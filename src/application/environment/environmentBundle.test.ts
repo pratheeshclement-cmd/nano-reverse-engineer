@@ -157,7 +157,9 @@ describe("planEnvironmentBundle", () => {
     );
     expect(bundleDockerfile(registryPackageSource())).not.toBe(dockerfile);
   });
+});
 
+describe("planEnvironmentBundle verifier and tasks", () => {
   it("writes a verifier that checks the served tool count and the status the server answers the first parameterless GET tool with", () => {
     const planned = plan();
     // Served tools are name-ordered, so the first parameterless GET is the annotations list; the state answers it from its recording.

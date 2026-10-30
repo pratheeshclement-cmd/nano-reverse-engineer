@@ -15,6 +15,29 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const execute = promisify(execFile);
 
+const captureHarnessSnapshot = async () => {
+  const harness = await createApplicationMcpHarness();
+  try {
+    const tools = await harness.client.listTools();
+    const sessionDefinition = tools.tools.find(
+      ({ name }) => name === "binary_session",
+    );
+    if (sessionDefinition === undefined)
+      throw new Error("Canary snapshot omitted binary_session");
+    return {
+      serverInfo: harness.client.getServerVersion(),
+      protocolVersion: harness.client.getNegotiatedProtocolVersion(),
+      tools,
+      reply: await harness.client.callTool(
+        { name: "binary_session", arguments: {} },
+        { toolDefinition: sessionDefinition },
+      ),
+    };
+  } finally {
+    await harness.close();
+  }
+};
+
 // Release rehearsal runs on Linux; the npm process adapter is also exercised on macOS.
 it.skipIf(process.platform === "win32")(
   "fails without declared runtime, then rehearses an installed tarball and rejects catalog drift",
@@ -25,27 +48,7 @@ it.skipIf(process.platform === "win32")(
     const { version } = z
       .object({ version: z.string() })
       .parse(JSON.parse(await readFile("package.json", "utf8")));
-    const harness = await createApplicationMcpHarness();
-    let snapshot;
-    try {
-      const tools = await harness.client.listTools();
-      const sessionDefinition = tools.tools.find(
-        ({ name }) => name === "binary_session",
-      );
-      if (sessionDefinition === undefined)
-        throw new Error("Canary snapshot omitted binary_session");
-      snapshot = {
-        serverInfo: harness.client.getServerVersion(),
-        protocolVersion: harness.client.getNegotiatedProtocolVersion(),
-        tools,
-        reply: await harness.client.callTool(
-          { name: "binary_session", arguments: {} },
-          { toolDefinition: sessionDefinition },
-        ),
-      };
-    } finally {
-      await harness.close();
-    }
+    const snapshot = await captureHarnessSnapshot();
     await mkdir(join(candidate, "scripts"), { recursive: true });
     await writeFile(
       join(candidate, "package.json"),
