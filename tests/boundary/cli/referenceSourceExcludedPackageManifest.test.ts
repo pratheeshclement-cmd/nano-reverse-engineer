@@ -11,10 +11,10 @@ cliTest(
   "keeps package selection unknown when its manifest is excluded",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-reference-excluded-package-main-",
+      "nre-reference-excluded-package-main-",
     );
     const config = await createTestTempDirectory(
-      "rea-reference-excluded-package-main-config-",
+      "nre-reference-excluded-package-main-config-",
     );
     await mkdir(join(root, "pkg"), { recursive: true });
     await Promise.all([
@@ -66,9 +66,9 @@ cliTest(
 cliTest(
   "does not fall back to an index when the declared main is excluded",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-excluded-main-");
+    const root = await createTestTempDirectory("nre-reference-excluded-main-");
     const config = await createTestTempDirectory(
-      "rea-reference-excluded-main-config-",
+      "nre-reference-excluded-main-config-",
     );
     await Promise.all([
       mkdir(join(root, "excluded", "dist"), { recursive: true }),

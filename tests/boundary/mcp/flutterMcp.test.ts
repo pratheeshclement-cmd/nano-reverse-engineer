@@ -216,7 +216,7 @@ it("advertises and enforces the same Unicode selector grammar through MCP", asyn
   const harness = await createApplicationMcpHarness({
     serverOptions: {
       flutterAnalysis: fakeProvider(),
-      environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
+      environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: "full" },
     },
   });
   onTestFinished(harness.close);

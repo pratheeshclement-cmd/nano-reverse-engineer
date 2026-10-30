@@ -106,7 +106,7 @@ pinned Turbo C++ 4.0J/TASM/TLINK toolchain. Both reproduce the complete
 contribution and overlapping relocation. Target and candidate slice SHA-256:
 `f7dfaeae5b18749d6687a94139488a825f86f00b85a4eb4072985223a5f1cc5e`.
 
-The retained receipt was Nred from the project's archive into private scratch
+The retained receipt was Read from the project's archive into private scratch
 storage. Receipt SHA-256:
 `76a361da712d8203f410068df0a864192ecdb64671e173ea15db358796b71e49`.
 Its digest matches the archive manifest. It reports `pass: true`, no failures,

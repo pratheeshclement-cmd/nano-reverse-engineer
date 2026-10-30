@@ -10,14 +10,14 @@ const hex = (value) => `0x${BigInt(value).toString(16)}`;
 
 /** Fixture symbol names, read from the ELF symbol table by GNU readelf (never hard-coded addresses). */
 export const DOL_SYMBOLS = [
-  "rea_ppc_entry",
-  "rea_ppc_leaf",
-  "rea_ppc_marker",
-  "rea_dol_global",
-  "rea_dol_tail",
+  "nre_ppc_entry",
+  "nre_ppc_leaf",
+  "nre_ppc_marker",
+  "nre_dol_global",
+  "nre_dol_tail",
 ];
 
-/** Independent DOL reader: header fields only, no REA parser. */
+/** Independent DOL reader: header fields only, no NRE parser. */
 export function parseDolHeaderIndependent(bytes) {
   assert.ok(bytes.length >= 0x100, "DOL shorter than its header");
   const slots = (kind, count, offsetBase, addressBase, sizeBase) =>
@@ -104,7 +104,7 @@ export function parseReadelfDolSource(text) {
 
 /** Independent GNU readelf reader for the ELF the DOL was converted from. */
 export async function inspectReadelfDolSource(elfPath) {
-  const command = process.env.REA_PPC_READELF ?? "readelf";
+  const command = process.env.NRE_PPC_READELF ?? "readelf";
   const options = {
     env: { ...process.env, LC_ALL: "C" },
     timeout: 10000,
@@ -180,7 +180,7 @@ export function assertDolAgainstElf(dol, dolBytes, elfBytes, elf, fixture) {
   assert.equal(data0.size, rw[0].fileSize, "data slot 0 size");
   assert.equal(data1.address, Number(rw[1].address), "data slot 1 address");
   assert.equal(data1.size, rw[1].fileSize, "data slot 1 size");
-  const tail = elf.symbols.rea_dol_tail;
+  const tail = elf.symbols.nre_dol_tail;
   assert.equal(
     BigInt(data1.address),
     tail,
@@ -203,7 +203,7 @@ export function assertDolAgainstElf(dol, dolBytes, elfBytes, elf, fixture) {
   }
   assert.equal(
     dol.entry,
-    Number(elf.symbols.rea_ppc_entry),
+    Number(elf.symbols.nre_ppc_entry),
     "DOL entry differs from the ELF entry symbol",
   );
   // The uncovered BSS gap runs from the end of data slot 0 to the tail segment.
@@ -271,10 +271,10 @@ export function assertDolEntryProcedure(procedures, entryAddress) {
 
 /** Memory bytes read through Ghidra must match the source fixture bytes. */
 export function assertDolGlobal(bytesHex) {
-  assert.equal(bytesHex, "11223344", "rea_dol_global bytes");
+  assert.equal(bytesHex, "11223344", "nre_dol_global bytes");
 }
 export function assertDolTail(bytesHex) {
-  assert.equal(bytesHex, "00000001", "rea_dol_tail first word");
+  assert.equal(bytesHex, "00000001", "nre_dol_tail first word");
 }
 /** Gap bytes are uninitialized in Ghidra: no file-backed bytes may be readable there. */
 export function assertDolGap(read) {

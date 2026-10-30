@@ -20,7 +20,7 @@ import {
 import { nativeFunctionMatchingSchema } from "../../../src/domain/native/functionMatching.js";
 
 const createMatchingFixture = async () => {
-  const root = await createTestTempDirectory("rea-native-matching-");
+  const root = await createTestTempDirectory("nre-native-matching-");
   const ancestor = createEvidence(undefined, nativeMatchingProvider, {
     operation: "fixture_provenance",
     parameters: {},
@@ -84,7 +84,7 @@ const createMatchingFixture = async () => {
 cliTest(
   "keeps the committed Evidence receipt when JSON Lines refuses the result",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-matching-jsonl-receipt-");
+    const root = await createTestTempDirectory("nre-matching-jsonl-receipt-");
     const request = join(root, "request.json");
     const left = nativeMatchingInventory("1", [
       { address: "0x10", value: "main" },
@@ -241,7 +241,7 @@ cliTest.for([{ profile: "full" }, { profile: "compact" }] as const)(
     const fixture = await createMatchingFixture();
     const { left, right, leftDetails, rightDetails, importedPath } = fixture;
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
     });
     const imported = await call("import_evidence_bundle", {
       path: importedPath,
@@ -454,7 +454,7 @@ cliTest(
     const right = nativeMatchingInventory("2", [
       { address: "0x20", value: "main" },
     ]);
-    const root = await createTestTempDirectory("rea-matching-input-");
+    const root = await createTestTempDirectory("nre-matching-input-");
     const bundlePath = join(root, "sources.json");
     await writeFile(
       bundlePath,
@@ -621,7 +621,7 @@ cliTest(
     // Reach the native matching representation boundary with this intentionally
     // oversized carrier fixture, rather than stopping at MCP's lower default.
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_MAX_INPUT_ELEMENTS: "1048576",
+      NRE_MCP_MAX_INPUT_ELEMENTS: "1048576",
     });
     const left = nativeMatchingInventory("1", [
       { address: "0x10", value: "main" },

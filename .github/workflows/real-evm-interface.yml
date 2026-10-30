@@ -52,13 +52,13 @@ jobs:
       - name: Acquire unchanged fixture compiler in isolated runner storage
         shell: bash
         run: |
-          evm_fixture_root="${RUNNER_TEMP}/rea-evm-fixture-compiler"
+          evm_fixture_root="${RUNNER_TEMP}/nre-evm-fixture-compiler"
           mkdir -p "${evm_fixture_root}"
           npm install --prefix "${evm_fixture_root}" --ignore-scripts --no-audit --no-fund --save-exact solc@0.8.30
           command -v prlimit
           command -v strace
-          echo "REA_VERIFY_STRACE_COMMAND=$(command -v strace)" >> "${GITHUB_ENV}"
-          echo "REA_VERIFY_SOLC_MODULE=${evm_fixture_root}/node_modules/solc/index.js" >> "${GITHUB_ENV}"
+          echo "NRE_VERIFY_STRACE_COMMAND=$(command -v strace)" >> "${GITHUB_ENV}"
+          echo "NRE_VERIFY_SOLC_MODULE=${evm_fixture_root}/node_modules/solc/index.js" >> "${GITHUB_ENV}"
       - name: Verify source-owned compiled bytecode through public CLI and MCP
         run: npm run verify:evm:interface
       - name: Verify content-hash-free and CBOR-free owned compiler artifacts

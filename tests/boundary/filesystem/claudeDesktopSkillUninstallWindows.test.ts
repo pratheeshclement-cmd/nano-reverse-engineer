@@ -17,7 +17,7 @@ afterEach(() => vi.unstubAllEnvs());
 it.runIf(process.platform === "win32").each([true, false])(
   "preflights native managed skill removal with redirected AppData: %s",
   async (redirected) => {
-    const home = await createTestTempDirectory("rea-claude-skill-uninstall-");
+    const home = await createTestTempDirectory("nre-claude-skill-uninstall-");
     const env = {
       APPDATA: join(home, "AppData", "Roaming"),
       LOCALAPPDATA: join(home, "AppData", "Local"),
@@ -37,11 +37,10 @@ it.runIf(process.platform === "win32").each([true, false])(
       await symlink(privateClaude, join(env.APPDATA, "Claude"), "junction");
     const agents = join(env.APPDATA, "dsh", "agents");
     const manifests = [
-      join(agents, "skills", "reverse-engineer-anything", "SKILL.md"),
-      join(home, ".claude", "skills", "reverse-engineer-anything", "SKILL.md"),
+      join(agents, "skills", "nano-reverse-engineer", "SKILL.md"),
+      join(home, ".claude", "skills", "nano-reverse-engineer", "SKILL.md"),
     ];
-    const contents =
-      "---\nname: reverse-engineer-anything\n---\nmanaged fixture\n";
+    const contents = "---\nname: nano-reverse-engineer\n---\nmanaged fixture\n";
     for (const manifest of manifests) {
       await mkdir(dirname(manifest), { recursive: true });
       await writeFile(manifest, contents);

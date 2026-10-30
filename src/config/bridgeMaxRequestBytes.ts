@@ -4,7 +4,7 @@ import { AnalysisResourceConstraintError } from "../domain/analysisErrorCore.js"
 import { ConfigurationError } from "../domain/configurationErrors.js";
 import { err, ok, type Result } from "../domain/result.js";
 
-export const BRIDGE_MAX_REQUEST_BYTES_SETTING = "REA_BRIDGE_MAX_REQUEST_BYTES";
+export const BRIDGE_MAX_REQUEST_BYTES_SETTING = "NRE_BRIDGE_MAX_REQUEST_BYTES";
 
 /** Request payload ceiling used when the setting is unset. Today's fixed constant. */
 export const DEFAULT_BRIDGE_MAX_REQUEST_BYTES = 16 * 1024 * 1024;
@@ -57,7 +57,7 @@ export const DEFAULT_BRIDGE_MAX_REQUEST: BridgeMaxRequestBytes = {
 
 /**
  * Peer a ceiling refusal is reported for. Ghidra differs from the other two:
- * its Java bridge reads no request ceiling, so only the REA client enforces
+ * its Java bridge reads no request ceiling, so only the NRE client enforces
  * this setting for Ghidra and recovery must not ask for a bridge restart.
  */
 export type BridgePeer = "Hopper" | "Cutter" | "Ghidra";
@@ -113,9 +113,9 @@ export const bridgeMaxRequestBytesRecovery = (
 ): string =>
   [
     `The effective ${BRIDGE_MAX_REQUEST_BYTES_SETTING} value is ${String(limit.maximumBytes)} bytes (source ${limit.source}; default ${String(DEFAULT_BRIDGE_MAX_REQUEST_BYTES)}, floor ${String(MINIMUM_BRIDGE_MAX_REQUEST_BYTES)}, maximum ${String(MAXIMUM_BRIDGE_MAX_REQUEST_BYTES)}).`,
-    `Set ${BRIDGE_MAX_REQUEST_BYTES_SETTING} in the environment that starts REA to a decimal integer from ${String(MINIMUM_BRIDGE_MAX_REQUEST_BYTES)} to ${String(MAXIMUM_BRIDGE_MAX_REQUEST_BYTES)}, then restart REA.`,
+    `Set ${BRIDGE_MAX_REQUEST_BYTES_SETTING} in the environment that starts NRE to a decimal integer from ${String(MINIMUM_BRIDGE_MAX_REQUEST_BYTES)} to ${String(MAXIMUM_BRIDGE_MAX_REQUEST_BYTES)}, then restart NRE.`,
     peer === "Ghidra"
-      ? `The Ghidra bridge enforces no request ceiling of its own, so only the REA client applies ${BRIDGE_MAX_REQUEST_BYTES_SETTING} to Ghidra requests.`
+      ? `The Ghidra bridge enforces no request ceiling of its own, so only the NRE client applies ${BRIDGE_MAX_REQUEST_BYTES_SETTING} to Ghidra requests.`
       : "Restart Hopper or Cutter from that same environment so the bridge uses this ceiling.",
   ].join(" ");
 
@@ -158,7 +158,7 @@ export const bridgeRequestLimitMismatchError = (
   return new AnalysisResourceConstraintError(
     operation,
     "transport",
-    `The ${peer} bridge ceiling is ${String(bridgeBytes)} bytes and the REA client ceiling is ${String(limit.maximumBytes)} bytes. ${sent} An out-of-band ${peer} process defaults to ${String(DEFAULT_BRIDGE_MAX_REQUEST_BYTES)} bytes when ${BRIDGE_MAX_REQUEST_BYTES_SETTING} is unset. ${recovery}`,
+    `The ${peer} bridge ceiling is ${String(bridgeBytes)} bytes and the NRE client ceiling is ${String(limit.maximumBytes)} bytes. ${sent} An out-of-band ${peer} process defaults to ${String(DEFAULT_BRIDGE_MAX_REQUEST_BYTES)} bytes when ${BRIDGE_MAX_REQUEST_BYTES_SETTING} is unset. ${recovery}`,
     {
       bridge_max_request_bytes: bridgeBytes,
       client_max_request_bytes: limit.maximumBytes,

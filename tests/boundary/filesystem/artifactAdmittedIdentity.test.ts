@@ -30,7 +30,7 @@ import { createSingleEntryZip } from "../../fixtures/zipNames.js";
 it.skipIf(process.platform === "win32").each(["zip", "asar"])(
   "rejects a %s selection whose traversed directory became a file",
   async (format) => {
-    const root = await createTestTempDirectory("rea-admitted-traversal-");
+    const root = await createTestTempDirectory("nre-admitted-traversal-");
     const child = join(root, "child");
     await mkdir(child);
     const stored = join(root, `stored.${format}`);
@@ -82,7 +82,7 @@ it.skipIf(process.platform === "win32")(
   "keeps native symlink parent traversal when revalidating archive selections",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-admitted-native-traversal-",
+      "nre-admitted-native-traversal-",
     );
     const physical = join(root, "physical");
     await mkdir(join(physical, "child"), { recursive: true });
@@ -130,7 +130,7 @@ it.each([
   "binds $format $replacement archive operations to the admitted source before output creation",
   async ({ format, replacement }) => {
     const root = await createTestTempDirectory(
-      "rea-archive-admitted-identity-",
+      "nre-archive-admitted-identity-",
     );
     const path = join(root, `selected.${format}`);
     const source = join(root, "source");
@@ -208,7 +208,7 @@ it.each([
 it.skipIf(process.platform === "win32")(
   "rejects retargeted ZIP selections without attributing or publishing the old packed bytes",
   async () => {
-    const root = await createTestTempDirectory("rea-admitted-zip-alias-");
+    const root = await createTestTempDirectory("nre-admitted-zip-alias-");
     const stored = join(root, "stored.zip");
     const other = join(root, "other.zip");
     const selected = join(root, "selected.zip");
@@ -251,7 +251,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("rejects an admitted archive replaced by a directory", async () => {
-  const root = await createTestTempDirectory("rea-admitted-file-directory-");
+  const root = await createTestTempDirectory("nre-admitted-file-directory-");
   const path = join(root, "selected.zip");
   const zip = new ZipWriter(new Uint8ArrayWriter());
   await zip.add("payload.txt", new TextReader("original"));
@@ -274,7 +274,7 @@ it("rejects an admitted archive replaced by a directory", async () => {
 });
 
 it("keeps app bundle aggregate inventories live when resources change", async () => {
-  const root = await createTestTempDirectory("rea-admitted-bundle-resources-");
+  const root = await createTestTempDirectory("nre-admitted-bundle-resources-");
   const app = join(root, "Fixture.app");
   await mkdir(join(app, "Contents", "MacOS"), { recursive: true });
   await writeFile(
@@ -320,7 +320,7 @@ it("keeps app bundle aggregate inventories live when resources change", async ()
 });
 
 it("checks embedded native packs before acceptance while preserving unsupported fast refusal", async () => {
-  const root = await createTestTempDirectory("rea-admitted-native-preflight-");
+  const root = await createTestTempDirectory("nre-admitted-native-preflight-");
   const path = join(root, "game");
   const writePack = async (text: string) => {
     const pack = buildGodotPck(2, [

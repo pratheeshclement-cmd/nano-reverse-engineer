@@ -30,7 +30,7 @@ const failureWithName = (
       {
         path: ["procedure"],
         reason: "invalid_value",
-        message: `Unknown Ghidra procedure name or address: REA_MISSING_${"x".repeat(nameBytes)}`,
+        message: `Unknown Ghidra procedure name or address: NRE_MISSING_${"x".repeat(nameBytes)}`,
       },
     ]),
     targetContent,

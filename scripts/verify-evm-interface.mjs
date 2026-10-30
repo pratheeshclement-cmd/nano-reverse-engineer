@@ -17,8 +17,8 @@ import {
 } from "./lib/mcp-verifier-results.mjs";
 import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 
-const solcModule = process.env.REA_VERIFY_SOLC_MODULE;
-const strace = process.env.REA_VERIFY_STRACE_COMMAND;
+const solcModule = process.env.NRE_VERIFY_SOLC_MODULE;
+const strace = process.env.NRE_VERIFY_STRACE_COMMAND;
 if (
   process.platform !== "linux" ||
   process.arch !== "x64" ||
@@ -26,11 +26,11 @@ if (
   !isAbsolute(strace ?? "")
 )
   throw new Error(
-    "verify:evm:interface requires Linux x64, caller-supplied util-linux prlimit and absolute REA_VERIFY_SOLC_MODULE pointing to unchanged solc 0.8.30 and absolute REA_VERIFY_STRACE_COMMAND. No target or chain is executed.",
+    "verify:evm:interface requires Linux x64, caller-supplied util-linux prlimit and absolute NRE_VERIFY_SOLC_MODULE pointing to unchanged solc 0.8.30 and absolute NRE_VERIFY_STRACE_COMMAND. No target or chain is executed.",
   );
 try {
   await access(
-    process.env.REA_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
+    process.env.NRE_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
     constants.X_OK,
   );
   await access(solcModule, constants.R_OK);
@@ -48,13 +48,13 @@ const source = await readFile(
   "utf8",
 );
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const execute = promisify(execFile);
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );
 const run = createVerifierRun();
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-evm-verifier-" });
+const root = await PrivateRuntimeRoot.create({ prefix: "nre-evm-verifier-" });
 const client = new Client({ name: "evm-interface-verifier", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -337,7 +337,7 @@ try {
     ["--cpu=20", "cpu_seconds=20"],
     ["--fsize=8388608", "file_size_bytes=8388608"],
   ]) {
-    const limiter = environment.REA_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
+    const limiter = environment.NRE_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
     const prefix = [
       option,
       "--",
@@ -377,7 +377,7 @@ try {
     }
   }
   const brokenLimiter = join(root.path, "broken-limiter");
-  await writeFile(brokenLimiter, "#!/rea-verifier-missing-interpreter\n", {
+  await writeFile(brokenLimiter, "#!/nre-verifier-missing-interpreter\n", {
     mode: 0o700,
   });
   const signalLimiter = join(root.path, "signal-limiter");
@@ -407,7 +407,7 @@ try {
   ]) {
     const selectedEnvironment = {
       ...environment,
-      REA_EVM_PRLIMIT_COMMAND: limiter,
+      NRE_EVM_PRLIMIT_COMMAND: limiter,
     };
     const selectedClient = new Client({
       name: "unavailable-evm-limiter-verifier",
@@ -520,7 +520,7 @@ try {
         assert.ok(
           [
             process.execPath,
-            environment.REA_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
+            environment.NRE_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
           ].includes(match[1]) || ownershipInspection,
           `Unexpected host execution: ${line}`,
         );
@@ -536,7 +536,7 @@ try {
   assert.ok(observedExecutables.has(process.execPath));
   assert.ok(
     observedExecutables.has(
-      environment.REA_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
+      environment.NRE_EVM_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
     ),
   );
   cases += 2;

@@ -7,8 +7,8 @@ it.each(["full", "compact", "off"] as const)(
   "keeps real stdio discovery, status identity and disabled calls in the same family scope (%s)",
   async (outputProfile) => {
     const { client, call } = await connectLocalToolsMcp({
-      REA_MCP_TOOL_FAMILIES: "session",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: outputProfile,
+      NRE_MCP_TOOL_FAMILIES: "session",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: outputProfile,
     });
     const tools = (await client.listTools()).tools;
     const names = tools.map(({ name }) => name).sort();

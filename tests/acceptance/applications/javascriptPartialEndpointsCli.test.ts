@@ -12,14 +12,14 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const execute = promisify(execFile);
 
 it("reports partial JavaScript request targets through the public CLI", async () => {
-  const root = await createTestTempDirectory("rea-js-partial-endpoints-cli-");
+  const root = await createTestTempDirectory("nre-js-partial-endpoints-cli-");
   await writeFile(
     join(root, "main.js"),
     "fetch(target); fetch('target'); fetch(`https://${hosts['a@b']}/items/${id}`); function other(target) { fetch(target); }",
   );
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/nre.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const result = javascriptApplicationAnalysisResultSchema.parse(

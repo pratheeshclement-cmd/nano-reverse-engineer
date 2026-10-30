@@ -44,7 +44,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 afterEach(() => vi.restoreAllMocks());
 
 const fixture = async (duringCollection?: (root: string) => Promise<void>) => {
-  const root = await createTestTempDirectory("rea-adb-bugreport-");
+  const root = await createTestTempDirectory("nre-adb-bugreport-");
   const binary = join(root, "adb");
   let reportedPath = "";
   vi.mocked(execFileOutput).mockImplementation(async (_binary, args) => {
@@ -68,7 +68,7 @@ const fixture = async (duringCollection?: (root: string) => Promise<void>) => {
       stderr: Buffer.alloc(0),
     };
   });
-  const provider = new AdbProvider({ environment: { REA_ADB_PATH: binary } });
+  const provider = new AdbProvider({ environment: { NRE_ADB_PATH: binary } });
   return {
     root,
     provider,
@@ -293,7 +293,7 @@ test("keeps a bugreport error unresolved until digest and staging owners recover
   });
   vi.mocked(rm).mockImplementation(async (path, options) => {
     if (
-      basename(String(path)).startsWith(".rea-bugreport-") &&
+      basename(String(path)).startsWith(".nre-bugreport-") &&
       ++stagingRemovalAttempts === 1
     )
       throw new Error("controlled staging removal fault");

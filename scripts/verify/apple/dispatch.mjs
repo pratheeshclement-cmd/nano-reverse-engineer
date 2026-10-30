@@ -149,12 +149,12 @@ const checkObjc = (metadata, mode) => {
     ) ||
     category?.class_name !== "NSString" ||
     category.class_source !== "external" ||
-    !category.instance_methods.includes("reaFixtureLength") ||
+    !category.instance_methods.includes("nreFixtureLength") ||
     !metadata.objc_dispatch_implementations.some(
       (item) =>
         item.class_name === "NSString" &&
         item.category === "ReaDispatchAdditions" &&
-        item.selector === "reaFixtureLength",
+        item.selector === "nreFixtureLength",
     ) ||
     objcCoverage?.status !== "complete" ||
     fixupCoverage(metadata)?.reason?.startsWith(mode.fixups) !== true ||
@@ -300,7 +300,7 @@ const checkSwiftSymbolAddresses = async (path, declarations) => {
   }
 };
 
-const root = await mkdtemp(join(tmpdir(), "rea-dispatch-"));
+const root = await mkdtemp(join(tmpdir(), "nre-dispatch-"));
 let report;
 try {
   const results = [];

@@ -56,7 +56,7 @@ cliTest(
     const fixture = await keyedArchiveWideIntegerFixture();
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", fixture.path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     expect(parseEvidence(output.json).normalized_result).toMatchObject({
@@ -119,7 +119,7 @@ cliTest(
     const fixture = await keyedArchiveSharedEntryFixture();
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", fixture.path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = parseEvidence(output.json).normalized_result as {
@@ -148,7 +148,7 @@ cliTest.for(archiveNumberMetadataCases)(
     const fixture = await keyedArchiveNumberMetadataFixture(item);
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", fixture.path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expectKeyedArchiveNumberMetadata(
       parseEvidence(output.json).normalized_result,

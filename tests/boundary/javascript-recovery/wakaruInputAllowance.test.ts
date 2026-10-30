@@ -68,7 +68,7 @@ const recover = async (
 it.skipIf(process.platform === "win32")(
   "reports exhausted total input bytes as a deterministic file-size limit",
   async () => {
-    const root = await createTestTempDirectory("rea-recovery-allowance-");
+    const root = await createTestTempDirectory("nre-recovery-allowance-");
     const exact = join(root, "exact.js");
     await writeFile(exact, Buffer.alloc(MAXIMUM, 32));
     const [admitted] = await snapshotRecoveryInputs(
@@ -114,7 +114,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("keeps malformed UTF-8 an input-format refusal distinct from size", async () => {
-  const root = await createTestTempDirectory("rea-recovery-encoding-");
+  const root = await createTestTempDirectory("nre-recovery-encoding-");
   const invalid = join(root, "invalid.js");
   await writeFile(invalid, Buffer.from([0xff]));
   const projection = await recover(root, invalid);

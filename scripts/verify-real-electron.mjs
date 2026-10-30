@@ -12,19 +12,19 @@ import {
 import { completeVerifierRun, createVerifierRun } from "./lib/verifier-run.mjs";
 import { verifyElectronToolContracts } from "./verify/electron/tool-contracts.mjs";
 
-const executable = process.env.REA_ELECTRON_EXECUTABLE;
+const executable = process.env.NRE_ELECTRON_EXECUTABLE;
 if (executable === undefined || executable.length === 0)
   throw new Error(
-    "REA_ELECTRON_EXECUTABLE must identify the Electron executable for this verification lane",
+    "NRE_ELECTRON_EXECUTABLE must identify the Electron executable for this verification lane",
   );
 
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 await verifyElectronToolContracts({ executable, repositoryRoot });
 const applicationRoot =
-  process.env.REA_ELECTRON_APPLICATION_ROOT ??
+  process.env.NRE_ELECTRON_APPLICATION_ROOT ??
   join(repositoryRoot, "tests/conformance/readiness/electron");
 const applicationPath =
-  process.env.REA_ELECTRON_APPLICATION_PATH ?? join(applicationRoot, "main.js");
+  process.env.NRE_ELECTRON_APPLICATION_PATH ?? join(applicationRoot, "main.js");
 const input = electronActiveObservationInputSchema.parse({
   executable_path: executable,
   application_path: applicationPath,
@@ -35,13 +35,13 @@ const input = electronActiveObservationInputSchema.parse({
       step_id: "open-url",
       kind: "deep-link",
       delivery: "open-url",
-      url: "rea-readiness://open-url",
+      url: "nre-readiness://open-url",
     },
     {
       step_id: "second-instance",
       kind: "deep-link",
       delivery: "second-instance",
-      url: "rea-readiness://second-instance",
+      url: "nre-readiness://second-instance",
     },
     { step_id: "renderer-reload", kind: "renderer-reload", window_index: 1 },
     { step_id: "renderer-crash", kind: "renderer-crash", window_index: 1 },

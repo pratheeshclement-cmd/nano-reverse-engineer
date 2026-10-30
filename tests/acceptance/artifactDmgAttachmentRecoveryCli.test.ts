@@ -14,7 +14,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform !== "darwin")(
   "DMG recovery preserves the caller's real attachment and succeeds after its owner releases it",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-dmg-attachment-recovery-");
+    const root = await createTestTempDirectory("nre-dmg-attachment-recovery-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "fixture.txt"), "caller-owned image\n");

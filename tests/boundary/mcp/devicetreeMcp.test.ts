@@ -52,7 +52,7 @@ mcpTest(
         client,
         "inspect_devicetree",
       );
-      const root = await createTestTempDirectory("rea-dtb-mcp-");
+      const root = await createTestTempDirectory("nre-dtb-mcp-");
       const path = join(root, "board.dtb");
       await writeFile(path, devicetreeFixture());
       const response = await client.callTool({
@@ -118,7 +118,7 @@ mcpTest(
     });
     const client = await mcp.connect(createDtbServer(session));
     try {
-      const root = await createTestTempDirectory("rea-dtb-mcp-bootargs-");
+      const root = await createTestTempDirectory("nre-dtb-mcp-bootargs-");
       const path = join(root, "board.dtb");
       // Quotes double under JSON escaping; the value must not ride on every page.
       const bootargs = '"'.repeat(3 * 1024 * 1024);
@@ -180,7 +180,7 @@ mcpTest(
     });
     const client = await mcp.connect(createDtbServer(session));
     try {
-      const root = await createTestTempDirectory("rea-dtb-mcp-phandle-");
+      const root = await createTestTempDirectory("nre-dtb-mcp-phandle-");
       const path = join(root, "board.dtb");
       await writeFile(
         path,
@@ -250,7 +250,7 @@ mcpTest("rejects relative paths and unsupported versions", async ({ mcp }) => {
     expect(parseMcpToolError(response).error).toMatchObject({
       code: "invalid_request",
     });
-    const root = await createTestTempDirectory("rea-dtb-mcp-version-");
+    const root = await createTestTempDirectory("nre-dtb-mcp-version-");
     const path = join(root, "board.dtb");
     await writeFile(path, devicetreeFixture(undefined, 18));
     const unsupported = await client.callTool({

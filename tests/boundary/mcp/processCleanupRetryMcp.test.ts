@@ -21,7 +21,7 @@ import { createServer } from "../../../src/server/createServer.js";
 import { ToolResultDelivery } from "../../../src/server/ToolResultDelivery.js";
 
 const createTemporaryRoot = (): Promise<string> =>
-  mkdtemp(join(tmpdir(), "rea-mcp-process-cleanup-retry-"));
+  mkdtemp(join(tmpdir(), "nre-mcp-process-cleanup-retry-"));
 
 const cleanupOptions = (
   root: string,

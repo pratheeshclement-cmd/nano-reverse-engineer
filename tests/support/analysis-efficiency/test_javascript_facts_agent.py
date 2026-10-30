@@ -18,7 +18,7 @@ HARNESS = Path(__file__).with_name('javascript-facts-agent.mjs')
 
 class JavaScriptFactsAgentTests(unittest.TestCase):
     def run_harness(self, mode):
-        directory = tempfile.TemporaryDirectory(prefix='rea-facts-agent-test-')
+        directory = tempfile.TemporaryDirectory(prefix='nre-facts-agent-test-')
         self.addCleanup(directory.cleanup)
         root = Path(directory.name)
         repository = root / 'repository'
@@ -28,7 +28,7 @@ class JavaScriptFactsAgentTests(unittest.TestCase):
         config = dict(mode=mode, root=str(root), output=str(root / 'output'))
         original_root = (REPOSITORY / 'dist/process/PrivateRuntimeRoot.js').as_uri()
         original_command = (REPOSITORY / 'dist/process/OwnedCommand.js').as_uri()
-        self.assertTrue((REPOSITORY / 'dist/process/OwnedCommand.js').is_file(), 'Build REA before running the experiment boundary checks')
+        self.assertTrue((REPOSITORY / 'dist/process/OwnedCommand.js').is_file(), 'Build NRE before running the experiment boundary checks')
         (modules / 'PrivateRuntimeRoot.js').write_text('''
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';

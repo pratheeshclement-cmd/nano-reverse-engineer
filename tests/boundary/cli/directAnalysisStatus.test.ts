@@ -32,7 +32,7 @@ it.each(["capabilities", "providers"])(
     const close = vi
       .spyOn(session, "close")
       .mockResolvedValueOnce(err(cleanup));
-    const cli = Cli.create({ name: "rea" });
+    const cli = Cli.create({ name: "nre" });
     registerUtilityCommands(
       cli,
       silentLogger,
@@ -116,7 +116,7 @@ it.each(["capabilities", "providers"])(
       promptContracts: promptsForToolFamilies(families),
       outputSchemaProfile: "compact",
     });
-    const cli = Cli.create({ name: "rea" });
+    const cli = Cli.create({ name: "nre" });
     registerUtilityCommands(
       cli,
       silentLogger,
@@ -126,9 +126,9 @@ it.each(["capabilities", "providers"])(
           runSessionStatus({
             readConfiguration: () =>
               parseConfig({
-                REA_MCP_TOOL_FAMILIES: " session,session ",
-                REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-                REA_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
+                NRE_MCP_TOOL_FAMILIES: " session,session ",
+                NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+                NRE_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
               }),
             createBinarySession: () => session,
           }),

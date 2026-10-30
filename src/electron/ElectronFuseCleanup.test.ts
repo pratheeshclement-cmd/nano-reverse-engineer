@@ -23,7 +23,7 @@ afterEach(() => {
 });
 
 it("retains the exact rejected fuse descriptor until its owner can close it", async () => {
-  const root = await createTestTempDirectory("rea-fuse-close-owner-");
+  const root = await createTestTempDirectory("nre-fuse-close-owner-");
   const path = join(root, "application");
   await fileSystem.writeFile(path, thinFuseImage([0x31]).bytes);
   const originalOpen = fileSystem.open;
@@ -71,7 +71,7 @@ const faultyFuse = async (faults: {
   read?: () => Promise<never>;
   close?: () => Promise<void>;
 }) => {
-  const root = await createTestTempDirectory("rea-fuse-finalization-");
+  const root = await createTestTempDirectory("nre-fuse-finalization-");
   const path = join(root, "application");
   const bytes = thinFuseImage([0x31]).bytes;
   await fileSystem.writeFile(path, bytes);
@@ -485,7 +485,7 @@ it("preserves a preflight caller cancelled while its preceding descriptor is bei
 });
 
 it("joins shutdown during preflight and refuses any later launch or capture", async () => {
-  const root = await createTestTempDirectory("rea-fuse-preflight-shutdown-");
+  const root = await createTestTempDirectory("nre-fuse-preflight-shutdown-");
   const path = join(root, "selected");
   await fileSystem.writeFile(path, thinFuseImage([0x31]).bytes);
   const entered = createDeferred<void>();
@@ -531,7 +531,7 @@ it("joins shutdown during preflight and refuses any later launch or capture", as
 });
 
 it("releases successful descriptor peers while retaining the failed owner's exact retry", async () => {
-  const root = await createTestTempDirectory("rea-fuse-mixed-descriptors-");
+  const root = await createTestTempDirectory("nre-fuse-mixed-descriptors-");
   const paths = [join(root, "first"), join(root, "second")];
   await Promise.all(
     paths.map((path) =>

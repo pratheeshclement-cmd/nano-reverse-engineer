@@ -29,7 +29,7 @@ cliTest.for([
 ] as const)(
   "preserves binary keyed-archive code-unit identity across output formats (%s)",
   async ([label, value], { cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-text-unicode-");
+    const root = await createTestTempDirectory("nre-keyed-text-unicode-");
     const renderer = await createMarkdownRenderer(root, { linkify: false });
     const path = join(root, `${label}.bplist`);
     await writeFile(
@@ -88,7 +88,7 @@ cliTest.for([
 cliTest(
   "keeps NUL-bearing class names distinct in rendered Markdown",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-class-unicode-");
+    const root = await createTestTempDirectory("nre-keyed-class-unicode-");
     const renderer = await createMarkdownRenderer(root, { linkify: false });
     for (const [label, name, expected] of [
       ["nul", "My\u0000Class", ""],

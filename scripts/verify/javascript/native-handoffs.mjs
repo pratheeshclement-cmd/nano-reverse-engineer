@@ -87,13 +87,13 @@ if (values["expect-timeout"])
     );
 const environment = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "auto",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "auto",
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [fileURLToPath(new URL("../../rea.mjs", import.meta.url)), "mcp"],
+  args: [fileURLToPath(new URL("../../nre.mjs", import.meta.url)), "mcp"],
   env: environment,
   stderr: "pipe",
 });
@@ -134,7 +134,7 @@ const ownedCommand = async (command, arguments_, timeoutMs = 60_000) => {
         arguments: arguments_,
         cwd: temporary.path,
         env: environment,
-        runId: `rea-native-handoff-${randomUUID()}`,
+        runId: `nre-native-handoff-${randomUUID()}`,
         expectedCommand: command === process.execPath ? process.execPath : null,
         sweepTokenOwnedProcesses: true,
       },
@@ -315,7 +315,7 @@ await withVerifierCleanup(async () => {
   let cliParity = null;
   if (values["cli-parity"]) {
     temporary = await PrivateRuntimeRoot.create({
-      prefix: "rea-native-handoff-verifier-",
+      prefix: "nre-native-handoff-verifier-",
     });
     const bundlePath = join(temporary.path, "bundle.json");
     const exported = await client.callTool({
@@ -354,7 +354,7 @@ await withVerifierCleanup(async () => {
     const result = await ownedCommand(
       process.execPath,
       [
-        fileURLToPath(new URL("../../rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../nre.mjs", import.meta.url)),
         "trace-application-feature",
         request,
         "--json",
@@ -382,7 +382,7 @@ await withVerifierCleanup(async () => {
   let tokenCosts = null;
   if (values["tokenizer-python"]) {
     temporary ??= await PrivateRuntimeRoot.create({
-      prefix: "rea-native-handoff-verifier-",
+      prefix: "nre-native-handoff-verifier-",
     });
     const input = join(temporary.path, "token-input.json");
     await writeFile(

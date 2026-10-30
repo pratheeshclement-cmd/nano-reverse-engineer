@@ -34,9 +34,9 @@ import {
 } from "./lib/mcp-startup-probe.mjs";
 
 const root = process.cwd();
-const retentionDirectory = process.env.REA_VERIFIED_PACKAGE_DIRECTORY;
+const retentionDirectory = process.env.NRE_VERIFIED_PACKAGE_DIRECTORY;
 const verifierRun = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-package-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-package-"));
 const evidenceRoot = join(workspace, "evidence");
 const referenceRoot = join(workspace, "reference-source");
 let tarball;
@@ -228,7 +228,7 @@ await withVerifierCleanup(async () => {
   await runStage("extracted plugin MCP tools and evidence", () =>
     verifyPackageMcp({
       commands,
-      cli: join(extractedDirectory, "package", "scripts", "rea.mjs"),
+      cli: join(extractedDirectory, "package", "scripts", "nre.mjs"),
       environment: environmentData.environment,
       evidenceRoot,
       artifactArchive,

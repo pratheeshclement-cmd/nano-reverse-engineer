@@ -89,8 +89,8 @@ checks are retained in the JSON record. Current-head CI/review follows publicati
 
 ## Original qualification
 
-Issue [#4537](https://github.com/morluto/rea/issues/4537), existing PR
-[#4158](https://github.com/morluto/rea/pull/4158). Runtime `f85a887a05fa62d0675139746dbce6eba7548aee`,
+Issue [#4537](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4537), existing PR
+[#4158](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/4158). Runtime `f85a887a05fa62d0675139746dbce6eba7548aee`,
 tree `ff1f42613847e198988bf84dfb2d50d578084bdb`, integrates main `a4a548718d696d7329ffc7b9caa64ee72a215461` while retaining
 contributor head `76445a83c8e6542131f7b38290ec749b3a199ba4`. The [JSON record](apk-signature-2026-10-22.json)
 pins commands, inputs, resource profiles, failed controls and limits.
@@ -114,7 +114,7 @@ Complete source Evidence remains accessible and CLI compact delivery exports it.
   verifier-reported CLI/SDK cases**, including v1 RSA/EC, legacy v1+v2+v3,
   rotation, v3.1, source stamp, tampered bytes and forged declared digests.
   Forged declarations can match bytes while apksigner rejects their signature;
-  REA preserves that distinction. Build Tools36.1.0/platform36 were downloaded
+  NRE preserves that distinction. Build Tools36.1.0/platform36 were downloaded
   from Google, checked against repository metadata and pinned SHA-256.
 - Exact CI static checks passed. Documentation validation follows this generated
   report; current-head GitHub CI and review are checked separately.

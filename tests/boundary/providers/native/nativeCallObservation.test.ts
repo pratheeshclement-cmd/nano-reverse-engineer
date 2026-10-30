@@ -117,11 +117,11 @@ class FixtureTracer implements NativeCallTracer {
 
 const BREAKPOINTS = [
   { kind: "objc-method", class_name: "Greeter", selector: "greet:times:" },
-  { kind: "function", name: "rea_add" },
+  { kind: "function", name: "nre_add" },
 ];
 
 const fixtureTarget = async () => {
-  const directory = await createTestTempDirectory("rea-native-calls-");
+  const directory = await createTestTempDirectory("nre-native-calls-");
   const path = join(directory, "Fixture");
   await writeFile(path, "fixture executable");
   return {
@@ -154,7 +154,7 @@ describe("observe_native_calls projection: projects completed observations", () 
       {
         breakpoints: BREAKPOINTS,
         arguments: ["--flag"],
-        environment: { REA_CASE: "selected" },
+        environment: { NRE_CASE: "selected" },
       },
       target,
     );
@@ -164,7 +164,7 @@ describe("observe_native_calls projection: projects completed observations", () 
       architecture: "arm64",
       input: {
         arguments: ["--flag"],
-        environment: { REA_CASE: "selected" },
+        environment: { NRE_CASE: "selected" },
         duration_ms: 10_000,
         max_events: 1_000,
         argument_registers: 4,
@@ -174,7 +174,7 @@ describe("observe_native_calls projection: projects completed observations", () 
     const result = nativeCallObservationResultSchema.parse(
       observed.value.result,
     );
-    expect(result.target.environment).toEqual({ REA_CASE: "selected" });
+    expect(result.target.environment).toEqual({ NRE_CASE: "selected" });
     expect(result.breakpoints.map(({ request }) => request)).toEqual([
       {
         kind: "objc-method",
@@ -182,7 +182,7 @@ describe("observe_native_calls projection: projects completed observations", () 
         selector: "greet:times:",
         method_type: "any",
       },
-      { kind: "function", name: "rea_add", module: null },
+      { kind: "function", name: "nre_add", module: null },
     ]);
     expect(result.process).toMatchObject({
       pid: 4242,
@@ -316,7 +316,7 @@ describe("observe_native_calls projection: reports partial observation coverage"
         "Observation stopped at max_events (1); later calls were not recorded and termination was requested but could not be confirmed.",
         "Breakpoints 1 matched no code in any image loaded while observing; their calls could not be observed.",
         "Target output beyond 1048576 bytes (1 MiB) per stream is counted but not kept. This release has no runtime override.",
-        "REA could not confirm that process 4242 exited; check for it before relying on host state.",
+        "NRE could not confirm that process 4242 exited; check for it before relying on host state.",
       ]),
     );
   });

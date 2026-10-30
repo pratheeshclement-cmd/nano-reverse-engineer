@@ -24,23 +24,23 @@ const FIRST_ATTEMPT_MS = 15 * 60_000;
 const MIN_RETRY_MS = 5 * 60_000;
 
 // Both tools are caller-supplied absolute paths, as every real-* lane names its upstream.
-for (const key of ["REA_AGENT_ENV_COMMAND", "REA_DOCKER_COMMAND"])
+for (const key of ["NRE_AGENT_ENV_COMMAND", "NRE_DOCKER_COMMAND"])
   if (!isAbsolute(process.env[key] ?? ""))
     throw new Error(
       `verify:agentenv:environment requires absolute ${key}; see docs/testing.md. No dependencies are installed by this verifier.`,
     );
-const agentEnv = process.env.REA_AGENT_ENV_COMMAND;
-const docker = process.env.REA_DOCKER_COMMAND;
+const agentEnv = process.env.NRE_AGENT_ENV_COMMAND;
+const docker = process.env.NRE_DOCKER_COMMAND;
 // The framework's local image store keeps its registry:2 helper running across runs; a first
 // run on a fresh host creates it, so it is reported separately rather than counted as a leak.
 const IMAGE_STORE_HELPER = /^agentenv-registry(?:-\d+)?$/u;
 await Promise.all([access(agentEnv), access(docker)]);
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const checkout = resolve(dirname(entrypoint), "..");
 const run = createVerifierRun();
 const runtime = await PrivateRuntimeRoot.create({
-  prefix: "rea-agentenv-verifier-",
+  prefix: "nre-agentenv-verifier-",
 });
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
@@ -125,7 +125,7 @@ try {
     "envs/grafana-example/env.toml",
     "envs/grafana-example/evidence.json",
     "envs/grafana-example/manifest.json",
-    "envs/grafana-example/rea-agents.tgz",
+    "envs/grafana-example/nano-reverse-engineer.tgz",
     "tasks/smoke.json",
   ]);
   const shipped = JSON.parse(
@@ -140,8 +140,8 @@ try {
     join(bundle, "envs/grafana-example/Dockerfile"),
     "utf8",
   );
-  assert.ok(dockerfile.includes("COPY rea-agents.tgz /tmp/"));
-  assert.ok(dockerfile.includes("/tmp/rea-agents.tgz"));
+  assert.ok(dockerfile.includes("COPY nano-reverse-engineer.tgz /tmp/"));
+  assert.ok(dockerfile.includes("/tmp/nano-reverse-engineer.tgz"));
   cases++;
   // The agentenv runner builds the image, deploys it on the local sandbox and runs the verifier.
   // One deadline for both attempts, well under the 30-minute job, so a hung or retried run ends

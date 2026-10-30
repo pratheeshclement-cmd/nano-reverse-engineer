@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "reports the last PE ordinal when an unused EAT slot follows it",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-export-last-ordinal-");
+    const root = await createTestTempDirectory("nre-pe-export-last-ordinal-");
     const path = join(root, "exports.dll");
     await writeFile(
       path,
@@ -51,7 +51,7 @@ cliTest(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves biased PE ordinals above the name-table index width through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-pe-biased-ordinal-");
+    const root = await createTestTempDirectory("nre-pe-biased-ordinal-");
     const cases = [
       { name: "word-base", base: 0x10000, index: 0, ordinal: 0x10000 },
       {

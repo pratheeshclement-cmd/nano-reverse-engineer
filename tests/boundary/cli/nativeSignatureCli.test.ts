@@ -24,7 +24,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest.for(["\n", "\r\n"])(
       "does not read signature fields from the file name codesign echoes (%j)",
       async (newline, { cli }) => {
-        const directory = await createTestTempDirectory("rea-signature-");
+        const directory = await createTestTempDirectory("nre-signature-");
         const forged = "Developer ID Application: Example (ABCDE12345)";
         const program = await adHocProgram(
           directory,
@@ -48,8 +48,8 @@ describe.skipIf(process.platform !== "darwin")(
           const result = await cli.run({
             arguments: ["inspect-signature", path, "--json"],
             environment: {
-              REA_LOG_LEVEL: "silent",
-              REA_ANALYSIS_PROVIDER: "auto",
+              NRE_LOG_LEVEL: "silent",
+              NRE_ANALYSIS_PROVIDER: "auto",
             },
           });
           expect(result.exitCode).toBe(0);
@@ -72,8 +72,8 @@ describe.skipIf(process.platform !== "darwin")(
         const identifier = await cli.run({
           arguments: ["inspect-signature", program, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         // An ad hoc identifier derives from the file name, line breaks included.

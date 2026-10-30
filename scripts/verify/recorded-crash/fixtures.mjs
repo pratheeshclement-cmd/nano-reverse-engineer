@@ -50,7 +50,7 @@ export async function createRecordedCore(options) {
   );
   // Fixed relative arguments avoid putting selected filesystem paths in GDB command syntax.
   await fixtureCommand(
-    options.environment.REA_PWNDBG_GDB,
+    options.environment.NRE_PWNDBG_GDB,
     [
       "-nx",
       "-nh",

@@ -7,7 +7,7 @@ import {
 import { parseConfig } from "../config/parseConfig.js";
 
 it("updates atomically, restores launch values, and refuses stale or invalid writes", () => {
-  const store = new AnalysisSettings({ REA_ASAR_MAX_HEADER_BYTES: "20000000" });
+  const store = new AnalysisSettings({ NRE_ASAR_MAX_HEADER_BYTES: "20000000" });
   const inspect = () => store.inspect({ settings: ["asar.max_header_bytes"] });
   expect(inspect().settings[0]).toMatchObject({
     value: 20000000,
@@ -101,7 +101,7 @@ it("keeps accepted operations and their typed provider views stable across concu
 });
 
 it("exposes shared provider controls and preserves the explicit unbounded decompile value", () => {
-  const environment = { REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "7" };
+  const environment = { NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "7" };
   const store = new AnalysisSettings(environment);
   const parsed = parseConfig(environment);
   if (!parsed.ok) throw parsed.error;

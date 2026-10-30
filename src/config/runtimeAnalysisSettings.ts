@@ -76,7 +76,7 @@ export const runtimeAsarHeaderAdmission = (
   read?: AnalysisSettingsReader,
 ): AsarHeaderAdmission => {
   const parsed = parseAsarHeaderAdmission(
-    environment.REA_ASAR_MAX_HEADER_BYTES,
+    environment.NRE_ASAR_MAX_HEADER_BYTES,
   );
   if (!parsed.ok) throw parsed.error;
   const baseline = parsed.value;

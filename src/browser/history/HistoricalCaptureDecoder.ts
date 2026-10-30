@@ -76,7 +76,7 @@ export class HistoricalCaptureDecoder {
     readonly environment: Readonly<NodeJS.ProcessEnv>,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-web-capture-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "nre-web-capture-" }),
     resources = new ArtifactResourceScope(),
   ) {
     this.#resources = resources;
@@ -193,7 +193,7 @@ export class HistoricalCaptureDecoder {
       const completed = await runOwnedCommand(
         {
           ...command,
-          runId: `rea-web-capture-${randomUUID()}`,
+          runId: `nre-web-capture-${randomUUID()}`,
           cwd: runtime.path,
           hostEnvironment: environment,
         },
@@ -570,6 +570,6 @@ const nodeMemoryLimitation = (heap: CaptureDecoderHeap): string => {
     heap.oldGenerationMiB,
   );
   return commitLimit === null
-    ? `HAR/SAZ/qlog run on Bun, which does not enforce REA's V8 heap flags. ${recovery}`
-    : `HAR/SAZ/qlog run on Bun, which does not enforce REA's V8 heap flags, under a ${String(commitLimit)}-byte Windows Job Object commit limit. ${recovery}`;
+    ? `HAR/SAZ/qlog run on Bun, which does not enforce NRE's V8 heap flags. ${recovery}`
+    : `HAR/SAZ/qlog run on Bun, which does not enforce NRE's V8 heap flags, under a ${String(commitLimit)}-byte Windows Job Object commit limit. ${recovery}`;
 };

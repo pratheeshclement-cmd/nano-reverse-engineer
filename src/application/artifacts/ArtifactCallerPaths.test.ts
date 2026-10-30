@@ -16,7 +16,7 @@ import { createArtifactExtractionDestination } from "./ArtifactExtractionDestina
 it.skipIf(process.platform === "win32")(
   "allocates extraction in the physical TMPDIR parent selected through a symlink and ..",
   async () => {
-    const root = await createTestTempDirectory("rea-extraction-parent-");
+    const root = await createTestTempDirectory("nre-extraction-parent-");
     const selected = join(root, "physical");
     await mkdir(join(selected, "child"), { recursive: true });
     await mkdir(join(root, "lexical"));
@@ -34,7 +34,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("refuses directory extraction output inside the source before copying and keeps outside extraction exact", async () => {
-  const root = await createTestTempDirectory("rea-extraction-overlap-");
+  const root = await createTestTempDirectory("nre-extraction-overlap-");
   const source = join(root, "source");
   await mkdir(join(source, "nested"), { recursive: true });
   await writeFile(join(source, "nested", "payload.txt"), "original bytes");
@@ -77,7 +77,7 @@ it("refuses directory extraction output inside the source before copying and kee
 it.skipIf(process.platform === "win32")(
   "inventories and extracts literal letter-colon POSIX names",
   async () => {
-    const root = await createTestTempDirectory("rea-extraction-colon-");
+    const root = await createTestTempDirectory("nre-extraction-colon-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "a:b"), "literal colon bytes");

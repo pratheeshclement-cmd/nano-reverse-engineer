@@ -672,7 +672,7 @@ it("revalidates a group after its observed launcher exits and a child appears", 
         exited = true;
         throw Object.assign(new Error("opaque exit"), { code: "ESRCH" });
       }
-      return { REA_PROCESS_RUN_ID: "run" };
+      return { NRE_PROCESS_RUN_ID: "run" };
     },
     processIdentities: async (rows) =>
       new Map(
@@ -748,7 +748,7 @@ it("refreshes a group when its last member exits during revalidation and a child
         throw Object.assign(new Error("opaque exit"), { code: "ESRCH" });
       }
       if (pid === launcher.pid) planningTokenRead = true;
-      return { REA_PROCESS_RUN_ID: "run" };
+      return { NRE_PROCESS_RUN_ID: "run" };
     },
     processIdentities: async (rows) =>
       new Map<number, ProcessIdentityObservation>(

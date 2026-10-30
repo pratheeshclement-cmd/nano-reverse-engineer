@@ -12,7 +12,7 @@ import { expect, it, vi } from "vitest";
 import { LldbReadbackFiles } from "../../../../src/native/LldbReadbackFiles.js";
 
 it("bounds PID readback while retaining newline-terminated producer fixtures", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-lldb-pid-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-lldb-pid-"));
   const values = [
     ["max-safe.pid", String(Number.MAX_SAFE_INTEGER), Number.MAX_SAFE_INTEGER],
     [

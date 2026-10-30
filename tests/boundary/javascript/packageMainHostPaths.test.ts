@@ -15,7 +15,7 @@ it.each([
 ] as const)(
   "compares %s package selection with the native Node resolver",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-package-main-host-");
+    const root = await createTestTempDirectory("nre-package-main-host-");
     const artifact = join(root, "artifact");
     const host = join(root, "host/window.cjs");
     const main = kind === "absolute-host" ? host : "entry.cjs";

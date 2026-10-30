@@ -45,20 +45,20 @@ if (installation.status !== "available")
     `Ghidra prerequisite unavailable: ${JSON.stringify(installation)}`,
   );
 const execute = promisify(execFile);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-ppc-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-ppc-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
 };
 for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
   if (process.env[setting] !== undefined) env[setting] = process.env[setting];
@@ -74,7 +74,7 @@ try {
     assert.deepEqual(
       resolved.value.powerpc,
       independent.powerpc,
-      "REA ELF interpretation disagrees with GNU readelf",
+      "NRE ELF interpretation disagrees with GNU readelf",
     );
     assert.equal(resolved.value.sha256, fixture.sha256);
     const snapshotPath = join(workspace, "ppc.snapshot.json");
@@ -84,7 +84,7 @@ try {
       env,
       stderr: "pipe",
     });
-    const client = new Client({ name: "rea-real-ppc-proof", version: "1" });
+    const client = new Client({ name: "nre-real-ppc-proof", version: "1" });
     let stderr = "";
     transport.stderr?.on("data", (chunk) => {
       stderr = (stderr + chunk.toString()).slice(-65536);
@@ -111,23 +111,23 @@ try {
       const image = await call("inspect_native_load_image");
       assertPowerPcLoadedImage(image.observations, fixture.sha256);
       const procedures = await call("list_procedures");
-      const entry = procedures.find((p) => p.value === "rea_ppc_entry");
-      const leaf = procedures.find((p) => p.value === "rea_ppc_leaf");
+      const entry = procedures.find((p) => p.value === "nre_ppc_entry");
+      const leaf = procedures.find((p) => p.value === "nre_ppc_leaf");
       assert.ok(entry, "Entry function missing from real Ghidra inventory");
       assert.ok(leaf, "Leaf function missing from real Ghidra inventory");
       assert.equal(
         BigInt(entry.address),
-        BigInt(independent.symbols.rea_ppc_entry),
+        BigInt(independent.symbols.nre_ppc_entry),
       );
       assert.equal(
         BigInt(leaf.address),
-        BigInt(independent.symbols.rea_ppc_leaf),
+        BigInt(independent.symbols.nre_ppc_leaf),
       );
-      const probe = independent.symbols.rea_ppc_probe;
+      const probe = independent.symbols.nre_ppc_probe;
       assert.ok(
         procedures.some(
           (p) =>
-            p.value === "rea_ppc_probe" && BigInt(p.address) === BigInt(probe),
+            p.value === "nre_ppc_probe" && BigInt(p.address) === BigInt(probe),
         ),
       );
       const move = await call("inspect_native_instruction", { address: probe });
@@ -136,18 +136,18 @@ try {
       });
       assertPowerPcProbe(move, branch, probe);
       const global = await call("read_bytes", {
-        address: independent.symbols.rea_ppc_global,
+        address: independent.symbols.nre_ppc_global,
         length: 4,
       });
       assert.equal(global.returned_bytes, 4);
       assertPowerPcGlobal(global.bytes_hex);
       const marker = await call("read_bytes", {
-        address: independent.symbols.rea_ppc_marker,
+        address: independent.symbols.nre_ppc_marker,
         length: 29,
       });
       assert.equal(
         marker.bytes_hex,
-        Buffer.from("rea-ppc-source-owned-fixture\0").toString("hex"),
+        Buffer.from("nre-ppc-source-owned-fixture\0").toString("hex"),
       );
       const callees = await call("procedure_callees", {
         procedure: entry.address,
@@ -212,7 +212,7 @@ try {
           entrypoint,
           "function",
           fixture.path,
-          "rea_ppc_entry",
+          "nre_ppc_entry",
           "--provider",
           "ghidra",
           "--json",

@@ -29,7 +29,7 @@ it("advertises the same unsupported PTY environment name as runtime admission", 
       NORMAL_CAPTURE_KEY: "control",
     }),
   ).toBe(true);
-  expect(validate({ REA_PROCESS_RUN_ID: "reserved" })).toBe(false);
+  expect(validate({ NRE_PROCESS_RUN_ID: "reserved" })).toBe(false);
 });
 
 it("defaults the finalization interval to zero without changing committed identity", () => {

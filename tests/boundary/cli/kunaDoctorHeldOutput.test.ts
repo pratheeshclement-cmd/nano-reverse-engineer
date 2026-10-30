@@ -15,7 +15,7 @@ import { observeOwnedProcessGroups } from "../../../src/process/ProcessOwnership
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "doctor returns bounded Kuna version diagnostics when an exited probe's descendant holds its output pipe",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-kuna-doctor-held-output-");
+    const root = await createTestTempDirectory("nre-kuna-doctor-held-output-");
     const home = join(root, "home");
     const executable = join(root, "kuna");
     const marker = join(root, "probe-owner.json");
@@ -32,7 +32,7 @@ const child = spawn(process.execPath, ["-e", ${JSON.stringify(
 fs.writeFileSync(${JSON.stringify(marker)}, JSON.stringify({
   leaderPid: process.pid,
   descendantPid: child.pid,
-  runId: process.env.REA_PROCESS_RUN_ID,
+  runId: process.env.NRE_PROCESS_RUN_ID,
   probeReadyAt: Date.now(),
 }));
 process.stdout.write("kuna 1.833\\n");
@@ -51,9 +51,9 @@ process.exit(0);
         USERPROFILE: home,
         HOPPER_LAUNCHER_PATH: join(root, "missing-hopper"),
         GHIDRA_INSTALL_DIR: join(root, "missing-ghidra"),
-        REA_KUNA_COMMAND: executable,
-        REA_KUNA_CACHE_DIR: join(root, "kuna-cache"),
-        REA_LOG_LEVEL: "silent",
+        NRE_KUNA_COMMAND: executable,
+        NRE_KUNA_CACHE_DIR: join(root, "kuna-cache"),
+        NRE_LOG_LEVEL: "silent",
       },
       // Leave room for the production probe deadline, while still bounding a
       // regression that waits for the descendant's finite fallback expiry.

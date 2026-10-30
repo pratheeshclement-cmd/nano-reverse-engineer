@@ -9,12 +9,12 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 // An unknown standing provider stops native analysis before any engine runs.
 const environment = {
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "missing-provider",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "missing-provider",
 } as const;
 
 const fixtureApp = async () => {
-  const directory = await createTestTempDirectory("rea-analyze-app-path-");
+  const directory = await createTestTempDirectory("nre-analyze-app-path-");
   const contents = join(directory, "Sample.app", "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
   await writeFile(
@@ -59,7 +59,7 @@ describe("analyze app bundle path spellings", () => {
 cliTest(
   "routes an ordinary JavaScript directory named .app through the static application lane",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-analyze-js-app-name-");
+    const root = await createTestTempDirectory("nre-analyze-js-app-name-");
     const app = join(root, "web.app");
     await mkdir(app);
     await writeFile(join(app, "package.json"), '{"main":"main.js"}');

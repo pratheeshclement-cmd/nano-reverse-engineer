@@ -12,7 +12,7 @@ cliTest.for(
 )(
   "retains possible application path setter owners through $surface (unknown loader: $unknownLoader)",
   async ({ surface, unknownLoader }, { cli }) => {
-    const root = await createTestTempDirectory("rea-possible-setter-owner-");
+    const root = await createTestTempDirectory("nre-possible-setter-owner-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs": 'require("../shared/change.cjs");',

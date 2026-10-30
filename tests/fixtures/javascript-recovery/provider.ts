@@ -12,7 +12,7 @@ export const recoveryFixture = async (
   mode = "normal",
   source = "module.exports = 42;",
 ) => {
-  const root = await createTestTempDirectory("rea-recovery-fixture-");
+  const root = await createTestTempDirectory("nre-recovery-fixture-");
   const path = join(root, "selected.js");
   await writeFile(path, source);
   const command = join(root, "fixture-wakaru");
@@ -23,7 +23,7 @@ export const recoveryFixture = async (
     args: readonly string[];
   }[] = [];
   const provider = createJavaScriptRecoveryProvider(
-    { ...process.env, REA_WAKARU_COMMAND: command },
+    { ...process.env, NRE_WAKARU_COMMAND: command },
     async (options) => {
       const start = options.arguments.indexOf("--") + 2;
       const child = await spawnOwnedProviderProcess({
@@ -36,10 +36,10 @@ export const recoveryFixture = async (
         ],
         env: {
           ...options.env,
-          REA_RECOVERY_FIXTURE_MODE: mode,
-          REA_RECOVERY_ORIGINAL_PATH: path,
-          REA_RECOVERY_ADDITIONAL_PATH: join(root, "chunk.js"),
-          REA_RECOVERY_ENGINE_PATH: command,
+          NRE_RECOVERY_FIXTURE_MODE: mode,
+          NRE_RECOVERY_ORIGINAL_PATH: path,
+          NRE_RECOVERY_ADDITIONAL_PATH: join(root, "chunk.js"),
+          NRE_RECOVERY_ENGINE_PATH: command,
         },
       });
       launches.push({

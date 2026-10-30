@@ -91,7 +91,7 @@ const tracer: NativeCallTracer & { calls: number } = {
 };
 
 it("routes observe_native_calls through MCP with schema-checked input and output", async () => {
-  const directory = await createTestTempDirectory("rea-native-calls-mcp-");
+  const directory = await createTestTempDirectory("nre-native-calls-mcp-");
   const path = join(directory, "Tool");
   await writeFile(path, machoHeader());
   const session = createTestBinarySession(
@@ -248,14 +248,14 @@ it.each([
   "preserves typed native partial observations over MCP after %s",
   async (_label, expectedCode, cleanup) => {
     const directory = await createTestTempDirectory(
-      "rea-native-calls-partial-mcp-",
+      "nre-native-calls-partial-mcp-",
     );
     const path = join(directory, "Tool");
     const selectedBytes = machoHeader();
     const sha256 = createHash("sha256").update(selectedBytes).digest("hex");
     await writeFile(path, selectedBytes);
     const launchArguments = ["--fixture", "selected argument"];
-    const launchEnvironment = { REA_NATIVE_FIXTURE: "selected value" };
+    const launchEnvironment = { NRE_NATIVE_FIXTURE: "selected value" };
     const workingDirectory = directory;
     const partialObservation = partialObservationFor({
       path,

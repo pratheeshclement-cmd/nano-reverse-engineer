@@ -29,7 +29,7 @@ describe.skipIf(process.platform !== "darwin")(
       "reports every slice's encryption command where otool reports it",
       async ({ cli, processes }) => {
         const directory = await createTestTempDirectory(
-          "rea-macho-encryption-",
+          "nre-macho-encryption-",
         );
         const source = join(directory, "main.c");
         const arm64 = join(directory, "enc");
@@ -77,7 +77,7 @@ describe.skipIf(process.platform !== "darwin")(
 
         const result = await cli.run({
           arguments: ["inspect-macho", fat, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(result.exitCode, result.stdout + result.stderr).toBe(0);
         const inspected = evidenceSchema.parse(result.json).normalized_result;

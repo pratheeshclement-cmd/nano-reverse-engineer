@@ -1,6 +1,6 @@
 #include "authority.hpp"
 
-namespace rea {
+namespace nre {
 
 class Attributes {
   std::vector<unsigned char> storage_;
@@ -374,7 +374,7 @@ static napi_value inputWrite(napi_env env, napi_value owner, Process& process, n
   check(napi_create_promise(env, &work->deferred, &promise));
   check(napi_create_reference(env, owner, 1, &work->processReference));
   try {
-    check(napi_create_async_work(env, nullptr, string(env, std::string("REA owned process input")),
+    check(napi_create_async_work(env, nullptr, string(env, std::string("NRE owned process input")),
                                writeInput, completeInput, work.get(), &work->work));
     check(napi_queue_async_work(env, work->work));
     process.inputPending = true;
@@ -476,7 +476,7 @@ napi_value inspect(napi_env env, std::unique_ptr<Runtime>& pending) {
   wchar_t temp[32768];
   const auto length = GetTempPathW(32768, temp);
   require(length > 0 && length < 32768, "Read temporary directory coordinate failed");
-  createRuntime(std::wstring(temp, length), L"rea-native-probe-", pending);
+  createRuntime(std::wstring(temp, length), L"nre-native-probe-", pending);
   napi_value filesystem;
   try {
     filesystem = identity(env, pending->directory.get(), pending->path);
@@ -511,4 +511,4 @@ napi_value inspect(napi_env env, std::unique_ptr<Runtime>& pending) {
   return result;
 }
 
-} // namespace rea
+} // namespace nre

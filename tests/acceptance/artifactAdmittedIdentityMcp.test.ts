@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { createSingleEntryZip } from "../fixtures/zipNames.js";
 
 it("refuses changed admitted archives over stdio MCP before publishing extraction and accepts an explicit reopen", async () => {
-  const root = await createTestTempDirectory("rea-admitted-archive-mcp-");
+  const root = await createTestTempDirectory("nre-admitted-archive-mcp-");
   const temporary = join(root, "temporary");
   await mkdir(temporary);
   const path = join(root, "selected.zip");
@@ -25,7 +25,7 @@ it("refuses changed admitted archives over stdio MCP before publishing extractio
     TMPDIR: temporary,
     TEMP: temporary,
     TMP: temporary,
-    REA_MCP_TOOL_FAMILIES: "session,artifact",
+    NRE_MCP_TOOL_FAMILIES: "session,artifact",
   });
   expect((await call("open_binary", { path })).isError).not.toBe(true);
   const inspect = async (digest: string, payload: string) => {

@@ -70,7 +70,7 @@ import { privateWorkspaceFailure } from "../process/privateWorkspaceFailure.js";
 const OPERATION = "decode_signal_recording";
 export const SIGROK_PROVIDER_IDENTITY = {
   id: "sigrok-recording",
-  name: "REA sigrok recording adapter",
+  name: "NRE sigrok recording adapter",
   version: "sigrok-cli@0.7.2",
 } as const;
 type Launcher = NonNullable<Parameters<typeof runOwnedCommand>[2]>["launcher"];
@@ -86,7 +86,7 @@ export class SigrokRecordingProvider implements SignalRecordingPort {
     readonly environment: Readonly<NodeJS.ProcessEnv> = process.env,
     readonly launcher?: Launcher,
     readonly createRuntime: () => Promise<ArtifactAnalysisRuntime> = () =>
-      PrivateRuntimeRoot.create({ prefix: "rea-sigrok-" }),
+      PrivateRuntimeRoot.create({ prefix: "nre-sigrok-" }),
     readonly platform: NodeJS.Platform = process.platform,
     readonly readArtifact: typeof readStableArtifact = readStableArtifact,
     readonly readLimits: typeof readLinuxResourceLimits = readLinuxResourceLimits,
@@ -146,12 +146,12 @@ export class SigrokRecordingProvider implements SignalRecordingPort {
       await this.#resources.release();
       if (!sigrokHostSupported(this.platform))
         throw new Error(
-          "Signal decoding requires Linux with util-linux prlimit and REA_SIGROK_COMMAND so expanded recordings are processed under an enforced address-space limit.",
+          "Signal decoding requires Linux with util-linux prlimit and NRE_SIGROK_COMMAND so expanded recordings are processed under an enforced address-space limit.",
         );
-      const configured = environment.REA_SIGROK_COMMAND ?? "";
+      const configured = environment.NRE_SIGROK_COMMAND ?? "";
       if (!isAbsolute(configured))
         throw new Error(
-          "Supply absolute REA_SIGROK_COMMAND for sigrok-cli 0.7.2 with libsigrokdecode.",
+          "Supply absolute NRE_SIGROK_COMMAND for sigrok-cli 0.7.2 with libsigrokdecode.",
         );
       const selectedCommand = await selectArtifactCommandPath(
         configured,
@@ -165,9 +165,9 @@ export class SigrokRecordingProvider implements SignalRecordingPort {
         options?.signal,
       );
       const configuredLimiter =
-        environment.REA_SIGROK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
+        environment.NRE_SIGROK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
       if (!isAbsolute(configuredLimiter))
-        throw new Error("REA_SIGROK_PRLIMIT_COMMAND must be absolute.");
+        throw new Error("NRE_SIGROK_PRLIMIT_COMMAND must be absolute.");
       const selectedLimiter = await selectArtifactCommandPath(
         configuredLimiter,
         options?.signal,
@@ -209,7 +209,7 @@ export class SigrokRecordingProvider implements SignalRecordingPort {
             arguments: [...limitArguments, ...args],
             ...(root === undefined ? {} : { cwd: root.path }),
             expectedCommand: null,
-            runId: `rea-sigrok-${randomUUID()}`,
+            runId: `nre-sigrok-${randomUUID()}`,
             hostEnvironment: environment,
           },
           {
@@ -410,7 +410,7 @@ export class SigrokRecordingProvider implements SignalRecordingPort {
               "Annotations are the selected decoder's interpretation of the recorded samples and caller-selected settings, not independently verified protocol semantics. Empty output does not establish absence of traffic.",
               "Sample-number ranges and display text are preserved verbatim, not converted to timestamps or parsed as a lossless byte stream. All producer stderr is retained, including warnings on exit zero.",
               "Only a private copy of the selected file is decoded. Hardware discovery/acquisition and target execution are not requested. Caller-supplied tools, plugins and decoder modules are trusted; this is not an OS sandbox.",
-              "Linux prlimit enforces soft and hard ceilings before execution, preserving stricter inherited limits: at most 1 GiB address space per process, 64 MiB per file, 30 CPU seconds and no core dumps. Effective limits are reported. Resident input is capped at 32 MiB, each command at 30 wall-clock seconds and combined output at 4 MiB. Output overflow fails. These are per-process/per-file limits, not aggregate memory or filesystem quotas; caller-supplied tools and the limiter are trusted. REA retains the tighter inherited limit. This release has no runtime override.",
+              "Linux prlimit enforces soft and hard ceilings before execution, preserving stricter inherited limits: at most 1 GiB address space per process, 64 MiB per file, 30 CPU seconds and no core dumps. Effective limits are reported. Resident input is capped at 32 MiB, each command at 30 wall-clock seconds and combined output at 4 MiB. Output overflow fails. These are per-process/per-file limits, not aggregate memory or filesystem quotas; caller-supplied tools and the limiter are trusted. NRE retains the tighter inherited limit. This release has no runtime override.",
             ],
           }),
         );
@@ -531,7 +531,7 @@ export class SigrokRecordingProvider implements SignalRecordingPort {
           ...(observedOutput === undefined
             ? {}
             : { capturedOutput: observedOutput }),
-          userMessage: `${reason} On Linux, configure sigrok-cli 0.7.2 through REA_SIGROK_COMMAND and util-linux prlimit through REA_SIGROK_PRLIMIT_COMMAND (default /usr/bin/prlimit).`,
+          userMessage: `${reason} On Linux, configure sigrok-cli 0.7.2 through NRE_SIGROK_COMMAND and util-linux prlimit through NRE_SIGROK_PRLIMIT_COMMAND (default /usr/bin/prlimit).`,
         },
       );
     if (cause instanceof ArtifactReaderFailure && cause.reason === "integrity")

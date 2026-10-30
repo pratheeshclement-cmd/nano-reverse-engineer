@@ -50,7 +50,7 @@ export const verifyAndroidCliCancellation = async ({
           entry !== null &&
           Number(entry[2]) === child.pid &&
           entry[4].includes("engine.jar") &&
-          entry[4].includes("ReaJadxBridge.java")
+          entry[4].includes("NreJadxBridge.java")
         ) {
           group = Number(entry[3]);
           const runId = await readProcessRunId(Number(entry[1]));

@@ -397,7 +397,7 @@ const importLookupPath = (
   try {
     source = new URL(
       fromPath.split("/").map(encodeURIComponent).join("/"),
-      "file:///rea-reference/",
+      "file:///nre-reference/",
     );
   } catch (cause: unknown) {
     if (!(cause instanceof URIError)) throw cause;
@@ -408,10 +408,10 @@ const importLookupPath = (
     return err(
       "The module URL cannot be resolved within the source inventory.",
     );
-  if (!target.pathname.startsWith("/rea-reference/"))
+  if (!target.pathname.startsWith("/nre-reference/"))
     return err("The module URL escapes the selected source inventory.");
   const decoded = decodeReferenceSourceModuleUrlPath(
-    target.pathname.slice("/rea-reference/".length),
+    target.pathname.slice("/nre-reference/".length),
   );
   return decoded.ok
     ? ok({ path: decoded.value, directory: target.pathname.endsWith("/") })

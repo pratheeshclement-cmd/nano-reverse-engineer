@@ -221,7 +221,7 @@ it.each([
 it.skipIf(process.platform === "win32")(
   "maps real selected-path failures before the EVM worker starts",
   async () => {
-    const root = await createTestTempDirectory("rea-evm-path-mapping-");
+    const root = await createTestTempDirectory("nre-evm-path-mapping-");
     await symlink("loop", join(root, "loop"));
     for (const [code, path] of [
       ["ELOOP", join(root, "loop", "carrier.bin")],

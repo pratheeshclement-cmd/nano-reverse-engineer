@@ -87,7 +87,7 @@ cliTest.for(fixtures)(
   "preserves entry kinds in $family projections through CLI and stdio MCP",
   { timeout: 60_000 },
   async (fixture, { cli }) => {
-    const root = await createTestTempDirectory("rea-mobile-directory-");
+    const root = await createTestTempDirectory("nre-mobile-directory-");
     const environment = { HOME: root, USERPROFILE: root };
     const { call } = await connectLocalToolsMcp(environment);
     for (const mode of ["directories", "files", "nested"] as const) {
@@ -256,7 +256,7 @@ cliTest.for([
   "preserves encrypted $family path facts through CLI and stdio MCP",
   { timeout: 60_000 },
   async (fixture, { cli }) => {
-    const root = await createTestTempDirectory("rea-mobile-encrypted-paths-");
+    const root = await createTestTempDirectory("nre-mobile-encrypted-paths-");
     const environment = { HOME: root, USERPROFILE: root };
     const { call } = await connectLocalToolsMcp(environment);
     for (const encrypted of [false, true]) {

@@ -25,7 +25,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "returns a tagged JSON error when a read input descriptor cannot be closed",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-export-input-close-cli-");
+    const root = await createTestTempDirectory("nre-export-input-close-cli-");
     const files = await writeEnvironmentServeFiles(root);
     const preload = join(root, "fail-close.mjs");
     await writeFile(
@@ -78,7 +78,7 @@ const BUNDLE_FILES = [
 cliTest(
   "refuses unaddressable service names before writing a bundle",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-bundle-hostname-cli-");
+    const root = await createTestTempDirectory("nre-bundle-hostname-cli-");
     const files = await writeEnvironmentServeFiles(root);
     for (const name of ["4294967296", "123", "a".repeat(64)]) {
       const directory = join(root, `bundle-${name}`);
@@ -111,7 +111,7 @@ cliTest(
 cliTest(
   "writes the bundle folder from the fixture pair and prints the written files with sizes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-environment-export-cli-");
+    const root = await createTestTempDirectory("nre-environment-export-cli-");
     const files = await writeEnvironmentServeFiles(root);
     const directory = join(root, "bundle");
     const result = await cli.run({
@@ -177,7 +177,7 @@ cliTest(
       `FROM node:${pinnedNodeVersion}-bookworm-slim`,
     );
     expect(dockerfile).toContain(
-      'CMD ["rea","environment-serve","/env/manifest.json","--evidence","/env/evidence.json"]',
+      'CMD ["nre","environment-serve","/env/manifest.json","--evidence","/env/evidence.json"]',
     );
     const verifier = await readFile(
       join(directory, "artifacts/check_grafana-example/verify.py"),
@@ -195,7 +195,7 @@ cliTest(
 cliTest(
   "refuses a non-empty directory with a typed invalid request and leaves it unchanged",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-environment-export-busy-");
+    const root = await createTestTempDirectory("nre-environment-export-busy-");
     const files = await writeEnvironmentServeFiles(root);
     const directory = join(root, "occupied");
     await mkdir(directory);
@@ -230,7 +230,7 @@ cliTest(
   "refuses a manifest whose parent is not the supplied evidence before creating the directory",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-environment-export-mismatch-",
+      "nre-environment-export-mismatch-",
     );
     const files = await writeEnvironmentServeFiles(
       root,
@@ -270,7 +270,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32")(
   "produces readable private files independently of an owner-read-masking umask",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-export-umask-");
+    const root = await createTestTempDirectory("nre-export-umask-");
     const files = await writeEnvironmentServeFiles(root);
     const preload = join(root, "umask.mjs");
     await writeFile(preload, "process.umask(0o400);\n");
@@ -309,7 +309,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "preserves the filesystem meaning of symlink/.. for the destination and tarball",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-export-selected-path-");
+    const root = await createTestTempDirectory("nre-export-selected-path-");
     const physical = join(root, "physical");
     const nested = join(physical, "nested");
     await mkdir(nested, { recursive: true });
@@ -340,7 +340,10 @@ cliTest.skipIf(process.platform === "win32")(
     expect(
       Buffer.compare(
         await readFile(
-          join(physical, "bundle/envs/grafana-example/rea-agents.tgz"),
+          join(
+            physical,
+            "bundle/envs/grafana-example/nano-reverse-engineer.tgz",
+          ),
         ),
         bytes,
       ),
@@ -361,7 +364,7 @@ cliTest.skipIf(HOST_PATH_MAX[process.platform] === undefined)(
   async ({ cli }) => {
     const limit = HOST_PATH_MAX[process.platform] ?? 0;
     const root = await realpath(
-      await createTestTempDirectory("rea-export-long-path-"),
+      await createTestTempDirectory("nre-export-long-path-"),
     );
     const files = await writeEnvironmentServeFiles(root);
     // Shorter bundle paths fit; the 41-byte nested verifier path reaches the host limit.

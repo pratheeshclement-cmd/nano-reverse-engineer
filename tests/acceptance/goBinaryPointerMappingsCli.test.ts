@@ -17,7 +17,7 @@ import { cliTest, runFileCli } from "../support/cli/cliFixture.js";
 cliTest(
   "retains header-backed PE and cross-load ELF pointer metadata through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-go-pointer-mappings-");
+    const root = await createTestTempDirectory("nre-go-pointer-mappings-");
     const { client, call } = await connectLocalToolsMcp();
     const cases = [
       ...([32, 64] as const).flatMap((bits) =>

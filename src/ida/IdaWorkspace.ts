@@ -41,7 +41,7 @@ export const resolveIdaWorkspaceParent = async (
 
 /** Private input copy isolates upstream database and sidecar writes from the original. */
 export class IdaWorkspace {
-  readonly sessionId = `rea-${randomUUID()}`;
+  readonly sessionId = `nre-${randomUUID()}`;
   #inputSha256: string | undefined;
   readonly #files = new ArtifactResourceScope();
   private constructor(
@@ -71,7 +71,7 @@ export class IdaWorkspace {
     try {
       runtime = await PrivateRuntimeRoot.create({
         parent: await resolveIdaWorkspaceParent(root),
-        prefix: "rea-ida-",
+        prefix: "nre-ida-",
       });
     } catch (cause: unknown) {
       if (cause instanceof AnalysisError) throw cause;

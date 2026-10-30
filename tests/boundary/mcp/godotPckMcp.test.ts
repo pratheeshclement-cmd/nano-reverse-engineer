@@ -96,7 +96,7 @@ const inventoryCases = profiles.flatMap((profile) => [
 ]);
 it.each(inventoryCases)("retains PCK ($profile/v$version)", async (input) => {
   const { profile, version } = input;
-  const root = await createTestTempDirectory("rea-pck-mcp-");
+  const root = await createTestTempDirectory("nre-pck-mcp-");
   const path = join(root, "game.pck");
   const members = [
     { path: "res://a.txt", data: "a" },
@@ -110,7 +110,7 @@ it.each(inventoryCases)("retains PCK ($profile/v$version)", async (input) => {
   const server = createServer(
     { kind: "session", session },
     {
-      environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: profile },
+      environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: profile },
     },
   );
   const client = new Client({ name: "pck-contract-test", version: "1" });
@@ -229,7 +229,7 @@ it.each(inventoryCases)("retains PCK ($profile/v$version)", async (input) => {
 });
 
 it("carries unknown encrypted-directory coverage through compact MCP delivery", async () => {
-  const root = await createTestTempDirectory("rea-pck-encrypted-mcp-");
+  const root = await createTestTempDirectory("nre-pck-encrypted-mcp-");
   const path = join(root, "game.pck");
   await writeFile(
     path,

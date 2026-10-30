@@ -67,7 +67,7 @@ describe("owned process-group cleanup validation: ownership and lineage", () => 
       },
       environment: (pid) =>
         pid === 100
-          ? Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" })
+          ? Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" })
           : Promise.reject(new Error("sysctl_errno_22")),
       signalGroup: vi.fn(),
     };
@@ -93,7 +93,7 @@ describe("owned process-group cleanup validation: ownership and lineage", () => 
         ]),
       environment: (pid) =>
         Promise.resolve({
-          REA_PROCESS_RUN_ID: pid === 100 ? "run-token" : "other-run",
+          NRE_PROCESS_RUN_ID: pid === 100 ? "run-token" : "other-run",
         }),
       signalGroup: vi.fn(),
     };
@@ -101,15 +101,15 @@ describe("owned process-group cleanup validation: ownership and lineage", () => 
   });
   it("does not publish lineage when any member fails ownership checks", async () => {
     const { adapter } = host({
-      100: { REA_PROCESS_RUN_ID: "run-token" },
-      101: { REA_PROCESS_RUN_ID: "other-run" },
+      100: { NRE_PROCESS_RUN_ID: "run-token" },
+      101: { NRE_PROCESS_RUN_ID: "other-run" },
     });
     await expectUnownedLineage(adapter);
   });
   it("fails closed for stale metadata or an unrelated concurrent process", async () => {
     const { adapter, signalGroup } = host({
-      100: { REA_PROCESS_RUN_ID: "run-token" },
-      101: { REA_PROCESS_RUN_ID: "different-run" },
+      100: { NRE_PROCESS_RUN_ID: "run-token" },
+      101: { NRE_PROCESS_RUN_ID: "different-run" },
     });
     expect(await cleanupOwnedProcessGroup(ownership, adapter)).toEqual({
       cleaned: false,
@@ -124,8 +124,8 @@ describe("owned process-group cleanup validation: ownership and lineage", () => 
         return Promise.reject(new Error("transient procfs read"));
       return Promise.resolve(
         pid === 101
-          ? { REA_PROCESS_RUN_ID: "different-run" }
-          : { REA_PROCESS_RUN_ID: "run-token" },
+          ? { NRE_PROCESS_RUN_ID: "different-run" }
+          : { NRE_PROCESS_RUN_ID: "run-token" },
       );
     });
     const signalGroup = vi.fn();
@@ -219,7 +219,7 @@ describe("owned process-group cleanup liveness rechecks", () => {
       const adapter: ProcessOwnershipHost = {
         listProcesses,
         environment: async (pid) => {
-          if (pid === 101) return { REA_PROCESS_RUN_ID: "other-run" };
+          if (pid === 101) return { NRE_PROCESS_RUN_ID: "other-run" };
           throw new Error(`unreadable ${pid}`);
         },
         signalGroup,
@@ -296,7 +296,7 @@ describe("owned process-group cleanup validation: refreshed descendant lineage",
           ]);
         },
         environment: () =>
-          Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+          Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
         signalGroup,
       };
       await expect(
@@ -323,7 +323,7 @@ describe("identityless exit refresh signals a token-owned replacement", () => {
     const signalGroup = vi.fn();
     const environment = vi.fn((pid: number) =>
       Promise.resolve({
-        REA_PROCESS_RUN_ID: pid === 102 ? ownership.runId : "run-token",
+        NRE_PROCESS_RUN_ID: pid === 102 ? ownership.runId : "run-token",
       }),
     );
     const listProcesses = vi
@@ -358,7 +358,7 @@ describe("identityless exit refresh signals a token-owned replacement", () => {
     const signalGroup = vi.fn();
     const environment = vi.fn((pid: number) =>
       Promise.resolve({
-        REA_PROCESS_RUN_ID: pid === 102 ? ownership.runId : "other-run",
+        NRE_PROCESS_RUN_ID: pid === 102 ? ownership.runId : "other-run",
       }),
     );
     const listProcesses = vi
@@ -390,7 +390,7 @@ describe("identityless exit refresh leaves unrelated replacements unresolved", (
       const signalGroup = vi.fn();
       const environment = vi.fn(() =>
         Promise.resolve(
-          runId === undefined ? {} : { REA_PROCESS_RUN_ID: runId },
+          runId === undefined ? {} : { NRE_PROCESS_RUN_ID: runId },
         ),
       );
       const listProcesses = vi
@@ -477,7 +477,7 @@ describe("identityless exit refresh leaves unrelated replacements unresolved", (
         {
           listProcesses,
           environment: () =>
-            Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+            Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
           signalGroup,
         },
       ),
@@ -509,7 +509,7 @@ describe("identityless exit refresh keeps later confirmation rows", () => {
     const environment = vi.fn((pid: number) =>
       pid === 102
         ? Promise.reject(new Error("environment unavailable"))
-        : Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+        : Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
     );
     const listProcesses = vi
       .fn<ProcessOwnershipHost["listProcesses"]>()
@@ -549,7 +549,7 @@ describe("identityless exit refresh keeps later confirmation rows", () => {
         {
           listProcesses,
           environment: () =>
-            Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+            Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
           signalGroup,
         },
       ),
@@ -639,7 +639,7 @@ describe("identityless exit refresh follows a helper that changes groups", () =>
           environment: (pid) =>
             pid === 104
               ? Promise.reject(new Error("environment unavailable"))
-              : Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+              : Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
           signalGroup,
         },
       ),
@@ -670,7 +670,7 @@ describe("identityless exit refresh rechecks a prior PID whose relation changes"
     const signalGroup = vi.fn();
     const environment = vi.fn((pid: number) =>
       Promise.resolve({
-        REA_PROCESS_RUN_ID: pid === 50 ? ownership.runId : "other-run",
+        NRE_PROCESS_RUN_ID: pid === 50 ? ownership.runId : "other-run",
       }),
     );
     const listProcesses = vi
@@ -728,7 +728,7 @@ describe("identityless exit refresh keeps a token-read helper", () => {
     const environment = vi.fn((pid: number) =>
       pid === 104
         ? Promise.reject(new Error("environment unavailable"))
-        : Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+        : Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
     );
     const listProcesses = vi
       .fn<ProcessOwnershipHost["listProcesses"]>()
@@ -781,10 +781,10 @@ describe("identityless exit refresh re-reads a reused foreign PID", () => {
       if (pid === 104)
         return Promise.reject(new Error("environment unavailable"));
       if (pid !== 102)
-        return Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId });
+        return Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId });
       reads += 1;
       return Promise.resolve({
-        REA_PROCESS_RUN_ID: reads === 1 ? "other-run" : ownership.runId,
+        NRE_PROCESS_RUN_ID: reads === 1 ? "other-run" : ownership.runId,
       });
     });
     const listProcesses = vi
@@ -832,7 +832,7 @@ describe("identityless cleanup revalidates a group that reappears", () => {
         {
           listProcesses,
           environment: () =>
-            Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+            Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
           signalGroup,
         },
       ),
@@ -869,7 +869,7 @@ describe("identityless cleanup revalidates a group that reappears", () => {
         {
           listProcesses,
           environment: () =>
-            Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+            Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
           signalGroup,
         },
       ),
@@ -909,7 +909,7 @@ describe("owned process-group cleanup validation: launcher exit races", () => {
           {
             listProcesses,
             environment: () =>
-              Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+              Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
             signalGroup,
           },
         ),
@@ -942,7 +942,7 @@ describe("owned process-group cleanup validation: launcher exit races", () => {
           },
           environment: () =>
             Promise.resolve({
-              REA_PROCESS_RUN_ID:
+              NRE_PROCESS_RUN_ID:
                 remaining === "foreign" && reads > 1
                   ? "other-run"
                   : "run-token",
@@ -971,7 +971,7 @@ describe("owned process-group cleanup validation: launcher exit races", () => {
   );
   it("fails closed when a mismatched launcher's exit cannot be inspected", async () => {
     const { adapter, signalGroup } = host({
-      100: { REA_PROCESS_RUN_ID: "run-token" },
+      100: { NRE_PROCESS_RUN_ID: "run-token" },
     });
     const listProcesses = vi
       .fn<ProcessOwnershipHost["listProcesses"]>()
@@ -1004,7 +1004,7 @@ describe("owned process-group cleanup validation: launcher exit races", () => {
                 : { ...launcher, processGroupId: 999 },
           ]);
         },
-        environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+        environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
         signalGroup,
       };
       await expect(
@@ -1057,7 +1057,7 @@ describe("owned process-group cleanup validation: exited members", () => {
   });
   it("ignores exited zombie members during live ownership checks", async () => {
     const environment = vi.fn((pid: number) =>
-      Promise.resolve(pid === 101 ? {} : { REA_PROCESS_RUN_ID: "run-token" }),
+      Promise.resolve(pid === 101 ? {} : { NRE_PROCESS_RUN_ID: "run-token" }),
     );
     const signalGroup = vi.fn();
     const adapter: ProcessOwnershipHost = {
@@ -1116,7 +1116,7 @@ describe("owned process-group cleanup validation: exited members", () => {
   });
   it("fails closed when the launcher command identity changes", async () => {
     const { adapter, signalGroup } = host({
-      100: { REA_PROCESS_RUN_ID: "run-token" },
+      100: { NRE_PROCESS_RUN_ID: "run-token" },
     });
     expect(
       await cleanupOwnedProcessGroup(
@@ -1136,7 +1136,7 @@ describe("owned process-group cleanup validation: exited members", () => {
   });
   it("fails closed when the launcher parent identity changes", async () => {
     const { adapter, signalGroup } = host({
-      100: { REA_PROCESS_RUN_ID: "run-token" },
+      100: { NRE_PROCESS_RUN_ID: "run-token" },
     });
     expect(
       await cleanupOwnedProcessGroup(
@@ -1170,7 +1170,7 @@ describe("owned process-group cleanup token batches", () => {
       ),
     );
     const environment = vi.fn(() =>
-      Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+      Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
     );
     const signalGroup = vi.fn();
     const adapter: ProcessOwnershipHost = {
@@ -1191,7 +1191,7 @@ describe("owned process-group cleanup token batches", () => {
 
   it("keeps explicit unreadable rows fail-closed without environment fallback", async () => {
     const environment = vi.fn(() =>
-      Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+      Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
     );
     const signalGroup = vi.fn();
     const adapter: ProcessOwnershipHost = {
@@ -1227,7 +1227,7 @@ describe("owned process-group cleanup token batches", () => {
 
   it("falls back to the environment reader when the batch operation throws", async () => {
     const environment = vi.fn(() =>
-      Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+      Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
     );
     const signalGroup = vi.fn();
     const adapter: ProcessOwnershipHost = {

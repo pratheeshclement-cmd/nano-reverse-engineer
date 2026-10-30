@@ -17,7 +17,7 @@ export const projectHarmonyApplicationEvidence = (
     rawInput,
     project: projectHarmonyInventory,
     operation: OPERATION,
-    predicateType: "rea.harmony-application-graph",
+    predicateType: "nre.harmony-application-graph",
     provider: HARMONY_APPLICATION_PROVIDER,
     subjectFormat: (first) => first.subject?.format ?? "unknown",
   });

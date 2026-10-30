@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../temporaryDirectory.js";
 
 /** Exercise the real limiter and process ownership with synthetic pinned reports. */
 export const firmwareFixture = async (mode = "normal", banner?: string) => {
-  const root = await createTestTempDirectory("rea-firmware-test-");
+  const root = await createTestTempDirectory("nre-firmware-test-");
   const path = join(root, "input.bin");
   await writeFile(path, Buffer.from("fixture-input-data"));
   const commands = {
@@ -43,10 +43,10 @@ export const firmwareFixture = async (mode = "normal", banner?: string) => {
   const provider = createFirmwareAnalysisProvider(
     {
       ...process.env,
-      REA_BINWALK_COMMAND: commands.binwalk,
-      REA_UNBLOB_COMMAND: commands.unblob,
-      REA_FIRMWARE_FIXTURE_MODE: mode,
-      ...(banner === undefined ? {} : { REA_FIRMWARE_FIXTURE_VERSION: banner }),
+      NRE_BINWALK_COMMAND: commands.binwalk,
+      NRE_UNBLOB_COMMAND: commands.unblob,
+      NRE_FIRMWARE_FIXTURE_MODE: mode,
+      ...(banner === undefined ? {} : { NRE_FIRMWARE_FIXTURE_VERSION: banner }),
     },
     async (options) => {
       const spawned = await spawnOwnedProviderProcess(options);

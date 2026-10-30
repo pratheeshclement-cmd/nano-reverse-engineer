@@ -14,8 +14,8 @@ const CHILD_SHUTDOWN_GRACE_MS = 1_000;
 
 describe("verifier run identity", { concurrent: false }, () => {
   it("allocates, propagates, and reuses one process-local identity", async () => {
-    const previousRunId = process.env.REA_PROCESS_RUN_ID;
-    process.env.REA_PROCESS_RUN_ID = "11111111-1111-4111-8111-111111111111";
+    const previousRunId = process.env.NRE_PROCESS_RUN_ID;
+    process.env.NRE_PROCESS_RUN_ID = "11111111-1111-4111-8111-111111111111";
     try {
       const first = createVerifierRun();
       const nested = createVerifierRun();
@@ -29,10 +29,10 @@ describe("verifier run identity", { concurrent: false }, () => {
       });
       expect(nested.run_id).toBe(first.run_id);
       expect(first.run_id).not.toBe("11111111-1111-4111-8111-111111111111");
-      expect(process.env.REA_PROCESS_RUN_ID).toBe(first.run_id);
+      expect(process.env.NRE_PROCESS_RUN_ID).toBe(first.run_id);
       const { stdout } = await execFileAsync(process.execPath, [
         "-e",
-        "process.stdout.write(process.env.REA_PROCESS_RUN_ID ?? '')",
+        "process.stdout.write(process.env.NRE_PROCESS_RUN_ID ?? '')",
       ]);
       expect(stdout).toBe(first.run_id);
       const { stdout: nestedProcessRunId } = await execFileAsync(
@@ -52,8 +52,8 @@ describe("verifier run identity", { concurrent: false }, () => {
   it.runIf(process.platform !== "win32")(
     "reports token-verified live descendants",
     async () => {
-      const previousRunId = process.env.REA_PROCESS_RUN_ID;
-      delete process.env.REA_PROCESS_RUN_ID;
+      const previousRunId = process.env.NRE_PROCESS_RUN_ID;
+      delete process.env.NRE_PROCESS_RUN_ID;
       const run = createVerifierRun();
       const child = spawnReadyChild(process.env);
       try {
@@ -83,10 +83,10 @@ describe("verifier run identity", { concurrent: false }, () => {
   it.runIf(process.platform !== "win32")(
     "reports unavailable when a live descendant lacks the run token",
     async () => {
-      const previousRunId = process.env.REA_PROCESS_RUN_ID;
-      delete process.env.REA_PROCESS_RUN_ID;
+      const previousRunId = process.env.NRE_PROCESS_RUN_ID;
+      delete process.env.NRE_PROCESS_RUN_ID;
       const run = createVerifierRun();
-      const child = spawnReadyChild({ ...process.env, REA_PROCESS_RUN_ID: "" });
+      const child = spawnReadyChild({ ...process.env, NRE_PROCESS_RUN_ID: "" });
       try {
         await childReady(child);
         const completed = await completeVerifierRun(run);
@@ -136,6 +136,6 @@ const stopChild = async (child: ChildProcess): Promise<void> => {
 };
 
 const restoreRunId = (runId: string | undefined): void => {
-  if (runId === undefined) delete process.env.REA_PROCESS_RUN_ID;
-  else process.env.REA_PROCESS_RUN_ID = runId;
+  if (runId === undefined) delete process.env.NRE_PROCESS_RUN_ID;
+  else process.env.NRE_PROCESS_RUN_ID = runId;
 };

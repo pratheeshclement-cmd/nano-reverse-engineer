@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "keeps one WABT inspection coherent while accepting environment changes on the next call",
   async () => {
-    const directory = await createTestTempDirectory("rea-wabt-environment-");
+    const directory = await createTestTempDirectory("nre-wabt-environment-");
     const path = join(directory, "selected.wasm");
     const log = join(directory, "children.jsonl");
     await writeFile(path, Buffer.alloc(76, 1));
@@ -30,9 +30,9 @@ it.skipIf(process.platform === "win32")(
         `#!${process.execPath}
 const fs = require("node:fs");
 fs.appendFileSync(${JSON.stringify(log)}, JSON.stringify({
-  marker: process.env.REA_TEST_MARKER,
-  empty: process.env.REA_TEST_EMPTY,
-  absent: Object.hasOwn(process.env, "REA_TEST_ABSENT")
+  marker: process.env.NRE_TEST_MARKER,
+  empty: process.env.NRE_TEST_EMPTY,
+  absent: Object.hasOwn(process.env, "NRE_TEST_ABSENT")
 }) + "\\n");
 process.stdout.write(process.argv[2] === "--version" ? "1.0.42\\n" : ${JSON.stringify(output)});
 `,
@@ -40,21 +40,21 @@ process.stdout.write(process.argv[2] === "--version" ? "1.0.42\\n" : ${JSON.stri
       );
     }
     const environment: NodeJS.ProcessEnv = {
-      REA_WABT_BIN_DIRECTORY: directory,
-      REA_TEST_MARKER: "selected-environment",
-      REA_TEST_EMPTY: "",
+      NRE_WABT_BIN_DIRECTORY: directory,
+      NRE_TEST_MARKER: "selected-environment",
+      NRE_TEST_EMPTY: "",
     };
     let runtimeCreations = 0;
     const provider = new WabtArtifactProvider(environment, undefined, () => {
       runtimeCreations += 1;
       // Selection already succeeded, but version probes have not launched.
       if (runtimeCreations === 2) {
-        environment.REA_WABT_BIN_DIRECTORY = join(directory, "unselected");
-        environment.REA_TEST_MARKER = "changed-environment";
-        environment.REA_TEST_EMPTY = "changed";
-        environment.REA_TEST_ABSENT = "added";
+        environment.NRE_WABT_BIN_DIRECTORY = join(directory, "unselected");
+        environment.NRE_TEST_MARKER = "changed-environment";
+        environment.NRE_TEST_EMPTY = "changed";
+        environment.NRE_TEST_ABSENT = "added";
       }
-      return PrivateRuntimeRoot.create({ prefix: "rea-wabt-environment-" });
+      return PrivateRuntimeRoot.create({ prefix: "nre-wabt-environment-" });
     });
     onTestFinished(() => provider.close());
     const input = { path, glue_paths: [], candidate_paths: [] };

@@ -35,16 +35,16 @@ const comparison = (
   return createEvidence(
     undefined,
     {
-      id: process ? "rea-process" : "rea-artifact-comparison",
+      id: process ? "nre-process" : "nre-artifact-comparison",
       name: process
-        ? "REA deterministic process harness"
-        : "REA artifact comparison",
+        ? "NRE deterministic process harness"
+        : "NRE artifact comparison",
       version: operation === "compare_process_captures" ? "3" : "1",
     },
     {
       predicateType: process
-        ? "rea.process-comparison"
-        : "rea.artifact-comparison",
+        ? "nre.process-comparison"
+        : "nre.artifact-comparison",
       operation,
       parameters: {
         ...(process
@@ -265,9 +265,9 @@ describe("changed-behavior input and Evidence validation", () => {
   it("rejects a comparison operation unsupported by this workflow", () => {
     const bundle = createEvidence(
       undefined,
-      { id: "rea-bundle-comparison", name: "Bundle", version: "1" },
+      { id: "nre-bundle-comparison", name: "Bundle", version: "1" },
       {
-        predicateType: "rea.bundle-comparison",
+        predicateType: "nre.bundle-comparison",
         operation: "compare_bundles",
         parameters: {},
         result: {},

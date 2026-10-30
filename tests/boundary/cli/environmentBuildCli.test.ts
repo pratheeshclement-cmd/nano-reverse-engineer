@@ -29,7 +29,7 @@ cliTest(
   "attributes invalid capture JSON to the capture argument",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-environment-invalid-capture-",
+      "nre-environment-invalid-capture-",
     );
     const capture = join(root, "invalid.json");
     await writeFile(capture, "{");
@@ -47,7 +47,7 @@ cliTest(
 cliTest(
   "builds the bundle the three CLI steps build, byte for byte",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-environment-build-cli-");
+    const root = await createTestTempDirectory("nre-environment-build-cli-");
     const har = join(root, "grafana.har");
     await writeFile(har, JSON.stringify(environmentManifestHar()));
     const built = await cli.run({
@@ -148,7 +148,7 @@ cliTest(
 cliTest(
   "plans without writing on a dry run and refuses unusable arguments",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-environment-build-plan-");
+    const root = await createTestTempDirectory("nre-environment-build-plan-");
     const har = join(root, "grafana.har");
     await writeFile(har, JSON.stringify(environmentManifestHar()));
     const planned = await cli.run({

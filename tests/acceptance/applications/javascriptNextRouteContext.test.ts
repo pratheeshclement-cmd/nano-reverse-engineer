@@ -12,7 +12,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "binds Next page candidates to their source root through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-next-route-context-");
+    const root = await createTestTempDirectory("nre-next-route-context-");
     const page = "export default function Page(){return null;}";
     await writeFixtureFiles(root, {
       "package.json": JSON.stringify({ dependencies: { next: "16.4.2" } }),
@@ -76,7 +76,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps an unreadable nearest Next package unknown and recovers after restoration through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-next-unavailable-package-");
+    const root = await createTestTempDirectory("nre-next-unavailable-package-");
     const source = join(root, "source");
     const input = join(root, "input");
     const archive = join(input, "app.asar");

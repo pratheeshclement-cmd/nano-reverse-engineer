@@ -91,7 +91,7 @@ const target = (path: string) => ({
 it.skipIf(process.platform === "win32")(
   "bounds timeout settlement when a test-owned descendant holds stdout and preserves the captured version output",
   async () => {
-    const root = await createTestTempDirectory("rea-kuna-held-version-pipe-");
+    const root = await createTestTempDirectory("nre-kuna-held-version-pipe-");
     const modeFile = join(root, "mode");
     const childStarted = join(root, "child-started");
     const parentExited = join(root, "parent-exited");
@@ -106,7 +106,7 @@ it.skipIf(process.platform === "win32")(
     const startedAt = Date.now();
     try {
       const result = await inspectKunaInstallation(
-        { REA_KUNA_COMMAND: executable },
+        { NRE_KUNA_COMMAND: executable },
         {
           resourceScope: resourceScopeFor(scope),
           processLauncher: launcher.launcher,
@@ -149,7 +149,7 @@ it.skipIf(process.platform === "win32")(
   "keeps a complete successful version capture unavailable until cleanup-only ownership is confirmed",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-kuna-cleanup-only-version-owner-",
+      "nre-kuna-cleanup-only-version-owner-",
     );
     const modeFile = join(root, "mode");
     const childStarted = join(root, "child-started");
@@ -171,7 +171,7 @@ it.skipIf(process.platform === "win32")(
     });
     const scope = new ArtifactResourceScope();
     const provider = new KunaProvider(
-      { REA_KUNA_COMMAND: executable, REA_KUNA_CACHE_DIR: join(root, "cache") },
+      { NRE_KUNA_COMMAND: executable, NRE_KUNA_CACHE_DIR: join(root, "cache") },
       { launcher: launcher.launcher },
     );
     const input = target(join(root, "target"));
@@ -222,7 +222,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "settles caller abort after direct-child exit with the exact reason and partial streams",
   async () => {
-    const root = await createTestTempDirectory("rea-kuna-abort-version-pipe-");
+    const root = await createTestTempDirectory("nre-kuna-abort-version-pipe-");
     const modeFile = join(root, "mode");
     const childStarted = join(root, "child-started");
     const parentExited = join(root, "parent-exited");
@@ -240,7 +240,7 @@ it.skipIf(process.platform === "win32")(
     });
     try {
       const pending = inspectKunaInstallation(
-        { REA_KUNA_COMMAND: executable },
+        { NRE_KUNA_COMMAND: executable },
         {
           resourceScope: resourceScopeFor(scope),
           processLauncher: launcher.launcher,
@@ -281,7 +281,7 @@ it.skipIf(process.platform === "win32")(
   "retains incomplete probe cleanup, blocks another profile, then retries only that exact process group",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-kuna-retained-version-owner-",
+      "nre-kuna-retained-version-owner-",
     );
     const modeFile = join(root, "mode");
     const childStarted = join(root, "child-started");
@@ -314,7 +314,7 @@ it.skipIf(process.platform === "win32")(
       unrelated.once("error", reject);
     });
     const provider = new KunaProvider(
-      { REA_KUNA_COMMAND: executable, REA_KUNA_CACHE_DIR: join(root, "cache") },
+      { NRE_KUNA_COMMAND: executable, NRE_KUNA_CACHE_DIR: join(root, "cache") },
       { launcher: launcher.launcher, probeTimeoutMs: 2_500 },
     );
     const input = target(join(root, "target"));
@@ -430,7 +430,7 @@ it.skipIf(process.platform === "win32")(
   "keeps caller cancellation primary while cancellation cleanup is held and then retried",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-kuna-final-cancel-cleanup-",
+      "nre-kuna-final-cancel-cleanup-",
     );
     const modeFile = join(root, "mode");
     const childStarted = join(root, "child-started");
@@ -460,7 +460,7 @@ it.skipIf(process.platform === "win32")(
     });
     try {
       const pending = inspectKunaInstallation(
-        { REA_KUNA_COMMAND: executable },
+        { NRE_KUNA_COMMAND: executable },
         {
           resourceScope: resourceScopeFor(scope),
           processLauncher: launcher.launcher,

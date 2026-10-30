@@ -30,7 +30,7 @@ const REQUIRED_LLM_TOPICS = [
  * installer applicability from the facts their owners parse.
  *
  * Host readiness and installer applicability are different facts: a
- * distribution REA supports can still be absent from the Hopper package's
+ * distribution NRE supports can still be absent from the Hopper package's
  * tested list, or run on an architecture the package lacks, so the doctor host
  * check cannot answer the second question. On Linux, Hopper readiness is
  * required only where the automated installer applies; elsewhere setup never
@@ -51,9 +51,9 @@ export function packageSetupSupport(checks, host) {
 }
 
 /**
- * Whether `rea setup --install-hopper` can install Hopper automatically here.
+ * Whether `nre setup --install-hopper` can install Hopper automatically here.
  * On macOS the doctor host check already is the owner's installer predicate
- * (macOS 12 or later); on Linux it reports REA host support instead, so the
+ * (macOS 12 or later); on Linux it reports NRE host support instead, so the
  * distribution's own parsed applicability governs.
  */
 function hopperInstallerSupported(host, hostCheckOk) {

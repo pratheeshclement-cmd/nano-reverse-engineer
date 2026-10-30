@@ -17,7 +17,7 @@ const opaqueCleanupReason = () =>
   );
 
 const makeCapture = async () => {
-  const parent = await createTestTempDirectory("rea-pcap-snapshot-cancel-");
+  const parent = await createTestTempDirectory("nre-pcap-snapshot-cancel-");
   const path = join(parent, "capture.pcap");
   const contents = Buffer.from("capture bytes for snapshot cancellation");
   await writeFile(path, contents);

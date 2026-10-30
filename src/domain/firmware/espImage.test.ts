@@ -150,7 +150,7 @@ describe("ESP image decoding", () => {
         observed_length: 256,
         secure_version: 0,
         version: "1.2.3",
-        project_name: "rea_esp_fixture",
+        project_name: "nre_esp_fixture",
         time: "12:34:56",
         date: "Oct 27 2026",
         idf_ver: "v6.1",
@@ -232,7 +232,7 @@ describe("ESP image decoding", () => {
     );
     expect(decoded.metadata.descriptor).toMatchObject({
       version: null,
-      project_name: "rea_esp_fixture",
+      project_name: "nre_esp_fixture",
     });
     expect(decoded.limitations).toEqual([
       ESP_DESCRIPTOR_LIMITATIONS.fieldNotUtf8("version"),

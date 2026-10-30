@@ -27,18 +27,23 @@ import { snapshotEnvironment } from "../../../src/process/snapshotEnvironment.js
 import { ok } from "../../../src/domain/result.js";
 import { MCP_STARTUP_POLICY } from "../../../src/mcpStartupPolicy.js";
 
-const staleOwnedCommand = ["npx", "-y", "rea-agents@6.6.0", "mcp"] as const;
+const staleOwnedCommand = [
+  "npx",
+  "-y",
+  "nano-reverse-engineer@6.6.0",
+  "mcp",
+] as const;
 
 it("awaits the owner-parsed provider request budget without changing caller strings", async () => {
   const parsed = parseClientConfiguration(
     JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        nre: {
+          command: "nre",
           args: ["mcp"],
           env: {
-            REA_ANALYSIS_PROVIDER: "ida",
-            REA_IDA_MCP_CONFIG: "/tmp/rea-registration.json/",
+            NRE_ANALYSIS_PROVIDER: "ida",
+            NRE_IDA_MCP_CONFIG: "/tmp/nre-registration.json/",
           },
         },
       },
@@ -57,24 +62,24 @@ it("awaits the owner-parsed provider request budget without changing caller stri
   expect(details).toMatchObject({
     ok: true,
     value: {
-      values: { REA_IDA_MCP_CONFIG: "/tmp/rea-registration.json/" },
+      values: { NRE_IDA_MCP_CONFIG: "/tmp/nre-registration.json/" },
       timeoutInputs: { providerRequestTimeoutMs: 17 },
     },
   });
 });
 
 it("preserves owner-parsed registration facts and revalidates later inspections", async () => {
-  const home = await createTestTempDirectory("rea-registration-snapshot-");
+  const home = await createTestTempDirectory("nre-registration-snapshot-");
   const configPath = join(home, "mcp.json");
   const environment = {
-    REA_ANALYSIS_PROVIDER: "ida",
-    REA_IDA_MCP_CONFIG: "/tmp/rea-registration.json/",
-    REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
+    NRE_ANALYSIS_PROVIDER: "ida",
+    NRE_IDA_MCP_CONFIG: "/tmp/nre-registration.json/",
+    NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
   };
   const original = JSON.stringify({
     mcpServers: {
-      rea: {
-        command: "rea",
+      nre: {
+        command: "nre",
         args: ["mcp"],
         env: environment,
         startupTimeoutMs: MCP_STARTUP_POLICY.kimiStartupTimeoutMs,
@@ -90,8 +95,8 @@ it("preserves owner-parsed registration facts and revalidates later inspections"
     provider: string,
     observedEnvironment: Readonly<Record<string, string>>,
   ) => {
-    expect(observedEnvironment.REA_IDA_MCP_CONFIG).toBe(
-      environment.REA_IDA_MCP_CONFIG,
+    expect(observedEnvironment.NRE_IDA_MCP_CONFIG).toBe(
+      environment.NRE_IDA_MCP_CONFIG,
     );
     expect(provider).toBe("ida");
     observedBudgets.add(providerTimeoutMs);
@@ -99,21 +104,21 @@ it("preserves owner-parsed registration facts and revalidates later inspections"
   };
 
   expect(
-    await clientConfigurationAligned(client, {}, ["rea", "mcp"], resolveBudget),
+    await clientConfigurationAligned(client, {}, ["nre", "mcp"], resolveBudget),
   ).toBe(true);
   expect(observedBudgets.has(17)).toBe(true);
 
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"], resolveBudget),
+    await inspectClientConfiguration(client, {}, ["nre", "mcp"], resolveBudget),
   ).toEqual({ status: "already_current" });
   providerTimeoutMs = 1_000_000;
   // Revalidate the budget while preserving the caller's positive timeout.
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"], resolveBudget),
+    await inspectClientConfiguration(client, {}, ["nre", "mcp"], resolveBudget),
   ).toEqual({ status: "already_current" });
   expect(observedBudgets.has(providerTimeoutMs)).toBe(true);
   expect(await readFile(configPath, "utf8")).toBe(original);
-  await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+  await expect(access(`${configPath}.nre.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
@@ -121,17 +126,17 @@ it("preserves owner-parsed registration facts and revalidates later inspections"
 it.each(["win32", "linux"] as const)(
   "uses the selected %s identity when inspecting lowercase registration settings",
   async (platform) => {
-    const home = await createTestTempDirectory("rea-selected-platform-env-");
+    const home = await createTestTempDirectory("nre-selected-platform-env-");
     const path = join(home, ".cursor/mcp.json");
     await mkdir(join(home, ".cursor"));
     await writeFile(
       path,
       JSON.stringify({
         mcpServers: {
-          rea: clientRegistrationEntry(
+          nre: clientRegistrationEntry(
             "json",
             currentClientRegistrationCommand({ platform }),
-            { rea_analysis_provider: "invalid provider" },
+            { nre_analysis_provider: "invalid provider" },
           ),
         },
       }),
@@ -152,31 +157,31 @@ it.each(["win32", "linux"] as const)(
 
 it.skipIf(process.platform !== "win32").each([
   {
-    key: "rea_analysis_provider",
-    override: "REA_ANALYSIS_PROVIDER",
+    key: "nre_analysis_provider",
+    override: "NRE_ANALYSIS_PROVIDER",
     value: "ghidra",
     duplicate: false,
   },
   { key: "true", override: "TRUE", value: "chosen", duplicate: false },
   { key: '"true"', override: "true", value: "chosen", duplicate: true },
   {
-    key: "rea_analysis_provider",
-    override: "REA_ANALYSIS_PROVIDER",
+    key: "nre_analysis_provider",
+    override: "NRE_ANALYSIS_PROVIDER",
     value: "ghidra",
     duplicate: true,
   },
 ])(
   "preserves DSH scalar-key identity and comments when replacing $key",
   async ({ key, override, value, duplicate }) => {
-    const root = await createTestTempDirectory("rea-dsh-alias-comments-");
+    const root = await createTestTempDirectory("nre-dsh-alias-comments-");
     const configPath = join(root, "cordis.patch.yml");
-    const source = `- insert:\n    - id: rea-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: rea\n        transport: stdio\n        command: old-rea\n        args: [mcp]\n        env:\n          # retain preceding rationale\n          ${key}: "hopper" # retain inline rationale\n${duplicate ? `          ${override}: "ghidra" # retain winning rationale\n` : ""}          CUSTOM: !!js caller.custom\n`;
+    const source = `- insert:\n    - id: nre-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: nre\n        transport: stdio\n        command: old-nre\n        args: [mcp]\n        env:\n          # retain preceding rationale\n          ${key}: "hopper" # retain inline rationale\n${duplicate ? `          ${override}: "ghidra" # retain winning rationale\n` : ""}          CUSTOM: !!js caller.custom\n`;
     await writeFile(configPath, source);
     const client = { name: "dsh", format: "dsh", configPath } as const;
     const result = await configureClientConfiguration(
       client,
       { [override]: value },
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     );
     expect(result, JSON.stringify(result)).toMatchObject({
       status: "configured",
@@ -197,10 +202,10 @@ it.skipIf(process.platform !== "win32").each([
         (name) => name.toUpperCase() === override.toUpperCase(),
       ),
     ).toEqual([override]);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(source);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(source);
     expect(
       await configureClientConfiguration(client, { [override]: value }, [
-        "rea",
+        "nre",
         "mcp",
       ]),
     ).toEqual({ status: "unchanged" });
@@ -210,17 +215,17 @@ it.skipIf(process.platform !== "win32").each([
 it.skipIf(process.platform !== "win32")(
   "preserves a lowercase explicit Kimi schema profile instead of inserting a conflicting default",
   async () => {
-    const home = await createTestTempDirectory("rea-kimi-case-");
+    const home = await createTestTempDirectory("nre-kimi-case-");
     await mkdir(join(home, ".kimi-code"));
     const configPath = join(home, ".kimi-code/mcp.json");
     await writeFile(
       configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             command: staleOwnedCommand[0],
             args: staleOwnedCommand.slice(1),
-            env: { rea_mcp_input_schema_profile: "full" },
+            env: { nre_mcp_input_schema_profile: "full" },
           },
         },
       }),
@@ -234,8 +239,8 @@ it.skipIf(process.platform !== "win32")(
       await readFile(configPath, "utf8"),
       "kimi",
     );
-    expect(effectiveClientServer(parsed, "rea")).toHaveProperty("env", {
-      rea_mcp_input_schema_profile: "full",
+    expect(effectiveClientServer(parsed, "nre")).toHaveProperty("env", {
+      nre_mcp_input_schema_profile: "full",
     });
     const statuses = await readClientRegistrationStatuses(home, command[1], {
       environment: {},
@@ -251,22 +256,22 @@ it
   .each(["hopper", "!!js caller.provider"])(
   "replaces a Windows DSH environment alias without evaluating %s",
   async (stored) => {
-    const root = await createTestTempDirectory("rea-dsh-case-");
+    const root = await createTestTempDirectory("nre-dsh-case-");
     const configPath = join(root, "cordis.patch.yml");
-    const source = `- insert:\n    - id: rea-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: rea\n        transport: stdio\n        command: old-rea\n        args: [mcp]\n        env:\n          rea_analysis_provider: ${stored}\n          CUSTOM: !!js caller.custom\n`;
+    const source = `- insert:\n    - id: nre-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: nre\n        transport: stdio\n        command: old-nre\n        args: [mcp]\n        env:\n          nre_analysis_provider: ${stored}\n          CUSTOM: !!js caller.custom\n`;
     await writeFile(configPath, source);
     const client = { name: "dsh", format: "dsh", configPath } as const;
-    const overrides = { REA_ANALYSIS_PROVIDER: "ghidra" };
+    const overrides = { NRE_ANALYSIS_PROVIDER: "ghidra" };
     const configured = await configureClientConfiguration(client, overrides, [
-      "rea",
+      "nre",
       "mcp",
     ]);
     expect(configured, JSON.stringify(configured)).toMatchObject({
       status: "configured",
     });
     const text = await readFile(configPath, "utf8");
-    expect(text).not.toContain("rea_analysis_provider:");
-    expect(text).toContain("REA_ANALYSIS_PROVIDER: ghidra");
+    expect(text).not.toContain("nre_analysis_provider:");
+    expect(text).toContain("NRE_ANALYSIS_PROVIDER: ghidra");
     expect(text).toContain("!!js caller.custom");
     const details = clientRegistrationEnvironmentDetails(
       parseClientConfiguration(text, "dsh"),
@@ -275,20 +280,20 @@ it
     if (!details.ok) throw details.error;
     expect(details.value.timeoutInputs?.analysisProvider).toBe("ghidra");
     expect(
-      await configureClientConfiguration(client, overrides, ["rea", "mcp"]),
+      await configureClientConfiguration(client, overrides, ["nre", "mcp"]),
     ).toEqual({ status: "unchanged" });
   },
 );
 
 it.skipIf(process.platform !== "win32").each([
   {
-    existing: { rea_analysis_provider: "hopper" },
-    overrides: { REA_ANALYSIS_PROVIDER: "ghidra" },
+    existing: { nre_analysis_provider: "hopper" },
+    overrides: { NRE_ANALYSIS_PROVIDER: "ghidra" },
     expected: "ghidra",
   },
   {
-    existing: { REA_ANALYSIS_PROVIDER: "ghidra" },
-    overrides: { rea_analysis_provider: "hopper" },
+    existing: { NRE_ANALYSIS_PROVIDER: "ghidra" },
+    overrides: { nre_analysis_provider: "hopper" },
     expected: "hopper",
   },
 ])(
@@ -296,7 +301,7 @@ it.skipIf(process.platform !== "win32").each([
   ({ existing, overrides, expected }) => {
     const parsed = parseClientConfiguration(
       JSON.stringify({
-        mcpServers: { rea: { command: "rea", args: ["mcp"], env: existing } },
+        mcpServers: { nre: { command: "nre", args: ["mcp"], env: existing } },
       }),
       "json",
     );
@@ -304,13 +309,13 @@ it.skipIf(process.platform !== "win32").each([
     expect(result.ok).toBe(true);
     if (!result.ok) throw result.error;
     expect(result.value.timeoutInputs?.analysisProvider).toBe(expected);
-    expect(snapshotEnvironment(result.value.values).REA_ANALYSIS_PROVIDER).toBe(
+    expect(snapshotEnvironment(result.value.values).NRE_ANALYSIS_PROVIDER).toBe(
       expected,
     );
     expect(Object.keys(result.value.values)).toHaveLength(1);
     const child = spawnSync(
       process.execPath,
-      ["-e", "process.stdout.write(process.env.REA_ANALYSIS_PROVIDER ?? '')"],
+      ["-e", "process.stdout.write(process.env.NRE_ANALYSIS_PROVIDER ?? '')"],
       {
         env: result.value.values,
         encoding: "utf8",
@@ -326,15 +331,15 @@ it.skipIf(process.platform !== "win32")(
   "rejects invalid lowercase known settings before writing a Windows registration",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-invalid-lowercase-environment-",
+      "nre-invalid-lowercase-environment-",
     );
     const configPath = join(root, "config.json");
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        nre: {
+          command: "nre",
           args: ["mcp"],
-          env: { rea_analysis_provider: "invalid provider" },
+          env: { nre_analysis_provider: "invalid provider" },
         },
       },
     });
@@ -342,11 +347,11 @@ it.skipIf(process.platform !== "win32")(
     const result = await configureClientConfiguration(
       { name: "cursor", format: "json", configPath },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     );
     expect(result).toMatchObject({ status: "failed" });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${configPath}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -360,19 +365,19 @@ it.each([
 ] as const)(
   "preserves %s server environment through command and provider updates",
   async (name, format, serversKey, environmentKey) => {
-    const root = await createTestTempDirectory("rea-setup-environment-");
+    const root = await createTestTempDirectory("nre-setup-environment-");
     const configPath = join(root, "config");
     const client = { name, format, configPath };
     const custom = {
-      REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
-      REA_MCP_MAX_RESPONSE_BYTES: "33554432",
-      REA_BROWSER_EXECUTABLE: join(root, "custom-browser"),
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+      NRE_MCP_MAX_RESPONSE_BYTES: "33554432",
+      NRE_BROWSER_EXECUTABLE: join(root, "custom-browser"),
       GHIDRA_INSTALL_DIR: join(root, "old-ghidra"),
       HOPPER_LOADER_ARGS_JSON: '["", "--loader", "Mach-O"]',
-      REA_REFERENCE_SECRET_PATTERNS_JSON: '["*.private", "local/**"]',
-      REA_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
-      REA_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
+      NRE_REFERENCE_SECRET_PATTERNS_JSON: '["*.private", "local/**"]',
+      NRE_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
+      NRE_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
       CALLER_SETTING: "preserve exactly",
       ["__proto__"]: "caller prototype setting",
       constructor: "caller constructor setting",
@@ -382,7 +387,7 @@ it.each([
       {
         ["__proto__"]: { caller: "retain root value" },
         [serversKey]: {
-          rea: clientRegistrationEntry(format, staleOwnedCommand, custom),
+          nre: clientRegistrationEntry(format, staleOwnedCommand, custom),
           other: clientRegistrationEntry(format, ["other"], { OTHER: "keep" }),
           ["__proto__"]: clientRegistrationEntry(format, ["peer"], {}),
         },
@@ -394,7 +399,7 @@ it.each([
     const originalParsed = parseClientConfiguration(original, format);
     await writeFile(configPath, original);
     const providers = { GHIDRA_INSTALL_DIR: join(root, "new-ghidra") };
-    const command = ["rea", "mcp"];
+    const command = ["nre", "mcp"];
     expect(
       await inspectClientConfiguration(client, providers, command),
     ).toMatchObject({ status: "update" });
@@ -411,14 +416,14 @@ it.each([
     expect(effectiveClientServer(parsed, "__proto__")).toEqual(
       effectiveClientServer(originalParsed, "__proto__"),
     );
-    expect(effectiveClientServer(parsed, "rea")).toHaveProperty(
+    expect(effectiveClientServer(parsed, "nre")).toHaveProperty(
       environmentKey,
       { ...custom, ...providers },
     );
     expect(effectiveClientServer(parsed, "other")).toEqual(
       effectiveClientServer(originalParsed, "other"),
     );
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(await clientConfigurationAligned(client, providers, command)).toBe(
       true,
     );
@@ -436,12 +441,12 @@ it.each(["linux", "win32"] as const)(
   "retains every literal Cordis environment key for %s",
   (platform) => {
     const source = `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
-        command: rea
+        command: nre
         args: [mcp]
         env:
           "__proto__": selected
@@ -468,11 +473,11 @@ it.each(["linux", "win32"] as const)(
 it("retains an unresolved JEB endpoint expression until a selected literal replaces it", async () => {
   const parsed = parseClientConfiguration(
     `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
         env:
-          REA_JEB_MCP_URL: !!js caller.endpoint
+          NRE_JEB_MCP_URL: !!js caller.endpoint
 `,
     "dsh",
   );
@@ -485,25 +490,25 @@ it("retains an unresolved JEB endpoint expression until a selected literal repla
   expect(unresolved.ok).toBe(true);
   if (!unresolved.ok) throw unresolved.error;
   expect(unresolved.value.unresolvedSettings).toEqual(
-    new Set(["REA_JEB_MCP_URL"]),
+    new Set(["NRE_JEB_MCP_URL"]),
   );
   const endpoint = "http://127.0.0.1:8426/mcp/";
   const selected = clientRegistrationEnvironmentDetails(parsed, {
-    REA_JEB_MCP_URL: endpoint,
+    NRE_JEB_MCP_URL: endpoint,
   });
   expect(selected.ok).toBe(true);
   if (!selected.ok) throw selected.error;
-  expect(selected.value.values.REA_JEB_MCP_URL).toBe(endpoint);
+  expect(selected.value.values.NRE_JEB_MCP_URL).toBe(endpoint);
   expect(selected.value.unresolvedSettings.size).toBe(0);
 });
 
 it.each(
   [
-    "REA_ANALYSIS_PROVIDER",
-    "REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
-    "REA_GHIDRA_STARTUP_TIMEOUT_MS",
-    "REA_HOPPER_STARTUP_TIMEOUT_MS",
-    "REA_JEB_MCP_TIMEOUT_MS",
+    "NRE_ANALYSIS_PROVIDER",
+    "NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
+    "NRE_GHIDRA_STARTUP_TIMEOUT_MS",
+    "NRE_HOPPER_STARTUP_TIMEOUT_MS",
+    "NRE_JEB_MCP_TIMEOUT_MS",
   ].flatMap((setting) =>
     (["linux", "win32"] as const).map((platform) => ({ setting, platform })),
   ),
@@ -512,7 +517,7 @@ it.each(
   async ({ setting, platform }) => {
     const parsed = parseClientConfiguration(
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
         env:
@@ -561,7 +566,7 @@ it.each(
     const overridden = clientRegistrationEnvironmentDetails(
       parsed,
       {
-        [setting]: setting === "REA_ANALYSIS_PROVIDER" ? "ghidra" : "17000",
+        [setting]: setting === "NRE_ANALYSIS_PROVIDER" ? "ghidra" : "17000",
       },
       "effective",
       platform,
@@ -576,13 +581,13 @@ it.each(
 it("retains an unknown companion while deriving unrelated literal timeout facts", () => {
   const parsed = parseClientConfiguration(
     `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
         env:
-          REA_GHIDRA_LANGUAGE_ID: !!js caller.language
-          REA_GHIDRA_COMPILER_SPEC_ID: borlandcpp
-          REA_GHIDRA_STARTUP_TIMEOUT_MS: "17000"
+          NRE_GHIDRA_LANGUAGE_ID: !!js caller.language
+          NRE_GHIDRA_COMPILER_SPEC_ID: borlandcpp
+          NRE_GHIDRA_STARTUP_TIMEOUT_MS: "17000"
 `,
     "dsh",
   );
@@ -590,7 +595,7 @@ it("retains an unknown companion while deriving unrelated literal timeout facts"
   expect(details.ok).toBe(true);
   if (!details.ok) throw details.error;
   expect(details.value.unresolvedSettings).toEqual(
-    new Set(["REA_GHIDRA_LANGUAGE_ID"]),
+    new Set(["NRE_GHIDRA_LANGUAGE_ID"]),
   );
   expect(details.value.timeoutInputs?.ghidraStartupTimeoutMs).toBe(17000);
 });
@@ -598,12 +603,12 @@ it("retains an unknown companion while deriving unrelated literal timeout facts"
 it("does not resolve a provider budget from an expression omitted from literal values", async () => {
   const parsed = parseClientConfiguration(
     `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
         env:
-          REA_ANALYSIS_PROVIDER: ida
-          REA_IDA_MCP_CONFIG: !!js caller.idaConfig
+          NRE_ANALYSIS_PROVIDER: ida
+          NRE_IDA_MCP_CONFIG: !!js caller.idaConfig
 `,
     "dsh",
   );
@@ -612,7 +617,7 @@ it("does not resolve a provider budget from an expression omitted from literal v
     provider: string,
     environment: Readonly<Record<string, string>>,
   ) => {
-    observations.push(provider, environment.REA_IDA_MCP_CONFIG ?? "missing");
+    observations.push(provider, environment.NRE_IDA_MCP_CONFIG ?? "missing");
     return ok(17);
   };
   expect(
@@ -635,12 +640,12 @@ it("does not resolve a provider budget from an expression omitted from literal v
     ),
   ).toMatchObject({
     ok: false,
-    error: { settings: [{ setting: "REA_IDA_MCP_CONFIG" }] },
+    error: { settings: [{ setting: "NRE_IDA_MCP_CONFIG" }] },
   });
   expect(observations).toEqual([]);
   const resolved = await clientRegistrationEnvironmentDetailsWithBudget(
     parsed,
-    { REA_IDA_MCP_CONFIG: "/selected/ida.json" },
+    { NRE_IDA_MCP_CONFIG: "/selected/ida.json" },
     "effective",
     resolveBudget,
   );
@@ -652,10 +657,10 @@ it("does not resolve a provider budget from an expression omitted from literal v
 });
 
 it("rejects a non-string caller environment key before editing configuration", async () => {
-  const root = await createTestTempDirectory("rea-invalid-own-environment-");
+  const root = await createTestTempDirectory("nre-invalid-own-environment-");
   const configPath = join(root, "config.json");
   const source =
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"],"env":{"__proto__":123}}}}';
+    '{"mcpServers":{"nre":{"command":"nre","args":["mcp"],"env":{"__proto__":123}}}}';
   await writeFile(configPath, source);
   const details = clientRegistrationEnvironmentDetails(
     parseClientConfiguration(source, "json"),
@@ -668,23 +673,23 @@ it("rejects a non-string caller environment key before editing configuration", a
     await configureClientConfiguration(
       { name: "cursor", format: "json", configPath },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ),
   ).toEqual({ status: "failed", reason: "readback" });
   expect(await readFile(configPath, "utf8")).toBe(source);
-  await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+  await expect(access(`${configPath}.nre.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
 
 it("does not hide an invalid JEB endpoint in an untouched configuration layer", async () => {
-  const root = await createTestTempDirectory("rea-jeb-layer-validation-");
+  const root = await createTestTempDirectory("nre-jeb-layer-validation-");
   const lower = join(root, "lower.json");
   const configPath = join(root, "opencode.json");
   const bad = JSON.stringify({
     mcp: {
-      rea: clientRegistrationEntry("opencode", ["rea", "mcp"], {
-        REA_JEB_MCP_URL: "https://example.com/mcp",
+      nre: clientRegistrationEntry("opencode", ["nre", "mcp"], {
+        NRE_JEB_MCP_URL: "https://example.com/mcp",
       }),
     },
   });
@@ -696,9 +701,9 @@ it("does not hide an invalid JEB endpoint in an untouched configuration layer", 
     configPath,
     configPaths: [lower, configPath],
   } as const;
-  const selected = { REA_JEB_MCP_URL: "http://127.0.0.1:8426/mcp" };
+  const selected = { NRE_JEB_MCP_URL: "http://127.0.0.1:8426/mcp" };
   expect(
-    await inspectClientConfiguration(client, selected, ["rea", "mcp"]),
+    await inspectClientConfiguration(client, selected, ["nre", "mcp"]),
   ).toMatchObject({
     status: "invalid",
     remediation: expect.stringContaining(lower),
@@ -708,15 +713,15 @@ it("does not hide an invalid JEB endpoint in an untouched configuration layer", 
 });
 
 it("retains legacy OpenCode environment when migrating into a native server table", async () => {
-  const root = await createTestTempDirectory("rea-opencode-environment-");
+  const root = await createTestTempDirectory("nre-opencode-environment-");
   const configPath = join(root, "opencode.json");
   const client = { name: "opencode", format: "opencode", configPath } as const;
-  const custom = { REA_MCP_INPUT_SCHEMA_PROFILE: "compact" };
+  const custom = { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact" };
   await writeFile(
     configPath,
     JSON.stringify({
       mcp: {
-        rea: clientRegistrationEntry("opencode", staleOwnedCommand, custom),
+        nre: clientRegistrationEntry("opencode", staleOwnedCommand, custom),
         servers: {
           other: clientRegistrationEntry("opencode_v2", ["other"], {}),
         },
@@ -724,35 +729,35 @@ it("retains legacy OpenCode environment when migrating into a native server tabl
     }),
   );
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({ status: "configured" });
   const parsed = parseClientConfiguration(
     await readFile(configPath, "utf8"),
     "opencode",
   );
   expect(parsed.legacyServers).toEqual({});
-  expect(parsed.servers.rea).toEqual(
-    clientRegistrationEntry("opencode_v2", ["rea", "mcp"], custom),
+  expect(parsed.servers.nre).toEqual(
+    clientRegistrationEntry("opencode_v2", ["nre", "mcp"], custom),
   );
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toEqual({ status: "unchanged" });
 });
 
 it.each([
   [
     "non-string member",
-    { REA_MCP_INPUT_SCHEMA_PROFILE: "compact", PORT: 8080 },
+    { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact", PORT: 8080 },
     "env.PORT",
   ],
   [
     "boolean member",
-    { REA_MCP_INPUT_SCHEMA_PROFILE: "compact", FLAG: true },
+    { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact", FLAG: true },
     "env.FLAG",
   ],
   [
     "null member",
-    { REA_MCP_INPUT_SCHEMA_PROFILE: "compact", VALUE: null },
+    { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact", VALUE: null },
     "env.VALUE",
   ],
   ["array", [], "env"],
@@ -760,78 +765,78 @@ it.each([
   ["null map", null, "env"],
   [
     "empty profile",
-    { REA_MCP_INPUT_SCHEMA_PROFILE: "" },
-    "REA_MCP_INPUT_SCHEMA_PROFILE",
+    { NRE_MCP_INPUT_SCHEMA_PROFILE: "" },
+    "NRE_MCP_INPUT_SCHEMA_PROFILE",
   ],
   [
     "invalid profile",
-    { REA_MCP_INPUT_SCHEMA_PROFILE: "bogus" },
-    "REA_MCP_INPUT_SCHEMA_PROFILE",
+    { NRE_MCP_INPUT_SCHEMA_PROFILE: "bogus" },
+    "NRE_MCP_INPUT_SCHEMA_PROFILE",
   ],
   [
     "empty output profile",
-    { REA_MCP_OUTPUT_SCHEMA_PROFILE: "" },
-    "REA_MCP_OUTPUT_SCHEMA_PROFILE",
+    { NRE_MCP_OUTPUT_SCHEMA_PROFILE: "" },
+    "NRE_MCP_OUTPUT_SCHEMA_PROFILE",
   ],
   [
     "invalid output profile",
-    { REA_MCP_OUTPUT_SCHEMA_PROFILE: "bogus" },
-    "REA_MCP_OUTPUT_SCHEMA_PROFILE",
+    { NRE_MCP_OUTPUT_SCHEMA_PROFILE: "bogus" },
+    "NRE_MCP_OUTPUT_SCHEMA_PROFILE",
   ],
   [
     "invalid response budget",
-    { REA_MCP_MAX_RESPONSE_BYTES: "1" },
-    "REA_MCP_MAX_RESPONSE_BYTES",
+    { NRE_MCP_MAX_RESPONSE_BYTES: "1" },
+    "NRE_MCP_MAX_RESPONSE_BYTES",
   ],
   [
     "ASAR header admission above its maximum",
-    { REA_ASAR_MAX_HEADER_BYTES: "268435457" },
-    "REA_ASAR_MAX_HEADER_BYTES",
+    { NRE_ASAR_MAX_HEADER_BYTES: "268435457" },
+    "NRE_ASAR_MAX_HEADER_BYTES",
   ],
   [
     "regex matching deadline of zero",
-    { REA_REGEX_MATCHING_DEADLINE_MS: "0" },
-    "REA_REGEX_MATCHING_DEADLINE_MS",
+    { NRE_REGEX_MATCHING_DEADLINE_MS: "0" },
+    "NRE_REGEX_MATCHING_DEADLINE_MS",
   ],
   [
     "capture decoder heap below its floor",
-    { REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "7" },
-    "REA_CAPTURE_DECODER_OLD_GENERATION_MIB",
+    { NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "7" },
+    "NRE_CAPTURE_DECODER_OLD_GENERATION_MIB",
   ],
   [
     "regex worker heap request below its floor",
-    { REA_REGEX_WORKER_HEAP_REQUEST_MIB: "6" },
-    "REA_REGEX_WORKER_HEAP_REQUEST_MIB",
+    { NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "6" },
+    "NRE_REGEX_WORKER_HEAP_REQUEST_MIB",
   ],
   [
     "bridge request ceiling below its floor",
-    { REA_BRIDGE_MAX_REQUEST_BYTES: "7463" },
-    "REA_BRIDGE_MAX_REQUEST_BYTES",
+    { NRE_BRIDGE_MAX_REQUEST_BYTES: "7463" },
+    "NRE_BRIDGE_MAX_REQUEST_BYTES",
   ],
   [
     "bridge request ceiling above its maximum",
-    { REA_BRIDGE_MAX_REQUEST_BYTES: "536870888" },
-    "REA_BRIDGE_MAX_REQUEST_BYTES",
+    { NRE_BRIDGE_MAX_REQUEST_BYTES: "536870888" },
+    "NRE_BRIDGE_MAX_REQUEST_BYTES",
   ],
   [
     "MCP initialize budget of zero",
-    { REA_MCP_INITIALIZE_BUDGET_MS: "0" },
-    "REA_MCP_INITIALIZE_BUDGET_MS",
+    { NRE_MCP_INITIALIZE_BUDGET_MS: "0" },
+    "NRE_MCP_INITIALIZE_BUDGET_MS",
   ],
   [
     "MCP tools/list budget above its maximum",
-    { REA_MCP_TOOLS_LIST_BUDGET_MS: "2147483648" },
-    "REA_MCP_TOOLS_LIST_BUDGET_MS",
+    { NRE_MCP_TOOLS_LIST_BUDGET_MS: "2147483648" },
+    "NRE_MCP_TOOLS_LIST_BUDGET_MS",
   ],
   [
     "MCP first-catalog budget with a leading zero",
-    { REA_MCP_FIRST_CATALOG_BUDGET_MS: "020000" },
-    "REA_MCP_FIRST_CATALOG_BUDGET_MS",
+    { NRE_MCP_FIRST_CATALOG_BUDGET_MS: "020000" },
+    "NRE_MCP_FIRST_CATALOG_BUDGET_MS",
   ],
   [
     "MCP doctor deadline that is not decimal",
-    { REA_MCP_DOCTOR_DEADLINE_MS: "30_000" },
-    "REA_MCP_DOCTOR_DEADLINE_MS",
+    { NRE_MCP_DOCTOR_DEADLINE_MS: "30_000" },
+    "NRE_MCP_DOCTOR_DEADLINE_MS",
   ],
   [
     "malformed loader JSON",
@@ -850,44 +855,44 @@ it.each([
   ],
   [
     "malformed exclusion JSON",
-    { REA_REFERENCE_SECRET_PATTERNS_JSON: "{" },
-    "REA_REFERENCE_SECRET_PATTERNS_JSON",
+    { NRE_REFERENCE_SECRET_PATTERNS_JSON: "{" },
+    "NRE_REFERENCE_SECRET_PATTERNS_JSON",
   ],
   [
     "empty exclusion pattern",
-    { REA_REFERENCE_SECRET_PATTERNS_JSON: '[""]' },
-    "REA_REFERENCE_SECRET_PATTERNS_JSON",
+    { NRE_REFERENCE_SECRET_PATTERNS_JSON: '[""]' },
+    "NRE_REFERENCE_SECRET_PATTERNS_JSON",
   ],
   [
     "unpaired compiler specification",
-    { REA_GHIDRA_COMPILER_SPEC_ID: "borlandcpp" },
-    "REA_GHIDRA_COMPILER_SPEC_ID",
+    { NRE_GHIDRA_COMPILER_SPEC_ID: "borlandcpp" },
+    "NRE_GHIDRA_COMPILER_SPEC_ID",
   ],
 ] as const)(
   "refuses %s before changing the configuration",
   async (_name, env, setting) => {
-    const home = await createTestTempDirectory("rea-invalid-environment-");
+    const home = await createTestTempDirectory("nre-invalid-environment-");
     const directory = join(home, ".cursor");
     const configPath = join(directory, "mcp.json");
     await mkdir(directory);
     const original = JSON.stringify({
-      mcpServers: { rea: { command: "rea", args: ["mcp"], env } },
+      mcpServers: { nre: { command: "nre", args: ["mcp"], env } },
     });
     await writeFile(configPath, original);
     const client = { name: "cursor", format: "json", configPath } as const;
     expect(
-      await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+      await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toMatchObject({
       status: "invalid",
       remediation: expect.stringContaining(setting),
     });
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
-    expect(await clientConfigurationAligned(client, {}, ["rea", "mcp"])).toBe(
+    expect(await clientConfigurationAligned(client, {}, ["nre", "mcp"])).toBe(
       false,
     );
-    const statuses = await readClientRegistrationStatuses(home, "rea", {
+    const statuses = await readClientRegistrationStatuses(home, "nre", {
       environment: {},
     });
     expect(statuses.find(({ client }) => client === "cursor")).toMatchObject({
@@ -895,14 +900,14 @@ it.each([
       remediation: expect.stringContaining(setting),
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${configPath}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
 );
 
 it("refuses an unidentified launch command before creating a client configuration", async () => {
-  const home = await createTestTempDirectory("rea-registration-unidentified-");
+  const home = await createTestTempDirectory("nre-registration-unidentified-");
   const configPath = join(home, "missing", "mcp.json");
   const result = await configureClientConfiguration(
     { name: "claude_code", configPath, format: "json" },

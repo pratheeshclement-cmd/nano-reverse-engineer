@@ -467,8 +467,8 @@ const parseBareKey = (
 };
 
 /**
- * Parse a table header. Quoted segments stay one key, so `mcp_servers."rea.env"`
- * is not the dotted path `mcp_servers.rea.env`.
+ * Parse a table header. Quoted segments stay one key, so `mcp_servers."nre.env"`
+ * is not the dotted path `mcp_servers.nre.env`.
  */
 const parseTomlTableHeader = (line: string): TomlTableHeader | undefined => {
   let index = skipHorizontalSpace(line, 0);
@@ -788,7 +788,7 @@ const hasSeparatorComma = (trivia: string): boolean =>
 
 /**
  * Replace or remove `serverKey` inside one `{ ... }` table. A closed inline
- * table cannot later grow a `[mcp_servers.rea]` header.
+ * table cannot later grow a `[mcp_servers.nre]` header.
  */
 const editInlineServerTable = (
   table: string,
@@ -1044,8 +1044,8 @@ const tomlCommentLines = (text: string): readonly string[] => {
 };
 
 /**
- * Replace REA's TOML server tables and assignments. Every comment line stays
- * where it was, including comments before, inside, and after REA's own table;
+ * Replace NRE's TOML server tables and assignments. Every comment line stays
+ * where it was, including comments before, inside, and after NRE's own table;
  * inline comments on replaced code become standalone comment lines.
  * Only blank lines that separated a removed table go with it. Text inside
  * strings is not treated as a header. Only Grok Build reads the root
@@ -1074,7 +1074,7 @@ const upsertTomlServerSection = (
   }
   const kept: string[] = [];
   // Blank lines held until the next statement shows whether they belong to a
-  // removed REA table. Comments are user text and are never held.
+  // removed NRE table. Comments are user text and are never held.
   const pending: string[] = [];
   let skipping = false;
   let inlineServerTable = false;
@@ -1274,7 +1274,7 @@ const grokServerListedDisabled = (
 
 /**
  * OMP's user `disabledServers` denylist hides a server by name regardless of
- * its entry, so a listed REA registration is not loaded.
+ * its entry, so a listed NRE registration is not loaded.
  */
 export const OMP_DISABLED_SERVERS_KEY = "disabledServers";
 
@@ -1313,7 +1313,7 @@ export const clientServerListedDisabled = (
   (parsed.dialect === "omp" &&
     ompServerListedDisabled(parsed.document, serverKey));
 
-/** Keep an existing Grok document intact aside from the REA server tables. */
+/** Keep an existing Grok document intact aside from the NRE server tables. */
 const serializeGrokConfiguration = (
   document: Record<string, unknown>,
   originalText: string | undefined,
@@ -1342,7 +1342,7 @@ const withoutEmptyServerTable = (
 };
 
 /**
- * Keep an existing Codex document intact aside from the REA server tables.
+ * Keep an existing Codex document intact aside from the NRE server tables.
  * An edit that would change any other parsed value falls back to a full
  * rewrite, which keeps every value but not comments or spelling.
  */
@@ -1478,7 +1478,7 @@ export const shadowedClientServers = (
   name: string,
 ): ShadowedClientServers => {
   // TOML rejects repeated keys, Hermes parses YAML with unique keys, and the
-  // Harness owner edits REA's entry by id rather than through a server table.
+  // Harness owner edits NRE's entry by id rather than through a server table.
   if (
     parsed.dialect === "toml" ||
     parsed.dialect === "grok" ||
@@ -1703,8 +1703,8 @@ export const legacyClientServerPath = (
     : undefined;
 
 /**
- * Keep an existing Hermes `config.yaml` intact aside from the REA server entry.
- * Hermes config files carry user comments and unrelated settings, so the rea
+ * Keep an existing Hermes `config.yaml` intact aside from the NRE server entry.
+ * Hermes config files carry user comments and unrelated settings, so the nre
  * entry is upserted into the parsed YAML document (which retains formatting and
  * comments) rather than re-serializing the whole object.
  */
@@ -1736,7 +1736,7 @@ export const clientRegistrationEntry = (
   command: readonly string[],
   environment: Readonly<Record<string, string>>,
 ): Record<string, unknown> => {
-  const [executable = "rea", ...args] = command;
+  const [executable = "nre", ...args] = command;
   switch (format) {
     case "opencode":
       return {

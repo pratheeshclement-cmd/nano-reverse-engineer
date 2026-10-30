@@ -133,7 +133,7 @@ const resolveHopperMachOImage = (
   });
 
 it("retains Hopper FAT selection across short header, table and slice reads", async () => {
-  const root = await createTestTempDirectory("rea-hopper-short-reads-");
+  const root = await createTestTempDirectory("nre-hopper-short-reads-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: 0, little: true },
   ]);
@@ -172,7 +172,7 @@ it.skipIf(process.platform === "win32")(
   "reports a FAT64 source that became unreadable as a host read denial",
   async (context) => {
     await requirePermissionDenial(context, "file-read");
-    const directory = await createTestTempDirectory("rea-hopper-fat64-");
+    const directory = await createTestTempDirectory("nre-hopper-fat64-");
     const path = join(directory, "universal");
     await writeFile(path, Buffer.alloc(64));
     await chmod(path, 0);
@@ -199,7 +199,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("rejects an ELF target before attempting FAT source preparation", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-mips-boundary-");
+  const directory = await createTestTempDirectory("nre-hopper-mips-boundary-");
   // No file is created: format validation must precede any filesystem lookup.
   const path = join(directory, "mips.elf");
   const result = await resolveHopperMachOImage({
@@ -221,7 +221,7 @@ it("rejects an ELF target before attempting FAT source preparation", async () =>
 });
 
 it("selects the plain-arm64-decodable arm64e slice from an Apple-style FAT32 container", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-arm64e-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-arm64e-");
   // /bin/* system binaries: x86_64, arm64e (cpusubtype 2), arm64e.x1 (subtype 12).
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
@@ -244,7 +244,7 @@ it("selects the plain-arm64-decodable arm64e slice from an Apple-style FAT32 con
 
 it("ranks capability-bearing arm64 subtypes by base and retains raw identity", async () => {
   const directory = await createTestTempDirectory(
-    "rea-hopper-fat32-capabilities-",
+    "nre-hopper-fat32-capabilities-",
   );
   const fixture = buildFat32Container([
     {
@@ -268,7 +268,7 @@ it("ranks capability-bearing arm64 subtypes by base and retains raw identity", a
 
 it("fails closed when capability variants share the preferred arm64e base", async () => {
   const directory = await createTestTempDirectory(
-    "rea-hopper-fat32-capability-ambiguity-",
+    "nre-hopper-fat32-capability-ambiguity-",
   );
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: 0x80000002 },
@@ -286,7 +286,7 @@ it("fails closed when capability variants share the preferred arm64e base", asyn
 });
 
 it("prefers cpusubtype 2 over 12 regardless of FAT32 table order", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-order-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-order-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
@@ -302,7 +302,7 @@ it("prefers cpusubtype 2 over 12 regardless of FAT32 table order", async () => {
 });
 
 it("prefers a plain arm64 slice over arm64e in a FAT32 container", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-plain-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-plain-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: 0 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
@@ -318,7 +318,7 @@ it("prefers a plain arm64 slice over arm64e in a FAT32 container", async () => {
 });
 
 it("keeps a lone arm64e.x1 FAT32 slice selectable to preserve today's open behavior", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-lone-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-lone-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
   ]);
@@ -330,7 +330,7 @@ it("keeps a lone arm64e.x1 FAT32 slice selectable to preserve today's open behav
 });
 
 it("still fails closed when two arm64e.x1 FAT32 slices compete", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-ambig-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-ambig-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
@@ -346,7 +346,7 @@ it("still fails closed when two arm64e.x1 FAT32 slices compete", async () => {
 });
 
 it("selects the single x86_64 slice of a FAT32 container for an x86_64 target", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-intel-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-intel-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
     { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
@@ -363,7 +363,7 @@ it("selects the single x86_64 slice of a FAT32 container for an x86_64 target", 
 });
 
 it("parses a little-endian FAT32 table without tying it to slice byte order", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-le-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-le-");
   const fixture = buildFat32Container(
     [
       { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
@@ -384,7 +384,7 @@ it("parses a little-endian FAT32 table without tying it to slice byte order", as
 });
 
 it("rejects a FAT32 slice whose declared range extends beyond the file", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-range-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-range-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
   ]);
@@ -400,7 +400,7 @@ it("rejects a FAT32 slice whose declared range extends beyond the file", async (
 });
 
 it("copies exactly the selected FAT32 slice bytes and verifies the source", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-copy-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-copy-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.x86_64, cpuSubtype: 3 },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
@@ -427,7 +427,7 @@ it("copies exactly the selected FAT32 slice bytes and verifies the source", asyn
 });
 
 it("retains the caller reason when a FAT copy is cancelled after its final write", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat-cancel-");
+  const directory = await createTestTempDirectory("nre-hopper-fat-cancel-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
   ]);
@@ -471,7 +471,7 @@ it("retains the caller reason when a FAT copy is cancelled after its final write
 });
 
 it("retains a failed prepared-image close through launcher cleanup and blocks another launch", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-copy-close-");
+  const directory = await createTestTempDirectory("nre-hopper-copy-close-");
   const bytes = thinFixture();
   const path = join(directory, "source.macho");
   await writeFile(path, bytes);
@@ -573,7 +573,7 @@ it("retains a failed prepared-image close through launcher cleanup and blocks an
 
 it("observes caller cancellation that arrives during final source-handle cleanup", async () => {
   const directory = await createTestTempDirectory(
-    "rea-hopper-copy-close-cancel-",
+    "nre-hopper-copy-close-cancel-",
   );
   const bytes = thinFixture();
   const path = join(directory, "source.macho");
@@ -624,7 +624,7 @@ it("observes caller cancellation that arrives during final source-handle cleanup
 });
 
 it("rejects FAT32 preparation when the source table changed after resolution", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-race-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-race-");
   const fixture = buildFat32Container([
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E },
     { cpuType: CPU_TYPES.arm64, cpuSubtype: ARM64E_X1 },
@@ -666,7 +666,7 @@ const thinTarget = (path: string, bytes: Buffer) => ({
 });
 
 it("copies an admitted thin Mach-O through the owned verified-image path", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-thin-copy-");
+  const directory = await createTestTempDirectory("nre-hopper-thin-copy-");
   const bytes = thinFixture();
   const path = join(directory, "source.macho");
   await writeFile(path, bytes);
@@ -695,7 +695,7 @@ it("copies an admitted thin Mach-O through the owned verified-image path", async
 });
 
 it("does not launch a thin selection when its admitted source changes before copy", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-thin-race-");
+  const directory = await createTestTempDirectory("nre-hopper-thin-race-");
   const bytes = thinFixture();
   const path = join(directory, "source.macho");
   await writeFile(path, bytes);
@@ -744,7 +744,7 @@ it("does not launch a thin selection when its admitted source changes before cop
 });
 
 it("keeps caller cancellation primary after verified thin-image preparation", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-thin-cancel-");
+  const directory = await createTestTempDirectory("nre-hopper-thin-cancel-");
   const bytes = thinFixture();
   const path = join(directory, "source.macho");
   await writeFile(path, bytes);
@@ -766,7 +766,7 @@ it("keeps caller cancellation primary after verified thin-image preparation", as
 });
 
 it("retains an owned partial thin image and exact cancellation reason after a write", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-thin-partial-");
+  const directory = await createTestTempDirectory("nre-hopper-thin-partial-");
   const bytes = Buffer.alloc(2 * 1024 * 1024, 0x5a);
   bytes.writeUInt32BE(0xfeedfacf, 0);
   bytes.writeUInt32BE(CPU_TYPES.arm64, 4);
@@ -828,7 +828,7 @@ it("retains an owned partial thin image and exact cancellation reason after a wr
 it.each([0, 129])(
   "keeps Hopper FAT count admission explicit for count %i",
   async (count) => {
-    const directory = await createTestTempDirectory("rea-hopper-fat-count-");
+    const directory = await createTestTempDirectory("nre-hopper-fat-count-");
     const fixture = buildFat32Container([
       { cpuType: CPU_TYPES.arm64, cpuSubtype: 0 },
     ]);

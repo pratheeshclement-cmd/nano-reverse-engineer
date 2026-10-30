@@ -19,7 +19,7 @@ import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 /** Check native URL resolution against an independently loaded module graph through CLI/MCP. */
 export async function verifyBrowserModules(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url)),
 ) {
   let site;
   let root;
@@ -27,12 +27,12 @@ export async function verifyBrowserModules(
   let client;
   return withVerifierCleanup(async () => {
     site = await startBrowserModuleSite();
-    root = await mkdtemp(join(tmpdir(), "rea-browser-modules-"));
+    root = await mkdtemp(join(tmpdir(), "nre-browser-modules-"));
     const env = {
       ...process.env,
-      REA_LOG_LEVEL: "silent",
-      REA_BROWSER_EXECUTABLE: executable,
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      NRE_LOG_LEVEL: "silent",
+      NRE_BROWSER_EXECUTABLE: executable,
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-provider/hopper",
     };
     const cli = async (...args) => {
       const { stdout } = await promisify(execFile)(
@@ -357,7 +357,7 @@ const loadingOracle = async (executable, site) => {
     timeout: 15000,
     args: [
       "--disable-dev-shm-usage",
-      ...(process.env.REA_BROWSER_NO_SANDBOX === "true"
+      ...(process.env.NRE_BROWSER_NO_SANDBOX === "true"
         ? ["--no-sandbox"]
         : []),
     ],

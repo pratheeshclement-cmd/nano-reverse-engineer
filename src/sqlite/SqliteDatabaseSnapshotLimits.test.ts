@@ -24,7 +24,7 @@ import { SQLITE_DATABASE_LIMITS } from "./SqliteDatabaseLimits.js";
 import { sqliteDatabaseFailure } from "./SqliteDatabaseFailures.js";
 
 it("tags an exact caller reason at snapshot admission", async () => {
-  const workspace = await mkdtemp(join(tmpdir(), "rea-sqlite-snapshot-entry-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-sqlite-snapshot-entry-"));
   const reason = { requested: "cancel at snapshot admission" };
   const controller = new AbortController();
   controller.abort(reason);
@@ -63,7 +63,7 @@ it("tags an exact caller reason at snapshot admission", async () => {
 
 it("keeps the exact caller reason when cancellation lands at final snapshot verification", async () => {
   const workspace = await mkdtemp(
-    join(tmpdir(), "rea-sqlite-snapshot-cancel-"),
+    join(tmpdir(), "nre-sqlite-snapshot-cancel-"),
   );
   const databasePath = join(workspace, "selected.db");
   const privateRoot = join(workspace, "private");
@@ -117,7 +117,7 @@ it("keeps the exact caller reason when cancellation lands at final snapshot veri
 it("reports filesystem sizes above the safe-integer range exactly before opening files", async () => {
   const databaseBytes = BigInt(Number.MAX_SAFE_INTEGER) + 1n;
   const walBytes = 17n;
-  const workspace = await mkdtemp(join(tmpdir(), "rea-sqlite-budget-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-sqlite-budget-"));
   const databasePath = join(workspace, "selected.db");
   const walPath = `${databasePath}-wal`;
   const journalPath = `${databasePath}-journal`;
@@ -208,7 +208,7 @@ it.each([
 ])(
   "preserves $label when a late read-limit failure becomes changed evidence",
   async ({ retainCleanup }) => {
-    const workspace = await mkdtemp(join(tmpdir(), "rea-sqlite-read-cleanup-"));
+    const workspace = await mkdtemp(join(tmpdir(), "nre-sqlite-read-cleanup-"));
     const databasePath = join(workspace, "selected.db");
     await writeFile(databasePath, "tiny fixture");
     const stat = await lstat(databasePath, { bigint: true });

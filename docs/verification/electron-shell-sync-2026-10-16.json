@@ -15,12 +15,12 @@
     },
     "inputs": {
       "joplin_asar": {
-        "path": "/tmp/rea-4388-runtime-20261016/resources/app.asar",
+        "path": "/tmp/nre-4388-runtime-20261016/resources/app.asar",
         "bytes": 233575014,
         "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
       },
       "generic_electron": {
-        "path": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "path": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "bytes": 228605256,
         "sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564"
       }
@@ -32,7 +32,7 @@
       "log_sha256": "7c6c2e59701ef37661158aff056521358d0336cbdbb7e787d68ead4b13c12a73",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "resource": {
-        "resource_scope": "rea-efficiency-1d06056321d946f7a9ec74a7e622758b.scope",
+        "resource_scope": "nre-efficiency-1d06056321d946f7a9ec74a7e622758b.scope",
         "peak_cgroup_bytes_sampled": 3146829824,
         "elapsed_seconds": 47.194,
         "abort": null,
@@ -69,7 +69,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-1d06056321d946f7a9ec74a7e622758b.scope",
+          "ownership_token": "nre-efficiency-1d06056321d946f7a9ec74a7e622758b.scope",
           "payload_exit_code": 1,
           "observer_pid": 4035933,
           "remaining_processes": [4035933],
@@ -85,7 +85,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 3156156416,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-1d06056321d946f7a9ec74a7e622758b.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-1d06056321d946f7a9ec74a7e622758b.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -113,7 +113,7 @@
       "log_sha256": "5a1afa91dd1dcf053233f6cdc89dff67aa9ea5e8a4ca356fa7bf463a518dd654",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "resource": {
-        "resource_scope": "rea-efficiency-1a736f0b9bbd4d4f8067115db8a58013.scope",
+        "resource_scope": "nre-efficiency-1a736f0b9bbd4d4f8067115db8a58013.scope",
         "peak_cgroup_bytes_sampled": 1298038784,
         "elapsed_seconds": 52.957,
         "abort": null,
@@ -150,7 +150,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-1a736f0b9bbd4d4f8067115db8a58013.scope",
+          "ownership_token": "nre-efficiency-1a736f0b9bbd4d4f8067115db8a58013.scope",
           "payload_exit_code": 0,
           "observer_pid": 4037307,
           "remaining_processes": [4037307],
@@ -166,7 +166,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1303474176,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-1a736f0b9bbd4d4f8067115db8a58013.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-1a736f0b9bbd4d4f8067115db8a58013.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -202,7 +202,7 @@
     "log_sha256": "9180aa21f2587b891e9061af6085f103c44e26afcd88892eb1bb2c57e7869bfc",
     "scope_poststate": "ActiveState=inactive\nSubState=dead",
     "resource": {
-      "resource_scope": "rea-efficiency-ce0227bdd2924fed8da1aef5b9918986.scope",
+      "resource_scope": "nre-efficiency-ce0227bdd2924fed8da1aef5b9918986.scope",
       "peak_cgroup_bytes_sampled": 4414713856,
       "elapsed_seconds": 91.414,
       "abort": null,
@@ -239,7 +239,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-ce0227bdd2924fed8da1aef5b9918986.scope",
+        "ownership_token": "nre-efficiency-ce0227bdd2924fed8da1aef5b9918986.scope",
         "payload_exit_code": 0,
         "observer_pid": 4042626,
         "remaining_processes": [4042626],
@@ -255,7 +255,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 4414976000,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-ce0227bdd2924fed8da1aef5b9918986.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-ce0227bdd2924fed8da1aef5b9918986.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -286,7 +286,7 @@
       "log_sha256": "f263d0657f03d9053306742d8d80dbbb94c3d0bc7055d73d89507fdb69c55cca",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "resource": {
-        "resource_scope": "rea-efficiency-21f669a615ef4af798ba1cc9ebd93c50.scope",
+        "resource_scope": "nre-efficiency-21f669a615ef4af798ba1cc9ebd93c50.scope",
         "peak_cgroup_bytes_sampled": 773623808,
         "elapsed_seconds": 24.116,
         "abort": null,
@@ -323,7 +323,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-21f669a615ef4af798ba1cc9ebd93c50.scope",
+          "ownership_token": "nre-efficiency-21f669a615ef4af798ba1cc9ebd93c50.scope",
           "payload_exit_code": 1,
           "observer_pid": 4043269,
           "remaining_processes": [4043269, 4043282],
@@ -339,7 +339,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 776937472,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-21f669a615ef4af798ba1cc9ebd93c50.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-21f669a615ef4af798ba1cc9ebd93c50.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -362,8 +362,8 @@
         }
       },
       "summary": {
-        "profile": "/tmp/rea-4393-realapp-20261016/trials/standard-final/profiles/joplin-shell-pKqHfv",
-        "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+        "profile": "/tmp/nre-4393-realapp-20261016/trials/standard-final/profiles/joplin-shell-pKqHfv",
+        "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
         "elapsed_ms": 18049.134575,
         "launch_transport": "standard-staged-argv",
         "probe": null,
@@ -371,7 +371,7 @@
         "error": {
           "tag": "ProviderAdapterError",
           "diagnostics": {
-            "message": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByPlaceholder('Search...') to be visible\u001b[22m\n\u001b[2m    - waiting for\" file:///tmp/rea-4388-runtime-20261016/resources/app.asar/index.html\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"file:///tmp/rea-4388-runtime-20261016/resources/app.asar/index.html\"\u001b[22m\n"
+            "message": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByPlaceholder('Search...') to be visible\u001b[22m\n\u001b[2m    - waiting for\" file:///tmp/nre-4388-runtime-20261016/resources/app.asar/index.html\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"file:///tmp/nre-4388-runtime-20261016/resources/app.asar/index.html\"\u001b[22m\n"
           }
         },
         "deadline_triggered": false,
@@ -382,7 +382,7 @@
       "log_sha256": "6f4b4d5cef154a54b803b9a48e8b4661150df4f7c24771455119631d9a8462eb",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "resource": {
-        "resource_scope": "rea-efficiency-17ad7599698a44109c3e03f1a6bdde42.scope",
+        "resource_scope": "nre-efficiency-17ad7599698a44109c3e03f1a6bdde42.scope",
         "peak_cgroup_bytes_sampled": 1355837440,
         "elapsed_seconds": 16.989,
         "abort": null,
@@ -419,7 +419,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-17ad7599698a44109c3e03f1a6bdde42.scope",
+          "ownership_token": "nre-efficiency-17ad7599698a44109c3e03f1a6bdde42.scope",
           "payload_exit_code": 1,
           "observer_pid": 4043452,
           "remaining_processes": [4043452],
@@ -435,7 +435,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1376382976,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-17ad7599698a44109c3e03f1a6bdde42.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-17ad7599698a44109c3e03f1a6bdde42.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -458,8 +458,8 @@
         }
       },
       "summary": {
-        "profile": "/tmp/rea-4393-realapp-20261016/trials/controlled-final/profiles/joplin-shell-mZcDCI",
-        "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+        "profile": "/tmp/nre-4393-realapp-20261016/trials/controlled-final/profiles/joplin-shell-mZcDCI",
+        "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
         "elapsed_ms": 15984.251922000001,
         "launch_transport": "controlled-argv-shim",
         "probe": {
@@ -568,7 +568,7 @@
           "probe_recorded": true
         },
         "resource": {
-          "resource_scope": "rea-efficiency-6832eb5f218a447483848368dc6389c3.scope",
+          "resource_scope": "nre-efficiency-6832eb5f218a447483848368dc6389c3.scope",
           "peak_cgroup_bytes_sampled": 760147968,
           "elapsed_seconds": 54.853,
           "abort": null,
@@ -626,7 +626,7 @@
           "probe_recorded": true
         },
         "resource": {
-          "resource_scope": "rea-efficiency-bca94116fb11401a82f0ccbaf794056b.scope",
+          "resource_scope": "nre-efficiency-bca94116fb11401a82f0ccbaf794056b.scope",
           "peak_cgroup_bytes_sampled": 755421184,
           "elapsed_seconds": 31.018,
           "abort": null,
@@ -684,7 +684,7 @@
           "probe_recorded": true
         },
         "resource": {
-          "resource_scope": "rea-efficiency-805df8b78d57437ea11d911ade9e8fa4.scope",
+          "resource_scope": "nre-efficiency-805df8b78d57437ea11d911ade9e8fa4.scope",
           "peak_cgroup_bytes_sampled": 815161344,
           "elapsed_seconds": 22.727,
           "abort": null,
@@ -721,7 +721,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-805df8b78d57437ea11d911ade9e8fa4.scope",
+            "ownership_token": "nre-efficiency-805df8b78d57437ea11d911ade9e8fa4.scope",
             "payload_exit_code": 1,
             "observer_pid": 4038862,
             "remaining_processes": [4038862, 4038874, 4039200, 4039202],
@@ -737,7 +737,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 817123328,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-805df8b78d57437ea11d911ade9e8fa4.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-805df8b78d57437ea11d911ade9e8fa4.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -774,7 +774,7 @@
           "probe_recorded": true
         },
         "resource": {
-          "resource_scope": "rea-efficiency-f2113914974845d8bcaa3a330dd7ec11.scope",
+          "resource_scope": "nre-efficiency-f2113914974845d8bcaa3a330dd7ec11.scope",
           "peak_cgroup_bytes_sampled": 944742400,
           "elapsed_seconds": 10.216,
           "abort": null,
@@ -811,7 +811,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-f2113914974845d8bcaa3a330dd7ec11.scope",
+            "ownership_token": "nre-efficiency-f2113914974845d8bcaa3a330dd7ec11.scope",
             "payload_exit_code": 1,
             "observer_pid": 4039317,
             "remaining_processes": [4039317, 4039329],
@@ -827,7 +827,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 947589120,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-f2113914974845d8bcaa3a330dd7ec11.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-f2113914974845d8bcaa3a330dd7ec11.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -859,8 +859,8 @@
         "log_sha256": "07eaaa2e0a11323105320232efc9f705b6aedb72fc189538e2b61482e27c731b",
         "outcome": "bad text locator; no reveal",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/profiles/joplin-shell-YAT5ud",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/profiles/joplin-shell-YAT5ud",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 17984.401862,
           "launch_transport": "controlled-node-options",
           "probe": null,
@@ -869,7 +869,7 @@
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-d9caa8785a79403a949cf4478004a5fe.scope",
+          "resource_scope": "nre-efficiency-d9caa8785a79403a949cf4478004a5fe.scope",
           "peak_cgroup_bytes_sampled": 1066831872,
           "elapsed_seconds": 19.376,
           "abort": null,
@@ -906,7 +906,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-d9caa8785a79403a949cf4478004a5fe.scope",
+            "ownership_token": "nre-efficiency-d9caa8785a79403a949cf4478004a5fe.scope",
             "payload_exit_code": 1,
             "observer_pid": 4039664,
             "remaining_processes": [4039664, 4039676],
@@ -922,7 +922,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1071435776,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-d9caa8785a79403a949cf4478004a5fe.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-d9caa8785a79403a949cf4478004a5fe.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -954,8 +954,8 @@
         "log_sha256": "2030ab1c7ca27120e99efedeb8f9a5e637879b9912779935e0cedec48712556f",
         "outcome": "menu startup not ready; no reveal",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/profiles/joplin-shell-yUZq9V",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/profiles/joplin-shell-yUZq9V",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 7632.131803,
           "launch_transport": "controlled-node-options",
           "probe": null,
@@ -970,7 +970,7 @@
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-a171b3416a374e969d90e8684b2e2531.scope",
+          "resource_scope": "nre-efficiency-a171b3416a374e969d90e8684b2e2531.scope",
           "peak_cgroup_bytes_sampled": 964960256,
           "elapsed_seconds": 9.118,
           "abort": null,
@@ -1007,7 +1007,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-a171b3416a374e969d90e8684b2e2531.scope",
+            "ownership_token": "nre-efficiency-a171b3416a374e969d90e8684b2e2531.scope",
             "payload_exit_code": 1,
             "observer_pid": 4040073,
             "remaining_processes": [4040073, 4040085],
@@ -1023,7 +1023,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 974745600,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-a171b3416a374e969d90e8684b2e2531.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-a171b3416a374e969d90e8684b2e2531.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1054,8 +1054,8 @@
         "log_sha256": "2f7fede31e95a6a36e971733e1355426948c9893c731c67373a670ad0e0bed84",
         "outcome": "picker callback asynchronous; no reveal",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/profiles/joplin-shell-biV4ve",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/profiles/joplin-shell-biV4ve",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 7957.350689,
           "launch_transport": "controlled-node-options",
           "probe": null,
@@ -1070,7 +1070,7 @@
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-baf83769693642ab89995ed627d7c2ad.scope",
+          "resource_scope": "nre-efficiency-baf83769693642ab89995ed627d7c2ad.scope",
           "peak_cgroup_bytes_sampled": 1008611328,
           "elapsed_seconds": 9.732,
           "abort": null,
@@ -1107,7 +1107,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-baf83769693642ab89995ed627d7c2ad.scope",
+            "ownership_token": "nre-efficiency-baf83769693642ab89995ed627d7c2ad.scope",
             "payload_exit_code": 1,
             "observer_pid": 4040276,
             "remaining_processes": [4040276, 4040288],
@@ -1123,7 +1123,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1008873472,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-baf83769693642ab89995ed627d7c2ad.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-baf83769693642ab89995ed627d7c2ad.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1154,8 +1154,8 @@
         "log_sha256": "8f8cb0050008a8b36e84031cf903d019a5898c207600cb3d0ab5254ee04c20e3",
         "outcome": "ambiguous iframe selector; no reveal",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/profiles/joplin-shell-L1YPcd",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/profiles/joplin-shell-L1YPcd",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 11710.565786,
           "launch_transport": "controlled-node-options",
           "probe": null,
@@ -1163,14 +1163,14 @@
           "error": {
             "tag": "ProviderAdapterError",
             "diagnostics": {
-              "message": "locator.waitFor: Error: strict mode violation: locator('iframe') resolved to 2 elements:\n    1) <iframe class=\"noteTextViewer\" aria-label=\"Note viewer\" src=\"joplin-content://note-viewer//tmp/rea-4388-runtime-20261016/resources/app.asar/gui/note-viewer/index.html\" allow=\"clipboard-write joplin-content://note-viewer/; fullscreen joplin-content://note-viewer/; autoplay joplin-content://note-viewer/; local-fonts joplin-content://note-viewer/; encrypted-media joplin-content://note-viewer/\"></iframe> aka getByRole('main', { name: 'Note' }).locator('iframe')\n    2) <iframe class=\"plugin-user-webview -fit-to-content \" id=\"plugin-view-io.github.jackgruber.backup-backupDialog\" src=\"file:///tmp/rea-4388-runtime-20261016/resources/app.asar/services/plugins/UserWebviewIndex.html\"></iframe> aka locator('[id=\"plugin-view-io.github.jackgruber.backup-backupDialog\"]')\n\nCall log:\n\u001b[2m  - waiting for locator('iframe').contentFrame().getByRole('img', { name: 'REA attachment' }) to be visible\u001b[22m\n"
+              "message": "locator.waitFor: Error: strict mode violation: locator('iframe') resolved to 2 elements:\n    1) <iframe class=\"noteTextViewer\" aria-label=\"Note viewer\" src=\"joplin-content://note-viewer//tmp/nre-4388-runtime-20261016/resources/app.asar/gui/note-viewer/index.html\" allow=\"clipboard-write joplin-content://note-viewer/; fullscreen joplin-content://note-viewer/; autoplay joplin-content://note-viewer/; local-fonts joplin-content://note-viewer/; encrypted-media joplin-content://note-viewer/\"></iframe> aka getByRole('main', { name: 'Note' }).locator('iframe')\n    2) <iframe class=\"plugin-user-webview -fit-to-content \" id=\"plugin-view-io.github.jackgruber.backup-backupDialog\" src=\"file:///tmp/nre-4388-runtime-20261016/resources/app.asar/services/plugins/UserWebviewIndex.html\"></iframe> aka locator('[id=\"plugin-view-io.github.jackgruber.backup-backupDialog\"]')\n\nCall log:\n\u001b[2m  - waiting for locator('iframe').contentFrame().getByRole('img', { name: 'NRE attachment' }) to be visible\u001b[22m\n"
             }
           },
           "deadline_triggered": false,
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-7eeeafc5aed5443eb19b5223e59570c0.scope",
+          "resource_scope": "nre-efficiency-7eeeafc5aed5443eb19b5223e59570c0.scope",
           "peak_cgroup_bytes_sampled": 1094717440,
           "elapsed_seconds": 13.043,
           "abort": null,
@@ -1207,7 +1207,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-7eeeafc5aed5443eb19b5223e59570c0.scope",
+            "ownership_token": "nre-efficiency-7eeeafc5aed5443eb19b5223e59570c0.scope",
             "payload_exit_code": 1,
             "observer_pid": 4040504,
             "remaining_processes": [4040504, 4040517],
@@ -1223,7 +1223,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1097269248,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-7eeeafc5aed5443eb19b5223e59570c0.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-7eeeafc5aed5443eb19b5223e59570c0.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1254,8 +1254,8 @@
         "log_sha256": "5472ec346c2e8cbec14928e4537aa058f090f118e035f1a02baf0284417d8fb6",
         "outcome": "hidden viewer; no reveal",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/profiles/joplin-shell-jqwiAn",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/profiles/joplin-shell-jqwiAn",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 23495.915680000002,
           "launch_transport": "controlled-node-options",
           "probe": null,
@@ -1263,14 +1263,14 @@
           "error": {
             "tag": "ProviderAdapterError",
             "diagnostics": {
-              "message": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('iframe.noteTextViewer').contentFrame().getByRole('img', { name: 'REA attachment' }) to be visible\u001b[22m\n"
+              "message": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('iframe.noteTextViewer').contentFrame().getByRole('img', { name: 'NRE attachment' }) to be visible\u001b[22m\n"
             }
           },
           "deadline_triggered": false,
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-6eed2223d0d9481dbcdb84a871604de6.scope",
+          "resource_scope": "nre-efficiency-6eed2223d0d9481dbcdb84a871604de6.scope",
           "peak_cgroup_bytes_sampled": 976928768,
           "elapsed_seconds": 24.811,
           "abort": null,
@@ -1307,7 +1307,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-6eed2223d0d9481dbcdb84a871604de6.scope",
+            "ownership_token": "nre-efficiency-6eed2223d0d9481dbcdb84a871604de6.scope",
             "payload_exit_code": 1,
             "observer_pid": 4040740,
             "remaining_processes": [4040740],
@@ -1323,7 +1323,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 977190912,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-6eed2223d0d9481dbcdb84a871604de6.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-6eed2223d0d9481dbcdb84a871604de6.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1354,8 +1354,8 @@
         "log_sha256": "0b0c0f2cc1ef0ca5bf7f3165ace866f36c69741399499591f881d3af2c02330f",
         "outcome": "hidden viewer; fresh private config; no reveal",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/trials/welcome-first/profiles/joplin-shell-4wwezJ",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/trials/welcome-first/profiles/joplin-shell-4wwezJ",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 25716.395555,
           "launch_transport": "controlled-node-options",
           "probe": null,
@@ -1370,7 +1370,7 @@
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-5d96af3a20064b46a144956b75bf60c3.scope",
+          "resource_scope": "nre-efficiency-5d96af3a20064b46a144956b75bf60c3.scope",
           "peak_cgroup_bytes_sampled": 1044713472,
           "elapsed_seconds": 27.023,
           "abort": null,
@@ -1407,7 +1407,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-5d96af3a20064b46a144956b75bf60c3.scope",
+            "ownership_token": "nre-efficiency-5d96af3a20064b46a144956b75bf60c3.scope",
             "payload_exit_code": 1,
             "observer_pid": 4041154,
             "remaining_processes": [4041154],
@@ -1423,7 +1423,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1045032960,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-5d96af3a20064b46a144956b75bf60c3.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-5d96af3a20064b46a144956b75bf60c3.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1454,8 +1454,8 @@
         "log_sha256": "cace8216398f9fc28803bd569add201bba1dd626f1289d6013858000e7291d3c",
         "outcome": "actual context menu reached but NODE_OPTIONS hook absent; INVALID interception experiment",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/trials/welcome-layout/profiles/joplin-shell-nSMO79",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/trials/welcome-layout/profiles/joplin-shell-nSMO79",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 11232.818393,
           "launch_transport": "controlled-node-options",
           "probe": null,
@@ -1470,7 +1470,7 @@
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-9981750923ff41c8baaabbd04dc71469.scope",
+          "resource_scope": "nre-efficiency-9981750923ff41c8baaabbd04dc71469.scope",
           "peak_cgroup_bytes_sampled": 1063694336,
           "elapsed_seconds": 13.233,
           "abort": null,
@@ -1507,7 +1507,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-9981750923ff41c8baaabbd04dc71469.scope",
+            "ownership_token": "nre-efficiency-9981750923ff41c8baaabbd04dc71469.scope",
             "payload_exit_code": 1,
             "observer_pid": 4041389,
             "remaining_processes": [4041389],
@@ -1523,7 +1523,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1065402368,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-9981750923ff41c8baaabbd04dc71469.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-9981750923ff41c8baaabbd04dc71469.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1554,8 +1554,8 @@
         "log_sha256": "a32ff1b17ae1ef9388f1705d6a6454d2366e014955d8abaf04bc40c6e0436d54",
         "outcome": "canonical hook installed via explicit argv shim; actual shipped welcome PNG reveal blocked; provider cleanup FAILED",
         "summary": {
-          "profile": "/tmp/rea-4393-realapp-20261016/trials/welcome-shim/profiles/joplin-shell-N1XHST",
-          "runtime": "/home/yann/yann/rea-electron-shell-sync-4393-20261016",
+          "profile": "/tmp/nre-4393-realapp-20261016/trials/welcome-shim/profiles/joplin-shell-N1XHST",
+          "runtime": "/home/yann/yann/nre-electron-shell-sync-4393-20261016",
           "elapsed_ms": 17397.034886999998,
           "launch_transport": "controlled-argv-shim",
           "probe": {
@@ -1652,7 +1652,7 @@
           "workflow_status": "partial-or-failed"
         },
         "resource": {
-          "resource_scope": "rea-efficiency-0234b51369fd4fa9b91e9c43a00bd370.scope",
+          "resource_scope": "nre-efficiency-0234b51369fd4fa9b91e9c43a00bd370.scope",
           "peak_cgroup_bytes_sampled": 1452589056,
           "elapsed_seconds": 18.452,
           "abort": null,
@@ -1689,7 +1689,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-0234b51369fd4fa9b91e9c43a00bd370.scope",
+            "ownership_token": "nre-efficiency-0234b51369fd4fa9b91e9c43a00bd370.scope",
             "payload_exit_code": 1,
             "observer_pid": 4042335,
             "remaining_processes": [4042335],
@@ -1705,7 +1705,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1469628416,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-0234b51369fd4fa9b91e9c43a00bd370.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-0234b51369fd4fa9b91e9c43a00bd370.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1747,7 +1747,7 @@
     "log_sha256": "7b424dc7f00c724a5e1e06d89903d8d321c2fb70c614bb1d03c4b66f7e6c5be4",
     "scope_poststate": "ActiveState=inactive\nSubState=dead",
     "resource": {
-      "resource_scope": "rea-efficiency-c678e8e13e5a4335b1bae85febebd0c7.scope",
+      "resource_scope": "nre-efficiency-c678e8e13e5a4335b1bae85febebd0c7.scope",
       "peak_cgroup_bytes_sampled": 471416832,
       "elapsed_seconds": 13.961,
       "abort": null,
@@ -1784,7 +1784,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-c678e8e13e5a4335b1bae85febebd0c7.scope",
+        "ownership_token": "nre-efficiency-c678e8e13e5a4335b1bae85febebd0c7.scope",
         "payload_exit_code": 0,
         "observer_pid": 4043732,
         "remaining_processes": [4043732],
@@ -1800,7 +1800,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 480522240,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-c678e8e13e5a4335b1bae85febebd0c7.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-c678e8e13e5a4335b1bae85febebd0c7.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,

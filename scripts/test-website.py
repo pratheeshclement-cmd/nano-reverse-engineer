@@ -181,17 +181,17 @@ class WebsiteSearchChecks(unittest.TestCase):
             self.assertEqual(
                 urls(),
                 {
-                    "https://rea.tools/",
-                    "https://rea.tools/guides/new/",
-                    "https://rea.tools/code%20%26%20notes.html",
-                    "https://rea.tools/visible/",
+                    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/",
+                    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/new/",
+                    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/code%20%26%20notes.html",
+                    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/visible/",
                 },
             )
             nested.rename(site / "moved.html")
-            self.assertIn("https://rea.tools/moved.html", urls())
-            self.assertNotIn("https://rea.tools/guides/new/", urls())
+            self.assertIn("https://github.com/pratheeshclement-cmd/nano-reverse-engineer/moved.html", urls())
+            self.assertNotIn("https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/new/", urls())
             (site / "moved.html").unlink()
-            self.assertNotIn("https://rea.tools/moved.html", urls())
+            self.assertNotIn("https://github.com/pratheeshclement-cmd/nano-reverse-engineer/moved.html", urls())
 
     def test_verifier_rejects_wrong_canonicals_stale_sitemaps_and_missing_previews(
         self,
@@ -199,14 +199,14 @@ class WebsiteSearchChecks(unittest.TestCase):
         cases = (
             (
                 "index.html",
-                'rel="canonical" href="https://rea.tools/"',
-                'rel="canonical" href="https://morluto.github.io/rea/"',
+                'rel="canonical" href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/"',
+                'rel="canonical" href="https://pratheeshclement-cmd.github.io/nre/"',
                 "head canonical",
             ),
             (
                 "showcase/aegis/index.html",
-                'rel="canonical" href="https://rea.tools/showcase/aegis/"',
-                'rel="canonical" href="https://rea.tools/"',
+                'rel="canonical" href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/showcase/aegis/"',
+                'rel="canonical" href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/"',
                 "head canonical",
             ),
             (
@@ -217,8 +217,8 @@ class WebsiteSearchChecks(unittest.TestCase):
             ),
             (
                 "sitemap.xml",
-                "https://rea.tools/faq/",
-                "https://rea.tools/deleted/",
+                "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/faq/",
+                "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/deleted/",
                 "each indexable page once",
             ),
             (
@@ -342,7 +342,7 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
                 snapshot = root / "website/public/contributors/people.json"
                 snapshot.parent.mkdir(parents=True)
                 snapshot.write_bytes(json.dumps({
-                    "repository": "morluto/rea", "updated": "2026-10-14", "contributors": people[:1],
+                    "repository": "pratheeshclement-cmd/nano-reverse-engineer", "updated": "2026-10-14", "contributors": people[:1],
                 }).encode("utf-8"))
                 before = snapshot.read_bytes()
                 with patch.object(WEBSITE.subprocess, "run", return_value=response), failure as save:
@@ -371,13 +371,13 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
             original = page.read_text()
             body = original.split('<main id="main"', 1)[1].split("</main>", 1)[0]
             template = root / "website/templates/header.html.tmpl"
-            template.write_text(template.read_text().replace("Nano Reverse Engineer", "REA test navigation"))
+            template.write_text(template.read_text().replace("Nano Reverse Engineer", "NRE test navigation"))
             with self.assertRaisesRegex(ValueError, "Shared HTML is stale"):
                 WEBSITE.sync_pages(root, check=True)
             self.assertEqual(page.read_text(), original)
             WEBSITE.sync_pages(root)
             updated = page.read_text()
-            self.assertIn("REA test navigation", updated)
+            self.assertIn("NRE test navigation", updated)
             self.assertEqual(updated.split('<main id="main"', 1)[1].split("</main>", 1)[0], body)
             self.assertEqual(WEBSITE.sync_pages(root), [])
             page.write_text(updated.replace('    <!-- website:header:end -->', '', 1))
@@ -404,10 +404,10 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
                 WEBSITE.new_page(root, "../outside", "Title", "Description")
             WEBSITE.sync_pages(root, check=True)
             PREPARE.prepare_sitemap(site)
-            self.assertNotIn("https://rea.tools/blog/new-example/", (site / "sitemap.xml").read_text())
+            self.assertNotIn("https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blog/new-example/", (site / "sitemap.xml").read_text())
             page.write_text(source.replace('    <meta name="robots" content="noindex" />\n', ''))
             PREPARE.prepare_sitemap(site)
-            self.assertIn("https://rea.tools/blog/new-example/", (site / "sitemap.xml").read_text())
+            self.assertIn("https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blog/new-example/", (site / "sitemap.xml").read_text())
             self.assertEqual(VERIFY.check_site(site)[3], [])
 
     def test_links_in_prompts_fragments_and_copy_controls_are_verified(self):
@@ -417,9 +417,9 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
             page = site / "faq/index.html"
             original = page.read_text()
             cases = (
-                ('<a href="https://rea.tools/deleted/">Broken</a>', "missing local target"),
-                ('<code>https://rea.tools/guides/native/#deleted</code>', "missing HTML fragment"),
-                ('<code>https://morluto.github.io/rea/examples/notes-web/</code>', "obsolete website URL"),
+                ('<a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/deleted/">Broken</a>', "missing local target"),
+                ('<code>https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/native/#deleted</code>', "missing HTML fragment"),
+                ('<code>https://pratheeshclement-cmd.github.io/nre/examples/notes-web/</code>', "obsolete website URL"),
                 ('<button data-copy="deleted">Copy</button>', "missing copy target"),
                 ('<a href="https://[">Malformed</a>', "invalid URL"),
             )
@@ -434,10 +434,10 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
             root = container / "repository"
             (root / "website/public").mkdir(parents=True)
             (root / "docs").mkdir()
-            (root / "docs/guide.md").write_text("# Guide\n## Set up REA\n")
+            (root / "docs/guide.md").write_text("# Guide\n## Set up NRE\n")
             (container / "outside.md").write_text("# Outside\n")
             page = root / "website/README.md"
-            page.write_text("[Guide](../docs/guide.md#set-up-rea)\n")
+            page.write_text("[Guide](../docs/guide.md#set-up-nre)\n")
             (root / "website/.venv").mkdir()
             (root / "website/.venv/vendor.md").write_text("[File](missing.md)")
             self.assertEqual(VERIFY.check_repository_links(root), [])
@@ -470,7 +470,7 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
             page.write_text(
                 page.read_text().replace(
                     "</main>",
-                    '<a href="https://rea.tools/../../outside/">Escape</a></main>',
+                    '<a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/../../outside/">Escape</a></main>',
                     1,
                 )
             )
@@ -507,7 +507,7 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
             page.write_text('<html lang="en"><head><title>Fixture</title><meta name="robots" content="noindex"></head><body><h1>Fixture</h1><a href="guide.html#answer">Guide</a></body></html>')
             (site / "guide.html").write_text('<html lang="en"><head><title>Guide</title><meta name="robots" content="noindex"></head><body><h1 id="answer">Answer</h1></body></html>')
             (site / "sitemap.xml").write_text('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>')
-            (site / "robots.txt").write_text("User-agent: *\nAllow: /\nSitemap: https://rea.tools/sitemap.xml\n")
+            (site / "robots.txt").write_text("User-agent: *\nAllow: /\nSitemap: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/sitemap.xml\n")
             alias = Path(directory) / "site-alias"
             alias.symlink_to(site, target_is_directory=True)
             # The tiny link fixture intentionally omits the social preview.
@@ -526,7 +526,7 @@ class WebsiteMaintenanceChecks(unittest.TestCase):
             (site / "guide").mkdir()
             (site / "guide/index.html").write_text("<h1>Guide</h1>")
             (site / "asset.css").write_text("body { color: black; }")
-            for prefix in ("/", "/rea/"):
+            for prefix in ("/", "/nre/"):
                 with self.subTest(prefix=prefix), ThreadingHTTPServer(("127.0.0.1", 0), WEBSITE.preview_handler(site, prefix)) as server:
                     worker = Thread(target=server.serve_forever, daemon=True)
                     worker.start()
@@ -582,32 +582,32 @@ class WebsiteTranslationChecks(unittest.TestCase):
             for code in ("ur-Latn", "ur-Latn-PK"):
                 path = site / code / "index.html"
                 path.parent.mkdir()
-                url = f"https://rea.tools/{code}/"
+                url = f"https://github.com/pratheeshclement-cmd/nano-reverse-engineer/{code}/"
                 source = dedent(f'''\
                     <!doctype html>
                     <html lang="{code}" dir="ltr">
                     <head>
-                      <title>REA ka ta'aruf</title>
-                      <meta name="description" content="REA ko samjhein." />
+                      <title>NRE ka ta'aruf</title>
+                      <meta name="description" content="NRE ko samjhein." />
                       <link rel="canonical" href="{url}" />
                       <link rel="alternate" hreflang="{code}" href="{url}" />
                       <meta property="og:type" content="website" />
-                      <meta property="og:site_name" content="REA" />
-                      <meta property="og:title" content="REA ka ta'aruf" />
-                      <meta property="og:description" content="REA ko samjhein." />
+                      <meta property="og:site_name" content="NRE" />
+                      <meta property="og:title" content="NRE ka ta'aruf" />
+                      <meta property="og:description" content="NRE ko samjhein." />
                       <meta property="og:url" content="{url}" />
-                      <meta property="og:image" content="https://rea.tools/assets/social-card.png" />
+                      <meta property="og:image" content="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/assets/social-card.png" />
                       <meta property="og:image:type" content="image/png" />
                       <meta property="og:image:width" content="1200" />
                       <meta property="og:image:height" content="630" />
-                      <meta property="og:image:alt" content="REA" />
+                      <meta property="og:image:alt" content="NRE" />
                       <meta name="twitter:card" content="summary_large_image" />
-                      <meta name="twitter:title" content="REA ka ta'aruf" />
-                      <meta name="twitter:description" content="REA ko samjhein." />
-                      <meta name="twitter:image" content="https://rea.tools/assets/social-card.png" />
-                      <meta name="twitter:image:alt" content="REA" />
+                      <meta name="twitter:title" content="NRE ka ta'aruf" />
+                      <meta name="twitter:description" content="NRE ko samjhein." />
+                      <meta name="twitter:image" content="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/assets/social-card.png" />
+                      <meta name="twitter:image:alt" content="NRE" />
                     </head>
-                    <body><h1>REA ka ta'aruf</h1></body>
+                    <body><h1>NRE ka ta'aruf</h1></body>
                     </html>
                 ''')
                 path.write_text(source, encoding="utf-8")
@@ -630,7 +630,7 @@ class WebsiteTranslationChecks(unittest.TestCase):
             for item in inventory:
                 destination = root / item["readme"]
                 destination.parent.mkdir(parents=True, exist_ok=True)
-                destination.write_text("# REA\n")
+                destination.write_text("# NRE\n")
             WEBSITE.sync_pages(root)
             extract_catalogs(root)
             yield root
@@ -639,19 +639,19 @@ class WebsiteTranslationChecks(unittest.TestCase):
         with self.translated_project() as root:
             path = root / "website/locales/zh-CN/messages.po"
             catalog = polib.pofile(path)
-            old = catalog.find("How do I install REA?", msgctxt="page:faq/index.html")
+            old = catalog.find("How do I install NRE?", msgctxt="page:faq/index.html")
             old.tcomment = "Reviewed installation wording."
             old_translation = old.msgstr
             catalog.save(path)
             page = root / "website/public/faq/index.html"
-            page.write_text(page.read_text().replace("How do I install REA?", "How do I install REA today?"))
+            page.write_text(page.read_text().replace("How do I install NRE?", "How do I install NRE today?"))
             with self.assertRaisesRegex(ValueError, "Translation sources changed"):
                 extract_catalogs(root, check=True)
             extract_catalogs(root)
             updated = polib.pofile(path)
             archived = next(entry for entry in updated if entry.obsolete and entry.msgid == old.msgid)
             self.assertEqual((archived.msgstr, archived.tcomment), (old_translation, old.tcomment))
-            new = updated.find("How do I install REA today?", msgctxt=old.msgctxt)
+            new = updated.find("How do I install NRE today?", msgctxt=old.msgctxt)
             self.assertEqual(new.msgstr, "")
             build_translations(root, root / "website/_site")
             site = root / "website/_site"
@@ -661,9 +661,9 @@ class WebsiteTranslationChecks(unittest.TestCase):
             self.assertTrue(fallback.translation_fallback)
             self.assertTrue(fallback.noindex())
             self.assertEqual(fallback.lang, "en")
-            self.assertNotIn("https://rea.tools/zh-CN/faq/", (site / "sitemap.xml").read_text())
+            self.assertNotIn("https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-CN/faq/", (site / "sitemap.xml").read_text())
             self.assertNotIn('hreflang="zh-CN"', (site / "faq/index.html").read_text())
-            new.msgstr = "现在如何安装 REA？"
+            new.msgstr = "现在如何安装 NRE？"
             new.flags.append("fuzzy")
             updated.save(path)
             build_translations(root, site)
@@ -673,11 +673,11 @@ class WebsiteTranslationChecks(unittest.TestCase):
             build_translations(root, site)
             PREPARE.prepare_sitemap(site)
             result = (site / "zh-CN/faq/index.html").read_text()
-            self.assertIn("现在如何安装 REA？", result)
+            self.assertIn("现在如何安装 NRE？", result)
             self.assertNotIn("data-translation-fallback", result)
             self.assertIn('href="../assets/styles.css"', (site / "zh-CN/index.html").read_text())
             self.assertIn('hreflang="zh-CN"', (site / "faq/index.html").read_text())
-            self.assertIn("https://rea.tools/zh-CN/faq/", (site / "sitemap.xml").read_text())
+            self.assertIn("https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-CN/faq/", (site / "sitemap.xml").read_text())
 
     def test_broken_placeholders_and_inline_markup_fail_before_replacing_preview(self):
         with self.translated_project() as root:
@@ -772,11 +772,11 @@ class WebsiteTranslationChecks(unittest.TestCase):
                     self.assertTrue(set(parser.copy_targets) <= parser.ids)
         for fixture in WEBSITE.NOTES_FIXTURES:
             self.assertEqual((site / fixture).read_bytes(), (ROOT / "website/public" / fixture).read_bytes())
-        with ThreadingHTTPServer(("127.0.0.1", 0), WEBSITE.preview_handler(site, "/rea/")) as server:
+        with ThreadingHTTPServer(("127.0.0.1", 0), WEBSITE.preview_handler(site, "/nre/")) as server:
             worker = Thread(target=server.serve_forever, daemon=True)
             worker.start()
             try:
-                base = f"http://127.0.0.1:{server.server_port}/rea/"
+                base = f"http://127.0.0.1:{server.server_port}/nre/"
                 with urlopen(base + "ar/faq?test=1") as response:
                     self.assertEqual(response.url, base + "ar/faq/?test=1")
                     self.assertIn(b'lang="ar"', response.read())

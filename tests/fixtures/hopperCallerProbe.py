@@ -28,7 +28,7 @@ class Document:
         return self.segments
 
 path = sys.argv[1]
-bridge = {"__file__": path, "__name__": "rea_hopper_bridge"}
+bridge = {"__file__": path, "__name__": "nre_hopper_bridge"}
 exec(compile(Path(path).read_text(encoding="utf-8"), path, "exec"), bridge)
 target = Procedure(0x2000)
 procedures = [Procedure(0x3000 + 0x10 * i) for i in range(130)]

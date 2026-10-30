@@ -11,7 +11,7 @@ import {
 // Vite's absolute-base build output: the helper table names files under the
 // output directory, and the real import is relative to the importing chunk.
 const viteBuild = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-vite-output-");
+  const root = await createTestTempDirectory("nre-vite-output-");
   await writeFixtureFiles(root, {
     "index.html":
       '<!doctype html><script type="module" src="/assets/index.js"></script>',
@@ -69,7 +69,7 @@ describe("Vite build-output preload dependencies", () => {
   });
 
   it("keeps an inventoried but unanalyzed dependency under a nested build output directory", async () => {
-    const root = await createTestTempDirectory("rea-vite-output-css-");
+    const root = await createTestTempDirectory("nre-vite-output-css-");
     await writeFixtureFiles(root, {
       "dist/index.html":
         '<!doctype html><script type="module" src="/assets/index.js"></script>',

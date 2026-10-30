@@ -48,7 +48,7 @@ const scriptedConnection = (
 
 const providerWith = (connection: JebMcpConnection) =>
   new JebProvider({
-    environment: { REA_JEB_MCP_URL: "http://127.0.0.1:8425/mcp" },
+    environment: { NRE_JEB_MCP_URL: "http://127.0.0.1:8425/mcp" },
     connectionFactory: () => connection,
   });
 
@@ -56,7 +56,7 @@ describe("JebProvider live availability", () => {
   it("retains the caller-selected endpoint spelling in results and failures", async () => {
     const endpoint = "HTTP://127.0.0.1:08425/mcp";
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: endpoint },
+      environment: { NRE_JEB_MCP_URL: endpoint },
       connectionFactory: () =>
         scriptedConnection({
           get_client_information: { success: true, version: "5.48.0" },
@@ -90,7 +90,7 @@ describe("JebProvider live availability", () => {
   it("passes its validated environment timeout to the production connection", async () => {
     let configured: JebMcpConnectionTimeouts | undefined;
     const provider = createJebAnalysisProvider(
-      { REA_JEB_MCP_TIMEOUT_MS: "900000" },
+      { NRE_JEB_MCP_TIMEOUT_MS: "900000" },
       (_endpoint, timeouts) => {
         configured = timeouts;
         return scriptedConnection({});
@@ -106,7 +106,7 @@ describe("JebProvider live availability", () => {
   it("rejects an invalid JEB timeout before constructing its MCP connection", async () => {
     let constructed = false;
     const provider = createJebAnalysisProvider(
-      { REA_JEB_MCP_TIMEOUT_MS: "0" },
+      { NRE_JEB_MCP_TIMEOUT_MS: "0" },
       () => {
         constructed = true;
         return scriptedConnection({});
@@ -115,7 +115,7 @@ describe("JebProvider live availability", () => {
     expect(constructed).toBe(false);
     await expect(provider.inspectAvailability()).resolves.toMatchObject({
       status: "unavailable",
-      diagnostics: { setting: "REA_JEB_MCP_TIMEOUT_MS" },
+      diagnostics: { setting: "NRE_JEB_MCP_TIMEOUT_MS" },
     });
     await provider.close();
   });
@@ -249,7 +249,7 @@ describe("JebProvider observations and failures", () => {
     const availability = await provider.inspectAvailability();
     expect(availability.status).toBe("unavailable");
     expect(availability.reason).toContain("Start a JEB client serving MCP");
-    expect(availability.reason).toContain("REA_JEB_MCP_URL");
+    expect(availability.reason).toContain("NRE_JEB_MCP_URL");
     const result = await provider.execute({
       operation: "list_jeb_units",
       input: { count: 10, index: 0 },
@@ -431,7 +431,7 @@ describe("JebProvider target and endpoint selection", () => {
   it("rejects unusable endpoints at construction", () => {
     const rejection = (value: string): AnalysisInputError => {
       try {
-        new JebProvider({ environment: { REA_JEB_MCP_URL: value } });
+        new JebProvider({ environment: { NRE_JEB_MCP_URL: value } });
       } catch (cause) {
         if (cause instanceof AnalysisInputError) return cause;
         throw cause;
@@ -451,7 +451,7 @@ it("refuses remote endpoints before constructing a connection", () => {
   expect(
     () =>
       new JebProvider({
-        environment: { REA_JEB_MCP_URL: "http://example.com/mcp" },
+        environment: { NRE_JEB_MCP_URL: "http://example.com/mcp" },
       }),
   ).toThrow(AnalysisInputError);
 });
@@ -743,7 +743,7 @@ it.each([
 );
 
 // The published JEB 5.47 catalog leaves codes open and describes recovery as
-// upstream advice, not permission for REA to invoke another engine operation.
+// upstream advice, not permission for NRE to invoke another engine operation.
 describe("JEB refusal input and response preservation", () => {
   const requests = [
     {

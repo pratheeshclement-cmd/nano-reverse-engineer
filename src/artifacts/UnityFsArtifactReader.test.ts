@@ -15,7 +15,7 @@ import { UnityFsArtifactReader } from "./UnityFsArtifactReader.js";
 
 const writeBundle = async (bytes: Buffer): Promise<string> => {
   const path = join(
-    await createTestTempDirectory("rea-unityfs-"),
+    await createTestTempDirectory("nre-unityfs-"),
     "content.bundle",
   );
   await writeFile(path, bytes);

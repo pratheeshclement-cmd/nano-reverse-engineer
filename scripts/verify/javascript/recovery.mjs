@@ -16,14 +16,14 @@ import { mcpTextValue } from "../../lib/mcp-verifier-results.mjs";
 
 const OFFICIAL_BINARY_SHA256 =
   "664fa06782a61eda7ed15885134b52525fd565dd77607e642062ceb6cd927c38";
-if (!process.env.REA_WAKARU_COMMAND)
+if (!process.env.NRE_WAKARU_COMMAND)
   throw new Error(
-    "Provide REA_WAKARU_COMMAND for the official Wakaru 1.14.0 Linux x64 binary",
+    "Provide NRE_WAKARU_COMMAND for the official Wakaru 1.14.0 Linux x64 binary",
   );
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("../../rea.mjs", import.meta.url));
-const root = await mkdtemp(join(tmpdir(), "rea-real-recovery-"));
-const environment = { ...process.env, REA_LOG_LEVEL: "silent" };
+  process.argv[2] ?? fileURLToPath(new URL("../../nre.mjs", import.meta.url));
+const root = await mkdtemp(join(tmpdir(), "nre-real-recovery-"));
+const environment = { ...process.env, NRE_LOG_LEVEL: "silent" };
 const transport = new StdioClientTransport({
   command: process.execPath,
   args: [entrypoint, "mcp"],
@@ -54,7 +54,7 @@ let finalReport;
 try {
   const fixtures = await buildRecoveryFixtures(
     root,
-    process.env.REA_JAVASCRIPT_FIXTURE_TOOLS,
+    process.env.NRE_JAVASCRIPT_FIXTURE_TOOLS,
   );
   await client.connect(transport);
   for (const fixture of [...fixtures.files, fixtures.codeSplit]) {
@@ -130,7 +130,7 @@ try {
         ) ?? result.modules[0];
       assert.ok(recoveredEntry);
       const oracle =
-        'await import((await import("node:url")).pathToFileURL(process.argv[1])); const f=globalThis.recoveryFixture; console.log(JSON.stringify([f.greet(null),f.greet("REA"),f.total([1,2,3])]));';
+        'await import((await import("node:url")).pathToFileURL(process.argv[1])); const f=globalThis.recoveryFixture; console.log(JSON.stringify([f.greet(null),f.greet("NRE"),f.total([1,2,3])]));';
       for (const selected of fixture.additional_paths ||
       fixture.options?.extraction_mode === "inspection"
         ? []
@@ -142,7 +142,7 @@ try {
         );
         assert.deepEqual(JSON.parse(execution.stdout), [
           "Hello world",
-          "Hello REA",
+          "Hello NRE",
           6,
         ]);
       }

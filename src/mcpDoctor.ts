@@ -35,10 +35,10 @@ import { MCP_DOCTOR_ALIAS, MCP_DOCTOR_OPTIONS } from "./mcpDoctorOptions.js";
 const OUTPUT_FORMATS = CLI_DOCUMENT_OUTPUT_FORMATS;
 type OutputFormat = (typeof OUTPUT_FORMATS)[number];
 
-const MCP_DOCTOR_COMMAND = "rea mcp doctor";
+const MCP_DOCTOR_COMMAND = "nre mcp doctor";
 const MCP_DOCTOR_DESCRIPTION = "Validate MCP adapter startup and tool listing";
 const MCP_DOCTOR_SCOPE =
-  "Checks this REA adapter using the current runtime; does not verify a client's registered command or launch environment.";
+  "Checks this NRE adapter using the current runtime; does not verify a client's registered command or launch environment.";
 
 /** Help flags derived from `MCP_DOCTOR_OPTIONS` plus its alias. */
 const HELP_FLAGS: ReadonlySet<string> = new Set(["--help", "-h"]);
@@ -126,7 +126,7 @@ export const runProductionMcpDoctor = async (options: McpDoctorOptions) => {
     stderr: "pipe",
   });
   transport.stderr?.on("data", stderr.append);
-  const client = new Client({ name: "rea-mcp-doctor", version: "1" });
+  const client = new Client({ name: "nre-mcp-doctor", version: "1" });
   let result: ProductionMcpDoctorResult;
   let cleanupFailure: { readonly cause: unknown } | undefined;
   try {
@@ -335,7 +335,7 @@ const inspectProductionMcpSession = async (
 };
 
 /**
- * Dispatcher entry for `rea mcp doctor`, kept separate from Incur MCP setup.
+ * Dispatcher entry for `nre mcp doctor`, kept separate from Incur MCP setup.
  * @public
  */
 export const runProductionMcpDoctorCli = async (
@@ -451,7 +451,7 @@ const parseIdentityToolResult = (
 };
 
 /**
- * Parsed `rea mcp doctor` arguments, including a help request. The `help`
+ * Parsed `nre mcp doctor` arguments, including a help request. The `help`
  * variant is the only success-independent early return; every other accepted
  * flag is an output selector declared in `MCP_DOCTOR_OPTIONS`.
  */
@@ -573,15 +573,15 @@ const doctorExpectationForEnvironment = (
   environment: Readonly<Record<string, string | undefined>>,
 ): DoctorCatalogExpectation => {
   const inputProfile = parseMcpInputSchemaProfile(
-    environment.REA_MCP_INPUT_SCHEMA_PROFILE,
+    environment.NRE_MCP_INPUT_SCHEMA_PROFILE,
   );
   const outputProfile = parseMcpOutputSchemaProfile(
-    environment.REA_MCP_OUTPUT_SCHEMA_PROFILE,
+    environment.NRE_MCP_OUTPUT_SCHEMA_PROFILE,
   );
   // An invalid selection fails child startup, which the transport check
   // reports with the server's diagnostics; expect the complete catalog so a
   // failed start is never mistaken for a scope mismatch.
-  const families = parseMcpToolFamilies(environment.REA_MCP_TOOL_FAMILIES);
+  const families = parseMcpToolFamilies(environment.NRE_MCP_TOOL_FAMILIES);
   const selection =
     families.ok && families.value !== undefined
       ? new Set(families.value)
@@ -658,7 +658,7 @@ const doctorTransportDetail = (
 
 /**
  * `deadlineMs` is a caller-selected applied deadline, used by tests. Omitted
- * means the budget resolved from `REA_MCP_DOCTOR_DEADLINE_MS`.
+ * means the budget resolved from `NRE_MCP_DOCTOR_DEADLINE_MS`.
  */
 const appliedDoctorBudget = (
   resolved: McpPhaseBudget,

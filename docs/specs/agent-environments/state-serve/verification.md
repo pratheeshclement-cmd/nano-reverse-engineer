@@ -55,7 +55,7 @@ The review fixes are covered by these tests, all passing in the runs above:
   `file:////remote.example.test/...` are refused with the network-share
   message and no failure category; a `file://localhost/...` uri loads.
 - Loaded identity: `view_fields` setting `id` to `3`, `"3"` or `null` on user 2
-  is refused at `/rea_state/entities/7/view_fields/0/fields`; `"2"` loads.
+  is refused at `/nre_state/entities/7/view_fields/0/fields`; `"2"` loads.
 - List required fields: a folder without `title` makes `get_folders` a tool
   error naming the incomplete entity.
 

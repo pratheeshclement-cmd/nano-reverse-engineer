@@ -166,7 +166,7 @@ it.each([
   },
   {
     name: "leaves an env-file launch unestablished when NODE_OPTIONS was absent",
-    execArgv: ["--env-file=rea.env"],
+    execArgv: ["--env-file=nre.env"],
     nodeOptions: undefined,
     heap: { kind: "unknown" } as const,
   },
@@ -178,31 +178,31 @@ it.each([
   },
   {
     name: "does not let an absolute flag hide NODE_OPTIONS supplied by an env file",
-    execArgv: ["--env-file=rea.env", "--max-old-space-size=64"],
+    execArgv: ["--env-file=nre.env", "--max-old-space-size=64"],
     nodeOptions: undefined,
     heap: { kind: "unknown" } as const,
   },
   {
     name: "recognizes an env-file flag split from its path",
-    execArgv: ["--env-file", "rea.env"],
+    execArgv: ["--env-file", "nre.env"],
     nodeOptions: undefined,
     heap: { kind: "unknown" } as const,
   },
   {
     name: "keeps an inherited NODE_OPTIONS value when an env file cannot override it",
-    execArgv: ["--env-file=rea.env"],
+    execArgv: ["--env-file=nre.env"],
     nodeOptions: "--max-old-space-size=64",
     heap: effective(64, true),
   },
   {
     name: "lets a later absolute flag win when an inherited NODE_OPTIONS blocks the env file",
-    execArgv: ["--max-old-space-size=32", "--env-file-if-exists=rea.env"],
+    execArgv: ["--max-old-space-size=32", "--env-file-if-exists=nre.env"],
     nodeOptions: "--max-old-space-size=64",
     heap: effective(32, true),
   },
   {
     name: "keeps the 128 MiB request when an empty NODE_OPTIONS blocks the env file",
-    execArgv: ["--env-file=rea.env"],
+    execArgv: ["--env-file=nre.env"],
     nodeOptions: "",
     heap: effective(128, false),
   },
@@ -419,18 +419,18 @@ it("recovers launch exec argv from the command line, not process.execArgv", () =
   expect(execArgvFromCommandLine(Buffer.from([0xff, 0]))).toEqual({
     kind: "unrecoverable",
   });
-  expect(execArgvFromCommandLine(commandLine("rea"))).toEqual({
+  expect(execArgvFromCommandLine(commandLine("nre"))).toEqual({
     kind: "unrecoverable",
   });
   expect(
     execArgvFromCommandLine(
-      Buffer.concat([Buffer.from("rea\0"), Buffer.alloc(32)]),
+      Buffer.concat([Buffer.from("nre\0"), Buffer.alloc(32)]),
     ),
   ).toEqual({ kind: "unrecoverable" });
   expect(
     resolveLaunchRegexWorkerHeap(
       execArgvFromCommandLine(
-        Buffer.concat([Buffer.from("rea\0"), Buffer.alloc(32)]),
+        Buffer.concat([Buffer.from("nre\0"), Buffer.alloc(32)]),
       ),
       { kind: "recovered", value: undefined },
     ),
@@ -465,8 +465,8 @@ it("describes the effective heap and the configurable matching deadline", () => 
       "source default",
       "regex.matching_deadline_ms",
       "regex.worker_heap_request_mib",
-      "REA_REGEX_MATCHING_DEADLINE_MS",
-      "REA_REGEX_WORKER_HEAP_REQUEST_MIB",
+      "NRE_REGEX_MATCHING_DEADLINE_MS",
+      "NRE_REGEX_WORKER_HEAP_REQUEST_MIB",
       "update_analysis_settings",
     ])
       expect(limitation).toContain(fact);

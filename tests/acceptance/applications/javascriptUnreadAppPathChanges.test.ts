@@ -23,7 +23,7 @@ cliTest.for(
 )(
   "retains possible app path changes from a reachable $gap module through $surface",
   async ({ surface, gap }, { cli }) => {
-    const root = await createTestTempDirectory("rea-unread-app-path-change-");
+    const root = await createTestTempDirectory("nre-unread-app-path-change-");
     const window =
       'const {BrowserWindow}=require("electron");new BrowserWindow().loadFile("index.html");';
     await writeFixtureFiles(root, {

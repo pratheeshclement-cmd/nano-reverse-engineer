@@ -36,7 +36,7 @@ it.each([32, 64] as const)(
           ]),
         });
         if (table === "section") image.writeUInt32LE(1, bits === 64 ? 64 : 52);
-        const root = await createTestTempDirectory("rea-flutter-alignment-");
+        const root = await createTestTempDirectory("nre-flutter-alignment-");
         const path = join(root, "engine.so");
         await writeFile(path, image);
         const file = await open(path, "r");
@@ -76,7 +76,7 @@ it.each(
       "section",
       [{ type: 7, offset: compressed.length, size: note.length }],
     );
-    const root = await createTestTempDirectory("rea-flutter-compressed-notes-");
+    const root = await createTestTempDirectory("nre-flutter-compressed-notes-");
     const path = join(root, "engine.so");
     await writeFile(path, bytes);
     const file = await open(path, "r");
@@ -130,7 +130,7 @@ it.each(
     };
     writeAlignment(header + (bits === 64 ? 48 : 28), program);
     writeAlignment(noteSection + (bits === 64 ? 48 : 32), section);
-    const root = await createTestTempDirectory("rea-flutter-alignment-");
+    const root = await createTestTempDirectory("nre-flutter-alignment-");
     const path = join(root, "engine.so");
     await writeFile(path, image);
     const file = await open(path, "r");
@@ -168,7 +168,7 @@ it.each([
         size: 1,
       })),
     );
-    const root = await createTestTempDirectory("rea-flutter-notes-");
+    const root = await createTestTempDirectory("nre-flutter-notes-");
     const path = join(root, "engine.so");
     await writeFile(path, image);
     const file = await open(path, "r");
@@ -197,7 +197,7 @@ it("deduplicates shared program/section notes and skips empty ranges before char
     "section",
     ranges,
   );
-  const root = await createTestTempDirectory("rea-flutter-notes-");
+  const root = await createTestTempDirectory("nre-flutter-notes-");
   const path = join(root, "engine.so");
   await writeFile(path, image);
   const file = await open(path, "r");

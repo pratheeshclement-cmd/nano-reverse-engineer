@@ -45,11 +45,11 @@ const scenarioFor = (browser, origin) =>
           origin,
           entries: [
             {
-              name: "rea_storage_probe",
+              name: "nre_storage_probe",
               value: { source: "literal", value: "main-initial" },
             },
             {
-              name: "rea_storage_remove",
+              name: "nre_storage_remove",
               value: { source: "literal", value: "main-remove-seed" },
             },
           ],
@@ -58,11 +58,11 @@ const scenarioFor = (browser, origin) =>
           origin: origin.replace("127.0.0.1", "localhost"),
           entries: [
             {
-              name: "rea_storage_probe",
+              name: "nre_storage_probe",
               value: { source: "literal", value: "frame-initial" },
             },
             {
-              name: "rea_storage_remove",
+              name: "nre_storage_remove",
               value: { source: "literal", value: "frame-remove-seed" },
             },
           ],
@@ -73,11 +73,11 @@ const scenarioFor = (browser, origin) =>
           origin,
           entries: [
             {
-              name: "rea_storage_probe",
+              name: "nre_storage_probe",
               value: { source: "literal", value: "main-session-initial" },
             },
             {
-              name: "rea_storage_empty",
+              name: "nre_storage_empty",
               value: { source: "literal", value: "main-empty-seed" },
             },
           ],
@@ -86,11 +86,11 @@ const scenarioFor = (browser, origin) =>
           origin: origin.replace("127.0.0.1", "localhost"),
           entries: [
             {
-              name: "rea_storage_probe",
+              name: "nre_storage_probe",
               value: { source: "literal", value: "frame-session-initial" },
             },
             {
-              name: "rea_storage_empty",
+              name: "nre_storage_empty",
               value: { source: "literal", value: "frame-empty-seed" },
             },
           ],
@@ -111,14 +111,14 @@ const raceWithTimeout = (operation, timeoutMs, onTimeout = () => undefined) => {
 const storagePage = (kind, port) => {
   if (kind === "main")
     return `<!doctype html><html><body><pre id="main-report"></pre><pre id="frame-report"></pre><iframe src="http://localhost:${port}/storage-frame"></iframe><script>
-      const state = { local: localStorage.getItem("rea_storage_probe"), session: sessionStorage.getItem("rea_storage_probe"), removed: localStorage.getItem("rea_storage_remove"), empty: sessionStorage.getItem("rea_storage_empty") };
+      const state = { local: localStorage.getItem("nre_storage_probe"), session: sessionStorage.getItem("nre_storage_probe"), removed: localStorage.getItem("nre_storage_remove"), empty: sessionStorage.getItem("nre_storage_empty") };
       document.querySelector("#main-report").textContent = JSON.stringify(state);
-      localStorage.setItem("rea_storage_probe", "main-updated");
-      sessionStorage.setItem("rea_storage_probe", "main-session-updated");
-      localStorage.removeItem("rea_storage_remove");
-      sessionStorage.setItem("rea_storage_empty", "");
+      localStorage.setItem("nre_storage_probe", "main-updated");
+      sessionStorage.setItem("nre_storage_probe", "main-session-updated");
+      localStorage.removeItem("nre_storage_remove");
+      sessionStorage.setItem("nre_storage_empty", "");
       addEventListener("message", (event) => {
-        if (event.data?.kind !== "rea-storage-frame") return;
+        if (event.data?.kind !== "nre-storage-frame") return;
         const report = document.querySelector("#frame-report");
         report.textContent = JSON.stringify(event.data.state);
         report.dataset.ready = "true";
@@ -126,26 +126,26 @@ const storagePage = (kind, port) => {
     </script></body></html>`;
   if (kind === "frame")
     return `<!doctype html><html><body><pre id="frame-state"></pre><script>
-      const state = { local: localStorage.getItem("rea_storage_probe"), session: sessionStorage.getItem("rea_storage_probe"), removed: localStorage.getItem("rea_storage_remove"), empty: sessionStorage.getItem("rea_storage_empty") };
+      const state = { local: localStorage.getItem("nre_storage_probe"), session: sessionStorage.getItem("nre_storage_probe"), removed: localStorage.getItem("nre_storage_remove"), empty: sessionStorage.getItem("nre_storage_empty") };
       document.querySelector("#frame-state").textContent = JSON.stringify(state);
-      localStorage.setItem("rea_storage_probe", "frame-updated");
-      sessionStorage.setItem("rea_storage_probe", "frame-session-updated");
-      localStorage.removeItem("rea_storage_remove");
-      sessionStorage.setItem("rea_storage_empty", "");
-      parent.postMessage({ kind: "rea-storage-frame", state }, "*");
+      localStorage.setItem("nre_storage_probe", "frame-updated");
+      sessionStorage.setItem("nre_storage_probe", "frame-session-updated");
+      localStorage.removeItem("nre_storage_remove");
+      sessionStorage.setItem("nre_storage_empty", "");
+      parent.postMessage({ kind: "nre-storage-frame", state }, "*");
     </script></body></html>`;
   if (kind === "debugger")
     return `<!doctype html><html><body><pre id="debugger-state"></pre><script>
-      window.reaDebuggerBefore = true;
+      window.nreDebuggerBefore = true;
       debugger;
-      window.reaDebuggerAfter = true;
-      document.querySelector("#debugger-state").textContent = String(window.reaDebuggerAfter);
+      window.nreDebuggerAfter = true;
+      document.querySelector("#debugger-state").textContent = String(window.nreDebuggerAfter);
     </script></body></html>`;
   return `<!doctype html><html><body><pre id="top-report"></pre><script>
-    const state = { local: localStorage.getItem("rea_storage_probe"), session: sessionStorage.getItem("rea_storage_probe"), removed: localStorage.getItem("rea_storage_remove"), empty: sessionStorage.getItem("rea_storage_empty") };
+    const state = { local: localStorage.getItem("nre_storage_probe"), session: sessionStorage.getItem("nre_storage_probe"), removed: localStorage.getItem("nre_storage_remove"), empty: sessionStorage.getItem("nre_storage_empty") };
     document.querySelector("#top-report").textContent = JSON.stringify(state);
-    localStorage.setItem("rea_storage_probe", "top-updated");
-    sessionStorage.setItem("rea_storage_probe", "top-session-updated");
+    localStorage.setItem("nre_storage_probe", "top-updated");
+    sessionStorage.setItem("nre_storage_probe", "top-session-updated");
   </script></body></html>`;
 };
 
@@ -514,7 +514,7 @@ const verifyCallerDebuggerPause = async (caller, origin, scenario) => {
       });
       const pausedState = await caller.send("Debugger.evaluateOnCallFrame", {
         callFrameId,
-        expression: "window.reaDebuggerAfter === true",
+        expression: "window.nreDebuggerAfter === true",
         returnByValue: true,
       });
       assert.equal(
@@ -533,7 +533,7 @@ const verifyCallerDebuggerPause = async (caller, origin, scenario) => {
       const result = await pending;
       if (!result.ok) throw result.error;
       const debuggerState = await caller.send("Runtime.evaluate", {
-        expression: "window.reaDebuggerAfter === true",
+        expression: "window.nreDebuggerAfter === true",
         returnByValue: true,
       });
       assert.equal(debuggerState.result.value, true);

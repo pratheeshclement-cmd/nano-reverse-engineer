@@ -17,7 +17,7 @@ cliTest.for([
 ] as const)(
   "binds live %s Evidence to the open executable through stdio MCP",
   async (operation) => {
-    const root = await createTestTempDirectory("rea-bundle-resource-identity-");
+    const root = await createTestTempDirectory("nre-bundle-resource-identity-");
     const app = join(root, "Probe.app");
     const contents = join(app, "Contents");
     const resources = join(contents, "Resources");

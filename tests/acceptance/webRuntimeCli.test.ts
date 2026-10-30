@@ -11,16 +11,16 @@ import { webEventListenersSchema } from "../../src/domain/webEventListeners.js";
 import { startRuntimeBrowser } from "../fixtures/webRuntime.js";
 
 const entrypoint = fileURLToPath(
-  new URL("../../scripts/rea.mjs", import.meta.url),
+  new URL("../../scripts/nre.mjs", import.meta.url),
 );
 const environment = () => ({
   ...process.env,
-  REA_LOG_LEVEL: "silent",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+  NRE_LOG_LEVEL: "silent",
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-provider/hopper",
 });
 
 const executionProgress = z.object({
-  rea_progress: z.object({
+  nre_progress: z.object({
     phase: z.literal("browser_execution"),
     completed: z.literal(1),
   }),
@@ -46,15 +46,15 @@ const executionReadyReader = () => {
 it("arms only for a complete matching browser execution progress event", () => {
   const ready = executionReadyReader();
   expect(
-    ready('{"rea_progress":{"phase":"browser_execution","completed":0}}\n'),
+    ready('{"nre_progress":{"phase":"browser_execution","completed":0}}\n'),
   ).toBe(false);
-  expect(ready('{"rea_progress":{"phase":"other","completed":1}}\n')).toBe(
+  expect(ready('{"nre_progress":{"phase":"other","completed":1}}\n')).toBe(
     false,
   );
   expect(
-    ready('{"rea_progress":{"phase":"browser_execution","completed":10}}\n'),
+    ready('{"nre_progress":{"phase":"browser_execution","completed":10}}\n'),
   ).toBe(false);
-  expect(ready('other stderr\n{"rea_progress":{"phase":"browser_')).toBe(false);
+  expect(ready('other stderr\n{"nre_progress":{"phase":"browser_')).toBe(false);
   expect(ready('execution","completed":1}}\n')).toBe(true);
 });
 

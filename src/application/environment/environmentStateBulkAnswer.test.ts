@@ -423,7 +423,7 @@ const withRows = (id: number, name: string, row: number) => ({
 const card = (id: number, name: string, at: string | null) => ({
   id,
   name,
-  edit: at === null ? null : { at, by: "rea" },
+  edit: at === null ? null : { at, by: "nre" },
 });
 const EDITED_AT = "2026-10-01T09:00:00.000Z";
 const CARDS = [
@@ -486,9 +486,9 @@ describe("served bulk updates of what each entity holds", () => {
     const loaded = cards.store.snapshot();
     expect(
       cards.store.replace({
-        rea_state: {
-          ...loaded.rea_state,
-          entities: loaded.rea_state.entities.map((entity) =>
+        nre_state: {
+          ...loaded.nre_state,
+          entities: loaded.nre_state.entities.map((entity) =>
             entity.id === "2"
               ? {
                   ...entity,

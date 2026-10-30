@@ -32,7 +32,7 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "analyzes unpacked JavaScript through an alias to $archiveName with format $format",
   async ({ archiveName, aliasName, format }) => {
-    const root = await createTestTempDirectory("rea-js-asar-selected-");
+    const root = await createTestTempDirectory("nre-js-asar-selected-");
     const source = join(root, "source");
     await mkdir(source);
     const main = 'module.exports = require("./dependency.js");';

@@ -3,8 +3,8 @@ import { expect, it } from "vitest";
 import { bridgeBootstrapSource } from "./BridgeLauncher.js";
 
 const session = {
-  directory: "/tmp/rea-bootstrap",
-  socketPath: "/tmp/rea-bootstrap/bridge.sock",
+  directory: "/tmp/nre-bootstrap",
+  socketPath: "/tmp/nre-bootstrap/bridge.sock",
   token: "token",
   runId: "run",
 };
@@ -19,7 +19,7 @@ const options = {
 
 it("leaves an unset ceiling out of the Hopper bootstrap", () => {
   const source = bridgeBootstrapSource(session, options, true, "/target");
-  expect(source).not.toContain("REA_BRIDGE_MAX_REQUEST_BYTES");
+  expect(source).not.toContain("NRE_BRIDGE_MAX_REQUEST_BYTES");
   expect(source).toContain("exec(compile");
 });
 
@@ -33,7 +33,7 @@ it("injects a caller-selected ceiling before the bridge is executed", () => {
     true,
     "/target",
   );
-  const injected = source.indexOf("REA_BRIDGE_MAX_REQUEST_BYTES = 8192");
+  const injected = source.indexOf("NRE_BRIDGE_MAX_REQUEST_BYTES = 8192");
   expect(injected).toBeGreaterThanOrEqual(0);
   expect(injected).toBeLessThan(source.indexOf("exec(compile"));
 });

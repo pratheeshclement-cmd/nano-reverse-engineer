@@ -29,14 +29,20 @@ const README_LINK_DRIFT_MUTATIONS = [
     "(../installation.md#supported-agents)",
     "(../installation.md#missing-agents)",
   ],
-  ["https://rea.tools/zh-CN/guides/", "https://rea.tools/zh-CN/missing/"],
-  ["https://rea.tools/zh-CN/guides/", "https://rea.tools/zh-TW/guides/"],
   [
-    "https://rea.tools/zh-CN/guides/",
-    "https://rea.tools/zh-CN/guides/?other=1",
+    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-CN/guides/",
+    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-CN/missing/",
   ],
   [
-    'src="../assets/rea-hopper-analysis.png"',
+    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-CN/guides/",
+    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-TW/guides/",
+  ],
+  [
+    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-CN/guides/",
+    "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/zh-CN/guides/?other=1",
+  ],
+  [
+    'src="../assets/nre-hopper-analysis.png"',
     'src="../assets/missing-hopper.png"',
   ],
   ['href="https://discord.gg/GkcryMnJDM"', 'href="https://discord.gg/missing"'],
@@ -48,7 +54,7 @@ const seedReadmeFactFixture = async (directory: string) => {
     await mkdir(dirname(destination), { recursive: true });
     await copyFile(join(root, path), destination);
   }
-  await mkdir(join(directory, "skills/reverse-engineer-anything"), {
+  await mkdir(join(directory, "skills/nano-reverse-engineer"), {
     recursive: true,
   });
 };
@@ -63,7 +69,7 @@ afterEach(async () => {
 
 describe("translated README facts", () => {
   it("keeps translated readmes linked to canonical setup and tool details", async () => {
-    const directory = await createTestTempDirectory("rea-readme-facts-");
+    const directory = await createTestTempDirectory("nre-readme-facts-");
     temporaryRoots.push(directory);
     await seedReadmeFactFixture(directory);
     const translatedPath = join(directory, "docs/readme/README_zh.md");

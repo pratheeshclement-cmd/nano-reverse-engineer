@@ -259,7 +259,7 @@ export class CiTestSequencer extends BaseSequencer {
   override async shard(
     files: TestSpecification[],
   ): Promise<TestSpecification[]> {
-    const historyPath = process.env.REA_CI_TEST_HISTORY;
+    const historyPath = process.env.NRE_CI_TEST_HISTORY;
     const shard = this.ctx.config.shard;
     if (!historyPath || !shard) return super.shard(files);
     const root = this.ctx.config.root;

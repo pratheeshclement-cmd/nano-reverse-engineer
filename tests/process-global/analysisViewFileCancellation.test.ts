@@ -19,7 +19,7 @@ it("prefers cancellation observed after failed Evidence-file authentication", as
   const parent = analysisViewCaptureEvidence(
     environmentManifestCaptureFixture(),
   );
-  const root = await createTestTempDirectory("rea-analysis-view-cancel-");
+  const root = await createTestTempDirectory("nre-analysis-view-cancel-");
   const path = join(root, "parent.json");
   await writeFile(
     path,

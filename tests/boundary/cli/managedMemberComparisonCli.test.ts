@@ -23,7 +23,7 @@ cliTest(
   "attributes malformed managed comparison input to its selected argument and retains completed peer Evidence",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-managed-malformed-cli-",
+      "nre-managed-malformed-cli-",
     );
     const good = join(directory, "good.dll");
     const bad = join(directory, "bad.dll");
@@ -102,7 +102,7 @@ cliTest(
   "keeps malformed signatures unknown through CLI and stdio MCP comparison while a valid control stays unchanged",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-managed-signature-cli-",
+      "nre-managed-signature-cli-",
     );
     const call = await cli.sharedMcpCall!();
     for (const malformed of [true, false]) {
@@ -194,7 +194,7 @@ cliTest(
 );
 
 const managedComparisonEvidence = async () => {
-  const directory = await createTestTempDirectory("rea-managed-finalization-");
+  const directory = await createTestTempDirectory("nre-managed-finalization-");
   const path = join(directory, "comparison.dll");
   await writeFile(path, buildManagedPeFixture());
   const result = await comparison.compareManagedMemberPaths({

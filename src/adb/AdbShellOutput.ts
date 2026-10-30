@@ -11,7 +11,7 @@ import {
 } from "./AdbUnparsedLines.js";
 
 /**
- * Parsers for fixed observation commands REA runs through `adb shell`.
+ * Parsers for fixed observation commands NRE runs through `adb shell`.
  *
  * Formats follow toybox output on Android 8+ (verified against an Android 14
  * emulator). Unparseable lines are sampled and counted rather than dropped so
@@ -337,7 +337,7 @@ const DETAIL_LINE = /^\s+([A-Za-z][A-Za-z0-9_]*)=(.*)$/u;
 /**
  * Package Manager prints its `String` fields by concatenation, so an absent
  * `installerPackageName` appears as the literal text `null`
- * (morluto/rea#3943). No installer can be named "null", so an empty value or
+ * (pratheeshclement-cmd/nano-reverse-engineer#3943). No installer can be named "null", so an empty value or
  * that sentinel is the absence of the fact and becomes the nullable result's
  * null. `versionName` keeps the printed text: a manifest may declare the
  * string "null" on purpose, and the parser cannot tell the two apart.

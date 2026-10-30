@@ -23,7 +23,7 @@ const hasMemoryBound =
   NODE_CAPTURE_HEAP_ENFORCED ||
   NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES !== null;
 const it = runtimeTest.skipIf(!hasMemoryBound);
-const cli = fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../../scripts/nre.mjs", import.meta.url));
 const event = {
   name: "transport:packet_sent",
   time: 1791819895000.25,
@@ -46,7 +46,7 @@ const qlog = (events: unknown[]) =>
   });
 
 it("does not classify hidden custom event data as incomplete transport facts", async () => {
-  const root = await createTestTempDirectory("rea-qlog-hidden-extension-");
+  const root = await createTestTempDirectory("nre-qlog-hidden-extension-");
   const path = join(root, "input.qlog");
   await writeFile(
     path,
@@ -144,7 +144,7 @@ const assertAdditionalQlogFacets = async (
 };
 
 it("pages original trace-scoped facts after source deletion without conflating selected events or identical stream IDs", async () => {
-  const root = await createTestTempDirectory("rea-qlog-pages-");
+  const root = await createTestTempDirectory("nre-qlog-pages-");
   const path = join(root, "input.qlog");
   const source = JSON.parse(
     qlog([
@@ -297,7 +297,7 @@ runtimeTest.runIf(!hasMemoryBound)(
   "refuses qlog when this runtime cannot enforce a decoder memory bound",
   async () => {
     const { call } = await connectLocalToolsMcp();
-    const root = await createTestTempDirectory("rea-qlog-unbounded-");
+    const root = await createTestTempDirectory("nre-qlog-unbounded-");
     const path = join(root, "input.qlog");
     await writeFile(path, qlog([event]));
     expect(
@@ -312,7 +312,7 @@ runtimeTest.runIf(!hasMemoryBound)(
 );
 
 it("runs built CLI and real stdio SDK with exact evidence parity, selection, retained references and strict schemas", async () => {
-  const root = await createTestTempDirectory("rea-qlog-public-");
+  const root = await createTestTempDirectory("nre-qlog-public-");
   const path = join(root, "input.qlog");
   await writeFile(
     path,
@@ -405,7 +405,7 @@ it("runs built CLI and real stdio SDK with exact evidence parity, selection, ret
 }, 60_000);
 
 it("fails whole-capture validation before selection and survives malformed, unsupported and oversized qlog", async () => {
-  const root = await createTestTempDirectory("rea-qlog-errors-");
+  const root = await createTestTempDirectory("nre-qlog-errors-");
   const path = join(root, "input.qlog");
   const { call, client } = await connectLocalToolsMcp();
   for (const [text, code] of [
@@ -471,7 +471,7 @@ it("fails whole-capture validation before selection and survives malformed, unsu
 runtimeTest.skipIf(process.versions.bun !== undefined || !hasMemoryBound)(
   "contains actual qlog decoder heap exhaustion and keeps MCP usable",
   async () => {
-    const root = await createTestTempDirectory("rea-qlog-capacity-");
+    const root = await createTestTempDirectory("nre-qlog-capacity-");
     const path = join(root, "dense.qlog");
     const dense = qlog(Array<unknown>(100_000).fill(event));
     expect(Buffer.byteLength(dense)).toBeLessThan(

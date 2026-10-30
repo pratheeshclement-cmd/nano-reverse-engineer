@@ -32,7 +32,7 @@ const connect = async () => {
   const server = createServer(
     { kind: "session", session },
     {
-      environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
+      environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: "full" },
     },
   );
   const client = new Client({ name: "environment-bundle-mcp", version: "1" });
@@ -79,7 +79,7 @@ it("reports an unmodelled literal delete without claiming recorded reads are abs
     ["GET", "/api/folders", []],
   ]);
   expect(session.recordEvidence(capture).ok).toBe(true);
-  const root = await createTestTempDirectory("rea-bundle-mcp-target-");
+  const root = await createTestTempDirectory("nre-bundle-mcp-target-");
   const response = await client.callTool({
     name: TOOL,
     arguments: {
@@ -115,7 +115,7 @@ it("writes the bundle environment-build writes from retained capture Evidence", 
     environmentManifestCaptureFixture(),
   );
   expect(session.recordEvidence(capture).ok).toBe(true);
-  const root = await createTestTempDirectory("rea-bundle-mcp-");
+  const root = await createTestTempDirectory("nre-bundle-mcp-");
   const input = {
     source: { kind: "retained-evidence", evidence_id: capture.evidence_id },
     output_directory: join(root, "grafana"),
@@ -167,7 +167,7 @@ it("writes the bundle environment-build writes from retained capture Evidence", 
 
 it("copies a capture Evidence file byte for byte and plans without writing on a dry run", async () => {
   const { client } = await connect();
-  const root = await createTestTempDirectory("rea-bundle-mcp-file-");
+  const root = await createTestTempDirectory("nre-bundle-mcp-file-");
   const path = join(root, "grafana.capture.json");
   await writeFile(
     path,
@@ -204,7 +204,7 @@ it("copies a capture Evidence file byte for byte and plans without writing on a 
 
 it("attributes source file admission and JSON failures to source.path", async () => {
   const { client } = await connect();
-  const root = await createTestTempDirectory("rea-bundle-source-errors-");
+  const root = await createTestTempDirectory("nre-bundle-source-errors-");
   await mkdir(join(root, "directory"));
   await writeFile(join(root, "invalid-utf8"), Buffer.from([0xff]));
   await writeFile(join(root, "invalid-json"), "{");
@@ -242,7 +242,7 @@ it("refuses an existing or parentless output directory and leaves it as it was",
     environmentManifestCaptureFixture(),
   );
   expect(session.recordEvidence(capture).ok).toBe(true);
-  const root = await createTestTempDirectory("rea-bundle-mcp-dirs-");
+  const root = await createTestTempDirectory("nre-bundle-mcp-dirs-");
   const source = {
     kind: "retained-evidence",
     evidence_id: capture.evidence_id,
@@ -314,7 +314,7 @@ it("refuses an existing or parentless output directory and leaves it as it was",
 
 it("refuses unknown, unnamed loopback and non-capture Evidence, and repeated rules", async () => {
   const { client, session } = await connect();
-  const root = await createTestTempDirectory("rea-bundle-mcp-refuse-");
+  const root = await createTestTempDirectory("nre-bundle-mcp-refuse-");
   const output_directory = join(root, "env");
   const unknown = await client.callTool({
     name: TOOL,

@@ -14,7 +14,7 @@ afterEach(() => {
 });
 
 it("serializes concurrent ASAR snapshot preparation and cleans its single owned root", async () => {
-  const root = await createTestTempDirectory("rea-asar-snapshot-owner-");
+  const root = await createTestTempDirectory("nre-asar-snapshot-owner-");
   vi.stubEnv("TMPDIR", root);
   vi.stubEnv("TMP", root);
   vi.stubEnv("TEMP", root);
@@ -51,7 +51,7 @@ it("serializes concurrent ASAR snapshot preparation and cleans its single owned 
 
     const snapshotRoots = async (): Promise<string[]> =>
       (await readdir(root)).filter((name) =>
-        name.startsWith("rea-asar-snapshot-"),
+        name.startsWith("nre-asar-snapshot-"),
       );
     expect(await snapshotRoots()).toHaveLength(1);
     await reader.close();

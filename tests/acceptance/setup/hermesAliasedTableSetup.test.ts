@@ -16,7 +16,7 @@ const configuration = (
     "# Personal settings\nmodel: custom\nmask: 0x1F\n" +
     "server_defaults: &servers\n" +
     (existing
-      ? "  rea: &server\n    command: npx\n    args: [ '-y', 'rea-agents@6.1.0', 'mcp' ]\n    env:\n      FLAG: 'on'\n  other: *server\n"
+      ? "  nre: &server\n    command: npx\n    args: [ '-y', 'nano-reverse-engineer@6.1.0', 'mcp' ]\n    env:\n      FLAG: 'on'\n  other: *server\n"
       : "  other: &server\n    command: other-server\n    args: [ 'on', '0600' ]\n");
   return {
     defaults,
@@ -31,10 +31,10 @@ const configuration = (
 
 for (const version of ["1.1", "1.2"] as const) {
   cliTest(
-    `Hermes YAML ${version} uninstall preserves an aliased table without REA`,
+    `Hermes YAML ${version} uninstall preserves an aliased table without NRE`,
     async ({ cli }) => {
       const home = await createTestTempDirectory(
-        "rea-hermes-absent-uninstall-",
+        "nre-hermes-absent-uninstall-",
       );
       const profile = join(home, "profile");
       const config = join(profile, "config.yaml");
@@ -54,7 +54,7 @@ for (const version of ["1.1", "1.2"] as const) {
         });
         expect(removed.exitCode).toBe(0);
         expect(await readFile(config, "utf8")).toBe(original);
-        await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+        await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
           code: "ENOENT",
         });
       }
@@ -63,9 +63,9 @@ for (const version of ["1.1", "1.2"] as const) {
 
   for (const existing of [false, true]) {
     cliTest(
-      `Hermes YAML ${version} ${existing ? "refreshes" : "adds"} REA in an aliased table without changing its source`,
+      `Hermes YAML ${version} ${existing ? "refreshes" : "adds"} NRE in an aliased table without changing its source`,
       async ({ cli }) => {
-        const home = await createTestTempDirectory("rea-hermes-table-alias-");
+        const home = await createTestTempDirectory("nre-hermes-table-alias-");
         const profile = join(home, "profile");
         const config = join(profile, "config.yaml");
         const original = configuration(version, existing);
@@ -99,9 +99,9 @@ for (const version of ["1.1", "1.2"] as const) {
         expect(parsed.server_defaults).toEqual(before.server_defaults);
         expect(parsed.observer).toEqual(before.observer);
         expect(parsed.mcp_servers.other).toEqual(before.mcp_servers.other);
-        expect(parsed.mcp_servers.rea).toMatchObject({ enabled: true });
+        expect(parsed.mcp_servers.nre).toMatchObject({ enabled: true });
         if (existing)
-          expect(parsed.mcp_servers.rea.env).toEqual({
+          expect(parsed.mcp_servers.nre.env).toEqual({
             FLAG: "on",
             HOPPER_LAUNCHER_PATH: process.execPath,
           });
@@ -109,7 +109,7 @@ for (const version of ["1.1", "1.2"] as const) {
         expect(configured).toContain("# Selected table");
         expect(configured.match(/&servers\b/gu)).toHaveLength(1);
         expect(configured.match(/&server\b/gu)).toHaveLength(1);
-        expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(
+        expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(
           original.text,
         );
         const doctor = await run(["doctor", "--client", "hermes", "--json"]);
@@ -140,7 +140,7 @@ for (const version of ["1.1", "1.2"] as const) {
 }
 
 cliTest("Hermes still registers into an explicit table", async ({ cli }) => {
-  const home = await createTestTempDirectory("rea-hermes-explicit-table-");
+  const home = await createTestTempDirectory("nre-hermes-explicit-table-");
   const profile = join(home, "profile");
   const config = join(profile, "config.yaml");
   const original = configuration("1.1", false, false);
@@ -169,15 +169,15 @@ cliTest("Hermes still registers into an explicit table", async ({ cli }) => {
   expect(parsed.mcp_servers.other).toEqual(
     parse(original.text).mcp_servers.other,
   );
-  expect(parsed.mcp_servers.rea).toMatchObject({ enabled: true });
-  expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original.text);
+  expect(parsed.mcp_servers.nre).toMatchObject({ enabled: true });
+  expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original.text);
 });
 
 for (const version of ["1.1", "1.2"] as const) {
   cliTest(
     `Hermes YAML ${version} preserves shadowed alias bindings`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-hermes-shadowed-anchor-");
+      const home = await createTestTempDirectory("nre-hermes-shadowed-anchor-");
       const profile = join(home, "profile");
       const config = join(profile, "config.yaml");
       const original =
@@ -211,15 +211,15 @@ for (const version of ["1.1", "1.2"] as const) {
       expect(configured.mcp_servers.other).toEqual(before.mcp_servers.other);
       expect(configured.server_defaults).toEqual(before.server_defaults);
       expect(configured.observer).toEqual(before.observer);
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     },
   );
 }
 
 cliTest(
-  "Hermes uninstall detaches an aliased table before deleting REA",
+  "Hermes uninstall detaches an aliased table before deleting NRE",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-hermes-aliased-uninstall-");
+    const home = await createTestTempDirectory("nre-hermes-aliased-uninstall-");
     const profile = join(home, "profile");
     const config = join(profile, "config.yaml");
     await mkdir(profile);
@@ -243,8 +243,8 @@ cliTest(
       "--json",
     ]);
     expect(setup.exitCode).toBe(0);
-    const entry = parse(await readFile(config, "utf8")).mcp_servers.rea;
-    const defaults = { rea: entry, other: { command: "other-server" } };
+    const entry = parse(await readFile(config, "utf8")).mcp_servers.nre;
+    const defaults = { nre: entry, other: { command: "other-server" } };
     const original =
       "server_defaults: &servers\n" +
       stringify(defaults)
@@ -264,10 +264,10 @@ cliTest(
     expect(remaining.server_defaults).toEqual(defaults);
     expect(remaining.observer).toEqual(defaults);
     const configured = await readFile(config, "utf8");
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     expect((await run(["uninstall", "--json"])).exitCode).toBe(0);
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -278,7 +278,7 @@ for (const original of [
   cliTest(
     `Hermes refuses an invalid aliased table: ${original.trim()}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-hermes-invalid-alias-");
+      const home = await createTestTempDirectory("nre-hermes-invalid-alias-");
       const profile = join(home, "profile");
       const config = join(profile, "config.yaml");
       await mkdir(profile);
@@ -307,7 +307,7 @@ for (const original of [
         appliedActions: [],
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },

@@ -88,7 +88,7 @@ const nativePlistFixture = async (
   bytes: Buffer,
   description = "ASCII text",
 ) => {
-  const root = await createTestTempDirectory("rea-plist-short-reads-");
+  const root = await createTestTempDirectory("nre-plist-short-reads-");
   const path = join(root, "selected.plist");
   await writeFile(path, bytes);
   const commands: string[][] = [];
@@ -266,7 +266,7 @@ it.each([
 ] as const)(
   "retains complete %s target admission under positive short reads",
   async (_label, fixture) => {
-    const root = await createTestTempDirectory("rea-target-short-reads-");
+    const root = await createTestTempDirectory("nre-target-short-reads-");
     const path = join(root, "selected");
     await writeFile(path, fixture());
     const expected = await parseBinaryTarget(path, {
@@ -303,7 +303,7 @@ afterEach(async () => {
 });
 
 it("keeps dyld root discovery, commands and digests when positive reads are short", async () => {
-  const root = await createTestTempDirectory("rea-dyld-short-reads-");
+  const root = await createTestTempDirectory("nre-dyld-short-reads-");
   const path = join(root, "Main");
   const bytes = machoImage({
     commands: [dylibCommand(LC.LOAD_DYLIB, "@rpath/Absent.dylib")],
@@ -328,7 +328,7 @@ it("keeps dyld root discovery, commands and digests when positive reads are shor
 });
 
 it("keeps fuse sentinel offsets, states and complete-file digest across short reads", async () => {
-  const root = await createTestTempDirectory("rea-fuse-short-reads-");
+  const root = await createTestTempDirectory("nre-fuse-short-reads-");
   const path = join(root, "Electron");
   const { bytes } = thinFuseImage(OBSIDIAN_FUSE_BYTES);
   await writeFile(path, bytes);
@@ -352,7 +352,7 @@ it("keeps fuse sentinel offsets, states and complete-file digest across short re
 });
 
 it("returns malformed dyld header facts when short positive data ends at true EOF", async () => {
-  const root = await createTestTempDirectory("rea-dyld-read-eof-");
+  const root = await createTestTempDirectory("nre-dyld-read-eof-");
   const path = join(root, "Main");
   await writeFile(path, machoImage({}));
   fault.path = path;
@@ -370,7 +370,7 @@ it("returns malformed dyld header facts when short positive data ends at true EO
 });
 
 it("rejects true EOF before the admitted Electron extent instead of publishing a digest", async () => {
-  const root = await createTestTempDirectory("rea-fuse-read-eof-");
+  const root = await createTestTempDirectory("nre-fuse-read-eof-");
   const path = join(root, "Electron");
   await writeFile(path, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
   fault.path = path;
@@ -384,7 +384,7 @@ it("rejects true EOF before the admitted Electron extent instead of publishing a
 });
 
 it("preserves cancellation during continued short reads and releases the descriptor", async () => {
-  const root = await createTestTempDirectory("rea-fuse-short-read-cancel-");
+  const root = await createTestTempDirectory("nre-fuse-short-read-cancel-");
   const path = join(root, "Electron");
   await writeFile(path, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
   const controller = new AbortController();
@@ -412,7 +412,7 @@ it("preserves cancellation during continued short reads and releases the descrip
 it.each(["cancelled", "eof", "io"] as const)(
   "preserves %s during short scan reads after container identification",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-fuse-scan-short-read-");
+    const root = await createTestTempDirectory("nre-fuse-scan-short-read-");
     const path = join(root, "Electron");
     await writeFile(path, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
     const controller = new AbortController();

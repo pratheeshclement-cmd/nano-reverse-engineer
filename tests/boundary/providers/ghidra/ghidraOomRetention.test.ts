@@ -41,7 +41,7 @@ const failedOperation = async (
       return ok({ ...launched.value, configuredMaxHeap: "4G" });
     },
   };
-  const directory = await createTestTempDirectory("rea-ghidra-oome-");
+  const directory = await createTestTempDirectory("nre-ghidra-oome-");
   const bytes = elf(2, 1, 62);
   const targetPath = join(directory, "target.elf");
   await writeFile(targetPath, bytes);
@@ -55,7 +55,7 @@ const failedOperation = async (
   };
   const config = parseConfig({
     GHIDRA_INSTALL_DIR: "/fixture/ghidra",
-    REA_GHIDRA_STARTUP_TIMEOUT_MS: String(options.startupTimeoutMs ?? 10_000),
+    NRE_GHIDRA_STARTUP_TIMEOUT_MS: String(options.startupTimeoutMs ?? 10_000),
   });
   if (!config.ok) throw config.error;
   const provider = new GhidraProvider(
@@ -239,14 +239,14 @@ describe.skipIf(process.platform === "win32")(
           },
         },
       });
-      expect(projected.remediation.action).not.toContain("rea doctor");
+      expect(projected.remediation.action).not.toContain("nre doctor");
     });
 
     it("names the signal when no cgroup attributes the kill", async () => {
       const projected = await failedOperation("sigkill_tools");
       expect(projected.code).toBe("execution_failure");
       expect(projected.message).toContain("SIGKILL");
-      expect(projected.message).not.toContain("rea doctor");
+      expect(projected.message).not.toContain("nre doctor");
       expect(projected.details).toMatchObject({
         diagnostics: { exit_signal: "SIGKILL" },
       });

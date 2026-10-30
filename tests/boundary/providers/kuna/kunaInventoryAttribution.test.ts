@@ -13,7 +13,7 @@ it
   ])(
   "retains the exact pre-admission reason without acquiring another installation: %j",
   async (reason) => {
-    const fixture = await session("rea-kuna-inventory-pre-abort-");
+    const fixture = await session("nre-kuna-inventory-pre-abort-");
     const client = fixture.open();
     const controller = new AbortController();
     controller.abort(reason);
@@ -43,9 +43,9 @@ it.skipIf(process.platform === "win32").each([
   "keeps search identity for a completed $inventory callable inventory",
   async ({ inventory, expected }) => {
     const fixture = await session(
-      "rea-kuna-inventory-attribution-",
+      "nre-kuna-inventory-attribution-",
       { inventory },
-      { REA_KUNA_TIMEOUT_MS: "1000" },
+      { NRE_KUNA_TIMEOUT_MS: "1000" },
     );
     const client = fixture.open();
     try {
@@ -77,7 +77,7 @@ it.skipIf(process.platform === "win32").each([
 it.skipIf(process.platform === "win32")(
   "cancels one search waiter with its exact reason while retaining its peer's shared inventory",
   async () => {
-    const fixture = await session("rea-kuna-inventory-waiter-", {
+    const fixture = await session("nre-kuna-inventory-waiter-", {
       inventory: "hang",
     });
     const client = fixture.open();

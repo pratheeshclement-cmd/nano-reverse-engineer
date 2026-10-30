@@ -171,7 +171,7 @@ describe("target-bound provider routing", () => {
 });
 
 it("preserves bundle-root identity for artifact inventory operations", async () => {
-  const directory = await createTestTempDirectory("rea-provider-bundle-");
+  const directory = await createTestTempDirectory("nre-provider-bundle-");
   const target = join(directory, "Fixture.app");
   const executable = join(target, "Fixture");
   const infoPlist = join(target, "Info.plist");
@@ -403,7 +403,7 @@ const capability = (
 });
 
 const databaseTarget = async (): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-provider-binding-");
+  const directory = await createTestTempDirectory("nre-provider-binding-");
   const path = join(directory, "fixture.hop");
   await writeFile(path, "fixture");
   return path;

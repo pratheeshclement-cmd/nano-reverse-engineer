@@ -1,11 +1,11 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.morluto/rea",
-  "title": "REA",
+  "name": "io.github.pratheeshclement-cmd/nano-reverse-engineer",
+  "title": "NRE",
   "description": "Nano Reverse Engineer from your terminal or agent with one CLI and MCP server.",
-  "websiteUrl": "https://github.com/morluto/rea",
+  "websiteUrl": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer",
   "repository": {
-    "url": "https://github.com/morluto/rea",
+    "url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer",
     "source": "github"
   },
   "version": "6.8.0",
@@ -13,7 +13,7 @@
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
-      "identifier": "rea-agents",
+      "identifier": "nano-reverse-engineer",
       "version": "6.8.0",
       "runtimeHint": "npx",
       "transport": {

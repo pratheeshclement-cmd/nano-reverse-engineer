@@ -33,7 +33,7 @@ afterEach(() => {
 });
 
 const fixture = async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-macho-source-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-macho-source-"));
   const path = join(root, "image");
   const bytes = Buffer.from("0123456789abcdef");
   await writeFile(path, bytes);

@@ -8,7 +8,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "reports the same headless workspace readiness through discovery and doctor",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ida-discovery-cli-");
+    const root = await createTestTempDirectory("nre-ida-discovery-cli-");
     const writable = join(root, "writable");
     const file = join(root, "file");
     const marker = join(root, "launched");
@@ -35,7 +35,7 @@ cliTest.skipIf(process.platform === "win32")(
       );
       const environment = {
         HOME: root,
-        REA_IDA_MCP_CONFIG: registration,
+        NRE_IDA_MCP_CONFIG: registration,
       };
       for (const command of ["providers", "capabilities"] as const) {
         const result = await cli.run({

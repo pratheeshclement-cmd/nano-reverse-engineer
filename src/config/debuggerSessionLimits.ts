@@ -22,12 +22,12 @@ import { positiveDecimalIntegerSchema } from "./positiveDecimalInteger.js";
  * it does not restate the name, bounds, or schema.
  */
 export const DEBUGGER_COMMAND_DEADLINE_SETTING =
-  "REA_DEBUGGER_COMMAND_DEADLINE_MS";
-export const DEBUGGER_MAX_SESSIONS_SETTING = "REA_DEBUGGER_MAX_SESSIONS";
+  "NRE_DEBUGGER_COMMAND_DEADLINE_MS";
+export const DEBUGGER_MAX_SESSIONS_SETTING = "NRE_DEBUGGER_MAX_SESSIONS";
 export const DEBUGGER_MAX_PENDING_COMMANDS_SETTING =
-  "REA_DEBUGGER_MAX_PENDING_COMMANDS";
+  "NRE_DEBUGGER_MAX_PENDING_COMMANDS";
 export const DEBUGGER_MAX_COMMAND_OUTPUT_BYTES_SETTING =
-  "REA_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES";
+  "NRE_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES";
 
 /** Effective debugger admission and where its value came from. */
 export interface DebuggerAdmissionLimit {
@@ -206,7 +206,7 @@ export const parseDebuggerSessionLimits = (
     !maxCommandOutputBytes.ok
   )
     return err(
-      new ConfigurationError("Invalid REA environment configuration", {
+      new ConfigurationError("Invalid NRE environment configuration", {
         settings,
       }),
     );
@@ -229,7 +229,7 @@ export const resolveDebuggerSessionLimits = (
 
 /**
  * Fixed budget for Rizin cleanup readback and GDB startup or detach MI.
- * This is not `REA_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES`. A caller cap below
+ * This is not `NRE_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES`. A caller cap below
  * this budget must not truncate those required replies, and recovery for
  * this budget is not an environment setting.
  */

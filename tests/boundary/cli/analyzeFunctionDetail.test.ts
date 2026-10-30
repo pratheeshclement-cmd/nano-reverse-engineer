@@ -32,7 +32,7 @@ const harness = () => {
   const runDirectAnalysis = vi.fn<
     Parameters<typeof registerCoreBinaryCommands>[2]
   >(async () => ok(cannedCompleteEvidence()));
-  const cli = Cli.create("rea-fn-detail-test", { version: "1", sync: false });
+  const cli = Cli.create("nre-fn-detail-test", { version: "1", sync: false });
   registerCoreBinaryCommands(
     cli as unknown as CliInstance,
     pino({ enabled: false }),
@@ -77,7 +77,7 @@ it("rejects summary delivery without --evidence_output before any analysis", asy
 
 it("summary delivery returns the compact view and writes a bundle inspect-analysis-view pages", async () => {
   const h = harness();
-  const directory = await createTestTempDirectory("rea-fn-detail-");
+  const directory = await createTestTempDirectory("nre-fn-detail-");
   const destination = join(directory, "complete.json");
   const out = (await h.invoke({
     detail: "summary",

@@ -8,7 +8,7 @@ import { itWithCaptureCapability } from "./processCaptureCapability.js";
 itWithCaptureCapability(
   "retains completed capture facts and the exact reason when cleanup reporting cancels",
   async () => {
-    const root = await createTestTempDirectory("rea-capture-reason-");
+    const root = await createTestTempDirectory("nre-capture-reason-");
     const controller = new AbortController();
     const reason = { request: "cancel after cleanup completed" };
     let cleanupReported = false;

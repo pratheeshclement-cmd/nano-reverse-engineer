@@ -3,7 +3,7 @@
 #include <delayimp.h>
 #include <cstdio>
 
-namespace rea {
+namespace nre {
 
 static const napi_type_tag RESOURCE_TAG = {0x45fcbf0b49e84fe3ULL, 0x9e3e5074130de843ULL};
 
@@ -72,7 +72,7 @@ void publishRuntimeHandle(napi_env env, napi_value observation, std::unique_ptr<
 Resource& resource(napi_env env, napi_value value, Kind kind) {
   bool tagged = false;
   check(napi_check_object_type_tag(env, value, &RESOURCE_TAG, &tagged));
-  require(tagged, "Native handle does not belong to REA", L"", ERROR_INVALID_HANDLE);
+  require(tagged, "Native handle does not belong to NRE", L"", ERROR_INVALID_HANDLE);
   void* pointer = nullptr; check(napi_unwrap(env, value, &pointer));
   auto& result = *static_cast<Resource*>(pointer);
   require(result.kind == kind && !result.closed, "Native handle is closed or has the wrong kind", L"", ERROR_INVALID_HANDLE);
@@ -120,7 +120,7 @@ static void cleanupRuntimeContext(void* data) noexcept {
   catch (const Failure& failure) {
     // Environment teardown cannot retain an owner or return an error. Report
     // terminal cleanup failure instead of claiming the directory was removed.
-    std::fprintf(stderr, "REA Windows runtime cleanup failed (Win32 %lu) path=\"",
+    std::fprintf(stderr, "NRE Windows runtime cleanup failed (Win32 %lu) path=\"",
                  static_cast<unsigned long>(failure.win32));
     // Emit reversible UTF-16 escapes without allocation or CRT locale conversion.
     for (wchar_t unit : failure.path) {
@@ -131,10 +131,10 @@ static void cleanupRuntimeContext(void* data) noexcept {
     std::fprintf(stderr, "\"\n");
   }
   catch (const std::exception& failure) {
-    std::fprintf(stderr, "REA Windows runtime cleanup failed: %s\n", failure.what());
+    std::fprintf(stderr, "NRE Windows runtime cleanup failed: %s\n", failure.what());
   }
   catch (...) {
-    std::fprintf(stderr, "REA Windows runtime cleanup failed: unknown native exception\n");
+    std::fprintf(stderr, "NRE Windows runtime cleanup failed: unknown native exception\n");
   }
 }
 
@@ -176,16 +176,16 @@ static napi_value initialize(napi_env env, napi_value exports) {
   return exports;
 }
 
-} // namespace rea
+} // namespace nre
 
-NAPI_MODULE(NODE_GYP_MODULE_NAME, rea::initialize)
+NAPI_MODULE(NODE_GYP_MODULE_NAME, nre::initialize)
 
 // Node-API symbols are delay-imported from "node.exe". Resolve them against the
 // host executable so Node.js, Bun, and other Node-API hosts load the addon
 // regardless of their executable file name.
-static FARPROC WINAPI reaHostHook(unsigned event, PDelayLoadInfo info) {
+static FARPROC WINAPI nreHostHook(unsigned event, PDelayLoadInfo info) {
   if (event != dliNotePreLoadLibrary || _stricmp(info->szDll, "node.exe") != 0) return nullptr;
   return reinterpret_cast<FARPROC>(GetModuleHandleW(nullptr));
 }
 
-decltype(__pfnDliNotifyHook2) __pfnDliNotifyHook2 = reaHostHook;
+decltype(__pfnDliNotifyHook2) __pfnDliNotifyHook2 = nreHostHook;

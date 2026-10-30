@@ -2,7 +2,7 @@ import { writeFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import { createInterface } from "node:readline";
 
-const mode = process.env.REA_MCP_PROBE_MODE ?? "serve";
+const mode = process.env.NRE_MCP_PROBE_MODE ?? "serve";
 
 if (mode === "fail") {
   console.error("unrelated probe failure");
@@ -16,7 +16,7 @@ const respond = (id, result) => {
           error: {
             code: -32601,
             message:
-              process.env.REA_MCP_PROBE_ERROR_MESSAGE ??
+              process.env.NRE_MCP_PROBE_ERROR_MESSAGE ??
               "unrelated fixture method refusal",
           },
         }
@@ -39,7 +39,7 @@ input.on("line", (line) => {
   if (mode === "initialize-then-hang" && request.method !== "initialize")
     return;
   if (mode === "hang-on-call" && request.method === "tools/call") {
-    const readyPath = process.env.REA_MCP_PROBE_READY_PATH;
+    const readyPath = process.env.NRE_MCP_PROBE_READY_PATH;
     if (readyPath !== undefined) void writeFile(readyPath, "ready");
     return;
   }
@@ -56,8 +56,8 @@ input.on("line", (line) => {
         serverInfo: { name: "probe-fixture", version: "1" },
       };
       // Synchronous so a parent can observe initialize before the next phase hangs.
-      if (process.env.REA_MCP_PROBE_INITIALIZED_PATH !== undefined)
-        writeFileSync(process.env.REA_MCP_PROBE_INITIALIZED_PATH, "ready");
+      if (process.env.NRE_MCP_PROBE_INITIALIZED_PATH !== undefined)
+        writeFileSync(process.env.NRE_MCP_PROBE_INITIALIZED_PATH, "ready");
       break;
     case "tools/list":
       result = { tools: [] };

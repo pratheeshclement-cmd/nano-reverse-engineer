@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.each(["npm/11.16.0 node/v24.22.1", "bun/1.4.2"])(
   "binds setup invoked by %s to the already selected installation",
   async (userAgent) => {
-    const home = await createTestTempDirectory("rea-runner-binding-");
+    const home = await createTestTempDirectory("nre-runner-binding-");
     const environment = {
       HOME: home,
       USERPROFILE: home,

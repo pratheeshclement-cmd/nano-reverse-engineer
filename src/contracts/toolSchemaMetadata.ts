@@ -110,7 +110,7 @@ export const toolOutputSchemaWithMetadata = <Contract extends ToolContract>(
       if ("$id" in shared || hasRelativeSchemaReference(shared)) return shared;
       return {
         ...shared,
-        $id: `urn:rea:tool-output:sha256:${digestCanonicalValue(
+        $id: `urn:nre:tool-output:sha256:${digestCanonicalValue(
           { target: options.target, schema: shared },
           "Tool output schema",
         )}`,

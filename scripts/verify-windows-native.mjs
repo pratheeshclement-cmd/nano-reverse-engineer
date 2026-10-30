@@ -48,7 +48,7 @@ const { PrivateRuntimeRootUnavailableError } = await import(
     join(packageRoot, "dist/process/PrivateRuntimeRootUnavailableError.js"),
   )
 );
-const workspace = await mkdtemp(join(tmpdir(), "rea-native-conformance-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-native-conformance-"));
 // A pwsh caller can supply module paths incompatible with Windows PowerShell.
 // Each independent observer must discover its own module path.
 const windowsPowerShellEnvironment = Object.fromEntries(
@@ -97,7 +97,7 @@ const privateRuntimeAclObserver = String.raw`
   Trace-AclPhase 'started'
   # Separates powershell.exe startup from the observation itself.
   [Console]::Error.WriteLine('private-runtime-acl: process-uptime ' + [int]([DateTime]::Now - [Diagnostics.Process]::GetCurrentProcess().StartTime).TotalMilliseconds + 'ms')
-  $p = $env:REA_TEST_PRIVATE_RUNTIME_PATH
+  $p = $env:NRE_TEST_PRIVATE_RUNTIME_PATH
   $sid = [Security.Principal.SecurityIdentifier]
   $a = [Security.AccessControl.DirectorySecurity]::new($p, [Security.AccessControl.AccessControlSections]'Access, Owner')
   Trace-AclPhase 'acl-read'
@@ -147,12 +147,12 @@ const startDeleteSharingDeniedReader = async (path) => {
     "powershell.exe",
     windowsPowerShellArguments(
       "$ErrorActionPreference = 'Stop'; " +
-        "$stream = [IO.File]::Open($env:REA_CLEANUP_HELD_PATH, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite); " +
+        "$stream = [IO.File]::Open($env:NRE_CLEANUP_HELD_PATH, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite); " +
         "try { [Console]::WriteLine('ready'); [void][Console]::In.ReadLine() } " +
         "finally { $stream.Dispose() }",
     ),
     {
-      env: { ...windowsPowerShellEnvironment, REA_CLEANUP_HELD_PATH: path },
+      env: { ...windowsPowerShellEnvironment, NRE_CLEANUP_HELD_PATH: path },
       stdio: ["pipe", "pipe", "pipe"],
       windowsHide: true,
     },
@@ -218,7 +218,7 @@ const report = { ok: false, artifact: "verified", controls: {}, processes: {} };
 try {
   // Exercise the loader in a process whose image is not named node.exe. The
   // ordinary Windows lane otherwise cannot detect eager Node-API imports.
-  const renamedHost = join(workspace, "rea-renamed-node.exe");
+  const renamedHost = join(workspace, "nre-renamed-node.exe");
   const renamedHostFixture = join(workspace, "renamed-host.mjs");
   const loaderUrl = pathToFileURL(
     join(packageRoot, "dist/windows/WindowsNativeLoader.js"),
@@ -237,7 +237,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
     windowsHide: true,
   });
   assert.deepEqual(JSON.parse(renamedHostResult), {
-    executable: "rea-renamed-node.exe",
+    executable: "nre-renamed-node.exe",
     abiVersion: 1,
   });
   report.controls.renamedHostNodeApi = true;
@@ -283,7 +283,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
   // without another executable, and proves that no child runtime was created.
   const sharingParent = WindowsPrivateRuntime.create(
     workspace,
-    "rea-sharing-parent-",
+    "nre-sharing-parent-",
   );
   try {
     await assert.rejects(
@@ -309,7 +309,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
   assert.equal(runtimeParent, driveRoot);
   const driveRootRuntime = native.call("runtime_create", [
     runtimeParent,
-    "rea-drive-root-",
+    "nre-drive-root-",
   ]);
   try {
     assert.equal(driveRootRuntime.path.startsWith(`${driveRoot}\\`), false);
@@ -437,7 +437,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
   try {
     const acl = JSON.parse(
       observeWithWindowsPowerShell(privateRuntimeAclObserver, {
-        REA_TEST_PRIVATE_RUNTIME_PATH: runtime.path,
+        NRE_TEST_PRIVATE_RUNTIME_PATH: runtime.path,
       }),
     );
     assert.deepEqual(acl, {
@@ -578,12 +578,12 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
       // Exercise that independent Win32 reader contract without requiring Java.
       const readerDigest = observeWithWindowsPowerShell(
         String.raw`
-          $stream = [IO.File]::Open($env:REA_SNAPSHOT_READER_PATH, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
+          $stream = [IO.File]::Open($env:NRE_SNAPSHOT_READER_PATH, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
           $hash = [Security.Cryptography.SHA256]::Create()
           try { [Console]::Out.Write([BitConverter]::ToString($hash.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()) }
           finally { $hash.Dispose(); $stream.Dispose() }
         `,
-        { REA_SNAPSHOT_READER_PATH: snapshotPath },
+        { NRE_SNAPSHOT_READER_PATH: snapshotPath },
       );
       assert.equal(readerDigest, readbackSnapshot.sha256);
       await assert.rejects(writeFile(snapshotPath, "replace"));
@@ -705,7 +705,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
     const readonlyChildren = JSON.parse(
       observeWithWindowsPowerShell(
         String.raw`
-          $observations = foreach ($item in $env:REA_TEST_READONLY_CHILDREN.Split([char]10)) {
+          $observations = foreach ($item in $env:NRE_TEST_READONLY_CHILDREN.Split([char]10)) {
             $current = [int][IO.File]::GetAttributes($item)
             $next = if (($current -band 16) -ne 0) { $current -bor 1 } else { 1 }
             [IO.File]::SetAttributes($item, [IO.FileAttributes]$next)
@@ -717,7 +717,7 @@ process.stdout.write(JSON.stringify({executable:basename(process.execPath),abiVe
           [Console]::Out.Write('[' + ($observations -join ',') + ']')
         `,
         {
-          REA_TEST_READONLY_CHILDREN: [
+          NRE_TEST_READONLY_CHILDREN: [
             join(runtime.path, "inputs"),
             join(runtime.path, "inputs", "target.bin"),
           ].join("\n"),
@@ -876,10 +876,10 @@ setInterval(()=>{},1000);\n`,
         "z_REA=z",
         "_REA=underscore",
         "A_REA=a",
-        "REA_CASE=first",
-        "rea_case=last",
+        "NRE_CASE=first",
+        "nre_case=last",
         "REA_ß=sharp",
-        "REA_SS=double",
+        "NRE_SS=double",
       ],
     ]);
     const childEnvironment = await wait(environmentChild);

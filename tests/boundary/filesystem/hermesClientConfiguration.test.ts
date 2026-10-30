@@ -46,7 +46,7 @@ describe("Hermes configuration paths", () => {
   it.skipIf(process.platform === "win32")(
     "configures the filesystem-selected Hermes home through symlink parent traversal",
     async () => {
-      const home = await createTestTempDirectory("rea-hermes-path-selection-");
+      const home = await createTestTempDirectory("nre-hermes-path-selection-");
       await mkdir(join(home, "physical", "child"), { recursive: true });
       await symlink(join(home, "physical", "child"), join(home, "alias"));
       const selected = `${home}/alias/..`;
@@ -74,7 +74,7 @@ describe("Hermes configuration paths", () => {
       ).toContain("mcp_servers:");
       expect(
         await readFile(
-          join(home, "physical", "config.yaml.rea.backup"),
+          join(home, "physical", "config.yaml.nre.backup"),
           "utf8",
         ),
       ).toBe(original);
@@ -122,7 +122,7 @@ describe("Hermes configuration paths", () => {
     "expands the named OS account independently of the selected home",
     () => {
       const account = userInfo();
-      for (const suffix of ["", "/rea-owned-profile", "//rea-owned-profile"]) {
+      for (const suffix of ["", "/nre-owned-profile", "//nre-owned-profile"]) {
         expect(
           hermesPath({ HERMES_HOME: `~${account.username}${suffix}` })
             ?.markerPath,
@@ -131,16 +131,16 @@ describe("Hermes configuration paths", () => {
       expect(
         hermesPath({
           HERMES_HOME: "$PROFILE",
-          PROFILE: `~${account.username}/rea-owned-profile`,
+          PROFILE: `~${account.username}/nre-owned-profile`,
         })?.markerPath,
-      ).toBe(join(account.homedir, "rea-owned-profile"));
+      ).toBe(join(account.homedir, "nre-owned-profile"));
     },
   );
 
   it.each(["linux", "win32"] as const)(
     "keeps an unresolved named home diagnostic without exposing a write destination on %s",
     (platform) => {
-      const requested = `~${userInfo().username}-other/rea-profile`;
+      const requested = `~${userInfo().username}-other/nre-profile`;
       expect(hermesPath({ HERMES_HOME: requested }, platform)).toMatchObject({
         configPath: requested,
         configPathError: expect.stringContaining("absolute HERMES_HOME"),
@@ -179,7 +179,7 @@ describe("Hermes unresolved home identity", () => {
   it.skipIf(process.platform === "win32")(
     "keeps a new custom home reached through a native-home symlink outside native sticky selection",
     async () => {
-      const home = await createTestTempDirectory("rea-hermes-new-alias-");
+      const home = await createTestTempDirectory("nre-hermes-new-alias-");
       const native = join(home, ".hermes");
       const profile = join(native, "profiles", "coder");
       const external = join(home, "external");
@@ -215,7 +215,7 @@ describe("Hermes unresolved home identity", () => {
   it.skipIf(process.platform === "win32")(
     "keeps a dangling home alias unresolved instead of selecting a native profile",
     async () => {
-      const home = await createTestTempDirectory("rea-hermes-dangling-home-");
+      const home = await createTestTempDirectory("nre-hermes-dangling-home-");
       const native = join(home, ".hermes");
       const profile = join(native, "profiles", "coder");
       await mkdir(profile, { recursive: true });
@@ -246,7 +246,7 @@ describe("Hermes unresolved home identity", () => {
 });
 
 const hermesClient = async () => {
-  const home = await createTestTempDirectory("rea-hermes-");
+  const home = await createTestTempDirectory("nre-hermes-");
   const client = supportedClients(home, process.platform, {}).find(
     ({ name }) => name === "hermes",
   );
@@ -259,8 +259,8 @@ const hermesClient = async () => {
 describe("Hermes YAML shape diagnostics", () => {
   it.each(
     [
-      "!!set {rea: null}",
-      "!!omap [{rea: {command: rea, args: [mcp]}}]",
+      "!!set {nre: null}",
+      "!!omap [{nre: {command: nre, args: [mcp]}}]",
       "!!timestamp 2001-12-15",
       "!!binary cmVh",
     ]
@@ -295,7 +295,7 @@ describe("Hermes YAML shape diagnostics", () => {
       const { home, client } = await hermesClient();
       const cursor = join(home, ".cursor", "mcp.json");
       const cursorOriginal =
-        '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}';
+        '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}';
       await mkdir(join(home, ".cursor"));
       await writeFile(cursor, cursorOriginal);
       await writeFile(client.configPath, original);
@@ -323,9 +323,9 @@ describe("Hermes YAML shape diagnostics", () => {
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       expect(await readFile(cursor, "utf8")).toBe(cursorOriginal);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(`${client.configPath}.nre.backup`, "utf8"),
       ).rejects.toThrow();
-      await expect(readFile(`${cursor}.rea.backup`, "utf8")).rejects.toThrow();
+      await expect(readFile(`${cursor}.nre.backup`, "utf8")).rejects.toThrow();
     },
   );
 });
@@ -355,7 +355,7 @@ mcp_servers:
       display: { language: "en" },
       mcp_servers: {
         other: { command: "other-server" },
-        rea: { command: command[0], args: command.slice(1), enabled: true },
+        nre: { command: command[0], args: command.slice(1), enabled: true },
       },
     });
 
@@ -426,7 +426,7 @@ mcp_servers:
     expect(text.startsWith(original)).toBe(true);
     expect(parseYaml(text, { intAsBigInt: true })).toMatchObject({
       mcp_servers: {
-        rea: { command: command[0], args: command.slice(1), enabled: true },
+        nre: { command: command[0], args: command.slice(1), enabled: true },
       },
     });
     expect((await systemUninstallHost(home).removeClient(client)).status).toBe(
@@ -437,7 +437,7 @@ mcp_servers:
 
   it("creates config.yaml when Hermes has no configuration yet", async () => {
     const { client } = await hermesClient();
-    const environment = { REA_MCP_OUTPUT_SCHEMA_PROFILE: "off" };
+    const environment = { NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off" };
     expect(
       (await configureClientConfiguration(client, environment, command)).status,
     ).toBe("configured");
@@ -445,7 +445,7 @@ mcp_servers:
       parseYaml(await readFile(client.configPath, "utf8"), { version: "1.1" }),
     ).toEqual({
       mcp_servers: {
-        rea: {
+        nre: {
           command: command[0],
           args: command.slice(1),
           env: environment,
@@ -459,7 +459,7 @@ mcp_servers:
     "refuses an environment value %s that Hermes parses as a non-string",
     async (value) => {
       const { home, client } = await hermesClient();
-      const original = `mcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n    env:\n      CUSTOM_SETTING: ${value}\n`;
+      const original = `mcp_servers:\n  nre:\n    command: nre\n    args: [mcp]\n    env:\n      CUSTOM_SETTING: ${value}\n`;
       await writeFile(client.configPath, original);
       expect(
         await inspectClientConfiguration(client, {}, command),
@@ -472,14 +472,14 @@ mcp_servers:
       ).toMatchObject({ status: "failed" });
       expect(
         (
-          await readClientRegistrationStatuses(home, "rea", {
+          await readClientRegistrationStatuses(home, "nre", {
             environment: {},
           })
         ).find(({ client: name }) => name === "hermes"),
       ).toMatchObject({ state: "invalid" });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(`${client.configPath}.nre.backup`, "utf8"),
       ).rejects.toThrow();
     },
   );
@@ -492,7 +492,7 @@ describe("Hermes YAML empty configurations", () => {
   it("rejects multiple YAML documents before treating an empty first root as absent", async () => {
     const { client } = await hermesClient();
     const original =
-      "---\n---\nmcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n";
+      "---\n---\nmcp_servers:\n  nre:\n    command: nre\n    args: [mcp]\n";
     await writeFile(client.configPath, original);
     expect(await inspectClientConfiguration(client, {}, command)).toMatchObject(
       { status: "invalid" },
@@ -503,7 +503,7 @@ describe("Hermes YAML empty configurations", () => {
     });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 
@@ -526,7 +526,7 @@ describe("Hermes YAML empty configurations", () => {
       expect(text.slice(0, kept.length)).toBe(kept);
       expect(parseYaml(text)).toEqual({
         mcp_servers: {
-          rea: { command: command[0], args: command.slice(1), enabled: true },
+          nre: { command: command[0], args: command.slice(1), enabled: true },
         },
       });
       expect(

@@ -38,7 +38,7 @@ const cancelledArrayFixture = (alignment?: number) => {
 it.each([undefined, 64])(
   "retains completed GGUF facts when cancellation interrupts a later value (alignment=%s)",
   async (alignment) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-model-partial-cancel-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-model-partial-cancel-"));
     const path = join(root, "model.gguf");
     const { fixture, count, arrayStart } = cancelledArrayFixture(alignment);
     await writeFile(path, fixture.bytes);
@@ -132,7 +132,7 @@ it.each([undefined, 64])(
 );
 
 it("retains GGUF tensor declarations and layout limitations before later tensor bytes cancel", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-model-tensor-partial-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-model-tensor-partial-"));
   const path = join(root, "model.gguf");
   const tensorCount = 4000;
   const fixture = ggufFixture({
@@ -242,7 +242,7 @@ it.each([
 ])(
   "retains parsed $format facts with alignment $alignment when full hashing is cancelled",
   async ({ format, alignment }) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-model-hash-cancel-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-model-hash-cancel-"));
     const path = join(root, `model.${format}`);
     const fixture =
       format === "safetensors"

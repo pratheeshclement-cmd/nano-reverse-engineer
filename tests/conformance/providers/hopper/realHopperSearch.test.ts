@@ -5,7 +5,7 @@ import {
   verifyHopperStringObjects,
 } from "../../../../scripts/lib/real-hopper-search.mjs";
 
-const value = "REA_UTF8_é_😀";
+const value = "NRE_UTF8_é_😀";
 const address = "0x402020";
 const bytes = Buffer.from(`${value}\0`);
 const item = {
@@ -21,7 +21,7 @@ const item = {
 const expectation = {
   value,
   encoding: "utf-8",
-  symbol: "rea_utf8_literal",
+  symbol: "nre_utf8_literal",
   recognitionOptional: true,
 };
 
@@ -141,7 +141,7 @@ it("reuses source bytes and inventory while checking real address filters and se
     { value, address, state: "observed", decodedObject: "verified" },
   ]);
   expect(calls).toEqual([
-    "read_bytes:rea_utf8_literal",
+    "read_bytes:nre_utf8_literal",
     `list_strings:${address}`,
     `search_strings:${value}`,
     "search_strings:\\xC3\\xA9",

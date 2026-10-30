@@ -17,7 +17,7 @@ const cases = [
   "unsafe-hexadecimal-integer",
 ] as const;
 const fixture = async (kind: (typeof cases)[number]) => {
-  const root = await createTestTempDirectory("rea-integer-scalar-");
+  const root = await createTestTempDirectory("nre-integer-scalar-");
   const xml = build({
     $archiver: "NSKeyedArchiver",
     $version: 100000,
@@ -125,7 +125,7 @@ cliTest.for(cases)(
     const item = await fixture(kind);
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", item.path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode).toBe(0);
     verify(
@@ -141,14 +141,14 @@ cliTest.for(cases)(
 cliTest.for(["three-byte-uid"] as const)(
   "preserves three-byte UID identity through the keyed-archive CLI",
   async (_kind, { cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-three-byte-uid-");
+    const root = await createTestTempDirectory("nre-keyed-three-byte-uid-");
     const path = join(root, "archive.plist");
     const bytes = keyedArchiveUidBytes();
     const digest = createHash("sha256").update(bytes).digest("hex");
     await writeFile(path, bytes);
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode).toBe(0);
     const result = keyedArchiveResultSchema.parse(
@@ -169,7 +169,7 @@ cliTest.for(["three-byte-uid"] as const)(
 cliTest(
   "reports an inexact binary UID as unsupported without changing the artifact",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-inexact-uid-");
+    const root = await createTestTempDirectory("nre-keyed-inexact-uid-");
     const path = join(root, "archive.plist");
     const bytes = keyedArchiveUidBytes(8, BigInt(Number.MAX_SAFE_INTEGER) + 1n);
     const originalHash = createHash("sha256").update(bytes).digest("hex");
@@ -177,7 +177,7 @@ cliTest(
 
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
 
     expect(output.exitCode).toBe(1);

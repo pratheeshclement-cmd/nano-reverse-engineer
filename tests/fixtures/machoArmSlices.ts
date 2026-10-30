@@ -17,7 +17,7 @@ const sha256 = (bytes: Uint8Array): string =>
 
 /** Self-owned Mach-O headers; lipo reads these bytes without executing the target. */
 export const createArmSliceFixture = async () => {
-  const root = await createTestTempDirectory("rea-arm-slices-");
+  const root = await createTestTempDirectory("nre-arm-slices-");
   const path = join(root, "universal");
   const slices = [
     { name: "armv7", cpu: { type: 12, subtype: 9 }, wide: false },

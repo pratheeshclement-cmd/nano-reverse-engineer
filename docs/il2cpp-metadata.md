@@ -133,18 +133,18 @@ budget.
 ## CLI
 
 ```bash
-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
+nre inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
 ```
 
 The CLI defaults to complete Evidence. For compact delivery, explicitly preserve
 the full Evidence in a new file:
 
 ```bash
-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat \
+nre inspect-il2cpp-metadata /absolute/path/global-metadata.dat \
   --detail summary --evidence_output /tmp/metadata-evidence.json --json
 jq -c '{source: {kind: "inline", evidence: .records[0]}, view: {kind: "il2cpp-metadata", collection: "methods", indices: [9785], fields: ["name", "declaring_type"]}}' \
   /tmp/metadata-evidence.json > /tmp/metadata-query.json
-rea inspect-analysis-view /tmp/metadata-query.json --json
+nre inspect-analysis-view /tmp/metadata-query.json --json
 ```
 
 Use the exported Evidence with the CLI's inline Evidence source format described
@@ -418,7 +418,7 @@ from 2022.3.62f3; and the Windows x64 build from 2023.2.13f1 named above
 (`GameAssembly.dll` SHA-256
 `a3ae7f6ecd1f671297b7d98d12713ef024062d93cd7a4205298102656c93b67a`). On every
 build each linked instance matches an Il2CppDumper entry by address and name,
-and Il2CppDumper lists no address-name pair that REA leaves out (Windows: 63,750
+and Il2CppDumper lists no address-name pair that NRE leaves out (Windows: 63,750
 linked rows, 142 without code; Android: 5,152 and 44). This does not establish
 names for versions 24 or 39, for type arguments that are open generic type
 definitions, or anything about instances created at runtime. The Linux build
@@ -457,7 +457,7 @@ Scans yield cooperatively in bounded batches. Name-address retention and reverse
 
 ELF RELATIVE writes into zero-fill are kept as a private virtual-pointer overlay. Unresolved supported-width symbol relocations, including RELA PLT entries, remain unknown only for the bytes their ELF ABI relocation type covers; an adjacent 32-bit relocation does not make a separate 64-bit method slot unknown. Stored zeros never establish no-body. COPY, TLS descriptor, REL, packed APS2 and other unsupported relocation encodings fail closed. Input bytes are unchanged.
 
-ELF relocation tables and file-backed destinations may span adjacent load ranges when every range agrees on the file translation. Any overlapping zero-fill declaration makes those bytes ambiguous; REA refuses the table or relocation destination instead of choosing the stored file bytes. Missing file bytes remain distinct from conflicting owners: supported unresolved relocations outside file-backed memory retain their unknown overlay, while ambiguous destinations refuse linking. Registration coverage uses the same file/zero-fill ownership checks as pointer reads.
+ELF relocation tables and file-backed destinations may span adjacent load ranges when every range agrees on the file translation. Any overlapping zero-fill declaration makes those bytes ambiguous; NRE refuses the table or relocation destination instead of choosing the stored file bytes. Missing file bytes remain distinct from conflicting owners: supported unresolved relocations outside file-backed memory retain their unknown overlay, while ambiguous destinations refuse linking. Registration coverage uses the same file/zero-fill ownership checks as pointer reads.
 
 Native address queries batch exact 64-bit hexadecimal `addresses` and `states` (`code`, `no-body`, `unknown`), intersecting indices and pagination; `generic_method_instances` accepts the same filters plus `method_indices` (generic definition indices). Numerically equal address spellings match; original row indices and every shared-body alternative survive:
 
@@ -482,13 +482,13 @@ Native address queries batch exact 64-bit hexadecimal `addresses` and `states` (
 ## Ghidra function names
 
 The CLI can turn a linked report into a
-[`REA_GHIDRA_SEED_FILE`](installation.md) so Ghidra names every IL2CPP method
+[`NRE_GHIDRA_SEED_FILE`](installation.md) so Ghidra names every IL2CPP method
 before auto-analysis:
 
 ```bash
-rea inspect-il2cpp-metadata global-metadata.dat --binary libil2cpp.so \
+nre inspect-il2cpp-metadata global-metadata.dat --binary libil2cpp.so \
   --ghidra-seeds il2cpp-seeds.tsv --json > /dev/null
-export REA_GHIDRA_SEED_FILE="$PWD/il2cpp-seeds.tsv"
+export NRE_GHIDRA_SEED_FILE="$PWD/il2cpp-seeds.tsv"
 ```
 
 Each linked method becomes one `function` seed named `Namespace.Type$$Method`
@@ -566,7 +566,7 @@ report limit can still require the summary and paging path.
 - Full method signatures beyond the rendered field, parameter and return type
   names, and type names for metadata version 27.
 - Running Ghidra or another disassembler. `--ghidra-seeds` only writes a seed
-  file for [`REA_GHIDRA_SEED_FILE`](installation.md); use the
+  file for [`NRE_GHIDRA_SEED_FILE`](installation.md); use the
   [native workflow](native-investigation.md) for native code.
 - Metadata versions other than 24, 27, 29, 31 and 39.
 

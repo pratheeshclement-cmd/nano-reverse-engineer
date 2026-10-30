@@ -9,7 +9,7 @@ it("uses Windows environment identity for caller overrides and capture-owned val
     environment: {
       path: "caller-bin",
       term: "caller-terminal",
-      rea_process_run_id: "caller-token",
+      nre_process_run_id: "caller-token",
     },
   });
   expect(
@@ -18,7 +18,7 @@ it("uses Windows environment identity for caller overrides and capture-owned val
       hostEnvironment: {
         Path: "host-bin",
         TERM: "host-terminal",
-        REA_PROCESS_RUN_ID: "host-token",
+        NRE_PROCESS_RUN_ID: "host-token",
         OMITTED: undefined,
       },
       runId: "capture-token",
@@ -27,7 +27,7 @@ it("uses Windows environment identity for caller overrides and capture-owned val
   ).toEqual({
     PATH: "caller-bin",
     TERM: "caller-terminal",
-    REA_PROCESS_RUN_ID: "capture-token",
+    NRE_PROCESS_RUN_ID: "capture-token",
   });
 });
 
@@ -48,6 +48,6 @@ it("preserves distinct POSIX names and supplies the terminal default", () => {
     path: "caller-bin",
     term: "lowercase-terminal",
     TERM: "xterm-256color",
-    REA_PROCESS_RUN_ID: "capture-token",
+    NRE_PROCESS_RUN_ID: "capture-token",
   });
 });

@@ -27,11 +27,11 @@ class ControlledSession {
   initialUrl = "https://app.example.test/";
   cleanup = new PlaywrightScenarioBrowserCleanupOwner({
     closeBrowser: async () => {
-      process.stderr.write("REA_CONTROLLED_CLOSE_CALLBACK\n");
+      process.stderr.write("NRE_CONTROLLED_CLOSE_CALLBACK\n");
     },
     removeProfile: async () => {
       assert.equal(this.cleanup.browserClosed, true);
-      process.stderr.write("REA_CONTROLLED_PROFILE_CALLBACK\n");
+      process.stderr.write("NRE_CONTROLLED_PROFILE_CALLBACK\n");
     },
   });
   get cleanupLease() {
@@ -76,7 +76,7 @@ class ControlledSession {
           );
         signal?.addEventListener("abort", abort, { once: true });
         process.stderr.write(
-          "REA_CONTROLLED_BROWSER_READY signal_present=" +
+          "NRE_CONTROLLED_BROWSER_READY signal_present=" +
             Number(signal !== undefined) +
             "\n",
         );

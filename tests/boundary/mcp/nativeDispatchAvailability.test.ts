@@ -123,7 +123,7 @@ describe("native dispatch availability at the public MCP boundary", () => {
     "preserves $name capability semantics",
     async (scenario) => {
       directory = await createTestTempDirectory(
-        "rea-native-dispatch-availability-",
+        "nre-native-dispatch-availability-",
       );
       const calls: Operation[] = [];
       const { mcp, first } = await createSessionMcpHarness(
@@ -180,7 +180,7 @@ describe("native dispatch availability at the public MCP boundary", () => {
   );
 
   it("reports a target requirement before probing provider operations", async () => {
-    directory = await createTestTempDirectory("rea-native-dispatch-no-target-");
+    directory = await createTestTempDirectory("nre-native-dispatch-no-target-");
     const calls: Operation[] = [];
     const { mcp } = await createSessionMcpHarness(
       directory,

@@ -226,7 +226,13 @@ const moduleCompatibility = (
     return "unknown";
   const observedValues = isAbsoluteModulePath(scope, format)
     ? [symbol.module_path]
-    : [symbol.module_name, symbol.module_path];
+    : [
+        symbol.module_path !== null &&
+        moduleFilename(symbol.module_path, false, format).length === 0
+          ? null
+          : symbol.module_name,
+        symbol.module_path,
+      ];
   const values = observedValues.filter(
     (value): value is string =>
       value !== null && moduleFilename(value, false, format).length > 0,
@@ -546,7 +552,7 @@ export const buildVerificationResult = ({
   };
   return {
     algorithm: {
-      name: "rea-managed-native-verification" as const,
+      name: "nre-managed-native-verification" as const,
       token_identity: "build-local" as const,
       token_to_address_mapping: "not-inferred" as const,
     },

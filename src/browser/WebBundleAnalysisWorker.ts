@@ -193,7 +193,7 @@ export class WebBundleAnalysisWorker {
         `Web analyzer heap must be an integer from ${String(MIN_WEB_BUNDLE_HEAP_MB)} through ${String(MAX_WEB_BUNDLE_HEAP_MB)} MiB (max_heap_mb)`,
       );
     this.#runtime = new OwnedWorkerRuntime({
-      rootPrefix: "rea-web-bundle-analysis-",
+      rootPrefix: "nre-web-bundle-analysis-",
       launcher,
       cleanupRegistry: workerCleanup.runtimes,
       retryCleanup: () => this.close(),
@@ -583,7 +583,7 @@ export class WebBundleAnalysisWorker {
           "--stack_size=2048",
           fileURLToPath(import.meta.resolve("#web-bundle-analysis-worker")),
         ],
-        runId: `rea-web-bundle-analysis-${randomUUID()}`,
+        runId: `nre-web-bundle-analysis-${randomUUID()}`,
         hostEnvironment: environment,
         stdin: "pipe",
         signal: deadline.signal,

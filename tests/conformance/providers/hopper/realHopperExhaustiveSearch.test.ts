@@ -16,7 +16,7 @@ describe("Hopper search verifier rejection", () => {
           path: "/fixture",
           expectedCount: 3,
           symbolPrefix: "_rea_fixture_",
-          stringPrefix: "REA_FIXTURE_",
+          stringPrefix: "NRE_FIXTURE_",
         }),
       ).rejects.toThrow();
     },
@@ -41,7 +41,7 @@ const fixtureClient = (count: number, fault: "duplicate" | "missing") => {
         const duplicateIndex = fault === "duplicate" && index === 1 ? 0 : index;
         return {
           address: `0x${(0x1000 + index).toString(16)}`,
-          value: `${procedures ? "_rea_fixture_" : "REA_FIXTURE_"}${String(duplicateIndex).padStart(4, "0")}`,
+          value: `${procedures ? "_rea_fixture_" : "NRE_FIXTURE_"}${String(duplicateIndex).padStart(4, "0")}`,
         };
       });
       if (fault === "missing") items.pop();

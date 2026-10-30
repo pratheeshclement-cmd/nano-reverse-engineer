@@ -227,7 +227,7 @@ describe("CLI advertised input schemas", () => {
 
     const help = await serve(cli, ["inspect-keyed-archive", "--help"]);
     expect(help.stdout).toContain(
-      "Usage: rea inspect-keyed-archive <path> [archive] [options]",
+      "Usage: nre inspect-keyed-archive <path> [archive] [options]",
     );
     expect(help.stdout).toContain(
       "archive  Relative archive path when the target is a bundle",
@@ -489,7 +489,7 @@ describe("ADB selector input schemas: package and activity", () => {
 
 describe("ADB selector input schemas: dispatch", () => {
   it("rejects malformed CLI selectors before an inert provider is called", async () => {
-    const cli = Cli.create("rea-adb-selector-test", { sync: false });
+    const cli = Cli.create("nre-adb-selector-test", { sync: false });
     const provider = {
       inspectAvailability: vi.fn(async (): Promise<never> => {
         throw new Error("unexpected availability probe");
@@ -524,7 +524,7 @@ describe("ADB selector input schemas: dispatch", () => {
   });
 
   it("preserves optional activity mapping and colon-containing extra values", async () => {
-    const cli = Cli.create("rea-adb-selector-valid-test", { sync: false });
+    const cli = Cli.create("nre-adb-selector-valid-test", { sync: false });
     const provider = {
       inspectAvailability: vi.fn(async (): Promise<never> => {
         throw new Error("unexpected availability probe");

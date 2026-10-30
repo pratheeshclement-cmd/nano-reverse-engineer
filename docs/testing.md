@@ -1,4 +1,4 @@
-# Testing REA
+# Testing NRE
 
 Use this guide when choosing coverage, pruning tests, or running a verification
 lane. Start with the commands below; use [real-toolchain lanes](#real-toolchain-verification-lanes)
@@ -6,8 +6,8 @@ for engine prerequisites and [client verification](client-verification.md) for
 installed-client and agent runs.
 
 Historical verification records may refer to `experiments/analysis-efficiency`.
-Those experiment scripts are available in the [archived source tree](https://github.com/morluto/rea/tree/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency);
-they are not included in current checkouts. The retained [test support](https://github.com/morluto/rea/blob/main/tests/support/analysis-efficiency/README.md)
+Those experiment scripts are available in the [archived source tree](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/tree/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency);
+they are not included in current checkouts. The retained [test support](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/tests/support/analysis-efficiency/README.md)
 contains deterministic checkers and fixtures. The [allocation report](verification/analysis-efficiency/mcp-integer-allocation.md)
 and its original receipt JSON remain documentation, checked by the report producer.
 
@@ -140,7 +140,7 @@ without the artifacts lock, so it can record hashes while `check:pr` or
 `check:ci:fast` and `check:ci:deep` commands.
 Use `npm run lint:details` or `npm run jscpd:details` for all console diagnostics.
 Both duplicate commands scan production and test code using the limit in
-[`.jscpd.json`](https://github.com/morluto/rea/blob/main/.jscpd.json).
+[`.jscpd.json`](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/.jscpd.json).
 The summary commands preserve checker failures and restore reports from cached
 static tasks. Both lint caches include the website, documentation configuration,
 and experiment code scanned by the checker; a regression compares the actual
@@ -157,22 +157,22 @@ The lint gate treats `no-async-promise-executor`, `no-unreachable`, and
 dead code, and unsafe uses of optional-chain results. `no-unsafe-finally` remains
 a warning because cleanup paths can deliberately throw aggregated failures;
 review whether they preserve the primary failure. Two local rules
-cover narrower observed failures: `rea/no-buffer-deep-equality` flags Vitest
+cover narrower observed failures: `nre/no-buffer-deep-equality` flags Vitest
 deep comparisons of Buffers from recognized constructors and file reads,
-including simple `const` aliases; `rea/cancellation-cause` requires an explicit
+including simple `const` aliases; `nre/cancellation-cause` requires an explicit
 cause when a directly checked caller `AbortSignal` is converted to an
 `AnalysisCancelledError`. The rules do not infer arbitrary Buffer types,
 follow indirect cancellation helpers, or prove that an explicit cause equals
 the caller's reason. Keep focused boundary and lifecycle tests for those facts.
 
-`rea/no-evidence-json-preadmission` rejects direct generic JSON parses in
+`nre/no-evidence-json-preadmission` rejects direct generic JSON parses in
 `createEvidence` payload expressions; it does not analyze intermediate values.
-`rea/no-positional-tool-contract` rejects catalog indices used to select
+`nre/no-positional-tool-contract` rejects catalog indices used to select
 operation names, schemas or types; display-only selection remains allowed.
-`rea/no-fixture-root-cleanup` follows `const` fixture-root aliases into teardown
+`nre/no-fixture-root-cleanup` follows `const` fixture-root aliases into teardown
 deletion; mutable bindings and mixed root arrays remain outside its scope.
 
-`rea/no-shared-module-mock` resolves Vitest import bindings before rejecting
+`nre/no-shared-module-mock` resolves Vitest import bindings before rejecting
 module mocks in projects without per-file isolation. The test-project definitions
 own isolation for Vitest and lint; the executable gate checks the resolved policy
 and runs the same collector. Aliases and namespace imports count; comments,
@@ -268,7 +268,7 @@ coverage. Ordinary CI also exhausted the former 384 MiB budget after earlier
 files loaded the shared source/contract graph, while later command registration
 and schema/help rendering still needed transient allocation space. This is a
 measured capacity control, not a suite-wide speedup claim. The worker count
-remains bounded at two, and spawned REA processes retain their own heap settings.
+remains bounded at two, and spawned NRE processes retain their own heap settings.
 Coverage enablement still controls instrumentation, test deadlines and coverage
 thresholds; explicitly disabling it or selecting only a provider does not enable
 instrumentation.
@@ -347,7 +347,7 @@ commands, including a non-zero status whose stdout is still a JSON document,
 and closes that process after the file.
 
 The Apple artifact verifier step shares a job-temporary bytecode cache among
-its fresh CLI/MCP children via `REA_ARTIFACT_NODE_COMPILE_CACHE`. The artifact
+its fresh CLI/MCP children via `NRE_ARTIFACT_NODE_COMPILE_CACHE`. The artifact
 helper maps this setting to child `NODE_COMPILE_CACHE`; npm, Turbo, and nested
 Vitest runs do not inherit that setting. Explicit `NODE_COMPILE_CACHE` takes
 precedence, and coverage collection or `NODE_DISABLE_COMPILE_CACHE=1` disables
@@ -435,7 +435,7 @@ For format compatibility, identify the producer revision that establishes each
 rule. Include an accepted boundary case beside the rejected case so a stricter
 parser cannot pass by refusing both. Keep source-derived behavior, synthetic
 fixtures, and executed producer or runtime oracles distinct in validation
-reports. A fixture accepted by REA proves its reader behavior; it does not prove
+reports. A fixture accepted by NRE proves its reader behavior; it does not prove
 that a real loader accepts the artifact. If multiple producer revisions share a
 format identifier but differ in behavior, record that ambiguity rather than
 using one installed version as an oracle for all of them.
@@ -514,7 +514,7 @@ Artifact verification uses `artifactMcpCall` for both lifecycle and analysis
 calls. A fresh SDK client has no held tool listing, so a bare `callTool` can
 skip output-schema validation. The helper discovers actual advertised
 definitions, rejects missing or ambiguous schemas, and validates the requested
-tool without compiling unrelated catalog schemas. REA registers process-static
+tool without compiling unrelated catalog schemas. NRE registers process-static
 tool contracts; bindings share one discovery per negotiated connection and are
 discarded on reconnect or failed discovery. Keep raw artifact calls on this
 shared path and retain explicit request options such as timeouts.
@@ -672,11 +672,11 @@ does not check those calls; run their orchestration tests against the built
 modules, including the verifier's failure and cleanup paths.
 
 Representative regressions include
-[process cleanup-time SIGINT](https://github.com/morluto/rea/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/process/processCaptureCancellationAdapters.test.ts),
-[late authenticated cleanup](https://github.com/morluto/rea/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/providers/hopper/hopperClient.handshakeRecovery.test.ts),
-[LLDB launch and finalization](https://github.com/morluto/rea/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/providers/native/lldbCallTracerFailures.test.ts),
-[composed child ownership](https://github.com/morluto/rea/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/src/application/binary/CompositeProvider.test.ts),
-and [public CLI cleanup denial](https://github.com/morluto/rea/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/cli/wasmCleanupCli.test.ts).
+[process cleanup-time SIGINT](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/process/processCaptureCancellationAdapters.test.ts),
+[late authenticated cleanup](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/providers/hopper/hopperClient.handshakeRecovery.test.ts),
+[LLDB launch and finalization](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/providers/native/lldbCallTracerFailures.test.ts),
+[composed child ownership](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/src/application/binary/CompositeProvider.test.ts),
+and [public CLI cleanup denial](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/e78455338fe2d06c4cd03d59cbf33473d754998b/tests/boundary/cli/wasmCleanupCli.test.ts).
 These controlled probes do not replace the matching real-provider lane. Record
 the base failure, passing control, exact host/provider, verified cleanup, and
 unavailable coverage; a missing engine is not a pass.
@@ -718,8 +718,8 @@ creation outside the workspace seam and its narrowly documented boundary/package
 exceptions.
 
 The shared temporary-directory and workspace helpers preserve caller labels
-under an owned `rea-` prefix when needed. Their
-[cleanup ownership differs](https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#temporary-files-and-diagnostics):
+under an owned `nre-` prefix when needed. Their
+[cleanup ownership differs](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/CONTRIBUTING.md#temporary-files-and-diagnostics):
 `createTestTempDirectory` registers `onTestFinished` deletion, while
 `createTestWorkspace` requires caller cleanup. Close resources before removing
 their directory. `npm run verify:test-temp-hygiene`
@@ -1038,7 +1038,7 @@ The host lane also verifies namespaced C++ ABI symbols and annotation identity.
 That facet requires Ghidra's matching `demangler_gnu_v2_41` native component in
 `GPL/DemanglerGnu/os/<platform>/` or `build/os/<platform>/`, in addition to the
 native decompiler. The namespace verifier reports missing or non-executable
-components before testing the fixture. REA does not build or install them.
+components before testing the fixture. NRE does not build or install them.
 
 Windows native conformance runs with `npm run verify:windows-native` and does
 not require Ghidra or Java. It includes Job Object commit-limit controls (a
@@ -1053,7 +1053,7 @@ rename, later-query handle-based recovery, successful-admission caching, and
 environment-teardown cleanup. It neither
 establishes the cause of the intermittent #1701 host failure nor replaces
 verification with the shipped production artifact.
-`npm run verify:ghidra:windows:package` additionally packs and installs REA into
+`npm run verify:ghidra:windows:package` additionally packs and installs NRE into
 an isolated prefix and runs ordinary-user CLI/MCP operations against their
 canonical schemas. Run the controlled fixture generator before that lane, or
 supply an installed package root and an explicit fixture as arguments.
@@ -1143,7 +1143,7 @@ It also invokes the actual bridge methods on detached Ghidra model objects to
 check ambiguous dispatches, signed literals, precision bounds, shared targets,
 and conflicting labels. This reflection fixture depends on the pinned Ghidra
 model and does not claim a compiler produced those synthetic graph shapes.
-Pass `--entrypoint /path/to/installed/rea-agents/scripts/rea.mjs` directly to
+Pass `--entrypoint /path/to/installed/nano-reverse-engineer/scripts/nre.mjs` directly to
 `scripts/verify-real-ghidra-switch.mjs` to verify an installed package through
 the same compiler oracles and CLI/MCP checks.
 
@@ -1153,7 +1153,7 @@ requires unresolved table bounds or case mappings to remain visible as
 residual unknowns.
 
 `npm run verify:inspector` requires the supported Node.js runtime and installed
-REA dependencies. CI runs it on Linux and macOS x64/arm64 and Windows x64. It starts owned loopback
+NRE dependencies. CI runs it on Linux and macOS x64/arm64 and Windows x64. It starts owned loopback
 Node Inspector fixtures and verifies discovery and passive observation through
 the CLI and stdio MCP, including special filenames, unresolved discovery
 locations, and independently resolved loaded scripts. Double-quote filenames
@@ -1173,7 +1173,7 @@ handler and can leave temporary workspace files. `verify:windows-native`
 separately checks binary input, backpressure, EOF and pending-write job closure.
 
 `npm run verify:android` requires an existing Java 17+ and an explicit
-`REA_JADX_MCP_JAR` for jadx-headless-mcp 0.7.1. Set `REA_ANDROID_TEST_APK` to the
+`NRE_JADX_MCP_JAR` for jadx-headless-mcp 0.7.1. Set `NRE_ANDROID_TEST_APK` to the
 fixed public ApiDemos v6.0.18 fixture. Obtain both with the explicit
 `npm run fixtures:android` command; files are SHA-256 verified and
 kept under ignored `_reference/`. No Gradle build, Android SDK, emulator or
@@ -1192,12 +1192,12 @@ execution behavior. The broader `verify:android` lane checks CLI/MCP parity;
 neither lane runs the APK.
 
 `verify:jeb` requires a caller-started JEB client serving MCP at
-`REA_JEB_MCP_URL` (default `http://127.0.0.1:8425/mcp`) with a project
+`NRE_JEB_MCP_URL` (default `http://127.0.0.1:8425/mcp`) with a project
 already open, and exercises shared application/provider client inspection, unit listing coverage,
 and method decompilation. The script records the engine's exact response to
 `open_jeb_project`; the earlier licensed 5.48.0 headless verification did not
 advertise that tool.
-REA does not install or launch JEB; see [JEB analysis](jeb-analysis.md) for
+NRE does not install or launch JEB; see [JEB analysis](jeb-analysis.md) for
 the bring-your-own boundary. The earlier licensed build was verified against JEB 5.48.0 serving
 `jeb-mcp-server` 1.3.0 at four scales: a compiled Java class fixture, a
 locally built signed probe APK with a launcher activity (manifest, v1/v2/v3
@@ -1210,7 +1210,7 @@ analyzed as native code (75k methods on arm64) and decompiled through both
 CLI and MCP with explicit unit selection, plus the thin Java wrapper and
 decoded manifest. The dedicated Dart snapshot processor and `run_script`
 remained GUI-only surfaces in that headless build.
-The separate [Linux CE native audit](https://github.com/morluto/rea/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/jeb-linux-native.md)
+The separate [Linux CE native audit](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/jeb-linux-native.md)
 uses the official CE `5.48.0.202610071539` direct CLI launcher and real
 CLI/stdio MCP ELF workflows. That audit does not qualify CE Java/Android
 decompilation or GUI project opening, and it does not replace the licensed
@@ -1221,7 +1221,7 @@ Authenticated IPA and macOS application inventory projection is documented in
 `npm run verify:harmony` requires no SDK or engine. It projects the pinned
 harmony-next-pipeline 1.0.1 release HAP from an MIT-licensed source repository,
 fetched by `npm run fixtures:harmony` into ignored
-`_reference/harmony-integration/`, set as `REA_HARMONY_TEST_HAP`.
+`_reference/harmony-integration/`, set as `NRE_HARMONY_TEST_HAP`.
 The lane exercises `inspect_artifact`, projection determinism, Stage-model
 path hints, exact component sets, signing-entry limitations, and CLI/MCP parity.
 The release artifact has no independently established compiler/SDK or
@@ -1239,7 +1239,7 @@ npm run test:focused -- tests/boundary/process/jadxIntegration.test.ts tests/bou
 ## Apktool resource decoding
 
 `npm run verify:apktool -- --apk PATH` exercises both Apktool operations
-against a real launcher (`REA_APKTOOL_COMMAND` or PATH) and one APK. No
+against a real launcher (`NRE_APKTOOL_COMMAND` or PATH) and one APK. No
 download or build step is involved. Record: apktool 2.7.0-dirty (Debian
 packaging) on Linux with OpenJDK 25, against a signed aapt2-built probe APK
 carrying two resource locales — launcher version, on-disk digest agreement
@@ -1283,7 +1283,7 @@ budgets.
 ## ADB device acquisition
 
 `npm run verify:adb` exercises every ADB operation against a live device or
-emulator through the caller's adb binary (`REA_ADB_PATH` or PATH). No SDK
+emulator through the caller's adb binary (`NRE_ADB_PATH` or PATH). No SDK
 installation or emulator management is involved; the device-mutating tools
 run only in the explicit lifecycle section (`--install-apk` drives a
 lane-owned install → resolve → start → observe → force-stop → uninstall
@@ -1335,7 +1335,7 @@ then `npm run build:fixtures:nativeaot`. Running `vcvars64.bat` as a child of
 PowerShell does not preserve its environment in the parent PowerShell session.
 
 Build the clean pinned upstream adapter with `build:ghidra:nativeaot`, then set
-`REA_GHIDRA_NATIVEAOT_JAR`. Run `verify:ghidra:nativeaot -- symbols`, `-- stripped`,
+`NRE_GHIDRA_NATIVEAOT_JAR`. Run `verify:ghidra:nativeaot -- symbols`, `-- stripped`,
 `-- ordinary`, `-- unsupported`, `-- malformed`, `-- ambiguous`, and
 `-- loader-failure`, and `-- default-native` separately. The loader-failure mode source-builds
 a deliberately failing JDK 21 initializer and checks the actual loader cause and
@@ -1343,31 +1343,31 @@ cleanup. The default-native mode verifies ordinary analysis with the optional
 extension disabled.
 The real MCP lane checks source identity, inline format discovery, metadata
 relationships/slots against independent compiler symbols, frozen strings,
-pseudocode and owned cleanup. Set `REA_NATIVEAOT_PROOF_CLI=1` for one equivalent
+pseudocode and owned cleanup. Set `NRE_NATIVEAOT_PROOF_CLI=1` for one equivalent
 CLI type inspection; this costs an additional full import. Select an unpacked
-installed package with `REA_NATIVEAOT_PROOF_PACKAGE_ROOT`, a fixture directory
-with `REA_NATIVEAOT_PROOF_FIXTURE_ROOT`, and optional evidence capture directory
-with `REA_NATIVEAOT_PROOF_CAPTURE_DIR` (absolute paths).
+installed package with `NRE_NATIVEAOT_PROOF_PACKAGE_ROOT`, a fixture directory
+with `NRE_NATIVEAOT_PROOF_FIXTURE_ROOT`, and optional evidence capture directory
+with `NRE_NATIVEAOT_PROOF_CAPTURE_DIR` (absolute paths).
 
 Keep builds/imports sequential on small hosts; scope `GHIDRA_HEADLESS_MAXMEM`
-(e.g. `768M`) to this command and use CPU affinity if needed. REA does not install
+(e.g. `768M`) to this command and use CPU affinity if needed. NRE does not install
 or upgrade Java, Ghidra, .NET or native toolchains. See
 [the supported layout and provenance](ghidra-nativeaot.md).
 
 ## IDA MCP adapter
 
 `npm run verify:ida -- --target /absolute/path/to/program --procedure main`
-uses the existing `REA_IDA_MCP_CONFIG` registration. It installs no engine,
+uses the existing `NRE_IDA_MCP_CONFIG` registration. It installs no engine,
 Python package, or compiler. The target must already be open in the GUI for
 the legacy or native attached profile; the database-supervisor headless profile opens
 a digest-verified private copy. A caller-supplied fixture keeps prerequisites
 limited to the selected engine and host. `tests/conformance/ida/inventory.c`
 provides an optional small native fixture source with exported
-`rea_fixture_add` and `rea_fixture_subtract` functions. For their switching check,
-use `--second-procedure rea_fixture_subtract --second-marker='- 13'`.
+`nre_fixture_add` and `nre_fixture_subtract` functions. For their switching check,
+use `--second-procedure nre_fixture_subtract --second-marker='- 13'`.
 
 The lane invokes the production CLI dispatcher and connects the pinned MCP
-client SDK to the production REA server. It verifies function Evidence and
+client SDK to the production NRE server. It verifies function Evidence and
 CLI/MCP parity, inventory/search, pseudocode, instructions, xrefs, malformed
 input, original-input preservation, and lifecycle cleanup. The headless
 profile also checks containing procedures, the admitted program as the
@@ -1375,7 +1375,7 @@ document, address context, and feature tracing. For headless
 analysis it confirms that the owned database IDs disappear from upstream
 discovery and private workspaces are removed. For attached analysis it confirms
 the existing GUI target remains reachable with the same input identity.
-`--package-root` selects an installed/extracted REA artifact. `--report` writes
+`--package-root` selects an installed/extracted NRE artifact. `--report` writes
 private local observations with mode `0600`; the console summary contains no
 target paths or upstream output.
 
@@ -1396,12 +1396,12 @@ other engine versions and architectures remain unverified; see the
 
 Native IDA MCP verification uses `"protocol": "native"` with an already-running native plugin and requires `--second-procedure other_function --second-marker unique_second_body_text` to exercise GUI function switching and a return to the first function. These options remain optional for other profiles. The literal marker must appear in the second function's pseudocode and be absent from the first. Native cloud/widget failures are reported without hidden retries.
 
-The initial Linux x64 IDA Free 9.4 run used native MCP 1.1.2 with a local navigation correction. Windows x64 verification uses **IDA Pro 9.3**, the two-function public fixture, and the shipped Windows `whoami.exe` application. The native plugin was built from upstream `c9d15d98e8a143fc74f6e14037c48f63889b6d6c`, including the merged navigation fix, with a local loopback-listener change. Production CLI/MCP parity, switching, identity and cleanup passed. Correctness and performance measurements are recorded in the [Windows native verification notes](https://github.com/morluto/rea/blob/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency/ida-native-windows.md). Stock 1.1.2 switching, native macOS, and Windows IDA Free remain unverified. See the [native bridge prerequisites](ida-provider.md#optional-native-ida-mcp-bridge).
+The initial Linux x64 IDA Free 9.4 run used native MCP 1.1.2 with a local navigation correction. Windows x64 verification uses **IDA Pro 9.3**, the two-function public fixture, and the shipped Windows `whoami.exe` application. The native plugin was built from upstream `c9d15d98e8a143fc74f6e14037c48f63889b6d6c`, including the merged navigation fix, with a local loopback-listener change. Production CLI/MCP parity, switching, identity and cleanup passed. Correctness and performance measurements are recorded in the [Windows native verification notes](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency/ida-native-windows.md). Stock 1.1.2 switching, native macOS, and Windows IDA Free remain unverified. See the [native bridge prerequisites](ida-provider.md#optional-native-ida-mcp-bridge).
 
 ## Kuna lane
 
-`npm run verify:kuna` requires a caller-supplied `kuna` in `REA_KUNA_COMMAND`
-and a host C compiler (`REA_CC`, default `cc`) with `strip` and `nm`. It builds a
+`npm run verify:kuna` requires a caller-supplied `kuna` in `NRE_KUNA_COMMAND`
+and a host C compiler (`NRE_CC`, default `cc`) with `strip` and `nm`. It builds a
 source-owned fixture with non-inlined calls, with symbols and stripped, then verifies through MCP that
 callers, callees and exact incoming xrefs agree with those calls, graph/path
 composition reaches the callee, reference-only queries leave project/staging
@@ -1426,7 +1426,7 @@ arm64. It covered zlib 1.3.2 `minigzip`, coreutils 9.9 `sort` and the sqlite
 3.54.0 shell, built at `-O2` for ELF x86-64, ELF AArch64, Mach-O arm64 and
 Mach-O x86-64, each with symbols and stripped. A separate Linux x86-64 run verified
 the fixture and system zlib 1.2.13 / SQLite 3.40.1 libraries through MCP, including
-cached byte spans and a Ghidra comparison. See the [Linux report](https://github.com/morluto/rea/pull/3854#issuecomment-6185870391)
+cached byte spans and a Ghidra comparison. See the [Linux report](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/3854#issuecomment-6185870391)
 for measured scope and limitations. Windows, PE and universal Mach-O remain
 unverified by this lane.
 
@@ -1455,7 +1455,7 @@ runtime or PC-98 device execution.
 
 `npm run verify:ghidra:6502` uses `ca65` and `ld65` to build the source-owned
 NMOS 6502 fixture from `tests/conformance/ghidra/6502.s` and `6502.cfg`. Set
-`REA_CA65` and `REA_LD65` for non-PATH installations (tested with cc65 `V2.19`).
+`NRE_CA65` and `NRE_LD65` for non-PATH installations (tested with cc65 `V2.19`).
 With an installed Ghidra 12.1.4 and full JDK, it verifies real CLI/stdio MCP
 mapping parity, exact source bytes, functions, a direct call reference,
 decompilation, 16-bit overflow rejection without replacing the active session,
@@ -1498,7 +1498,7 @@ verified empty process lineage. This lane does not establish Windows or macOS
 real-provider coverage.
 
 For source-identity boundaries that a normal single-file import cannot create,
-`tests/conformance/ghidra/ReaFileOffsetSourceProbe.java` exercises the production
+`tests/conformance/ghidra/NreFileOffsetSourceProbe.java` exercises the production
 bridge against real Ghidra `FileBytes`. It rejects auxiliary and partial sources,
 checks the original target's round trip, and retains ambiguity when duplicate
 target bytes have distinct loaded mappings. Injected decompiler failures and
@@ -1509,13 +1509,13 @@ source-owned PE fixture, run from the repository root:
 
 ```powershell
 node scripts/create-ghidra-windows-fixture.mjs
-$proofRoot = Join-Path $env:TEMP 'rea-file-offset-source-proof'
+$proofRoot = Join-Path $env:TEMP 'nre-file-offset-source-proof'
 New-Item -ItemType Directory -Path $proofRoot -Force | Out-Null
-Copy-Item bridge/ghidra/ReaGhidraBridge.java, bridge/ghidra/ReaGhidraExtensions.java, tests/conformance/ghidra/ReaFileOffsetSourceProbe.java -Destination $proofRoot
-& "$env:GHIDRA_INSTALL_DIR/support/analyzeHeadless.bat" $proofRoot source-proof -import "$PWD/build/fixtures/rea-ghidra-windows.exe" -scriptPath $proofRoot -postScript ReaFileOffsetSourceProbe.java -deleteProject
+Copy-Item bridge/ghidra/NreGhidraBridge.java, bridge/ghidra/NreGhidraExtensions.java, tests/conformance/ghidra/NreFileOffsetSourceProbe.java -Destination $proofRoot
+& "$env:GHIDRA_INSTALL_DIR/support/analyzeHeadless.bat" $proofRoot source-proof -import "$PWD/build/fixtures/nre-ghidra-windows.exe" -scriptPath $proofRoot -postScript NreFileOffsetSourceProbe.java -deleteProject
 ```
 
-Require the `REA_FILE_OFFSET_SOURCE_OK` marker and no script errors; Ghidra may
+Require the `NRE_FILE_OFFSET_SOURCE_OK` marker and no script errors; Ghidra may
 exit successfully even when a post-script fails. The probe edits only its
 temporary analysis database and does not execute the fixture. This producer
 regression supplements public CLI/MCP coverage and does not establish Linux
@@ -1826,7 +1826,7 @@ separate workflow, because reusable qualification calls this workflow and
 cannot raise its read-only token. After a push, schedule, or manual CI run on
 the default branch finishes, including when a later lane fails, times out, or
 is cancelled, that workflow runs on `ubuntu-latest` and deletes older
-`rea-static-v1`, `rea-static-deep-v1`, and `rea-portable-build-v2` entries for
+`nre-static-v1`, `nre-static-deep-v1`, and `nre-portable-build-v2` entries for
 that runner's OS and architecture, plus older `knip-meta-v1` entries for that
 OS. It keeps two generations plus the key that run saved. A fast run that did
 not publish a deep or Knip snapshot still leaves the two newest entries in
@@ -1849,7 +1849,7 @@ establish that fewer tests would preserve regression detection.
 
 The nine automatic browser, binary-layout, EVM, JavaScript-recovery,
 recorded-crash, web and environment-bundle provider lanes download
-`rea-build-cache` from their own run after the build and static jobs succeed. Their existing build commands still
+`nre-build-cache` from their own run after the build and static jobs succeed. Their existing build commands still
 validate task hashes and rebuild mismatched inputs; provider observations always
 run. Provider-workflow-only edits also admit the build without enabling source
 test shards. Direct provider dispatches retain the cross-run restore-only cache.
@@ -1949,7 +1949,7 @@ runs `observe-native-calls` through the CLI and stdio MCP. It checks:
 
 ### Firmware adapters
 
-Linux-owned provider launches require a procps-compatible `ps` on REA's `PATH`
+Linux-owned provider launches require a procps-compatible `ps` on NRE's `PATH`
 so ownership can be inspected before launching a child. A missing or incompatible
 command fails with an actionable capability error before the launch.
 
@@ -1961,30 +1961,30 @@ fixture's Unblob extractor. The provider also accepts other 3.1.x and
 26.6.x builds and reports them as unverified; this lane proves the audited
 releases. It verifies CLI/MCP parity, selected ranges,
 unknown chunks, depth limits and extracted child digests. The optional
-`REA_FIRMWARE_VERIFY_EXT4=1` lane requires existing mke2fs/debugfs; the separate
-`REA_FIRMWARE_VERIFY_GHIDRA=1` lane checks a selected host ELF through real Ghidra.
+`NRE_FIRMWARE_VERIFY_EXT4=1` lane requires existing mke2fs/debugfs; the separate
+`NRE_FIRMWARE_VERIFY_GHIDRA=1` lane checks a selected host ELF through real Ghidra.
 Neither optional toolchain is a base-lane prerequisite. See
 [firmware analysis](firmware-analysis.md) for limits and unverified formats.
 
 `npm run verify:esp-images` requires a Clang with the RISC-V target and
-`ld.lld` (`REA_RISCV_CLANG`, `REA_RISCV_LLD`) and a Python that runs esptool
-and espsecure (`REA_ESPTOOL_PYTHON`). It builds ESP32-C3 app and bootloader
+`ld.lld` (`NRE_RISCV_CLANG`, `NRE_RISCV_LLD`) and a Python that runs esptool
+and espsecure (`NRE_ESPTOOL_PYTHON`). It builds ESP32-C3 app and bootloader
 ELF files from `tests/conformance/esp/`, converts them with `esptool
 elf2image`, including `--secure-pad-v2`, `--ram-only-header` and
 `--pad-to-size`, signs one with RSA, ECDSA P-256 and P-384 keys, and compares
-REA's facts with `esptool image-info` and `espsecure signature-info-v2`. It
+NRE's facts with `esptool image-info` and `espsecure signature-info-v2`. It
 compares extracted segments and signature blocks with the producer's bytes,
 and derives malformed images and ESP8266 v1 and v3 images. It checks each
 tool before building and warns when esptool is not the pinned v5.6.0.
-`REA_XTENSA_ESP32_GCC` adds an ESP32 Xtensa build. See
+`NRE_XTENSA_ESP32_GCC` adds an ESP32 Xtensa build. See
 [ESP images](esp-image.md).
 
 ### JavaScript source recovery
 
 Build once with `npm run build:cached`, then run `npm run verify:javascript:recovery`.
 This focused lane requires Linux x64, util-linux `prlimit`,
-`REA_WAKARU_COMMAND` pointing to the official Wakaru 1.14.0 Linux x64 binary,
-and `REA_JAVASCRIPT_FIXTURE_TOOLS` pointing to an isolated npm prefix containing
+`NRE_WAKARU_COMMAND` pointing to the official Wakaru 1.14.0 Linux x64 binary,
+and `NRE_JAVASCRIPT_FIXTURE_TOOLS` pointing to an isolated npm prefix containing
 esbuild 0.25.10 and webpack 5.101.3. No global installation is required.
 The lane compiles source-owned fixtures, exercises CLI and stdio MCP, verifies
 published bytes and provenance, feeds recovered modules into existing analysis,
@@ -2002,19 +2002,19 @@ lane uses real Chrome for browser capture and website workflows.
 
 `npm run verify:browser:source-maps` checks actual Chromium capture/export and
 source-map point tracing through CLI and stdio MCP. It requires absolute
-`REA_BROWSER_EXECUTABLE` and `REA_WEB_SOURCE_MAP_COMPILER` pointing to esbuild
+`NRE_BROWSER_EXECUTABLE` and `NRE_WEB_SOURCE_MAP_COMPILER` pointing to esbuild
 0.25.10's `lib/main.js` in a caller-owned isolated installation. Preflight reports
 missing prerequisites for this lane. The compiler is used only to generate the
 source-owned fixture. No Hopper, Ghidra or application dependency installation
 is required.
 
 ```bash
-REA_BROWSER_EXECUTABLE=/absolute/path/to/chromium \
-REA_WEB_SOURCE_MAP_COMPILER=/absolute/path/to/fixture-tools/node_modules/esbuild/lib/main.js \
+NRE_BROWSER_EXECUTABLE=/absolute/path/to/chromium \
+NRE_WEB_SOURCE_MAP_COMPILER=/absolute/path/to/fixture-tools/node_modules/esbuild/lib/main.js \
 npm run verify:browser:source-maps
 ```
 
-`scripts/verify-browser-source-maps.mjs /absolute/path/to/installed/rea.mjs`
+`scripts/verify-browser-source-maps.mjs /absolute/path/to/installed/nre.mjs`
 checks an installed package after building the verifier dependencies. The separate
 conditional `real-web-source-map` CI job supplies Chrome and an isolated pinned
 fixture compiler; static/unit checks do not acquire a browser. See
@@ -2026,7 +2026,7 @@ fixture compiler; static/unit checks do not acquire a browser. See
 the running Node engine's single-string limit. Shared input leaves keep the
 fixture's graph small; the verifier writes one temporary output file, checks its
 complete byte count and an independent digest, then removes it. It requires only
-Node and the built REA runtime, with space for the output plus a 1 GiB reserve.
+Node and the built NRE runtime, with space for the output plus a 1 GiB reserve.
 Run `npm run verify:javascript:output -- jsonl` for compact JSONL coverage. Its
 row collection must match independent row and final-metadata byte/digest goldens;
 its token count is checked against the actual file one line at a time, even when
@@ -2037,7 +2037,7 @@ arbitrary third-party application's parsing cost or MCP client capacity.
 ### Website runtime attribution lane
 
 `npm run verify:browser:runtime` uses caller-supplied
-`REA_BROWSER_EXECUTABLE` and an owned synthetic site/profile. It exercises public
+`NRE_BROWSER_EXECUTABLE` and an owned synthetic site/profile. It exercises public
 CLI and stdio MCP for precise execution and native listener source locations,
 including actual armed progress, Unicode/CRLF digests, repeated source URLs with
 distinct script IDs, zero branches and function-only unknowns on repeated
@@ -2055,8 +2055,8 @@ coverage limits.
 `npm run verify:binary:layout` requires Linux x64, GCC/binutils, the
 `i686-linux-gnu`, `arm-linux-gnueabi`, `mips-linux-gnu` and `mipsel-linux-gnu`
 cross `gcc`/`readelf` toolchains, absolute
-`REA_PWNTOOLS_PYTHON` with pwntools 4.15.0/pyelftools 0.33/Unicorn 2.1.2 and
-absolute `REA_VERIFY_STRACE_COMMAND`. It compiles ephemeral source-owned ELF
+`NRE_PWNTOOLS_PYTHON` with pwntools 4.15.0/pyelftools 0.33/Unicorn 2.1.2 and
+absolute `NRE_VERIFY_STRACE_COMMAND`. It compiles ephemeral source-owned ELF
 fixtures and checks public CLI/MCP, lossless addresses/names, file ranges,
 mitigation inferences, malformed/unsupported input, original file hashes and
 released process ownership. Cross-compiled ELF32 executables and relocatable
@@ -2067,15 +2067,15 @@ separate verification lanes. Pass an installed package entrypoint as the script'
 first argument to verify packaging independently of the checkout.
 The valid SHN_XINDEX fixture has 65,281 full section rows; CLI is checked in
 the ordinary lane. Its large MCP transfer is opt-in with
-`REA_VERIFY_LARGE_ELF_MCP=1` (or the workflow dispatch `large_mcp` input), an
-explicit 256 MiB SDK receive buffer, matching server `REA_MCP_MAX_RESPONSE_BYTES`,
+`NRE_VERIFY_LARGE_ELF_MCP=1` (or the workflow dispatch `large_mcp` input), an
+explicit 256 MiB SDK receive buffer, matching server `NRE_MCP_MAX_RESPONSE_BYTES`,
 and five-minute request timeout. Ordinary
 MCP fixtures retain the pinned SDK defaults.
 
 ### Offline EVM interface
 
 `npm run verify:evm:interface` requires Linux x64, an absolute
-`REA_VERIFY_STRACE_COMMAND`, caller-supplied util-linux `prlimit` and `REA_VERIFY_SOLC_MODULE` selecting the absolute module path for
+`NRE_VERIFY_STRACE_COMMAND`, caller-supplied util-linux `prlimit` and `NRE_VERIFY_SOLC_MODULE` selecting the absolute module path for
 solc 0.8.30. It compiles source-owned plain/optimized/via-IR Cancun fixtures in
 private storage and checks actual CLI/MCP selector evidence, raw/hex identity,
 unknowns, malformed carriers and independent cleanup. An optional positional
@@ -2085,9 +2085,9 @@ or chain dependency and does not execute a contract on a chain.
 ### Recorded crash evidence
 
 `npm run verify:recorded:crash` is a separate Linux x64 lane. It requires GCC,
-GDB, absolute `REA_PWNTOOLS_PYTHON` with the offline ELF profile above,
-`REA_PWNDBG_GDBINIT` and `REA_PWNDBG_VENV_PATH` with unchanged pwndbg 2026.09.15,
-and `REA_VERIFY_STRACE_COMMAND`. Its disposable CI runner installs GDB, checks out the exact upstream
+GDB, absolute `NRE_PWNTOOLS_PYTHON` with the offline ELF profile above,
+`NRE_PWNDBG_GDBINIT` and `NRE_PWNDBG_VENV_PATH` with unchanged pwndbg 2026.09.15,
+and `NRE_VERIFY_STRACE_COMMAND`. Its disposable CI runner installs GDB, checks out the exact upstream
 commit and installs its frozen lockfile in isolated runner storage. No developer
 host configuration or core-pattern setting changes.
 
@@ -2099,7 +2099,7 @@ missing/unsupported plugin errors. A historical-PID collision fixture references
 an owned live sentinel; inspection syscall traces reject process attach/memory
 access, provider lookups of that PID's `/proc` files and attempted Internet sockets. Traces admit
 the observed upstream startup helpers (`iconv -l`, the selected checkout's Git
-version lookup) and REA ownership inspection separately from target execution.
+version lookup) and NRE ownership inspection separately from target execution.
 This is fixture evidence, not a sandbox claim. Inputs remain unchanged and the
 sentinel must stay alive; owned cleanup and empty verifier descendants are required. Pass an
 installed package entrypoint as the script's first argument for package coverage.
@@ -2107,9 +2107,9 @@ installed package entrypoint as the script's first argument for package coverage
 ### Exported environment bundles
 
 `npm run verify:agentenv:environment` is the `real-agentenv` lane. It requires
-the host's Docker CLI named by absolute `REA_DOCKER_COMMAND`, Python 3.12 with
+the host's Docker CLI named by absolute `NRE_DOCKER_COMMAND`, Python 3.12 with
 `agentenv-framework==0.9.1334` installed in a virtual environment whose
-`agent-env` binary is named by absolute `REA_AGENT_ENV_COMMAND`, and outbound
+`agent-env` binary is named by absolute `NRE_AGENT_ENV_COMMAND`, and outbound
 network for `pip` on the runner and for `npm` inside the image build. Both
 variables are required; neither upstream executable is resolved from `PATH`,
 and the verifier installs nothing. Packing uses the shared npm helper, honoring
@@ -2141,7 +2141,7 @@ ends the lane at once.
 
 The verifier writes the Grafana-shaped HAR the view tests own, packs the
 checkout with `npm pack`, builds the bundle from the HAR with
-`rea environment-build --package-tarball` through the built CLI, the command
+`nre environment-build --package-tarball` through the built CLI, the command
 users run, so the image installs this checkout rather than the registry
 package, and runs `agent-env run` on the bundle. It checks that the build
 reports the 28-record capture, the default template rules, the planned file set
@@ -2164,8 +2164,8 @@ package entrypoint as the script's first argument for package coverage.
 
 `npm run verify:agent` evaluates investigation scenarios through a real local
 Codex CLI. The lane runs sequentially; select scenarios with
-`REA_AGENT_EVAL_SCENARIOS` and choose the installed client/model with
-`REA_CODEX_CLI` and `REA_AGENT_EVAL_MODEL`. The detailed
+`NRE_AGENT_EVAL_SCENARIOS` and choose the installed client/model with
+`NRE_CODEX_CLI` and `NRE_AGENT_EVAL_MODEL`. The detailed
 [agent evaluation reference](client-verification.md#agent-evaluation-and-conformance-records)
 contains isolation, authentication cleanup, grading, and conformance boundaries.
 
@@ -2178,9 +2178,9 @@ uncertainty and a negative control rejecting claims of complete coverage.
 
 ## Frida instrumentation
 
-`npm run verify:frida` builds REA, spawns a short-lived local Node.js fixture,
+`npm run verify:frida` builds NRE, spawns a short-lived local Node.js fixture,
 loads a harmless marker script before resuming it, captures the message, and
-detaches. This lane requires Linux on the REA host and the optional Frida
+detaches. This lane requires Linux on the NRE host and the optional Frida
 binding; it does not need a Frida server or a caller-selected process. To run
 the separate remote attach lane, pass `-- --address HOST:PORT --pid PID` for an
 explicitly selected process. Optional remote flags are `--token`,
@@ -2191,7 +2191,7 @@ real device/server compatibility.
 ### Offline WASM artifacts
 
 `npm run verify:wasm:artifact -- --require-tools` uses an absolute
-`REA_WABT_BIN_DIRECTORY` containing WABT 1.0.42, including `wat2wasm` for fixture
+`NRE_WABT_BIN_DIRECTORY` containing WABT 1.0.42, including `wat2wasm` for fixture
 generation. It installs nothing. Without configuration, the default invocation
 reports a named skip; `--require-tools` makes missing configuration fail.
 
@@ -2209,8 +2209,8 @@ input descriptors, checks recovered CLI errors, and verifies retry on the same
 MCP connection after repeated runtime-removal denial. These are controlled
 faults, not naturally occurring permission failures; no WASM target is executed.
 Pass an installed package's
-`scripts/rea.mjs` as the first argument to run the same lane against the package.
-`npm run verify:wasm:package` packs and installs REA into an isolated temporary
+`scripts/nre.mjs` as the first argument to run the same lane against the package.
+`npm run verify:wasm:package` packs and installs NRE into an isolated temporary
 prefix with lifecycle scripts disabled and runs the same required real-tool lane.
 It requires WABT configuration and makes no host tool installation.
 

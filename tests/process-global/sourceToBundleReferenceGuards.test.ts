@@ -24,7 +24,7 @@ vi.mock(
 afterEach(() => vi.restoreAllMocks());
 
 it("reserves graph validation/hash memory before the owning parser allocates", async () => {
-  const root = await createTestTempDirectory("rea-source-headroom-");
+  const root = await createTestTempDirectory("nre-source-headroom-");
   const path = join(root, "graph.json");
   await writeFile(
     path,
@@ -65,7 +65,7 @@ it("reserves graph validation/hash memory before the owning parser allocates", a
 });
 
 it("attributes file-I/O cancellation to the comparison and preserves its exact cause", async () => {
-  const root = await createTestTempDirectory("rea-reference-io-cancel-");
+  const root = await createTestTempDirectory("nre-reference-io-cancel-");
   const path = join(root, "graph.json");
   await writeFile(
     path,
@@ -186,7 +186,7 @@ it.each(["validation", "comparison"] as const)(
 );
 
 const connectedComparison = async () => {
-  const root = await createTestTempDirectory("rea-source-commit-cancel-");
+  const root = await createTestTempDirectory("nre-source-commit-cancel-");
   const path = join(root, "graph.json");
   await writeFile(
     path,

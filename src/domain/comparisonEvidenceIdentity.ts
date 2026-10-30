@@ -6,29 +6,29 @@ import {
 
 /** Canonical provider identity for deterministic artifact comparisons. */
 export const ARTIFACT_COMPARISON_PROVIDER = {
-  id: "rea-artifact-comparison",
-  name: "REA artifact comparison",
+  id: "nre-artifact-comparison",
+  name: "NRE artifact comparison",
   version: "1",
 } as const;
 
 /** Canonical provider identity for deterministic function comparisons. */
 export const FUNCTION_COMPARISON_PROVIDER = {
-  id: "rea-function-comparison",
-  name: "REA function comparison",
+  id: "nre-function-comparison",
+  name: "NRE function comparison",
   version: "1",
 } as const;
 
 const COMPARISON_EVIDENCE_IDENTITIES = {
   compare_artifacts: {
-    predicate: "rea.artifact-comparison",
+    predicate: "nre.artifact-comparison",
     provider: ARTIFACT_COMPARISON_PROVIDER,
   },
   compare_functions: {
-    predicate: "rea.function-comparison",
+    predicate: "nre.function-comparison",
     provider: FUNCTION_COMPARISON_PROVIDER,
   },
   compare_process_captures: {
-    predicate: "rea.process-comparison",
+    predicate: "nre.process-comparison",
     provider: PROCESS_PROVIDER,
   },
 } as const;

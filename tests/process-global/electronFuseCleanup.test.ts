@@ -21,7 +21,7 @@ afterEach(() => {
 mcpTest(
   "retries the same fuse descriptor before admitting another MCP read and during server close",
   async ({ mcp }) => {
-    const root = await createTestTempDirectory("rea-fuse-mcp-close-");
+    const root = await createTestTempDirectory("nre-fuse-mcp-close-");
     const path = join(root, "application");
     await writeFile(path, thinFuseImage([0x31]).bytes);
     const originalOpen = fs.promises.open;

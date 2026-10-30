@@ -59,7 +59,7 @@ it.each([
     const bytes = commandImage(true, true, [16]);
     bytes.writeUInt32LE(value, field);
     const path = join(
-      await createTestTempDirectory("rea-macho-command-"),
+      await createTestTempDirectory("nre-macho-command-"),
       "image",
     );
     await writeFile(path, bytes);
@@ -87,7 +87,7 @@ it.each([
   async ({ wide, littleEndian, size }) => {
     const bytes = commandImage(wide, littleEndian, [size]);
     const path = join(
-      await createTestTempDirectory("rea-macho-command-control-"),
+      await createTestTempDirectory("nre-macho-command-control-"),
       "image",
     );
     await writeFile(path, bytes);
@@ -109,7 +109,7 @@ it.each([false, true])(
     const bytes = commandImage(true, true, [4104, 16]);
     if (corrupt) bytes.writeUInt32LE(0xffffffff, 32 + 4104 + 4);
     const path = join(
-      await createTestTempDirectory("rea-macho-command-window-"),
+      await createTestTempDirectory("nre-macho-command-window-"),
       "image",
     );
     await writeFile(path, bytes);
@@ -139,7 +139,7 @@ it.each([null, 0, 1])(
       { cpu: CPU.arm64, bytes: slices[1]! },
     ]);
     const path = join(
-      await createTestTempDirectory("rea-fat-command-"),
+      await createTestTempDirectory("nre-fat-command-"),
       "image",
     );
     await writeFile(path, bytes);

@@ -41,7 +41,7 @@ export async function verifyPackageEnvironment({
   await writeFile(swVers, "#!/bin/sh\necho 14.5\n");
   await writeFile(
     npx,
-    '#!/bin/sh\nexec "$REA_VERIFY_NODE" "$REA_VERIFY_NPX_SCRIPT" "$@"\n',
+    '#!/bin/sh\nexec "$NRE_VERIFY_NODE" "$NRE_VERIFY_NPX_SCRIPT" "$@"\n',
   );
   await writeFile(hopper, "#!/bin/sh\nexit 0\n");
   await Promise.all([
@@ -95,14 +95,14 @@ export async function verifyPackageEnvironment({
     GEMINI_CLI_SYSTEM_DEFAULTS_PATH: undefined,
     XDG_CONFIG_HOME: join(home, ".config"),
     PATH: `${fakeBin}:${process.env.PATH ?? ""}`,
-    REA_ANALYSIS_PROVIDER: "auto",
+    NRE_ANALYSIS_PROVIDER: "auto",
     ...packageHopperEnvironment(root),
-    REA_NPX_LOG: npxLog,
-    REA_VERIFY_NODE: process.execPath,
-    REA_VERIFY_NPX_SCRIPT: fileURLToPath(
+    NRE_NPX_LOG: npxLog,
+    NRE_VERIFY_NODE: process.execPath,
+    NRE_VERIFY_NPX_SCRIPT: fileURLToPath(
       new URL("./lib/verify-package-runner-fixture.mjs", import.meta.url),
     ),
-    REA_REFERENCE_SECRET_PATTERNS_JSON: JSON.stringify([".env"]),
+    NRE_REFERENCE_SECRET_PATTERNS_JSON: JSON.stringify([".env"]),
   };
   return {
     prefix,
@@ -137,7 +137,7 @@ export const packageHopperEnvironment = (root, platform = process.platform) => {
     HOPPER_LOADER_ARGS_JSON: JSON.stringify([
       "-c",
       'node_path=$1; shift; "$node_path" "$@"',
-      "rea-package-hopper",
+      "nre-package-hopper",
       process.execPath,
       fakeLauncher,
     ]),

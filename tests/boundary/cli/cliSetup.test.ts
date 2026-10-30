@@ -22,7 +22,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const execute = promisify(execFile);
-const decisionMarker = "REA_SETUP_DECISION:";
+const decisionMarker = "NRE_SETUP_DECISION:";
 const decisionSchema = z.object({
   approved: z.boolean(),
   selectedActionIds: z.array(z.string()),
@@ -35,14 +35,14 @@ const actions = [
     kind: "configure_client",
     label: "Codex",
     target: "/isolated/.codex/config.toml",
-    detail: "Add the REA MCP registration for Codex.",
+    detail: "Add the NRE MCP registration for Codex.",
     external: false,
     operation: "create",
   },
   {
     id: "install_skill",
     kind: "install_skill",
-    label: "REA reverse-engineering skill",
+    label: "NRE reverse-engineering skill",
     target: "/isolated/.agents/skills/reverse-engineering/SKILL.md",
     detail: "Install the bundled reverse-engineering skill.",
     external: false,
@@ -92,7 +92,7 @@ const runSetupDryRunInTty = async (
 ): Promise<{ readonly exitCode: number; readonly output: string }> => {
   const terminal = spawn(
     process.execPath,
-    ["scripts/rea.mjs", "setup", "--dry-run", ...arguments_],
+    ["scripts/nre.mjs", "setup", "--dry-run", ...arguments_],
     {
       cwd: process.cwd(),
       env: {
@@ -100,7 +100,7 @@ const runSetupDryRunInTty = async (
         HOME: home,
         USERPROFILE: home,
         XDG_CONFIG_HOME: join(home, ".config"),
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
         NO_COLOR: "1",
       },
       name: "xterm-256color",
@@ -127,7 +127,7 @@ const runSetupDryRunInTty = async (
 
 describe("TTY setup dry run", () => {
   it("prints the plan and no-mutation notice for a TTY dry run", async () => {
-    const home = await createTestTempDirectory("rea-cli-setup-dry-run-");
+    const home = await createTestTempDirectory("nre-cli-setup-dry-run-");
     const { exitCode, output } = await runSetupDryRunInTty(home, [
       "--client",
       "codex",
@@ -146,9 +146,9 @@ describe("TTY setup dry run", () => {
   });
 
   it("shows the refusal instead of a blocked skill plan for a TTY dry run", async () => {
-    const home = await createTestTempDirectory("rea-cli-setup-linked-dry-run-");
+    const home = await createTestTempDirectory("nre-cli-setup-linked-dry-run-");
     const managed = join(home, "managed-skill");
-    const linked = join(home, ".claude/skills/reverse-engineer-anything");
+    const linked = join(home, ".claude/skills/nano-reverse-engineer");
     const original = "user-managed skill bytes\n";
     await mkdir(managed);
     await writeFile(join(managed, "SKILL.md"), original);
@@ -168,8 +168,8 @@ describe("TTY setup dry run", () => {
     expect(output).toContain("Skill directory is a symbolic link.");
     expect(output).toContain(linked);
     expect(output).toContain("--skill=false");
-    expect(output).not.toContain("REA setup plan");
-    expect(output).not.toContain("Install or update the REA skill");
+    expect(output).not.toContain("NRE setup plan");
+    expect(output).not.toContain("Install or update the NRE skill");
     expect((await lstat(linked)).isSymbolicLink()).toBe(true);
     expect(await readFile(join(managed, "SKILL.md"), "utf8")).toBe(original);
     expect(await readdir(managed)).toEqual(["SKILL.md"]);
@@ -182,26 +182,26 @@ describe("TTY setup dry run", () => {
 cliTest.skipIf(process.platform === "win32")(
   "repairs a Codex timeout without replacing an equivalent caller-selected launcher",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-codex-alias-repair-");
+    const home = await createTestTempDirectory("nre-codex-alias-repair-");
     const codexHome = join(home, ".codex");
     const config = join(codexHome, "config.toml");
-    const backup = `${config}.rea.backup`;
-    const alias = join(home, "rea-launcher-alias.mjs");
+    const backup = `${config}.nre.backup`;
+    const alias = join(home, "nre-launcher-alias.mjs");
     await mkdir(codexHome);
-    await symlink(resolve("scripts/rea.mjs"), alias, "file");
+    await symlink(resolve("scripts/nre.mjs"), alias, "file");
     const original = [
       "# Caller-owned Codex approval policy",
       'approval_policy = "on-request"',
       'sandbox_mode = "read-only"',
       "",
-      "[mcp_servers.rea]",
+      "[mcp_servers.nre]",
       `command = ${JSON.stringify(process.execPath)}`,
       `args = ${JSON.stringify([alias, "mcp"])}`,
       "startup_timeout_sec = 0",
       "tool_timeout_sec = 900",
       'default_tools_approval_mode = "prompt"',
       "",
-      "[mcp_servers.rea.tools.open_binary]",
+      "[mcp_servers.nano-reverse-engineer.open_binary]",
       'approval_mode = "approve"',
       "output_token_limit = 2048",
       "",
@@ -253,7 +253,7 @@ cliTest.skipIf(process.platform === "win32")(
       approval_policy: "on-request",
       sandbox_mode: "read-only",
       mcp_servers: {
-        rea: {
+        nre: {
           command: process.execPath,
           args: [alias, "mcp"],
           startup_timeout_sec: 30,
@@ -284,7 +284,7 @@ describe("interactive setup journey", () => {
   it("shows detected and absent clients without preselecting detected clients", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", "\u001b[B"),
+        step("Which agents should use NRE?", "\u001b[B"),
         step("Not detected · configuration is still available", "\r"),
       ],
       false,
@@ -294,15 +294,15 @@ describe("interactive setup journey", () => {
     expect(result.output).toContain(
       "Not detected · configuration is still available",
     );
-    expect(result.output).toContain("Which agents should use REA?");
-    expect(result.output).not.toContain("What should REA set up?");
+    expect(result.output).toContain("Which agents should use NRE?");
+    expect(result.output).not.toContain("What should NRE set up?");
     expect(result.decision.selectedActionIds).toEqual([]);
   });
 
   it("selects an absent OpenCode client and bundles its skill", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", "\u001b[B \r"),
+        step("Which agents should use NRE?", "\u001b[B \r"),
         step("Apply these 2 changes?", "\r"),
       ],
       false,
@@ -327,7 +327,7 @@ describe("interactive setup journey", () => {
   it("shows the launcher, backup, and path before final approval", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", " \r"),
+        step("Which agents should use NRE?", " \r"),
         step("Apply these 2 changes?", "\r"),
       ],
       false,
@@ -336,13 +336,15 @@ describe("interactive setup journey", () => {
           ...actions[0],
           operation: "update",
           backupPath: "/isolated/.codex/config.toml.bak",
-          commands: ["npx -y rea-agents@3.2.1 mcp"],
+          commands: ["npx -y nano-reverse-engineer@3.2.1 mcp"],
         },
         actions[1],
       ],
     );
     expect(result.output).toContain("/isolated/.codex/config.toml.bak");
-    expect(result.output).toContain("command: npx -y rea-agents@3.2.1 mcp");
+    expect(result.output).toContain(
+      "command: npx -y nano-reverse-engineer@3.2.1 mcp",
+    );
     expect(result.output.indexOf("command:")).toBeLessThan(
       result.output.indexOf("Apply these 2 changes?"),
     );
@@ -350,7 +352,7 @@ describe("interactive setup journey", () => {
 
   it("treats final No as cancellation", async () => {
     const result = await runJourney([
-      step("Which agents should use REA?", " \r"),
+      step("Which agents should use NRE?", " \r"),
       step("Apply these 2 changes?", "\u001b[D\r"),
     ]);
     expect(result.output).toContain("Setup cancelled. No changes were made.");
@@ -360,7 +362,7 @@ describe("interactive setup journey", () => {
 
   it("restores the terminal after Ctrl-C during selection", async () => {
     const result = await runJourney([
-      step("Which agents should use REA?", "\u0003"),
+      step("Which agents should use NRE?", "\u0003"),
     ]);
     expect(result.output).toContain("\u001b[?25h");
     expect(result.decision.cancelled).toBe(true);
@@ -368,8 +370,8 @@ describe("interactive setup journey", () => {
 
   it("can install the skill for CLI use without an agent registration", async () => {
     const result = await runJourney([
-      step("Which agents should use REA?", "\r"),
-      step("Install the guided REA skill for CLI use?", "\u001b[D\r"),
+      step("Which agents should use NRE?", "\r"),
+      step("Install the guided NRE skill for CLI use?", "\u001b[D\r"),
       step("Apply this change?", "\r"),
     ]);
     expect(result.decision.selectedActionIds).toEqual(["install_skill"]);
@@ -379,7 +381,7 @@ describe("interactive setup journey", () => {
   it("offers Hopper separately and defaults against installing it", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", " \r"),
+        step("Which agents should use NRE?", " \r"),
         step("Install Hopper for deep binary analysis?", "\r"),
         step("Apply these 2 changes?", "\r"),
       ],
@@ -407,10 +409,10 @@ describe("interactive setup journey", () => {
     ]);
   });
 
-  it("preselects only a prior REA registration", async () => {
+  it("preselects only a prior NRE registration", async () => {
     const result = await runJourney(
       [
-        step("Which agents should use REA?", "\r"),
+        step("Which agents should use NRE?", "\r"),
         step("Apply these 2 changes?", "\r"),
       ],
       false,
@@ -426,16 +428,16 @@ describe("interactive setup journey", () => {
 
 describe("interactive setup completion", () => {
   it.each([
-    { npmCommand: "", userAgent: "", launcher: "rea" },
+    { npmCommand: "", userAgent: "", launcher: "nre" },
     {
       npmCommand: "exec",
       userAgent: "npm/10.9.0 node/v24.11.0 linux x64",
-      launcher: "npx rea-agents",
+      launcher: "npx nano-reverse-engineer",
     },
     {
       npmCommand: "exec",
       userAgent: "bun/1.4.2 npm/? node/v26.3.0 linux x64",
-      launcher: "bunx rea-agents",
+      launcher: "bunx nano-reverse-engineer",
     },
   ])(
     "prints an available next command for $launcher invocation",
@@ -553,7 +555,7 @@ const runJourney = async (
   journeyActions: readonly object[] = agentActions,
   initialClientIds: readonly string[] = [],
 ): Promise<JourneyResult> => {
-  const isolatedHome = await createTestTempDirectory("rea-cli-setup-test-");
+  const isolatedHome = await createTestTempDirectory("nre-cli-setup-test-");
   const script = [
     'import { confirmInteractiveSetup } from "./dist/cli/interactiveSetup.js";',
     `const actions = ${JSON.stringify(journeyActions)};`,

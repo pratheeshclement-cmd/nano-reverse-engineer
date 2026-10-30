@@ -273,7 +273,7 @@ cliCaptureTest.for(["CLI", "MCP"] as const)(
   "captures a cooperative finalizer through the compiled %s workflow",
   { timeout: 20_000 },
   async (adapter, { cli }) => {
-    const root = await createTestTempDirectory("rea-finalization-accept-");
+    const root = await createTestTempDirectory("nre-finalization-accept-");
     const scenario = captureScenario("cooperative", root, {
       timeout_ms: 1_500,
       finalization_ms: 1_500,
@@ -290,7 +290,7 @@ cliCaptureTest.for(["CLI", "MCP"] as const)(
   "records the non-zero exit code of a finalizer through the compiled %s workflow",
   { timeout: 20_000 },
   async (adapter, { cli }) => {
-    const root = await createTestTempDirectory("rea-finalization-accept-");
+    const root = await createTestTempDirectory("nre-finalization-accept-");
     const scenario = captureScenario(
       "cooperative",
       root,
@@ -309,7 +309,7 @@ cliCaptureTest.for(["CLI", "MCP"] as const)(
   "forces SIGKILL after the finalization interval through the compiled %s workflow",
   { timeout: 20_000 },
   async (adapter, { cli }) => {
-    const root = await createTestTempDirectory("rea-finalization-accept-");
+    const root = await createTestTempDirectory("nre-finalization-accept-");
     const scenario = captureScenario("ignoring", root, {
       timeout_ms: 1_500,
       finalization_ms: 1_500,
@@ -325,7 +325,7 @@ cliCaptureTest.for(["CLI", "MCP"] as const)(
 captureTest(
   "retains finalization facts with omitted digests and cleans the owned descendant",
   async () => {
-    const root = await createTestTempDirectory("rea-finalization-descendant-");
+    const root = await createTestTempDirectory("nre-finalization-descendant-");
     const childDirectory = join(root, "descendant");
     const outcome = await captureViaMcp(
       captureScenario("descendant", root, {
@@ -388,7 +388,7 @@ cliCaptureTest.for(["CLI", "MCP"] as const)(
   "keeps the default identity through the compiled %s workflow without finalization_ms",
   { timeout: 20_000 },
   async (adapter, { cli }) => {
-    const root = await createTestTempDirectory("rea-finalization-default-");
+    const root = await createTestTempDirectory("nre-finalization-default-");
     const scenario = captureScenario("ignoring", root, { timeout_ms: 500 });
     const outcome =
       adapter === "CLI"
@@ -419,7 +419,7 @@ cliCaptureTest.for(["CLI", "MCP"] as const)(
 cliCaptureTest.for(["CLI", "MCP"] as const)(
   "rejects an unrepresentable combined capture budget through the compiled %s workflow",
   async (adapter, { cli }) => {
-    const root = await createTestTempDirectory("rea-finalization-budget-");
+    const root = await createTestTempDirectory("nre-finalization-budget-");
     const scenario = captureScenario("cooperative", root, {
       timeout_ms: Number.MAX_SAFE_INTEGER,
       finalization_ms: 1,
@@ -458,7 +458,7 @@ captureTest(
   "cancels the compiled CLI and MCP workflows during finalization without waiting for grace",
   async () => {
     const cliRoot = await createTestTempDirectory(
-      "rea-finalization-cli-cancel-",
+      "nre-finalization-cli-cancel-",
     );
     const cliScenarioPath = join(cliRoot, "scenario.json");
     // Match the other finalization cases' observation window. The old 300 ms
@@ -475,7 +475,7 @@ captureTest(
     const cli = spawn(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "capture-process",
         cliScenarioPath,
         "--format",
@@ -535,7 +535,7 @@ captureTest(
     }
 
     const mcpRoot = await createTestTempDirectory(
-      "rea-finalization-mcp-cancel-",
+      "nre-finalization-mcp-cancel-",
     );
     const { client, call: callTool } = await connectLocalToolsMcp();
     const controller = new AbortController();

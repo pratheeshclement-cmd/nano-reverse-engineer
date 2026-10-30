@@ -23,7 +23,7 @@ it
   "rejects a reparented %s without signaling it",
   async (mode) => {
     const runId = randomUUID();
-    const directory = await createTestTempDirectory("rea-clean-runtime-test-");
+    const directory = await createTestTempDirectory("nre-clean-runtime-test-");
     const launcher = join(directory, "Hopper");
     const alternate = join(directory, "Hopper-alternate");
     const procRoot = join(directory, "proc");
@@ -57,7 +57,7 @@ it
       });
     `;
     const parent = execFileAsync(process.execPath, ["-e", parentCode], {
-      env: { ...process.env, REA_PROCESS_RUN_ID: runId },
+      env: { ...process.env, NRE_PROCESS_RUN_ID: runId },
       timeout: 10_000,
     });
     const parentPid = parent.child.pid;

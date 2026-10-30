@@ -20,7 +20,7 @@ import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { cliTest } from "../support/cli/cliFixture.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../scripts/nre.mjs", import.meta.url));
 
 const onefile = async (
   magic = PYTHON_39_MAGIC,
@@ -28,7 +28,7 @@ const onefile = async (
   compressPyz = false,
   pyzToc?: Buffer,
 ): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-pyinstaller-cli-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-cli-");
   const path = join(directory, "hello");
   await writeFile(
     path,
@@ -123,7 +123,7 @@ const namespaceToc = (typeCode: Buffer): Buffer =>
   ]);
 
 const namespacePathCollision = async (): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-pyinstaller-namespace-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-namespace-");
   const path = join(directory, "collision");
   await writeFile(
     path,
@@ -223,7 +223,7 @@ cliTest(
   "preserves Windows PyInstaller source names",
   async ({ cli: driver }) => {
     const directory = await createTestTempDirectory(
-      "rea-pyinstaller-windows-names-",
+      "nre-pyinstaller-windows-names-",
     );
     const path = join(directory, "windows.exe");
     const storedName = String.raw`pkg\data.bin`;
@@ -320,7 +320,7 @@ cliTest(
 
 it("extracts legacy and modern CArchive modules with one pyc header through the CLI", async () => {
   const fixture = cArchiveBytecodeExecutable();
-  const directory = await createTestTempDirectory("rea-pyinstaller-bytecode-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-bytecode-");
   const path = join(directory, "bytecode-layouts");
   await writeFile(path, fixture.archive);
   const result = await execute(process.execPath, [
@@ -352,7 +352,7 @@ it("extracts legacy and modern CArchive modules with one pyc header through the 
 });
 
 it("keeps PYZ namespaces with CPython surrogatepass names through the CLI", async () => {
-  const directory = await createTestTempDirectory("rea-pyinstaller-surrogate-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-surrogate-");
   const path = join(directory, "surrogate-name");
   const namespace = Buffer.concat([
     Buffer.from("node_"),
@@ -410,7 +410,7 @@ it("keeps PYZ namespaces with CPython surrogatepass names through the CLI", asyn
 });
 
 it("classifies a PyInstaller PE carrier when its signature straddles the probe prefix", async () => {
-  const directory = await createTestTempDirectory("rea-pyinstaller-far-pe-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-far-pe-");
   const path = join(directory, "hello.exe");
   await writeFile(
     path,

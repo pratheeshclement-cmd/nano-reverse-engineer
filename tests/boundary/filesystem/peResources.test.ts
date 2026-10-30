@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("PE resource stable filesystem boundary", () => {
   it("reports non-file and malformed PE selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-pe-resource-files-");
+    const root = await createTestTempDirectory("nre-pe-resource-files-");
     const path = join(root, "image.exe");
     const alias = join(root, "alias.exe");
     const malformed = join(root, "malformed.exe");
@@ -41,7 +41,7 @@ describe("PE resource stable filesystem boundary", () => {
   it.skipIf(process.platform === "win32")(
     "reports a native symlink-loop failure as invalid selected-path input",
     async () => {
-      const root = await createTestTempDirectory("rea-pe-resource-path-loop-");
+      const root = await createTestTempDirectory("nre-pe-resource-path-loop-");
       const loop = join(root, "loop");
       await symlink(loop, loop, "dir");
       const path = join(loop, "image.exe");
@@ -63,7 +63,7 @@ describe("PE resource stable filesystem boundary", () => {
   );
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-pe-resource-budget-");
+    const root = await createTestTempDirectory("nre-pe-resource-budget-");
     const path = join(root, "image.exe");
     await writeFile(path, peResourceFixture().bytes);
     const service = createPeResourcesService();
@@ -102,7 +102,7 @@ describe("PE resource stable filesystem boundary", () => {
         payload: Buffer.from([index % 256]),
       })),
     ];
-    const root = await createTestTempDirectory("rea-pe-resource-stock-scale-");
+    const root = await createTestTempDirectory("nre-pe-resource-stock-scale-");
     const path = join(root, "image.exe");
     await writeFile(path, peResourceFixture(false, resources, 262144).bytes);
     const result = await createPeResourcesService().inspect({ path });

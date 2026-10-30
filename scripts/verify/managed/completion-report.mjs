@@ -1,8 +1,8 @@
 import { createEvidence } from "../../../dist/domain/evidence.js";
 
 const COMPLETION_PROVIDER = {
-  id: "rea-managed-conformance",
-  name: "REA managed conformance verifier",
+  id: "nre-managed-conformance",
+  name: "NRE managed conformance verifier",
   version: "1",
 };
 
@@ -17,7 +17,7 @@ const completionClaim = ({
     ...new Set(targets.map(({ sha256: digest }) => digest)),
   ].sort();
   const evidence = createEvidence(targets[0], COMPLETION_PROVIDER, {
-    predicateType: "rea.verification",
+    predicateType: "nre.verification",
     operation: "verify_managed_conformance",
     parameters: {
       scenario_id: scenarioId,
@@ -129,7 +129,7 @@ const optionalClaims = ({ operatorManifest, ilspyOracle }) => [
     status: operatorManifest === null ? "unsupported" : "pass",
     limitations:
       operatorManifest === null
-        ? ["REA_MANAGED_APP_MANIFEST_PATH is not configured."]
+        ? ["NRE_MANAGED_APP_MANIFEST_PATH is not configured."]
         : [],
   }),
   completionClaim({
@@ -138,7 +138,7 @@ const optionalClaims = ({ operatorManifest, ilspyOracle }) => [
     targets: optionalTarget(ilspyOracle?.fixture),
     status: ilspyOracle === null ? "unsupported" : "pass",
     limitations:
-      ilspyOracle === null ? ["REA_ILSPY_CMD_PATH is not configured."] : [],
+      ilspyOracle === null ? ["NRE_ILSPY_CMD_PATH is not configured."] : [],
   }),
 ];
 

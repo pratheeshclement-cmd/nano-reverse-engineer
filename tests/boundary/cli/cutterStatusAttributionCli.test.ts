@@ -70,8 +70,8 @@ workspaceCliTest.for([
       await writeDescriptor(directory, sessionId, address.port, token);
       const environment = {
         ...workspace.environment,
-        REA_CUTTER_BRIDGE_DIR: directory,
-        REA_LOG_LEVEL: "silent",
+        NRE_CUTTER_BRIDGE_DIR: directory,
+        NRE_LOG_LEVEL: "silent",
       };
       const discovery = await cli.run({
         arguments: ["list-cutter-sessions", "--json"],

@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "repeated client flags plan and configure each selected client once",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-repeated-clients-");
+    const directory = await createTestTempDirectory("nre-repeated-clients-");
     const arguments_ = [
       "setup",
       "--client",
@@ -85,7 +85,7 @@ cliTest(
   "combines explicitly selected undetected clients with all detected clients",
   async ({ cli }) => {
     const home = await createTestTempDirectory(
-      "rea-explicit-detected-clients-",
+      "nre-explicit-detected-clients-",
     );
     await mkdir(join(home, ".codex"));
     const run = (selection: readonly string[], mode: string) =>
@@ -155,14 +155,14 @@ cliTest(
       },
     });
     for (const path of configurations)
-      expect(await readFile(path, "utf8")).toContain("rea");
+      expect(await readFile(path, "utf8")).toContain("nre");
   },
 );
 
 cliTest(
   "uninstall preserves user edits made after an earlier setup",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-current-uninstall-backup-");
+    const home = await createTestTempDirectory("nre-current-uninstall-backup-");
     const config = join(home, ".cursor", "mcp.json");
     const original = '{"mcpServers":{"other":{"command":"other-server"}}}\n';
     await mkdir(join(home, ".cursor"), { recursive: true });
@@ -202,9 +202,9 @@ cliTest(
     const removed = await run(["uninstall"]);
     expect(removed.exitCode, removed.stderr).toBe(0);
     expect(removed.json).toMatchObject({ status: "complete" });
-    const recovery = `${config}.rea.backup.${createHash("sha256").update(current).digest("hex")}.recovery`;
+    const recovery = `${config}.nre.backup.${createHash("sha256").update(current).digest("hex")}.recovery`;
     expect(await readFile(recovery, "utf8")).toBe(current);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     expect(JSON.parse(await readFile(config, "utf8"))).toEqual({
       mcpServers: { other: { command: "edited-server" } },
     });

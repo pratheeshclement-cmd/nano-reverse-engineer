@@ -33,7 +33,7 @@ import {
 it.skipIf(process.platform === "win32")(
   "reports Rizin launch provenance and lossy frame decoding through MCP",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-provenance-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-provenance-"));
     const provider = join(directory, "fake-rizin-provenance.mjs");
     await writeFile(
       provider,
@@ -54,7 +54,7 @@ process.stdin.on("data", (chunk) => {
 `,
     );
     await chmod(provider, 0o700);
-    const manager = createRizinTestManager({ REA_RIZIN_COMMAND: provider });
+    const manager = createRizinTestManager({ NRE_RIZIN_COMMAND: provider });
     const server = new McpServer({
       name: "rizin-evidence-provenance",
       version: "1",
@@ -182,7 +182,7 @@ it("admits Rizin startup across a bound analysis session", async () => {
 it.skipIf(process.platform === "win32")(
   "propagates MCP cancellation into a running Rizin debugger command",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-mcp-cancel-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-mcp-cancel-"));
     const provider = join(directory, "fake-rizin.mjs");
     const commandPath = join(directory, "command-started");
     await writeFile(
@@ -200,7 +200,7 @@ process.stdin.on("data", async (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createRizinTestManager({
-      REA_RIZIN_COMMAND: provider,
+      NRE_RIZIN_COMMAND: provider,
     });
     const server = new McpServer({ name: "rizin-cancellation", version: "1" });
     registerRizinDebugTools(

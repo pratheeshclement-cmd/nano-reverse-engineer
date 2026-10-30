@@ -33,7 +33,7 @@ it.each(["source", "snapshot", "output"] as const)(
   "retains the exact %s descriptor after a denied close and fences root removal",
   async (kind) => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-apktool-owned-test-",
+      prefix: "nre-apktool-owned-test-",
     });
     const commands = new ApktoolCommandCleanup();
     const workspace = new ApktoolWorkspace(root, commands);
@@ -94,7 +94,7 @@ it.each(["source", "snapshot", "output"] as const)(
 
 it("retains a physical decode-output failure when cancellation arrives during descriptor close", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-apktool-owned-test-",
+    prefix: "nre-apktool-owned-test-",
   });
   const commands = new ApktoolCommandCleanup();
   const workspace = new ApktoolWorkspace(root, commands);
@@ -122,7 +122,7 @@ it("retains a physical decode-output failure when cancellation arrives during de
 
 it("records cancellation observed during a successful output descriptor close", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-apktool-owned-test-",
+    prefix: "nre-apktool-owned-test-",
   });
   const commands = new ApktoolCommandCleanup();
   const workspace = new ApktoolWorkspace(root, commands);
@@ -161,7 +161,7 @@ it.skipIf(process.platform === "win32")(
   "rejects a decoded FIFO without waiting for a writer",
   async () => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-apktool-owned-test-",
+      prefix: "nre-apktool-owned-test-",
     });
     const commands = new ApktoolCommandCleanup();
     const workspace = new ApktoolWorkspace(root, commands);
@@ -182,7 +182,7 @@ it.each([false, true])(
   "keeps malformed UTF-8 primary when final stat observes cancellation (close denied=%s)",
   async (deniedInitially) => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-apktool-owned-test-",
+      prefix: "nre-apktool-owned-test-",
     });
     const commands = new ApktoolCommandCleanup();
     const workspace = new ApktoolWorkspace(root, commands);
@@ -242,7 +242,7 @@ it.skipIf(process.platform === "win32")(
   "counts omitted special entries toward the decoded inventory budget",
   async () => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-apktool-owned-test-",
+      prefix: "nre-apktool-owned-test-",
     });
     const commands = new ApktoolCommandCleanup();
     const workspace = new ApktoolWorkspace(root, commands);
@@ -287,7 +287,7 @@ it.skipIf(process.platform === "win32")(
   "inventories only observed regular tables and discloses non-regular and unknown entries",
   async () => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-apktool-tables-test-",
+      prefix: "nre-apktool-tables-test-",
     });
     const commands = new ApktoolCommandCleanup();
     const workspace = new ApktoolWorkspace(root, commands);
@@ -344,7 +344,7 @@ it.skipIf(process.platform === "win32")(
 
 it("preserves a directory inspection failure instead of treating its locale table as absent", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-apktool-tables-test-",
+    prefix: "nre-apktool-tables-test-",
   });
   const commands = new ApktoolCommandCleanup();
   const workspace = new ApktoolWorkspace(root, commands);
@@ -382,7 +382,7 @@ it("preserves a directory inspection failure instead of treating its locale tabl
 
 it("reports raw retained-prefix bytes when UTF-8 decoding removes a BOM", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-apktool-source-bytes-",
+    prefix: "nre-apktool-source-bytes-",
   });
   const commands = new ApktoolCommandCleanup();
   const workspace = new ApktoolWorkspace(root, commands);
@@ -411,7 +411,7 @@ it("reports raw retained-prefix bytes when UTF-8 decoding removes a BOM", async 
 
 it("classifies source state changes during snapshot copying as artifact changes", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-apktool-changed-test-",
+    prefix: "nre-apktool-changed-test-",
   });
   const commands = new ApktoolCommandCleanup();
   const workspace = new ApktoolWorkspace(root, commands);
@@ -463,7 +463,7 @@ it.each(["EACCES", "EPERM", "EIO", "ENOENT"] as const)(
   "preserves the %s acquisition failure classification before snapshot admission",
   async (code) => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-apktool-admission-test-",
+      prefix: "nre-apktool-admission-test-",
     });
     const commands = new ApktoolCommandCleanup();
     const workspace = new ApktoolWorkspace(root, commands);

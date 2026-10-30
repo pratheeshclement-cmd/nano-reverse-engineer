@@ -137,7 +137,7 @@ it("advertises stable output identity without interpreting example data as refer
     const output = first.tools.find(
       (tool) => tool.name === "literal_output",
     )?.outputSchema;
-    expect(output?.$id).toMatch(/^urn:rea:tool-output:sha256:[a-f0-9]{64}$/u);
+    expect(output?.$id).toMatch(/^urn:nre:tool-output:sha256:[a-f0-9]{64}$/u);
     expect(second.tools[0]?.outputSchema).toEqual(output);
     expect(output?.examples).toEqual([value]);
     expect(output?.default).toEqual(value);

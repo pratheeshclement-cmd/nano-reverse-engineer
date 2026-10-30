@@ -1,5 +1,5 @@
 import { open } from "node:fs/promises";
-import { posix } from "node:path";
+import { posix, resolve } from "node:path";
 
 /** Memory facts for the cgroup v2 group that holds this process. */
 export interface LinuxCgroupMemoryState {
@@ -121,7 +121,9 @@ export const linuxCgroupDirectory = (
   }
   return selected === undefined
     ? undefined
-    : posix.resolve(selected.mount.mountPoint, `.${selected.rest}`);
+    : selected.mount.mountPoint.startsWith("/")
+      ? posix.resolve(selected.mount.mountPoint, `.${selected.rest}`)
+      : resolve(selected.mount.mountPoint, `.${selected.rest}`);
 };
 
 /**

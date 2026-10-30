@@ -39,7 +39,7 @@ const graphEvidence = {
     value: { kind: "artifact-path" as const, path: "renderer.js" },
   },
   extractor: {
-    name: "rea-javascript-application",
+    name: "nre-javascript-application",
     version: "1",
     operation: "inventory-relevant-file",
     executable_sha256: null,
@@ -120,12 +120,12 @@ const semanticGraph = createJavaScriptSemanticGraph({
 export const JAVASCRIPT_APPLICATION_EVIDENCE_EXAMPLE = createEvidence(
   { path: inputPath, sha256: applicationSha256, format: "directory" },
   {
-    id: "rea-javascript-application",
-    name: "REA JavaScript application analyzer",
+    id: "nre-javascript-application",
+    name: "NRE JavaScript application analyzer",
     version: "1",
   },
   {
-    predicateType: "rea.javascript-application-analysis",
+    predicateType: "nre.javascript-application-analysis",
     operation: "analyze_javascript_application",
     parameters: {},
     result: {
@@ -182,12 +182,12 @@ export const JAVASCRIPT_APPLICATION_EVIDENCE_EXAMPLE = createEvidence(
 const runtimeEvidence = createEvidence(
   undefined,
   {
-    id: "rea-cdp-electron",
-    name: "REA Electron file-page CDP observation provider",
+    id: "nre-cdp-electron",
+    name: "NRE Electron file-page CDP observation provider",
     version: "1",
   },
   {
-    predicateType: "rea.electron-page-inspection",
+    predicateType: "nre.electron-page-inspection",
     operation: "inspect_electron_page",
     parameters: {
       cdp_endpoint: "http://127.0.0.1:9223",

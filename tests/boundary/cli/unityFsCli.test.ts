@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "inspects and extracts UnityFS with virtual coordinates and retained unavailable members",
   async ({ cli, onTestFinished }) => {
-    const root = await createTestTempDirectory("rea-unity-cli-");
+    const root = await createTestTempDirectory("nre-unity-cli-");
     const path = join(root, "bundle");
     const payload = Buffer.from("serialized bytes");
     await writeFile(
@@ -90,7 +90,7 @@ cliTest(
 cliTest(
   "keeps an unsafe declared uint64 size unknown in desktop header facts",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-unity-desktop-");
+    const root = await createTestTempDirectory("nre-unity-desktop-");
     await mkdir(join(root, "assets"));
     const bytes = buildUnityFs([{ path: "CAB", data: "bytes" }]);
     bytes.writeBigUInt64BE(2n ** 53n + 1n, 32);

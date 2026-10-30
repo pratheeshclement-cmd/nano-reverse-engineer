@@ -22,7 +22,7 @@ assert.notEqual(
   "win32",
   "This direct headless regression requires a POSIX host; Windows uses its controlled provider lane",
 );
-const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-seed-regression-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-ghidra-seed-regression-"));
 const run = createVerifierRun();
 let supervisor;
 try {
@@ -44,23 +44,23 @@ try {
   );
   const output = await runHeadless(target, "seed-regression", [
     "-postScript",
-    "ReaSeedRegressionProbe.java",
+    "NreSeedRegressionProbe.java",
     seeds,
   ]);
   // Headless can exit zero after a script fails, so require the probe's marker.
-  assert.ok(output.includes("REA_SEED_REGRESSION_OK "), output);
+  assert.ok(output.includes("NRE_SEED_REGRESSION_OK "), output);
 
   const analyzer = "Decompiler Switch Analysis";
   const disabled = await runHeadless(target, "analyzer-regression-valid", [
     "-preScript",
-    "ReaGhidraAnalysisOptions.java",
+    "NreGhidraAnalysisOptions.java",
     analyzer,
     "-postScript",
-    "ReaAnalyzerOptionsRegressionProbe.java",
+    "NreAnalyzerOptionsRegressionProbe.java",
     analyzer,
   ]);
   assert.ok(
-    disabled.includes(`REA_ANALYZER_OPTIONS_DISABLED_OK ${analyzer}`),
+    disabled.includes(`NRE_ANALYZER_OPTIONS_DISABLED_OK ${analyzer}`),
     disabled,
   );
 
@@ -71,17 +71,17 @@ try {
     "analyzer-regression-not-applicable",
     [
       "-preScript",
-      "ReaGhidraAnalysisOptions.java",
+      "NreGhidraAnalysisOptions.java",
       `${analyzer},${formatSpecificAnalyzer}`,
       "-postScript",
-      "ReaAnalyzerOptionsRegressionProbe.java",
+      "NreAnalyzerOptionsRegressionProbe.java",
       analyzer,
     ],
   );
   assert.ok(
     notApplicable.includes(
-      `REA_ANALYZER_OPTIONS_REPORT ${JSON.stringify({
-        format: "rea-ghidra-disabled-analyzers-v1",
+      `NRE_ANALYZER_OPTIONS_REPORT ${JSON.stringify({
+        format: "nre-ghidra-disabled-analyzers-v1",
         analyzers: [
           { name: analyzer, status: "disabled" },
           { name: formatSpecificAnalyzer, status: "not_applicable" },
@@ -91,18 +91,18 @@ try {
     notApplicable,
   );
 
-  const unknownAnalyzer = "REA Unknown Analyzer";
+  const unknownAnalyzer = "NRE Unknown Analyzer";
   const rejected = await runHeadless(target, "analyzer-regression-unknown", [
     "-preScript",
-    "ReaGhidraAnalysisOptions.java",
+    "NreGhidraAnalysisOptions.java",
     `${analyzer},${unknownAnalyzer}`,
     "-postScript",
-    "ReaAnalyzerOptionsRegressionProbe.java",
+    "NreAnalyzerOptionsRegressionProbe.java",
     analyzer,
   ]);
   assert.ok(
     rejected.includes(
-      `REA_GHIDRA_DISABLED_ANALYZERS names ${unknownAnalyzer}, which is not an analyzer in this Ghidra installation`,
+      `NRE_GHIDRA_DISABLED_ANALYZERS names ${unknownAnalyzer}, which is not an analyzer in this Ghidra installation`,
     ),
     rejected,
   );
@@ -110,7 +110,7 @@ try {
     rejected.includes("Processing aborted as a result of pre-script."),
     rejected,
   );
-  assert.ok(!rejected.includes("REA_ANALYZER_OPTIONS_DISABLED_OK"), rejected);
+  assert.ok(!rejected.includes("NRE_ANALYZER_OPTIONS_DISABLED_OK"), rejected);
 } finally {
   if (supervisor !== undefined) {
     const stopped = await supervisor.stop();

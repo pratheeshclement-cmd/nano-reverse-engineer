@@ -52,7 +52,7 @@ export const createGhidraEndpoint = async (
     return { endpoint: { transport, path } };
   const socketRoot = await PrivateRuntimeRoot.create({
     parent: "/tmp",
-    prefix: "rea-ghidra-socket-",
+    prefix: "nre-ghidra-socket-",
     platform,
   });
   return {
@@ -70,7 +70,7 @@ const tcpEndpointSchema = z.strictObject({
   host: z.literal("127.0.0.1"),
   port: z.number().int().min(1).max(65_535),
 });
-// ReaGhidraBridge.serveTcp publishes compact Gson JSON followed by one newline.
+// NreGhidraBridge.serveTcp publishes compact Gson JSON followed by one newline.
 // Both fields are fixed ASCII, and the bound includes the longest legal port.
 const MAX_TCP_ENDPOINT_BYTES = Buffer.byteLength(
   JSON.stringify({ host: "127.0.0.1", port: 65_535 }) + "\n",

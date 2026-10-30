@@ -17,7 +17,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "inspects and extracts a ZIP after an inert script stub",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-script-stub-");
+    const root = await createTestTempDirectory("nre-zip-script-stub-");
     const archivePath = join(root, "installer.sh");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("a.txt", new TextReader("hello world\n"));

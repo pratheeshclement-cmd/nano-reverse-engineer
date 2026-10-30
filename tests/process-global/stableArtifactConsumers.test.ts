@@ -492,7 +492,7 @@ afterEach(async () => {
 });
 
 const selectedImage = async () => {
-  const root = await createTestTempDirectory("rea-rust-artifact-owner-");
+  const root = await createTestTempDirectory("nre-rust-artifact-owner-");
   const path = join(root, "image.elf");
   await writeFile(path, createRustImage({ format: "elf" }));
   fault.path = path;

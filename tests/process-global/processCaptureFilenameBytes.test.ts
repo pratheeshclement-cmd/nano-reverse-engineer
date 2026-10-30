@@ -42,7 +42,7 @@ const injectNames = (names: Buffer[]): void => {
 it.each([false, true])(
   "retains invalid basename bytes without looking up a replacement alias (sibling=%s)",
   async (sibling) => {
-    const root = await createTestTempDirectory("rea-capture-name-bytes-");
+    const root = await createTestTempDirectory("nre-capture-name-bytes-");
     const content = "replacement sibling";
     if (sibling) await fs.writeFile(join(root, "�"), content);
     injectNames([Buffer.from([0xff])]);
@@ -80,7 +80,7 @@ it.each([false, true])(
 );
 
 it("bounds invalid-name enumeration with the selected files limit", async () => {
-  const root = await createTestTempDirectory("rea-capture-name-budget-");
+  const root = await createTestTempDirectory("nre-capture-name-budget-");
   injectNames(Array.from({ length: 10 }, () => Buffer.from([0xff])));
   const snapshot = await snapshotRoots(
     processScenarioSchema.parse({
@@ -102,7 +102,7 @@ it("bounds invalid-name enumeration with the selected files limit", async () => 
 it.skipIf(process.platform !== "linux")(
   "keeps actual Linux non-UTF-8 filenames distinct from a replacement sibling",
   async () => {
-    const root = await createTestTempDirectory("rea-capture-linux-name-");
+    const root = await createTestTempDirectory("nre-capture-linux-name-");
     await fs.writeFile(
       Buffer.concat([Buffer.from(`${root}/`), Buffer.from([0xff])]),
       "invalid basename",

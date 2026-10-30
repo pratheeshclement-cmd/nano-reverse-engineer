@@ -34,12 +34,12 @@ export const authenticatedServer = (
           unknown
         >;
         input = input.slice(end + 1);
-        if (frame.kind === "rea-auth-v2") {
+        if (frame.kind === "nre-auth-v2") {
           clientNonce = String(frame.nonce);
           serverNonce = `${connectionOrdinal.toString(16).padStart(16, "0")}${"e".repeat(48)}`;
           const proof = createHmac("sha256", token)
             .update(
-              `rea-cutter-server-v2:${sessionId}:${clientNonce}:${serverNonce}`,
+              `nre-cutter-server-v2:${sessionId}:${clientNonce}:${serverNonce}`,
             )
             .digest("hex");
           connection.write(
@@ -50,7 +50,7 @@ export const authenticatedServer = (
         const requestBytes = String(frame.request);
         const expected = createHmac("sha256", token)
           .update(
-            `rea-cutter-client-v2:${sessionId}:${clientNonce}:${serverNonce}:${requestBytes}`,
+            `nre-cutter-client-v2:${sessionId}:${clientNonce}:${serverNonce}:${requestBytes}`,
           )
           .digest("hex");
         if (frame.proof !== expected) {
@@ -69,7 +69,7 @@ export const authenticatedServer = (
             options.raw === true ? String(value) : JSON.stringify(value);
           const responseProof = createHmac("sha256", token)
             .update(
-              `rea-cutter-response-v2:${sessionId}:${clientNonce}:${serverNonce}:${response}`,
+              `nre-cutter-response-v2:${sessionId}:${clientNonce}:${serverNonce}:${response}`,
             )
             .digest("hex");
           const frame = `${JSON.stringify({ response, proof: responseProof })}\n`;

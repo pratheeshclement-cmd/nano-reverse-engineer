@@ -79,7 +79,7 @@ cliTest.for(
 )(
   "keeps launch ownership for $name through $surface",
   async (testCase, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-launch-");
+    const root = await createTestTempDirectory("nre-package-launch-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs": 'require("../shared/window.cjs");',
@@ -122,7 +122,7 @@ cliTest.for(
 )(
   "keeps competing package launch owners across $archive through $surface",
   async ({ surface, archive }, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-archive-main-");
+    const root = await createTestTempDirectory("nre-package-archive-main-");
     const source = join(root, "source");
     const application = join(root, "application");
     const declaredMain = `../resources/${archive}/window.cjs`;

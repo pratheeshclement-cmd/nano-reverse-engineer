@@ -37,7 +37,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 afterEach(() => vi.restoreAllMocks());
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-adb-input-owner-");
+  const root = await createTestTempDirectory("nre-adb-input-owner-");
   const binary = join(root, "adb");
   const source = join(root, "payload.bin");
   const devicePath = "/data/local/tmp/payload.bin";
@@ -96,7 +96,7 @@ const fixture = async () => {
     }
     throw new Error(`Unexpected ADB fixture command: ${JSON.stringify(args)}`);
   });
-  const provider = new AdbProvider({ environment: { REA_ADB_PATH: binary } });
+  const provider = new AdbProvider({ environment: { NRE_ADB_PATH: binary } });
   onTestFinished(() => provider.close());
   return {
     root,
@@ -123,7 +123,7 @@ test("retains failed snapshot cleanup ownership and retries it on close", async 
       "node:fs/promises",
     );
   vi.mocked(rm).mockImplementationOnce(async (path, options) => {
-    if (basename(String(path)).startsWith("rea-adb-input-"))
+    if (basename(String(path)).startsWith("nre-adb-input-"))
       throw new Error("snapshot cleanup denied");
     return actualFs.rm(path, options);
   });
@@ -164,10 +164,10 @@ test("closes retained snapshot handles before removing their runtime root", asyn
   let snapshotHandleOpen = false;
   const closeAttempts = new Map<string, number>();
   let rootClosedWithHandleOpen = false;
-  const runtime = await PrivateRuntimeRoot.create({ prefix: "rea-adb-order-" });
+  const runtime = await PrivateRuntimeRoot.create({ prefix: "nre-adb-order-" });
   runtimePath = runtime.path;
   const provider = new AdbProvider({
-    environment: { REA_ADB_PATH: join(f.root, "adb") },
+    environment: { NRE_ADB_PATH: join(f.root, "adb") },
     createRuntimeRoot: async () => ({
       path: runtime.path,
       close: async () => {
@@ -225,7 +225,7 @@ test("retries the same retained snapshot owner before removing its root", async 
       "node:fs/promises",
     );
   const runtime = await PrivateRuntimeRoot.create({
-    prefix: "rea-adb-persistent-order-",
+    prefix: "nre-adb-persistent-order-",
   });
   const snapshotPath = join(runtime.path, basename(f.source));
   const rawHandles = new Map<
@@ -262,7 +262,7 @@ test("retries the same retained snapshot owner before removing its root", async 
   });
 
   const provider = new AdbProvider({
-    environment: { REA_ADB_PATH: join(f.root, "adb") },
+    environment: { NRE_ADB_PATH: join(f.root, "adb") },
     createRuntimeRoot: async () => ({
       path: runtime.path,
       close: async () => {
@@ -642,7 +642,7 @@ test.each([false, true])(
         "node:fs/promises",
       );
     vi.mocked(rm).mockImplementationOnce(async (path, options) => {
-      if (basename(String(path)).startsWith("rea-adb-input-")) {
+      if (basename(String(path)).startsWith("nre-adb-input-")) {
         controller.abort(abortReason);
         if (failCleanup) throw new Error("snapshot cleanup denied");
       }
@@ -703,7 +703,7 @@ test("cancels after the input snapshot copy and before contacting the device", a
     const handle = await actualFs.open(path, ...args);
     if (
       String(path).endsWith("payload.bin") &&
-      basename(dirname(String(path))).startsWith("rea-adb-input-")
+      basename(dirname(String(path))).startsWith("nre-adb-input-")
     ) {
       const sync = handle.sync.bind(handle);
       handle.sync = async () => {
@@ -737,7 +737,7 @@ test("reports input snapshot capacity failures before contacting the device", as
   vi.mocked(open).mockImplementation(async (path, ...args) => {
     if (
       String(path).endsWith("payload.bin") &&
-      basename(dirname(String(path))).startsWith("rea-adb-input-")
+      basename(dirname(String(path))).startsWith("nre-adb-input-")
     )
       throw capacityFailure;
     return actualFs.open(path, ...args);

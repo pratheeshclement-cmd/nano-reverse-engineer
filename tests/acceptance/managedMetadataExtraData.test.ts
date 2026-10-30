@@ -13,16 +13,16 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "CLI and stdio MCP inspect CLR ExtraData metadata without shifting table identities",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-extra-data-");
+    const root = await createTestTempDirectory("nre-managed-extra-data-");
     const path = join(root, "extra-data.dll");
     const bytes = buildManagedPeFixture({ metadataExtraData: 0x1234_5678 });
     const sha256 = createHash("sha256").update(bytes).digest("hex");
     await writeFile(path, bytes);
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
-      env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+      env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
       stderr: "pipe",
     });
     transport.stderr?.on("data", () => undefined);

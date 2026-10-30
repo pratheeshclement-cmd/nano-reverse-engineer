@@ -71,7 +71,7 @@ const sharedAnalysisSemantics = {
 } as const;
 
 /**
- * The processor language REA pins for this target, or undefined when Ghidra may
+ * The processor language NRE pins for this target, or undefined when Ghidra may
  * select from the header. The committed profile and the session readback both
  * compare against this single owner rather than re-deriving a lane.
  */
@@ -92,11 +92,11 @@ const languageOverrideConflict = (
     settings: [
       ...(pinned?.languageId === override.languageId
         ? []
-        : [{ setting: "REA_GHIDRA_LANGUAGE_ID", constraint }]),
+        : [{ setting: "NRE_GHIDRA_LANGUAGE_ID", constraint }]),
       ...(override.compilerSpecId === undefined ||
       pinned?.compilerSpecId === override.compilerSpecId
         ? []
-        : [{ setting: "REA_GHIDRA_COMPILER_SPEC_ID", constraint }]),
+        : [{ setting: "NRE_GHIDRA_COMPILER_SPEC_ID", constraint }]),
     ],
   });
 

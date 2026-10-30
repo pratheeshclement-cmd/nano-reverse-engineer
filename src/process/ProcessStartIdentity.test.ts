@@ -61,7 +61,7 @@ describe("process start identity lease", () => {
   it("does not adopt a replacement PID's first identity for an owned launch", async () => {
     const replacement: ProcessOwnershipHost = {
       ...host("replacement-start"),
-      environment: async () => ({ REA_PROCESS_RUN_ID: "another-run" }),
+      environment: async () => ({ NRE_PROCESS_RUN_ID: "another-run" }),
     };
     await expect(
       observeProcessStartIdentity(42, replacement, "captured-run"),
@@ -95,7 +95,7 @@ describe("process start identity lease", () => {
         new Map([[42, { state: "readable", identity }]]),
       environment: async () => {
         identity = "replacement-start";
-        return { REA_PROCESS_RUN_ID: "captured-run" };
+        return { NRE_PROCESS_RUN_ID: "captured-run" };
       },
     };
     await expect(

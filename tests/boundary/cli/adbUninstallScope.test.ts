@@ -17,7 +17,7 @@ for (const { verdict, exit, succeeds } of [
   cliTest.skipIf(process.platform === "win32")(
     `selects user 0 through CLI and MCP for ${verdict}, exit ${String(exit)}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-adb-uninstall-scope-");
+      const root = await createTestTempDirectory("nre-adb-uninstall-scope-");
       const binary = join(root, "fake-adb.mjs");
       await writeFile(
         binary,
@@ -35,7 +35,7 @@ if (args.length === 1 && args[0] === 'version') {
         { mode: 0o700 },
       );
       const environment = {
-        REA_ADB_PATH: binary,
+        NRE_ADB_PATH: binary,
         HOME: root,
         TMPDIR: root,
         PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,

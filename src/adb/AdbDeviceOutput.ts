@@ -1,5 +1,5 @@
 /**
- * Parsers for the exact adb and Package Manager output formats REA consumes.
+ * Parsers for the exact adb and Package Manager output formats NRE consumes.
  *
  * Each parser preserves what the tool actually printed: unparseable lines are
  * sampled and counted rather than silently dropped, and derived

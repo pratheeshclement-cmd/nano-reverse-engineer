@@ -21,7 +21,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 const client = new Client({ name: "managed-native-adapters", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [resolve("scripts/rea.mjs"), "mcp"],
+  args: [resolve("scripts/nre.mjs"), "mcp"],
   cwd: process.cwd(),
   env: { PATH: process.env.PATH ?? "" },
   stderr: "pipe",
@@ -127,7 +127,7 @@ cliTest(
           {
             path: ["managed_members"],
             reason: "invalid_value",
-            message: `Expected rea.analysis inspect_managed_members Evidence, received ${wrongRole.predicate_type} ${wrongRole.operation}`,
+            message: `Expected nre.analysis inspect_managed_members Evidence, received ${wrongRole.predicate_type} ${wrongRole.operation}`,
           },
         ],
       },
@@ -175,7 +175,7 @@ const signatureEvidence = () =>
     },
     { id: "native", name: "Native", version: "simulated" },
     {
-      predicateType: "rea.native-signature",
+      predicateType: "nre.native-signature",
       operation: "inspect_signature",
       parameters: {},
       result: { signed: true },
@@ -252,7 +252,7 @@ cliTest(
   "preserves platform-specific P/Invoke names and module matching through CLI and MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-managed-native-module-names-",
+      "nre-managed-native-module-names-",
     );
     const nativeProvider = {
       id: "native-fixture",
@@ -374,7 +374,7 @@ cliTest(
 cliTest(
   "counts authentic unsupported native Evidence identically through MCP and CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-native-adapters-");
+    const root = await createTestTempDirectory("nre-managed-native-adapters-");
     const path = join(root, "fixture.dll");
     await writeFile(path, buildManagedPeFixture({ pinvoke: {} }));
     const inspected = await client.callTool({

@@ -17,10 +17,10 @@ import { harmonyApplicationProjectionResultSchema } from "../../../dist/domain/h
 import fixture from "../../fixtures/harmony/pipeline.json" with { type: "json" };
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
-const hap = process.env.REA_HARMONY_TEST_HAP;
+const hap = process.env.NRE_HARMONY_TEST_HAP;
 if (hap === undefined)
   throw new Error(
-    "verify:harmony requires REA_HARMONY_TEST_HAP. Run npm run fixtures:harmony and set it to the downloaded file; see docs/harmony-analysis.md.",
+    "verify:harmony requires NRE_HARMONY_TEST_HAP. Run npm run fixtures:harmony and set it to the downloaded file; see docs/harmony-analysis.md.",
   );
 await access(hap);
 const hashFile = async (path) => {
@@ -34,10 +34,10 @@ assert.equal(
   "Real HarmonyOS lane requires the pinned Harmony pipeline release fixture",
 );
 const entrypoint =
-  process.env.REA_HARMONY_ENTRYPOINT ?? resolve(repository, "scripts/rea.mjs");
+  process.env.NRE_HARMONY_ENTRYPOINT ?? resolve(repository, "scripts/nre.mjs");
 const execute = promisify(execFile);
 const path = resolve(hap);
-const workspace = await mkdtemp(join(tmpdir(), "rea-harmony-verify-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-harmony-verify-"));
 
 try {
   const inspectResponse = await execute(
@@ -149,7 +149,7 @@ try {
     stderr += chunk.toString();
   });
   const client = new Client({
-    name: "rea-real-harmony-verifier",
+    name: "nre-real-harmony-verifier",
     version: "1",
   });
   try {

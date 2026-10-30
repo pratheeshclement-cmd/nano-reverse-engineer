@@ -47,7 +47,7 @@ const resources: Array<{ close(): Promise<void> }> = [];
 it.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "drains an admitted SQLite inspection before changing the session binding",
   async () => {
-    const workspace = await createTestWorkspace("rea-sqlite-mcp-admission-");
+    const workspace = await createTestWorkspace("nre-sqlite-mcp-admission-");
     const database = createSqliteDatabaseFixture(workspace.root);
     database.close();
     const acquired = createDeferred<void>();
@@ -126,7 +126,7 @@ it.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 it.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "records completed SQLite evidence before delivering a cleanup failure",
   async () => {
-    const workspace = await createTestWorkspace("rea-sqlite-mcp-retention-");
+    const workspace = await createTestWorkspace("nre-sqlite-mcp-retention-");
     const database = createSqliteDatabaseFixture(workspace.root);
     database.close();
     let removalAllowed = false;
@@ -224,7 +224,7 @@ it.each(["handle", "stdin"] as const)(
   "retains failed SQLite cleanup through production stdio shutdown: %s",
   async (shutdown) => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-sqlite-stdio-cleanup-",
+      prefix: "nre-sqlite-stdio-cleanup-",
     });
     let removalAllowed = false;
     let attempts = 0;
@@ -283,7 +283,7 @@ it.each(["handle", "stdin"] as const)(
       const [reply] = await response;
       expect(JSON.parse(String(reply))).toMatchObject({
         id: 1,
-        result: { serverInfo: { name: "rea" } },
+        result: { serverInfo: { name: "nre" } },
       });
       if (shutdown === "stdin") {
         stdin.end();
@@ -443,14 +443,14 @@ it("closes the Inspector owner with peers and retries its retained cleanup", asy
   let inspectorCloseAttempts = 0;
   let peerCloseAttempts = 0;
   const cleanupFailure = new ProviderCleanupError(
-    "rea-v8-inspector",
+    "nre-v8-inspector",
     ["browser_transport"],
     { reason: "Inspector transport close is still pending" },
     { operation: "observe_javascript_runtime" },
   );
   const runtime: JavaScriptRuntimeObservationPort = {
     identity: () => ({
-      id: "rea-v8-inspector",
+      id: "nre-v8-inspector",
       name: "V8 Inspector",
       version: "1",
     }),
@@ -501,7 +501,7 @@ it("does not close a caller-owned Inspector observation provider", async () => {
   let closeAttempts = 0;
   const runtime: JavaScriptRuntimeObservationPort = {
     identity: () => ({
-      id: "rea-v8-inspector",
+      id: "nre-v8-inspector",
       name: "V8 Inspector",
       version: "1",
     }),

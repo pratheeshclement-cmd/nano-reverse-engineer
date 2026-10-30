@@ -115,7 +115,7 @@ const withGnuAttributes = (
   return bytes;
 };
 const writeFixture = async (bytes: Buffer): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-mips-abi-test-");
+  const directory = await createTestTempDirectory("nre-mips-abi-test-");
   const path = join(directory, "fixture.elf");
   await writeFile(path, bytes);
   return path;
@@ -598,7 +598,7 @@ it("checks the GNU attribute size bound before attempting its file read", async 
   bytes.writeUInt32LE(4097, 228);
   const result = await inspectDeclarations(bytes);
   assert.ok(!result.ok);
-  assert.match(result.error, /outside REA's inspected bound of 4096 bytes/u);
+  assert.match(result.error, /outside NRE's inspected bound of 4096 bytes/u);
 });
 
 it("uses section type and bounds the GNU attribute payload extent", async () => {
@@ -612,7 +612,7 @@ it("uses section type and bounds the GNU attribute payload extent", async () => 
 });
 
 it("preserves cancellation instead of turning it into malformed target data", async () => {
-  const directory = await createTestTempDirectory("rea-mips-resolution-");
+  const directory = await createTestTempDirectory("nre-mips-resolution-");
   const path = join(directory, "fixture.elf");
   await writeFile(path, fixture());
   const controller = new AbortController();

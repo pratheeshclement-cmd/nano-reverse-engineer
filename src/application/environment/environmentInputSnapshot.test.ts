@@ -21,7 +21,7 @@ const member = (value: unknown, key: string): unknown => {
 };
 
 it("seals privately parsed files and shares reported trees across both Evidence schema boundaries", async () => {
-  const root = await createTestTempDirectory("rea-environment-owned-input-");
+  const root = await createTestTempDirectory("nre-environment-owned-input-");
   const files = await writeEnvironmentServeFiles(root);
   const inputs = await readEnvironmentExportInputs(
     files.manifestPath,

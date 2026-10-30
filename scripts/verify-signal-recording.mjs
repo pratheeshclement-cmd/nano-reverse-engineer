@@ -24,15 +24,15 @@ if (process.platform !== "linux")
   throw new Error(
     "Real signal verification requires Linux with util-linux prlimit.",
   );
-if (!isAbsolute(process.env.REA_SIGROK_COMMAND ?? ""))
+if (!isAbsolute(process.env.NRE_SIGROK_COMMAND ?? ""))
   throw new Error(
-    "Supply an absolute REA_SIGROK_COMMAND for sigrok-cli 0.7.2.",
+    "Supply an absolute NRE_SIGROK_COMMAND for sigrok-cli 0.7.2.",
   );
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
 const root = await PrivateRuntimeRoot.create({
-  prefix: "rea-signal-verifier-",
+  prefix: "nre-signal-verifier-",
 });
 const path = join(root.path, "recording with spaces.vcd");
 const pagedPath = join(root.path, "paged.vcd");
@@ -78,7 +78,7 @@ const lines = [
   "1!",
 ];
 let tick = 1000;
-for (const byte of Buffer.from("REA")) {
+for (const byte of Buffer.from("NRE")) {
   for (const bit of [
     0,
     ...Array.from({ length: 8 }, (_, i) => (byte >> i) & 1),
@@ -144,10 +144,10 @@ await withVerifierCleanup(async () => {
     );
     assert.equal(report.hardware_acquisition, "not-performed");
     assert.equal(report.limits.address_space_bytes, expectedAddressSpace);
-    assert.equal(report.tool.configured_path, process.env.REA_SIGROK_COMMAND);
+    assert.equal(report.tool.configured_path, process.env.NRE_SIGROK_COMMAND);
     assert.equal(
       report.resource_limiter.configured_path,
-      process.env.REA_SIGROK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
+      process.env.NRE_SIGROK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
     );
     assert.ok(
       report.resource_limiter.arguments.includes(
@@ -193,7 +193,7 @@ await withVerifierCleanup(async () => {
     name: advertised.name,
     arguments: {
       path,
-      decoders: "uart:rx=REA_NO_SUCH_CHANNEL:baudrate=9600",
+      decoders: "uart:rx=NRE_NO_SUCH_CHANNEL:baudrate=9600",
       input_format: "vcd",
     },
   });
@@ -205,7 +205,7 @@ await withVerifierCleanup(async () => {
   );
   assert.match(
     channelError.details.captured_output.stderr,
-    /cli: No channel with name "REA_NO_SUCH_CHANNEL" found\./u,
+    /cli: No channel with name "NRE_NO_SUCH_CHANNEL" found\./u,
   );
   assert.match(channelError.details.captured_output.stdout, /uart-1:/u);
   cases++;
@@ -323,7 +323,7 @@ await withVerifierCleanup(async () => {
   assert.ok(ajv.validateSchema(discoveryTool.outputSchema));
   const nativeHelp = (
     await execute(
-      process.env.REA_SIGROK_COMMAND,
+      process.env.NRE_SIGROK_COMMAND,
       ["--dont-scan", "--protocol-decoders=uart", "--show"],
       { env: environment, timeout: 30000, maxBuffer: 4 * 1024 * 1024 },
     )
@@ -331,7 +331,7 @@ await withVerifierCleanup(async () => {
   if (nativeHelp.at(-1) === "") nativeHelp.pop();
   const nativeCatalogText = (
     await execute(
-      process.env.REA_SIGROK_COMMAND,
+      process.env.NRE_SIGROK_COMMAND,
       ["--dont-scan", "--list-supported"],
       { env: environment, timeout: 30000, maxBuffer: 4 * 1024 * 1024 },
     )
@@ -364,7 +364,7 @@ await withVerifierCleanup(async () => {
     { decoder: "uart", query: "BaUd" },
     { decoder: "uart", offset: 50, limit: null },
     { decoder: "uart", query: "[" },
-    { query: "rea_no_such_decoder" },
+    { query: "nre_no_such_decoder" },
   ]) {
     const started = performance.now();
     const response = await client.callTool({
@@ -428,7 +428,7 @@ await withVerifierCleanup(async () => {
   }
   const unavailable = await client.callTool({
     name: discoveryTool.name,
-    arguments: { decoder: "rea_no_such_decoder" },
+    arguments: { decoder: "nre_no_such_decoder" },
   });
   assertRejectedSelector(unavailable, discoveryTool.name, "decoder");
   cases++;

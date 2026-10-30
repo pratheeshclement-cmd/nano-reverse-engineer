@@ -546,8 +546,8 @@ export class ReverseEngineeringService {
             operation === "inspect_with_objdump" ? "objdump" : "rizin";
           const setting =
             provider === "objdump"
-              ? "REA_OBJDUMP_COMMAND"
-              : "REA_RIZIN_COMMAND";
+              ? "NRE_OBJDUMP_COMMAND"
+              : "NRE_RIZIN_COMMAND";
           earlyFailure = new AnalysisCapabilityUnavailableError(
             provider,
             operation,
@@ -786,7 +786,7 @@ export class ReverseEngineeringService {
         : { path: absolutePath, sha256: digest, format: "unknown" },
       profile.identity,
       {
-        predicateType: "rea.reverse-engineering.command-observation",
+        predicateType: "nre.reverse-engineering.command-observation",
         operation,
         parameters: {
           ...(absolutePath === undefined

@@ -29,7 +29,7 @@ assert.ok(
   volume.bavail * volume.bsize > count * encodedLeaf.length + 1024 ** 3,
   "Large-output verification needs room for one output file and a 1-GiB reserve",
 );
-const workspace = await mkdtemp(join(tmpdir(), "rea-javascript-output-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-javascript-output-"));
 const path = join(workspace, "result.json");
 let destination;
 let peakRss = process.memoryUsage().rss;
@@ -73,7 +73,7 @@ try {
     // every non-row fact and the caller's full-output envelope.
     prefix = "";
     suffix = `\n${JSON.stringify({
-      $rea: "jsonl/v1",
+      $nre: "jsonl/v1",
       type: "metadata",
       records: {
         path: ["data", "normalized_result", "rows"],
@@ -111,7 +111,7 @@ try {
   assert.ok(output);
   let unexpectedOutputBytes = 0;
   let exitCode = 0;
-  await Cli.create("rea-output-verifier", { sync: false })
+  await Cli.create("nre-output-verifier", { sync: false })
     .command(metadata.command, {
       run: async ({ format: selectedFormat }) => {
         assert.equal(

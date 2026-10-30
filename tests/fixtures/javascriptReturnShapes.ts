@@ -43,7 +43,7 @@ export const verifyJavaScriptReturnShapes = async (
   check: (fields: JavaScriptReturnFields) => void,
   fileName = "app.js",
 ): Promise<void> => {
-  const root = await createTestTempDirectory("rea-return-shapes-");
+  const root = await createTestTempDirectory("nre-return-shapes-");
   await writeFile(join(root, fileName), source);
   const cliResponse = await cli.run({
     arguments: [
@@ -61,7 +61,7 @@ export const verifyJavaScriptReturnShapes = async (
   const client = new Client({ name: "return-shapes-e2e", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: process.cwd(),
     env: { PATH: process.env.PATH ?? "" },
     stderr: "pipe",

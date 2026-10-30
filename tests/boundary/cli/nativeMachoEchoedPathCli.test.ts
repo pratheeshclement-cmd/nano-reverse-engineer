@@ -12,8 +12,8 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const environment = {
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "auto",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "auto",
 } as const;
 
 // dyld_info echoes the operand path before its records.
@@ -49,7 +49,7 @@ describe.skipIf(process.platform !== "darwin")(
         `does not read ${facts} from the file name`,
         async ({ cli, processes }) => {
           const directory = await createTestTempDirectory(
-            "rea-native-cli-echo-",
+            "nre-native-cli-echo-",
           );
           const fixture = join(directory, "fat-fixture");
           const compiled = await processes.run(

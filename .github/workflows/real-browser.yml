@@ -51,5 +51,5 @@ jobs:
       # Own a fresh bus so Chromium never depends on an inherited session address.
       - run: dbus-run-session -- npm run verify:browser
         env:
-          REA_BROWSER_EXECUTABLE: /usr/bin/google-chrome
-          REA_BROWSER_NO_SANDBOX: "true"
+          NRE_BROWSER_EXECUTABLE: /usr/bin/google-chrome
+          NRE_BROWSER_NO_SANDBOX: "true"

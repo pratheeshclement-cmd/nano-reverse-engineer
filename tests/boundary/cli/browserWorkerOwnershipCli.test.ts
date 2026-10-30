@@ -92,7 +92,7 @@ cliTest(
     const evidence = evidenceInvocation.json;
     expect(evidence).toMatchObject({
       operation: "inspect_web_page",
-      provider: { id: "rea-cdp-browser" },
+      provider: { id: "nre-cdp-browser" },
     });
     const inspection = webPageInspectionSchema.parse(
       normalizedResult(evidence),
@@ -133,7 +133,7 @@ cliTest(
 cliTest(
   "uses the same ownership facts for passive Electron worker inspection",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-worker-ownership-");
+    const root = await createTestTempDirectory("nre-worker-ownership-");
     temporary.push(root);
     await writeFile(join(root, "index.html"), "<html></html>");
     await writeFile(join(root, "worker.js"), "void 0;");
@@ -176,7 +176,7 @@ cliTest(
     const evidence = evidenceInvocation.json;
     expect(evidence).toMatchObject({
       operation: "inspect_electron_page",
-      provider: { id: "rea-cdp-electron" },
+      provider: { id: "nre-cdp-electron" },
     });
     const inspection = electronPageInspectionSchema.parse(
       normalizedResult(evidence),

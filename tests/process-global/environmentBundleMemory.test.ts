@@ -18,7 +18,7 @@ it("refuses retained export before allocation when its expanded copies cannot fi
   const capture = analysisViewCaptureEvidence(
     environmentManifestCaptureFixture(),
   );
-  const root = await createTestTempDirectory("rea-retained-export-memory-");
+  const root = await createTestTempDirectory("nre-retained-export-memory-");
   const statistics = getHeapStatistics();
   vi.mocked(getHeapStatistics).mockReturnValue({
     ...statistics,

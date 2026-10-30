@@ -52,7 +52,7 @@ it.each(["bootstrap", "launch"] as const)(
     const application = new HopperApplicationLauncher(
       {
         environment: {},
-        launcherPath: "/nonexistent-rea-bootstrap-fixture/hopper",
+        launcherPath: "/nonexistent-nre-bootstrap-fixture/hopper",
         targetPath: "/fixture-target",
         targetKind: "database",
         loaderArgs: [],
@@ -94,7 +94,7 @@ it.each(["bootstrap", "launch"] as const)(
 it.each(["failed", "cancelled"] as const)(
   "removes the token-bearing bootstrap and releases the lease after a %s launch",
   async (outcome) => {
-    const directory = await createTestTempDirectory("rea-bootstrap-cleanup-");
+    const directory = await createTestTempDirectory("nre-bootstrap-cleanup-");
     const controller = new AbortController();
     const reason = { source: "caller", opaque: 7 };
     if (outcome === "cancelled") controller.abort(reason);

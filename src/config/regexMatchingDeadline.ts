@@ -7,7 +7,7 @@ import { positiveDecimalIntegerSchema } from "./positiveDecimalInteger.js";
 import { ConfigurationError } from "../domain/configurationErrors.js";
 import { err, ok, type Result } from "../domain/result.js";
 
-export const REGEX_MATCHING_DEADLINE_SETTING = "REA_REGEX_MATCHING_DEADLINE_MS";
+export const REGEX_MATCHING_DEADLINE_SETTING = "NRE_REGEX_MATCHING_DEADLINE_MS";
 
 /** Effective regex matching deadline and where its value came from. */
 export interface RegexMatchingDeadline {
@@ -70,6 +70,6 @@ export const regexMatchingDeadlineRecovery = (
 ): string =>
   [
     `The effective ${REGEX_MATCHING_DEADLINE_SETTING} value is ${String(deadline.deadlineMs)} ms (source ${deadline.source}; default ${String(DEFAULT_REGEX_MATCHING_DEADLINE_MS)} ms, floor 1 ms, maximum ${String(MAXIMUM_REGEX_MATCHING_DEADLINE_MS)} ms).`,
-    `Set ${REGEX_MATCHING_DEADLINE_SETTING} in the environment that starts REA to a positive decimal integer from 1 to ${String(MAXIMUM_REGEX_MATCHING_DEADLINE_MS)}, then restart REA. In a running MCP server, use update_analysis_settings with setting regex.matching_deadline_ms and action set instead; the new value applies to new work without a REA restart.`,
+    `Set ${REGEX_MATCHING_DEADLINE_SETTING} in the environment that starts NRE to a positive decimal integer from 1 to ${String(MAXIMUM_REGEX_MATCHING_DEADLINE_MS)}, then restart NRE. In a running MCP server, use update_analysis_settings with setting regex.matching_deadline_ms and action set instead; the new value applies to new work without a NRE restart.`,
     "The worker old-generation heap does not raise this deadline.",
   ].join(" ");

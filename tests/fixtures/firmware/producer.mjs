@@ -15,8 +15,8 @@ if (engine !== "binwalk" && engine !== "unblob")
     "Firmware fixture requires an explicit binwalk or unblob engine",
   );
 const args = process.argv.slice(3);
-const mode = process.env.REA_FIRMWARE_FIXTURE_MODE;
-const banner = process.env.REA_FIRMWARE_FIXTURE_VERSION;
+const mode = process.env.NRE_FIRMWARE_FIXTURE_MODE;
+const banner = process.env.NRE_FIRMWARE_FIXTURE_VERSION;
 if (args.includes("--version")) {
   console.log(
     mode === "version"

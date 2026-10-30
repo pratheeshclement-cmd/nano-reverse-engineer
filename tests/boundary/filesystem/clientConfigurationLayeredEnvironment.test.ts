@@ -31,7 +31,7 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
   "uses effective OpenCode native activation when the upper layer is %s",
   async (shape) => {
     const home = await createTestTempDirectory(
-      "rea-opencode-effective-dialect-",
+      "nre-opencode-effective-dialect-",
     );
     const root = join(home, ".config", "opencode");
     await mkdir(root, { recursive: true });
@@ -40,7 +40,7 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
     const originalLower = JSON.stringify({
       mcp: {
         servers: {
-          rea: { type: "local", command, disabled: true },
+          nre: { type: "local", command, disabled: true },
           other: { type: "local", command: ["other"], disabled: true },
         },
       },
@@ -54,7 +54,7 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
           ...(shape === "legacy"
             ? {
                 mcp: {
-                  rea: {
+                  nre: {
                     type: "local",
                     command,
                     enabled: true,
@@ -83,17 +83,17 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
     expect(
       effective === undefined
         ? undefined
-        : effectiveClientServer(effective, "rea"),
+        : effectiveClientServer(effective, "nre"),
     ).toMatchObject({ disabled: false });
     const written = JSON.parse(await readFile(upper, "utf8"));
-    expect(written.mcp.servers.rea).toMatchObject({
+    expect(written.mcp.servers.nre).toMatchObject({
       type: "local",
       command,
       disabled: false,
     });
     if (shape === "legacy")
-      expect(written.mcp.servers.rea.future_policy).toEqual({ retain: true });
-    expect(written.mcp.rea).toBeUndefined();
+      expect(written.mcp.servers.nre.future_policy).toEqual({ retain: true });
+    expect(written.mcp.nre).toBeUndefined();
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "already_current",
     });
@@ -105,7 +105,7 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
 );
 
 const layered = async (lower: unknown, upper: unknown) => {
-  const home = await createTestTempDirectory("rea-layered-environment-");
+  const home = await createTestTempDirectory("nre-layered-environment-");
   const directory = join(home, ".config/opencode");
   await mkdir(directory, { recursive: true });
   const paths = [
@@ -115,7 +115,7 @@ const layered = async (lower: unknown, upper: unknown) => {
   const sources = [lower, upper].map((environment) =>
     JSON.stringify({
       mcp: {
-        rea: {
+        nre: {
           ...clientRegistrationEntry("opencode", command, {}),
           environment,
         },
@@ -139,7 +139,7 @@ const layered = async (lower: unknown, upper: unknown) => {
   const unchanged = async () => {
     for (const [index, path] of paths.entries()) {
       expect(await readFile(path, "utf8")).toBe(sources[index]);
-      await expect(access(`${path}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${path}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     }
@@ -148,8 +148,8 @@ const layered = async (lower: unknown, upper: unknown) => {
 };
 
 it.skipIf(process.platform !== "win32").each([
-  { REA_ANALYSIS_PROVIDER: "ghidra", rea_analysis_provider: "hopper" },
-  { rea_analysis_provider: "hopper", REA_ANALYSIS_PROVIDER: "ghidra" },
+  { NRE_ANALYSIS_PROVIDER: "ghidra", nre_analysis_provider: "hopper" },
+  { nre_analysis_provider: "hopper", NRE_ANALYSIS_PROVIDER: "ghidra" },
 ])(
   "keeps explicit overrides above inherited Windows aliases: %j",
   async (lower) => {
@@ -157,7 +157,7 @@ it.skipIf(process.platform !== "win32").each([
     expect(
       await configureClientConfiguration(
         fixture.client,
-        { REA_ANALYSIS_PROVIDER: "ghidra" },
+        { NRE_ANALYSIS_PROVIDER: "ghidra" },
         command,
       ),
     ).toMatchObject({ status: "configured" });
@@ -171,17 +171,17 @@ it.skipIf(process.platform !== "win32").each([
     if (!environment.ok) throw environment.error;
     expect(environment.value.timeoutInputs?.analysisProvider).toBe("ghidra");
     expect(environment.value.values).toHaveProperty(
-      "REA_ANALYSIS_PROVIDER",
+      "NRE_ANALYSIS_PROVIDER",
       "ghidra",
     );
     expect(environment.value.values).not.toHaveProperty(
-      "rea_analysis_provider",
+      "nre_analysis_provider",
     );
     expect(await readFile(fixture.paths[0]!, "utf8")).toBe(fixture.sources[0]);
     expect(
       await configureClientConfiguration(
         fixture.client,
-        { REA_ANALYSIS_PROVIDER: "ghidra" },
+        { NRE_ANALYSIS_PROVIDER: "ghidra" },
         command,
       ),
     ).toEqual({ status: "unchanged" });
@@ -190,8 +190,8 @@ it.skipIf(process.platform !== "win32").each([
 
 it("validates language/compiler settings in the effective OpenCode environment", async () => {
   const fixture = await layered(
-    { REA_GHIDRA_LANGUAGE_ID: language },
-    { REA_GHIDRA_COMPILER_SPEC_ID: compiler },
+    { NRE_GHIDRA_LANGUAGE_ID: language },
+    { NRE_GHIDRA_COMPILER_SPEC_ID: compiler },
   );
   expect(await inspectClientConfiguration(fixture.client, {}, command)).toEqual(
     { status: "already_current" },
@@ -209,20 +209,20 @@ it("validates language/compiler settings in the effective OpenCode environment",
 it("rejects a companion absent from the complete layered environment", async () => {
   const fixture = await layered(
     { CALLER_SETTING: "keep" },
-    { REA_GHIDRA_COMPILER_SPEC_ID: compiler },
+    { NRE_GHIDRA_COMPILER_SPEC_ID: compiler },
   );
   expect(
     await inspectClientConfiguration(fixture.client, {}, command),
   ).toMatchObject({
     status: "invalid",
-    remediation: expect.stringContaining("REA_GHIDRA_COMPILER_SPEC_ID"),
+    remediation: expect.stringContaining("NRE_GHIDRA_COMPILER_SPEC_ID"),
   });
   expect(await clientConfigurationAligned(fixture.client, {}, command)).toBe(
     false,
   );
   expect(await fixture.status()).toMatchObject({
     state: "invalid",
-    remediation: expect.stringContaining("REA_GHIDRA_COMPILER_SPEC_ID"),
+    remediation: expect.stringContaining("NRE_GHIDRA_COMPILER_SPEC_ID"),
   });
   expect(
     await configureClientConfiguration(fixture.client, {}, command),
@@ -233,12 +233,12 @@ it("rejects a companion absent from the complete layered environment", async () 
 it("keeps higher-priority values and does not copy inherited settings into the write layer", async () => {
   const fixture = await layered(
     {
-      REA_GHIDRA_LANGUAGE_ID: language,
+      NRE_GHIDRA_LANGUAGE_ID: language,
       HOPPER_LOADER_ARGS_JSON: '["lower"]',
       ["__proto__"]: "lower caller value",
     },
     {
-      REA_GHIDRA_COMPILER_SPEC_ID: compiler,
+      NRE_GHIDRA_COMPILER_SPEC_ID: compiler,
       HOPPER_LOADER_ARGS_JSON: '[""]',
       ["__proto__"]: "selected caller value",
     },
@@ -246,7 +246,7 @@ it("keeps higher-priority values and does not copy inherited settings into the w
   expect(
     await configureClientConfiguration(
       fixture.client,
-      { REA_LOG_LEVEL: "debug" },
+      { NRE_LOG_LEVEL: "debug" },
       command,
     ),
   ).toMatchObject({ status: "configured" });
@@ -255,17 +255,17 @@ it("keeps higher-priority values and does not copy inherited settings into the w
     await readFile(fixture.client.configPath, "utf8"),
     "opencode",
   );
-  expect(effectiveClientServer(configured, "rea")).toHaveProperty(
+  expect(effectiveClientServer(configured, "nre")).toHaveProperty(
     "environment",
     {
-      REA_GHIDRA_COMPILER_SPEC_ID: compiler,
+      NRE_GHIDRA_COMPILER_SPEC_ID: compiler,
       HOPPER_LOADER_ARGS_JSON: '[""]',
-      REA_LOG_LEVEL: "debug",
+      NRE_LOG_LEVEL: "debug",
       ["__proto__"]: "selected caller value",
     },
   );
   expect(
-    await readFile(`${fixture.client.configPath}.rea.backup`, "utf8"),
+    await readFile(`${fixture.client.configPath}.nre.backup`, "utf8"),
   ).toBe(fixture.sources[1]);
   expect(await fixture.status()).toMatchObject({ state: "aligned" });
   expect(await clientConfigurationAligned(fixture.client, {}, command)).toBe(
@@ -325,9 +325,9 @@ it.each([
 );
 
 it("uses inherited settings when creating a missing write layer", async () => {
-  const fixture = await layered({ REA_GHIDRA_LANGUAGE_ID: language }, {});
+  const fixture = await layered({ NRE_GHIDRA_LANGUAGE_ID: language }, {});
   await rm(fixture.client.configPath);
-  const overrides = { REA_GHIDRA_COMPILER_SPEC_ID: compiler };
+  const overrides = { NRE_GHIDRA_COMPILER_SPEC_ID: compiler };
   expect(
     await inspectClientConfiguration(fixture.client, overrides, command),
   ).toEqual({ status: "create" });
@@ -338,24 +338,24 @@ it("uses inherited settings when creating a missing write layer", async () => {
     await readFile(fixture.client.configPath, "utf8"),
     "opencode",
   );
-  expect(effectiveClientServer(parsed, "rea")).toHaveProperty(
+  expect(effectiveClientServer(parsed, "nre")).toHaveProperty(
     "environment",
     overrides,
   );
   expect(await readFile(fixture.paths[0]!, "utf8")).toBe(fixture.sources[0]);
   expect(await fixture.status()).toMatchObject({ state: "aligned" });
   await expect(
-    access(`${fixture.client.configPath}.rea.backup`),
+    access(`${fixture.client.configPath}.nre.backup`),
   ).rejects.toMatchObject({ code: "ENOENT" });
 });
 
 it("replaces the selected write layer rather than the last loaded layer", async () => {
   const fixture = await layered(
-    { REA_GHIDRA_LANGUAGE_ID: language },
-    { REA_GHIDRA_COMPILER_SPEC_ID: compiler },
+    { NRE_GHIDRA_LANGUAGE_ID: language },
+    { NRE_GHIDRA_COMPILER_SPEC_ID: compiler },
   );
   const client = { ...fixture.client, configPath: fixture.paths[0]! };
-  const overrides = { REA_LOG_LEVEL: "debug" };
+  const overrides = { NRE_LOG_LEVEL: "debug" };
   expect(await inspectClientConfiguration(client, {}, command)).toEqual({
     status: "already_current",
   });
@@ -366,12 +366,12 @@ it("replaces the selected write layer rather than the last loaded layer", async 
     await readFile(client.configPath, "utf8"),
     "opencode",
   );
-  expect(effectiveClientServer(parsed, "rea")).toHaveProperty("environment", {
-    REA_GHIDRA_LANGUAGE_ID: language,
+  expect(effectiveClientServer(parsed, "nre")).toHaveProperty("environment", {
+    NRE_GHIDRA_LANGUAGE_ID: language,
     ...overrides,
   });
   expect(await readFile(fixture.paths[1]!, "utf8")).toBe(fixture.sources[1]);
-  expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
     fixture.sources[0],
   );
   expect(await clientConfigurationAligned(client, {}, command)).toBe(true);

@@ -39,7 +39,7 @@ for (const scenario of cases)
   cliTest(
     `Electron DOM admission preserves source identities: ${scenario.name}`,
     async ({ cli, onTestFinished }) => {
-      const root = await createTestTempDirectory("rea-electron-dom-admission-");
+      const root = await createTestTempDirectory("nre-electron-dom-admission-");
       const main = join(root, "index.html");
       await writeFile(main, "<html/>");
       const url = pathToFileURL(main).href;

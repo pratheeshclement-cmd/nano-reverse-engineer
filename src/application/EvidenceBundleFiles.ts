@@ -168,7 +168,7 @@ const validateBundlePayloads = (
   bundle: EvidenceBundle,
 ): Result<EvidenceBundle, EvidenceIntegrityError> => {
   for (const record of bundle.records) {
-    if (record.predicate_type !== "rea.process-capture") continue;
+    if (record.predicate_type !== "nre.process-capture") continue;
     const parsedCapture = safeParseProcessCapture(record.normalized_result);
     if (!parsedCapture.success) {
       return err(

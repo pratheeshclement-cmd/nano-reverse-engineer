@@ -36,7 +36,7 @@ const YML = [
 ].join("\n");
 const MANIFEST = [
   '<?xml version="1.0" encoding="utf-8" standalone="no"?>',
-  '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rea.apktool.probe"/>',
+  '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.nre.apktool.probe"/>',
   "",
 ].join("\n");
 
@@ -98,12 +98,12 @@ const decode = async (
   );
 
 it("applies the omitted 600000 ms decode deadline and a selected value on the next decode", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-apktool-deadline-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-apktool-deadline-"));
   const path = join(root, "probe.apk");
   await writeFile(path, "apk-bytes");
   installLauncher();
   const provider = new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: "/opt/apktool/apktool" },
+    environment: { NRE_APKTOOL_COMMAND: "/opt/apktool/apktool" },
   });
   try {
     const omitted = await decode(provider, path);

@@ -161,7 +161,7 @@ here.
 
 ## Built-CLI exchange on the prototype capture
 
-`node scripts/rea.mjs inspect-web-network-capture grafana-like.har har
+`node scripts/nre.mjs inspect-web-network-capture grafana-like.har har
 --format json` wrote capture Evidence `ev_4ee4759b…` with 28 records;
 `inspect-analysis-view` with the inline source and all three template rules
 wrote manifest Evidence `ev_6553a8e5…` naming that parent, `grafana-example`,
@@ -212,7 +212,7 @@ The manifest served against the capture of one selected record (`--record
 0`, `ev_3249d233…`) was refused with exit 1 and
 `{"code":"invalid_request","details":{"operation":"environment-serve","issues":[{"path":["evidence","evidence_id"],"reason":"invalid_value","expected":"ev_4ee4759b…",…}]}}`
 whose message names both identifiers; omitting `--evidence` exited 1 with
-Incur's `VALIDATION_ERROR` naming `evidence`. No `rea.mjs` process or
+Incur's `VALIDATION_ERROR` naming `evidence`. No `nre.mjs` process or
 listener remained after these runs.
 
 ## Independent review

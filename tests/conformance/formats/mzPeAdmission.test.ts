@@ -69,7 +69,7 @@ it("refuses relocation-owned DOS bytes as packaged Windows native artifacts", ()
 });
 
 it("does not scan fuse wires in a planted PE record owned by DOS relocations", async () => {
-  const root = await createTestTempDirectory("rea-fuse-dos-relocations-");
+  const root = await createTestTempDirectory("nre-fuse-dos-relocations-");
   const path = join(root, "selected.exe");
   await writeFile(
     path,
@@ -86,7 +86,7 @@ it("does not scan fuse wires in a planted PE record owned by DOS relocations", a
 });
 
 it("does not emit desktop PE facts from relocation-owned DOS bytes", async () => {
-  const root = await createTestTempDirectory("rea-desktop-dos-relocations-");
+  const root = await createTestTempDirectory("nre-desktop-dos-relocations-");
   const path = join(root, "selected.exe");
   const bytes = relocationOwnedPointer(buildManagedPeFixture());
   await writeFile(path, bytes);
@@ -155,7 +155,7 @@ it("preserves recognized PE records after short DOS headers in complete-byte rea
 });
 
 it("preserves fuse inspection after a short DOS header with a confirmed PE signature", async () => {
-  const root = await createTestTempDirectory("rea-fuse-short-dos-");
+  const root = await createTestTempDirectory("nre-fuse-short-dos-");
   const path = join(root, "selected.exe");
   await writeFile(
     path,
@@ -174,7 +174,7 @@ it("preserves fuse inspection after a short DOS header with a confirmed PE signa
 });
 
 it("preserves desktop PE observations after a short DOS header", async () => {
-  const root = await createTestTempDirectory("rea-desktop-short-dos-");
+  const root = await createTestTempDirectory("nre-desktop-short-dos-");
   const path = join(root, "selected.exe");
   const bytes = shortDosHeader(buildManagedPeFixture());
   await writeFile(path, bytes);

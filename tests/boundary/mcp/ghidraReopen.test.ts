@@ -49,7 +49,7 @@ class FixtureLauncher implements GhidraLauncher {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
       env: {
         ...process.env,
-        REA_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
+        NRE_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
           endpointPath: session.endpointPath,
           token: session.token,
           runId: session.runId,
@@ -117,7 +117,7 @@ const installationHost: GhidraInstallationHost = {
 // Only installation discovery and the Java bridge are simulated. Requests use
 // the production client, real child/socket and public MCP session routing.
 const connectGhidra = async () => {
-  const directory = await createTestTempDirectory("rea-ghidra-reopen-");
+  const directory = await createTestTempDirectory("nre-ghidra-reopen-");
   const target = join(directory, "target.elf");
   const source = elf(2, 1, 62);
   await writeFile(target, source);

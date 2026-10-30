@@ -23,7 +23,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { mcpTest } from "../../support/mcp/mcpFixture.js";
 
 const createSnapshotReplayFixture = async (missingSource: boolean) => {
-  const directory = await createTestTempDirectory("rea-snapshot-source-mcp-");
+  const directory = await createTestTempDirectory("nre-snapshot-source-mcp-");
   const path = join(directory, "application.exe");
   const snapshotPath = join(directory, "historical.json");
   await writeFile(path, buildManagedPeFixture());

@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 const encodingFixture = () => {
   const xml =
-    '<?xml version="1.0" encoding="UTF-16"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.rea.encoding</string></dict></plist>';
+    '<?xml version="1.0" encoding="UTF-16"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.nre.encoding</string></dict></plist>';
   const utf16 = Buffer.from(xml, "utf16le");
   const utf8 = xml.replace("UTF-16", "UTF-8");
   const cases = [
@@ -70,7 +70,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "resolves real compiled bundles without changing executable names during decoding",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-bundle-encoding-");
+        const directory = await createTestTempDirectory("nre-bundle-encoding-");
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -87,8 +87,8 @@ describe.skipIf(process.platform !== "darwin")(
           const result = await cli.run({
             arguments: ["inspect-plist", app, "--json"],
             environment: {
-              REA_LOG_LEVEL: "silent",
-              REA_ANALYSIS_PROVIDER: "auto",
+              NRE_LOG_LEVEL: "silent",
+              NRE_ANALYSIS_PROVIDER: "auto",
             },
           });
           expect(
@@ -100,7 +100,7 @@ describe.skipIf(process.platform !== "darwin")(
               normalized_result: {
                 value: {
                   CFBundleExecutable: "App",
-                  CFBundleIdentifier: "dev.rea.encoding",
+                  CFBundleIdentifier: "dev.nre.encoding",
                 },
                 bundle: { executable: "App" },
               },
@@ -118,11 +118,11 @@ describe.skipIf(process.platform !== "darwin")(
         }
         const transport = new StdioClientTransport({
           command: process.execPath,
-          args: [resolve("scripts/rea.mjs"), "mcp"],
+          args: [resolve("scripts/nre.mjs"), "mcp"],
           env: {
             PATH: process.env.PATH ?? "",
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
           stderr: "pipe",
         });
@@ -159,7 +159,7 @@ describe.skipIf(process.platform !== "darwin")(
           normalized_result: {
             value: {
               CFBundleExecutable: "App",
-              CFBundleIdentifier: "dev.rea.encoding",
+              CFBundleIdentifier: "dev.nre.encoding",
             },
           },
         });

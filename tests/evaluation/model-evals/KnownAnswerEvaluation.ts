@@ -254,7 +254,7 @@ const parseToolResult = (
       ? error.code
       : null;
   const evidenceValue =
-    server?.toLowerCase() === "rea" &&
+    server?.toLowerCase() === "nre" &&
     item.status !== "failed" &&
     (item.error === undefined || item.error === null) &&
     consistentJsonAliases(item, "result", "output") &&
@@ -347,7 +347,7 @@ const artifactDelivery = (evidence: Evidence): readonly Evidence[] => {
   return records;
 };
 
-/** Parse one completed transcript call and authenticate any successful REA Evidence. */
+/** Parse one completed transcript call and authenticate any successful NRE Evidence. */
 export const parseCodexToolCall = (
   event: unknown,
 ): ParsedCodexToolCall | undefined => {

@@ -60,7 +60,7 @@ const fixedEvmRecovery = (allowance: string): string =>
 const evmTimeoutRecovery = (timeoutMs: number): string =>
   `${
     timeoutMs < MAX_EVM_TIMEOUT_MS
-      ? `Increase timeout_ms above ${String(timeoutMs)} (integer milliseconds, maximum ${String(MAX_EVM_TIMEOUT_MS)}), or use rea inspect-evm-interface <path> <encoding> --timeout-ms <milliseconds> on the CLI.`
+      ? `Increase timeout_ms above ${String(timeoutMs)} (integer milliseconds, maximum ${String(MAX_EVM_TIMEOUT_MS)}), or use nre inspect-evm-interface <path> <encoding> --timeout-ms <milliseconds> on the CLI.`
       : `timeout_ms is already at the maximum supported ${String(MAX_EVM_TIMEOUT_MS)} ms; no higher worker deadline is supported. Report this blocker or select another suitable complete carrier with caller approval.`
   } This is a per-call setting; no server restart is needed. It covers the owned EVMole worker command, not carrier acquisition or final reply reads. Allow the MCP client deadline to cover acquisition, the worker, reply reads, cleanup and delivery; increasing only that client deadline does not change this budget. Fixed input (${String(EVM_INTERFACE_LIMITS.inputBytes)} bytes), reply (${String(EVM_INTERFACE_LIMITS.outputBytes)} bytes), diagnostic (${String(EVM_INTERFACE_LIMITS.diagnosticBytes)} bytes), address-space (${String(EVM_INTERFACE_LIMITS.addressSpaceBytes)} bytes), and CPU (${String(EVM_CPU_SECONDS)} seconds) allowances stay unchanged, and timeout_ms does not raise them. Resolve any incomplete cleanup before retrying; do not repeat the unchanged failed call.`;
 

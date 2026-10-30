@@ -13,7 +13,7 @@ const localDrivePath = (path: string): string =>
   path.replace(/^\\\\\?\\(?=[A-Za-z]:\\)/u, "");
 
 const guardianSource = fileURLToPath(
-  new URL("../../scripts/rea-android-workspace-guardian.mjs", import.meta.url),
+  new URL("../../scripts/nre-android-workspace-guardian.mjs", import.meta.url),
 );
 const readySchema = z.strictObject({
   path: z.string(),
@@ -148,7 +148,7 @@ class WindowsJadxWorkspaceRoot implements JadxWorkspaceRoot {
       if (
         win32.dirname(localDrivePath(observation.path)).toLowerCase() !==
           localDrivePath(win32.resolve(parent)).toLowerCase() ||
-        !/^rea-android-[a-f0-9]{32}$/u.test(win32.basename(observation.path))
+        !/^nre-android-[a-f0-9]{32}$/u.test(win32.basename(observation.path))
       )
         throw new Error(
           "Android workspace guardian returned an unexpected root",
@@ -223,4 +223,4 @@ class WindowsJadxWorkspaceRoot implements JadxWorkspaceRoot {
 export const createJadxWorkspaceRoot = (): Promise<JadxWorkspaceRoot> =>
   process.platform === "win32"
     ? WindowsJadxWorkspaceRoot.create()
-    : PrivateRuntimeRoot.create({ prefix: "rea-android-" });
+    : PrivateRuntimeRoot.create({ prefix: "nre-android-" });

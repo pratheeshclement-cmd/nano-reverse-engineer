@@ -32,21 +32,21 @@ jobs:
         with:
           node-version-file: .nvmrc
       - name: Fetch checksum-pinned engine and public APK fixture
-        run: node scripts/fixtures/android/fetch.mjs "$RUNNER_TEMP/rea-android"
+        run: node scripts/fixtures/android/fetch.mjs "$RUNNER_TEMP/nre-android"
       - name: Compile and exercise the real metadata bridge
         shell: bash
         run: |
           export JAVA_HOME="$JAVA_HOME_21_X64"
-          android_root="$RUNNER_TEMP/rea-android"
+          android_root="$RUNNER_TEMP/nre-android"
           classes="$android_root/classes"
           jar="$android_root/jadx-headless-mcp-0.7.1-all.jar"
           mkdir -p "$classes"
           "$JAVA_HOME/bin/javac" -J-Xmx512m -J-XX:ActiveProcessorCount=2 \
             -classpath "$jar" -d "$classes" \
-            bridge/android/ReaJadxBridge.java \
-            tests/conformance/android/ReaJadxMetadataRegression.java
+            bridge/android/NreJadxBridge.java \
+            tests/conformance/android/NreJadxMetadataRegression.java
           "$JAVA_HOME/bin/java" -Xmx512m -XX:ActiveProcessorCount=2 \
-            -classpath "$classes:$jar" ReaJadxMetadataRegression \
+            -classpath "$classes:$jar" NreJadxMetadataRegression \
             "$android_root/ApiDemos-debug.apk" \
             "$GITHUB_WORKSPACE/tests/fixtures/android/static-initializers" \
             "$classes" "$GITHUB_WORKSPACE/tests/fixtures/android/direct-invokes" \

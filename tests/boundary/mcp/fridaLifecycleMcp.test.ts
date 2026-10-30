@@ -1089,7 +1089,7 @@ it("retains cancellation source facts without claiming native creation when no s
 
 it("retains original malformed file identity and decoded representation through a rejected cancelled MCP load", async () => {
   const { fixture, id, held } = await scriptLoadFixture();
-  const directory = await mkdtemp(join(tmpdir(), "rea-frida-file-cancel-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-frida-file-cancel-"));
   onTestFinished(() => rm(directory, { recursive: true, force: true }));
   const path = join(directory, "script.js");
   const bytes = Buffer.from([0x2f, 0x2f, 0xff, 0x0a]);

@@ -62,7 +62,7 @@ describe("CLI JSON path normalization", () => {
   it.skipIf(process.platform === "win32")(
     "keeps POSIX symlink-parent traversal for each selected JSON path",
     async () => {
-      const root = await mkdtemp(join(tmpdir(), "rea-json-caller-path-"));
+      const root = await mkdtemp(join(tmpdir(), "nre-json-caller-path-"));
       const originalCwd = process.cwd();
       try {
         await mkdir(join(root, "real/inner"), { recursive: true });

@@ -14,7 +14,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "omits HAR extension payloads from capture previews while retaining complete records",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-har-preview-");
+    const root = await createTestTempDirectory("nre-har-preview-");
     const fixture = historicalHar();
     const entry = fixture.log.entries[0];
     if (entry === undefined) throw new Error("fixture missing");
@@ -109,7 +109,7 @@ cliTest(
 cliTest(
   "refuses malformed HAR schema facts before record selection through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-har-timing-facts-");
+    const root = await createTestTempDirectory("nre-har-timing-facts-");
     const { call } = await connectLocalToolsMcp();
     const fixture = historicalHar();
     const entry = fixture.log.entries[0];
@@ -189,7 +189,7 @@ cliTest(
 cliTest(
   "keeps unknown HAR body encodings as evidence without deriving decoded state through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-har-body-facts-");
+    const root = await createTestTempDirectory("nre-har-body-facts-");
     const fixture = historicalHar();
     const entry = fixture.log.entries[0];
     if (entry === undefined) throw new Error("fixture missing");

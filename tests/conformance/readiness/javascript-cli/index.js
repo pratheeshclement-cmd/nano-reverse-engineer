@@ -5,7 +5,7 @@ import process from "node:process";
 import readline from "node:readline";
 
 const configurationPath =
-  process.env.REA_READINESS_CONFIG ?? "./readiness-config.json";
+  process.env.NRE_READINESS_CONFIG ?? "./readiness-config.json";
 const configuration = JSON.parse(
   await readFile(configurationPath, "utf8").catch(() => "{}"),
 );

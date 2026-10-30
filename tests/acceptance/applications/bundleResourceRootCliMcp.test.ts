@@ -91,14 +91,14 @@ cliTest.skipIf(process.platform !== "darwin")(
   "inspects a keyless app resource root through the compiled CLI",
   async ({ cli }) => {
     const temporaryRoot = await createTestTempDirectory(
-      "rea-bundle-resource-acceptance-",
+      "nre-bundle-resource-acceptance-",
     );
     const firstBundle = await createKeylessBundle(temporaryRoot, "First");
 
     for (const scenario of cliScenarios(firstBundle)) {
       const response = await cli.run({
         arguments: [...scenario.arguments, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(
         response.exitCode,
@@ -124,7 +124,7 @@ cliTest.skipIf(process.platform !== "darwin")(
   "retains and switches keyless resource sessions through stdio MCP",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-resource-session-acceptance-",
+      "nre-resource-session-acceptance-",
     );
     const firstBundle = await createKeylessBundle(root, "First");
     const secondBundle = await createKeylessBundle(root, "Second");

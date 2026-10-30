@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "rea": {
+    "nre": {
       "command": "node",
       "args": [
         "./scripts/plugin-mcp-launcher.mjs",

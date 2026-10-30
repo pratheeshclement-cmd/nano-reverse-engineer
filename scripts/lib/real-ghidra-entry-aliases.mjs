@@ -15,8 +15,8 @@ export async function verifyGhidraEntryAliases({
   env,
 }) {
   const exec = promisify(execFile);
-  const compiler = process.env.REA_CC ?? "cc";
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-entry-aliases-"));
+  const compiler = process.env.NRE_CC ?? "cc";
+  const workspace = await mkdtemp(join(tmpdir(), "nre-ghidra-entry-aliases-"));
   const source = fileURLToPath(
     new URL("../../tests/conformance/ghidra/entry-aliases.c", import.meta.url),
   );
@@ -32,7 +32,7 @@ export async function verifyGhidraEntryAliases({
     const prefix = imported.format === "mach-o" ? "_" : "";
     const names = await call("list_names");
     const alias = names.find(
-      ({ value }) => value === `${prefix}rea_entry_alias`,
+      ({ value }) => value === `${prefix}nre_entry_alias`,
     );
     assert.ok(alias, "Fixture entry alias was not imported");
     assert.equal(
@@ -49,15 +49,15 @@ export async function verifyGhidraEntryAliases({
     // CLI xrefs keeps bare hexadecimal selectors as addresses. A Mach-O
     // primary label such as "dead" is tested below as a procedure name instead.
     for (const value of [
-      `${prefix}rea_alias_target`,
+      `${prefix}nre_alias_target`,
       alias.value,
-      `${prefix}rea_xrefs_data`,
-      `${prefix}rea_xrefs_unreferenced`,
+      `${prefix}nre_xrefs_data`,
+      `${prefix}nre_xrefs_unreferenced`,
     ]) {
       const symbol = names.find((item) => item.value === value);
       assert.ok(symbol, `Missing xrefs selector ${value}`);
       const expected = await call("xrefs", { address: symbol.address });
-      if (value === `${prefix}rea_xrefs_unreferenced`)
+      if (value === `${prefix}nre_xrefs_unreferenced`)
         assert.deepEqual(expected, []);
       else assert.ok(expected.length > 0, `Missing references for ${value}`);
       xrefsSelectors.push({ symbol, expected });
@@ -88,7 +88,7 @@ export async function verifyGhidraEntryAliases({
       alias.address,
     );
     const interior = names.find(
-      ({ value }) => value === `${prefix}rea_interior`,
+      ({ value }) => value === `${prefix}nre_interior`,
     );
     assert.ok(interior);
     assert.notEqual(interior.address, alias.address);
@@ -183,7 +183,7 @@ export async function verifyGhidraEntryAliases({
           entrypoint,
           "xrefs",
           path,
-          "rea_missing_symbol",
+          "nre_missing_symbol",
           "--provider",
           "ghidra",
           "--json",
@@ -196,7 +196,7 @@ export async function verifyGhidraEntryAliases({
         assert.equal(failure.details.operation, "xrefs");
         assert.match(
           JSON.stringify(failure.details.issues),
-          /Unknown analyzed symbol name.*rea_missing_symbol/u,
+          /Unknown analyzed symbol name.*nre_missing_symbol/u,
         );
         return true;
       },

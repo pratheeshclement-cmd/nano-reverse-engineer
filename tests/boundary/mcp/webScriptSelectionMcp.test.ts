@@ -24,7 +24,7 @@ import { webScriptExportResultSchema } from "../../../src/domain/webScriptExport
 it.skipIf(process.platform === "win32")(
   "returns a capture_path invalid_request for a named pipe without waiting or publishing output",
   async () => {
-    const root = await createTestTempDirectory("rea-script-selection-mcp-");
+    const root = await createTestTempDirectory("nre-script-selection-mcp-");
     const capturePath = join(root, "capture.pipe");
     const outputDirectory = join(root, "export");
     await promisify(execFile)("mkfifo", [capturePath]);
@@ -87,7 +87,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("refuses an existing output directory as invalid output_directory input", async () => {
-  const root = await createTestTempDirectory("rea-script-export-existing-mcp-");
+  const root = await createTestTempDirectory("nre-script-export-existing-mcp-");
   const capturePath = join(root, "capture.json");
   await writeFile(capturePath, JSON.stringify(scriptScenarioFixture()));
   const outputDirectory = join(root, "retained");
@@ -142,7 +142,7 @@ it("refuses an existing output directory as invalid output_directory input", asy
 });
 
 it("publishes script bytes and retains the returned Evidence without starting an analysis provider", async () => {
-  const root = await createTestTempDirectory("rea-script-export-retained-mcp-");
+  const root = await createTestTempDirectory("nre-script-export-retained-mcp-");
   const capturePath = join(root, "capture.json");
   const outputDirectory = join(root, "export");
   const bytes = Buffer.from("export const callerValue = 'retained';\n");

@@ -56,10 +56,10 @@ export class WindowsNativeControlUnavailableError extends RuntimeControlUnavaila
 
   constructor(readonly control: WindowsNativeControl) {
     super(
-      `The bundled Windows native artifact does not support ${NATIVE_CONTROL_NAMES[control]}; use a matching current Windows x64 REA package.`,
+      `The bundled Windows native artifact does not support ${NATIVE_CONTROL_NAMES[control]}; use a matching current Windows x64 NRE package.`,
       {
         remediationAction:
-          "Install the matching current Windows x64 REA package; its native inspection must prove this control. REA does not launch without it, so retrying the unchanged installation will not succeed.",
+          "Install the matching current Windows x64 NRE package; its native inspection must prove this control. NRE does not launch without it, so retrying the unchanged installation will not succeed.",
       },
     );
     this.name = "WindowsNativeControlUnavailableError";

@@ -28,12 +28,12 @@ describe("MCP response budget configuration", () => {
       nodeCeiling,
     );
     expect(recovery).toContain(
-      "The effective REA_MCP_MAX_RESPONSE_BYTES value is 20971520 bytes",
+      "The effective NRE_MCP_MAX_RESPONSE_BYTES value is 20971520 bytes",
     );
     expect(recovery).toContain("floor 10485760 bytes, 10 MiB");
-    expect(recovery).toContain("restarting the REA process");
+    expect(recovery).toContain("restarting the NRE process");
     expect(recovery).toContain(
-      `REA's reserved single-string limit of ${String(reserved)} UTF-16 code units`,
+      `NRE's reserved single-string limit of ${String(reserved)} UTF-16 code units`,
     );
     expect(recovery).toContain(
       `Node's single-string ceiling of ${String(nodeCeiling)} UTF-16 code units`,
@@ -45,7 +45,7 @@ describe("MCP response budget configuration", () => {
       `Node's single-string ceiling is ${String(reserved)}`,
     );
     expect(nodeStringCeilingRecovery(reserved, nodeCeiling)).toBe(
-      `REA's reserved single-string limit is ${String(reserved)} UTF-16 code units, below Node's single-string ceiling of ${String(nodeCeiling)} UTF-16 code units. This release has no runtime override for either limit, and REA_MCP_MAX_RESPONSE_BYTES does not raise them.`,
+      `NRE's reserved single-string limit is ${String(reserved)} UTF-16 code units, below Node's single-string ceiling of ${String(nodeCeiling)} UTF-16 code units. This release has no runtime override for either limit, and NRE_MCP_MAX_RESPONSE_BYTES does not raise them.`,
     );
   });
 
@@ -54,7 +54,7 @@ describe("MCP response budget configuration", () => {
     (value) => {
       const parsed = parseMcpResponseBudget(value);
       if (parsed.ok) throw new Error("Expected invalid budget");
-      expect(parsed.error.message).toContain("REA_MCP_MAX_RESPONSE_BYTES");
+      expect(parsed.error.message).toContain("NRE_MCP_MAX_RESPONSE_BYTES");
     },
   );
 });

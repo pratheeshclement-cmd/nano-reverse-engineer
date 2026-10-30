@@ -44,7 +44,7 @@ afterEach(() => {
 });
 
 it("skips an oversized definition without buffering it beyond the catalog limit", async () => {
-  const root = await createTestTempDirectory("rea-ghidra-ldefs-bound-");
+  const root = await createTestTempDirectory("nre-ghidra-ldefs-bound-");
   const module = (name: string) =>
     join(root, "Ghidra/Processors", name, "data/languages");
   await mkdir(module("huge"), { recursive: true });
@@ -71,7 +71,7 @@ it("skips an oversized definition without buffering it beyond the catalog limit"
 });
 
 it("keeps a definition at exactly the catalog limit", async () => {
-  const root = await createTestTempDirectory("rea-ghidra-ldefs-limit-");
+  const root = await createTestTempDirectory("nre-ghidra-ldefs-limit-");
   const languages = join(root, "Ghidra/Processors/edge/data/languages");
   await mkdir(languages, { recursive: true });
   const document = Buffer.from(
@@ -88,7 +88,7 @@ it("keeps a definition at exactly the catalog limit", async () => {
 });
 
 it("follows a symlinked definition file", async () => {
-  const root = await createTestTempDirectory("rea-ghidra-ldefs-symlink-");
+  const root = await createTestTempDirectory("nre-ghidra-ldefs-symlink-");
   const languages = join(root, "Ghidra/Processors/link/data/languages");
   await mkdir(languages, { recursive: true });
   const source = join(root, "source.xml");
@@ -105,7 +105,7 @@ it("follows a symlinked definition file", async () => {
 it.skipIf(process.platform === "win32")(
   "refuses a non-regular definition without waiting for a writer",
   async () => {
-    const root = await createTestTempDirectory("rea-ghidra-ldefs-fifo-");
+    const root = await createTestTempDirectory("nre-ghidra-ldefs-fifo-");
     const languages = join(root, "Ghidra/Processors/pipe/data/languages");
     await mkdir(languages, { recursive: true });
     execFileSync("mkfifo", [join(languages, "pipe.ldefs")]);

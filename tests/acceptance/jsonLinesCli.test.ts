@@ -13,7 +13,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "exports authenticated analysis-view rows, preserving every Evidence fact and empty/partial coverage",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-json-lines-view-");
+    const root = await createTestTempDirectory("nre-json-lines-view-");
     const parent = analysisViewJavaScriptEvidence();
     const evidencePath = join(root, "parent.json");
     const requestPath = join(root, "request.json");
@@ -29,7 +29,7 @@ cliTest(
     });
     expect(invalid.exitCode).toBe(1);
     expect(JSON.parse(invalid.stdout)).toMatchObject({
-      $rea: "jsonl/v1",
+      $nre: "jsonl/v1",
       type: "error",
       result: { code: "VALIDATION_ERROR" },
     });
@@ -39,7 +39,7 @@ cliTest(
     });
     expect(badOutputValue.exitCode).toBe(1);
     expect(JSON.parse(badOutputValue.stdout)).toMatchObject({
-      $rea: "jsonl/v1",
+      $nre: "jsonl/v1",
       type: "error",
     });
 
@@ -66,7 +66,7 @@ cliTest(
         .map((line) => JSON.parse(line));
       const final = records.pop();
       expect(final).toMatchObject({
-        $rea: "jsonl/v1",
+        $nre: "jsonl/v1",
         type: "metadata",
         records: {
           path: ["normalized_result", "rows"],
@@ -124,7 +124,7 @@ cliTest(
 cliTest(
   "refuses non-record SQLite selections as caller output errors while the analysis succeeds",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-json-lines-sqlite-");
+    const root = await createTestTempDirectory("nre-json-lines-sqlite-");
     const path = join(root, "config.sqlite");
     const database = new DatabaseSync(path);
     try {
@@ -167,7 +167,7 @@ cliTest(
       ],
     ] as const) {
       expect(await sqliteJsonLines(selection)).toMatchObject({
-        $rea: "jsonl/v1",
+        $nre: "jsonl/v1",
         type: "error",
         ok: false,
         result: {
@@ -216,7 +216,7 @@ for (const full of [false, true]) {
               }
             : { code: "UNKNOWN", message: "Unknown flag: --zzz-bogus" };
         expect(JSON.parse(invalid.stdout)).toMatchObject({
-          $rea: "jsonl/v1",
+          $nre: "jsonl/v1",
           type: "error",
           ok: false,
           result: full

@@ -16,7 +16,7 @@ const runCapture = async (cli: TestCli, steps: string | undefined) => {
   arguments_.push("--json");
   return cli.run({
     arguments: arguments_,
-    environment: { REA_LOG_LEVEL: "silent" },
+    environment: { NRE_LOG_LEVEL: "silent" },
   });
 };
 
@@ -86,7 +86,7 @@ describe("native UI scenario CLI input", () => {
           '[{"kind":"wait","milliseconds":0}]',
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
 
       expect(result.exitCode).not.toBe(0);

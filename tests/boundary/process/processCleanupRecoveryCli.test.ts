@@ -17,9 +17,9 @@ import fs from "node:fs";
 import { basename, resolve } from "node:path";
 import { syncBuiltinESMExports } from "node:module";
 
-const cliEntry = process.env.REA_TEST_CLI_ENTRY;
+const cliEntry = process.env.NRE_TEST_CLI_ENTRY;
 if (cliEntry !== undefined && resolve(process.argv[1] ?? "") === cliEntry) {
-  const markerPath = process.env.REA_TEST_CLEANUP_MARKER;
+  const markerPath = process.env.NRE_TEST_CLEANUP_MARKER;
   const originalMkdtemp = fs.promises.mkdtemp;
   const originalRm = fs.promises.rm;
   let captureRoot;
@@ -37,7 +37,7 @@ if (cliEntry !== undefined && resolve(process.argv[1] ?? "") === cliEntry) {
 
   fs.promises.mkdtemp = async function (prefix, ...options) {
     const root = await originalMkdtemp.call(this, prefix, ...options);
-    if (basename(String(prefix)) === "rea-process-") {
+    if (basename(String(prefix)) === "nre-process-") {
       captureRoot = resolve(root);
       record();
     }
@@ -88,7 +88,7 @@ itWithCaptureCapability(
   "retries the failed capture root before projecting the completed CLI failure",
   async () => {
     const fixtureRoot = await createTestTempDirectory(
-      "rea-process-cleanup-recovery-cli-",
+      "nre-process-cleanup-recovery-cli-",
     );
     const scenarioPath = join(fixtureRoot, "scenario.json");
     const preloadPath = join(fixtureRoot, "cleanup-preload.mjs");
@@ -105,7 +105,7 @@ itWithCaptureCapability(
 
     let captureRoot: string | undefined;
     try {
-      const cliEntry = resolve("scripts/rea.mjs");
+      const cliEntry = resolve("scripts/nre.mjs");
       const result = await execFileAsync(
         process.execPath,
         [cliEntry, "capture-process", scenarioPath, "--json"],
@@ -114,8 +114,8 @@ itWithCaptureCapability(
           env: {
             ...process.env,
             NODE_OPTIONS: `--import=${pathToFileURL(preloadPath).href}`,
-            REA_TEST_CLI_ENTRY: cliEntry,
-            REA_TEST_CLEANUP_MARKER: markerPath,
+            NRE_TEST_CLI_ENTRY: cliEntry,
+            NRE_TEST_CLEANUP_MARKER: markerPath,
           },
           timeout: CLI_TIMEOUT_MS,
         },

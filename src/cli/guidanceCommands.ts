@@ -41,14 +41,14 @@ export const closeCliGuidanceResources = (
   resources: CliGuidanceResources = processGuidanceResources,
 ): Promise<void> => resources.close();
 
-/** Register offline search and retrieval for the installed REA guide bundle. */
+/** Register offline search and retrieval for the installed NRE guide bundle. */
 export const registerGuidanceCommands = (
   cli: CliInstance,
   logger: Logger,
   resources: CliGuidanceResources = processGuidanceResources,
 ): void => {
   cli.command(CLI_COMMANDS.guidance, {
-    description: "Search or read the installed REA workflow guidance",
+    description: "Search or read the installed NRE workflow guidance",
     args: z.object({}),
     options: z
       .object({

@@ -66,14 +66,14 @@ it.each(["pre-aborted", "admission", "close"] as const)(
     const arch = Object.getOwnPropertyDescriptor(process, "arch");
     Object.defineProperty(process, "platform", { ...platform, value: "linux" });
     Object.defineProperty(process, "arch", { ...arch, value: "x64" });
-    const workspace = await mkdtemp(join(tmpdir(), "rea-evm-artifact-cancel-"));
+    const workspace = await mkdtemp(join(tmpdir(), "nre-evm-artifact-cancel-"));
     const input = join(workspace, "selected.hex");
     await writeFile(input, "0x60006000f3\n");
     const createRuntime = vi.fn(async () => {
       throw new Error("Worker must not start");
     });
     const provider = new EvmoleInterfaceProvider(
-      { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+      { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
       undefined,
       createRuntime,
     );
@@ -134,7 +134,7 @@ it.each([
     const arch = Object.getOwnPropertyDescriptor(process, "arch");
     Object.defineProperty(process, "platform", { ...platform, value: "linux" });
     Object.defineProperty(process, "arch", { ...arch, value: "x64" });
-    const workspace = await mkdtemp(join(tmpdir(), "rea-evm-cleanup-retry-"));
+    const workspace = await mkdtemp(join(tmpdir(), "nre-evm-cleanup-retry-"));
     const input = join(workspace, "selected.hex");
     await writeFile(input, "0x60006000f3\n");
     let rootPath = "";
@@ -142,7 +142,7 @@ it.each([
     const controller = new AbortController();
     const abortReason = { requested: "cancel during root cleanup" };
     const provider = new EvmoleInterfaceProvider(
-      { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+      { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
       async (spawn) => {
         // Emulate only Linux admission and limits; restore Darwin before the
         // owned process captures and validates its real host identity.
@@ -186,7 +186,7 @@ it.each([
       },
       async () => {
         const runtime = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-cleanup-retry-",
+          prefix: "nre-evm-cleanup-retry-",
         });
         rootPath = runtime.path;
         const close = runtime.close.bind(runtime);
@@ -276,13 +276,13 @@ it("keeps descriptor cleanup in close aggregates until the exact file lease rele
   const arch = Object.getOwnPropertyDescriptor(process, "arch");
   Object.defineProperty(process, "platform", { ...platform, value: "linux" });
   Object.defineProperty(process, "arch", { ...arch, value: "x64" });
-  const workspace = await mkdtemp(join(tmpdir(), "rea-evm-descriptor-retry-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-evm-descriptor-retry-"));
   const input = join(workspace, "selected.hex");
   await writeFile(input, "0x60006000f3\n");
   closeState.path = input;
   closeState.failures = 2;
   const provider = new EvmoleInterfaceProvider({
-    REA_EVM_PRLIMIT_COMMAND: process.execPath,
+    NRE_EVM_PRLIMIT_COMMAND: process.execPath,
   });
   try {
     const result = await provider.inspect({ path: input, encoding: "hex" });
@@ -332,7 +332,7 @@ it("keeps a mixed root and reply-descriptor aggregate pending until both owners 
   const arch = Object.getOwnPropertyDescriptor(process, "arch");
   Object.defineProperty(process, "platform", { ...platform, value: "linux" });
   Object.defineProperty(process, "arch", { ...arch, value: "x64" });
-  const workspace = await mkdtemp(join(tmpdir(), "rea-evm-mixed-owners-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-evm-mixed-owners-"));
   const input = join(workspace, "selected.hex");
   await writeFile(input, "0x60006000f3\n");
   closeState.path = "";
@@ -341,7 +341,7 @@ it("keeps a mixed root and reply-descriptor aggregate pending until both owners 
   let rootPath = "";
   let rootCloseAttempts = 0;
   const provider = new EvmoleInterfaceProvider(
-    { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+    { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
     async (spawn) => {
       const requestPath = spawn.arguments.at(-1);
       if (requestPath === undefined) throw new Error("Request path missing");
@@ -363,7 +363,7 @@ it("keeps a mixed root and reply-descriptor aggregate pending until both owners 
     },
     async () => {
       const root = await PrivateRuntimeRoot.create({
-        prefix: "rea-evm-mixed-owners-",
+        prefix: "nre-evm-mixed-owners-",
       });
       rootPath = root.path;
       const close = root.close.bind(root);
@@ -433,7 +433,7 @@ it("releases a retained process independently while a root cleanup retry remains
   Object.defineProperty(process, "platform", { ...platform, value: "linux" });
   Object.defineProperty(process, "arch", { ...arch, value: "x64" });
   const workspace = await mkdtemp(
-    join(tmpdir(), "rea-evm-process-root-retry-"),
+    join(tmpdir(), "nre-evm-process-root-retry-"),
   );
   const input = join(workspace, "selected.hex");
   await writeFile(input, "0x60006000f3\n");
@@ -442,7 +442,7 @@ it("releases a retained process independently while a root cleanup retry remains
   let cleanupAttempts = 0;
   let allowProcessCleanup = false;
   const provider = new EvmoleInterfaceProvider(
-    { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+    { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
     async (spawn) => {
       const requestPath = spawn.arguments.at(-1);
       if (requestPath === undefined) throw new Error("Request path missing");
@@ -486,7 +486,7 @@ it("releases a retained process independently while a root cleanup retry remains
     },
     async () => {
       const root = await PrivateRuntimeRoot.create({
-        prefix: "rea-evm-process-root-retry-",
+        prefix: "nre-evm-process-root-retry-",
       });
       rootPath = root.path;
       const close = root.close.bind(root);
@@ -555,7 +555,7 @@ it("preserves an active cancellation through denied owned-group cleanup and late
   const arch = Object.getOwnPropertyDescriptor(process, "arch");
   Object.defineProperty(process, "platform", { ...platform, value: "linux" });
   Object.defineProperty(process, "arch", { ...arch, value: "x64" });
-  const workspace = await mkdtemp(join(tmpdir(), "rea-evm-cancel-process-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-evm-cancel-process-"));
   const input = join(workspace, "selected.hex");
   await writeFile(input, "0x60006000f3\n");
   const controller = new AbortController();
@@ -565,7 +565,7 @@ it("preserves an active cancellation through denied owned-group cleanup and late
   let cleanupAttempts = 0;
   let allowRootClose = false;
   const provider = new EvmoleInterfaceProvider(
-    { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+    { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
     async (spawn) => {
       if (platform !== undefined)
         Object.defineProperty(process, "platform", platform);
@@ -596,7 +596,7 @@ it("preserves an active cancellation through denied owned-group cleanup and late
     },
     async () => {
       const root = await PrivateRuntimeRoot.create({
-        prefix: "rea-evm-cancel-process-",
+        prefix: "nre-evm-cancel-process-",
       });
       rootPath = root.path;
       const close = root.close.bind(root);
@@ -677,7 +677,7 @@ it.each([
     Object.defineProperty(process, "platform", { ...platform, value: "linux" });
     Object.defineProperty(process, "arch", { ...arch, value: "x64" });
     const workspace = await mkdtemp(
-      join(tmpdir(), "rea-evm-reply-finalization-"),
+      join(tmpdir(), "nre-evm-reply-finalization-"),
     );
     const input = join(workspace, "selected.hex");
     await writeFile(input, "0x60006000f3\n");
@@ -685,7 +685,7 @@ it.each([
     const reason = { requested: "stop during reply close" };
     let replyPath = "";
     const provider = new EvmoleInterfaceProvider(
-      { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+      { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
       async (spawn) => {
         const request = JSON.parse(
           await readFile(spawn.arguments.at(-1)!, "utf8"),
@@ -827,7 +827,7 @@ it.each(["physical-read", "completed-late-cancel"] as const)(
     Object.defineProperty(process, "platform", { ...platform, value: "linux" });
     Object.defineProperty(process, "arch", { ...arch, value: "x64" });
     const workspace = await mkdtemp(
-      join(tmpdir(), "rea-evm-carrier-finalization-"),
+      join(tmpdir(), "nre-evm-carrier-finalization-"),
     );
     const input = join(workspace, "selected.hex");
     await writeFile(input, "0x60006000f3\n");
@@ -845,7 +845,7 @@ it.each(["physical-read", "completed-late-cancel"] as const)(
       throw new Error("Worker must not start");
     });
     const provider = new EvmoleInterfaceProvider(
-      { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+      { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
       undefined,
       createRuntime,
     );
@@ -909,7 +909,7 @@ it.each([
     const arch = Object.getOwnPropertyDescriptor(process, "arch");
     Object.defineProperty(process, "platform", { ...platform, value: "linux" });
     Object.defineProperty(process, "arch", { ...arch, value: "x64" });
-    const workspace = await mkdtemp(join(tmpdir(), "rea-evm-marker-receipt-"));
+    const workspace = await mkdtemp(join(tmpdir(), "nre-evm-marker-receipt-"));
     const input = join(workspace, "selected.hex");
     await writeFile(input, "0x60006000f3\n");
     let markerPath = "";
@@ -918,7 +918,7 @@ it.each([
     const deniedDescriptor =
       scenario.endsWith("denied") || scenario === "physical-read";
     const provider = new EvmoleInterfaceProvider(
-      { REA_EVM_PRLIMIT_COMMAND: process.execPath },
+      { NRE_EVM_PRLIMIT_COMMAND: process.execPath },
       async (spawn) => {
         const request = JSON.parse(
           await readFile(spawn.arguments.at(-1)!, "utf8"),
@@ -1022,20 +1022,20 @@ it("keeps the selected limiter and child environment together while later inspec
   const arch = Object.getOwnPropertyDescriptor(process, "arch");
   Object.defineProperty(process, "platform", { ...platform, value: "linux" });
   Object.defineProperty(process, "arch", { ...arch, value: "x64" });
-  const workspace = await mkdtemp(join(tmpdir(), "rea-evm-environment-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-evm-environment-"));
   const input = join(workspace, "selected.hex");
   const limiter = join(workspace, "selected-limiter");
   const { symlink } = await import("node:fs/promises");
   await symlink(process.execPath, limiter);
   await writeFile(input, "0x60006000f3\n");
   const environment = {
-    REA_EVM_PRLIMIT_COMMAND: limiter,
-    REA_ENV_MARKER: "first",
+    NRE_EVM_PRLIMIT_COMMAND: limiter,
+    NRE_ENV_MARKER: "first",
   };
   let expectedLimiter = limiter;
   closeState.onLimits = () => {
-    environment.REA_EVM_PRLIMIT_COMMAND = "/missing-limiter";
-    environment.REA_ENV_MARKER = "changed-during-inspection";
+    environment.NRE_EVM_PRLIMIT_COMMAND = "/missing-limiter";
+    environment.NRE_ENV_MARKER = "changed-during-inspection";
   };
   const provider = new EvmoleInterfaceProvider(environment, async (spawn) => {
     expect(spawn.command).toBe(expectedLimiter);
@@ -1044,7 +1044,7 @@ it("keeps the selected limiter and child environment together while later inspec
       command: process.execPath,
       arguments: [
         "-e",
-        "process.stdout.write(process.env.REA_ENV_MARKER, () => { process.exitCode = 9; })",
+        "process.stdout.write(process.env.NRE_ENV_MARKER, () => { process.exitCode = 9; })",
       ],
     });
   });
@@ -1052,8 +1052,8 @@ it("keeps the selected limiter and child environment together while later inspec
     for (const marker of ["first", "second"]) {
       if (marker === "second") {
         expectedLimiter = process.execPath;
-        environment.REA_EVM_PRLIMIT_COMMAND = process.execPath;
-        environment.REA_ENV_MARKER = marker;
+        environment.NRE_EVM_PRLIMIT_COMMAND = process.execPath;
+        environment.NRE_ENV_MARKER = marker;
       }
       const result = await provider.inspect({ path: input, encoding: "hex" });
       if (result.ok) throw new Error("Expected inert worker failure");

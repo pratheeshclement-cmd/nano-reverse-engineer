@@ -31,7 +31,7 @@ processTest.skipIf(process.platform === "win32")(
       import { createPackageVerifierCommands } from ${JSON.stringify(commandsModule)};
       import { createVerifierRun, completeVerifierRun } from ${JSON.stringify(verifierModule)};
       const run = createVerifierRun();
-      const path = await mkdtemp(join(tmpdir(), "rea-cold-verifier-"));
+      const path = await mkdtemp(join(tmpdir(), "nre-cold-verifier-"));
       const commands = await createPackageVerifierCommands({ workspace: { path, close: () => rm(path, { recursive: true, force: true }) } });
       try {
         await commands.exec(process.execPath, ["-e", "process.stdout.write('ok')"]);
@@ -131,7 +131,7 @@ processTest.skipIf(process.platform === "win32")(
   "joins a timed-out npm entry and its acknowledged descendant before removing the verifier root",
   { timeout: 30_000 },
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-package-command-owner-");
+    const root = await createTestTempDirectory("nre-package-command-owner-");
     const scratch = join(root, "scratch");
     const entry = join(root, "selected npm entry.mjs");
     const descendant = join(root, "descendant.mjs");

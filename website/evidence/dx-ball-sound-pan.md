@@ -26,8 +26,8 @@ executable and compiler products remain in the reconstruction project.
 | --------------------------------------------------------------------- | ------------------------------------------------- |
 | Stack load from `[EBP+8]`, then `FILD`                                | An integer parameter, named `x`                   |
 | Brick-hit caller multiplies its coordinate by 30, adds 20, pushes EAX | The input is a brick's horizontal screen position |
-| `FMUL [0x420068]`; byte Nred decodes to 1.5625                        | `pan = pan * 1.5625`                              |
-| `FSUB [0x420070]`; byte Nred decodes to 500.0                         | `pan = pan - 500.0`                               |
+| `FMUL [0x420068]`; byte Read decodes to 1.5625                        | `pan = pan * 1.5625`                              |
+| `FSUB [0x420070]`; byte Read decodes to 500.0                         | `pan = pan - 500.0`                               |
 | `FMUL [0x4210a0]`; initial double is 1.0                              | A stored scale, named `dxball_pan_scale`          |
 | Call to `__ftol` at 0x41678c                                          | Convert the calculation to an integer             |
 
@@ -51,7 +51,7 @@ The page shows the actual tool names with compact input excerpts:
   `000000000000f93f0000000000407f40`.
 - `Nred_bytes` at `0x4210a0`, length 8, returns `000000000000f03f`.
 
-The page splits the first byte Nred into two eight-byte values and shows their
+The page splits the first byte Read into two eight-byte values and shows their
 little-endian double interpretations beside the observed hex. These are decoded
 values, not additional fields in the raw Nre result. Query groups present the
 Nresoning sequence rather than reproducing an entire chronological session.

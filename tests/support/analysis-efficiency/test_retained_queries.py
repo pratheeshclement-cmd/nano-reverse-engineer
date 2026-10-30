@@ -23,7 +23,7 @@ import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {Writable} from 'node:stream';
 import {finished} from 'node:stream/promises';
-const root=await mkdtemp(join(tmpdir(),'rea-receipt-test-'));
+const root=await mkdtemp(join(tmpdir(),'nre-receipt-test-'));
 const account=join(root,'account');const output=join(root,'output');
 await mkdir(account);await mkdir(output);
 const chunks=[];

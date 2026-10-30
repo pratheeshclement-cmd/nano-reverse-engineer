@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "projects inventoried special-entry omissions into partial application coverage",
   async () => {
-    const root = await createTestTempDirectory("rea-js-directory-fifo-");
+    const root = await createTestTempDirectory("nre-js-directory-fifo-");
     await writeFile(join(root, "good.js"), "export const answer = 42;");
     await promisify(execFile)("mkfifo", [join(root, "events.pipe")], {
       timeout: 2_000,
@@ -41,7 +41,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "retains readable source facts and permission omissions while refusing an unreadable root",
   async () => {
-    const root = await createTestTempDirectory("rea-js-directory-permissions-");
+    const root = await createTestTempDirectory("nre-js-directory-permissions-");
     const deniedFile = join(root, "closed.js");
     const deniedDirectory = join(root, "private");
     await mkdir(deniedDirectory);

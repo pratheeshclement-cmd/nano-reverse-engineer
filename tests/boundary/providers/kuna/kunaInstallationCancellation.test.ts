@@ -8,7 +8,7 @@ import { session } from "./kunaSessionFixture.js";
 const it = test.skipIf(process.platform === "win32");
 
 const gatedInstallation = async () => {
-  const fixture = await session("rea-kuna-installation-cancel-");
+  const fixture = await session("nre-kuna-installation-cancel-");
   const gate = join(fixture.root, "release-version");
   await setFakeKunaBehavior(fixture.kuna, {
     version: { stdout: "kuna 1.833\n", gate },

@@ -90,17 +90,17 @@ if (values.phase) {
 }
 
 async function runMcpTask() {
-  const account = await mkdtemp(join(tmpdir(), "rea-model-utf8-"));
+  const account = await mkdtemp(join(tmpdir(), "nre-model-utf8-"));
   const client = new Client({ name: "model-utf8-validation", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [join(values.runtime, "scripts/rea.mjs"), "mcp"],
+    args: [join(values.runtime, "scripts/nre.mjs"), "mcp"],
     env: {
       HOME: account,
       PATH: process.env.PATH,
       NODE_OPTIONS: "--max-old-space-size=2048",
       UV_THREADPOOL_SIZE: "1",
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
       TMPDIR: account,
     },
     stderr: "pipe",

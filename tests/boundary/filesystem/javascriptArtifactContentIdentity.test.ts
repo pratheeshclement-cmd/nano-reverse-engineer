@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { asarHeaderBytes } from "../../fixtures/asarHeader.js";
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-ingestion-content-identity-");
+  const root = await createTestTempDirectory("nre-ingestion-content-identity-");
   const source = join(root, "source");
   const bundle = join(root, "bundle");
   await Promise.all([mkdir(source), mkdir(bundle)]);
@@ -57,7 +57,7 @@ describe("JavaScript artifact ingestion content identities", () => {
   );
 
   it("rejects changed opaque native-addon bytes after inventory", async () => {
-    const root = await createTestTempDirectory("rea-ingestion-native-bytes-");
+    const root = await createTestTempDirectory("nre-ingestion-native-bytes-");
     const addon = join(root, "addon.node");
     await writeFile(addon, Buffer.from([0xcf, 0xfa, 0xed, 0xfe, 1]));
     const snapshot = await scanArtifactInventory(root);
@@ -161,7 +161,7 @@ describe("JavaScript artifact ingestion content identities", () => {
 });
 
 it("refuses normalized ASAR name collisions without claiming changed bytes", async () => {
-  const root = await createTestTempDirectory("rea-asar-unicode-collision-");
+  const root = await createTestTempDirectory("nre-asar-unicode-collision-");
   const archive = join(root, "twins.asar");
   const first = Buffer.from("console.log(1)\n");
   const second = Buffer.from("console.log(2)\n");
@@ -225,7 +225,7 @@ it("refuses normalized ASAR name collisions without claiming changed bytes", asy
 });
 
 it("does not attribute a colliding opaque path to one inventory occurrence", async () => {
-  const root = await createTestTempDirectory("rea-asar-opaque-collision-");
+  const root = await createTestTempDirectory("nre-asar-opaque-collision-");
   const archive = join(root, "opaque.asar");
   const entries = [
     ["main.js", "export const ready = true;"],
@@ -271,7 +271,7 @@ it("does not attribute a colliding opaque path to one inventory occurrence", asy
 it.each(["unavailable", "packed-first", "packed-last"] as const)(
   "handles normalized relevant ASAR collisions with %s content",
   async (availability) => {
-    const root = await createTestTempDirectory("rea-asar-missing-collision-");
+    const root = await createTestTempDirectory("nre-asar-missing-collision-");
     const archive = join(root, "missing.asar");
     const main = Buffer.from("export const ready = true;\n");
     const packed = Buffer.from("export const sibling = true;\n");
@@ -320,7 +320,7 @@ it.each(["unavailable", "packed-first", "packed-last"] as const)(
 it.each(["file-first", "link-first"] as const)(
   "rejects mixed-kind normalized ASAR collisions at inventory (%s)",
   async (order) => {
-    const root = await createTestTempDirectory("rea-asar-mixed-collision-");
+    const root = await createTestTempDirectory("nre-asar-mixed-collision-");
     const archive = join(root, "mixed.asar");
     const file = { size: 1, offset: "0" };
     const link = { link: "target.txt" };

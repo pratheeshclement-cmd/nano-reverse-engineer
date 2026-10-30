@@ -27,7 +27,7 @@ const report: AppleIps = {
     unlisted_keys: [],
   },
   process: {
-    name: "rea-crash-fixture",
+    name: "nre-crash-fixture",
     path: null,
     pid: null,
     parent: null,

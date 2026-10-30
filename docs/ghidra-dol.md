@@ -2,7 +2,7 @@
 
 This lane imports 32-bit big-endian PowerPC GameCube/Wii DOL images through
 Ghidra. It does not execute the image. DOL is a headerless format with no magic
-number, so REA never detects it: the caller must select it explicitly.
+number, so NRE never detects it: the caller must select it explicitly.
 
 Only the cached MEM1 window `0x80000000..0x81800000` is admitted. Wii MEM2
 and uncached aliases are outside this lane.
@@ -15,8 +15,8 @@ support. See [Not supported yet](#not-supported-yet).
 CLI:
 
 ```bash
-rea inspect /absolute/path/to/main.dol --target-format gamecube-dol --provider ghidra --json
-rea function /absolute/path/to/main.dol 0x80003130 --target-format gamecube-dol --provider ghidra --json
+nre inspect /absolute/path/to/main.dol --target-format gamecube-dol --provider ghidra --json
+nre function /absolute/path/to/main.dol 0x80003130 --target-format gamecube-dol --provider ghidra --json
 ```
 
 MCP, with the existing `open_binary` tool:
@@ -37,7 +37,7 @@ Omitting `format` never imports a file as a DOL. Detection does not run for DOL.
 
 ## What the import does
 
-REA reads the 256-byte DOL header at admission. It checks every section's file
+NRE reads the 256-byte DOL header at admission. It checks every section's file
 range and load address. It records BSS/data overlaps and computes the exact
 uninitialized BSS gaps once. Malformed headers are refused before Ghidra starts.
 
@@ -45,8 +45,8 @@ Ghidra then runs in two steps:
 
 1. The standard `BinaryLoader` maps the whole file at base `0x0`, with
    `-processor` and `-cspec` taken from the language selection below.
-2. The pre-script `bridge/ghidra/ReaGhidraPrepareDol.java` reads a section file
-   that REA wrote from the parsed header, with versioned collection counts. It creates one initialized block per
+2. The pre-script `bridge/ghidra/NreGhidraPrepareDol.java` reads a section file
+   that NRE wrote from the parsed header, with versioned collection counts. It creates one initialized block per
    used text and data section at its load address, with file bytes from the
    section's file offset. The whole-file block is removed before the section
    blocks are created. Text is read-execute and data is read-write. It sets the
@@ -72,7 +72,7 @@ reports, not only the requested one.
 
 ### Optional Gekko/Broadway override
 
-`REA_GHIDRA_LANGUAGE_ID=PowerPC:BE:32:Gekko_Broadway` selects the Gekko/Broadway
+`NRE_GHIDRA_LANGUAGE_ID=PowerPC:BE:32:Gekko_Broadway` selects the Gekko/Broadway
 variant. The language is not in stock Ghidra. It comes from the GameCubeLoader
 extension, by Cuyler, licensed under Apache-2.0. The extension ships
 `ppc_gekko_broadway.ldefs` under its `data/languages` directory and must be
@@ -101,10 +101,10 @@ never executed. The real GameCube or Wii game images are never used.
 GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra npm run verify:ghidra:dol
 ```
 
-The lane needs the same toolchain as the PowerPC ELF lane: `REA_PPC_CLANG`,
-`REA_PPC_READELF` and LLD. An independent DOL header reader and GNU readelf
+The lane needs the same toolchain as the PowerPC ELF lane: `NRE_PPC_CLANG`,
+`NRE_PPC_READELF` and LLD. An independent DOL header reader and GNU readelf
 (run on the source ELF) check the section table, file bytes, entry and BSS gap
-before Ghidra starts. The checks never use REA's parser.
+before Ghidra starts. The checks never use NRE's parser.
 
 After import, the lane checks the load-image attestation (`verified`), the
 bound language, the `__start` entry procedure, a direct call to the leaf
@@ -112,10 +112,10 @@ function, decompilation, and bytes at the data, tail, marker and BSS-gap
 addresses. It also checks CLI identity.
 
 The Gekko pass runs only when `PowerPC:BE:32:Gekko_Broadway` is in the Ghidra
-installation's language catalog, the same catalog REA uses to admit
-`REA_GHIDRA_LANGUAGE_ID`. A language that exists only in a user extension under
+installation's language catalog, the same catalog NRE uses to admit
+`NRE_GHIDRA_LANGUAGE_ID`. A language that exists only in a user extension under
 `~/Library/ghidra` is not admitted, so the lane prints
-`skipped: PowerPC:BE:32:Gekko_Broadway (not in the Ghidra installation catalog that REA admits); stock lane still verified`
+`skipped: PowerPC:BE:32:Gekko_Broadway (not in the Ghidra installation catalog that NRE admits); stock lane still verified`
 and still succeeds on the stock checks.
 
 The ELF lane (`npm run verify:ghidra:ppc`) is separate. See

@@ -81,7 +81,7 @@ beforeAll(async () => {
   const root =
     process.platform === "win32" ? join(process.cwd(), "build") : tmpdir();
   await mkdir(root, { recursive: true });
-  installDir = await mkdtemp(join(root, "rea-ghidra-riscv-languages-"));
+  installDir = await mkdtemp(join(root, "nre-ghidra-riscv-languages-"));
   // The simulated Linux host needs a POSIX absolute path. A current-drive root
   // path also reaches this real fixture on Windows without changing admission.
   if (process.platform === "win32")
@@ -189,33 +189,33 @@ const registerRiscvAdmissionAndCapabilityCases = () => {
 
   it("refuses a caller-selected processor outside the verified generic lane", async () => {
     const resolved = await ghidra({
-      REA_GHIDRA_LANGUAGE_ID: "RISCV:LE:32:AndeStar_v5",
+      NRE_GHIDRA_LANGUAGE_ID: "RISCV:LE:32:AndeStar_v5",
     }).resolveAnalysisProfile(target({ elfClass: 32 }));
     expect(resolved.ok).toBe(false);
     if (resolved.ok) throw new Error("expected a refusal");
     expect(resolved.error.message).toContain("generic little-endian RISC-V");
     expect(resolved.error).toMatchObject({
       _tag: "ConfigurationError",
-      settings: [{ setting: "REA_GHIDRA_LANGUAGE_ID" }],
+      settings: [{ setting: "NRE_GHIDRA_LANGUAGE_ID" }],
     });
   });
 
   it("attributes a compiler-only pin conflict to its setting", async () => {
     const resolved = await ghidra({
-      REA_GHIDRA_LANGUAGE_ID: "RISCV:LE:64:default",
-      REA_GHIDRA_COMPILER_SPEC_ID: "windows",
+      NRE_GHIDRA_LANGUAGE_ID: "RISCV:LE:64:default",
+      NRE_GHIDRA_COMPILER_SPEC_ID: "windows",
     }).resolveAnalysisProfile(target());
     if (resolved.ok) throw new Error("expected a configuration conflict");
     expect(resolved.error).toMatchObject({
       _tag: "ConfigurationError",
-      settings: [{ setting: "REA_GHIDRA_COMPILER_SPEC_ID" }],
+      settings: [{ setting: "NRE_GHIDRA_COMPILER_SPEC_ID" }],
     });
   });
 
   it("keeps a caller-selected language that matches the pin as configured", async () => {
     const resolved = await ghidra({
-      REA_GHIDRA_LANGUAGE_ID: "RISCV:LE:64:default",
-      REA_GHIDRA_COMPILER_SPEC_ID: "gcc",
+      NRE_GHIDRA_LANGUAGE_ID: "RISCV:LE:64:default",
+      NRE_GHIDRA_COMPILER_SPEC_ID: "gcc",
     }).resolveAnalysisProfile(target());
     if (!resolved.ok || resolved.value.profile === null)
       throw new Error("expected a configured profile");

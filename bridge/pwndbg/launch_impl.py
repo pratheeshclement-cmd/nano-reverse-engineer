@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 
 runtime_path = Path(__file__).parent.parent / "pwntools" / "decoder_runtime.py"
-runtime = {"__file__": str(runtime_path), "__name__": "rea_decoder_runtime"}
+runtime = {"__file__": str(runtime_path), "__name__": "nre_decoder_runtime"}
 exec(compile(runtime_path.read_bytes(), str(runtime_path), "exec"), runtime)
 
 
@@ -19,7 +19,7 @@ def launch(snapshot, cache):
     request_path = sys.argv[-1]
     request = json.loads(Path(request_path).read_text(encoding="utf-8"))
     bridge = str(Path(__file__).with_name("core_context.py"))
-    environment = dict(os.environ, REA_CORE_CONTEXT_REQUEST=request_path)
+    environment = dict(os.environ, NRE_CORE_CONTEXT_REQUEST=request_path)
     # Only fixed package code appears in the GDB Python command. Selected paths stay JSON data.
     command = "python exec(compile(open(" + repr(bridge) + ", 'rb').read(), " + repr(bridge) + ", 'exec'), {'__name__':'__main__','__file__':" + repr(bridge) + "})"
     try:

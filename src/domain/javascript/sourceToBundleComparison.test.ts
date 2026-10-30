@@ -640,7 +640,7 @@ const historicalGraph = (
     manifests: [],
     vcs: { kind: "none", head: null, dirty: null },
     provenance: {
-      importer: "rea-test",
+      importer: "nre-test",
       importer_version: "1",
       caller: "source-to-bundle-test",
     },

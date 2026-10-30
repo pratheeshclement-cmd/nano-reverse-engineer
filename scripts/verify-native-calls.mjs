@@ -43,9 +43,9 @@ const INPUT = {
       selector: "greet:times:",
       method_type: "instance",
     },
-    { kind: "function", name: "rea_call_add" },
+    { kind: "function", name: "nre_call_add" },
   ],
-  environment: { REA_CALLS_MARKER: "observed" },
+  environment: { NRE_CALLS_MARKER: "observed" },
   // Entry stops and Objective-C runtime reads slow the real target on busy hosts.
   duration_ms: 30_000,
   argument_registers: 4,
@@ -95,7 +95,7 @@ const checkScenario = async (binary) => {
     unresolved_breakpoints: [],
   });
   const greet = result.events.filter(({ symbol }) => symbol === GREET);
-  const add = result.events.filter(({ symbol }) => symbol === "rea_call_add");
+  const add = result.events.filter(({ symbol }) => symbol === "nre_call_add");
   assert.equal(greet.length, 3, JSON.stringify(result));
   assert.equal(add.length, 3, JSON.stringify(result));
   for (const [index, event] of greet.entries()) {
@@ -133,7 +133,7 @@ const checkBounds = async (binary) => {
     binary,
     [
       JSON.stringify({
-        breakpoints: [{ kind: "function", name: "rea_never_called" }],
+        breakpoints: [{ kind: "function", name: "nre_never_called" }],
         arguments: ["--flood"],
         duration_ms: 30_000,
       }),
@@ -157,7 +157,7 @@ const checkBounds = async (binary) => {
     binary,
     [
       JSON.stringify({
-        breakpoints: [{ kind: "function", name: "rea_call_add" }],
+        breakpoints: [{ kind: "function", name: "nre_call_add" }],
         max_events: 2,
         duration_ms: 30_000,
       }),
@@ -173,7 +173,7 @@ const checkBounds = async (binary) => {
     binary,
     [
       JSON.stringify({
-        breakpoints: [{ kind: "function", name: "rea_call_add" }],
+        breakpoints: [{ kind: "function", name: "nre_call_add" }],
         arguments: ["--wait"],
         duration_ms: 1_500,
       }),
@@ -191,14 +191,14 @@ const cliFailure = async (binary) => {
     const completed = await exec(
       process.execPath,
       [
-        fileURLToPath(new URL("rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("nre.mjs", import.meta.url)),
         "observe-native-calls",
         binary,
         JSON.stringify(INPUT),
         "--json",
       ],
       {
-        env: { ...process.env, REA_LOG_LEVEL: "silent" },
+        env: { ...process.env, NRE_LOG_LEVEL: "silent" },
         timeout: CLI_TIMEOUT_MS,
       },
     );
@@ -264,7 +264,7 @@ const checkHardenedRuntime = async (directory, binary) => {
   assert.equal(traced.process.exit_status, 0);
 };
 
-const directory = await mkdtemp(join(tmpdir(), "rea-native-calls-"));
+const directory = await mkdtemp(join(tmpdir(), "nre-native-calls-"));
 try {
   const binary = join(directory, "ReaCalls");
   await exec("/usr/bin/xcrun", [
@@ -295,8 +295,8 @@ try {
     // own hit; consuming only the first stop-reason ID loses the second.
     const overlapping = {
       breakpoints: [
-        { kind: "function", name: "rea_call_add" },
-        { kind: "function", name: "rea_call_add", module: basename(binary) },
+        { kind: "function", name: "nre_call_add" },
+        { kind: "function", name: "nre_call_add", module: basename(binary) },
       ],
       duration_ms: 30_000,
       argument_registers: 2,
@@ -316,7 +316,7 @@ try {
         hits.map((event) => event.registers[0].value),
         ["0x0", "0x1", "0x2"],
       );
-      assert.ok(hits.every((event) => event.symbol === "rea_call_add"));
+      assert.ok(hits.every((event) => event.symbol === "nre_call_add"));
     }
     const capped = await artifactMcpResult(client, "observe_native_calls", {
       ...overlapping,

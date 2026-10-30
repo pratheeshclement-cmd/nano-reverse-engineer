@@ -17,7 +17,7 @@ class ContextFailure(Exception):
 def inspect(request):
     if gdb.selected_inferior().connection is not None:
         raise ContextFailure("decoder", "Owned GDB unexpectedly has an inferior connection before core loading.")
-    root = Path(os.environ["REA_CORE_CONTEXT_REQUEST"]).parent
+    root = Path(os.environ["NRE_CORE_CONTEXT_REQUEST"]).parent
     empty = root / "no-libraries"
     empty.mkdir(mode=0o700)
     for command in ["set auto-load off", "set debuginfod enabled off", "set auto-solib-add off", "set history save off", "set pagination off", "set target-file-system-kind unix",
@@ -77,7 +77,7 @@ def failure_exit(request_path, status, marker):
 
 
 def main():
-    request_path = os.environ["REA_CORE_CONTEXT_REQUEST"]
+    request_path = os.environ["NRE_CORE_CONTEXT_REQUEST"]
     request = json.loads(Path(request_path).read_text(encoding="utf-8"))
     reserve = bytearray(1024 * 1024)
     try:

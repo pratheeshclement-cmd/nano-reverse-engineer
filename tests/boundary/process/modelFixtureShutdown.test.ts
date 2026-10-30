@@ -57,7 +57,7 @@ const protocols = [
     exportName: "createOpenAiModelFixture",
     path: "/v1/chat/completions",
     body: {
-      model: "rea-client-fixture",
+      model: "nre-client-fixture",
       messages: [{ role: "user", content: "authored shutdown request" }],
     },
     response: { role: "assistant", content: "authored response" },
@@ -68,7 +68,7 @@ const protocols = [
     exportName: "createAnthropicModelFixture",
     path: "/v1/messages",
     body: {
-      model: "rea-client-fixture",
+      model: "nre-client-fixture",
       messages: [{ role: "user", content: "authored shutdown request" }],
     },
     response: [{ type: "text", text: "authored response" }],
@@ -77,7 +77,7 @@ const protocols = [
     name: "Gemini",
     module: "gemini-model-fixture.mjs",
     exportName: "createGeminiModelFixture",
-    path: "/v1beta/models/rea-client-fixture:generateContent",
+    path: "/v1beta/models/nre-client-fixture:generateContent",
     body: {
       contents: [
         { role: "user", parts: [{ text: "authored shutdown request" }] },
@@ -127,7 +127,7 @@ const serverRequestSchema = z.object({
 for (const protocol of protocols)
   for (const outcome of ["success", "late-error"] as const)
     it(`${protocol.name} joins a disconnected request's ${outcome} finalization before fixture close`, async () => {
-      const workspace = await createTestWorkspace("rea-model-fixture-close-");
+      const workspace = await createTestWorkspace("nre-model-fixture-close-");
       const artifactPath = workspace.path("final request evidence.bin");
       const artifact = Buffer.from("accepted request evidence α\0\n");
       const entered = deferred<void>();
@@ -280,7 +280,7 @@ for (const protocol of protocols)
 
 for (const protocol of protocols)
   it(`${protocol.name} preserves an ordinary 400 and gracefully joins admitted work across repeated closes`, async () => {
-    const workspace = await createTestWorkspace("rea-model-fixture-graceful-");
+    const workspace = await createTestWorkspace("nre-model-fixture-graceful-");
     const artifactPath = workspace.path("graceful request evidence.bin");
     const artifact = Buffer.from("graceful request evidence α\0\n");
     const entered = deferred<void>();
@@ -419,7 +419,7 @@ for (const protocol of protocols)
 
 for (const opaqueFailure of [undefined, null])
   it(`OpenAI retains a late ${String(opaqueFailure)} rejection through HTTP fixture close`, async () => {
-    const workspace = await createTestWorkspace("rea-model-fixture-opaque-");
+    const workspace = await createTestWorkspace("nre-model-fixture-opaque-");
     const entered = deferred<void>();
     const release = deferred<void>();
     const handlerFinished = deferred<void>();
@@ -451,7 +451,7 @@ for (const opaqueFailure of [undefined, null])
       client.once("close", () => clientClosed.resolve());
       client.end(
         JSON.stringify({
-          model: "rea-client-fixture",
+          model: "nre-client-fixture",
           messages: [{ role: "user", content: "authored opaque failure" }],
         }),
       );

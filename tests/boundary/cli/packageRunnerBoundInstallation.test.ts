@@ -21,14 +21,14 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 const registrationSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+    nre: z.object({ command: z.string(), args: z.array(z.string()) }),
   }),
 });
 
 cliTest.skipIf(process.platform === "win32")(
   "real offline npm setup binds an installation across project starts and cache restoration",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-real-npm-binding-");
+    const root = await createTestTempDirectory("nre-real-npm-binding-");
     const home = join(root, "home"),
       trusted = join(root, "trusted"),
       project = join(root, "project");
@@ -57,7 +57,7 @@ cliTest.skipIf(process.platform === "win32")(
         "--yes",
         `--package=file:${resolve(".")}`,
         "--",
-        "rea",
+        "nre",
         "setup",
         "--client",
         "omp",
@@ -76,7 +76,7 @@ cliTest.skipIf(process.platform === "win32")(
     const configPath = join(home, ".omp", "agent", "mcp.json");
     const original = await readFile(configPath, "utf8");
     const registration = registrationSchema.parse(JSON.parse(original))
-      .mcpServers.rea;
+      .mcpServers.nre;
     const alias = registration.args[0];
     expect(alias).toBeDefined();
     if (alias === undefined) throw new Error("Missing registered entrypoint");
@@ -104,7 +104,7 @@ cliTest.skipIf(process.platform === "win32")(
       JSON.stringify({
         name: PRODUCT_IDENTITY.packageName,
         version: PRODUCT_IDENTITY.packageVersion,
-        bin: { rea: "candidate.cjs" },
+        bin: { nre: "candidate.cjs" },
       }),
     );
     await writeFile(
@@ -114,7 +114,7 @@ cliTest.skipIf(process.platform === "win32")(
     );
     await symlink(
       `../${PRODUCT_IDENTITY.packageName}/candidate.cjs`,
-      join(project, "node_modules", ".bin", "rea"),
+      join(project, "node_modules", ".bin", "nre"),
     );
     await writeFile(join(project, ".npmrc"), "registry=http://127.0.0.1:9/\n");
     const clientEnvironment = {
@@ -177,11 +177,11 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "mcp add preserves a selected entrypoint with spaces and both quote characters",
   async ({ processes }) => {
-    const home = await createTestTempDirectory("rea-amp-command-");
+    const home = await createTestTempDirectory("nre-amp-command-");
     const bin = join(home, `bin 'quoted' "double"`);
     await mkdir(bin);
-    const alias = join(bin, "rea");
-    await symlink(resolve("scripts/rea.mjs"), alias);
+    const alias = join(bin, "nre");
+    await symlink(resolve("scripts/nre.mjs"), alias);
     const result = await processes.run(
       process.execPath,
       [alias, "mcp", "add", "--agent", "amp"],
@@ -200,7 +200,7 @@ cliTest.skipIf(process.platform === "win32")(
     const settings = z
       .object({
         "amp.mcpServers": z.object({
-          rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+          nre: z.object({ command: z.string(), args: z.array(z.string()) }),
         }),
       })
       .parse(
@@ -208,9 +208,9 @@ cliTest.skipIf(process.platform === "win32")(
           await readFile(join(home, ".config", "amp", "settings.json"), "utf8"),
         ),
       );
-    expect(settings["amp.mcpServers"].rea.args).toEqual([alias, "mcp"]);
+    expect(settings["amp.mcpServers"].nre.args).toEqual([alias, "mcp"]);
     const start = await processes.run(
-      settings["amp.mcpServers"].rea.command,
+      settings["amp.mcpServers"].nre.command,
       [alias, "--version"],
       { cwd: home, timeoutMs: 10_000 },
     );

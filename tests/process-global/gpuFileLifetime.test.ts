@@ -17,7 +17,7 @@ type ReadFile = (
   position: number,
 ) => Promise<{ bytesRead: number; buffer: Buffer }>;
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-gpu-lifetime-"),
+  const root = await createTestTempDirectory("nre-gpu-lifetime-"),
     path = join(root, "cuda"),
     bytes = cudaFixture();
   await writeFile(path, bytes);
@@ -53,7 +53,7 @@ const interceptClose = (
   };
 };
 it("reserves the inspection work budget before reading aliased HIP payloads", async () => {
-  const root = await createTestTempDirectory("rea-gpu-aliased-hip-"),
+  const root = await createTestTempDirectory("nre-gpu-aliased-hip-"),
     path = join(root, "aliased-hip"),
     payload = amdFixture(),
     payloadSize = 128 * 1024 * 1024,

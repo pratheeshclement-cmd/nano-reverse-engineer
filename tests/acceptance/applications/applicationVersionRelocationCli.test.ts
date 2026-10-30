@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "retains exact factory bytes and relocation while exposing unresolved chunk alignment",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-version-relocation-");
+    const root = await createTestTempDirectory("nre-version-relocation-");
     const bundle =
       "globalThis.webpackChunkApp.push([[1], {11(module,exports){exports.value=11;},22(module,exports){exports.value=22;}}]);";
     const versions = [];
@@ -23,7 +23,7 @@ cliTest(
       );
       const response = await cli.run({
         arguments: ["analyze-javascript-application", application, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       versions.push(parseEvidence(response.json));
@@ -49,7 +49,7 @@ cliTest(
     await writeFile(input, JSON.stringify({ left, right }));
     const response = await cli.run({
       arguments: ["compare-application-versions", input, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(0);
     const result = applicationVersionComparisonResultSchema.parse(
@@ -100,7 +100,7 @@ cliTest(
 cliTest(
   "preserves ambiguous imported factory identity through public version comparison",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-version-ambiguous-import-");
+    const root = await createTestTempDirectory("nre-version-ambiguous-import-");
     const bundle =
       "globalThis.webpackChunkApp.push([[1], {11:function(module,exports,__webpack_require__){exports.value=__webpack_require__(22).value;},22:function(module,exports){exports.value=1;},33:function(module,exports){exports.value=1;}}]);";
     const versions = [];
@@ -113,7 +113,7 @@ cliTest(
       );
       const run = await cli.run({
         arguments: ["analyze-javascript-application", application, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(run.exitCode, run.stderr).toBe(0);
       versions.push(parseEvidence(run.json));
@@ -149,7 +149,7 @@ cliTest(
     await writeFile(input, JSON.stringify({ left, right }));
     const run = await cli.run({
       arguments: ["compare-application-versions", input, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(run.exitCode, run.stderr).toBe(0);
     const result = applicationVersionComparisonResultSchema.parse(

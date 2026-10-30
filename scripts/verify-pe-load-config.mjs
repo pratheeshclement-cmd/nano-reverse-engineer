@@ -5,8 +5,8 @@ import { mkdtemp, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
-const zig = process.env.REA_ZIG ?? "zig";
-const root = await mkdtemp(join(tmpdir(), "rea-pe-load-config-"));
+const zig = process.env.NRE_ZIG ?? "zig";
+const root = await mkdtemp(join(tmpdir(), "nre-pe-load-config-"));
 try {
   const source = join(root, "tls.c");
   await writeFile(
@@ -59,7 +59,7 @@ void entry(void) {}
     );
     const output = execFileSync(
       process.execPath,
-      [resolve("scripts/rea.mjs"), "inspect-pe-load-config", binary, "--json"],
+      [resolve("scripts/nre.mjs"), "inspect-pe-load-config", binary, "--json"],
       { encoding: "utf8", timeout: 30000 },
     );
     const evidence = JSON.parse(output);

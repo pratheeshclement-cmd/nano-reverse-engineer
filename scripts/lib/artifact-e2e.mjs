@@ -7,7 +7,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 import { INLINE_EVIDENCE_MCP_ENVIRONMENT } from "./mcp-verification-environment.mjs";
 
-// REA registers process-static tool contracts. Bind their parsed definitions to
+// NRE registers process-static tool contracts. Bind their parsed definitions to
 // the SDK's negotiated connection identity, including when a Client reconnects.
 const toolBindings = new WeakMap();
 
@@ -70,7 +70,7 @@ export async function artifactMcpCall(client, parameters, options = {}) {
 const environment = () => {
   const compileCache =
     process.env.NODE_COMPILE_CACHE ??
-    process.env.REA_ARTIFACT_NODE_COMPILE_CACHE;
+    process.env.NRE_ARTIFACT_NODE_COMPILE_CACHE;
   return {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
     ...(compileCache &&
@@ -78,10 +78,10 @@ const environment = () => {
     process.env.NODE_DISABLE_COMPILE_CACHE !== "1"
       ? { NODE_COMPILE_CACHE: compileCache }
       : {}),
-    REA_LOG_LEVEL: "silent",
-    REA_ANALYSIS_PROVIDER: "auto",
+    NRE_LOG_LEVEL: "silent",
+    NRE_ANALYSIS_PROVIDER: "auto",
     // Artifact workflows have no deep-provider prerequisite or GUI authority.
-    HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+    HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
   };
 };
 
@@ -106,7 +106,7 @@ export async function artifactCliEvidence(
   const { stdout } = await promisify(execFile)(
     process.execPath,
     [
-      fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+      fileURLToPath(new URL("../nre.mjs", import.meta.url)),
       command,
       target,
       ...arguments_,
@@ -123,7 +123,7 @@ export async function artifactCliEvidence(
 const withOpenedArtifactMcp = async (target, openTool, verify) => {
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
+    args: [fileURLToPath(new URL("../nre.mjs", import.meta.url)), "mcp"],
     env: { ...environment(), ...INLINE_EVIDENCE_MCP_ENVIRONMENT },
     stderr: "pipe",
   });

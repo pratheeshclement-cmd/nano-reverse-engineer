@@ -133,7 +133,7 @@ export const packetCaptureSchema = z
       selection_source: z
         .enum(["environment", "path"])
         .describe(
-          "Whether REA_TSHARK_COMMAND selected the tool or PATH located it",
+          "Whether NRE_TSHARK_COMMAND selected the tool or PATH located it",
         ),
       path: z.string(),
       sha256: z.string().regex(/^[a-f0-9]{64}$/),

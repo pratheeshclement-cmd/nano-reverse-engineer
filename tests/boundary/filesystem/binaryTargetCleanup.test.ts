@@ -27,7 +27,7 @@ it.each(
 )(
   "retains target admission and one descriptor through failed close (supported=$supported, cancelled=$cancel)",
   async ({ supported, cancel }) => {
-    const directory = await createTestTempDirectory("rea-target-close-");
+    const directory = await createTestTempDirectory("nre-target-close-");
     const path = join(directory, supported ? "target.hop" : "target.bin");
     const bytes = Buffer.from("target source bytes");
     await writeFile(path, bytes);
@@ -105,7 +105,7 @@ it.each(
 it.each([true, false])(
   "keeps target completion or refusal when cancellation arrives during confirmed close (supported=%s)",
   async (supported) => {
-    const directory = await createTestTempDirectory("rea-target-final-cancel-");
+    const directory = await createTestTempDirectory("nre-target-final-cancel-");
     const path = join(directory, supported ? "target.hop" : "target.bin");
     await writeFile(path, "target source bytes");
     const controller = new AbortController();
@@ -142,7 +142,7 @@ it.each([true, false])(
 );
 
 it("retries target and provider owners independently through the same MCP connection", async () => {
-  const directory = await createTestTempDirectory("rea-target-mcp-close-");
+  const directory = await createTestTempDirectory("nre-target-mcp-close-");
   const first = join(directory, "first.hop");
   const second = join(directory, "second.hop");
   await writeFile(first, "first database bytes");

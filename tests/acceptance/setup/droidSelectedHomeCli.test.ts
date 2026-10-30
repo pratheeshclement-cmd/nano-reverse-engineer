@@ -8,7 +8,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "registers Droid in its selected home and preserves peers and backups",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-droid-home-");
+    const home = await createTestTempDirectory("nre-droid-home-");
     const selected = join(home, "selected");
     const config = join(selected, ".factory", "mcp.json");
     const original = JSON.stringify({
@@ -42,16 +42,16 @@ cliTest(
     expect(JSON.parse(configured)).toMatchObject({
       mcpServers: {
         peer: { command: "peer" },
-        rea: { args: expect.arrayContaining(["mcp"]) },
+        nre: { args: expect.arrayContaining(["mcp"]) },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     await expect(
       access(join(home, ".factory", "mcp.json")),
     ).rejects.toMatchObject({ code: "ENOENT" });
     const second = await run();
     expect(second.exitCode, second.stdout).toBe(0);
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
   },
 );

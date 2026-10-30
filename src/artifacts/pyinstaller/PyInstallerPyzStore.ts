@@ -124,7 +124,7 @@ export class PyInstallerPyzStore {
         "format",
         "Compressed PYZ image has no zlib bytes",
       );
-    this.#root ??= await mkdtemp(join(tmpdir(), "rea-pyz-"));
+    this.#root ??= await mkdtemp(join(tmpdir(), "nre-pyz-"));
     const path = join(this.#root, String(this.#serial++));
     const writer = await open(path, "wx", 0o600);
     this.#retain(path, new OwnedFileHandle(writer));

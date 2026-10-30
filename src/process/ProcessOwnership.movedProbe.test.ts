@@ -52,7 +52,7 @@ it("runs the production private-display timeout cleanup through the Linux host",
     unref: vi.fn(),
   });
   state.spawn.mockImplementation((_command, _arguments, options) => {
-    token = options.env.REA_PROCESS_RUN_ID;
+    token = options.env.NRE_PROCESS_RUN_ID;
     queueMicrotask(() => helper.emit("spawn"));
     return helper;
   });
@@ -81,7 +81,7 @@ it("runs the production private-display timeout cleanup through the Linux host",
       if (pid === 101) moved = true;
       return pid === process.pid
         ? "FOREIGN=value\0"
-        : `REA_PROCESS_RUN_ID=${token}\0`;
+        : `NRE_PROCESS_RUN_ID=${token}\0`;
     }
     const parent =
       pid === 100

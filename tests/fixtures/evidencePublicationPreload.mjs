@@ -7,7 +7,7 @@ import { writeFileSync } from "node:fs";
 // is removed; "staging" delivers it once the staging directory exists, before
 // any byte can be committed. cleanup_failures rejects that many removals of
 // the staging directory first, without removing it.
-const input = JSON.parse(process.env.REA_TEST_EVIDENCE_PUBLICATION ?? "null");
+const input = JSON.parse(process.env.NRE_TEST_EVIDENCE_PUBLICATION ?? "null");
 assert.ok(
   input && typeof input.prefix === "string" && typeof input.marker === "string",
 );

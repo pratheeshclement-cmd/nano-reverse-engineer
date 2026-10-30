@@ -173,7 +173,7 @@ const scenario = (origin = "https://app.example.test") => ({
   secrets: [
     {
       secret_id: "login_input",
-      environment_variable: "REA_TEST_PASSWORD",
+      environment_variable: "NRE_TEST_PASSWORD",
     },
   ],
 });
@@ -189,7 +189,7 @@ test.each(["full", "compact"] as const)(
       { kind: "session", session },
       {
         browserScenarioCapture: provider,
-        environment: { REA_MCP_INPUT_SCHEMA_PROFILE: profile },
+        environment: { NRE_MCP_INPUT_SCHEMA_PROFILE: profile },
       },
     );
     const client = new Client({
@@ -314,7 +314,7 @@ describe("browser scenario MCP tool", () => {
     });
     expect(provider.scenarios).toHaveLength(2);
     expect(captured.structuredContent).toMatchObject({
-      predicate_type: "rea.browser-scenario-capture",
+      predicate_type: "nre.browser-scenario-capture",
       operation: "capture_browser_scenario",
       parameters: {
         ...provider.scenarios[1],

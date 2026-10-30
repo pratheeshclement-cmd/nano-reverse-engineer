@@ -194,17 +194,17 @@ const readValidatedSourceFacts = (
     if (claim.kind === "behavioral")
       return (
         source.operation === "capture_process_scenario" &&
-        source.predicate_type === "rea.process-capture"
+        source.predicate_type === "nre.process-capture"
       );
     if (claim.kind === "structural-function")
       return (
         source.operation === "analyze_function" &&
-        source.predicate_type === "rea.analysis"
+        source.predicate_type === "nre.analysis"
       );
     return (
       (source.operation === "inventory_artifact" ||
         source.operation === "inspect_artifact") &&
-      source.predicate_type === "rea.analysis"
+      source.predicate_type === "nre.analysis"
     );
   };
   if (sources.some((source) => !isExpectedType(source)))

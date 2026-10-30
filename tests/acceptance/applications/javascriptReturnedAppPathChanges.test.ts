@@ -83,7 +83,7 @@ cliTest.for(
 )(
   "preserves $name path uncertainty for $owners application owners through $surface",
   async ({ surface, setter, owners, changed }, { cli }) => {
-    const root = await createTestTempDirectory("rea-returned-app-path-");
+    const root = await createTestTempDirectory("nre-returned-app-path-");
     const files: Record<string, string> = {
       "shared/change.mjs": `throw new Error('Static fixture must never execute');import {app} from 'electron';${setter}`,
       "shared/index.html": "setter-relative decoy",

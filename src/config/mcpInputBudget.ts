@@ -11,7 +11,7 @@ import { err, ok, type Result } from "../domain/result.js";
  */
 export const DEFAULT_MCP_MAX_INPUT_ELEMENTS = 1_024;
 
-const setting = "REA_MCP_MAX_INPUT_ELEMENTS";
+const setting = "NRE_MCP_MAX_INPUT_ELEMENTS";
 const constraint = `${setting} must be a positive decimal safe integer counting combined array elements and object members; the default is ${String(DEFAULT_MCP_MAX_INPUT_ELEMENTS)}.`;
 
 export const mcpInputBudgetSchema = positiveDecimalIntegerSchema(

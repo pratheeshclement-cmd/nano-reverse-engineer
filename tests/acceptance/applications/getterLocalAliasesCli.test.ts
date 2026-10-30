@@ -8,7 +8,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains getter-local alias mutations in exported Evidence through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-getter-local-aliases-");
+    const root = await createTestTempDirectory("nre-getter-local-aliases-");
     const cases = [
       ["initialized", "const self = this; return self.s;", true],
       ["assigned", "let self; self = this; return self.s;", true],

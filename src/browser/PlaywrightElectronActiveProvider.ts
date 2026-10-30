@@ -408,7 +408,7 @@ export const safeElectronEnvironment = (
       .filter(
         (entry): entry is readonly [string, string] => entry[1] !== undefined,
       ),
-    ["REA_PROCESS_RUN_ID", runId] as const,
+    ["NRE_PROCESS_RUN_ID", runId] as const,
   ]);
 
 const PLAYWRIGHT_INTERNAL_FRAME = /playwright-core[\\/]lib[\\/]/;

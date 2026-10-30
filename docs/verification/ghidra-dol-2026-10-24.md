@@ -1,6 +1,6 @@
 # GameCube DOL verification, 2026-10-24
 
-This records additional verification of [PR #6240](https://github.com/morluto/rea/pull/6240).
+This records additional verification of [PR #6240](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/6240).
 The lane explicitly imports a static 32-bit big-endian PowerPC DOL through the
 existing POSIX Ghidra provider. It does not execute the target. Admission covers
 cached MEM1 (`0x80000000..0x81800000`); Wii MEM2, uncached aliases, REL/RPX,
@@ -163,9 +163,9 @@ claim about exclusive physical memory or production-agent costs.
   Simulated-provider scenarios do not add real Windows, Hopper or IDA coverage.
 
 While preparing the final PR, main independently failed a release-test typecheck
-([main job](https://github.com/morluto/rea/actions/runs/40079461941/job/120829870149))
+([main job](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/40079461941/job/120829870149))
 and JavaScript worker startup
-([main job](https://github.com/morluto/rea/actions/runs/40079461941/job/120829870212)).
+([main job](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/40079461941/job/120829870212)).
 These are recorded baseline failures, not successful checks or automatic
 exemptions for unrelated future failures. The published head's CI must be
 assessed separately before any authorized bypass.
@@ -175,7 +175,7 @@ assessed separately before any authorized bypass.
 Source `a853c0c0ee5ea5eb66924c2c0235b223ae9d87b0` integrates main
 `d9660eb03271d0ce1859cf8720ca460701dd3322`. The only conflict was the packaged
 Windows verifier: main's new command/workspace owner is retained exactly, with
-one additional `ReaGhidraPrepareDol.java` caller-directory collision fixture.
+one additional `NreGhidraPrepareDol.java` caller-directory collision fixture.
 No previous resource-owner implementation is restored.
 
 The combined snapshot `e267d92d7af33681620548d584e3d60622ec7abd`

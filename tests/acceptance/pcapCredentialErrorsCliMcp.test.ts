@@ -22,8 +22,8 @@ const credential = "SYNTHETIC_PCAP_AUTH_83A4";
 const uri = `http://user:${credential}@example.test/a/../b?value=keep%2Fthis`;
 const safeUri = "http://example.test/a/../b?value=keep%2Fthis";
 const environmentFor = (root: string) => ({
-  REA_TSHARK_COMMAND: "/usr/bin/tshark",
-  REA_CAPINFOS_COMMAND: "/usr/bin/capinfos",
+  NRE_TSHARK_COMMAND: "/usr/bin/tshark",
+  NRE_CAPINFOS_COMMAND: "/usr/bin/capinfos",
   HOME: root,
   USERPROFILE: root,
   XDG_CONFIG_HOME: join(root, "config"),
@@ -54,7 +54,7 @@ const verifyOriginalError = (document: unknown) => {
 cliTest.skipIf(missingNative)(
   "keeps real pcap success and output-limit CLI Evidence credential-safe",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pcap-private-cli-");
+    const root = await createTestTempDirectory("nre-pcap-private-cli-");
     const single = join(root, "single.pcap");
     await writeFile(single, offlineHttpCapture(uri));
     const success = await cli.run({
@@ -95,14 +95,14 @@ cliTest.skipIf(missingNative)(
 it.skipIf(missingNative)(
   "keeps real pcap MCP errors and exported retained errors credential-safe",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-private-mcp-");
+    const root = await createTestTempDirectory("nre-pcap-private-mcp-");
     const path = join(root, "many.pcap");
     await writeFile(path, offlineHttpCapture(uri, 40_000));
     for (const direct of [true, false]) {
       const environment = {
         ...environmentFor(root),
         ...(direct
-          ? { REA_MCP_MAX_RESPONSE_BYTES: String(20 * 1024 * 1024) }
+          ? { NRE_MCP_MAX_RESPONSE_BYTES: String(20 * 1024 * 1024) }
           : {}),
       };
       const { client, call } = await connectLocalToolsMcp(

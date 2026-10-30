@@ -10,11 +10,11 @@ import { parseEvidence } from "../dist/domain/evidence.js";
 import { requireMcpOutput } from "./lib/mcp-verifier-results.mjs";
 
 const execute = promisify(execFile);
-const bin = process.env.REA_WABT_BIN_DIRECTORY;
+const bin = process.env.NRE_WABT_BIN_DIRECTORY;
 if (!isAbsolute(bin ?? ""))
-  throw new Error("Supply absolute REA_WABT_BIN_DIRECTORY with WABT 1.0.42");
-const root = await mkdtemp(join(tmpdir(), "rea-wasm-interface-real-"));
-const cli = resolve("scripts/rea.mjs");
+  throw new Error("Supply absolute NRE_WABT_BIN_DIRECTORY with WABT 1.0.42");
+const root = await mkdtemp(join(tmpdir(), "nre-wasm-interface-real-"));
+const cli = resolve("scripts/nre.mjs");
 const environment = { ...process.env };
 const command = async (file, args) =>
   (

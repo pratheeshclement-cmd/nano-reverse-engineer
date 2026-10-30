@@ -17,7 +17,7 @@ describe("native module resolver cleanup ownership", () => {
       const controller = new AbortController();
       let closed = false;
       const provider = new NativeModuleResolver(
-        { REA_BROWSER_EXECUTABLE: "/browser" },
+        { NRE_BROWSER_EXECUTABLE: "/browser" },
         () => {
           controller.abort();
           return Promise.resolve({
@@ -55,7 +55,7 @@ describe("native module resolver cleanup ownership", () => {
     let closes = 0;
     let cleanupAllowed = false;
     const provider = new NativeModuleResolver(
-      { REA_BROWSER_EXECUTABLE: "/browser" },
+      { NRE_BROWSER_EXECUTABLE: "/browser" },
       () => {
         launches += 1;
         return Promise.resolve({
@@ -118,7 +118,7 @@ describe("native module resolver cleanup ownership", () => {
     let launches = 0;
     let closes = 0;
     const provider = new NativeModuleResolver(
-      { REA_BROWSER_EXECUTABLE: "/browser" },
+      { NRE_BROWSER_EXECUTABLE: "/browser" },
       async () => {
         launches += 1;
         acquired();
@@ -164,14 +164,14 @@ describe("optional native resolution acquisition", () => {
     if (!result.ok)
       expect(projectAnalysisError(result.error)).toMatchObject({
         code: "capability_unavailable",
-        message: expect.stringContaining("REA_BROWSER_EXECUTABLE"),
+        message: expect.stringContaining("NRE_BROWSER_EXECUTABLE"),
       });
   });
   it.each(["relative/chromium", ""])(
     "retains an invalid selected browser path %j without launching",
     async (executable) => {
       const provider = new NativeModuleResolver(
-        { REA_BROWSER_EXECUTABLE: executable },
+        { NRE_BROWSER_EXECUTABLE: executable },
         () => {
           throw new Error("must not launch");
         },
@@ -192,7 +192,7 @@ describe("optional native resolution acquisition", () => {
     const reason = { request: "opaque admission cancellation" };
     controller.abort(reason);
     const provider = new NativeModuleResolver(
-      { REA_BROWSER_EXECUTABLE: "/browser" },
+      { NRE_BROWSER_EXECUTABLE: "/browser" },
       () => {
         throw new Error("must not launch");
       },
@@ -204,7 +204,7 @@ describe("optional native resolution acquisition", () => {
   });
   it("retains the selected executable and actual startup diagnostic", async () => {
     const provider = new NativeModuleResolver(
-      { REA_BROWSER_EXECUTABLE: "/missing/browser" },
+      { NRE_BROWSER_EXECUTABLE: "/missing/browser" },
       () => Promise.reject(new Error("spawn EACCES fixture")),
     );
     const result = await provider.resolve(input);
@@ -241,7 +241,7 @@ describe("completed native resolution finalization", () => {
         if (!allowClose) throw new Error("controlled close refusal");
       });
       const provider = new NativeModuleResolver(
-        { REA_BROWSER_EXECUTABLE: "/browser" },
+        { NRE_BROWSER_EXECUTABLE: "/browser" },
         launcher,
       );
       const result = await provider.resolve(input, {
@@ -298,7 +298,7 @@ it.each([
       return rejected;
     };
     const provider = new NativeModuleResolver(
-      { REA_BROWSER_EXECUTABLE: "/browser" },
+      { NRE_BROWSER_EXECUTABLE: "/browser" },
       () =>
         stage === "launch"
           ? reject()
@@ -336,7 +336,7 @@ it.each(["caller", "deadline"] as const)(
       let rejectCall!: (cause: unknown) => void;
       let closes = 0;
       const provider = new NativeModuleResolver(
-        { REA_BROWSER_EXECUTABLE: "/browser" },
+        { NRE_BROWSER_EXECUTABLE: "/browser" },
         async () => ({
           version: () => "controlled-browser",
           newContext: () => {

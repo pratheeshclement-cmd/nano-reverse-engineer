@@ -34,7 +34,7 @@ it.each(["configuration", "producer"] as const)(
               limit: {
                 setting: "wasm.command_timeout_ms",
                 effective_value: 1234,
-                rea_restart_required: false,
+                nre_restart_required: false,
               },
             },
             recovery: { kind: "inspect_timeout_state", timeout_ms: 1234 },
@@ -97,7 +97,7 @@ it.each([1234, 2_147_483_647])(
           parameter: "command_timeout_ms",
           applies_at: "next_operation",
           agent_editable: true,
-          rea_restart_required: false,
+          nre_restart_required: false,
         },
       },
       recovery: { kind: "inspect_timeout_state", timeout_ms: commandTimeoutMs },
@@ -123,7 +123,7 @@ it.each([
       cleanup,
     );
     const probe = {
-      configuration_key: "REA_WABT_BIN_DIRECTORY" as const,
+      configuration_key: "NRE_WABT_BIN_DIRECTORY" as const,
       executable_path: "/tools/wasm2wat",
       tool: "wasm2wat",
       expected_version: "1.0.42" as const,
@@ -164,7 +164,7 @@ it.each([
       retryable: false,
       remediation: { action: expect.stringContaining(action) },
     });
-    expect(projected.remediation.action).toContain("REA_WABT_BIN_DIRECTORY");
+    expect(projected.remediation.action).toContain("NRE_WABT_BIN_DIRECTORY");
     expect(projected.remediation.action).toContain("restart");
     expect(projected.remediation.action).toContain("Do not repeat");
   },

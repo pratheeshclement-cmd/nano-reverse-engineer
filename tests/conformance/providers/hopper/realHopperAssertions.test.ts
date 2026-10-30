@@ -37,11 +37,11 @@ describe("Hopper verifier fixture assertions", () => {
   it("requires fixture-specific positive dossier evidence", () => {
     const entry = fixtureDossier({
       address: "0x1000",
-      name: "rea_entry",
-      callee: { address: "0x2000", name: "rea_branch" },
+      name: "nre_entry",
+      callee: { address: "0x2000", name: "nre_branch" },
       caller: { address: "0x0900", name: "main" },
-      referencedString: "REA_C_ENTRY",
-      comment: "REA real-Hopper verifier",
+      referencedString: "NRE_C_ENTRY",
+      comment: "NRE real-Hopper verifier",
       successor: "0x1010",
     });
     expect(() =>
@@ -49,9 +49,9 @@ describe("Hopper verifier fixture assertions", () => {
         procedure_address: "0x1000",
         callee_address: "0x2000",
         caller_address: "0x0900",
-        referenced_string: "REA_C_ENTRY",
-        referenced_name: "rea_c_global",
-        comment: "REA real-Hopper verifier",
+        referenced_string: "NRE_C_ENTRY",
+        referenced_name: "nre_c_global",
+        comment: "NRE real-Hopper verifier",
         require_cfg_successor: true,
         require_assembly: true,
       }),
@@ -73,9 +73,9 @@ describe("Hopper verifier fixture assertions", () => {
             procedure_address: "0x1000",
             callee_address: "0x2000",
             caller_address: "0x0900",
-            referenced_string: "REA_C_ENTRY",
-            referenced_name: "rea_c_global",
-            comment: "REA real-Hopper verifier",
+            referenced_string: "NRE_C_ENTRY",
+            referenced_name: "nre_c_global",
+            comment: "NRE real-Hopper verifier",
             require_cfg_successor: true,
             require_assembly: true,
           },
@@ -96,7 +96,7 @@ describe("Hopper verifier fixture assertions", () => {
         },
         {
           procedure_address: "0x1000",
-          referenced_name: "rea_c_global",
+          referenced_name: "nre_c_global",
         },
       ),
     ).toThrow();
@@ -109,8 +109,8 @@ describe("Hopper verifier fixture assertions", () => {
         {
           procedure_address: "0x1000",
           callee_address: "0x2000",
-          referenced_string: "REA_C_ENTRY",
-          comment: "REA real-Hopper verifier",
+          referenced_string: "NRE_C_ENTRY",
+          comment: "NRE real-Hopper verifier",
           require_cfg_successor: true,
         },
       ),
@@ -166,7 +166,7 @@ const fixtureDossier = (input: {
   referenced_names: [
     {
       address: "0x4000",
-      value: "_rea_c_global",
+      value: "_nre_c_global",
       source_address: "0x1008",
     },
   ],

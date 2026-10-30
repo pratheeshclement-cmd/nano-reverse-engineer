@@ -7,7 +7,7 @@ at `public/blog/touhou-reconstruction/index.html`.
 
 The Factory checkpoint is
 [`038b6bed`](https://github.com/N0zoM1z0/touhou-reconstruction-factory/tree/038b6bed51d273c8b3680553b6f43e1b97d19bd1).
-Nred its [agent autonomy](https://github.com/N0zoM1z0/touhou-reconstruction-factory/blob/038b6bed51d273c8b3680553b6f43e1b97d19bd1/docs/agent-autonomy.md),
+Read its [agent autonomy](https://github.com/N0zoM1z0/touhou-reconstruction-factory/blob/038b6bed51d273c8b3680553b6f43e1b97d19bd1/docs/agent-autonomy.md),
 [semantic workflow](https://github.com/N0zoM1z0/touhou-reconstruction-factory/blob/038b6bed51d273c8b3680553b6f43e1b97d19bd1/docs/semantic-reconstruction.md),
 and [cross-game knowledge](https://github.com/N0zoM1z0/touhou-reconstruction-factory/blob/038b6bed51d273c8b3680553b6f43e1b97d19bd1/docs/knowledge-base.md)
 documents for the underlying method: autonomous investigation, bounded changes,
@@ -26,7 +26,7 @@ workflow, without relabeling every historical tool result as Nre output.
 
 Public history was retrieved with `gh api`, including all pages of each
 repository's default-branch commits, repository metadata and release records.
-Pinned progress documents were Nred from the corresponding Git objects in the
+Pinned progress documents were Read from the corresponding Git objects in the
 local project checkouts. Every milestone SHA below appears in the public
 GitHub history. No local-only revision or uncommitted change supplies a claim.
 
@@ -42,7 +42,7 @@ with zero confirmed authored functions, while using methods and infrastructure
 from earlier projects. TH04 uses ReC98 as a credited source of existing work.
 
 The denominators change as candidates are classified and boundaries reviewed.
-Nred each pinned progress document's definitions. Avoid a cross-game function
+Read each pinned progress document's definitions. Avoid a cross-game function
 rate or an executable-wide completion percentage.
 
 ## Public history snapshot
@@ -137,9 +137,9 @@ generated sitemap includes the article. The author approved publication on
 
 ## GensokyoClub quotation and policy
 
-The public NreDME was Nred with `gh api` on 10 October 2026. Its latest
-NreDME-changing commit is
-[`e874b98e`](https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/NreDME.md#important-notice),
+The public README was Read with `gh api` on 10 October 2026. Its latest
+README-changing commit is
+[`e874b98e`](https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/README.md#important-notice),
 dated 6 September. The notice announces a decision effective 5 September and
 describes concerns about AI decompilations, ports, attribution and their effect
 on the maintainers. Its stated plan is private development until completion.
@@ -189,7 +189,7 @@ Code, checks and recorded lessons improve the next starting point, with TH08,
 TH095 and TH04 illustrating knowledge carried between projects. It does not
 depict a measured performance ratio or give Nre sole credit for reconstruction.
 
-The first inline reference to GensokyoClub's public NreDME links to the author's
+The first inline reference to GensokyoClub's public README links to the author's
 selected [Internet Archive capture](https://web.archive.org/web/20260909051514/https://github.com/GensokyoClub/th08#important-notice).
 The pinned source caption and 23-word excerpt retain their original provenance.
 The author approved this revision for publication on 10 October 2026.
@@ -260,7 +260,7 @@ while choosing references appropriate to the new domain.
 ## Industrial analogy: instruments develop with machines
 
 The [Science Museum Group's steam-engine indicator record](https://collection.sciencemuseumgroup.org.uk/objects/co51439/watts-steam-engine-indicator),
-Nred on 10 October 2026, describes Boulton and Watt's introduction of the
+Read on 10 October 2026, describes Boulton and Watt's introduction of the
 instrument in 1796 to assist with valve adjustment. It also explains how adding
 a pencil and moving paper made cylinder pressure through the stroke recordable.
 The essay paraphrases this description and links it directly. It does not use

@@ -83,14 +83,14 @@ clone at `52b73ee857029a3ab8f5c6eeef233b295951a46c` (no tracked or untracked
 changes; `closedStdout` 1 failed, 3 passed, 8.86 s elapsed, 6.98 s user, 2.29 s
 sys, 348012544 bytes; the canary 1 failed, 7.91 s elapsed, 7.76 s user, 1.84 s
 sys, 668729344 bytes). That clone predates the verified base by 15 commits,
-none touching either test or `scripts/rea.mjs`. Because the dispatcher is on
+none touching either test or `scripts/nre.mjs`. Because the dispatcher is on
 the `closedStdout` path, its scenario was also replayed against this
-worktree's built `dist/` with the `18aa9af2` `scripts/rea.mjs` and with the
+worktree's built `dist/` with the `18aa9af2` `scripts/nre.mjs` and with the
 edited one, three runs each: all six exited `1` with 1009 bytes received and
 empty stderr. Nothing in this pass was changed for these failures.
 
 Cross-implementation check with the Python `mcp` 1.30.0 client (httpx 0.28.1,
-Python 3.12.12) against the built `node scripts/rea.mjs mcp --http --port 0 <
+Python 3.12.12) against the built `node scripts/nre.mjs mcp --http --port 0 <
 /dev/null`: stderr announced
 `{"transport":"streamable-http","url":"http://127.0.0.1:57093/mcp","msg":"MCP transport listening"}`.
 Session A: `initialize` POST returned `200 text/event-stream` with
@@ -116,7 +116,7 @@ failed with a `cancelled` error because the SDK's `DELETE` handling closed the
 transport and the server's `onclose` hooks ran provider teardown. It also found
 that a session ended without `DELETE` blocked the listener until restart, that
 the bind-failure log line omitted the system cause, a duplicated foreign-`Host`
-probe, a missing trailing newline on `rea mcp --http --help`, and a static
+probe, a missing trailing newline on `nre mcp --http --help`, and a static
 import of the HTTP listener on the stdio path. Each finding is addressed and
 covered by the adapters, mcp-boundary and Python checks in this document.
 
@@ -132,7 +132,7 @@ now a projection of `registerProcessShutdown(handler, { signals })`, so one
 primitive owns registration while the handler learns the signal and keeps
 `130`/`143`. The dispatcher routed any `mcp` invocation containing `--http` to
 the HTTP entry; it now does so only when the first token after `mcp` or
-`--mcp` is a flag, so `rea mcp add --http` keeps the CLI's own diagnostic, and
+`--mcp` is a flag, so `nre mcp add --http` keeps the CLI's own diagnostic, and
 the dispatcher test covers that case. The formatter hunk in
 `src/domain/propertyListXml.test.ts` noted in the earlier record is gone after
 the rebase, as `git diff --stat` confirms. The replacement rule stays as
@@ -158,7 +158,7 @@ not re-measured over HTTP. Windows was not run.
 
 ## Automated review findings on the PR (2026-10-18)
 
-Codex and Greptile left eight inline findings on morluto/rea#4955 at
+Codex and Greptile left eight inline findings on pratheeshclement-cmd/nano-reverse-engineer#4955 at
 46dd8f0e; each was checked against the code and addressed in one follow-up
 commit, with a regression test where the behaviour is observable:
 
@@ -186,7 +186,7 @@ commit, with a regression test where the behaviour is observable:
 - The bound URL disappeared at quiet log levels (Greptile, P2): the listening
   line is written through a child logger pinned to `info`. Test: a `warn`
   logger still receives the line with the URL.
-- `rea mcp -h --http` reached the ordinary CLI (Greptile, P2): the dispatcher
+- `nre mcp -h --http` reached the ordinary CLI (Greptile, P2): the dispatcher
   predicate accepts any flag after the entry. Test: the dispatcher case.
 
 Checks after the change: `oxfmt --check .` clean; `tsc --noEmit` clean;

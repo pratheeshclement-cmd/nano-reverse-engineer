@@ -12,7 +12,7 @@ Godot 3 export has not been exercised.
 Format 1 uses an 84-byte header, no pack or member flags, and absolute member
 offsets in the complete source file, including an embedded executable carrier.
 Its reported flags and file base are zero because those fields are absent.
-Zero-offset removal records remain unsupported; REA does not apply patches.
+Zero-offset removal records remain unsupported; NRE does not apply patches.
 
 Inspection retains the original header and directory facts, including engine
 version, flags, declared file count, source paths, offsets and declared MD5.
@@ -30,9 +30,9 @@ not a verified digest.
 Start with a compact summary and keep the complete Evidence bundle:
 
 ```sh
-rea inspect-artifact /artifacts/game.pck --detail summary \
+nre inspect-artifact /artifacts/game.pck --detail summary \
   --evidence_output /evidence/game.json --json
-rea extract-artifact /artifacts/game.pck --json
+nre extract-artifact /artifacts/game.pck --json
 ```
 
 Summary delivery requires `--evidence_output` and never overwrites that file.
@@ -97,7 +97,7 @@ they do not reopen the source. These are historical observations, including
 after the source changes or disappears. Close the target with `close_binary`
 when finished. To read an exported bundle through the CLI, select its complete
 inspection record as `source: {kind: "inline", evidence: ...}` in a JSON request
-file for `rea inspect-analysis-view request.json --json`.
+file for `nre inspect-analysis-view request.json --json`.
 
 ## Coverage and limits
 
@@ -110,7 +110,7 @@ are not evidence of absence.
 
 Encrypted directories retain their header and declared file count with unknown
 entry coverage. Individually encrypted members retain directory metadata with
-unknown content identity; REA does not decrypt them. Sparse bundles likewise
+unknown content identity; NRE does not decrypt them. Sparse bundles likewise
 retain header facts with unknown member coverage. Extraction refuses an
 unreadable directory or encrypted member. This capability does not recover
 keys, decode Godot resources, decompile GDScript bytecode, analyze signals,

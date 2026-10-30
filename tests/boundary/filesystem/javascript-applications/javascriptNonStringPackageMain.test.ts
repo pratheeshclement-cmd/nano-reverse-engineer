@@ -22,7 +22,7 @@ it.each(
 )(
   "follows Node index admission for main=$main with index=$index",
   async ({ main, index, request }) => {
-    const root = await createTestTempDirectory("rea-nonstring-package-main-");
+    const root = await createTestTempDirectory("nre-nonstring-package-main-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs": index ? "module.exports={};" : windowSource,
@@ -84,7 +84,7 @@ it.each(
 )(
   "distinguishes malformed package root $text from a valid index fallback",
   async ({ text, valid, request }) => {
-    const root = await createTestTempDirectory("rea-invalid-package-main-");
+    const root = await createTestTempDirectory("nre-invalid-package-main-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs": windowSource,

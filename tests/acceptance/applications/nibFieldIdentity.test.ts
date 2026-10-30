@@ -71,7 +71,7 @@ const createIdentityArchive = () =>
 cliTest(
   "preserves literal NIB fields and unavailable string identities through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-nib-field-identity-");
+    const root = await createTestTempDirectory("nre-nib-field-identity-");
     const app = join(root, "Fixture.app");
     const contents = join(app, "Contents");
     await mkdir(join(contents, "Resources"), { recursive: true });
@@ -82,25 +82,25 @@ cliTest(
     );
     await writeFile(
       join(contents, "Info.plist"),
-      "<plist><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.rea.nib-fields</string></dict></plist>",
+      "<plist><dict><key>CFBundleExecutable</key><string>App</string><key>CFBundleIdentifier</key><string>dev.nre.nib-fields</string></dict></plist>",
     );
     const archive = createIdentityArchive();
     const path = join(contents, "Resources/Panel.nib");
     await writeFile(path, archive);
     const result = await cli.run({
       arguments: ["decode-interface-builder", app, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(result.exitCode, result.stdout + result.stderr).toBe(0);
     const contract = toolContract("decode_interface_builder");
     const evidence = contract.outputSchema.parse(result.json);
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       env: {
         PATH: process.env.PATH ?? "",
-        REA_LOG_LEVEL: "silent",
-        REA_ANALYSIS_PROVIDER: "auto",
+        NRE_LOG_LEVEL: "silent",
+        NRE_ANALYSIS_PROVIDER: "auto",
       },
       stderr: "pipe",
     });

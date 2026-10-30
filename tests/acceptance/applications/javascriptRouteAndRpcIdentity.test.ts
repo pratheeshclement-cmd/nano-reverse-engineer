@@ -8,7 +8,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves route flags and lexical RPC names through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-route-rpc-identity-");
+    const root = await createTestTempDirectory("nre-route-rpc-identity-");
     await writeFixtureFiles(root, {
       "entry.ts": `
         const INDEX=true;
@@ -42,7 +42,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains anchored reserved-prefix route constants through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-route-reserved-prefix-");
+    const root = await createTestTempDirectory("nre-route-reserved-prefix-");
     await writeFixtureFiles(root, {
       "entry.js": `globalThis.TURBOPACK=[];
         import {createBrowserRouter} from 'react-router-dom';

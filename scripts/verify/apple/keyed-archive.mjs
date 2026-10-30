@@ -21,7 +21,7 @@ if (process.platform !== "darwin")
   throw new Error(
     "Real Foundation keyed archive verification requires macOS and Xcode Swift tools",
   );
-const root = await mkdtemp(join(tmpdir(), "rea-keyed-fixture-"));
+const root = await mkdtemp(join(tmpdir(), "nre-keyed-fixture-"));
 let report;
 try {
   const archive = join(root, "model.plist");

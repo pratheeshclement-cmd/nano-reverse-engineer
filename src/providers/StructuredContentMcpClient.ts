@@ -18,7 +18,7 @@ export class StructuredContentMcpClient extends Client {
   readonly #toolResult: StandardSchemaV1<unknown, CallToolResult> = {
     "~standard": {
       version: 1,
-      vendor: "rea-mcp-structured-content",
+      vendor: "nre-mcp-structured-content",
       validate: (input) => {
         const parsed = this._wireCodec().validateResult("tools/call", input);
         if (!parsed.ok)

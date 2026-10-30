@@ -8,7 +8,7 @@ import { processScenarioSchema } from "./process/processScenario.js";
 const lookaheadRootRelativePath =
   /^(?!\/)(?!(?:.*\/)?\.{1,2}(?:\/|$))(?!.*\/\/)(?!.*\/$)[^\\\u0000]+$/u;
 const lookaheadEnvironmentName =
-  /^(?!REA_PROCESS_RUN_ID(?![\s\S]))[^=\u0000]+$/u;
+  /^(?!NRE_PROCESS_RUN_ID(?![\s\S]))[^=\u0000]+$/u;
 
 const strings = (alphabet: readonly string[], maxLength: number): string[] => {
   const all: string[] = [];
@@ -35,7 +35,7 @@ describe("look-around-free advertised patterns", () => {
   });
 
   it("accepts exactly the previous environment names around the reserved name", () => {
-    const reserved = "REA_PROCESS_RUN_ID";
+    const reserved = "NRE_PROCESS_RUN_ID";
     const edits = ["", "R", "X", "_", "=", "\u0000", "é"];
     const candidates = new Set<string>(strings(["R", "E", "=", "x"], 5));
     for (let index = 0; index <= reserved.length; index += 1)
@@ -56,22 +56,22 @@ describe("look-around-free advertised patterns", () => {
     );
     expect(accepts(reserved)).toBe(false);
     expect(accepts(`${reserved}_2`)).toBe(true);
-    expect(accepts("REA_PROCESS_RUN")).toBe(true);
+    expect(accepts("NRE_PROCESS_RUN")).toBe(true);
     expect(mismatches).toEqual([]);
   });
 
   it("keeps the reserved-name diagnostic", () => {
     const parsed = processScenarioSchema.safeParse({
       executable: "/bin/true",
-      environment: { REA_PROCESS_RUN_ID: "value" },
+      environment: { NRE_PROCESS_RUN_ID: "value" },
     });
     // Record keys report their own issues nested under the invalid key.
     expect(parsed.error?.issues).toMatchObject([
       {
         code: "invalid_key",
-        path: ["environment", "REA_PROCESS_RUN_ID"],
+        path: ["environment", "NRE_PROCESS_RUN_ID"],
         issues: [
-          { message: "REA_PROCESS_RUN_ID is reserved by the process adapter" },
+          { message: "NRE_PROCESS_RUN_ID is reserved by the process adapter" },
         ],
       },
     ]);

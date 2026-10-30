@@ -75,14 +75,14 @@ const fixture = async (
   rollback: () => Promise<ProcessCleanupFailure>,
   afterSpawn?: () => void,
 ) => {
-  const root = await createTestTempDirectory("rea-launch-rollback-");
+  const root = await createTestTempDirectory("nre-launch-rollback-");
   const launcher = new GhidraHeadlessLauncher({
     configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
     environment: {},
     platform: process.platform,
     analyzeHeadlessPath: join(root, "support", "analyzeHeadless"),
     javaHome: join(root, "jdk"),
-    bridgeScriptPath: join(root, "ReaGhidraBridge.java"),
+    bridgeScriptPath: join(root, "NreGhidraBridge.java"),
     javaLaunch: async () => ({
       command: process.execPath,
       arguments: ["-e", "setInterval(()=>{},1000)"],

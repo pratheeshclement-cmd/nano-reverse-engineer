@@ -19,7 +19,7 @@ mcpTest.for([
   "$name session fixture reports failed teardown and retries its exact descriptor owner",
   async ({ open }, { mcp, task }) => {
     const directory = await createTestTempDirectory(
-      "rea-session-fixture-cleanup-",
+      "nre-session-fixture-cleanup-",
     );
     // Descriptor ownership needs real target bytes, without selecting an
     // installed deep-analysis engine whose availability varies by host.

@@ -4,10 +4,10 @@ import { verifyBrowserModules } from "./lib/browser-module-e2e.mjs";
 import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 import { requireOrdinaryWindowsVerifierCaller } from "./lib/windows-ordinary-user-verifier.mjs";
 
-const executable = process.env.REA_BROWSER_EXECUTABLE;
+const executable = process.env.NRE_BROWSER_EXECUTABLE;
 if (!executable)
   throw new Error(
-    "verify:browser:modules requires REA_BROWSER_EXECUTABLE for caller-supplied Chromium",
+    "verify:browser:modules requires NRE_BROWSER_EXECUTABLE for caller-supplied Chromium",
   );
 await requireOrdinaryWindowsVerifierCaller();
 await access(executable);

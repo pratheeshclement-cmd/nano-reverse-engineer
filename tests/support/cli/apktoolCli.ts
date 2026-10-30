@@ -25,7 +25,7 @@ export const invokeApktoolCli = async (argv: readonly string[]) => {
       );
     },
   };
-  const cli = Cli.create("rea", { sync: false });
+  const cli = Cli.create("nre", { sync: false });
   registerApktoolCommands(cli, pino({ level: "silent" }), {}, provider);
   presentOmittableDefaults(cli);
 

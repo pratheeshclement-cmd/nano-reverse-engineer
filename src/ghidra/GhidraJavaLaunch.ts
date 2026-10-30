@@ -70,7 +70,7 @@ export const ghidraJavaLaunch = async (options: {
   readonly command: string;
   readonly arguments: readonly string[];
   readonly environment: NodeJS.ProcessEnv;
-  /** REA-configured -Xmx value, not effective or observed JVM memory. */
+  /** NRE-configured -Xmx value, not effective or observed JVM memory. */
   readonly configuredMaxHeap?: string;
   /** Frozen argfile references for wrappers which launch their own JVM. */
   readonly preparedJdkJavaOptions?: string;

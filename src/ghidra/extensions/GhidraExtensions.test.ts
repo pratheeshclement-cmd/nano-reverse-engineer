@@ -29,7 +29,7 @@ afterEach(async () => {
   );
 });
 const root = async () => {
-  const path = await mkdtemp(join(tmpdir(), "rea-extension-test-"));
+  const path = await mkdtemp(join(tmpdir(), "nre-extension-test-"));
   roots.push(path);
   return path;
 };
@@ -43,7 +43,7 @@ const target: BinaryTarget = {
 };
 const config = (path?: string) => {
   const parsed = parseConfig(
-    path === undefined ? {} : { REA_GHIDRA_NATIVEAOT_JAR: path },
+    path === undefined ? {} : { NRE_GHIDRA_NATIVEAOT_JAR: path },
   );
   if (!parsed.ok) throw parsed.error;
   return parsed.value;
@@ -96,7 +96,7 @@ describe("optional Ghidra extension refusals", () => {
         retryable: false,
         message: expect.stringContaining("verified on Linux only"),
         remediation: {
-          action: expect.stringContaining("omit REA_GHIDRA_NATIVEAOT_JAR"),
+          action: expect.stringContaining("omit NRE_GHIDRA_NATIVEAOT_JAR"),
         },
         details: {
           provider_id: "ghidra",
@@ -118,7 +118,7 @@ describe("optional Ghidra extension refusals", () => {
       expect(projectAnalysisError(architecture.error)).toMatchObject({
         code: "unsupported_target",
         remediation: {
-          action: expect.stringContaining("omit REA_GHIDRA_NATIVEAOT_JAR"),
+          action: expect.stringContaining("omit NRE_GHIDRA_NATIVEAOT_JAR"),
         },
         details: {
           operation: "resolve_analysis_profile",
@@ -139,7 +139,7 @@ describe("optional Ghidra extension boundary", () => {
     });
   });
   it("validates configuration paths rather than ignoring an unsupported value", () => {
-    expect(parseConfig({ REA_GHIDRA_NATIVEAOT_JAR: "relative.jar" }).ok).toBe(
+    expect(parseConfig({ NRE_GHIDRA_NATIVEAOT_JAR: "relative.jar" }).ok).toBe(
       false,
     );
   });
@@ -340,7 +340,7 @@ describe("Ghidra extension profile and producer validation", () => {
         "darwin",
       ),
     ).toBe(
-      "NativeAOT recovery is verified on Linux only; omit REA_GHIDRA_NATIVEAOT_JAR for ordinary native analysis.",
+      "NativeAOT recovery is verified on Linux only; omit NRE_GHIDRA_NATIVEAOT_JAR for ordinary native analysis.",
     );
     expect(
       validateGhidraExtensionProfile(

@@ -9,7 +9,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "darwin")(
   "preserves real plutil diagnostics and typed selection failures through MCP",
   async () => {
-    const root = await createTestTempDirectory("rea-plist-diagnostic-mcp-");
+    const root = await createTestTempDirectory("nre-plist-diagnostic-mcp-");
     const program = join(root, "program");
     await writeFile(program, thinMach(0xfeedfacf, 0x100000c));
     await mkdir(join(root, "Contents"));

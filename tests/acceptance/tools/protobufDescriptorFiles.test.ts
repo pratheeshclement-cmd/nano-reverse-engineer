@@ -118,7 +118,7 @@ const retainedDetailsSchema = z.object({
 cliTest(
   "refuses conflicting descriptor file identities before registry import lookup through CLI/MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-file-conflicts-");
+    const root = await createTestTempDirectory("nre-protobuf-file-conflicts-");
     const call = await cli.sharedMcpCall!();
     for (const change of [
       "declarations",
@@ -224,7 +224,7 @@ const reorderedSharedFile = () => {
 cliTest(
   "coalesces equal descriptor file facts while preserving original descriptor identity through CLI/MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-file-repeat-");
+    const root = await createTestTempDirectory("nre-protobuf-file-repeat-");
     const capture = join(root, "capture.har");
     await writeFile(capture, protobufHar(body, "application/x-protobuf"));
     const call = await cli.sharedMcpCall!();

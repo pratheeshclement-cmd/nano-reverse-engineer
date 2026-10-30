@@ -62,7 +62,7 @@ export const writeAmpRegistrationBackup = async (
   settingsPath: string,
   settingsText: string,
 ): Promise<Result<string, RecoveryBackupPreservationFailure>> => {
-  const firstBackupPath = `${settingsPath}.rea.backup`;
+  const firstBackupPath = `${settingsPath}.nre.backup`;
   const firstRestricted = restrictExistingBackup(firstBackupPath);
   if (!firstRestricted.ok) return firstRestricted;
   const preserved = await preserveCurrentRecoveryBackup(

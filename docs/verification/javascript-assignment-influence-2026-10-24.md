@@ -150,11 +150,11 @@ export function update{i}() { let speed = 6; const state = { speed: 6 }; speed =
 ```
 
 For each pinned checkout, build with the locked toolchain, then invoke
-`node scripts/rea.mjs analyze-javascript-application <same-folder> --format json --full-output`.
+`node scripts/nre.mjs analyze-javascript-application <same-folder> --format json --full-output`.
 Save its envelope's `data` as the `application` in a query with
 `seed: {kind: "literal", value: 0.001}`, `direction: "forward-influence"`,
 `include_ambiguous_dynamic_edges: true`; run
-`node scripts/rea.mjs trace-javascript-semantics <query.json> --format json --full-output`.
+`node scripts/nre.mjs trace-javascript-semantics <query.json> --format json --full-output`.
 The task harness SHA-256 is `93a2b5908013bdaaa39cc1492a61fc159fc71874fc7dad51a74a57f9f5d6f346`.
 Raw command receipts, stdout/stderr, equality checks and all 12 measurements
 are retained in the local maintenance evidence directory; generated runtime,

@@ -37,7 +37,7 @@ mcpTest(
       const ajv = new Ajv2020({ strict: false, validateFormats: false });
       expect(ajv.validateSchema(schema)).toBe(true);
       const validate = ajv.compile(schema);
-      const root = await createTestTempDirectory("rea-pe-cert-schema-");
+      const root = await createTestTempDirectory("nre-pe-cert-schema-");
       const path = join(root, "timestamped.exe");
       await writeFile(
         path,
@@ -75,7 +75,7 @@ mcpTest(
         readOnlyHint: false,
         idempotentHint: true,
       });
-      const root = await createTestTempDirectory("rea-pe-cert-mcp-");
+      const root = await createTestTempDirectory("nre-pe-cert-mcp-");
       const path = join(root, "signed.exe");
       await writeFile(path, peCertificateFixture(true));
       const response = await client.callTool({
@@ -125,7 +125,7 @@ mcpTest.for([
   async ({ count, reported_limits }, { mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-pe-cert-mcp-budget-");
+      const root = await createTestTempDirectory("nre-pe-cert-mcp-budget-");
       const path = join(root, "large.exe");
       await writeFile(
         path,

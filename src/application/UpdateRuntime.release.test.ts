@@ -11,8 +11,8 @@ import {
 
 const installation = {
   manager: "npm",
-  prefix: "/opt/rea",
-  packageRoot: "/opt/rea/lib/node_modules/rea-agents",
+  prefix: "/opt/nre",
+  packageRoot: "/opt/nre/lib/node_modules/nano-reverse-engineer",
 } as const;
 
 describe("npm latest release metadata", () => {

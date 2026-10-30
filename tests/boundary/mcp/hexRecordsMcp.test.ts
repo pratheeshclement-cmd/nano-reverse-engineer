@@ -14,11 +14,11 @@ import { artifactExtractionResultSchema } from "../../../src/domain/artifactGrap
 it.each(["full", "compact"] as const)(
   "exposes S-record facts and region extraction through MCP (%s)",
   async (profile) => {
-    const root = await createTestTempDirectory("rea-hex-mcp-");
+    const root = await createTestTempDirectory("nre-hex-mcp-");
     const path = join(root, "firmware.s37");
     await writeFile(path, SREC_S37);
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
     });
     let outputRoot: string | undefined;
     try {

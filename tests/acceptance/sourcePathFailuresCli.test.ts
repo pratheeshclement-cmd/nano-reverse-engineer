@@ -8,7 +8,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "reports unresolvable source and scenario selections without permission advice",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-source-path-failures-");
+    const root = await createTestTempDirectory("nre-source-path-failures-");
     await symlink("loop-b", join(root, "loop-a"));
     await symlink("loop-a", join(root, "loop-b"));
     await mkdir(join(root, "valid"));

@@ -85,7 +85,7 @@ export const compareArtifactEvidence = ({
   return ok({
     comparison,
     evidence: createEvidence(undefined, ARTIFACT_COMPARISON_PROVIDER, {
-      predicateType: "rea.artifact-comparison",
+      predicateType: "nre.artifact-comparison",
       operation: OPERATION,
       parameters: {
         left_evidence_ids: leftEvidenceIds,

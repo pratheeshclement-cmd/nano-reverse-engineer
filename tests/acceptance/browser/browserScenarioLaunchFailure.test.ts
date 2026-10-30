@@ -7,7 +7,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "retains the selected browser and its startup failure through the CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-browser-launch-");
+    const root = await createTestTempDirectory("nre-browser-launch-");
     const executable = join(root, "selected-browser");
     const secret = "explicit-browser-startup-secret";
     await writeFile(

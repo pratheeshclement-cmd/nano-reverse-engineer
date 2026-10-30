@@ -39,7 +39,7 @@ it.each([
   "retains $carrier carrier dialect at offset $offset through member projection",
   async ({ carrier, offset, dialect, path: memberPath }) => {
     const root = await createTestTempDirectory(
-      "rea-pyinstaller-carrier-admission-",
+      "nre-pyinstaller-carrier-admission-",
     );
     const path = join(root, "app");
     const sourceName = String.raw`pkg\data.bin`;
@@ -102,7 +102,7 @@ it.each([
 
 it("preserves backslashes when a standalone archive has no recognized carrier", async () => {
   const root = await createTestTempDirectory(
-    "rea-pyinstaller-unknown-carrier-",
+    "nre-pyinstaller-unknown-carrier-",
   );
   const path = join(root, "app");
   const sourceName = String.raw`pkg\data.bin`;
@@ -132,7 +132,7 @@ it("preserves backslashes when a standalone archive has no recognized carrier", 
 
 it("inventories members using the cookie discovered by root classification", async () => {
   const root = await createTestTempDirectory(
-    "rea-pyinstaller-cookie-inventory-",
+    "nre-pyinstaller-cookie-inventory-",
   );
   const path = join(root, "app");
   await writeFile(path, fixture());
@@ -158,7 +158,7 @@ it("inventories members using the cookie discovered by root classification", asy
 });
 
 it("rejects changed source before consuming an admitted cookie and leaves the borrowed descriptor open", async () => {
-  const root = await createTestTempDirectory("rea-pyinstaller-cookie-change-");
+  const root = await createTestTempDirectory("nre-pyinstaller-cookie-change-");
   const path = join(root, "app");
   await writeFile(path, fixture());
   await withOwnedRegularFile(path, {}, async (source) => {
@@ -191,7 +191,7 @@ it("rejects changed source before consuming an admitted cookie and leaves the bo
 });
 
 it("retains completed cookie facts across unchanged admissions and honors cached cancellation", async () => {
-  const root = await createTestTempDirectory("rea-pyinstaller-cookie-cache-");
+  const root = await createTestTempDirectory("nre-pyinstaller-cookie-cache-");
   const path = join(root, "app");
   await writeFile(path, fixture());
   const locate = vi.spyOn(layout, "observePyInstallerCookie");
@@ -224,7 +224,7 @@ it("retains completed cookie facts across unchanged admissions and honors cached
 });
 
 it("retains rejected magic candidates without classifying their native carrier as PyInstaller", async () => {
-  const root = await createTestTempDirectory("rea-pyinstaller-candidate-");
+  const root = await createTestTempDirectory("nre-pyinstaller-candidate-");
   const path = join(root, "app");
   await writeFile(
     path,
@@ -265,7 +265,7 @@ it("retains rejected magic candidates without classifying their native carrier a
 
 it("continues past an invalid trailing magic copy to inventory the valid cookie", async () => {
   const root = await createTestTempDirectory(
-    "rea-pyinstaller-candidate-valid-",
+    "nre-pyinstaller-candidate-valid-",
   );
   const path = join(root, "app");
   await writeFile(
@@ -295,7 +295,7 @@ it("continues past an invalid trailing magic copy to inventory the valid cookie"
 });
 
 it("does not cache an incomplete tail read as an absent cookie and can retry", async () => {
-  const root = await createTestTempDirectory("rea-pyinstaller-tail-short-");
+  const root = await createTestTempDirectory("nre-pyinstaller-tail-short-");
   const path = join(root, "app");
   await writeFile(path, fixture());
   await withOwnedRegularFile(path, {}, async (source) => {

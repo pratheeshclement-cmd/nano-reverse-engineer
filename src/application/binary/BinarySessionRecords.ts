@@ -55,7 +55,7 @@ const SNAPSHOT_MUTATION_RECOVERY =
 /** A missing replay prerequisite is not an Evidence integrity failure. */
 const snapshotUnavailable = (reason: string) =>
   new AnalysisCapabilityUnavailableError(
-    "rea",
+    "nre",
     "export_analysis_snapshot",
     reason,
     {
@@ -171,7 +171,7 @@ export abstract class BinarySessionRecords {
         "analysis session files",
       );
       const error = new ProviderCleanupError(
-        "rea",
+        "nre",
         observation.resources,
         { reason: observation.reason },
         { cause, operation: "close_binary" },

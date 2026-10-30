@@ -102,7 +102,7 @@ const acknowledgementSchema = z.object({
 const MAX_DESCRIPTOR_BYTES = 64 * 1024;
 const REQUEST_TIMEOUT_MS = 25_000;
 // Discovery stays at the historical 16 MiB descriptor budget. It does not
-// follow REA_BRIDGE_MAX_REQUEST_BYTES.
+// follow NRE_BRIDGE_MAX_REQUEST_BYTES.
 const DISCOVERY_CANDIDATE_BUDGET_BYTES = 16 * 1024 * 1024;
 const MAX_DESCRIPTOR_CANDIDATES =
   DISCOVERY_CANDIDATE_BUDGET_BYTES / MAX_DESCRIPTOR_BYTES;
@@ -163,7 +163,7 @@ const authenticatedServerNonce = (
     throw new Error("unexpected peer session");
   const expected = createHmac("sha256", descriptor.token)
     .update(
-      `rea-cutter-server-v2:${descriptor.session_id}:${clientNonce}:${challenge.nonce}`,
+      `nre-cutter-server-v2:${descriptor.session_id}:${clientNonce}:${challenge.nonce}`,
     )
     .digest();
   const presented = Buffer.from(challenge.proof, "hex");
@@ -262,7 +262,7 @@ interface CutterBridgeClientOptions {
   readonly windowsPrivateReader?: WindowsCutterDescriptorReader;
 }
 
-/** Discovers and communicates with REA Python bridge plugins in live Cutter processes. */
+/** Discovers and communicates with NRE Python bridge plugins in live Cutter processes. */
 export class CutterBridgeClient {
   readonly #maxRequestBytes: BridgeMaxRequestBytes;
   readonly #directory: string;
@@ -276,7 +276,7 @@ export class CutterBridgeClient {
     options: CutterBridgeClientOptions = {},
   ) {
     this.#maxRequestBytes = resolveBridgeMaxRequestBytes(environment);
-    const configured = environment.REA_CUTTER_BRIDGE_DIR;
+    const configured = environment.NRE_CUTTER_BRIDGE_DIR;
     const localAppData = environment.LOCALAPPDATA;
     this.#platform = options.platform ?? process.platform;
     this.#windowsPrivateReader =
@@ -1004,7 +1004,7 @@ export class CutterBridgeClient {
       connection.once("connect", () => {
         if (settled) return;
         connection.write(
-          `${JSON.stringify({ kind: "rea-auth-v2", nonce: clientNonce })}\n`,
+          `${JSON.stringify({ kind: "nre-auth-v2", nonce: clientNonce })}\n`,
         );
       });
       connection.on("data", (chunk: Buffer) => {
@@ -1088,7 +1088,7 @@ export class CutterBridgeClient {
       connection.once("connect", () => {
         if (completion !== undefined) return;
         connection.write(
-          `${JSON.stringify({ kind: "rea-auth-v2", nonce: clientNonce })}\n`,
+          `${JSON.stringify({ kind: "nre-auth-v2", nonce: clientNonce })}\n`,
         );
       });
       connection.on("data", (chunk: Buffer) => {
@@ -1105,7 +1105,7 @@ export class CutterBridgeClient {
               connectionOrdinal = serverNonce.slice(0, 16);
               onAuthenticated?.(connectionOrdinal);
               const proof = cutterBridgeMac(descriptor.token, [
-                `rea-cutter-client-v2:${descriptor.session_id}:${clientNonce}:${serverNonce}:`,
+                `nre-cutter-client-v2:${descriptor.session_id}:${clientNonce}:${serverNonce}:`,
                 requestBytes,
               ]).toString("hex");
               authenticated = true;
@@ -1117,7 +1117,7 @@ export class CutterBridgeClient {
             }
             // One decoded payload. The wire pages and outer JSON string are gone.
             const expected = cutterBridgeMac(descriptor.token, [
-              `rea-cutter-response-v2:${descriptor.session_id}:${clientNonce}:${serverNonce}:`,
+              `nre-cutter-response-v2:${descriptor.session_id}:${clientNonce}:${serverNonce}:`,
               frame.response,
             ]);
             if (!timingSafeEqual(expected, Buffer.from(frame.proof, "hex")))
@@ -1168,10 +1168,10 @@ const resolveBridgeDirectory = (
     return configured;
   }
   return platform === "win32" && localAppData
-    ? join(localAppData, "REA", "CutterBridge")
+    ? join(localAppData, "NRE", "CutterBridge")
     : platform === "win32"
-      ? join(homeDirectory, ".cache", "rea", "cutter-bridge")
-      : appendCallerPath(homeDirectory, ".cache/rea/cutter-bridge", platform);
+      ? join(homeDirectory, ".cache", "nre", "cutter-bridge")
+      : appendCallerPath(homeDirectory, ".cache/nre/cutter-bridge", platform);
 };
 
 class CutterDiscoveryFailure extends Error {

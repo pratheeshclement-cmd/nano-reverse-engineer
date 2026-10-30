@@ -29,7 +29,7 @@ const snapshotCommands = (root: string) =>
   });
 
 it("preserves selected path spelling, UTF-8 bytes and missing-file facts", async () => {
-  const root = await createTestTempDirectory("rea-verifier-snapshot-");
+  const root = await createTestTempDirectory("nre-verifier-snapshot-");
   const path = `${root}/./selected file.json`;
   const missing = join(root, "missing file.json");
   const content = '\uFEFF{"label":"保留","value":"\\u0000"}\r\n';
@@ -50,7 +50,7 @@ it("preserves selected path spelling, UTF-8 bytes and missing-file facts", async
 });
 
 it("detects distinct invalid UTF-8 bytes in verifier file readback", async () => {
-  const root = await createTestTempDirectory("rea-verifier-byte-readback-");
+  const root = await createTestTempDirectory("nre-verifier-byte-readback-");
   const path = join(root, "selected.json");
   await writeFile(path, Buffer.from([0x80]));
   const commands = await snapshotCommands(root);
@@ -70,7 +70,7 @@ it("detects distinct invalid UTF-8 bytes in verifier file readback", async () =>
 it.each(["content", "removed", "created"] as const)(
   "detects a %s change after an unchanged readback",
   async (change) => {
-    const root = await createTestTempDirectory("rea-verifier-readback-");
+    const root = await createTestTempDirectory("nre-verifier-readback-");
     const path = join(root, "selected.json");
     if (change !== "created") await writeFile(path, "original\n");
     const commands = await snapshotCommands(root);
@@ -93,7 +93,7 @@ it.each(["content", "removed", "created"] as const)(
 it.skipIf(process.platform === "win32")(
   "rejects a direct broken symlink instead of recording an absent file",
   async () => {
-    const root = await createTestTempDirectory("rea-verifier-broken-link-");
+    const root = await createTestTempDirectory("nre-verifier-broken-link-");
     const path = join(root, "selected.json");
     await symlink(join(root, "missing-target.json"), path);
     const commands = await snapshotCommands(root);
@@ -116,14 +116,14 @@ it.skipIf(process.platform === "win32").each([
 ] as const)(
   "finishes the %s baseline before launching setup",
   async (_mode, verify) => {
-    const root = await createTestTempDirectory("rea-verifier-setup-baseline-");
+    const root = await createTestTempDirectory("nre-verifier-setup-baseline-");
     const path = join(root, "selected.json");
     const marker = join(root, "launched");
     const command = join(root, "setup-command");
     await symlink(join(root, "missing-target.json"), path);
     await writeFile(
       command,
-      '#!/bin/sh\nprintf launched > "$REA_SETUP_LAUNCH_MARKER"\n',
+      '#!/bin/sh\nprintf launched > "$NRE_SETUP_LAUNCH_MARKER"\n',
     );
     await chmod(command, 0o700);
     const commands = await snapshotCommands(root);
@@ -132,7 +132,7 @@ it.skipIf(process.platform === "win32").each([
         verify({
           commands,
           command,
-          environment: { ...process.env, REA_SETUP_LAUNCH_MARKER: marker },
+          environment: { ...process.env, NRE_SETUP_LAUNCH_MARKER: marker },
           root,
           unchangedPaths: [path],
         }).then(
@@ -176,7 +176,7 @@ processTest(
       ${JSON.stringify(new URL("../../support/workspace/workspaceFixture.ts", import.meta.url).href)},
       ${JSON.stringify(import.meta.url)},
     );
-    const workspace = await createTestWorkspace("rea-verifier-snapshot-owner-");
+    const workspace = await createTestWorkspace("nre-verifier-snapshot-owner-");
     const path = join(workspace.root, "input.json");
     const originalOpen = fs.promises.open;
     let commands;

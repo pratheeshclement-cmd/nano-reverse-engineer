@@ -10,7 +10,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "archive snapshot refusal preserves the session and explains the missing replay binding",
   async () => {
-    const root = await createTestTempDirectory("rea-archive-snapshot-refusal-");
+    const root = await createTestTempDirectory("nre-archive-snapshot-refusal-");
     const archive = join(root, "sample.zip");
     const snapshot = join(root, "snapshot.json");
     const bytes = await createSingleEntryZip("sample.txt");

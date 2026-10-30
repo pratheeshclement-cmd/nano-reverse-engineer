@@ -69,7 +69,7 @@ An independent Python ElementTree projection checked every component field,
 declaration order, namespace attribute, class-name qualification, permission
 source, export/default, intent value, authority and preceding alias target
 against the retained XML on all six measured CLI tasks. It also rehashed the
-APK. This oracle checks REA's projection of JADX-decoded XML; it does not
+APK. This oracle checks NRE's projection of JADX-decoded XML; it does not
 independently validate binary XML decoding or Android runtime behavior.
 Interpretation was checked against Android's
 [activity](https://developer.android.com/guide/topics/manifest/activity-element),
@@ -92,7 +92,7 @@ receive buffer; default client-buffer compatibility was not established.
 ## Completed-task costs
 
 Three alternating before/after pairs ran
-`rea inspect-android-package <same APK> --json`. Each task launched a fresh CLI
+`nre inspect-android-package <same APK> --json`. Each task launched a fresh CLI
 and JVM. OS/JAR caches were already warm; cold disk and first bridge compilation
 were not isolated. Full normalized results, target identity and provenance
 were equal; raw per-run engine records were retained without rewriting them.

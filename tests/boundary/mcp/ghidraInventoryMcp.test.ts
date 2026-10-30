@@ -225,7 +225,7 @@ it("searches bytes through MCP and the socket bridge with pagination and skipped
                 stdio: ["ignore", "pipe", "pipe"],
                 env: {
                   ...process.env,
-                  REA_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
+                  NRE_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
                     endpointPath: launch.endpointPath,
                     token: launch.token,
                     runId: launch.runId,
@@ -330,7 +330,7 @@ it("searches bytes through MCP and the socket bridge with pagination and skipped
 });
 
 it("retains missing PDB coverage in empty PE name-search Evidence and snapshot replay", async () => {
-  const root = await createTestTempDirectory("rea-pdb-evidence-");
+  const root = await createTestTempDirectory("nre-pdb-evidence-");
   const targetPath = join(root, "fixture.exe");
   await writeFile(targetPath, nativeAotPeFixture());
   // Synthetic post-analysis facts at the real provider boundary; no engine is simulated as verified.
@@ -394,7 +394,7 @@ it("retains missing PDB coverage in empty PE name-search Evidence and snapshot r
     if (!replay.ok) throw replay.error;
     expect(replay.value.limitations).toContain(limitation);
     expect(replay.value.limitations).toContainEqual(
-      expect.stringContaining("Loaded from a local REA analysis snapshot"),
+      expect.stringContaining("Loaded from a local NRE analysis snapshot"),
     );
   } finally {
     await harness.close();

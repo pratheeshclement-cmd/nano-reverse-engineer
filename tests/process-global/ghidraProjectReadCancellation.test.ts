@@ -30,7 +30,7 @@ vi.mock(
 it.each([null, "cancel file read", { source: "caller" }])(
   "preserves an owned file-read cancellation through project profile resolution: %j",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-ghidra-read-cancel-");
+    const root = await createTestTempDirectory("nre-ghidra-read-cancel-");
     await mkdir(join(root, "selected.rep"));
     await writeFile(join(root, "selected.gpr"), "marker");
     const resources = new ArtifactResourceScope();

@@ -9,7 +9,7 @@ import unittest
 class ModelPhaseReceipts(unittest.TestCase):
     def run_phase(self, inspect_body, close_body):
         driver = Path(__file__).with_name('model-utf8-validation.mjs').resolve()
-        with tempfile.TemporaryDirectory(prefix='rea-model-phase-test-') as directory:
+        with tempfile.TemporaryDirectory(prefix='nre-model-phase-test-') as directory:
             root = Path(directory)
             artifact = root / 'input'
             artifact.write_bytes(b'receipt fixture, not a model')

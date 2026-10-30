@@ -16,7 +16,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "keeps full endpoint evidence usable without copying large values into metadata",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-endpoint-payload-");
+    const root = await createTestTempDirectory("nre-endpoint-payload-");
     const endpoint = `https://example.invalid/${"part/ğ".repeat(160_000)}`;
     const digestLookalike = `value-sha256:${createHash("sha256").update(JSON.stringify(endpoint)).digest("hex")}`;
     // UTF-8 replacement would conflate these distinct JavaScript strings.
@@ -56,7 +56,7 @@ cliTest(
     const client = new Client({ name: "endpoint-payload-e2e", version: "1" });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: { PATH: process.env.PATH ?? "" },
       stderr: "pipe",

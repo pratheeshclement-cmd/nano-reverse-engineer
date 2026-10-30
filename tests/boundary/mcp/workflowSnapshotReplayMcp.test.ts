@@ -48,7 +48,7 @@ describe("MCP external command snapshot retirement", () => {
     "rejects a queued snapshot after mutation and preserves Evidence through explicit reopening",
     async () => {
       const { targetPaths, snapshotPath } = await createWorkflowFiles(
-        "rea-mcp-admitted-reverse-",
+        "nre-mcp-admitted-reverse-",
         ["target.hop"],
       );
       const targetPath = targetPaths[0];
@@ -67,7 +67,7 @@ describe("MCP external command snapshot retirement", () => {
       const { mcp } = await connectWorkflowMcp(
         session,
         "admitted-reverse-engineering",
-        { REA_RIZIN_COMMAND: providerPath },
+        { NRE_RIZIN_COMMAND: providerPath },
       );
       await openWorkflowTarget(mcp, targetPath);
 
@@ -154,7 +154,7 @@ describe("MCP external command snapshot retirement", () => {
 describe("MCP composed workflow target admission", () => {
   it("keeps a composed result and snapshot on its admitted target across queued close and open", async () => {
     const { targetPaths, snapshotPath } = await createWorkflowFiles(
-      "rea-mcp-admitted-workflow-",
+      "nre-mcp-admitted-workflow-",
       ["first.hop", "second.hop"],
     );
     const firstPath = targetPaths[0];
@@ -219,7 +219,7 @@ describe("MCP composed workflow target admission", () => {
 describe("MCP composed workflow snapshot replay", () => {
   it("exports an MCP workflow binding and replays its Evidence without provider startup or calls", async () => {
     const { targetPaths, snapshotPath } = await createWorkflowFiles(
-      "rea-mcp-workflow-snapshot-",
+      "nre-mcp-workflow-snapshot-",
       ["fixture.hop"],
     );
     const targetPath = targetPaths[0];
@@ -354,7 +354,7 @@ describe("MCP composed workflow snapshot replay", () => {
 describe("MCP live workflow snapshot policy", () => {
   it("does not bind a workflow when an upstream operation is live", async () => {
     const { targetPaths, snapshotPath } = await createWorkflowFiles(
-      "rea-mcp-live-workflow-snapshot-",
+      "nre-mcp-live-workflow-snapshot-",
       ["fixture.hop"],
     );
     const targetPath = targetPaths[0];
@@ -394,7 +394,7 @@ describe("MCP investigation history snapshot replay", () => {
     "preserves a target's %s resolution recorded while another target is active",
     async (disposition) => {
       const { targetPaths, snapshotPath } = await createWorkflowFiles(
-        "rea-mcp-investigation-history-",
+        "nre-mcp-investigation-history-",
         ["first.hop", "second.hop"],
       );
       const firstPath = targetPaths[0];

@@ -72,12 +72,12 @@ const assertRealVerifierJsonInspection = async (
       "--format",
       "json",
     ],
-    { REA_CUTTER_BRIDGE_DIR: directory },
+    { NRE_CUTTER_BRIDGE_DIR: directory },
   );
   expect(verification.exitCode).toBe(0);
   expect(commandJsonModes.at(-1)).toBe(true);
   expect(JSON.parse(verification.stdout)).toMatchObject({
-    predicate_type: "rea.cutter.command-observation",
+    predicate_type: "nre.cutter.command-observation",
     raw_result: { answer: 42 },
   });
 };
@@ -96,10 +96,10 @@ describe("Cutter CLI commands", () => {
   });
 
   it("lists sessions from the selected bridge directory", async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-cutter-cli-test-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-cutter-cli-test-"));
 
     const result = await serveCli(["list-cutter-sessions", "--json"], {
-      REA_CUTTER_BRIDGE_DIR: directory,
+      NRE_CUTTER_BRIDGE_DIR: directory,
     });
 
     expect(result.exitCode).toBe(0);
@@ -113,7 +113,7 @@ describe("Cutter CLI commands", () => {
   it.skipIf(process.platform === "win32")(
     "awaits discovery cancellation on SIGINT and returns its typed outcome with exit130",
     async () => {
-      directory = await mkdtemp(join(tmpdir(), "rea-cutter-cli-cancel-"));
+      directory = await mkdtemp(join(tmpdir(), "nre-cutter-cli-cancel-"));
       const sockets = new Set<import("node:net").Socket>();
       let accepted = 0;
       server = createServer((socket) => {
@@ -144,12 +144,12 @@ describe("Cutter CLI commands", () => {
       }
       const launched = await spawnOwnedProviderProcess({
         command: process.execPath,
-        arguments: ["scripts/rea.mjs", "list-cutter-sessions", "--json"],
+        arguments: ["scripts/nre.mjs", "list-cutter-sessions", "--json"],
         runId: randomUUID(),
         hostEnvironment: {
           ...process.env,
-          REA_CUTTER_BRIDGE_DIR: directory,
-          REA_LOG_LEVEL: "silent",
+          NRE_CUTTER_BRIDGE_DIR: directory,
+          NRE_LOG_LEVEL: "silent",
         },
       });
       const supervisor = new ProviderProcessSupervisor({
@@ -177,11 +177,11 @@ describe("Cutter CLI commands", () => {
   );
 
   it("reports an unavailable selected session for a command", async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-cutter-cli-test-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-cutter-cli-test-"));
 
     const result = await serveCli(
       ["cutter-command", SESSION_ID, "0", "pdi", "--json"],
-      { REA_CUTTER_BRIDGE_DIR: directory },
+      { NRE_CUTTER_BRIDGE_DIR: directory },
     );
 
     expect(result.exitCode).toBe(0);
@@ -203,7 +203,7 @@ describe("Cutter CLI command output flags", () => {
   });
 
   it("returns Evidence when the selected Cutter session completes a command", async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-cutter-cli-test-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-cutter-cli-test-"));
     const token = "synthetic-cutter-cli-token-for-test";
     let nextConnectionOrdinal = 0;
     const commandJsonModes: boolean[] = [];
@@ -222,11 +222,11 @@ describe("Cutter CLI command output flags", () => {
           unknown
         >;
         input = input.slice(newline + 1);
-        if (frame.kind === "rea-auth-v2") {
+        if (frame.kind === "nre-auth-v2") {
           clientNonce = String(frame.nonce);
           serverNonce = `${ordinal.toString(16).padStart(16, "0")}${"b".repeat(48)}`;
           connection.write(
-            `${JSON.stringify({ session_id: SESSION_ID, nonce: serverNonce, proof: createHmac("sha256", token).update(`rea-cutter-server-v2:${SESSION_ID}:${clientNonce}:${serverNonce}`).digest("hex") })}\n`,
+            `${JSON.stringify({ session_id: SESSION_ID, nonce: serverNonce, proof: createHmac("sha256", token).update(`nre-cutter-server-v2:${SESSION_ID}:${clientNonce}:${serverNonce}`).digest("hex") })}\n`,
           );
           return;
         }
@@ -238,7 +238,7 @@ describe("Cutter CLI command output flags", () => {
           frame.proof !==
           createHmac("sha256", token)
             .update(
-              `rea-cutter-client-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${requestBytes}`,
+              `nre-cutter-client-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${requestBytes}`,
             )
             .digest("hex")
         ) {
@@ -274,7 +274,7 @@ describe("Cutter CLI command output flags", () => {
         });
         const proof = createHmac("sha256", token)
           .update(
-            `rea-cutter-response-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${response}`,
+            `nre-cutter-response-v2:${SESSION_ID}:${clientNonce}:${serverNonce}:${response}`,
           )
           .digest("hex");
         connection.end(`${JSON.stringify({ response, proof })}\n`);
@@ -299,7 +299,7 @@ describe("Cutter CLI command output flags", () => {
 
     const result = await serveCli(
       ["cutter-command", SESSION_ID, "000", "pdi", "--json-output"],
-      { REA_CUTTER_BRIDGE_DIR: directory },
+      { NRE_CUTTER_BRIDGE_DIR: directory },
     );
 
     expect(result.exitCode).toBe(0);
@@ -308,7 +308,7 @@ describe("Cutter CLI command output flags", () => {
 
     const formatted = await serveCli(
       ["cutter-command", SESSION_ID, "0", "pdi", "--json"],
-      { REA_CUTTER_BRIDGE_DIR: directory },
+      { NRE_CUTTER_BRIDGE_DIR: directory },
     );
     expect(formatted.exitCode).toBe(0);
     expect(commandJsonModes).toEqual([true, false]);
@@ -324,7 +324,7 @@ describe("Cutter CLI command output flags", () => {
     ] as const) {
       const selected = await serveCli(
         ["cutter-command", SESSION_ID, "0", "pdi", ...flags],
-        { REA_CUTTER_BRIDGE_DIR: directory },
+        { NRE_CUTTER_BRIDGE_DIR: directory },
       );
       expect(selected.exitCode).toBe(0);
       expect(commandJsonModes.at(-1)).toBe(expected);
@@ -336,7 +336,7 @@ describe("Cutter CLI command output flags", () => {
     for (const flag of ["--json=true", "--json=false"]) {
       const rejected = await serveCli(
         ["cutter-command", SESSION_ID, "0", "pdi", flag],
-        { REA_CUTTER_BRIDGE_DIR: directory },
+        { NRE_CUTTER_BRIDGE_DIR: directory },
       );
       expect(rejected.exitCode).toBe(1);
       expect(rejected.stdout).toContain("Unknown flag: --json");

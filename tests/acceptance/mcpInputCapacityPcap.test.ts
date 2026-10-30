@@ -18,7 +18,7 @@ it.skipIf(
 )(
   "admits real TShark Evidence and explicit bundle pairs without losing identity or source bytes",
   async () => {
-    const root = await createTestTempDirectory("rea-input-capacity-pcap-");
+    const root = await createTestTempDirectory("nre-input-capacity-pcap-");
     const path = join(root, "owned.pcap");
     const uri = "http://example.test/a?value=keep%2Fthis";
     const bytes = offlineHttpCapture(uri);
@@ -31,9 +31,9 @@ it.skipIf(
         XDG_CONFIG_HOME: join(root, "config"),
         XDG_CACHE_HOME: join(root, "cache"),
         XDG_DATA_HOME: join(root, "data"),
-        REA_TSHARK_COMMAND: "/usr/bin/tshark",
-        REA_CAPINFOS_COMMAND: "/usr/bin/capinfos",
-        REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+        NRE_TSHARK_COMMAND: "/usr/bin/tshark",
+        NRE_CAPINFOS_COMMAND: "/usr/bin/capinfos",
+        NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
         NODE_OPTIONS: "--max-old-space-size=3072",
       },
       onTestFinished,

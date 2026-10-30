@@ -97,7 +97,7 @@ it.each([
   "retains environment $ending facts when final cleanup fails=$fails",
   async ({ ending, fails }) => {
     const files = await writeEnvironmentServeFiles(
-      await createTestTempDirectory("rea-environment-finalization-"),
+      await createTestTempDirectory("nre-environment-finalization-"),
     );
     const originalExitCode = process.exitCode;
     const originalListeners = new Set(process.listeners("SIGINT"));
@@ -111,7 +111,7 @@ it.each([
     control.closeCalls = 0;
     control.cleanupFailure = undefined;
     let stdout = "";
-    const pending = createCli({ REA_LOG_LEVEL: "silent" }).serve(
+    const pending = createCli({ NRE_LOG_LEVEL: "silent" }).serve(
       [
         "environment-serve",
         files.manifestPath,

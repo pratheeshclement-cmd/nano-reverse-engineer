@@ -26,7 +26,7 @@ const cases = [
 /** Verify compiler-produced nested maps through an actual owned Chrome and public CLI. */
 export async function verifyBrowserNestedSourceMaps(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url)),
 ) {
   const results = [];
   for (const scenario of cases) {
@@ -122,7 +122,7 @@ async function verifyCase(executable, entrypoint, scenario) {
           "--json",
         ],
         {
-          env: { ...process.env, REA_LOG_LEVEL: "silent" },
+          env: { ...process.env, NRE_LOG_LEVEL: "silent" },
           timeout: 45_000,
           maxBuffer: 16 * 1024 * 1024,
         },

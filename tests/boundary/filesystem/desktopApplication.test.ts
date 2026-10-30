@@ -63,7 +63,7 @@ const put = async (root: string, path: string, bytes: Buffer | string) => {
 it.each(["NE", "LE", "LX", "PE\0\0"])(
   "admits the MZ signature before interpreting a trailing %j header as PE",
   async (signature) => {
-    const root = await createTestTempDirectory("rea-desktop-mz-signature-");
+    const root = await createTestTempDirectory("nre-desktop-mz-signature-");
     const bytes = Buffer.alloc(64 + signature.length);
     bytes.write("MZ");
     bytes.writeUInt16LE(4, 8);
@@ -120,7 +120,7 @@ it.each(["oversized-header", "prefix-only-section"] as const)(
         scope: "cli.header",
       },
     });
-    const root = await createTestTempDirectory("rea-desktop-clr-prefix-");
+    const root = await createTestTempDirectory("nre-desktop-clr-prefix-");
     const path = "Game_Data/Managed/Assembly-CSharp.dll";
     await put(root, path, image);
     const { report } = await inspect(root);
@@ -141,7 +141,7 @@ it.each(["oversized-header", "prefix-only-section"] as const)(
 it.skipIf(process.platform !== "linux")(
   "keeps desktop sibling files with partial coverage for invalid UTF-8 names",
   async () => {
-    const root = await createTestTempDirectory("rea-desktop-filename-bytes-");
+    const root = await createTestTempDirectory("nre-desktop-filename-bytes-");
     const rawName = Buffer.from([
       0x62, 0x61, 0x64, 0xff, 0x2e, 0x74, 0x78, 0x74,
     ]);
@@ -168,7 +168,7 @@ it.skipIf(process.platform !== "linux")(
 );
 
 it("joins real PE/CLI reference facts and independent engine markers without picking a winner", async () => {
-  const root = await createTestTempDirectory("rea-desktop-mixed-");
+  const root = await createTestTempDirectory("nre-desktop-mixed-");
   await put(
     root,
     "Game_Data/Managed/Assembly-CSharp.dll",
@@ -268,7 +268,7 @@ it("joins real PE/CLI reference facts and independent engine markers without pic
 });
 
 it("reads sparse embedded PCK ranges without hashing or retaining a large executable", async () => {
-  const root = await createTestTempDirectory("rea-desktop-sparse-");
+  const root = await createTestTempDirectory("nre-desktop-sparse-");
   const path = join(root, "game.exe");
   const file = await open(path, "w");
   const header = buildNativePeFixture();
@@ -304,7 +304,7 @@ it("reads sparse embedded PCK ranges without hashing or retaining a large execut
 it.each([4, 19, 20])(
   "keeps PCK location separate from desktop header admission for %i-byte packs",
   async (packBytes) => {
-    const root = await createTestTempDirectory("rea-desktop-pck-minimum-");
+    const root = await createTestTempDirectory("nre-desktop-pck-minimum-");
     const path = join(root, "game.exe");
     const carrier = Buffer.alloc(64);
     carrier.set([0x7f, 0x45, 0x4c, 0x46]);
@@ -351,7 +351,7 @@ it.each([4, 19, 20])(
 );
 
 it("does not promote filenames, arbitrary pak files or symlink targets into byte facts", async () => {
-  const root = await createTestTempDirectory("rea-desktop-unknown-");
+  const root = await createTestTempDirectory("nre-desktop-unknown-");
   await put(root, "GameAssembly.dll", "x");
   await put(root, "global-metadata.dat", "");
   await put(root, "game.pck", "GDPC");
@@ -366,7 +366,7 @@ it("does not promote filenames, arbitrary pak files or symlink targets into byte
 });
 
 it("retains bounded coverage and stable pages without claiming absence after a traversal limit", async () => {
-  const root = await createTestTempDirectory("rea-desktop-limit-");
+  const root = await createTestTempDirectory("nre-desktop-limit-");
   for (let i = 0; i < 4; i++) await put(root, `${i}.txt`, "ordinary data");
   const { report, evidence } = await inspect(root, { max_entries: 2 });
   expect(report.coverage).toMatchObject({
@@ -394,7 +394,7 @@ it("retains bounded coverage and stable pages without claiming absence after a t
 });
 
 it("preserves caller cancellation and refuses a replaced selected entry", async () => {
-  const root = await createTestTempDirectory("rea-desktop-identity-");
+  const root = await createTestTempDirectory("nre-desktop-identity-");
   await put(root, "entry", "original");
   const reader = new DirectoryArtifactReader(root);
   const values = [];
@@ -424,7 +424,7 @@ it("preserves caller cancellation and refuses a replaced selected entry", async 
 });
 
 it("retains an entry whose close failed and observes cancellation after final close", async () => {
-  const root = await createTestTempDirectory("rea-desktop-close-");
+  const root = await createTestTempDirectory("nre-desktop-close-");
   await put(root, "entry", "bytes");
   const reader = new DirectoryArtifactReader(root);
   const entries = [];
@@ -468,7 +468,7 @@ it("retains an entry whose close failed and observes cancellation after final cl
 it.each(["Game_Data/Managed", "Contents/Resources/Data/Managed"])(
   "requires a Unity reference in %s and reports a metadata budget refusal as partial",
   async (managedDirectory) => {
-    const root = await createTestTempDirectory("rea-desktop-mono-boundary-");
+    const root = await createTestTempDirectory("nre-desktop-mono-boundary-");
     await put(
       root,
       `${managedDirectory}/ordinary.dll`,
@@ -501,7 +501,7 @@ it.each(["Game_Data/Managed", "Contents/Resources/Data/Managed"])(
 );
 
 it("retains complete observations through cancellation during directory finalization", async () => {
-  const root = await createTestTempDirectory("rea-desktop-finalize-cancel-");
+  const root = await createTestTempDirectory("nre-desktop-finalize-cancel-");
   await put(root, "notes.txt", "target content");
   const controller = new AbortController();
   const reason = new Error("cancel during final close");
@@ -531,7 +531,7 @@ it("retains complete observations through cancellation during directory finaliza
 });
 
 it("keeps a completed directory report and exact cleanup authority until retry confirms release", async () => {
-  const root = await createTestTempDirectory("rea-desktop-finalize-retry-");
+  const root = await createTestTempDirectory("nre-desktop-finalize-retry-");
   await put(root, "notes.txt", "target content");
   let denied = true;
   const service = new DesktopApplicationService(
@@ -561,7 +561,7 @@ it("keeps a completed directory report and exact cleanup authority until retry c
 });
 
 it("bounds simultaneous directory scans without cancelling the admitted caller", async () => {
-  const root = await createTestTempDirectory("rea-desktop-capacity-");
+  const root = await createTestTempDirectory("nre-desktop-capacity-");
   await put(root, "notes.txt", "observed");
   let release!: () => void;
   let entered!: () => void;
@@ -606,7 +606,7 @@ it("bounds simultaneous directory scans without cancelling the admitted caller",
 });
 
 it("keeps directory-only marker identities separate across installation roots", async () => {
-  const root = await createTestTempDirectory("rea-desktop-namespaces-");
+  const root = await createTestTempDirectory("nre-desktop-namespaces-");
   const left = join(root, "left");
   const right = join(root, "right");
   await mkdir(join(left, "BepInEx"), { recursive: true });
@@ -625,7 +625,7 @@ it("keeps directory-only marker identities separate across installation roots", 
 it.skipIf(process.platform === "win32").each(["path", "kind"] as const)(
   "commits omitted special-entry %s changes and exposes selected omission facts",
   async (change) => {
-    const root = await createTestTempDirectory("rea-desktop-omissions-");
+    const root = await createTestTempDirectory("nre-desktop-omissions-");
     const original = join(root, "special");
     execFileSync("mkfifo", [original], { timeout: 10_000 });
     const before = await inspect(root);
@@ -695,7 +695,7 @@ it.skipIf(process.platform === "win32").each(["path", "kind"] as const)(
 );
 
 it("bounds omitted-entry retention before allocating rows or serializing identities", async () => {
-  const root = await createTestTempDirectory("rea-desktop-omission-capacity-");
+  const root = await createTestTempDirectory("nre-desktop-omission-capacity-");
   let examined = 0;
   // Simulate bounded parsed paths without creating hundreds of deep FIFO trees.
   const prefix = Array.from({ length: 15 }, () => "d".repeat(255)).join("/");
@@ -738,7 +738,7 @@ const inspectSimulatedRows = async (
   path: (index: number) => string,
   kind: "file" | "directory" = "directory",
 ) => {
-  const root = await createTestTempDirectory("rea-desktop-row-capacity-");
+  const root = await createTestTempDirectory("nre-desktop-row-capacity-");
   let yielded = 0;
   const service = new DesktopApplicationService(
     new DesktopApplicationReader((selected) => {
@@ -837,7 +837,7 @@ it.each([
 );
 
 it("charges the next probes a header fact offers before retaining the fact", async () => {
-  const root = await createTestTempDirectory("rea-desktop-fact-probes-");
+  const root = await createTestTempDirectory("nre-desktop-fact-probes-");
   const bytes = buildManagedPeFixture();
   await put(root, "Managed.dll", bytes);
   // Each managed fact offers a probe that repeats this escaped local path.
@@ -882,7 +882,7 @@ it("charges the next probes a header fact offers before retaining the fact", asy
 });
 
 it("preserves the selected root alias and directs follow-ups to the admitted physical root", async () => {
-  const root = await createTestTempDirectory("rea-desktop-root-alias-");
+  const root = await createTestTempDirectory("nre-desktop-root-alias-");
   const admitted = join(root, "admitted");
   const replacement = join(root, "replacement");
   const alias = join(root, "selected");
@@ -939,7 +939,7 @@ it.each(
   "keeps $variant failure through $validationState final validation while discarding unverified desktop byte facts",
   async ({ variant, validationState }) => {
     const root = await createTestTempDirectory(
-      "rea-desktop-failed-validation-",
+      "nre-desktop-failed-validation-",
     );
     const header = Buffer.alloc(20);
     header.write("GDPC");
@@ -1028,7 +1028,7 @@ it.each([false, true])(
   "preserves a physical desktop read failure when cancellation arrives during final validation (failed close: %s)",
   async (failedClose) => {
     const root = await createTestTempDirectory(
-      "rea-desktop-read-final-validation-",
+      "nre-desktop-read-final-validation-",
     );
     await put(root, "game.pck", Buffer.from("completed source prefix"));
     const reader = new DirectoryArtifactReader(root);
@@ -1089,7 +1089,7 @@ it.each([false, true])(
 it.each([false, true])(
   "retains verified header facts and exact release authority when file close fails (late cancellation: %s)",
   async (cancelDuringClose) => {
-    const root = await createTestTempDirectory("rea-desktop-probe-close-");
+    const root = await createTestTempDirectory("nre-desktop-probe-close-");
     const header = Buffer.alloc(20);
     header.write("GDPC");
     header.writeUInt32LE(2, 4);
@@ -1176,7 +1176,7 @@ it.each([
 ])(
   "reads AssemblyRef names in %s independently of unrelated key/hash payload validity",
   async (managedDirectory) => {
-    const root = await createTestTempDirectory("rea-desktop-reference-fields-");
+    const root = await createTestTempDirectory("nre-desktop-reference-fields-");
     const image = buildManagedPeFixture({
       references: ["System.Runtime", "UnityEngine.CoreModule"],
     });
@@ -1221,7 +1221,7 @@ it.each([
   "Other/Resources/Data/Managed",
   "Contents/Resource/Data/Managed",
 ])("does not infer Unity from an unrelated layout %s", async (directory) => {
-  const root = await createTestTempDirectory("rea-desktop-unity-layout-");
+  const root = await createTestTempDirectory("nre-desktop-unity-layout-");
   await put(
     root,
     `${directory}/Assembly-CSharp.dll`,
@@ -1246,7 +1246,7 @@ it.each([
 ])(
   "requires GEN8 within FORM and the file: $container/$chunk/$bytes (valid=$valid)",
   async ({ container, chunk, bytes, valid }) => {
-    const root = await createTestTempDirectory("rea-desktop-form-extents-");
+    const root = await createTestTempDirectory("nre-desktop-form-extents-");
     const form = Buffer.alloc(bytes);
     form.write("FORM");
     form.writeUInt32LE(container, 4);
@@ -1269,7 +1269,7 @@ it.each([
 it.each(["assets/game.unx", "Example.app/Contents/Resources/game.ios"])(
   "probes the GameMaker data file at %s",
   async (path) => {
-    const root = await createTestTempDirectory("rea-desktop-gamemaker-data-");
+    const root = await createTestTempDirectory("nre-desktop-gamemaker-data-");
     const form = Buffer.alloc(16);
     form.write("FORM");
     form.writeUInt32LE(8, 4);
@@ -1299,7 +1299,7 @@ it.each(["assets/game.unx", "Example.app/Contents/Resources/game.ios"])(
 );
 
 it("compares exact signature bytes without masking high bits in engine headers or trailers", async () => {
-  const root = await createTestTempDirectory("rea-desktop-exact-signatures-");
+  const root = await createTestTempDirectory("nre-desktop-exact-signatures-");
   const pck = Buffer.alloc(20);
   pck.write("GDPC");
   const form = Buffer.alloc(16);
@@ -1338,7 +1338,7 @@ it("compares exact signature bytes without masking high bits in engine headers o
 });
 
 it("yields between reference-name batches so accepted cancellation precedes inspection completion", async () => {
-  const root = await createTestTempDirectory("rea-desktop-reference-cancel-");
+  const root = await createTestTempDirectory("nre-desktop-reference-cancel-");
   await put(
     root,
     "Game_Data/Managed/Assembly-CSharp.dll",
@@ -1444,7 +1444,7 @@ it.each([
 ])(
   "joins IL2CPP metadata with $format library $path",
   async ({ path, image }) => {
-    const root = await createTestTempDirectory("rea-desktop-unix-il2cpp-");
+    const root = await createTestTempDirectory("nre-desktop-unix-il2cpp-");
     await put(root, path, image);
     const metadata = Buffer.alloc(8);
     metadata.writeUInt32LE(0xfab11baf);
@@ -1490,7 +1490,7 @@ it.each([
 );
 
 it("bounds diagnostic previews while preserving complete caller-provided issue facts", async () => {
-  const root = await createTestTempDirectory("rea-desktop-diagnostic-preview-");
+  const root = await createTestTempDirectory("nre-desktop-diagnostic-preview-");
   const malformed = Buffer.alloc(64);
   malformed.write("MZ");
   malformed.writeUInt32LE(0xffffffff, 0x3c);
@@ -1564,7 +1564,7 @@ it("bounds diagnostic previews while preserving complete caller-provided issue f
 });
 
 it("keeps snapshot identity stable across limits that preserve source observations", async () => {
-  const root = await createTestTempDirectory("rea-desktop-snapshot-policy-");
+  const root = await createTestTempDirectory("nre-desktop-snapshot-policy-");
   await put(root, "GameAssembly.dll", buildNativePeFixture());
   const metadata = Buffer.alloc(8);
   metadata.writeUInt32LE(0xfab11baf);
@@ -1611,7 +1611,7 @@ it("keeps snapshot identity stable across limits that preserve source observatio
 });
 
 it("changes snapshot identity when probe limits change retained read ranges", async () => {
-  const root = await createTestTempDirectory("rea-desktop-snapshot-ranges-");
+  const root = await createTestTempDirectory("nre-desktop-snapshot-ranges-");
   for (let index = 0; index < 20; index++)
     await put(
       root,
@@ -1634,7 +1634,7 @@ it("changes snapshot identity when probe limits change retained read ranges", as
 });
 
 it("rejects expanded managed facts before serializing an over-budget value", async () => {
-  const root = await createTestTempDirectory("rea-desktop-fact-capacity-");
+  const root = await createTestTempDirectory("nre-desktop-fact-capacity-");
   const name = `UnityEngine.${"\u0001".repeat(600_000)}`;
   await put(
     root,
@@ -1667,7 +1667,7 @@ it("rejects expanded managed facts before serializing an over-budget value", asy
 });
 
 it("preserves admitted Unicode and escaped AssemblyRef names in complete Evidence", async () => {
-  const root = await createTestTempDirectory("rea-desktop-fact-text-");
+  const root = await createTestTempDirectory("nre-desktop-fact-text-");
   const name = `UnityEngine.${'雪🧪"\\\n\u0001'.repeat(1024)}`;
   await put(
     root,
@@ -1695,7 +1695,7 @@ it("preserves admitted Unicode and escaped AssemblyRef names in complete Evidenc
 it.each([27, 28, 31, 106, 0xffffffff])(
   "preserves raw metadata version %s and suggests inspection only when supported",
   async (version) => {
-    const root = await createTestTempDirectory("rea-desktop-metadata-probe-");
+    const root = await createTestTempDirectory("nre-desktop-metadata-probe-");
     const bytes = Buffer.alloc(8);
     bytes.writeUInt32LE(0xfab11baf);
     bytes.writeUInt32LE(version, 4);
@@ -1724,7 +1724,7 @@ it.each([27, 28, 31, 106, 0xffffffff])(
 it.each([4, 5, 6, 7])(
   "retains IL2CPP magic with an unknown version for a %i-byte prefix",
   async (length) => {
-    const root = await createTestTempDirectory("rea-desktop-metadata-prefix-");
+    const root = await createTestTempDirectory("nre-desktop-metadata-prefix-");
     const bytes = Buffer.alloc(length);
     bytes.writeUInt32LE(0xfab11baf);
     await put(root, "global-metadata.dat", bytes);

@@ -3,11 +3,11 @@ import { fileURLToPath } from "node:url";
 import { createVerifierCommands } from "../../lib/verify-commands.mjs";
 
 // Optional verification tools only; the runtime reader starts no tool.
-const compiler = process.env.REA_RISCV_CLANG ?? "clang";
-const linker = process.env.REA_RISCV_LLD ?? "ld.lld";
-const python = process.env.REA_ESPTOOL_PYTHON ?? "python3";
+const compiler = process.env.NRE_RISCV_CLANG ?? "clang";
+const linker = process.env.NRE_RISCV_LLD ?? "ld.lld";
+const python = process.env.NRE_ESPTOOL_PYTHON ?? "python3";
 // Optional: an Xtensa ESP32 build when Espressif's GCC is supplied.
-export const xtensa = process.env.REA_XTENSA_ESP32_GCC;
+export const xtensa = process.env.NRE_XTENSA_ESP32_GCC;
 /**
  * Every tool runs as an owned process tree, so a timeout or close also stops
  * the children a compiler driver starts. Close it before removing outputs.
@@ -26,7 +26,7 @@ export const source = (name) =>
   fileURLToPath(
     new URL(`../../../tests/conformance/esp/${name}`, import.meta.url),
   );
-const entrypoint = fileURLToPath(new URL("../../rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("../../nre.mjs", import.meta.url));
 
 /** The esptool release whose sources the reader's layout facts cite. */
 const PINNED_ESPTOOL = "v5.6.0";
@@ -66,19 +66,19 @@ export const spell = (v4, later) => {
 export const checkTools = async () => {
   const compilerVersion = await prerequisite(
     `a Clang with the RISC-V target (tried ${compiler})`,
-    "REA_RISCV_CLANG",
+    "NRE_RISCV_CLANG",
     async () => {
       const targets = await execute(compiler, ["--print-targets"], options);
       assert.match(targets.stdout, /^\s*riscv32\b/mu, "No riscv32 target.");
       return firstLine(await execute(compiler, ["--version"], options));
     },
   );
-  await prerequisite(`ld.lld (tried ${linker})`, "REA_RISCV_LLD", () =>
+  await prerequisite(`ld.lld (tried ${linker})`, "NRE_RISCV_LLD", () =>
     execute(linker, ["--version"], options),
   );
   const versionText = await prerequisite(
     `a Python that runs esptool (tried ${python} -m esptool)`,
-    "REA_ESPTOOL_PYTHON",
+    "NRE_ESPTOOL_PYTHON",
     () => tool("esptool", ["version"]),
   );
   const version = /\bv(\d+)\.(\d+)\.(\d+)\b/u.exec(versionText);
@@ -86,7 +86,7 @@ export const checkTools = async () => {
   v5 = Number(version[1]) >= 5;
   await prerequisite(
     `espsecure in the same Python (tried ${python} -m espsecure)`,
-    "REA_ESPTOOL_PYTHON",
+    "NRE_ESPTOOL_PYTHON",
     async () => {
       const help = await tool("espsecure", ["--help"]);
       for (const command of [
@@ -105,7 +105,7 @@ export const checkTools = async () => {
       ? undefined
       : await prerequisite(
           `xtensa-esp32-elf-gcc (tried ${xtensa})`,
-          "REA_XTENSA_ESP32_GCC to Espressif's compiler, or unset it to skip that image",
+          "NRE_XTENSA_ESP32_GCC to Espressif's compiler, or unset it to skip that image",
           async () => firstLine(await execute(xtensa, ["--version"], options)),
         );
   return { compilerVersion, esptoolVersion: version[0], xtensaVersion };
@@ -201,12 +201,12 @@ export const imageInfo = async (file, chip) => {
   };
 };
 
-/** REA's complete inline inventory for one file through the built CLI. */
+/** NRE's complete inline inventory for one file through the built CLI. */
 export const inspect = async (file) => {
   const result = await execute(
     process.execPath,
     [entrypoint, "inspect-artifact", file, "--json"],
-    { ...options, env: { ...process.env, REA_LOG_LEVEL: "silent" } },
+    { ...options, env: { ...process.env, NRE_LOG_LEVEL: "silent" } },
   ).then(
     ({ stdout }) => ({ ok: true, stdout }),
     (failure) => ({ ok: false, stdout: exitOutput(failure) }),
@@ -243,7 +243,7 @@ export const extract = async (file, root) => {
       ...options,
       env: {
         ...process.env,
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
         TMPDIR: root,
         TMP: root,
         TEMP: root,
@@ -280,12 +280,12 @@ const assertDescriptorAgrees = (name, oracle, descriptor) => {
 };
 
 /** Every fact both tools report for an image esptool can load. */
-export const assertAgrees = (name, oracle, rea) => {
-  assert.equal(rea.inventory.manifest.root_format, "esp-image", name);
-  assert.equal(rea.root.header.entry_addr, oracle.entry, `${name} entry`);
-  assert.equal(rea.root.header.chip_id, oracle.chipId, `${name} chip_id`);
+export const assertAgrees = (name, oracle, nre) => {
+  assert.equal(nre.inventory.manifest.root_format, "esp-image", name);
+  assert.equal(nre.root.header.entry_addr, oracle.entry, `${name} entry`);
+  assert.equal(nre.root.header.chip_id, oracle.chipId, `${name} chip_id`);
   assert.deepEqual(
-    rea.segments.map(({ format_metadata: segment }) => ({
+    nre.segments.map(({ format_metadata: segment }) => ({
       index: segment.index,
       length: segment.data_len,
       address: segment.load_addr,
@@ -294,7 +294,7 @@ export const assertAgrees = (name, oracle, rea) => {
     oracle.segments,
     `${name} segments`,
   );
-  const { checksum, appended_sha256: digest } = rea.root;
+  const { checksum, appended_sha256: digest } = nre.root;
   assert.equal(checksum.stored, oracle.checksum.stored, `${name} checksum`);
   assert.equal(checksum.computed, oracle.checksum.computed, name);
   assert.equal(checksum.status === "valid", oracle.checksum.valid, name);
@@ -304,5 +304,5 @@ export const assertAgrees = (name, oracle, rea) => {
     assert.equal(digest.computed, oracle.hash.computed, `${name} digest`);
     assert.equal(digest.status === "valid", oracle.hash.valid, name);
   }
-  assertDescriptorAgrees(name, oracle, rea.root.descriptor);
+  assertDescriptorAgrees(name, oracle, nre.root.descriptor);
 };

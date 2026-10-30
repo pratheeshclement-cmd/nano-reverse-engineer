@@ -712,7 +712,7 @@ export const createRunManifest = async (
   );
   const comparisonContract = processComparisonContract(scenario);
   return {
-    rea_version: PRODUCT_IDENTITY.packageVersion,
+    nre_version: PRODUCT_IDENTITY.packageVersion,
     provider_version: PROCESS_PROVIDER.version,
     platform: host.platform,
     architecture: host.architecture,
@@ -1860,6 +1860,6 @@ const systemProcessPreparationHost: ProcessPreparationHost = {
   prepareOwnershipInspector: prepareProcessOwnershipInspection,
   captureOwnershipBaseline: (signal) =>
     systemProcessOwnershipHost.captureBaseline?.(signal) ?? Promise.resolve([]),
-  createTemporaryRoot: () => mkdtemp(join(tmpdir(), "rea-process-")),
+  createTemporaryRoot: () => mkdtemp(join(tmpdir(), "nre-process-")),
   cleanup: (path) => rm(path, { recursive: true, force: true }),
 };

@@ -43,8 +43,8 @@ const source = (
     {
       predicateType:
         authority === "controlled-replay"
-          ? "rea.process-capture"
-          : "rea.analysis",
+          ? "nre.process-capture"
+          : "nre.analysis",
       operation:
         authority === "controlled-replay"
           ? "capture_process_scenario"
@@ -105,12 +105,12 @@ const processComparison = (
   createEvidence(
     undefined,
     {
-      id: "rea-process",
-      name: "REA deterministic process harness",
+      id: "nre-process",
+      name: "NRE deterministic process harness",
       version: "3",
     },
     {
-      predicateType: "rea.process-comparison",
+      predicateType: "nre.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_id: left.evidence_id,
@@ -130,12 +130,12 @@ const multiSourceProcessComparison = (
   createEvidence(
     undefined,
     {
-      id: "rea-process",
-      name: "REA deterministic process harness",
+      id: "nre-process",
+      name: "NRE deterministic process harness",
       version: "3",
     },
     {
-      predicateType: "rea.process-comparison",
+      predicateType: "nre.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_ids: left.map(({ evidence_id: id }) => id),
@@ -200,12 +200,12 @@ const artifactComparison = (
   createEvidence(
     undefined,
     {
-      id: "rea-artifact-comparison",
-      name: "REA artifact comparison",
+      id: "nre-artifact-comparison",
+      name: "NRE artifact comparison",
       version: "1",
     },
     {
-      predicateType: "rea.artifact-comparison",
+      predicateType: "nre.artifact-comparison",
       operation: "compare_artifacts",
       parameters: {
         left_evidence_ids: [left.evidence_id],
@@ -554,7 +554,7 @@ describe("reconstruction verification integrity", () => {
         undefined,
         { id: "fixture", name: "Fixture", version: "1" },
         {
-          predicateType: "rea.residual-unknown-mutation",
+          predicateType: "nre.residual-unknown-mutation",
           operation: "record_unknown",
           parameters: { index },
           result: { action: "record" },

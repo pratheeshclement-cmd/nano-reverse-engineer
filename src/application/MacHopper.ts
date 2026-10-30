@@ -366,7 +366,7 @@ export const systemMacHopperInstallHost = (
   const pendingCleanup = new Map<() => Promise<void>, readonly string[]>();
   return {
     download: downloadHopperPackage,
-    createTemporaryDirectory: () => mkdtemp(join(tmpdir(), "rea-hopper-mac-")),
+    createTemporaryDirectory: () => mkdtemp(join(tmpdir(), "nre-hopper-mac-")),
     createMountDirectory: (path) => mkdir(path),
     writePackage: (path, bytes) => writeFile(path, bytes, { mode: 0o600 }),
     async mount(packagePath, mountPath) {
@@ -438,7 +438,7 @@ export const systemMacHopperInstallHost = (
           async createStagingRoot(parent) {
             await mkdir(parent, { recursive: true });
             return mkdtemp(
-              appendCallerPath(parent, ".rea-hopper-stage-", "darwin"),
+              appendCallerPath(parent, ".nre-hopper-stage-", "darwin"),
             );
           },
           copyBundle: async (bundle, staged) => {

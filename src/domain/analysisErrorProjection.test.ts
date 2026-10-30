@@ -242,7 +242,7 @@ it("projects a published file receipt alongside retained cleanup failure", () =>
       published: { path: "/tmp/evidence.json", bytes: 42 },
       cleanup: {
         reason: "staging directory is still owned",
-        resources: ["/tmp/.rea-write-abc"],
+        resources: ["/tmp/.nre-write-abc"],
       },
       cause: new Error("cleanup incomplete"),
     }),
@@ -261,7 +261,7 @@ it("projects a published file receipt alongside retained cleanup failure", () =>
       published: true,
       published_path: "/tmp/evidence.json",
       bytes: 42,
-      resources: ["/tmp/.rea-write-abc"],
+      resources: ["/tmp/.nre-write-abc"],
     },
   });
   expect(analysisErrorProjectionSchema.safeParse(projected).success).toBe(true);
@@ -602,7 +602,7 @@ describe("analysis error projection: browser provider failures", () => {
       "inspect_web_page",
       "cleanup_failed",
       {
-        detail: "Target page-1 closed while REA released its session.",
+        detail: "Target page-1 closed while NRE released its session.",
         remediationAction: "Release session page-1, then retry.",
         cleanup: { reason: "socket close failed", resources: ["page-1"] },
         diagnostics: { endpoint: "loopback" },
@@ -628,7 +628,7 @@ describe("analysis error projection: browser provider failures", () => {
     expect(projected).toEqual(originalProjected);
     expect(projected).toMatchObject({
       code: "cleanup_incomplete",
-      message: "Target page-1 closed while REA released its session.",
+      message: "Target page-1 closed while NRE released its session.",
       remediation: { action: "Release session page-1, then retry." },
     });
     expect(details).toEqual({
@@ -698,18 +698,18 @@ describe("analysis error projection: Hopper provider failures", () => {
     );
   });
 
-  it("identifies the REA session that already owns a Hopper target", () => {
+  it("identifies the NRE session that already owns a Hopper target", () => {
     const error = new HopperStartError({
       ownerRunId: "session-owner",
       userMessage:
-        "This Hopper target is already open in REA session session-owner. Use that REA session or close it before opening this target again.",
+        "This Hopper target is already open in NRE session session-owner. Use that NRE session or close it before opening this target again.",
     });
     expect(projectAnalysisError(error)).toMatchObject({
       category: "unavailable",
       message: expect.stringContaining("session-owner"),
       remediation: {
         action: expect.stringContaining(
-          "Use the active REA session session-owner",
+          "Use the active NRE session session-owner",
         ),
       },
     });
@@ -747,7 +747,7 @@ describe("analysis error projection: detached provider diagnostics", () => {
     "preserves detached, actionable diagnostics for %s errors",
     (kind) => {
       const diagnostics = {
-        runtime_root: "/tmp/rea-ghidra-fixture",
+        runtime_root: "/tmp/nre-ghidra-fixture",
         profile_digest: "a".repeat(64),
         exit_code: 1,
       };
@@ -1002,7 +1002,7 @@ describe("analysis error projection: operational diagnostics", () => {
         exit_code: 7,
       },
     });
-    expect(exited.message).not.toContain("Run `rea doctor`, then try again.");
+    expect(exited.message).not.toContain("Run `nre doctor`, then try again.");
     expect(exited.remediation.action).toContain("Restart the owned provider");
 
     const unknown = projectAnalysisError(
@@ -1197,7 +1197,7 @@ it("does not offer entry-policy retries for integrity refusals without a declare
 });
 
 it("preserves ordinary configuration recovery and projects a producer-owned session repair", () => {
-  const settings = [{ setting: "REA_EXAMPLE", constraint: "must be positive" }];
+  const settings = [{ setting: "NRE_EXAMPLE", constraint: "must be positive" }];
   const original = projectAnalysisError(
     new ConfigurationError("Invalid setting", { settings }),
   );
@@ -1208,7 +1208,7 @@ it("preserves ordinary configuration recovery and projects a producer-owned sess
     }),
   );
   expect(original.remediation.action).toBe(
-    "Correct REA_EXAMPLE in the environment that starts REA (your shell or the MCP client's registration), then rerun.",
+    "Correct NRE_EXAMPLE in the environment that starts NRE (your shell or the MCP client's registration), then rerun.",
   );
   expect(repairing).toEqual({
     ...original,

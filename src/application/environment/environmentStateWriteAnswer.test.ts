@@ -64,7 +64,7 @@ const NEW_BOOK = book(3, "New Book", bookClock(13));
 const CREATE_NEW_BOOK = { body: { name: "New Book" } };
 
 const entityOf = (books: Served, id: string) =>
-  books.store.snapshot().rea_state.entities.find((entity) => entity.id === id);
+  books.store.snapshot().nre_state.entities.find((entity) => entity.id === id);
 
 /** Load what data/get reports back through data/add: the state must come back byte for byte. */
 const expectReloadsUnchanged = (books: Served): void => {
@@ -262,9 +262,9 @@ describe("served creates", () => {
     }));
     const loaded = {
       ...snapshot,
-      rea_state: {
-        ...snapshot.rea_state,
-        entities: [...snapshot.rea_state.entities, ...collisions],
+      nre_state: {
+        ...snapshot.nre_state,
+        entities: [...snapshot.nre_state.entities, ...collisions],
       },
     };
     const replaced = books.store.replace(loaded);
@@ -595,8 +595,8 @@ describe("write coverage limits", () => {
     expect(create("Fifth Book")).toMatchObject({ asset: "99-99" });
     expect(create("Sixth Book")).toMatchObject({ asset: "100-00" });
     // Loading what data/get wrote clears the sequence counter, so the held numbers alone carry it on.
-    const { rea_state } = books.store.snapshot();
-    expect(books.store.replace({ rea_state }).ok).toBe(true);
+    const { nre_state } = books.store.snapshot();
+    expect(books.store.replace({ nre_state }).ok).toBe(true);
     expect(create("Seventh Book")).toMatchObject({ asset: "100-01" });
   });
 
@@ -1078,9 +1078,9 @@ describe("list lines", () => {
         ["GET", `/api/orgs/2/books?${query}&limit=50`, []],
         ["GET", "/api/orgs/1/books/1", alpha],
       ]);
-      const held = books.store.snapshot().rea_state;
+      const held = books.store.snapshot().nre_state;
       const loaded = books.store.replace({
-        rea_state: {
+        nre_state: {
           ...held,
           entities: [
             ...held.entities,
@@ -1156,9 +1156,9 @@ describe("list queries", () => {
         const snapshot = books.store.snapshot();
         const loaded = books.store.replace({
           ...snapshot,
-          rea_state: {
-            ...snapshot.rea_state,
-            entities: snapshot.rea_state.entities.filter(
+          nre_state: {
+            ...snapshot.nre_state,
+            entities: snapshot.nre_state.entities.filter(
               (entity) => entity.id !== "3",
             ),
           },
@@ -1312,7 +1312,7 @@ describe("path values", () => {
       books.answer(tool.name, { [org!]: spelling, body: { name: "Epsilon" } });
       const created = books.store
         .snapshot()
-        .rea_state.entities.find(
+        .nre_state.entities.find(
           (entity) => entity.fields["name"] === "Epsilon",
         );
       expect(created).toMatchObject({
@@ -1363,7 +1363,7 @@ describe("collections a create chooses", () => {
     expect(
       books.store
         .snapshot()
-        .rea_state.entities.find((entity) => entity.fields["name"] === "Zeta")
+        .nre_state.entities.find((entity) => entity.fields["name"] === "Zeta")
         ?.collection,
     ).toBe("/api/orgs/acme1/books");
   });
@@ -1465,7 +1465,7 @@ describe("values the state started with", () => {
       books.answer(tool.name, { [parent!]: value, body: { name } });
       return books.store
         .snapshot()
-        .rea_state.entities.find((entity) => entity.fields["name"] === name)
+        .nre_state.entities.find((entity) => entity.fields["name"] === name)
         ?.collection;
     };
     return { books, toolOf, create };
@@ -1485,10 +1485,10 @@ describe("values the state started with", () => {
 
   it("creates in the Evidence's spelling of a collection a loaded state does not hold", () => {
     const { books, create } = twoOrgs("my%20org1", "my org1");
-    const { rea_state: held } = books.store.snapshot();
+    const { nre_state: held } = books.store.snapshot();
     expect(
       books.store.replace({
-        rea_state: {
+        nre_state: {
           version: held.version,
           entities: held.entities.filter(
             (entity) => !entity.collection.includes("%20"),
@@ -1502,10 +1502,10 @@ describe("values the state started with", () => {
 
   it("creates in the loaded state's collection when the Evidence spells the same one differently", () => {
     const { books, create } = twoOrgs("%61cme1", "acme1");
-    const { rea_state: held } = books.store.snapshot();
+    const { nre_state: held } = books.store.snapshot();
     expect(
       books.store.replace({
-        rea_state: {
+        nre_state: {
           version: held.version,
           entities: held.entities.map((entity) =>
             entity.collection.includes("%61cme1")
@@ -1549,7 +1549,7 @@ describe("values the state started with", () => {
     expect(
       books.store
         .snapshot()
-        .rea_state.entities.find(
+        .nre_state.entities.find(
           (entity) => entity.fields["name"] === "Epsilon",
         )?.collection,
     ).toBe("/api/orgs/my%20org1/books");
@@ -1557,11 +1557,11 @@ describe("values the state started with", () => {
 
   it("forgets the spellings of a loaded state once reset", () => {
     const { books, create } = twoOrgs("%61cme1", "acme1");
-    const { rea_state: held } = books.store.snapshot();
+    const { nre_state: held } = books.store.snapshot();
     // A loaded state spells the first organisation plainly; the Evidence's state spells it encoded.
     expect(
       books.store.replace({
-        rea_state: {
+        nre_state: {
           version: held.version,
           // Moved to another spelling, the entity cites none of the Evidence's records.
           entities: held.entities.map((entity) =>
@@ -1970,7 +1970,7 @@ describe("path values of creates read under another path", () => {
       });
       const created = notes.store
         .snapshot()
-        .rea_state.entities.filter((entity) => entity.fields.title === "Delta");
+        .nre_state.entities.filter((entity) => entity.fields.title === "Delta");
       expect(created).toMatchObject([{ fields: { project: "my org1" } }]);
     }
   });
@@ -2046,7 +2046,7 @@ const tokenCard = (id: number, token: string, at: string) => ({
   id,
   name: `Card ${String(id)}`,
   token,
-  edit: { at, by: "rea" },
+  edit: { at, by: "nre" },
 });
 const CARD_ROWS: readonly TimedCaptureRow[] = [
   [
@@ -2159,7 +2159,7 @@ describe("served values an application stamps", () => {
       "Qx81mP0aZkT3vB7n-Lw2e",
       "cdMLcknG-Lcu6oWL-3ZgA",
     ]).not.toContain(created.token);
-    expect(created.edit.by).toBe("rea");
+    expect(created.edit.by).toBe("nre");
     expect(created.edit.at).not.toBe(`${bookClock(3).slice(0, -1)}.030Z`);
     expect(created.edit.at).toMatch(
       /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u,
@@ -2248,7 +2248,7 @@ describe("path fields of creates read under another path", () => {
       });
       const created = notes.store
         .snapshot()
-        .rea_state.entities.filter((entity) => entity.fields.title === "Delta");
+        .nre_state.entities.filter((entity) => entity.fields.title === "Delta");
       expect(created).toMatchObject([{ fields: { project: "team%31" } }]);
     }
   });

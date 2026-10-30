@@ -23,7 +23,7 @@ const admission = (id: string) =>
   });
 
 const startServer = async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-js-server-framing-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-js-server-framing-"));
   const serverUrl = new URL(
     "./JavaScriptAnalysisWorkerServer.ts",
     import.meta.url,

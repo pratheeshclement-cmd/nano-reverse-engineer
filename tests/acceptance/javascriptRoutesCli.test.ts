@@ -27,7 +27,7 @@ const independentPaths = [
 ];
 
 const fixture = async () => {
-  const path = await createTestTempDirectory("rea-javascript-routes-");
+  const path = await createTestTempDirectory("nre-javascript-routes-");
   await writeFile(
     join(path, "routes.js"),
     `globalThis.TURBOPACK=[];globalThis.TURBOPACK.push([1,function module(){const routes=defineRoutes({reports:{_$:'reports',settings:{_$:'settings'},history:{}}});createBrowserRouter([{path:'/account',children:[{path:':id'}]}]);router.push('/reports/' + selectedId);router.push({pathname:'/reports/' + selectedId});router.navigate(['/reports/',selectedId]);const mixed={children:[{path:'/reports/stale-ordinary',element:View},{_$:'/reports/stale-typed'}]};mixed.children[1]._$='/reports/changed';createBrowserRouter(mixed);router.push({pathname:'/reports/static-object',query:{href:'/query-data',path:'/download/file',component:'preview'}});router.addRoute('admin',{path:'settings',component:View});const aliasQuery={path:'/download/alias',component:'preview',href:'/alias-query-data',module:'app/fake/page.tsx'};const target={pathname:'/reports/aliased',query:aliasQuery};router.push(target);const independent={path:'/checks/independent',component:View};router.push({pathname:'/reports/aliased',query:independent ? {ok:1}:{ok:2}});createBrowserRouter([{path:'/reports/stale-computed',[computedKey]:'/unrelated',children:[{path:'settings'}]}]);const registry={route:{path:'/checks/projected',component:View},query:{path:'/download/projected-query',component:Preview}};const {query:payload}=registry;router.push({pathname:'/reports/aliased',query:payload});const pattern='/checks/optional/:id?';createBrowserRouter([{path:pattern}]);const restRegistry={query:{path:'/download/rest-query',component:Preview},route:{path:'/checks/rest',component:View}};const {route,...restPayload}=restRegistry;router.push({pathname:'/reports/aliased',query:restPayload});const fallback={path:'/checks/inactive-default',component:View};const {query:actualQuery=fallback}={query:{ok:1}};router.push({pathname:'/reports/aliased',query:actualQuery});const cache=[];cache.push('/checks/array-data');text.replace('/checks/string-data','');const inactiveBranch={path:'/checks/inactive-branch',component:View};router.push({pathname:'/reports/aliased',query:true?{}:inactiveBranch});const overwritten={path:'/checks/overwritten',component:View};router.push({pathname:'/reports/aliased',query:{item:overwritten,item:0}});const memberRegistry={query:{path:'/download/member-query',component:Preview},route:{path:'/checks/member',component:View}};router.push({pathname:'/reports/aliased',query:memberRegistry.query});const protoPayload={path:'/download/proto-query',component:Preview};router.push({pathname:'/reports/aliased',query:{['__proto__']:protoPayload,__proto__:null}});const replacedRegistry={query:independent};replacedRegistry.query={ok:1};router.push({pathname:'/reports/aliased',query:replacedRegistry.query});let replacedDirect=independent;replacedDirect={ok:1};router.push({pathname:'/reports/aliased',query:replacedDirect});const uncertainPayload={path:'/download/uncertain-query',component:Preview};const uncertainRegistry={query:uncertainPayload};const otherRegistry={query:{ok:1}};const uncertainAlias=flag?uncertainRegistry:otherRegistry;uncertainAlias.query={ok:1};router.push({pathname:'/reports/aliased',query:uncertainRegistry.query});const possiblePayload={path:'/download/possible-query',component:Preview};const possibleRegistry={query:possiblePayload,...unknown};router.push({pathname:'/reports/aliased',query:possibleRegistry.query});const cyclicRegistry={get a(){return this.a.b}};router.push({pathname:'/reports/aliased',query:cyclicRegistry.a});const finiteRegistry={get a(){return this},get b(){return this.a.a},path:'/download/finite-query',component:Preview};router.push({pathname:'/reports/aliased',query:finiteRegistry.a.b});const configurationRegistry={children:[{path:'/checks/config-sibling',component:View}],routes:[]};createBrowserRouter(configurationRegistry.routes);const helper='app/reports/helper/page-helpers.js';const extra='/reports/help';}]);`,
@@ -46,7 +46,7 @@ cliTest(
   async ({ cli }) => {
     const path = await fixture(),
       output = join(
-        await createTestTempDirectory("rea-route-evidence-"),
+        await createTestTempDirectory("nre-route-evidence-"),
         "routes.json",
       );
     const response = await cli.run({
@@ -86,7 +86,7 @@ cliTest(
     );
     expect(record).toBeDefined();
     const evidenceFile = join(
-      await createTestTempDirectory("rea-route-record-"),
+      await createTestTempDirectory("nre-route-record-"),
       "evidence.json",
     );
     await writeFile(evidenceFile, JSON.stringify(record));
@@ -143,7 +143,7 @@ it.each(["full", "compact"] as const)(
   async (profile) => {
     const path = await fixture(),
       { call } = await connectLocalToolsMcp({
-        REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+        NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
       });
     for (const source_paths of [[], [""], [1]]) {
       const invalid = await call("analyze_javascript_application", {
@@ -338,7 +338,7 @@ cliTest(
         },
       };
       const output = join(
-        await createTestTempDirectory("rea-browser-route-evidence-"),
+        await createTestTempDirectory("nre-browser-route-evidence-"),
         "routes.json",
       );
       const response = await cli.run({
@@ -423,7 +423,7 @@ cliTest(
 );
 
 it("keeps a large source's partial route facts queryable through SDK delivery", async () => {
-  const path = await createTestTempDirectory("rea-large-route-result-");
+  const path = await createTestTempDirectory("nre-large-route-result-");
   const text = Array.from(
     { length: 12000 },
     (_, index) => `route('/reports/${index}/${"x".repeat(96)}');`,

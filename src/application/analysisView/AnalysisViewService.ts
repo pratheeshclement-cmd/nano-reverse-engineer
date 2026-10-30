@@ -407,7 +407,7 @@ const createAnalysisViewEvidence = (
     target,
     ANALYSIS_VIEW_PROVIDER,
     {
-      predicateType: "rea.analysis-view",
+      predicateType: "nre.analysis-view",
       operation: INSPECT_ANALYSIS_VIEW_OPERATION,
       parameters: {
         parent_evidence_id: parent.evidence_id,

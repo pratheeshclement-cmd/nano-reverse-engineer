@@ -22,7 +22,7 @@ describe.skipIf(process.platform !== "darwin")(
       "inventories a detached checksum-free UDRW image and its UDZO conversion",
       async ({ cli }) => {
         const root = await realpath(
-          await createTestTempDirectory("rea-raw-dmg-cli-"),
+          await createTestTempDirectory("nre-raw-dmg-cli-"),
         );
         const source = join(root, "source");
         await mkdir(source);
@@ -55,7 +55,7 @@ describe.skipIf(process.platform !== "darwin")(
         const inspect = async (path: string) => {
           const result = await cli.run({
             arguments: ["inspect-artifact", path, "--json", "--full-output"],
-            environment: { REA_LOG_LEVEL: "silent" },
+            environment: { NRE_LOG_LEVEL: "silent" },
           });
           expect(result.exitCode, result.stdout + result.stderr).toBe(0);
           const inspected = artifactInspectionResultSchema.parse(
@@ -114,13 +114,13 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "refuses a DMG-named blob without disk image structure",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-raw-dmg-cli-blob-");
+        const root = await createTestTempDirectory("nre-raw-dmg-cli-blob-");
         const blob = join(root, "blob.dmg");
         // hdiutil itself treats any file as a raw image with no checksum.
         await writeFile(blob, Buffer.alloc(1024 * 1024));
         const result = await cli.run({
           arguments: ["inspect-artifact", blob, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(result.exitCode).not.toBe(0);
         expect(result.json).toMatchObject({

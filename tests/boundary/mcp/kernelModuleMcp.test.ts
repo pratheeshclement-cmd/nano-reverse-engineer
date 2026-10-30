@@ -32,7 +32,7 @@ mcpTest(
         readOnlyHint: false,
         idempotentHint: true,
       });
-      const root = await createTestTempDirectory("rea-kernel-module-mcp-");
+      const root = await createTestTempDirectory("nre-kernel-module-mcp-");
       const path = join(root, "demo.ko");
       await writeFile(path, kernelModuleFixture({ bits: 32, little: false }));
       const response = await client.callTool({
@@ -88,7 +88,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-kernel-module-zstd-mcp-");
+      const root = await createTestTempDirectory("nre-kernel-module-zstd-mcp-");
       const path = join(root, "demo.ko.zst");
       await writeFile(path, compressedKernelModuleContainer("zstd"));
       const response = await client.callTool({

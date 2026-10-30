@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("Apple IPS stable filesystem boundary", () => {
   it("reports non-file and malformed IPS selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-apple-ips-files-");
+    const root = await createTestTempDirectory("nre-apple-ips-files-");
     const path = join(root, "report.ips");
     const alias = join(root, "alias.ips");
     const malformed = join(root, "malformed.ips");
@@ -42,7 +42,7 @@ describe("Apple IPS stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-apple-ips-budget-");
+    const root = await createTestTempDirectory("nre-apple-ips-budget-");
     const path = join(root, "report.ips");
     await writeFile(path, appleIpsBytes());
     const service = createAppleIpsService();
@@ -58,7 +58,7 @@ describe("Apple IPS stable filesystem boundary", () => {
   });
 
   it("maps register, fixed structural and UTF-8 refusals to typed errors", async () => {
-    const root = await createTestTempDirectory("rea-apple-ips-shape-");
+    const root = await createTestTempDirectory("nre-apple-ips-shape-");
     const report = join(root, "report.ips");
     const deep = join(root, "deep.ips");
     const corrupt = join(root, "corrupt.ips");
@@ -68,7 +68,7 @@ describe("Apple IPS stable filesystem boundary", () => {
       `${appleIpsMetadataLine()}\n{"vmSummary":${"[".repeat(100)}${"]".repeat(100)}}`,
     );
     const bytes = appleIpsBytes();
-    bytes[bytes.indexOf(Buffer.from("rea-crash-fixture"))] = 0xc3;
+    bytes[bytes.indexOf(Buffer.from("nre-crash-fixture"))] = 0xc3;
     await writeFile(corrupt, bytes);
     const service = createAppleIpsService();
 

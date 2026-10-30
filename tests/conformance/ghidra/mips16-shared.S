@@ -6,36 +6,36 @@
 .set noreorder
 .set nomicromips
 .set mips16
-.globl rea_mips16_probe
-.type rea_mips16_probe, @function
-.ent rea_mips16_probe
-rea_mips16_probe:
+.globl nre_mips16_probe
+.type nre_mips16_probe, @function
+.ent nre_mips16_probe
+nre_mips16_probe:
     li $2, 90
     xor $2, $4
     addiu $2, 7
     jrc $31
-.end rea_mips16_probe
-.size rea_mips16_probe, . - rea_mips16_probe
-.ifndef REA_MIPS_SYMBOL_RELATIVE
-.hidden rea_mips16_probe
+.end nre_mips16_probe
+.size nre_mips16_probe, . - nre_mips16_probe
+.ifndef NRE_MIPS_SYMBOL_RELATIVE
+.hidden nre_mips16_probe
 .endif
 
 .set nomips16
-.globl rea_mips32_probe
-.type rea_mips32_probe, @function
-.ent rea_mips32_probe
-rea_mips32_probe:
+.globl nre_mips32_probe
+.type nre_mips32_probe, @function
+.ent nre_mips32_probe
+nre_mips32_probe:
     addiu $2, $4, 3
     jr $31
     nop
-.end rea_mips32_probe
-.size rea_mips32_probe, . - rea_mips32_probe
+.end nre_mips32_probe
+.size nre_mips32_probe, . - nre_mips32_probe
 
 .data
 .balign 4
-.globl rea_mips16_pointer
-.type rea_mips16_pointer, @object
-.size rea_mips16_pointer, 4
-rea_mips16_pointer:
-    .word rea_mips16_probe
+.globl nre_mips16_pointer
+.type nre_mips16_pointer, @object
+.size nre_mips16_pointer, 4
+nre_mips16_pointer:
+    .word nre_mips16_probe
 .section .note.GNU-stack, "", @progbits

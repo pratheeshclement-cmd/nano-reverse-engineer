@@ -355,7 +355,7 @@ it.each([true, false])(
               format: "pyinstaller",
             },
             {
-              id: "rea-artifact-graph",
+              id: "nre-artifact-graph",
               name: "artifact inventory",
               version: "1",
             },

@@ -7,7 +7,7 @@ import {
 } from "./runtimeVersion.js";
 
 /**
- * Machine-readable `rea --version` report for support requests. Every field
+ * Machine-readable `nre --version` report for support requests. Every field
  * comes from package metadata or the runtime's own identity; it never carries
  * a path, an environment value, or a user or host name.
  */
@@ -41,7 +41,7 @@ export interface VersionReportHost {
   readonly architecture: string;
 }
 
-/** Build the report; runtime support uses the same rule as `rea doctor`. */
+/** Build the report; runtime support uses the same rule as `nre doctor`. */
 export const versionReport = (host: VersionReportHost): VersionReport => {
   const runtime = javaScriptRuntime(host.versions);
   return {

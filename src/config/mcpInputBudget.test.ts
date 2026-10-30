@@ -39,7 +39,7 @@ it.each([
   expect(parsed.error).toBeInstanceOf(ConfigurationError);
   expect(parsed.error.settings).toEqual([
     {
-      setting: "REA_MCP_MAX_INPUT_ELEMENTS",
+      setting: "NRE_MCP_MAX_INPUT_ELEMENTS",
       constraint: expect.stringContaining("positive decimal safe integer"),
     },
   ]);

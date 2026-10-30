@@ -17,7 +17,7 @@ import { extractArtifact } from "../../../src/artifacts/extraction/ArtifactExtra
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const archiveWith = async (bytes: Buffer) => {
-  const root = await createTestTempDirectory("rea-asar-listing-");
+  const root = await createTestTempDirectory("nre-asar-listing-");
   const path = join(root, "app.asar");
   await writeFile(path, bytes);
   return path;

@@ -40,7 +40,7 @@ import { skillReferenceIssues } from "../../../scripts/lib/docs-facts.mjs";
 
 describe("managed skill file read boundary", () => {
   it("rejects linked and oversized managed guide files", async () => {
-    const root = await createTestTempDirectory("rea-guidance-file-boundary-");
+    const root = await createTestTempDirectory("nre-guidance-file-boundary-");
     const target = join(root, "guide.md");
     const link = join(root, "linked-guide.md");
     const oversized = join(root, "oversized-guide.md");
@@ -63,14 +63,14 @@ const expectPermissionMode = async (
 
 describe("skill recovery backup selection", () => {
   it("reuses a verified existing backup without copying it again", async () => {
-    const home = await createTestTempDirectory("rea-skill-matching-backup-");
+    const home = await createTestTempDirectory("nre-skill-matching-backup-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Missing shared skill root");
     const manifest = join(destination.path, "SKILL.md");
     const current = "currently installed instructions\n";
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, current);
-    await writeFile(`${manifest}.rea.backup`, current);
+    await writeFile(`${manifest}.nre.backup`, current);
     const result = await installCanonicalSkill(home, [], {}, process.platform, {
       mkdir: async (path) =>
         mkdir(path, { recursive: true }).then(() => undefined),
@@ -81,12 +81,12 @@ describe("skill recovery backup selection", () => {
     });
 
     expect(result).toEqual({ ok: true, value: "installed" });
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(current);
+    expect(await readFile(`${manifest}.nre.backup`, "utf8")).toBe(current);
     expect(await canonicalSkillNeedsInstall(home, [])).toBe(false);
   });
 
   it("advertises a current recovery snapshot when the first backup is historical", async () => {
-    const home = await createTestTempDirectory("rea-skill-historical-backup-");
+    const home = await createTestTempDirectory("nre-skill-historical-backup-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Missing shared skill root");
     const manifest = join(destination.path, "SKILL.md");
@@ -94,7 +94,7 @@ describe("skill recovery backup selection", () => {
     const oldSnapshot = "historical instructions V0\n";
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, current);
-    await writeFile(`${manifest}.rea.backup`, oldSnapshot);
+    await writeFile(`${manifest}.nre.backup`, oldSnapshot);
     const operations: SkillInstallFileOperations = {
       mkdir: async (path) =>
         mkdir(path, { recursive: true }).then(() => undefined),
@@ -129,22 +129,22 @@ describe("skill recovery backup selection", () => {
       { path: manifest, reason: "injected rollback failure" },
     ]);
     const recovery = result.error.recoveryBackupPaths.find((path) =>
-      path.startsWith(`${manifest}.rea.backup.`),
+      path.startsWith(`${manifest}.nre.backup.`),
     );
     expect(recovery).toBeDefined();
     expect(await readFile(recovery!, "utf8")).toBe(current);
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(oldSnapshot);
+    expect(await readFile(`${manifest}.nre.backup`, "utf8")).toBe(oldSnapshot);
   });
 });
 
 describe("skill recovery byte preservation", () => {
   it("backs up and restores the exact bytes of invalid UTF-8 before replacing a skill", async () => {
-    const home = await createTestTempDirectory("rea-skill-damaged-bytes-");
+    const home = await createTestTempDirectory("nre-skill-damaged-bytes-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Missing shared skill root");
     const manifest = join(destination.path, "SKILL.md");
     const original = Buffer.from([0x63, 0x61, 0x66, 0xe9, 0xff, 0x0a]);
-    const firstBackup = `${manifest}.rea.backup`;
+    const firstBackup = `${manifest}.nre.backup`;
     const recovery = `${firstBackup}.${createHash("sha256").update(original).digest("hex")}.recovery`;
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, original);
@@ -180,7 +180,7 @@ describe("skill recovery byte preservation", () => {
 describe("skill directory admission", () => {
   it("excludes a linked references directory from update maintenance", async () => {
     const directory = await createTestTempDirectory(
-      "rea-skill-linked-maintenance-",
+      "nre-skill-linked-maintenance-",
     );
     const installed = await installCanonicalSkill(directory, ["claude_code"]);
     expect(installed.ok).toBe(true);
@@ -208,7 +208,7 @@ describe("skill directory admission", () => {
     "reports every unreadable reference with a %s manifest",
     async (manifestState) => {
       const directory = await createTestTempDirectory(
-        "rea-skill-unreadable-reference-",
+        "nre-skill-unreadable-reference-",
       );
       expect((await installCanonicalSkill(directory, ["claude_code"])).ok).toBe(
         true,
@@ -261,7 +261,7 @@ describe("skill directory admission", () => {
   it.each(["root", "references"] as const)(
     "refuses a linked skill %s before changing any selected destination",
     async (linkedDirectory) => {
-      const home = await createTestTempDirectory("rea-skill-linked-root-");
+      const home = await createTestTempDirectory("nre-skill-linked-root-");
       const destinations = skillDestinations(home, ["shared", "claude_code"]);
       const selected = destinations.find(
         ({ client }) => client === "claude_code",
@@ -306,8 +306,8 @@ describe("skill directory admission", () => {
 
 describe("canonical skill transaction", () => {
   it("does not roll back files when backup preparation fails", async () => {
-    const home = await createTestTempDirectory("rea-skill-backup-failure-");
-    const root = join(home, ".agents/skills/reverse-engineer-anything");
+    const home = await createTestTempDirectory("nre-skill-backup-failure-");
+    const root = join(home, ".agents/skills/nano-reverse-engineer");
     const manifest = join(root, "SKILL.md");
     const connection = join(root, "references/connection-and-recovery.md");
     const original = "operator-owned manifest bytes\n";
@@ -346,9 +346,9 @@ describe("canonical skill transaction", () => {
     expect(writes).toEqual([]);
     expect(await readFile(manifest, "utf8")).toBe(original);
     expect(await readFile(connection, "utf8")).toBe(secondOriginal);
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${manifest}.nre.backup`, "utf8")).toBe(original);
     await expect(
-      readFile(`${connection}.rea.backup`, "utf8"),
+      readFile(`${connection}.nre.backup`, "utf8"),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -357,7 +357,7 @@ describe("canonical skill transaction", () => {
   });
 
   it("rolls back attempted writes independently and preserves original modes", async () => {
-    const home = await createTestTempDirectory("rea-skill-rollback-failure-");
+    const home = await createTestTempDirectory("nre-skill-rollback-failure-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Missing shared skill root");
     const root = destination.path;
@@ -405,9 +405,9 @@ describe("canonical skill transaction", () => {
       { path: native, reason: "injected rollback failure" },
     ]);
     expect(result.error.recoveryBackupPaths).toEqual([
-      `${manifest}.rea.backup`,
-      `${connection}.rea.backup`,
-      `${native}.rea.backup`,
+      `${manifest}.nre.backup`,
+      `${connection}.nre.backup`,
+      `${native}.nre.backup`,
     ]);
     expect(result.error.message).toContain(
       `${native} (injected rollback failure)`,
@@ -417,9 +417,9 @@ describe("canonical skill transaction", () => {
     await expectPermissionMode(manifest, 0o640);
     await expectPermissionMode(connection, 0o644);
     expect(await readFile(native, "utf8")).not.toBe("old native\n");
-    expect(await readFile(`${native}.rea.backup`, "utf8")).toBe("old native\n");
+    expect(await readFile(`${native}.nre.backup`, "utf8")).toBe("old native\n");
     expect(result.error.message).toContain(
-      `Existing-file backups remain at ${manifest}.rea.backup`,
+      `Existing-file backups remain at ${manifest}.nre.backup`,
     );
   });
 });
@@ -428,10 +428,10 @@ describe("canonical skill discovery", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "preserves an unreadable existing skill instead of treating it as absent",
     async () => {
-      const home = await createTestTempDirectory("rea-skill-unreadable-");
+      const home = await createTestTempDirectory("nre-skill-unreadable-");
       const destination = join(
         home,
-        ".agents/skills/reverse-engineer-anything/SKILL.md",
+        ".agents/skills/nano-reverse-engineer/SKILL.md",
       );
       const original = "existing private skill bytes\n";
       await mkdir(dirname(destination), { recursive: true });
@@ -446,7 +446,7 @@ describe("canonical skill discovery", () => {
       }
       expect(await readFile(destination, "utf8")).toBe(original);
       await expect(
-        readFile(`${destination}.rea.backup`, "utf8"),
+        readFile(`${destination}.nre.backup`, "utf8"),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });
@@ -454,19 +454,16 @@ describe("canonical skill discovery", () => {
   );
 
   it("installs only the selected Claude Code personal skill", async () => {
-    const home = await createTestTempDirectory("rea-claude-skill-");
+    const home = await createTestTempDirectory("nre-claude-skill-");
     const configDirectory = join(home, "claude-config");
     const skillsDirectory = join(configDirectory, "skills");
-    const claudeSkill = join(
-      skillsDirectory,
-      "reverse-engineer-anything/SKILL.md",
-    );
+    const claudeSkill = join(skillsDirectory, "nano-reverse-engineer/SKILL.md");
     await mkdir(configDirectory, { recursive: true });
     await writeFile(
       join(configDirectory, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           },
@@ -498,7 +495,7 @@ describe("canonical skill discovery", () => {
     ).toBe(false);
     await expect(access(claudeSkill)).resolves.toBeUndefined();
     await expect(
-      access(join(home, ".agents/skills/reverse-engineer-anything")),
+      access(join(home, ".agents/skills/nano-reverse-engineer")),
     ).rejects.toMatchObject({ code: "ENOENT" });
     expect(
       (
@@ -511,16 +508,13 @@ describe("canonical skill discovery", () => {
   });
 
   it("checks selected skill locations for independent drift", async () => {
-    const home = await createTestTempDirectory("rea-mixed-skill-");
+    const home = await createTestTempDirectory("nre-mixed-skill-");
     const sharedSkill = join(
       home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/nano-reverse-engineer/SKILL.md",
     );
     const claudeSkills = join(home, ".claude", "skills");
-    const claudeSkill = join(
-      claudeSkills,
-      "reverse-engineer-anything/SKILL.md",
-    );
+    const claudeSkill = join(claudeSkills, "nano-reverse-engineer/SKILL.md");
     const host = systemDoctorHost({
       environment: { HOME: home, USERPROFILE: home },
     });
@@ -553,10 +547,10 @@ describe("canonical skill discovery", () => {
 
 describe("canonical skill transaction", () => {
   it("backs up and upgrades a stale managed skill without touching siblings", async () => {
-    const home = await createTestTempDirectory("rea-skill-test-");
+    const home = await createTestTempDirectory("nre-skill-test-");
     const destination = join(
       home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/nano-reverse-engineer/SKILL.md",
     );
     const sibling = join(home, ".agents/skills/unrelated/SKILL.md");
     const nativeGuide = join(
@@ -575,14 +569,14 @@ describe("canonical skill transaction", () => {
       ok: true,
       value: "installed",
     });
-    expect(await readFile(`${destination}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${destination}.nre.backup`, "utf8")).toBe(
       "stale managed skill\n",
     );
     const installedSkill = await readFile(destination, "utf8");
     expect(installedSkill).toBe(
       await readFile(
         new URL(
-          "../../../skills/reverse-engineer-anything/SKILL.md",
+          "../../../skills/nano-reverse-engineer/SKILL.md",
           import.meta.url,
         ),
         "utf8",
@@ -592,7 +586,7 @@ describe("canonical skill transaction", () => {
       `version: "${PRODUCT_IDENTITY.skillVersion}"`,
     );
     await expectPermissionMode(destination, 0o640);
-    expect(await readFile(`${nativeGuide}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${nativeGuide}.nre.backup`, "utf8")).toBe(
       "stale filesystem-write permission grant\n",
     );
     for (const reference of [
@@ -610,7 +604,7 @@ describe("canonical skill transaction", () => {
       expect(installed).toBe(
         await readFile(
           new URL(
-            `../../../skills/reverse-engineer-anything/references/${reference}`,
+            `../../../skills/nano-reverse-engineer/references/${reference}`,
             import.meta.url,
           ),
           "utf8",
@@ -621,7 +615,7 @@ describe("canonical skill transaction", () => {
       );
     }
     expect(installedSkill).toContain(
-      "use normal repository tools and do not run REA",
+      "use normal repository tools and do not run NRE",
     );
     expect(installedSkill).toContain(
       `tool_count: ${String(TOOL_CONTRACTS.length)}`,
@@ -631,7 +625,7 @@ describe("canonical skill transaction", () => {
       await readFile(
         join(
           home,
-          ".agents/skills/reverse-engineer-anything/references/javascript-applications.md",
+          ".agents/skills/nano-reverse-engineer/references/javascript-applications.md",
         ),
         "utf8",
       ),
@@ -645,7 +639,7 @@ describe("canonical skill transaction", () => {
   });
 
   it("binds portable conformance to the generated skill bytes that setup installs", async () => {
-    const home = await createTestTempDirectory("rea-skill-commitment-");
+    const home = await createTestTempDirectory("nre-skill-commitment-");
     expect(await installCanonicalSkill(home)).toMatchObject({
       ok: true,
       value: "installed",
@@ -663,7 +657,7 @@ describe("canonical skill transaction", () => {
     const records = await Promise.all(
       paths.map(async (path) => {
         const bytes = await readFile(
-          join(home, ".agents/skills/reverse-engineer-anything", path),
+          join(home, ".agents/skills/nano-reverse-engineer", path),
         );
         return `${path}\0${createHash("sha256").update(bytes).digest("hex")}\n`;
       }),
@@ -683,17 +677,17 @@ describe("canonical skill transaction", () => {
         ),
       );
     expect(manifest.skill_digests).toContainEqual({
-      skill_id: "reverse-engineer-anything",
+      skill_id: "nano-reverse-engineer",
       sha256: createHash("sha256").update(records.join("")).digest("hex"),
     });
   });
 });
 
 it("doctor verifies installed instructions and references even when metadata is current", async () => {
-  const home = await createTestTempDirectory("rea-skill-doctor-");
+  const home = await createTestTempDirectory("nre-skill-doctor-");
   const destination = join(
     home,
-    ".agents/skills/reverse-engineer-anything/SKILL.md",
+    ".agents/skills/nano-reverse-engineer/SKILL.md",
   );
   const reference = join(
     dirname(destination),
@@ -738,7 +732,7 @@ it("doctor verifies installed instructions and references even when metadata is 
 });
 
 it("reads installed frontmatter metadata without treating body examples as identity", async () => {
-  const home = await createTestTempDirectory("rea-installed-metadata-");
+  const home = await createTestTempDirectory("nre-installed-metadata-");
   const installed = await installCanonicalSkill(home, ["claude_code"]);
   expect(installed.ok).toBe(true);
   const destination = skillDestinations(home, ["claude_code"])[0];
@@ -746,14 +740,14 @@ it("reads installed frontmatter metadata without treating body examples as ident
   const manifest = join(destination.path, "SKILL.md");
   await writeFile(
     manifest,
-    "---\nname: reverse-engineer-anything\nmetadata:\n  version: '49'\n  tool_count: -1\n---\n\n```yaml\nmetadata:\n  version: \"counterfeit\"\n  tool_count: 42\n```\n",
+    "---\nname: nano-reverse-engineer\nmetadata:\n  version: '49'\n  tool_count: -1\n---\n\n```yaml\nmetadata:\n  version: \"counterfeit\"\n  tool_count: 42\n```\n",
   );
   expect(await readInstalledSkillIdentity(home, ["claude_code"])).toMatchObject(
     { version: "49", toolCount: null, canonical: false },
   );
   await writeFile(
     manifest,
-    '---\nname: reverse-engineer-anything\n---\n\n```yaml\nmetadata:\n  version: "counterfeit"\n  tool_count: 42\n```\n',
+    '---\nname: nano-reverse-engineer\n---\n\n```yaml\nmetadata:\n  version: "counterfeit"\n  tool_count: 42\n```\n',
   );
   expect(await readInstalledSkillIdentity(home, ["claude_code"])).toMatchObject(
     { version: null, toolCount: null, canonical: false },

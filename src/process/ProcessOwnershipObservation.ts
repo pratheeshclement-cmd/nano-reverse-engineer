@@ -685,7 +685,7 @@ const lineageTokenMismatchReason = (
   observedRunId: string | undefined,
 ): string =>
   observedRunId === undefined
-    ? `REA_PROCESS_RUN_ID was absent from the readable environment for PID ${String(pid)}; process lineage ownership remains unverified`
+    ? `NRE_PROCESS_RUN_ID was absent from the readable environment for PID ${String(pid)}; process lineage ownership remains unverified`
     : "process lineage contains an unowned or PID-reused process";
 
 const unavailableLineage = (
@@ -1085,8 +1085,8 @@ export const createSystemProcessOwnershipHost = (
 ): ProcessOwnershipHost => {
   const darwinModuleCachePath =
     options.darwinModuleCachePath ??
-    hostEnvironment.REA_DARWIN_MODULE_CACHE_PATH;
-  const swiftcPath = hostEnvironment.REA_DARWIN_SWIFTC_PATH;
+    hostEnvironment.NRE_DARWIN_MODULE_CACHE_PATH;
+  const swiftcPath = hostEnvironment.NRE_DARWIN_SWIFTC_PATH;
   const darwinCompiler =
     options.darwinCompiler ??
     (swiftcPath === undefined || swiftcPath === ""
@@ -1407,7 +1407,7 @@ export const createSystemProcessOwnershipHost = (
           );
         const environment: Record<string, string> = Object.create(null);
         if (observation.runId !== undefined)
-          environment.REA_PROCESS_RUN_ID = observation.runId;
+          environment.NRE_PROCESS_RUN_ID = observation.runId;
         return environment;
       }
       const { stdout } = await execFileOutput(
@@ -1556,7 +1556,7 @@ export const signalProcessWithStartIdentity = async (
 /** Refusal before an owned launch when Linux `ps` is missing or incompatible. */
 export class LinuxOwnedProcessPrerequisiteError extends AnalysisCapabilityUnavailableError {
   constructor(cause: unknown) {
-    const reason = `Linux process ownership inspection requires a procps-compatible ps on REA's PATH before launching a child: ${errorMessage(cause)}`;
+    const reason = `Linux process ownership inspection requires a procps-compatible ps on NRE's PATH before launching a child: ${errorMessage(cause)}`;
     super("process-ownership", "prepare_owned_process", reason, {
       cause,
       userMessage: reason,
@@ -1564,7 +1564,7 @@ export class LinuxOwnedProcessPrerequisiteError extends AnalysisCapabilityUnavai
   }
 }
 
-/** Prepare native token inspection before REA launches a captured child. */
+/** Prepare native token inspection before NRE launches a captured child. */
 export const prepareProcessOwnershipInspection = async (
   signal?: AbortSignal,
 ): Promise<void> => {

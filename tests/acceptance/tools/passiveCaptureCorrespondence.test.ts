@@ -498,7 +498,7 @@ cliTest.for(cases.filter(({ name }) => cliCaseNames.has(name)))(
   "CLI preserves capture correspondence: $name",
   async (scenario, { cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-capture-correspondence-",
+      "nre-capture-correspondence-",
     );
     const paths = [
       join(directory, "before.json"),
@@ -514,7 +514,7 @@ cliTest.for(cases.filter(({ name }) => cliCaseNames.has(name)))(
     );
     const response = await cli.run({
       arguments: ["compare-web-captures", ...paths, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(0);
     expectComparison(response.json, scenario);

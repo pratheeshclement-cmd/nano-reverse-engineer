@@ -151,7 +151,7 @@ it("reads a 309 crash report, uppercase UUID, and lossless register", () => {
   expect(report.images[1]?.uuid_unknown).toBe(true);
   expect(report.threads[0]?.frames[0]).toMatchObject({
     role: "faulting_instruction",
-    recorded_symbol: "rea_fixture_fault",
+    recorded_symbol: "nre_fixture_fault",
   });
   expect(report.threads[0]?.registers[0]).toMatchObject({
     name: "x0",
@@ -432,11 +432,11 @@ it("keeps the documented terminating process, parent pid and metadata members", 
 it("keeps the recorded image name and symbol offset", () => {
   const parsed = report({});
   expect(parsed.images.map((image) => image.name)).toEqual([
-    "rea-crash-fixture",
+    "nre-crash-fixture",
     null,
   ]);
   expect(parsed.threads[0]?.frames[0]).toMatchObject({
-    recorded_symbol: "rea_fixture_fault",
+    recorded_symbol: "nre_fixture_fault",
     symbol_location: { decimal: "12", hex: "0xc" },
   });
   expect(parsed.threads[1]?.frames[0]?.symbol_location).toEqual({
@@ -802,11 +802,11 @@ it("records wrong-type rows, scalars and registers with their source path", () =
 });
 
 it("refuses invalid UTF-8 instead of replacing bytes", () => {
-  const valid = appleIpsBytes({ procName: "rea-é" });
+  const valid = appleIpsBytes({ procName: "nre-é" });
   const offset = valid.indexOf(Buffer.from("é", "utf8"));
   const corrupt = Buffer.from(valid);
   corrupt[offset] = 0xff;
-  expect(parse(valid).process.name).toBe("rea-é");
+  expect(parse(valid).process.name).toBe("nre-é");
   expect(() => parse(corrupt)).toThrow(
     expect.objectContaining({
       kind: "malformed",

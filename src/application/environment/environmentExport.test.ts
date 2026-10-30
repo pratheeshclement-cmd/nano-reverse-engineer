@@ -53,7 +53,7 @@ const prepare = async (prefix: string) => {
 
 describe("readEnvironmentExportInputs", () => {
   it("reads each file once as the bytes on disk and the value they parse to", async () => {
-    const root = await createTestTempDirectory("rea-environment-inputs-");
+    const root = await createTestTempDirectory("nre-environment-inputs-");
     const fixture = environmentServeFixture();
     const files = await writeEnvironmentServeFiles(root, fixture);
     const inputs = await readEnvironmentExportInputs(
@@ -79,7 +79,7 @@ describe("readEnvironmentExportInputs", () => {
   });
 
   it("refuses inline JSON, a directory and a file that is not JSON by role", async () => {
-    const root = await createTestTempDirectory("rea-environment-inputs-bad-");
+    const root = await createTestTempDirectory("nre-environment-inputs-bad-");
     const files = await writeEnvironmentServeFiles(root);
     const inline = await readEnvironmentExportInputs(
       await readFile(files.manifestPath, "utf8"),
@@ -123,7 +123,7 @@ describe("readEnvironmentExportInputs", () => {
 const registerBundlePublicationCases = () => {
   it("writes the bundle into an absent directory with the read bytes copied unchanged", async () => {
     const { root, files, input, directory } = await prepare(
-      "rea-environment-export-",
+      "nre-environment-export-",
     );
     const exported = await exportEnvironmentBundle({ ...input, directory });
     if (!exported.ok) throw exported.error;
@@ -138,7 +138,7 @@ const registerBundlePublicationCases = () => {
       state: { served: true, evidence_id: expect.stringMatching(/^ev_/u) },
       package_source: {
         kind: "registry",
-        specifier: `rea-agents@${PACKAGE_METADATA.version}`,
+        specifier: `nano-reverse-engineer@${PACKAGE_METADATA.version}`,
       },
     });
     const written = exported.value.files.map((file) => file.path).sort();
@@ -175,9 +175,9 @@ const registerBundlePublicationCases = () => {
 
   it("copies the package tarball beside the Dockerfile and reports it as the package source", async () => {
     const { root, input, directory } = await prepare(
-      "rea-environment-export-tarball-",
+      "nre-environment-export-tarball-",
     );
-    const tarball = join(root, "rea-agents-0.0.0.tgz");
+    const tarball = join(root, "nano-reverse-engineer-0.0.0.tgz");
     await writeFile(tarball, Buffer.from([0x1f, 0x8b, 8, 0, 1, 2, 3]));
     const exported = await exportEnvironmentBundle({
       ...input,
@@ -191,25 +191,27 @@ const registerBundlePublicationCases = () => {
       path: tarball,
     });
     expect(exported.value.files).toContainEqual({
-      path: "envs/replay-copy/rea-agents.tgz",
+      path: "envs/replay-copy/nano-reverse-engineer.tgz",
       bytes: 7,
     });
     expect(
       Buffer.compare(
-        await readFile(join(directory, "envs/replay-copy/rea-agents.tgz")),
+        await readFile(
+          join(directory, "envs/replay-copy/nano-reverse-engineer.tgz"),
+        ),
         await readFile(tarball),
       ),
     ).toBe(0);
     expect(
       await readFile(join(directory, "envs/replay-copy/Dockerfile"), "utf8"),
-    ).toContain("COPY rea-agents.tgz /tmp/");
+    ).toContain("COPY nano-reverse-engineer.tgz /tmp/");
   });
 };
 
 const registerBundleDestinationAdmissionCases = () => {
   it("refuses a non-empty directory, a file path and a missing tarball before writing anything", async () => {
     const { root, input, directory } = await prepare(
-      "rea-environment-export-refusals-",
+      "nre-environment-export-refusals-",
     );
     await mkdir(directory);
     await writeFile(join(directory, "keep.txt"), "existing");
@@ -258,7 +260,7 @@ const registerBundleDestinationAdmissionCases = () => {
     "distinguishes denied output writing from denied input reading and recovers with the same inputs",
     async () => {
       const { input, directory, files } = await prepare(
-        "rea-environment-export-denied-",
+        "nre-environment-export-denied-",
       );
       await mkdir(directory, { mode: 0o500 });
       try {
@@ -303,7 +305,7 @@ const registerBundleDestinationAdmissionCases = () => {
   );
 
   it("accepts an existing empty directory", async () => {
-    const { input, directory } = await prepare("rea-environment-export-empty-");
+    const { input, directory } = await prepare("nre-environment-export-empty-");
     await mkdir(directory);
     const exported = await exportEnvironmentBundle({ ...input, directory });
     expect(exported.ok).toBe(true);
@@ -321,7 +323,7 @@ describe("exportEnvironmentBundle file modes", () => {
     "writes the captured manifest and Evidence copies readable by their owner only",
     async () => {
       const { input, directory } = await prepare(
-        "rea-environment-export-mode-",
+        "nre-environment-export-mode-",
       );
       const exported = await exportEnvironmentBundle({ ...input, directory });
       if (!exported.ok) throw exported.error;

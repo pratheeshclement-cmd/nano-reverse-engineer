@@ -6,7 +6,7 @@ with snap Chromium for the recording round.
 ## Diagnosis
 
 Claude Code (`claude-sonnet-5-5`) built an environment of each of seven applications from the same prompt, once with
-REA main `5aa23c3d` (skill 50) and once with #7332 at `7d01a5d5` (skill 53). Each bundle's write tasks ran with
+NRE main `5aa23c3d` (skill 50) and once with #7332 at `7d01a5d5` (skill 53). Each bundle's write tasks ran with
 `fireworks_ai/gpt-oss-120b` and `fireworks_ai/glm-5p3-flash`, which scored alike:
 
 | Application | Write tasks | Main    | #7332   |
@@ -21,7 +21,7 @@ REA main `5aa23c3d` (skill 50) and once with #7332 at `7d01a5d5` (skill 53). Eac
 | Total       | 20          | 9/20    | 12/20   |
 
 Served writes were 14 and 25. Recorded again, Homebox and EspoCRM gave main 2/2 and 1/3 and #7332 2/2 and 3/3: the
-first losses were the agents' runs, not REA. Built with both versions, none of the 18 recordings served fewer writes
+first losses were the agents' runs, not NRE. Built with both versions, none of the 18 recordings served fewer writes
 with #7332 (44 and 53 in all).
 
 Replaying #7332's recordings with failing checks and refusals logged gave the causes this branch takes: EspoCRM's

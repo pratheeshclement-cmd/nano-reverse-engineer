@@ -22,7 +22,7 @@ it.each(
 )(
   "preserves verified carrier binding through final cancellation (matching=$matchingDigest, source=$sourceState)",
   async ({ matchingDigest, sourceState }) => {
-    const root = await createTestTempDirectory("rea-pck-binding-finalization-");
+    const root = await createTestTempDirectory("nre-pck-binding-finalization-");
     const path = join(root, "game.pck");
     const bytes = buildGodotPck(4, [
       { path: "res://main.gd", data: "extends Node\n" },
@@ -90,7 +90,7 @@ it.each(
 );
 
 it("binds extraction to the original carrier even if a changed directory names identical payloads", async () => {
-  const root = await createTestTempDirectory("rea-pck-extraction-identity-");
+  const root = await createTestTempDirectory("nre-pck-extraction-identity-");
   const source = join(root, "game.pck");
   const bytes = buildGodotPck(4, [{ path: "res://a.txt", data: "unchanged" }]);
   await writeFile(source, bytes);
@@ -117,7 +117,7 @@ it("binds extraction to the original carrier even if a changed directory names i
 });
 
 it("preserves native defaults and explicit native selection for embedded carriers", async () => {
-  const root = await createTestTempDirectory("rea-pck-native-selection-");
+  const root = await createTestTempDirectory("nre-pck-native-selection-");
   const source = join(root, "game.x86_64");
   const pack = buildGodotPck(4, [{ path: "res://a.txt", data: "a" }]);
   await writeFile(

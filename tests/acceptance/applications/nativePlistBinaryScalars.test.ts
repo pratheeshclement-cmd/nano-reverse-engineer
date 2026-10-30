@@ -82,7 +82,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "preserves binary plist scalars through compiled CLI and stdio MCP",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-plist-binary-scalars-");
+        const root = await createTestTempDirectory("nre-plist-binary-scalars-");
         const target = join(root, "target");
         const binaryPath = join(root, "selected-binary.plist");
         const xmlPath = join(root, "selected-xml.plist");
@@ -98,8 +98,8 @@ describe.skipIf(process.platform !== "darwin")(
         const environment = {
           HOME: root,
           USERPROFILE: root,
-          REA_LOG_LEVEL: "silent",
-          REA_ANALYSIS_PROVIDER: "auto",
+          NRE_LOG_LEVEL: "silent",
+          NRE_ANALYSIS_PROVIDER: "auto",
         };
 
         const inspectCli = async (path: string) => {

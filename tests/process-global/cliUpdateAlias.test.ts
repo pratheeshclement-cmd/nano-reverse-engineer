@@ -34,7 +34,7 @@ const current = {
 
 beforeEach(async () => {
   vi.clearAllMocks();
-  const root = await createTestTempDirectory("rea-update-api-sandbox-");
+  const root = await createTestTempDirectory("nre-update-api-sandbox-");
   await writeFile(
     join(root, process.platform === "win32" ? "npm.cmd" : "npm"),
     process.platform === "win32"
@@ -91,9 +91,9 @@ const serve = async (
 it.each(["json", "jsonl", "yaml", "toon", "md"])(
   "uses the verified update command and selected environment through direct serve with %s output",
   async (format) => {
-    const selected = { REA_SELECTED_UPDATE: "original" };
+    const selected = { NRE_SELECTED_UPDATE: "original" };
     const cli = createCli(selected);
-    selected.REA_SELECTED_UPDATE = "changed";
+    selected.NRE_SELECTED_UPDATE = "changed";
     const expected = await serve(cli, ["update", "--format", format]);
     const actual = await serve(cli, ["--format", format, "--update"]);
     expect(actual).toEqual(expected);
@@ -106,7 +106,7 @@ it.each(["json", "jsonl", "yaml", "toon", "md"])(
       "structured",
     );
     expect(mocks.host).toHaveBeenLastCalledWith(undefined, undefined, {
-      REA_SELECTED_UPDATE: "original",
+      NRE_SELECTED_UPDATE: "original",
     });
     expect(mocks.dependencyInstall).not.toHaveBeenCalled();
   },
@@ -159,7 +159,7 @@ it("refuses ambiguous built-in installation rather than selecting another update
   expect(result.exitCode).toBe(1);
   expect(JSON.parse(result.stdout)).toMatchObject({
     code: "UPDATE_FAILED",
-    message: expect.stringContaining("rea update"),
+    message: expect.stringContaining("nre update"),
   });
   expect(mocks.run).not.toHaveBeenCalled();
   expect(mocks.dependencyInstall).not.toHaveBeenCalled();

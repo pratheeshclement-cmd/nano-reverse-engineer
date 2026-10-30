@@ -1,6 +1,6 @@
 # Build an environment in one step
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
@@ -11,7 +11,7 @@ published capture-built environments all use the same four, and a local capture
 is named after its origin host (`127-0-0-1-3105`). Nothing reports which tools
 an environment serves from its state, or why a write tool is withheld.
 
-`rea environment-build <capture> [directory]` builds the bundle in one offline
+`nre environment-build <capture> [directory]` builds the bundle in one offline
 step and reports what it serves. A new `environment-coverage` analysis view
 reports the same summary for any capture, so an agent can check a recording
 before building.

@@ -55,8 +55,8 @@ const observe = (digit: string, text: string) =>
       format: "mach-o",
     },
     {
-      id: "rea-workflow",
-      name: "REA composed investigation workflow",
+      id: "nre-workflow",
+      name: "NRE composed investigation workflow",
       version: "1",
     },
     {

@@ -200,8 +200,8 @@ test.each(["unavailable", "unknown"] as const)(
       });
       expect(check?.remediation).toContain(
         state === "unavailable"
-          ? "rea setup --install-hopper"
-          : "Retry rea doctor",
+          ? "nre setup --install-hopper"
+          : "Retry nre doctor",
       );
     } finally {
       python.mockRestore();
@@ -423,14 +423,14 @@ it("exposes jadx through the doctor provider selector", () => {
   expect(DOCTOR_PROVIDER_IDS).toContain("jadx");
 });
 
-it("carries a validated REA_JADX_MCP_JAR into the provider registration environment", async () => {
-  const root = await createTestTempDirectory("rea-jadx-registration-");
+it("carries a validated NRE_JADX_MCP_JAR into the provider registration environment", async () => {
+  const root = await createTestTempDirectory("nre-jadx-registration-");
   const jar = join(root, "jadx-headless-mcp.jar");
   const javaHome = await createFakeJdk(root);
   await writeJadxJarInventory(jar);
 
   const host = createSystemDoctorHost({
-    REA_JADX_MCP_JAR: jar,
+    NRE_JADX_MCP_JAR: jar,
     JAVA_HOME: javaHome,
   });
   const inspections = await host.providerInspections?.();
@@ -438,30 +438,30 @@ it("carries a validated REA_JADX_MCP_JAR into the provider registration environm
 
   const environment = providerRegistrationEnvironment(inspections ?? []);
   expect(environment).toMatchObject({
-    REA_JADX_MCP_JAR: await realpath(jar),
+    NRE_JADX_MCP_JAR: await realpath(jar),
   });
 });
 
-it("omits REA_JADX_MCP_JAR from the provider registration environment when it is not configured", async () => {
+it("omits NRE_JADX_MCP_JAR from the provider registration environment when it is not configured", async () => {
   const host = createSystemDoctorHost({});
   const inspections = await host.providerInspections?.();
 
   const environment = providerRegistrationEnvironment(inspections ?? []);
-  expect(environment).not.toHaveProperty("REA_JADX_MCP_JAR");
+  expect(environment).not.toHaveProperty("NRE_JADX_MCP_JAR");
 });
 
 it("shares one parsed IDA registration between timeout-budget and doctor projections", async () => {
-  const root = await createTestTempDirectory("rea-ida-registration-fact-");
+  const root = await createTestTempDirectory("nre-ida-registration-fact-");
   const registration = join(root, "registration.json");
   await writeFile(
     registration,
     JSON.stringify({ command: "fixture", timeoutMs: 3210 }),
   );
-  const host = createSystemDoctorHost({ REA_IDA_MCP_CONFIG: registration });
+  const host = createSystemDoctorHost({ NRE_IDA_MCP_CONFIG: registration });
   try {
     expect(
       await host.resolveProviderRequestBudget?.("ida", {
-        REA_IDA_MCP_CONFIG: registration,
+        NRE_IDA_MCP_CONFIG: registration,
       }),
     ).toEqual(ok(3210));
     await writeFile(registration, "not JSON anymore");
@@ -476,15 +476,15 @@ it("shares one parsed IDA registration between timeout-budget and doctor project
   }
 });
 
-it("carries a validated REA_KUNA_COMMAND into the provider registration environment", async () => {
+it("carries a validated NRE_KUNA_COMMAND into the provider registration environment", async () => {
   expect(DOCTOR_PROVIDER_IDS).toContain("kuna");
-  const root = await createTestTempDirectory("rea-kuna-registration-");
+  const root = await createTestTempDirectory("nre-kuna-registration-");
   const kuna = join(root, "kuna");
   await writeFile(kuna, "#!/bin/sh\nprintf 'kuna 1.833\\n'\n", { mode: 0o700 });
 
   const inspections = await createSystemDoctorHost({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
   }).providerInspections?.();
 
   expect(inspections?.find(({ id }) => id === "kuna")).toMatchObject({
@@ -492,8 +492,8 @@ it("carries a validated REA_KUNA_COMMAND into the provider registration environm
     providerVersion: "1.833",
   });
   expect(providerRegistrationEnvironment(inspections ?? [])).toMatchObject({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
   });
 });
 

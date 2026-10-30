@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "compiled CLI retains a standalone keyed archive alias and accepts either admitted basename",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-selected-cli-");
+    const root = await createTestTempDirectory("nre-keyed-selected-cli-");
     const stored = join(root, "stored.plist");
     const selected = join(root, "chosen.plist");
     await writeFile(
@@ -31,7 +31,7 @@ cliTest.skipIf(process.platform === "win32")(
           ...(selection === undefined ? [] : [selection]),
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+        environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
       });
       expect(output.exitCode, output.stderr).toBe(0);
       const evidence = parseEvidence(output.json);

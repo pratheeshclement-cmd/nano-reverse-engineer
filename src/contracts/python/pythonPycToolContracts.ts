@@ -21,7 +21,7 @@ export const inspectPythonPycRequestSchema = z
     inspectPythonPycInputSchema.extend(pythonPycCompleteDeliveryShape),
     inspectPythonPycInputSchema.extend(pythonPycSummaryDeliveryShape),
   ])
-  .meta({ "x-rea-root-discriminator": "detail" });
+  .meta({ "x-nre-root-discriminator": "detail" });
 
 /** Static CPython pyc inspection is independent of active native-analysis providers. */
 export const PYTHON_PYC_TOOL_CONTRACTS = [

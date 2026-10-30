@@ -204,7 +204,7 @@ export const parseZipTail = (
   // comment) leave the archive's directory undetermined: whichever a reader
   // picks, the other may be attacker-placed. apksigner and Android take the
   // one nearest the end; that choice can report a signed APK as unsigned, so
-  // REA deliberately refuses instead (stricter than apksigner: a crafted APK
+  // NRE deliberately refuses instead (stricter than apksigner: a crafted APK
   // that apksigner verifies may be refused here, never misreported).
   if (candidates.length > 1)
     return err({

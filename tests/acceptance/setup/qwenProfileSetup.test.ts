@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "keeps Qwen profile registration and shared skill consistent through setup, doctor and uninstall",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-qwen-profile-");
+    const root = await createTestTempDirectory("nre-qwen-profile-");
     const home = join(root, "account");
     const profile = join(root, "selected profile");
     const settings = join(profile, "settings.json");
@@ -17,7 +17,7 @@ cliTest(
       home,
       ".agents",
       "skills",
-      "reverse-engineer-anything",
+      "nano-reverse-engineer",
       "SKILL.md",
     );
     const environment = { USERPROFILE: home, QWEN_HOME: profile };
@@ -36,7 +36,7 @@ cliTest(
         { kind: "configure_client", target: settings },
         {
           kind: "install_skill",
-          target: join(home, ".agents", "skills", "reverse-engineer-anything"),
+          target: join(home, ".agents", "skills", "nano-reverse-engineer"),
         },
       ],
     });
@@ -46,21 +46,21 @@ cliTest(
     const installed = await run(["setup", "--client", "qwen_code", "--yes"]);
     expect(installed.exitCode, installed.stderr).toBe(0);
     expect(installed.json).toMatchObject({ status: "ready" });
-    expect(await readFile(`${settings}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settings}.nre.backup`, "utf8")).toBe(original);
     const configured = await readFile(settings, "utf8");
     expect(configured).toContain("// Keep my configuration.");
     expect(parse(configured)).toMatchObject({
       model: { name: "existing" },
       mcpServers: {
         other: { command: "other-server" },
-        rea: {
+        nre: {
           command: process.execPath,
-          args: [resolve("scripts/rea.mjs"), "mcp"],
+          args: [resolve("scripts/nre.mjs"), "mcp"],
         },
       },
     });
     expect(await readFile(skill, "utf8")).toContain(
-      "name: reverse-engineer-anything",
+      "name: nano-reverse-engineer",
     );
 
     const doctor = await run(["doctor", "--client", "qwen_code", "--skill"]);

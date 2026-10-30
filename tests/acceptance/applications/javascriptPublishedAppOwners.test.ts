@@ -46,7 +46,7 @@ cliTest.for(
   async (test, { cli }) => {
     const { surface, body, changed } = test;
     const esm = "esm" in test && test.esm;
-    const root = await createTestTempDirectory("rea-published-app-owner-");
+    const root = await createTestTempDirectory("nre-published-app-owner-");
     const prefix = esm
       ? 'import {app} from "electron";'
       : 'const {app}=require("electron");';

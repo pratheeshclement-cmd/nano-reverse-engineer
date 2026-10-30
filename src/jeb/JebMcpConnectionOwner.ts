@@ -54,7 +54,7 @@ export class JebMcpAcquisitionCleanupFailure extends ProviderCleanupError {
 /** One SDK client owns its attached transport; failed cleanup retains both identities. */
 export class JebMcpConnectionOwner {
   readonly client = new StructuredContentMcpClient({
-    name: "rea-jeb",
+    name: "nre-jeb",
     version: "0.0.0",
   });
   readonly transport: StreamableHTTPClientTransport;

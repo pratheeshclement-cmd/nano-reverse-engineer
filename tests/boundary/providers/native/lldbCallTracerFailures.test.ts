@@ -117,7 +117,7 @@ const configSchema = z.object({
 const configFromArguments = async (arguments_: readonly string[]) => {
   const command = arguments_.at(-1);
   const match =
-    command === undefined ? null : /^rea_trace (.+)$/u.exec(command);
+    command === undefined ? null : /^nre_trace (.+)$/u.exec(command);
   if (match?.[1] === undefined)
     throw new Error("fake LLDB launcher did not receive a tracer config path");
   const raw: unknown = JSON.parse(await readFile(match[1], "utf8"));
@@ -696,12 +696,12 @@ describe("LLDB primary outcome during owned process cleanup", () => {
     "preserves a physical bridge failure and no-target proof when %s arrives during successful process cleanup",
     async (interruption) => {
       const fixtureRoot = await mkdtemp(
-        join(tmpdir(), "rea-lldb-primary-outcome-"),
+        join(tmpdir(), "nre-lldb-primary-outcome-"),
       );
       const fakeLldb = join(fixtureRoot, "fake-lldb");
       await writeFile(
         fakeLldb,
-        `#!${process.execPath}\nconst fs = require("node:fs");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("rea_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("rea_trace ".length), "utf8"));\nfs.writeFileSync(config.result_path, JSON.stringify({ status: "target-error", error: "fixture physical bridge failure", target_process_created: false }));\nprocess.exit(17);\n`,
+        `#!${process.execPath}\nconst fs = require("node:fs");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("nre_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("nre_trace ".length), "utf8"));\nfs.writeFileSync(config.result_path, JSON.stringify({ status: "target-error", error: "fixture physical bridge failure", target_process_created: false }));\nprocess.exit(17);\n`,
         { mode: 0o700 },
       );
 
@@ -785,12 +785,12 @@ describe("LLDB process exit while output is still open", () => {
     "keeps a nonzero leader exit observed before cancellation while inherited output is still open",
     async () => {
       const fixtureRoot = await mkdtemp(
-        join(tmpdir(), "rea-lldb-exit-before-cancel-"),
+        join(tmpdir(), "nre-lldb-exit-before-cancel-"),
       );
       const fakeLldb = join(fixtureRoot, "fake-lldb");
       await writeFile(
         fakeLldb,
-        `#!${process.execPath}\nconst fs = require("node:fs");\nconst { spawn } = require("node:child_process");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("rea_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("rea_trace ".length), "utf8"));\nconst child = spawn(process.execPath, ["-e", "setTimeout(() => {}, 60000)"], { stdio: ["ignore", "inherit", "inherit"] });\nchild.once("error", () => process.exit(92));\nchild.once("spawn", () => { fs.writeFileSync(config.result_path, JSON.stringify({ status: "target-error", error: "fixture leader failure before drain", target_process_created: false })); process.exit(17); });\n`,
+        `#!${process.execPath}\nconst fs = require("node:fs");\nconst { spawn } = require("node:child_process");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("nre_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("nre_trace ".length), "utf8"));\nconst child = spawn(process.execPath, ["-e", "setTimeout(() => {}, 60000)"], { stdio: ["ignore", "inherit", "inherit"] });\nchild.once("error", () => process.exit(92));\nchild.once("spawn", () => { fs.writeFileSync(config.result_path, JSON.stringify({ status: "target-error", error: "fixture leader failure before drain", target_process_created: false })); process.exit(17); });\n`,
         { mode: 0o700 },
       );
 
@@ -863,14 +863,14 @@ describe("LLDB process exit while output is still open", () => {
 
 /**
  * A fake LLDB that publishes its bridge result and exits 0, as `lldb --batch`
- * does after rea_trace, while an inherited child keeps its output open.
+ * does after nre_trace, while an inherited child keeps its output open.
  */
 const publishedResultLldb = async (result: string) => {
-  const fixtureRoot = await mkdtemp(join(tmpdir(), "rea-lldb-published-"));
+  const fixtureRoot = await mkdtemp(join(tmpdir(), "nre-lldb-published-"));
   const fakeLldb = join(fixtureRoot, "fake-lldb");
   await writeFile(
     fakeLldb,
-    `#!${process.execPath}\nconst fs = require("node:fs");\nconst { spawn } = require("node:child_process");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("rea_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("rea_trace ".length), "utf8"));\nconst child = spawn(process.execPath, ["-e", "setTimeout(() => {}, 60000)"], { stdio: ["ignore", "inherit", "inherit"] });\nchild.once("error", () => process.exit(92));\nchild.once("spawn", () => { fs.writeFileSync(config.result_path, ${JSON.stringify(result)}); process.exit(0); });\n`,
+    `#!${process.execPath}\nconst fs = require("node:fs");\nconst { spawn } = require("node:child_process");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("nre_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("nre_trace ".length), "utf8"));\nconst child = spawn(process.execPath, ["-e", "setTimeout(() => {}, 60000)"], { stdio: ["ignore", "inherit", "inherit"] });\nchild.once("error", () => process.exit(92));\nchild.once("spawn", () => { fs.writeFileSync(config.result_path, ${JSON.stringify(result)}); process.exit(0); });\n`,
     { mode: 0o700 },
   );
   return { fixtureRoot, fakeLldb };
@@ -993,7 +993,7 @@ describe("LLDB target proof published before interruption", () => {
               "lldb-process-group",
             );
             retainedRoot = result.error.cleanupResources.find((resource) =>
-              resource.includes("rea-lldb-"),
+              resource.includes("nre-lldb-"),
             );
             const close = await tracer.close();
             expect(close.ok).toBe(false);
@@ -1055,7 +1055,7 @@ describe("LLDB target proof read by cleanup retry", () => {
             ]),
           );
           retainedRoot = result.error.cleanupResources.find((resource) =>
-            resource.includes("rea-lldb-"),
+            resource.includes("nre-lldb-"),
           );
           expect(retainedRoot).toBeDefined();
 
@@ -1089,7 +1089,7 @@ describe("LLDB target proof read by cleanup retry", () => {
 
 const completedOutputCloseFixture = async () => {
   const fixtureRoot = await mkdtemp(
-    join(tmpdir(), "rea-lldb-complete-output-"),
+    join(tmpdir(), "nre-lldb-complete-output-"),
   );
   const fakeLldb = join(fixtureRoot, "fake-lldb");
   const completedPidPath = join(fixtureRoot, "completed-target.pid");
@@ -1106,8 +1106,8 @@ const completedOutputCloseFixture = async () => {
 const fs = require("node:fs");
 const { spawnSync } = require("node:child_process");
 const command = process.argv.at(-1);
-if (!command?.startsWith("rea_trace ")) process.exit(91);
-const config = JSON.parse(fs.readFileSync(command.slice("rea_trace ".length), "utf8"));
+if (!command?.startsWith("nre_trace ")) process.exit(91);
+const config = JSON.parse(fs.readFileSync(command.slice("nre_trace ".length), "utf8"));
 const child = spawnSync(process.execPath, ["-e", ""]);
 const result = ${JSON.stringify(completed)};
 result.pid = child.pid;
@@ -1217,12 +1217,12 @@ describe("LLDB process exit at output-close loop completion", () => {
     "keeps a nonzero exit when output closure and cancellation meet at loop exit",
     async () => {
       const fixtureRoot = await mkdtemp(
-        join(tmpdir(), "rea-lldb-closed-output-cancel-"),
+        join(tmpdir(), "nre-lldb-closed-output-cancel-"),
       );
       const fakeLldb = join(fixtureRoot, "fake-lldb");
       await writeFile(
         fakeLldb,
-        `#!${process.execPath}\nconst fs = require("node:fs");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("rea_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("rea_trace ".length), "utf8"));\nfs.writeFileSync(config.result_path, JSON.stringify({ status: "target-error", error: "fixture exit before closed-output cancellation", target_process_created: false }));\nprocess.exit(17);\n`,
+        `#!${process.execPath}\nconst fs = require("node:fs");\nconst command = process.argv.at(-1);\nif (!command?.startsWith("nre_trace ")) process.exit(91);\nconst config = JSON.parse(fs.readFileSync(command.slice("nre_trace ".length), "utf8"));\nfs.writeFileSync(config.result_path, JSON.stringify({ status: "target-error", error: "fixture exit before closed-output cancellation", target_process_created: false }));\nprocess.exit(17);\n`,
         { mode: 0o700 },
       );
 

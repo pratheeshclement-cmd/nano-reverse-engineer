@@ -69,7 +69,7 @@ test.skipIf(process.platform === "win32")(
     const closed = barrier();
     let exports = 0;
     const { cacheRoot, open } = await session(
-      "rea-kuna-reader-eviction-",
+      "nre-kuna-reader-eviction-",
       {},
       {},
       async (options) => {

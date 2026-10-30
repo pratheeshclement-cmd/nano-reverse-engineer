@@ -170,7 +170,7 @@ export class PwntoolsDecoder<
     readonly launcher?: PwntoolsLauncher,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-artifact-decoder-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "nre-artifact-decoder-" }),
   ) {
     this.identity = profile.identity;
   }
@@ -276,7 +276,7 @@ export class PwntoolsDecoder<
     let result: Result<Report, AnalysisError>;
     let replyFinalization: AnalysisError | undefined;
     let phase: "configuration" | "artifact-read" | "decoder" = "configuration";
-    const executablePath = environment.REA_PWNTOOLS_PYTHON ?? "";
+    const executablePath = environment.NRE_PWNTOOLS_PYTHON ?? "";
     let selectedPath = executablePath;
     const failure = (cause: unknown) =>
       pwntoolsDecoderFailure(
@@ -301,7 +301,7 @@ export class PwntoolsDecoder<
         );
       if (!isAbsolute(selectedPath))
         throw pwntoolsUnavailable(
-          "Set REA_PWNTOOLS_PYTHON to an absolute caller-supplied Python executable with pwntools 4.15.0, pyelftools 0.33 and Unicorn 2.1.2; REA never installs Python or packages.",
+          "Set NRE_PWNTOOLS_PYTHON to an absolute caller-supplied Python executable with pwntools 4.15.0, pyelftools 0.33 and Unicorn 2.1.2; NRE never installs Python or packages.",
           selectedPath,
           undefined,
           undefined,
@@ -326,7 +326,7 @@ export class PwntoolsDecoder<
           undefined,
           {
             ...context,
-            configurationKey: "REA_PWNTOOLS_MAX_INPUT_BYTES",
+            configurationKey: "NRE_PWNTOOLS_MAX_INPUT_BYTES",
           },
         );
       phase = "artifact-read";
@@ -379,7 +379,7 @@ export class PwntoolsDecoder<
       const execution = await this.#runCommand(
         timeoutMs,
         {
-          command: environment.REA_PWNTOOLS_PYTHON ?? "",
+          command: environment.NRE_PWNTOOLS_PYTHON ?? "",
           arguments: [
             "-I",
             fileURLToPath(this.profile.bridge),
@@ -387,7 +387,7 @@ export class PwntoolsDecoder<
             requestPath,
           ],
           cwd: root.path,
-          runId: `rea-artifact-decoder-${randomUUID()}`,
+          runId: `nre-artifact-decoder-${randomUUID()}`,
           hostEnvironment: {
             ...environment,
             PWNLIB_NOTERM: "1",
@@ -514,7 +514,7 @@ export class PwntoolsDecoder<
         if (reply.reason === "unavailable")
           throw pwntoolsUnavailable(
             reply.message,
-            environment.REA_PWNTOOLS_PYTHON ?? "",
+            environment.NRE_PWNTOOLS_PYTHON ?? "",
             undefined,
             capturedOutput,
             context,

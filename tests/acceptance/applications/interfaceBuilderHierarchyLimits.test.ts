@@ -115,7 +115,7 @@ cliTest.for(cases)(
       omittedEdges,
       unresolvedEdge,
     } = testCase;
-    const root = await createTestTempDirectory("rea-ib-hierarchy-limits-");
+    const root = await createTestTempDirectory("nre-ib-hierarchy-limits-");
     const app = join(root, "Fixture.app");
     const contents = join(app, "Contents");
     const resources = join(contents, "Resources");
@@ -140,7 +140,7 @@ cliTest.for(cases)(
         "2",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stdout + output.stderr).toBe(0);
     const evidence = parseEvidence(output.json);
@@ -189,7 +189,7 @@ cliTest.for(cases)(
     );
     const summaryOutput = await cli.run({
       arguments: ["inspect-analysis-view", viewPath, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(
       summaryOutput.exitCode,

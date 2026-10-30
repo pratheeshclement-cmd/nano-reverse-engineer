@@ -28,7 +28,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { analyzeJavaScriptApplication } from "../../support/javascriptApplicationScope.js";
 
 const createFixture = async () => {
-  const root = await createTestTempDirectory("rea-asar-header-admission-");
+  const root = await createTestTempDirectory("nre-asar-header-admission-");
   const source = join(root, "source");
   const archive = join(root, "fixture.asar");
   await mkdir(source);
@@ -121,7 +121,7 @@ it("rejects contradictory and unsigned-boundary extents before decoding", async 
 });
 
 it("separates the header decode budget from container validity at its exact boundary", async () => {
-  const root = await createTestTempDirectory("rea-asar-header-budget-");
+  const root = await createTestTempDirectory("nre-asar-header-budget-");
   const archive = join(root, "budget.asar");
   expect(DEFAULT_ASAR_MAX_HEADER_BYTES).toBe(16 * 1024 * 1024);
   for (const headerBytes of [
@@ -157,7 +157,7 @@ it("separates the header decode budget from container validity at its exact boun
 });
 
 const writeOversizedHeaderArchive = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-asar-header-recovery-");
+  const root = await createTestTempDirectory("nre-asar-header-recovery-");
   const archive = join(root, "app.asar");
   const headerBytes = DEFAULT_ASAR_MAX_HEADER_BYTES + 4;
   const json = Buffer.from("{}");
@@ -205,7 +205,7 @@ it("names the default header admission budget and its setting when source select
       admission: "asar-header",
       maximum_header_bytes: DEFAULT_ASAR_MAX_HEADER_BYTES,
       maximum_header_bytes_source: "default",
-      setting: "REA_ASAR_MAX_HEADER_BYTES",
+      setting: "NRE_ASAR_MAX_HEADER_BYTES",
       limit: {
         setting: "asar.max_header_bytes",
         effective_value: DEFAULT_ASAR_MAX_HEADER_BYTES,
@@ -215,8 +215,8 @@ it("names the default header admission budget and its setting when source select
         source: "default",
         applies_at: "next_operation",
         agent_editable: true,
-        scope: "rea-runtime",
-        rea_restart_required: false,
+        scope: "nre-runtime",
+        nre_restart_required: false,
       },
     },
   });
@@ -284,14 +284,14 @@ it("admits a header above the default when the selected admission raises the bud
 it("applies the caller-selected environment, not the ambient one, to inventory and JavaScript analysis", async () => {
   const { archive, original } = await createFixture();
   const headerBytes = original.readUInt32LE(4);
-  const lowered = { REA_ASAR_MAX_HEADER_BYTES: String(headerBytes - 1) };
+  const lowered = { NRE_ASAR_MAX_HEADER_BYTES: String(headerBytes - 1) };
   const recovery = asarHeaderAdmissionRecovery({
     maximumBytes: headerBytes - 1,
     source: "setting",
   });
   // An ambient value that would refuse the archive must not reach callers
   // whose selected environment leaves the setting unset.
-  vi.stubEnv("REA_ASAR_MAX_HEADER_BYTES", "1");
+  vi.stubEnv("NRE_ASAR_MAX_HEADER_BYTES", "1");
   for (const operation of ["inventory_artifact", "inspect_artifact"] as const) {
     await expect(
       createDirectAnalysis(lowered)
@@ -303,7 +303,7 @@ it("applies the caller-selected environment, not the ambient one, to inventory a
       details: {
         maximum_header_bytes: headerBytes - 1,
         maximum_header_bytes_source: "setting",
-        setting: "REA_ASAR_MAX_HEADER_BYTES",
+        setting: "NRE_ASAR_MAX_HEADER_BYTES",
       },
     });
     await expect(
@@ -320,7 +320,7 @@ it("applies the caller-selected environment, not the ambient one, to inventory a
   expect(projectAnalysisError(refused.error).message).toBe(recovery);
   const admitted = await analyzeJavaScriptApplication(
     { input_path: archive },
-    { environment: { REA_ASAR_MAX_HEADER_BYTES: String(headerBytes) } },
+    { environment: { NRE_ASAR_MAX_HEADER_BYTES: String(headerBytes) } },
   );
   expect(admitted.ok).toBe(true);
   expect((await analyzeJavaScriptApplication({ input_path: archive })).ok).toBe(
@@ -353,22 +353,22 @@ it("refuses invalid settings at startup validation and at each owner", async () 
     if (parsed.ok) throw new Error(`Accepted ${JSON.stringify(value)}`);
     expect(parsed.error.settings).toEqual([
       {
-        setting: "REA_ASAR_MAX_HEADER_BYTES",
+        setting: "NRE_ASAR_MAX_HEADER_BYTES",
         constraint: expect.stringContaining("at most 268435456 bytes"),
       },
     ]);
-    const startup = parseEnvironment({ REA_ASAR_MAX_HEADER_BYTES: value });
+    const startup = parseEnvironment({ NRE_ASAR_MAX_HEADER_BYTES: value });
     if (startup.ok)
       throw new Error(`Startup accepted ${JSON.stringify(value)}`);
     expect(startup.error.settings).toContainEqual({
-      setting: "REA_ASAR_MAX_HEADER_BYTES",
+      setting: "NRE_ASAR_MAX_HEADER_BYTES",
       constraint: expect.stringContaining("at most 268435456 bytes"),
     });
   }
 
   // Owners refuse rather than falling back to the default.
   const { archive } = await createFixture();
-  const invalid = { REA_ASAR_MAX_HEADER_BYTES: "0" };
+  const invalid = { NRE_ASAR_MAX_HEADER_BYTES: "0" };
   await expect(
     createDirectAnalysis(invalid)
       .runProviderAnalysis(archive, "inventory_artifact", {})

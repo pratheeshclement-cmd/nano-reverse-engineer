@@ -24,7 +24,7 @@ it("refuses a complete oversized discovery before trying to bind", async () => {
   };
   const result = await serveEnvironment({
     source: { ...source, manifest },
-    host: "invalid.rea.invalid",
+    host: "invalid.nre.invalid",
     port: 0,
   });
   expect(result).toMatchObject({

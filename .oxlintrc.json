@@ -2,8 +2,8 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "import", "unicorn", "oxc", "vitest"],
   "rules": {
-    "rea/no-buffer-deep-equality": "error",
-    "rea/cancellation-cause": "error",
+    "nre/no-buffer-deep-equality": "error",
+    "nre/cancellation-cause": "error",
     "no-async-promise-executor": "error",
     "no-unreachable": "error",
     "no-unsafe-optional-chaining": "error",
@@ -48,9 +48,9 @@
         "maxArgs": 2
       }
     ],
-    "rea/no-evidence-json-preadmission": "error",
-    "rea/no-positional-tool-contract": "error",
-    "rea/no-fixture-root-cleanup": "error",
+    "nre/no-evidence-json-preadmission": "error",
+    "nre/no-positional-tool-contract": "error",
+    "nre/no-fixture-root-cleanup": "error",
     "typescript/no-floating-promises": "error",
     "typescript/no-misused-promises": "warn",
     "typescript/return-await": ["error", "error-handling-correctness-only"],
@@ -60,7 +60,7 @@
         "considerDefaultExhaustiveForUnions": true
       }
     ],
-    "rea/no-shared-module-mock": "error"
+    "nre/no-shared-module-mock": "error"
   },
   "overrides": [
     {
@@ -198,7 +198,7 @@
   },
   "jsPlugins": [
     {
-      "name": "rea",
+      "name": "nre",
       "specifier": "./scripts/lint/index.mjs"
     }
   ]

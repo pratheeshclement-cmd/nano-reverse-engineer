@@ -53,7 +53,7 @@ const externalToolchain = async (root: string, tool: string) => {
     join(toolchain, "Info.plist"),
     `<?xml version="1.0"?>
 <plist version="1.0"><dict>
-<key>CFBundleIdentifier</key><string>org.rea.audit.selected</string>
+<key>CFBundleIdentifier</key><string>org.nre.audit.selected</string>
 <key>CompatibilityVersion</key><integer>2</integer>
 </dict></plist>`,
   );
@@ -66,7 +66,7 @@ const externalToolchain = async (root: string, tool: string) => {
       DEVELOPER_DIR: undefined,
       SDKROOT: undefined,
       EXTERNAL_TOOLCHAINS_DIR: toolchains,
-      TOOLCHAINS: "org.rea.audit.selected",
+      TOOLCHAINS: "org.nre.audit.selected",
       xcrun_nocache: "1",
     },
   };
@@ -75,7 +75,7 @@ const externalToolchain = async (root: string, tool: string) => {
 it.skipIf(process.platform !== "darwin")(
   "invokes the xcrun-selected native tool spelling and its sibling resources",
   async () => {
-    const root = await createTestTempDirectory("rea-native-selection-");
+    const root = await createTestTempDirectory("nre-native-selection-");
     const tool = await externalToolchain(root, "nm");
     const source = `#!/bin/sh\nprintf '%s\\n' "$0"\ncat "$(dirname "$0")/selected-resource"\n`;
     await writeFile(tool.resolvedPath, source, { mode: 0o755 });
@@ -106,7 +106,7 @@ it.skipIf(process.platform !== "darwin")(
 it.skipIf(process.platform !== "darwin")(
   "cleans an xcrun-selected LLDB wrapper after cancellation without requiring its pre-exec argv",
   async () => {
-    const root = await createTestTempDirectory("rea-lldb-wrapper-");
+    const root = await createTestTempDirectory("nre-lldb-wrapper-");
     const tool = await externalToolchain(root, "lldb");
     const child = join(dirname(tool.invocationPath), "safe-child.mjs");
     const readyPath = join(root, "ready.json");
@@ -115,8 +115,8 @@ it.skipIf(process.platform !== "darwin")(
     await writeFile(
       child,
       `import { readFileSync, writeFileSync } from 'node:fs';
-const command = process.argv.find(value => value.startsWith('rea_trace '));
-const configPath = command.slice('rea_trace '.length);
+const command = process.argv.find(value => value.startsWith('nre_trace '));
+const configPath = command.slice('nre_trace '.length);
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 writeFileSync(config.result_path, JSON.stringify({
   status: 'launch-error', error: 'fixture deliberately launches no target',
@@ -125,7 +125,7 @@ writeFileSync(config.result_path, JSON.stringify({
 for (const path of [config.observation_path, config.stdout_capture_path, config.stderr_capture_path])
   writeFileSync(path, '');
 writeFileSync(${JSON.stringify(readyPath)}, JSON.stringify({
-  pid: process.pid, run_id: process.env.REA_PROCESS_RUN_ID, config_path: configPath
+  pid: process.pid, run_id: process.env.NRE_PROCESS_RUN_ID, config_path: configPath
 }));
 setTimeout(() => process.exit(0), 10000);
 `,

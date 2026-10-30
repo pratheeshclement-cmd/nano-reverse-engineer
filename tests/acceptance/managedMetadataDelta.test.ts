@@ -18,7 +18,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "keeps EnC baseline-dependent metadata unknown through CLI and stdio MCP, then compares retained sources after deletion",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-delta-");
+    const root = await createTestTempDirectory("nre-managed-delta-");
     const call = await cli.sharedMcpCall!();
     const sources: ReturnType<typeof parseEvidence>[] = [];
     for (const [name, bytes] of [

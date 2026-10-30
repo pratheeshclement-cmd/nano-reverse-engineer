@@ -10,7 +10,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "retains the selected database path on worker resource refusals through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-worker-resource-");
+    const root = await createTestTempDirectory("nre-sqlite-worker-resource-");
     const path = join(root, "selected.db");
     const producer = new DatabaseSync(path);
     try {
@@ -31,7 +31,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "records",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const { call } = await connectLocalToolsMcp();
     const mcpResult = await call("inspect_sqlite_database", {
@@ -61,7 +61,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reports the SQL allowance when a generated row query exceeds it",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-sql-limit-");
+    const root = await createTestTempDirectory("nre-sqlite-sql-limit-");
     const path = join(root, "selected.db");
     const producer = new DatabaseSync(path);
     try {
@@ -74,7 +74,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
     }
     const result = await cli.run({
       arguments: ["inspect-sqlite-database", path, "--table", "t", "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode).toBe(1);
     expect(result.json).toMatchObject({

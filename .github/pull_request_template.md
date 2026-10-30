@@ -16,13 +16,13 @@ describe the use case and observable outcome. -->
 
 ## Change and scope
 
-<!-- Explain the chosen approach, why it fits REA's architecture, and what is
+<!-- Explain the chosen approach, why it fits NRE's architecture, and what is
 intentionally not included. If adding complexity for a speculative or vanishingly
 unlikely race or security edge case, record the concrete failure mode, likelihood,
 complexity cost, and the user's buy-in obtained before implementation. Do not
 silently expand scope for theoretical robustness. -->
 
-Follow the [contribution scope](https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#contribution-scope).
+Follow the [contribution scope](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/CONTRIBUTING.md#contribution-scope).
 Unresolved scope, authority, side effects, or required verification block
 integration. Link the required maintainer scope decision for new providers or
 capabilities involving target execution, injection, mutation, or protection
@@ -44,7 +44,7 @@ Use "none" or "not applicable" only when established. -->
 - Provider, bridge, target-format, or platform compatibility:
 - Evidence, artifact, provenance, or reconstruction contract:
 - Target selection, authority, upstream behavior, and cleanup details (if applicable):
-- Generated metadata (`docs/public/product-catalog.json`), package, or installation impact (CI generates and validates ignored catalogs and `skills/`; edit authored instructions in `.agents/skills/reverse-engineer-anything/` and never commit build outputs):
+- Generated metadata (`docs/public/product-catalog.json`), package, or installation impact (CI generates and validates ignored catalogs and `skills/`; edit authored instructions in `.agents/skills/nano-reverse-engineer/` and never commit build outputs):
 
 Expected effects (check known effects; use documentation-only on its own).
 Unchecked items do not establish absence; leave uncertainties visible.
@@ -71,8 +71,8 @@ source, link, or rendered-document checks. -->
 - User-visible CLI/MCP output (if applicable):
 - Remaining proof gaps:
 
-For boundary fixes, identify the applicable [boundary regressions](https://github.com/morluto/rea/blob/main/docs/testing.md#boundary-regressions)
-and [lifecycle regressions](https://github.com/morluto/rea/blob/main/docs/testing.md#lifecycle-regressions)
+For boundary fixes, identify the applicable [boundary regressions](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/testing.md#boundary-regressions)
+and [lifecycle regressions](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/testing.md#lifecycle-regressions)
 covered by the evidence above, and explain relevant gaps.
 
 For evidence-bearing changes:
@@ -109,7 +109,7 @@ limits, security/privacy/containment implications, and meaningful proof gaps. --
 <!-- The human owner completes these declarations before requesting review.
 The PR author is the owner by default. A different owner must explicitly accept
 ownership on this PR.
-AI agents must leave these declarations to a human to dictate to them or there could be catastrophic consequences for many users of REA.
+AI agents must leave these declarations to a human to dictate to them or there could be catastrophic consequences for many users of NRE.
 Draft PRs may leave them unchecked. These declarations record initial readiness
 when opening the PR for review; later pushes do not require a new human sign-off.
 Keep the description and validation evidence current as the work changes.

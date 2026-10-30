@@ -25,7 +25,7 @@ export const BUNDLE_MCP_PORT = 18765;
 export const BUNDLE_ALLOWED_HOSTS = "127.0.0.1,localhost";
 
 /** Name of the packed CLI inside the env folder when a tarball is exported. */
-export const BUNDLE_TARBALL_NAME = "rea-agents.tgz";
+export const BUNDLE_TARBALL_NAME = "nano-reverse-engineer.tgz";
 
 /** Folder and env id rule: a kebab-case label the agentenv framework accepts as a local id. */
 const BUNDLE_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
@@ -179,7 +179,7 @@ export const bundleDockerfile = (
     // Owned by the runtime user, so a private host umask cannot make the inputs unreadable.
     "COPY --chown=node:node manifest.json evidence.json /env/",
     "USER node",
-    'CMD ["rea","environment-serve","/env/manifest.json","--evidence","/env/evidence.json"]',
+    'CMD ["nre","environment-serve","/env/manifest.json","--evidence","/env/evidence.json"]',
     "",
   ].join("\n");
 
@@ -300,7 +300,7 @@ export const bundleReadme = (
       : `calls \`${plan.check.tool}\` without arguments and checks the call succeeds with \`status\` ${String(plan.check.status)}, the status of record ${String(plan.check.recordOrdinal)} its answer carries`;
   return `# ${plan.name}
 
-An agent environment exported by REA from one retained ${source.captureKind === "browser-scenario" ? "browser scenario capture" : "web network capture"}.
+An agent environment exported by NRE from one retained ${source.captureKind === "browser-scenario" ? "browser scenario capture" : "web network capture"}.
 Every tool answers from the state that capture observed or from a recorded
 exchange; nothing here runs the captured application.
 
@@ -321,7 +321,7 @@ if that content requires restricted access.
 
 ## What the environment serves
 
-\`envs/${plan.name}/\` builds an image that runs \`rea environment-serve\` on the
+\`envs/${plan.name}/\` builds an image that runs \`nre environment-serve\` on the
 manifest and capture Evidence copied beside its Dockerfile. At startup the
 server derives the state the capture observed, the \`environment-state\` view
 of the capture with the manifest's template rules, and serves from it: read
@@ -333,7 +333,7 @@ its catalog exceeds the discovery budget, the server logs why and replays
 instead: each MCP tool call selects the retained record whose path and query
 values best match the arguments and returns that record's recorded status,
 content type and body, citing the record ordinal and the Evidence id.
-\`rea environment-serve --replay-only\` serves pure replay.
+\`nre environment-serve --replay-only\` serves pure replay.
 
 ${servedHere(source, plan)}
 

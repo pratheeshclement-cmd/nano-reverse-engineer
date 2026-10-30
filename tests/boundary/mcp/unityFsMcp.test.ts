@@ -11,12 +11,12 @@ import { buildUnityFs } from "../../fixtures/unityfs.js";
 it.each(["full", "compact"] as const)(
   "retains UnityFS facts and unsupported content through compiled MCP (%s)",
   async (profile) => {
-    const root = await createTestTempDirectory("rea-unity-mcp-");
+    const root = await createTestTempDirectory("nre-unity-mcp-");
     const path = join(root, "bundle");
     const payload = Buffer.from("serialized bytes");
     await writeFile(path, buildUnityFs([{ path: "CAB", data: payload }]));
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
     });
     let outputRoot: string | undefined;
     try {

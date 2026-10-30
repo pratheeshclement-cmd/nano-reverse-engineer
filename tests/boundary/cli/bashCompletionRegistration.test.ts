@@ -9,7 +9,7 @@ const execute = promisify(execFile);
 it.skipIf(process.platform === "win32")(
   "registers and invokes dynamic candidates in the host Bash",
   async () => {
-    const script = bashCompletionScript("rea");
+    const script = bashCompletionScript("nre");
     const { stdout, stderr } = await execute(
       "bash",
       [
@@ -17,13 +17,13 @@ it.skipIf(process.platform === "win32")(
         "--norc",
         "-c",
         `${script}
-complete -p rea || exit
-rea() {
+complete -p nre || exit
+nre() {
   [[ "$COMPLETE" == bash && "$_COMPLETE_INDEX" == 1 ]] || return 1
-  [[ "$1" == -- && "$2" == rea && "$3" == ana ]] || return 1
+  [[ "$1" == -- && "$2" == nre && "$3" == ana ]] || return 1
   printf 'analyze\\013analyze-web-bundle\\013'
 }
-COMP_WORDS=(rea ana)
+COMP_WORDS=(nre ana)
 COMP_CWORD=1
 _incur_complete_rea || exit
 printf '%s\\n' "\${COMPREPLY[@]}"
@@ -32,7 +32,7 @@ printf '%s\\n' "\${COMPREPLY[@]}"
       { timeout: 5_000 },
     );
     expect(stderr).toBe("");
-    expect(stdout).toContain("-F _incur_complete_rea rea");
+    expect(stdout).toContain("-F _incur_complete_rea nre");
     expect(stdout).toContain("\nanalyze\nanalyze-web-bundle\n");
   },
 );
@@ -52,10 +52,10 @@ it.skipIf(process.platform === "win32")(
 }
 compopt() { echo 'unexpected compopt' >&2; return 1; }
 type() { [[ "$1" != compopt ]] && builtin type "$@"; }
-${bashCompletionScript("rea")}
-builtin complete -p rea || exit
-rea() { printf 'group\\001\\013'; }
-COMP_WORDS=(rea gr)
+${bashCompletionScript("nre")}
+builtin complete -p nre || exit
+nre() { printf 'group\\001\\013'; }
+COMP_WORDS=(nre gr)
 COMP_CWORD=1
 _incur_complete_rea || exit
 printf '%s\\n' "\${COMPREPLY[@]}"
@@ -64,7 +64,7 @@ printf '%s\\n' "\${COMPREPLY[@]}"
       { timeout: 5_000 },
     );
     expect(stderr).toBe("");
-    expect(stdout).toContain("-F _incur_complete_rea rea");
+    expect(stdout).toContain("-F _incur_complete_rea nre");
     expect(stdout).not.toContain("nosort");
     expect(stdout).toContain("\ngroup\n");
   },

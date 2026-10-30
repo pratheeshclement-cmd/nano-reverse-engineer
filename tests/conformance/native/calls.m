@@ -13,7 +13,7 @@
 }
 @end
 
-__attribute__((noinline)) int rea_call_add(int left, int right) {
+__attribute__((noinline)) int nre_call_add(int left, int right) {
   return left + right;
 }
 
@@ -42,8 +42,8 @@ int main(int argc, char **argv) {
     ReaCallGreeter *greeter = [ReaCallGreeter new];
     for (long index = 0; index < 3; index++)
       printf("%s %d\n", [[greeter greet:@"world" times:index] UTF8String],
-             rea_call_add((int)index, 40));
-    const char *marker = getenv("REA_CALLS_MARKER");
+             nre_call_add((int)index, 40));
+    const char *marker = getenv("NRE_CALLS_MARKER");
     if (marker != NULL)
       printf("marker %s\n", marker);
   }

@@ -43,11 +43,11 @@ try {
     { cause },
   );
 }
-const root = await mkdtemp(join(tmpdir(), "rea-ghidra-swift-"));
+const root = await mkdtemp(join(tmpdir(), "nre-ghidra-swift-"));
 const client = new Client({ name: "ghidra-swift-verifier", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [fileURLToPath(new URL("./rea.mjs", import.meta.url)), "mcp"],
+  args: [fileURLToPath(new URL("./nre.mjs", import.meta.url)), "mcp"],
   env: Object.fromEntries(
     Object.entries(process.env).filter(([, value]) => value !== undefined),
   ),
@@ -262,7 +262,7 @@ async function verifyStringLiterals() {
       decoded[name] = observed.length;
     }
     const unresolvedJump = procedures.find(({ value }) =>
-      value.includes("rea_unresolved_string_jump"),
+      value.includes("nre_unresolved_string_jump"),
     );
     assert(
       unresolvedJump,
@@ -302,17 +302,17 @@ async function verifyDecoderSafeguards() {
   await copyFile(
     fileURLToPath(
       new URL(
-        "../tests/conformance/swift/ReaSwiftDecoderRegressions.java",
+        "../tests/conformance/swift/NreSwiftDecoderRegressions.java",
         import.meta.url,
       ),
     ),
-    join(scripts, "ReaSwiftDecoderRegressions.java"),
+    join(scripts, "NreSwiftDecoderRegressions.java"),
   );
   const report = join(root, "decoder-safeguards.txt");
   await runDecoderProbe(scripts, report);
   assert.equal(
     await readFile(report, "utf8"),
-    "REA_SWIFT_DECODER_SAFEGUARDS_OK\n",
+    "NRE_SWIFT_DECODER_SAFEGUARDS_OK\n",
   );
 }
 
@@ -340,7 +340,7 @@ async function runDecoderProbe(scripts, report) {
         "-scriptPath",
         scripts,
         "-postScript",
-        "ReaSwiftDecoderRegressions.java",
+        "NreSwiftDecoderRegressions.java",
         report,
         "-deleteProject",
         "-max-cpu",

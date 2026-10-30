@@ -10,8 +10,8 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const environment = {
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "auto",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "auto",
 } as const;
 
 const capturedDiagnostic = (value: unknown): string => {
@@ -27,7 +27,7 @@ const capturedDiagnostic = (value: unknown): string => {
 
 /** An app bundle whose Contents holds a directory and a non-plist file. */
 const fixtureApp = async () => {
-  const app = join(await createTestTempDirectory("rea-plist-fail-"), "A.app");
+  const app = join(await createTestTempDirectory("nre-plist-fail-"), "A.app");
   const contents = join(app, "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
   await mkdir(join(contents, "Folder.plist"));
@@ -116,7 +116,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "reports a missing default Info.plist as unavailable for the target",
       async ({ cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-bare-");
+        const directory = await createTestTempDirectory("nre-plist-bare-");
         const program = join(directory, "tool");
         await writeFile(program, thinMach(0xfeedfacf, 0x100000c));
         const result = await cli.run({
@@ -183,7 +183,7 @@ describe.skipIf(process.platform !== "darwin")(
         });
         expect(capturedDiagnostic(selected.json)).toContain(diagnostic);
         const directory = await createTestTempDirectory(
-          "rea-plist-default-diagnostic-",
+          "nre-plist-default-diagnostic-",
         );
         const program = join(directory, "program");
         await writeFile(program, thinMach(0xfeedfacf, 0x100000c));
@@ -235,7 +235,7 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "classifies the selected malformed plist as input: %s",
       async ([source, diagnostic], { cli }) => {
-        const root = await createTestTempDirectory("rea-plist-target-input-");
+        const root = await createTestTempDirectory("nre-plist-target-input-");
         const path = join(root, "chosen.plist");
         await writeFile(path, source);
         for (const args of [[], ["--relative-path", path]]) {
@@ -271,7 +271,7 @@ describe.skipIf(process.platform !== "darwin")(
       "accepts native nested plist syntax without imposing an XML grammar allowlist",
       async ({ cli }) => {
         const root = await createTestTempDirectory(
-          "rea-plist-nested-admission-",
+          "nre-plist-nested-admission-",
         );
         const path = join(root, "chosen.plist");
         const source = "<plist><plist><integer>1</integer></plist></plist>";
@@ -298,7 +298,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "retains a valid prototype key after native validation",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-plist-valid-key-");
+        const root = await createTestTempDirectory("nre-plist-valid-key-");
         const path = join(root, "chosen.plist");
         const source =
           "<plist><dict><key>__proto__</key><integer>42</integer><key>kept</key><string>value</string></dict></plist>";
@@ -331,7 +331,7 @@ describe.skipIf(process.platform !== "darwin")(
       "retains original unknown scalar facts after successful native validation",
       async ({ cli }) => {
         const root = await createTestTempDirectory(
-          "rea-plist-source-admission-",
+          "nre-plist-source-admission-",
         );
         const path = join(root, "chosen.plist");
         const source =
@@ -376,7 +376,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "names the binary plist decode allowance instead of host memory",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-plist-decode-limit-");
+        const root = await createTestTempDirectory("nre-plist-decode-limit-");
         const path = join(root, "large.plist");
         // The decode estimate exceeds 64 MiB below the 64 MiB input ceiling.
         const source = buildBinary({
@@ -414,7 +414,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "names the binary plist input allowance instead of worker file-size limits",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-plist-input-limit-");
+        const root = await createTestTempDirectory("nre-plist-input-limit-");
         const path = join(root, "huge.plist");
         await writeFile(path, "bplist00");
         await truncate(path, 64 * 1024 * 1024 + 1);

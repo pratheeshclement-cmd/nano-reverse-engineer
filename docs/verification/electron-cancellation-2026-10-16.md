@@ -1,8 +1,8 @@
 # Electron cancellation verification, 2026-10-16
 
-[#4388](https://github.com/morluto/rea/issues/4388), existing
-[#4387](https://github.com/morluto/rea/pull/4387), umbrella
-[#4027](https://github.com/morluto/rea/issues/4027).
+[#4388](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4388), existing
+[#4387](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/4387), umbrella
+[#4027](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4027).
 
 The cancellation boundaries and retained cancellation cause are verified below.
 The complete real Linux Joplin workflow remains **partial or failed** because
@@ -49,7 +49,7 @@ actual application with **generic Electron 44.7.0**, fresh profiles and Xvfb.
 They exercise startup/cancellation, not a completed Joplin business workflow.
 
 Frozen verifier revision `279aa29a7` records source/runtime hashes before the
-final probes. The controlled cases hold a REA-side Playwright reply while the
+final probes. The controlled cases hold a NRE-side Playwright reply while the
 real application runs. They do not establish a naturally occurring Joplin stall.
 
 | Controlled condition                        | Observed result                                                                                        |
@@ -62,7 +62,7 @@ real application runs. They do not establish a naturally occurring Joplin stall.
 Every fixed case preserves the `cancelled` category. Every real case still has
 unverified provider cleanup and a nonzero verifier exit; these are cancellation
 phase proofs, not complete runtime passes. The known Linux ownership gap is
-tracked in [#4282](https://github.com/morluto/rea/issues/4282). Ownership was not
+tracked in [#4282](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4282). Ownership was not
 inferred from process names, PIDs or executable paths to make these tests pass.
 
 The public CLI trials send SIGTERM after actual Joplin startup logging. Main
@@ -100,7 +100,7 @@ diagnostic helper hashes were not captured at execution; the record marks that
 gap instead of assigning the later frozen hash to earlier runs.
 
 Build each pinned checkout, then run under the existing
-[resource observer](https://github.com/morluto/rea/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/resource-counters.md)
+[resource observer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/resource-counters.md)
 and a private Xvfb instance. The shared verifier supports all four named cases:
 
 ```sh

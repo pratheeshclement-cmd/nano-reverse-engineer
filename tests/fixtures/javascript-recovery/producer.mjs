@@ -2,7 +2,7 @@ import { readFile, symlink, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
 const args = process.argv.slice(2);
-const mode = process.env.REA_RECOVERY_FIXTURE_MODE ?? "normal";
+const mode = process.env.NRE_RECOVERY_FIXTURE_MODE ?? "normal";
 if (args.includes("--version")) {
   console.log(
     mode === "wrong-version"
@@ -50,8 +50,8 @@ if (args.includes("--version")) {
       };
     }
     if (mode === "redistribute") {
-      const primary = process.env.REA_RECOVERY_ORIGINAL_PATH;
-      const secondary = process.env.REA_RECOVERY_ADDITIONAL_PATH;
+      const primary = process.env.NRE_RECOVERY_ORIGINAL_PATH;
+      const secondary = process.env.NRE_RECOVERY_ADDITIONAL_PATH;
       const first = await readFile(primary);
       const second = await readFile(secondary);
       await writeFile(primary, Buffer.concat([first, second.subarray(0, 1)]));
@@ -59,7 +59,7 @@ if (args.includes("--version")) {
     }
     if (mode === "secondary-change")
       await writeFile(
-        process.env.REA_RECOVERY_ADDITIONAL_PATH,
+        process.env.NRE_RECOVERY_ADDITIONAL_PATH,
         "changed additional input",
       );
     await writeFile(
@@ -90,11 +90,11 @@ if (args.includes("--version")) {
     await writeFile(input, Buffer.alloc(bytes.length, 0x61));
   if (mode === "engine-change")
     await writeFile(
-      process.env.REA_RECOVERY_ENGINE_PATH,
+      process.env.NRE_RECOVERY_ENGINE_PATH,
       "#!/bin/sh\nexit 1\n",
     );
   if (mode === "source-change")
-    await writeFile(process.env.REA_RECOVERY_ORIGINAL_PATH, "changed original");
+    await writeFile(process.env.NRE_RECOVERY_ORIGINAL_PATH, "changed original");
   const filename = mode === "escaping" ? "../escaped.js" : "module.js";
   const modules = [
     mode === "additive"

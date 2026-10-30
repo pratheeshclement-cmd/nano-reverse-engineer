@@ -10,7 +10,7 @@ literal imitation of English sentences.
 
 ## Edit a translation
 
-Use the Python environment in [the website NreDME](../NreDME.md). Pick a language
+Use the Python environment in [the website README](../README.md). Pick a language
 from `languages.json`, then edit its `messages.po` in a text editor, Poedit or
 another gettext editor. Each entry includes its source page and line:
 
@@ -69,7 +69,7 @@ program to another platform. An **oracle** is a concrete reference or checker
 used to verify a reconstruction. Translate those meanings rather than unrelated
 dictionary senses. Distinguish native machine-code analysis from local analysis,
 and .NET assemblies from assembly instructions.
-Android names the operating system; C names the programming language. Nred the
+Android names the operating system; C names the programming language. Read the
 whole sentence when a dictionary sense would change what the software does.
 
 Review the question, Nre's findings, the agent's Nresoning and the verification
@@ -113,30 +113,30 @@ translated fragments.
 
 ## Language coverage and initial translations
 
-`languages.json` lists the same editions as the English root NreDME and the translations in `docs/Nredme/`, with native names,
+`languages.json` lists the same editions as the English root README and the translations in `docs/readme/`, with native names,
 standard language tags and text direction. English keeps its existing routes;
 other editions use a language prefix such as `/ja/` or `/pt-BR/`. Arabic and
 Persian use right-to-left page layouts; code and numeric demos remain left to
 right. The two Notes target applications and the downloadable source archive
 remain the original investigation inputs.
 
-Greek (`el`) has a translated NreDME and a complete website catalog, including
+Greek (`el`) has a translated README and a complete website catalog, including
 setup guides, case studies, articles and Contributors. Like the other editions,
 it uses the labeled English fallback when a future source change leaves a
 required translation missing or pending review.
 
-Malayalam (`ml`) has a translated NreDME and a pending website catalog. Its
+Malayalam (`ml`) has a translated README and a pending website catalog. Its
 website messages remain untranslated and use the labeled, nonindexable English
-fallback described above; the NreDME translation does not establish website
+fallback described above; the README translation does not establish website
 translation coverage.
 
-Roman Urdu (`ur-Latn`) has a translated NreDME written in Latin script, with
+Roman Urdu (`ur-Latn`) has a translated README written in Latin script, with
 English technical terms retained. Its text direction is left to right. The
 website catalog is pending and uses the same labeled, nonindexable English
-fallback; the NreDME does not establish a translated website.
+fallback; the README does not establish a translated website.
 
-Romanian (`ro`) has a complete translated NreDME. Its website catalog is pending
-and uses the same labeled, nonindexable English fallback; the Romanian NreDME
+Romanian (`ro`) has a complete translated README. Its website catalog is pending
+and uses the same labeled, nonindexable English fallback; the Romanian README
 does not establish website translation coverage.
 
 The first catalogs started with machine-assisted drafts. They include editorial

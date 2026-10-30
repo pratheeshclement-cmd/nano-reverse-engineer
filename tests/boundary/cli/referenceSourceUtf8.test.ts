@@ -17,7 +17,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "retains malformed source bytes without inventing decoded import targets",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-utf8-");
+    const root = await createTestTempDirectory("nre-reference-utf8-");
     const sources = new Map([
       [
         "invalid.mjs",
@@ -87,9 +87,9 @@ cliTest(
 cliTest.skipIf(process.platform !== "linux")(
   "reports unsupported raw POSIX filename bytes without substituting a Unicode sibling",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-raw-name-");
+    const root = await createTestTempDirectory("nre-reference-raw-name-");
     const config = await createTestTempDirectory(
-      "rea-reference-raw-name-config-",
+      "nre-reference-raw-name-config-",
     );
     const rawName = Buffer.from([0x62, 0x61, 0x64, 0xff, 0x2e, 0x6a, 0x73]);
     const rawPath = Buffer.concat([Buffer.from(`${root}/`), rawName]);
@@ -136,9 +136,9 @@ cliTest.skipIf(process.platform !== "linux")(
 cliTest.skipIf(process.platform === "win32")(
   "keeps raw symlink target identities distinct from UTF-8 replacement and BOM handling",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-link-bytes-");
+    const root = await createTestTempDirectory("nre-reference-link-bytes-");
     const config = await createTestTempDirectory(
-      "rea-reference-link-bytes-config-",
+      "nre-reference-link-bytes-config-",
     );
     const rawTarget = Buffer.from([0x62, 0x61, 0x64, 0xff, 0x2e, 0x74, 0x73]);
     await Promise.all([
@@ -196,9 +196,9 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "preserves historical literal-backslash entries and their exact owning import base",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-literal-paths-");
+    const root = await createTestTempDirectory("nre-reference-literal-paths-");
     const config = await createTestTempDirectory(
-      "rea-reference-literal-config-",
+      "nre-reference-literal-config-",
     );
     await mkdir(join(root, "literal"));
     await mkdir(join(root, "literal\\dir"));
@@ -245,9 +245,9 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "preserves an observed historical symlink target with a literal backslash",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-literal-link-");
+    const root = await createTestTempDirectory("nre-reference-literal-link-");
     const config = await createTestTempDirectory(
-      "rea-reference-literal-link-config-",
+      "nre-reference-literal-link-config-",
     );
     await writeFile(
       join(root, "literal\\name.js"),
@@ -284,8 +284,8 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "imports an inventory-owned POSIX UNC-looking symlink target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-unc-literal-");
-    const config = await createTestTempDirectory("rea-reference-unc-config-");
+    const root = await createTestTempDirectory("nre-reference-unc-literal-");
+    const config = await createTestTempDirectory("nre-reference-unc-config-");
     const literal = "\\\\server\\share.js";
     const literalBytes = "export const value = 'literal';\n";
     const slashBytes = "export const value = 'slash';\n";

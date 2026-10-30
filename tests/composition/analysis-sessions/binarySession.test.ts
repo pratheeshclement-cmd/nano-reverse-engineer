@@ -193,66 +193,69 @@ it("preserves the exact abort reason before external mutation admission", async 
   await session.close();
 });
 
-it("drains session calls and retires analysis after an admitted external mutation", async () => {
-  const [target] = await createBinarySessionTargets();
-  const alias = join(dirname(target), "first-alias.hop");
-  await symlink(target, alias);
-  const calls: string[] = [];
-  const clients: { closed: number; targetSha256: string }[] = [];
-  const base = createCacheProvider(calls);
-  const session = createTestBinarySession({
-    ...base,
-    createClient: (...arguments_) => {
-      const client = base.createClient(...arguments_);
-      const tracked = { closed: 0, targetSha256: arguments_[0].sha256 };
-      clients.push(tracked);
-      return {
-        ...client,
-        close: async () => {
-          tracked.closed += 1;
-          return client.close();
-        },
-      };
-    },
-  });
-  expect((await session.open(target)).ok).toBe(true);
-  expect(session.activeTarget()?.path).toBe(target);
-  const originalDigest = session.activeTarget()?.sha256;
-  const started = createDeferred<void>();
-  const release = createDeferred<void>();
+it.skipIf(process.platform === "win32")(
+  "drains session calls and retires analysis after an admitted external mutation",
+  async () => {
+    const [target] = await createBinarySessionTargets();
+    const alias = join(dirname(target), "first-alias.hop");
+    await symlink(target, alias);
+    const calls: string[] = [];
+    const clients: { closed: number; targetSha256: string }[] = [];
+    const base = createCacheProvider(calls);
+    const session = createTestBinarySession({
+      ...base,
+      createClient: (...arguments_) => {
+        const client = base.createClient(...arguments_);
+        const tracked = { closed: 0, targetSha256: arguments_[0].sha256 };
+        clients.push(tracked);
+        return {
+          ...client,
+          close: async () => {
+            tracked.closed += 1;
+            return client.close();
+          },
+        };
+      },
+    });
+    expect((await session.open(target)).ok).toBe(true);
+    expect(session.activeTarget()?.path).toBe(target);
+    const originalDigest = session.activeTarget()?.sha256;
+    const started = createDeferred<void>();
+    const release = createDeferred<void>();
 
-  const mutation = session.withAdmittedExternalMutation(
-    alias,
-    undefined,
-    async () => {
-      expect(session.activeTarget()?.path).toBe(target);
-      started.resolve();
-      await release.promise;
-      await writeFile(alias, "changed by external provider");
-      return resultOk("provider finished");
-    },
-    (_value, error) => error,
-  );
-  await started.promise;
-  const queuedAnalysis = session.execute("address_name", {});
-  expect(calls).toEqual([]);
+    const mutation = session.withAdmittedExternalMutation(
+      alias,
+      undefined,
+      async () => {
+        expect(session.activeTarget()?.path).toBe(target);
+        started.resolve();
+        await release.promise;
+        await writeFile(alias, "changed by external provider");
+        return resultOk("provider finished");
+      },
+      (_value, error) => error,
+    );
+    await started.promise;
+    const queuedAnalysis = session.execute("address_name", {});
+    expect(calls).toEqual([]);
 
-  release.resolve();
-  await expect(mutation).resolves.toMatchObject({
-    ok: true,
-    value: { ok: true, value: "provider finished" },
-  });
-  expect((await queuedAnalysis).ok).toBe(false);
-  expect(session.activeTarget()).toBeUndefined();
-  expect(calls).toEqual([]);
-  expect(clients).toHaveLength(0);
-  expect((await session.open(target)).ok).toBe(true);
-  expect((await session.execute("address_name", {})).ok).toBe(true);
-  expect(session.activeTarget()?.sha256).not.toBe(originalDigest);
-  expect(clients.at(-1)?.targetSha256).toBe(session.activeTarget()?.sha256);
-  expect(calls).toEqual(["address_name"]);
-  await session.close();
-});
+    release.resolve();
+    await expect(mutation).resolves.toMatchObject({
+      ok: true,
+      value: { ok: true, value: "provider finished" },
+    });
+    expect((await queuedAnalysis).ok).toBe(false);
+    expect(session.activeTarget()).toBeUndefined();
+    expect(calls).toEqual([]);
+    expect(clients).toHaveLength(0);
+    expect((await session.open(target)).ok).toBe(true);
+    expect((await session.execute("address_name", {})).ok).toBe(true);
+    expect(session.activeTarget()?.sha256).not.toBe(originalDigest);
+    expect(clients.at(-1)?.targetSha256).toBe(session.activeTarget()?.sha256);
+    expect(calls).toEqual(["address_name"]);
+    await session.close();
+  },
+);
 
 it("leaves analysis unbound when a command returns before its writer finishes", async () => {
   const [target] = await createBinarySessionTargets();
@@ -369,7 +372,7 @@ it("preserves Evidence records while retiring the client after an external mutat
 });
 
 it("requires explicitly reopening an app bundle after a session mutation", async () => {
-  const directory = await createTestTempDirectory("rea-session-app-rebind-");
+  const directory = await createTestTempDirectory("nre-session-app-rebind-");
   const app = join(directory, "Fixture.app");
   const executable = join(app, "Fixture");
   await mkdir(app, { recursive: true });
@@ -598,7 +601,7 @@ describe("evidence metadata imports and snapshot cache", () => {
       },
       { id: "fixture", name: "Fixture", version: "1" },
       {
-        predicateType: "rea.analysis",
+        predicateType: "nre.analysis",
         operation: "health",
         parameters: { source: "additive-import" },
         result: true,
@@ -873,7 +876,7 @@ describe("replay of exact immutable calls", () => {
     expect(cached.ok).toBe(true);
     if (cached.ok)
       expect(cached.value.limitations).toContainEqual(
-        expect.stringContaining("local REA analysis snapshot"),
+        expect.stringContaining("local NRE analysis snapshot"),
       );
     expect(
       (
@@ -949,7 +952,7 @@ describe("replay of exact immutable calls", () => {
 describe("snapshot switch rollback", () => {
   it("retains the previous cache when a target switch snapshot conflicts", async () => {
     const [first] = await createBinarySessionTargets();
-    const directory = await createTestTempDirectory("rea-session-copy-");
+    const directory = await createTestTempDirectory("nre-session-copy-");
     const second = join(directory, `second${extname(first)}`);
     await copyFile(first, second);
     const calls: string[] = [];

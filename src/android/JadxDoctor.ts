@@ -1,9 +1,11 @@
-import type { RetainedResourceScope } from "../application/AnalysisProvider.js";
+import type {
+  RetainedResourceScope,
+  ProviderAvailability,
+} from "../application/AnalysisProvider.js";
 import type {
   DoctorProviderCheck,
   DoctorProviderInspection,
 } from "../application/Doctor.js";
-import type { ProviderAvailability } from "../application/AnalysisProvider.js";
 import type { JsonValue } from "../domain/jsonValue.js";
 import {
   inspectJadxAvailability,
@@ -18,7 +20,7 @@ export const inspectJadxProvider = async (
   resourceOwner: RetainedResourceScope,
   signal?: AbortSignal,
 ): Promise<DoctorProviderInspection> => {
-  const configured = environment.REA_JADX_MCP_JAR !== undefined;
+  const configured = environment.NRE_JADX_MCP_JAR !== undefined;
   const availability = await inspectJadxAvailability(environment, {
     resourceOwner,
     signal,
@@ -35,7 +37,7 @@ export const inspectJadxProvider = async (
   // Preserve the caller-selected JAR path (it may be a stable symlink) and
   // the validated JAVA_HOME selection; the resolved jarPath stays in
   // diagnostics as inspection evidence.
-  const configuredJar = environment.REA_JADX_MCP_JAR;
+  const configuredJar = environment.NRE_JADX_MCP_JAR;
   return {
     id: "jadx",
     configured,
@@ -45,19 +47,19 @@ export const inspectJadxProvider = async (
       jarPath === undefined || configuredJar === undefined
         ? {}
         : {
-            REA_JADX_MCP_JAR: configuredJar,
+            NRE_JADX_MCP_JAR: configuredJar,
             ...optionalEntry("JAVA_HOME", environment.JAVA_HOME),
             ...optionalEntry(
-              "REA_JADX_HEAP_MIB",
-              environment.REA_JADX_HEAP_MIB,
+              "NRE_JADX_HEAP_MIB",
+              environment.NRE_JADX_HEAP_MIB,
             ),
             ...optionalEntry(
-              "REA_JADX_ACTIVE_PROCESSOR_COUNT",
-              environment.REA_JADX_ACTIVE_PROCESSOR_COUNT,
+              "NRE_JADX_ACTIVE_PROCESSOR_COUNT",
+              environment.NRE_JADX_ACTIVE_PROCESSOR_COUNT,
             ),
             ...optionalEntry(
-              "REA_JADX_OPERATION_TIMEOUT_MS",
-              environment.REA_JADX_OPERATION_TIMEOUT_MS,
+              "NRE_JADX_OPERATION_TIMEOUT_MS",
+              environment.NRE_JADX_OPERATION_TIMEOUT_MS,
             ),
           },
     checks: [configurationCheck(configured, availability, jarPath)],

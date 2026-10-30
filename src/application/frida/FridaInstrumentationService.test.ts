@@ -253,7 +253,7 @@ it.each(["startSession", "instrument"] as const)(
 );
 
 it.each([
-  [join(tmpdir(), "rea-missing-frida-script.js"), "no file exists there"],
+  [join(tmpdir(), "nre-missing-frida-script.js"), "no file exists there"],
   [tmpdir(), "it is not a regular file"],
 ])(
   "rejects the unreadable script file %s before starting Frida",
@@ -301,7 +301,7 @@ it("reports cancellation before checking a file script source", async () => {
       program: "/tmp/fixture",
       source: {
         sourceKind: "file",
-        path: join(tmpdir(), "rea-missing-frida-script.js"),
+        path: join(tmpdir(), "nre-missing-frida-script.js"),
       },
       durationMs: 1,
     },
@@ -890,7 +890,7 @@ it("records target selection in Evidence without remote authentication values", 
       address: "127.0.0.1:27042",
       token,
       certificate,
-      origin: "rea-test",
+      origin: "nre-test",
       keepaliveInterval: 1_000,
     },
     program: "/tmp/fixture",
@@ -905,7 +905,7 @@ it("records target selection in Evidence without remote authentication values", 
     session_id: createSession().sessionId,
     remote: {
       address: "127.0.0.1:27042",
-      origin: "rea-test",
+      origin: "nre-test",
       keepalive_interval: 1_000,
     },
     mode: "spawn",
@@ -1162,7 +1162,7 @@ it.each([
 
 it("preserves typed load cancellation cause, safe diagnostics, and decoded source representation in partial Evidence", async () => {
   const directory = await mkdtemp(
-    join(tmpdir(), "rea-frida-cancelled-source-"),
+    join(tmpdir(), "nre-frida-cancelled-source-"),
   );
   const path = join(directory, "invalid-utf8.js");
   await writeFile(path, Buffer.from([0x2f, 0x2f, 0x20, 0xff, 0x0a]));

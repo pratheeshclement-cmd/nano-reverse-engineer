@@ -34,7 +34,7 @@ it("returns a complete requested text artifact beyond the former inline ceiling"
 });
 
 it("redacts declared secrets from current and historical URL artifacts", async () => {
-  const secretValue = "rea browser+verifier";
+  const secretValue = "nre browser+verifier";
   const scenarioWithSecretUrl = browserScenarioSchema.parse({
     browser: { mode: "launch", executable_path: "/opt/chromium" },
     start_url: {
@@ -50,13 +50,13 @@ it("redacts declared secrets from current and historical URL artifacts", async (
     secrets: [
       {
         secret_id: "url_token",
-        environment_variable: "REA_URL_TOKEN",
+        environment_variable: "NRE_URL_TOKEN",
       },
     ],
     capture: { at_end: ["url", "history"] },
   });
   const scenarioSecrets = resolveScenarioSecrets(scenarioWithSecretUrl, {
-    REA_URL_TOKEN: secretValue,
+    NRE_URL_TOKEN: secretValue,
   });
   const query = new URLSearchParams([["token", secretValue]]).toString();
   const url = `https://app.example.test/?${query}#${encodeURIComponent(secretValue)}`;
@@ -111,11 +111,11 @@ it("redacts a declared secret used as a cookie or storage name", async () => {
     start_url: { url: "https://app.example.test/" },
     actions: [{ step_id: "wait", action: "wait_for_timeout", duration_ms: 1 }],
     secrets: [
-      { secret_id: "storage_key", environment_variable: "REA_STORAGE_KEY" },
+      { secret_id: "storage_key", environment_variable: "NRE_STORAGE_KEY" },
     ],
   });
   const scenarioSecrets = resolveScenarioSecrets(scenarioWithSecret, {
-    REA_STORAGE_KEY: secretValue,
+    NRE_STORAGE_KEY: secretValue,
   });
   const page = {
     url: () => "https://app.example.test/",

@@ -29,11 +29,11 @@ export function parsePowerPcReadelf(text) {
   assert.equal(flags, 0, "Fixture ELF flags differ from build intent");
   const symbols = {};
   for (const name of [
-    "rea_ppc_entry",
-    "rea_ppc_leaf",
-    "rea_ppc_probe",
-    "rea_ppc_global",
-    "rea_ppc_marker",
+    "nre_ppc_entry",
+    "nre_ppc_leaf",
+    "nre_ppc_probe",
+    "nre_ppc_global",
+    "nre_ppc_marker",
   ]) {
     const value = field(
       new RegExp(
@@ -50,9 +50,9 @@ export function parsePowerPcReadelf(text) {
   };
 }
 
-/** Independent reader is a bounded test prerequisite, never an REA provider. */
+/** Independent reader is a bounded test prerequisite, never an NRE provider. */
 export async function inspectPowerPcReadelf(path) {
-  const command = process.env.REA_PPC_READELF ?? "readelf";
+  const command = process.env.NRE_PPC_READELF ?? "readelf";
   const options = {
     env: { ...process.env, LC_ALL: "C" },
     timeout: 10000,

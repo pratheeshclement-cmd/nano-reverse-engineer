@@ -11,11 +11,11 @@ import { parseEvidence } from "../../src/domain/evidence.js";
 import { connectLocalToolsMcp } from "../fixtures/localToolsMcp.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 
-const cli = fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../scripts/nre.mjs", import.meta.url));
 const execute = promisify(execFile);
 
 it("keeps observed entry differences when content identity is unknown", async () => {
-  const root = await createTestTempDirectory("rea-artifact-unavailable-");
+  const root = await createTestTempDirectory("nre-artifact-unavailable-");
   const inspect = async (name: string, mode: number, content: string) => {
     const writer = new ZipWriter(new Uint8ArrayWriter(), {
       useWebWorkers: false,

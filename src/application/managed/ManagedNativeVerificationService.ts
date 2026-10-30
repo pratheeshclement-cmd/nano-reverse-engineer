@@ -50,7 +50,7 @@ const createManagedNativeVerificationEvidence = (
   result: ManagedNativeVerificationResult,
 ): Evidence =>
   createEvidence(undefined, MANAGED_WORKFLOW_PROVIDER, {
-    predicateType: "rea.managed-native-verification",
+    predicateType: "nre.managed-native-verification",
     operation: OPERATION,
     parameters: {
       managed_boundaries_evidence_id: source.managedEvidence.evidence_id,

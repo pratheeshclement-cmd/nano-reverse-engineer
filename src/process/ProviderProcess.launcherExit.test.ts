@@ -75,7 +75,7 @@ const hostFor = (
   const host: ProcessOwnershipHost = {
     platform: "linux",
     listProcesses: vi.fn(async () => (launcher.exited ? [] : [row])),
-    environment: vi.fn(async () => ({ REA_PROCESS_RUN_ID: "run-6134" })),
+    environment: vi.fn(async () => ({ NRE_PROCESS_RUN_ID: "run-6134" })),
     signalGroup: vi.fn(),
   };
   if (lifecycle === undefined) return host;

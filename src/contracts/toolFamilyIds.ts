@@ -2,7 +2,7 @@
  * Selectable tool-family ids in catalog order.
  *
  * Kept separate from the contract definitions so startup configuration can
- * validate `REA_MCP_TOOL_FAMILIES` without loading the canonical schema graph
+ * validate `NRE_MCP_TOOL_FAMILIES` without loading the canonical schema graph
  * that the deferred MCP runtime deliberately avoids.
  */
 export const TOOL_FAMILY_IDS = [

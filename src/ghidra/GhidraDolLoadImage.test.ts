@@ -58,7 +58,7 @@ const overlappingDol = (): Buffer =>
   });
 
 const dolTarget = async (bytes: Buffer): Promise<DolTarget> => {
-  const directory = await createTestTempDirectory("rea-dol-attest-");
+  const directory = await createTestTempDirectory("nre-dol-attest-");
   await writeFile(join(directory, "game.dol"), bytes);
   const parsed = await parseBinaryTarget("game.dol", {
     cwd: directory,

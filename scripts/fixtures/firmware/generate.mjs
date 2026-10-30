@@ -5,17 +5,17 @@ import { promisify } from "node:util";
 
 const exec = promisify(execFile);
 const root = resolve(
-  process.env.REA_FIRMWARE_FIXTURE_ROOT ??
+  process.env.NRE_FIRMWARE_FIXTURE_ROOT ??
     "_reference/firmware-integration/generated",
 );
 for (const [command, args, purpose] of [
   [
-    process.env.REA_FIRMWARE_PYTHON ?? "python3",
+    process.env.NRE_FIRMWARE_PYTHON ?? "python3",
     ["--version"],
     "Python 3 standard-library fixture generator",
   ],
   [
-    process.env.REA_FIRMWARE_CC ?? "cc",
+    process.env.NRE_FIRMWARE_CC ?? "cc",
     ["--version"],
     "host ELF fixture compiler",
   ],
@@ -29,14 +29,14 @@ for (const [command, args, purpose] of [
   }
 }
 const ext4 =
-  process.env.REA_FIRMWARE_VERIFY_EXT4 === "1"
-    ? [process.env.REA_FIRMWARE_MKE2FS_COMMAND ?? "mke2fs"]
+  process.env.NRE_FIRMWARE_VERIFY_EXT4 === "1"
+    ? [process.env.NRE_FIRMWARE_MKE2FS_COMMAND ?? "mke2fs"]
     : [];
 for (const command of ext4) await exec(command, ["-V"]);
-const generated = await exec(process.env.REA_FIRMWARE_PYTHON ?? "python3", [
+const generated = await exec(process.env.NRE_FIRMWARE_PYTHON ?? "python3", [
   fileURLToPath(new URL("./generate.py", import.meta.url)),
   root,
-  process.env.REA_FIRMWARE_CC ?? "cc",
+  process.env.NRE_FIRMWARE_CC ?? "cc",
   ...ext4,
 ]);
 console.log(generated.stdout.trim());

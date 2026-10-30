@@ -19,7 +19,7 @@ const producer = fileURLToPath(
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "archives real lint I/O errors with unavailable source and rule identity",
   async () => {
-    const root = await createTestTempDirectory("rea-ci-static-io-");
+    const root = await createTestTempDirectory("nre-ci-static-io-");
     const source = join(root, "unreadable.js");
     await writeFile(source, "debugger;\n");
     await chmod(source, 0);
@@ -95,7 +95,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 );
 
 it("uses the same repository path admission for archived and compared diagnostics", async () => {
-  const root = await createTestTempDirectory("rea-ci-static-paths-");
+  const root = await createTestTempDirectory("nre-ci-static-paths-");
   await writeFile(
     join(root, "static-task-context.json"),
     JSON.stringify({
@@ -150,7 +150,7 @@ it("uses the same repository path admission for archived and compared diagnostic
 it.each([3.5, 100, 0])(
   "retains real lint failures when the duplication threshold is %s",
   async (threshold) => {
-    const root = await createTestTempDirectory("rea-ci-static-archive-");
+    const root = await createTestTempDirectory("nre-ci-static-archive-");
     await mkdir(join(root, "src"));
     await mkdir(join(root, "tests"));
     await writeFile(
@@ -189,7 +189,7 @@ it.each([3.5, 100, 0])(
       JSON.parse(
         await readFile(join(reports, "jscpd/jscpd-report.json"), "utf8"),
       ),
-    ).toMatchObject({ reaCheck: { exitCode: threshold === 0 ? 1 : 0 } });
+    ).toMatchObject({ nreCheck: { exitCode: threshold === 0 ? 1 : 0 } });
     await writeFile(
       join(reports, "static-task-context.json"),
       JSON.stringify({

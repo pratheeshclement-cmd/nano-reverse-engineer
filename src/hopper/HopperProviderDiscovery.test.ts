@@ -22,7 +22,7 @@ describe("Hopper provider discovery", () => {
         },
       });
 
-      const missingPath = "/missing/rea-hopper-launcher";
+      const missingPath = "/missing/nre-hopper-launcher";
       expect(provider(missingPath).inspectAvailability()).toEqual({
         status: "unavailable",
         code: "executable_missing",
@@ -85,7 +85,7 @@ describe("Hopper provider discovery", () => {
     ).toMatchObject({
       status: "unsupported",
       code: "target_kind_unsupported",
-      reason: expect.stringContaining("cannot start REA's analysis bridge"),
+      reason: expect.stringContaining("cannot start NRE's analysis bridge"),
       diagnostics: {
         target_kind: "database",
         target_format: "analysis-database",

@@ -517,7 +517,7 @@ const captureProcess = async (
   environment: Readonly<NodeJS.ProcessEnv>,
   launcher?: NativeCommandLauncher,
 ): Promise<Result<ProcessCapture, NativeCommandFailure>> => {
-  const runId = `rea-native-command-${randomUUID()}`;
+  const runId = `nre-native-command-${randomUUID()}`;
   try {
     const snapshot = await runOwnedCommand(
       {

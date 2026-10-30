@@ -3,7 +3,7 @@ import { spawn } from "node:child_process";
 /** Start a source-owned decoy whose process title exercises broad Hopper kills. */
 export const startUnrelatedHopperSentinel = async () => {
   const environment = { ...process.env };
-  delete environment.REA_PROCESS_RUN_ID;
+  delete environment.NRE_PROCESS_RUN_ID;
   const child = spawn(
     process.execPath,
     ["-e", "process.title = 'Hopper'; setInterval(() => undefined, 1000)"],

@@ -20,14 +20,14 @@ cliTest(
     );
     // Unique private values: the report must carry none of them. Literal
     // report values such as "node" or "linux" cannot collide with these.
-    const marker = `rea-private-${randomUUID()}`;
+    const marker = `nre-private-${randomUUID()}`;
     const cwd = await createTestTempDirectory(`${marker}-cwd-`);
     const home = join(cwd, `${marker}-home`);
     await mkdir(home);
     const environment = {
       HOME: home,
       USERPROFILE: home,
-      REA_VERSION_REPORT_PRIVATE_MARKER: marker,
+      NRE_VERSION_REPORT_PRIVATE_MARKER: marker,
     };
 
     const json = await cli.run({
@@ -97,6 +97,6 @@ cliTest(
       cwd,
     });
     expect(help.exitCode, help.stderr).toBe(0);
-    expect(help.stdout).toContain("Usage: rea");
+    expect(help.stdout).toContain("Usage: nre");
   },
 );

@@ -24,7 +24,7 @@ import { ProcessOwnershipEvidenceOwner } from "./ProcessOwnershipEvidence.js";
 import { mergeEnvironmentOverrides } from "./snapshotEnvironment.js";
 
 const SENSITIVE_CHILD_ENV_PATTERNS: readonly RegExp[] = [
-  /^(?:NRE|REA|MCP)_HTTP_AUTH_TOKEN$/iu,
+  /^(?:NRE|NRE|MCP)_HTTP_AUTH_TOKEN$/iu,
   /^MCP_AUTH_TOKEN$/iu,
   /.*_AUTH_TOKEN$/iu,
   /.*_SECRET_KEY$/iu,
@@ -303,7 +303,7 @@ export const spawnOwnedProviderProcess = async (
   // Resolve undefined overrides before the launchers omit unset variables.
   const environment = mergeEnvironmentOverrides(
     selectedEnvironment,
-    { REA_PROCESS_RUN_ID: options.runId },
+    { NRE_PROCESS_RUN_ID: options.runId },
     platform,
   );
   if (platform === "win32" && process.platform === "win32") {

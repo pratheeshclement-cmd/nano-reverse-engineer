@@ -9,11 +9,8 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "unqualified doctor checks the installed managed skill and preserves its files",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-unqualified-doctor-skill-");
-    const skill = join(
-      home,
-      ".claude/skills/reverse-engineer-anything/SKILL.md",
-    );
+    const home = await createTestTempDirectory("nre-unqualified-doctor-skill-");
+    const skill = join(home, ".claude/skills/nano-reverse-engineer/SKILL.md");
     const run = (arguments_: readonly string[]) =>
       cli.run({
         arguments: [...arguments_, "--json"],
@@ -106,7 +103,7 @@ cliTest(
     }
 
     const emptyHome = await createTestTempDirectory(
-      "rea-unqualified-doctor-empty-",
+      "nre-unqualified-doctor-empty-",
     );
     for (const arguments_ of [
       ["doctor", "--skill"],
@@ -125,11 +122,11 @@ cliTest(
     }
 
     const foreignHome = await createTestTempDirectory(
-      "rea-unqualified-doctor-foreign-skill-",
+      "nre-unqualified-doctor-foreign-skill-",
     );
     const foreignSkill = join(
       foreignHome,
-      ".claude/skills/reverse-engineer-anything/SKILL.md",
+      ".claude/skills/nano-reverse-engineer/SKILL.md",
     );
     const foreignBytes = Buffer.from(
       "---\nname: another-skill\n---\nA caller-owned workflow.\n",

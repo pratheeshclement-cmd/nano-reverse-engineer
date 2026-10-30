@@ -47,7 +47,7 @@ it("aggregates comparison Evidence and records an approved runtime gap", async (
     expect(response.isError, JSON.stringify(response)).not.toBe(true);
     const evidence = inlineEvidence(response.structuredContent);
     expect(evidence).toMatchObject({
-      provider: { id: "rea-changed-behavior" },
+      provider: { id: "nre-changed-behavior" },
       normalized_result: { behavior_status: "unknown" },
     });
     expect(session.listUnknowns({ domain: "changed-behavior" })).toMatchObject([
@@ -75,7 +75,7 @@ it("builds exact-address paths with qualified callees and dossier citations", as
     expect(response.isError).not.toBe(true);
     const evidence = inlineEvidence(response.structuredContent);
     expect(evidence).toMatchObject({
-      provider: { id: "rea-call-path" },
+      provider: { id: "nre-call-path" },
       normalized_result: {
         status: "found",
         shortest_hops: 0,
@@ -186,7 +186,7 @@ it("keeps call-path publication ahead of close_binary record draining", async ()
     expect(settlementOrder).toEqual(["build_call_path", "close_binary"]);
     const evidence = inlineEvidence(response.structuredContent);
     expect(evidence).toMatchObject({
-      provider: { id: "rea-call-path" },
+      provider: { id: "nre-call-path" },
       evidence_links: input.functions.map(({ evidence_id }) => evidence_id),
     });
     expect(session.exportEvidenceBundle().records).toHaveLength(0);
@@ -430,7 +430,7 @@ it("records an explicit non-causal static/runtime hypothesis", async () => {
     expect(response.isError).not.toBe(true);
     const evidence = inlineEvidence(response.structuredContent);
     expect(evidence).toMatchObject({
-      provider: { id: "rea-static-runtime-correlation" },
+      provider: { id: "nre-static-runtime-correlation" },
       confidence: "inferred",
       normalized_result: {
         status: "correlated",
@@ -499,7 +499,7 @@ it("passes only the finite declared reconstruction specification", async () => {
     expect(response.isError).not.toBe(true);
     const evidence = inlineEvidence(response.structuredContent);
     expect(evidence).toMatchObject({
-      provider: { id: "rea-reconstruction-verifier" },
+      provider: { id: "nre-reconstruction-verifier" },
       normalized_result: { status: "pass", summary: { passed: 1 } },
     });
     expect(evidence.limitations).toContain(

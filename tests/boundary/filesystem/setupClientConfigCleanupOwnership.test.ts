@@ -141,7 +141,7 @@ const cleanupHeldHandle = async (
 };
 
 it("retains invalid UTF-8 diagnostics and the uninstall read owner when close fails", async () => {
-  const home = await createTestTempDirectory("rea-uninstall-utf8-close-");
+  const home = await createTestTempDirectory("nre-uninstall-utf8-close-");
   const path = join(home, "client.json");
   const original = Buffer.from([0xff]);
   await writeFile(path, original);
@@ -173,16 +173,16 @@ it("retains invalid UTF-8 diagnostics and the uninstall read owner when close fa
 });
 
 it("stops uninstall and retains the backup read owner when its close fails", async () => {
-  const home = await createTestTempDirectory("rea-uninstall-backup-close-");
+  const home = await createTestTempDirectory("nre-uninstall-backup-close-");
   const path = join(home, "client.json");
   const client = { name: "cursor", format: "json", configPath: path } as const;
   await writeFile(path, '{"keep":"before setup"}\n');
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({ status: "configured" });
   const configured = await readFile(path, "utf8");
   const { closeAttempts, release } = holdReadHandle(
-    `${path}.rea.backup`,
+    `${path}.nre.backup`,
     "held backup handle",
   );
   const host = systemUninstallHost(home, undefined, { HOME: home }, "linux");
@@ -206,7 +206,7 @@ it("keeps shared-ownership proof when the ownership read completes but its close
   // unverified. The completed ownership read is the proof that later read
   // failures are blocking; discarding it softens every failure to retained,
   // so purge runs while the active shared registration remains.
-  const home = await createTestTempDirectory("rea-freebuff-ownership-close-");
+  const home = await createTestTempDirectory("nre-freebuff-ownership-close-");
   const setupHost = systemSetupHost(
     { platform: "linux", homeDirectory: home } as DoctorHost,
     { HOME: home },
@@ -221,9 +221,9 @@ it("keeps shared-ownership proof when the ownership read completes but its close
     JSON.stringify({ mcpServers: { other: { command: "other" } } }),
   );
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({ status: "configured" });
-  const state = join(home, ".rea", "state.json");
+  const state = join(home, ".nre", "state.json");
   await mkdir(dirname(state), { recursive: true });
   await writeFile(state, "{}\n");
   const { release } = holdReadHandle(
@@ -242,7 +242,7 @@ it("keeps shared-ownership proof when the ownership read completes but its close
         name: "uninstall",
         status: "skipped",
         detail: expect.stringContaining(
-          "No REA registration, skill, or data was removed",
+          "No NRE registration, skill, or data was removed",
         ),
       }),
     );
@@ -254,11 +254,11 @@ it("keeps shared-ownership proof when the ownership read completes but its close
 });
 
 it("keeps shared-ownership proof when removal refuses a shadowed duplicate", async () => {
-  // The effective row is REA-owned while an earlier duplicate is foreign, so
+  // The effective row is NRE-owned while an earlier duplicate is foreign, so
   // removal refuses the edit. That refusal must not erase ownership: without
   // the positive row fact, recurring close failures soften to retained and
   // purge runs while the owned row remains active.
-  const home = await createTestTempDirectory("rea-freebuff-shadowed-close-");
+  const home = await createTestTempDirectory("nre-freebuff-shadowed-close-");
   const setupHost = systemSetupHost(
     { platform: "linux", homeDirectory: home } as DoctorHost,
     { HOME: home },
@@ -270,9 +270,9 @@ it("keeps shared-ownership proof when removal refuses a shadowed duplicate", asy
   await mkdir(dirname(client.configPath), { recursive: true });
   await writeFile(
     client.configPath,
-    '{"mcpServers":{"rea":{"command":"foreign-server","args":[]},"rea":{"command":"rea","args":["mcp"]}}}',
+    '{"mcpServers":{"nre":{"command":"foreign-server","args":[]},"nre":{"command":"nre","args":["mcp"]}}}',
   );
-  const state = join(home, ".rea", "state.json");
+  const state = join(home, ".nre", "state.json");
   await mkdir(dirname(state), { recursive: true });
   await writeFile(state, "{}\n");
   const { release } = holdReadHandle(
@@ -291,7 +291,7 @@ it("keeps shared-ownership proof when removal refuses a shadowed duplicate", asy
         name: "uninstall",
         status: "skipped",
         detail: expect.stringContaining(
-          "No REA registration, skill, or data was removed",
+          "No NRE registration, skill, or data was removed",
         ),
       }),
     );
@@ -303,11 +303,11 @@ it("keeps shared-ownership proof when removal refuses a shadowed duplicate", asy
 
 it("stops removal when a completed reread leaves its handle unreleased", async () => {
   // Greptile P1: preflight and reread both complete with a foreign-only row,
-  // but the reread handle cannot be closed even by the cleanup retry. REA
+  // but the reread handle cannot be closed even by the cleanup retry. NRE
   // still owns that open handle, so removal must stop before purge: serving
   // the completed text would let removeAll delete managed data while the
   // incomplete cleanup is only reported later, by close().
-  const home = await createTestTempDirectory("rea-freebuff-reread-leak-");
+  const home = await createTestTempDirectory("nre-freebuff-reread-leak-");
   const setupHost = systemSetupHost(
     { platform: "linux", homeDirectory: home } as DoctorHost,
     { HOME: home },
@@ -319,9 +319,9 @@ it("stops removal when a completed reread leaves its handle unreleased", async (
   await mkdir(dirname(client.configPath), { recursive: true });
   await writeFile(
     client.configPath,
-    '{"mcpServers":{"rea":{"command":"foreign-server","args":[]}}}',
+    '{"mcpServers":{"nre":{"command":"foreign-server","args":[]}}}',
   );
-  const state = join(home, ".rea", "state.json");
+  const state = join(home, ".nre", "state.json");
   await mkdir(dirname(state), { recursive: true });
   await writeFile(state, "{}\n");
   const { hold, release } = holdReadHandle(
@@ -366,7 +366,7 @@ it("keeps the shared registration fail-closed when ZCode's probe is unresolved",
   // absent: the shared file stays fail-closed so its row is inspected and
   // removed instead of leaving an installed ZCode wired to purged data.
   // Definitive absence still leaves the file to FreeBuff, ZCode's owner.
-  const home = await createTestTempDirectory("rea-zcode-fallback-unresolved-");
+  const home = await createTestTempDirectory("nre-zcode-fallback-unresolved-");
   const fallback = join(home, ".agents", "mcp.json");
   const profile = join(home, ".zcode", "cli");
   lstatMock.mockImplementation((path) =>
@@ -417,7 +417,7 @@ it("removes a shared registration once and reports that outcome to both clients"
   // removed the row as ZCode and then reported FreeBuff as "absent", losing
   // the outcome for the client that owns the file, and it read and edited one
   // shared resource twice.
-  const home = await createTestTempDirectory("rea-shared-removal-once-");
+  const home = await createTestTempDirectory("nre-shared-removal-once-");
   const shared = join(home, ".agents", "mcp.json");
   await mkdir(join(home, ".zcode", "cli"), { recursive: true });
   await mkdir(join(home, ".config", "freebuff-desktop"), { recursive: true });
@@ -425,7 +425,7 @@ it("removes a shared registration once and reports that outcome to both clients"
     await configureClientConfiguration(
       { name: "freebuff", format: "json", configPath: shared },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ),
   ).toMatchObject({ status: "configured" });
   const host = systemUninstallHost(home, undefined, { HOME: home }, "linux");
@@ -463,10 +463,10 @@ it("removes a shared registration once and reports that outcome to both clients"
 
 it("keeps one row per client when OpenCode is pointed at FreeBuff's file", async () => {
   // OPENCODE_CONFIG can make OpenCode and FreeBuff edit one file with different
-  // tables (`mcp.rea` and `mcpServers.rea`). Sharing one decision by filename
+  // tables (`mcp.nre` and `mcpServers.nre`). Sharing one decision by filename
   // would remove only OpenCode's row and report it for FreeBuff too, leaving
   // FreeBuff registered while uninstall reports complete.
-  const home = await createTestTempDirectory("rea-shared-dialects-");
+  const home = await createTestTempDirectory("nre-shared-dialects-");
   const shared = join(home, ".agents", "mcp.json");
   await mkdir(dirname(shared), { recursive: true });
   await mkdir(join(home, ".config", "freebuff-desktop"), { recursive: true });
@@ -474,7 +474,7 @@ it("keeps one row per client when OpenCode is pointed at FreeBuff's file", async
     await configureClientConfiguration(
       { name: "freebuff", format: "json", configPath: shared },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ),
   ).toMatchObject({ status: "configured" });
   const host = systemUninstallHost(
@@ -505,7 +505,7 @@ it("keeps one row per client when OpenCode is pointed at FreeBuff's file", async
 it.each([true, false])(
   "projects only the shared table's outcome to ZCode (shared row owned: %s)",
   async (sharedOwned) => {
-    const home = await createTestTempDirectory("rea-shared-table-outcome-");
+    const home = await createTestTempDirectory("nre-shared-table-outcome-");
     const shared = join(home, ".agents", "mcp.json");
     const zcodePath = join(home, ".zcode", "cli", "config.json");
     await mkdir(dirname(shared), { recursive: true });
@@ -515,14 +515,14 @@ it.each([true, false])(
       shared,
       JSON.stringify({
         mcp: {
-          rea: {
+          nre: {
             type: "local",
-            command: [sharedOwned ? "foreign-server" : "rea", "mcp"],
+            command: [sharedOwned ? "foreign-server" : "nre", "mcp"],
           },
         },
         mcpServers: {
-          rea: {
-            command: sharedOwned ? "rea" : "foreign-server",
+          nre: {
+            command: sharedOwned ? "nre" : "foreign-server",
             args: ["mcp"],
           },
         },
@@ -551,13 +551,13 @@ it.each([true, false])(
       const remaining = JSON.parse(await readFile(shared, "utf8"));
       expect(remaining.mcp).toEqual(
         sharedOwned
-          ? { rea: { type: "local", command: ["foreign-server", "mcp"] } }
+          ? { nre: { type: "local", command: ["foreign-server", "mcp"] } }
           : {},
       );
       expect(remaining.mcpServers).toEqual(
         sharedOwned
           ? {}
-          : { rea: { command: "foreign-server", args: ["mcp"] } },
+          : { nre: { command: "foreign-server", args: ["mcp"] } },
       );
     } finally {
       await host.close?.();
@@ -569,8 +569,8 @@ it("does not treat a dangling FreeBuff profile link as installed", async () => {
   // Setup and doctor follow ~/.config/freebuff-desktop and reject a link whose
   // target is gone. Discovery must agree: counting the leftover link as an
   // installed product turns an unrelated malformed shared file into a blocking
-  // failure that stops every other REA removal.
-  const home = await createTestTempDirectory("rea-freebuff-dangling-profile-");
+  // failure that stops every other NRE removal.
+  const home = await createTestTempDirectory("nre-freebuff-dangling-profile-");
   const shared = join(home, ".agents", "mcp.json");
   const profile = join(home, ".config", "freebuff-desktop");
   const cursor = join(home, ".cursor", "mcp.json");
@@ -582,7 +582,7 @@ it("does not treat a dangling FreeBuff profile link as installed", async () => {
     await configureClientConfiguration(
       { name: "cursor", format: "json", configPath: cursor },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ),
   ).toMatchObject({ status: "configured" });
   lstatMock.mockImplementation((path) =>
@@ -613,7 +613,7 @@ it("does not treat a dangling FreeBuff profile link as installed", async () => {
       expect.objectContaining({ name: "cursor", status: "removed" }),
     );
     expect(JSON.parse(await readFile(cursor, "utf8"))).not.toHaveProperty(
-      "mcpServers.rea",
+      "mcpServers.nre",
     );
     expect(result.items).toContainEqual(
       expect.objectContaining({ name: "freebuff", status: "retained" }),
@@ -629,7 +629,7 @@ it("serves a completed removal reread when its close retry releases the handle",
   // the completed text is the ownership evidence that drives removal of the
   // concurrently added row instead of softening to retained and leaving it
   // active while data is purged.
-  const home = await createTestTempDirectory("rea-freebuff-reread-close-");
+  const home = await createTestTempDirectory("nre-freebuff-reread-close-");
   const setupHost = systemSetupHost(
     { platform: "linux", homeDirectory: home } as DoctorHost,
     { HOME: home },
@@ -641,9 +641,9 @@ it("serves a completed removal reread when its close retry releases the handle",
   await mkdir(dirname(client.configPath), { recursive: true });
   await writeFile(
     client.configPath,
-    '{"mcpServers":{"rea":{"command":"foreign-server","args":[]}}}',
+    '{"mcpServers":{"nre":{"command":"foreign-server","args":[]}}}',
   );
-  const cacheOwned = join(home, ".rea", "cache", "owned");
+  const cacheOwned = join(home, ".nre", "cache", "owned");
   await mkdir(dirname(cacheOwned), { recursive: true });
   await writeFile(cacheOwned, "owned\n");
   const { hold, release } = holdReadHandle(
@@ -656,10 +656,10 @@ it("serves a completed removal reread when its close retry releases the handle",
   const host = {
     ...base,
     inspectSkill: async () => {
-      // Another writer registers REA between preflight and removal.
+      // Another writer registers NRE between preflight and removal.
       await writeFile(
         client.configPath,
-        '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}',
+        '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}',
       );
       hold();
       return base.inspectSkill?.();
@@ -671,7 +671,7 @@ it("serves a completed removal reread when its close retry releases the handle",
     expect(result.items).toContainEqual(
       expect.objectContaining({ name: "freebuff", status: "removed" }),
     );
-    expect(await readFile(client.configPath, "utf8")).not.toContain("rea");
+    expect(await readFile(client.configPath, "utf8")).not.toContain("nre");
     await expect(readFile(cacheOwned)).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -684,7 +684,7 @@ describe("ZCode fallback cleanup ownership", () => {
   it.each(["preflight", "configure"])(
     "retains a failed ZCode fallback close during %s until host cleanup",
     async (operation) => {
-      const home = await createTestTempDirectory("rea-zcode-fallback-close-");
+      const home = await createTestTempDirectory("nre-zcode-fallback-close-");
       const host = systemSetupHost(
         { platform: "linux", homeDirectory: home } as DoctorHost,
         { HOME: home },
@@ -705,8 +705,8 @@ describe("ZCode fallback cleanup ownership", () => {
       try {
         const action =
           operation === "preflight"
-            ? host.inspectClientConfiguration?.(client, {}, ["rea", "mcp"])
-            : host.configureClient(client, {}, ["rea", "mcp"]);
+            ? host.inspectClientConfiguration?.(client, {}, ["nre", "mcp"])
+            : host.configureClient(client, {}, ["nre", "mcp"]);
         if (action === undefined) throw new Error("setup preflight missing");
         await expect(action).rejects.toMatchObject({
           _tag: "ConfigurationError",
@@ -735,7 +735,7 @@ describe("setup client configuration cleanup ownership", () => {
     "stops configuration and retains the %s read owner until host close",
     async (encoding, original) => {
       const { host, client } = await preparedVsCodeSetupHost(
-        "rea-setup-config-close-",
+        "nre-setup-config-close-",
       );
       await writeFile(client.configPath, original);
 
@@ -750,14 +750,14 @@ describe("setup client configuration cleanup ownership", () => {
           host,
           [client],
           {},
-          ["rea", "mcp"],
+          ["nre", "mcp"],
         )
           .then((detectedClients) =>
             configureDetectedClients({
               host,
               detectedClients,
               providerEnvironment: {},
-              command: ["rea", "mcp"],
+              command: ["nre", "mcp"],
               clients: {},
               appliedActions: [],
             }),
@@ -805,7 +805,7 @@ describe("setup client configuration cleanup ownership", () => {
 
   it("waits for an admitted configuration read and rejects later admissions", async () => {
     const { host, client } = await preparedVsCodeSetupHost(
-      "rea-setup-config-inflight-",
+      "nre-setup-config-inflight-",
     );
     await writeFile(client.configPath, '{"servers": {}}\n');
 
@@ -834,7 +834,7 @@ describe("setup client configuration cleanup ownership", () => {
     let hostCloseFinished = false;
     let alignment: Promise<boolean> | undefined;
     try {
-      alignment = host.clientNeedsConfigure(client, {}, ["rea", "mcp"]);
+      alignment = host.clientNeedsConfigure(client, {}, ["nre", "mcp"]);
       await readStarted;
 
       const close = host.close;
@@ -845,7 +845,7 @@ describe("setup client configuration cleanup ownership", () => {
       });
 
       const lateAdmission = await host
-        .clientNeedsConfigure(client, {}, ["rea", "mcp"])
+        .clientNeedsConfigure(client, {}, ["nre", "mcp"])
         .then(
           () => undefined,
           (cause: unknown) => cause,
@@ -879,22 +879,22 @@ const unscopedRegistrationReaders: readonly {
   {
     name: "inspections",
     read: (home, environment) =>
-      readClientRegistrationInspections(home, "/current/rea", { environment }),
+      readClientRegistrationInspections(home, "/current/nre", { environment }),
   },
   {
     name: "statuses",
     read: (home, environment) =>
-      readClientRegistrationStatuses(home, "/current/rea", { environment }),
+      readClientRegistrationStatuses(home, "/current/nre", { environment }),
   },
   {
     name: "maintenance scope",
     read: (home, environment) =>
-      existingMaintenanceScope(home, "/current/rea", environment),
+      existingMaintenanceScope(home, "/current/nre", environment),
   },
   {
     name: "maintenance plan",
     read: (home, environment, execute) =>
-      planIntegrationMaintenance(home, "/current/rea", environment, execute),
+      planIntegrationMaintenance(home, "/current/nre", environment, execute),
   },
 ];
 
@@ -912,7 +912,7 @@ it.each(
   "$name transfers the exact $source owner after a $readOutcome read without a supplied scope",
   async ({ read, source, readOutcome }) => {
     const home = await createTestTempDirectory(
-      "rea-registration-unscoped-close-",
+      "nre-registration-unscoped-close-",
     );
     const config = join(
       home,
@@ -920,7 +920,7 @@ it.each(
     );
     await mkdir(dirname(config), { recursive: true });
     const registration =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n';
     await writeFile(config, registration);
     const heldPath = source === "policy" ? join(home, "system.json") : config;
     const heldText = source === "policy" ? "{}\n" : registration;
@@ -981,19 +981,19 @@ it.each(
 );
 
 it("keeps a supplied registration scope responsible for diagnostics and cleanup retry", async () => {
-  const home = await createTestTempDirectory("rea-registration-scoped-close-");
+  const home = await createTestTempDirectory("nre-registration-scoped-close-");
   const config = join(home, ".cursor/mcp.json");
   await mkdir(dirname(config), { recursive: true });
   await writeFile(
     config,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}',
+    '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}',
   );
   const held = holdReadHandle(config, "held scoped registration descriptor");
   const resources = new ArtifactResourceScope();
   try {
     expect(
       (
-        await readClientRegistrationStatuses(home, "/current/rea", {
+        await readClientRegistrationStatuses(home, "/current/nre", {
           environment: { HOME: home },
           resources,
         })

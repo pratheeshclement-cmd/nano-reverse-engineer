@@ -33,7 +33,7 @@ it.each([
     xml: archive.replace("<string>value</string>", "<string>\u0000</string>"),
   },
 ])("refuses $name before registering archive observations", async ({ xml }) => {
-  const root = await createTestTempDirectory("rea-keyed-xml-syntax-");
+  const root = await createTestTempDirectory("nre-keyed-xml-syntax-");
   await writeFile(join(root, "Archive.plist"), xml);
   await expect(
     inspectBundleKeyedArchive({
@@ -48,7 +48,7 @@ it.each([
 });
 
 it("preserves valid Unicode, entity values and original archive identities", async () => {
-  const root = await createTestTempDirectory("rea-keyed-xml-valid-");
+  const root = await createTestTempDirectory("nre-keyed-xml-valid-");
   await writeFile(
     join(root, "Archive.plist"),
     archive.replace("<string>value</string>", "<string>� &amp; &#13;</string>"),

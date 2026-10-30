@@ -20,7 +20,7 @@ cliTest.for([
 ] as const)(
   "owns the actual CLI fuse descriptor through %s",
   async (mode, { processes }) => {
-    const root = await createTestTempDirectory("rea-cli-fuse-cleanup-");
+    const root = await createTestTempDirectory("nre-cli-fuse-cleanup-");
     const path = join(root, "selected");
     const tracePath = join(root, "trace.jsonl");
     await writeFile(path, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
@@ -29,7 +29,7 @@ cliTest.for([
       [
         "--import",
         resolve("tests/fixtures/electron/fuseCleanupPreload.mjs"),
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/nre.mjs"),
         "inspect-electron-fuses",
         path,
         "--json",
@@ -38,11 +38,11 @@ cliTest.for([
         env: {
           PATH: process.env.PATH,
           HOME: root,
-          REA_LOG_LEVEL: "silent",
-          REA_FUSE_PROBE_INPUT: path,
-          REA_FUSE_PROBE_MODE: mode,
-          REA_FUSE_PROBE_TRACE: tracePath,
-          REA_FUSE_PROBE_ALLOW: join(root, "allow"),
+          NRE_LOG_LEVEL: "silent",
+          NRE_FUSE_PROBE_INPUT: path,
+          NRE_FUSE_PROBE_MODE: mode,
+          NRE_FUSE_PROBE_TRACE: tracePath,
+          NRE_FUSE_PROBE_ALLOW: join(root, "allow"),
         },
         timeoutMs: 30_000,
       },

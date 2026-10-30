@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "darwin")(
   "resource-only MCP plist selections retain symlink-parent and directory semantics",
   async () => {
-    const root = await createTestTempDirectory("rea-resource-plist-selection-");
+    const root = await createTestTempDirectory("nre-resource-plist-selection-");
     const app = join(root, "Fixture.app");
     const contents = join(app, "Contents");
     const physical = join(contents, "physical");

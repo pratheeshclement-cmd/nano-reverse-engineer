@@ -388,7 +388,7 @@ it.each([
 ] as const)(
   "preserves the analysis-view result and exit status for %s: %s during %s",
   async (source, signal, phase) => {
-    const root = await createTestTempDirectory("rea-analysis-view-signal-");
+    const root = await createTestTempDirectory("nre-analysis-view-signal-");
     const parent = analysisViewLayoutEvidence();
     const filename = `${source}.json`;
     const path = join(root, filename);

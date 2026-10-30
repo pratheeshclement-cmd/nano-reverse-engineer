@@ -8,7 +8,7 @@ export const isUnsafeDebuggingPermitted = (
   env: NodeJS.ProcessEnv = process.env,
 ): boolean =>
   env.NRE_ALLOW_UNSAFE_DEBUGGING === "true" ||
-  env.REA_ALLOW_UNSAFE_DEBUGGING === "true";
+  env.NRE_ALLOW_UNSAFE_DEBUGGING === "true";
 
 /**
  * Audit a GDB console command.

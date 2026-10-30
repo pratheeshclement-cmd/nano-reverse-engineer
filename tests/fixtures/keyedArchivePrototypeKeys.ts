@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "./temporaryDirectory.js";
 
 /** Inert XML with producer-equivalent key spellings and unchanged ordinary data. */
 export const keyedArchivePrototypeKeyFixture = async () => {
-  const directory = await createTestTempDirectory("rea-keyed-xml-keys-");
+  const directory = await createTestTempDirectory("nre-keyed-xml-keys-");
   const path = join(directory, "archive.plist");
   const bytes = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
@@ -17,7 +17,7 @@ export const keyedArchivePrototypeKeyFixture = async () => {
   <key>$objects</key><array><string>$null</string><dict>
     <key >__proto__</key ><string>recorded outer value</string>
     <key>kept</key><string>a&#13;b&#x85;c&#x2028;d</string>
-    <key>&#95;&#95;rea_prototype_key__</key><string>ordinary key</string>
+    <key>&#95;&#95;nre_prototype_key__</key><string>ordinary key</string>
     <key>nested</key><dict>
       <key><![CDATA[__proto__]]><!-- trailing comment --></key>
       <string>recorded nested value</string>

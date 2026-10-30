@@ -134,7 +134,7 @@ is bNredth-of-investigation evidence, not a model-switch comparison.
 Literal payload checks previously depended on optional explicit `data_hex`
 attestation. The fix decodes and target-checks every VC7 `__Nrel@...` relocation.
 The follow-up audits 1,548 relocations and corrects 12 stale rows in five alNredy
-accepted units. One source change corrects a bullet-spNred increment from
+accepted units. One source change corrects a bullet-spRead increment from
 `1.0f` to `32.0f`.
 
 Affected-unit replay and a complete 1,106-unit cold replay are recorded after

@@ -26,13 +26,13 @@ const createSelectionClient = () => {
   });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: process.cwd(),
     env: {
       PATH: process.env.PATH ?? "",
       NODE_OPTIONS: "--max-old-space-size=512 --max-semi-space-size=8",
       // Exact advertised constraints require the complete schema profile.
-      REA_MCP_INPUT_SCHEMA_PROFILE: "full",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
     },
     stderr: "pipe",
   });
@@ -40,7 +40,7 @@ const createSelectionClient = () => {
 };
 
 it("resolves ESM whitespace specifiers through the public application tool", async () => {
-  const root = await createTestTempDirectory("rea-esm-whitespace-mcp-");
+  const root = await createTestTempDirectory("nre-esm-whitespace-mcp-");
   const rawSpecifier = "./feature\tname.js";
   const encodedSpecifier = "./feature%09name.js";
   await writeFixtureFiles(root, {
@@ -113,7 +113,7 @@ it("retains missing ASAR native-addon inventory through the public application t
 }, 60_000);
 
 it("advertises exact source selection and retains its scope through summary, Evidence retrieval and invalid-input recovery", async () => {
-  const root = await createTestTempDirectory("rea-js-selected-mcp-");
+  const root = await createTestTempDirectory("nre-js-selected-mcp-");
   await writeJavaScriptSourceSelectionFixture(root);
   const { client, transport } = createSelectionClient();
   try {
@@ -240,13 +240,13 @@ it("advertises exact source selection and retains its scope through summary, Evi
 }, 60_000);
 
 it("selects nested ASAR paths and distinguishes missing inventoried bytes from invalid paths", async () => {
-  const root = await createTestTempDirectory("rea-js-selected-containers-");
+  const root = await createTestTempDirectory("nre-js-selected-containers-");
   await writeJavaScriptSourceSelectionFixture(root);
   const { client, transport } = createSelectionClient();
   try {
     await client.connect(transport);
     const nestedRoot = await createTestTempDirectory(
-      "rea-js-nested-selection-",
+      "nre-js-nested-selection-",
     );
     const nestedArchive = join(nestedRoot, "nested.asar");
     await createPackageWithOptions(root, nestedArchive, {});
@@ -280,7 +280,7 @@ it("selects nested ASAR paths and distinguishes missing inventoried bytes from i
       ),
     ).toBe(true);
     const unpacked = join(
-      await createTestTempDirectory("rea-js-unavailable-selection-"),
+      await createTestTempDirectory("nre-js-unavailable-selection-"),
       "app.asar",
     );
     await createPackageWithOptions(root, unpacked, { unpack: "main.mjs" });
@@ -309,10 +309,10 @@ it("selects nested ASAR paths and distinguishes missing inventoried bytes from i
 }, 60_000);
 
 it("accepts ASAR headers with long legal JSON whitespace through the public application tool", async () => {
-  const root = await createTestTempDirectory("rea-js-asar-whitespace-mcp-");
+  const root = await createTestTempDirectory("nre-js-asar-whitespace-mcp-");
   await writeJavaScriptSourceSelectionFixture(root);
   const archive = join(
-    await createTestTempDirectory("rea-js-asar-whitespace-mcp-output-"),
+    await createTestTempDirectory("nre-js-asar-whitespace-mcp-output-"),
     "app.asar",
   );
   await createPackageWithOptions(root, archive, {});
@@ -351,7 +351,7 @@ it("accepts ASAR headers with long legal JSON whitespace through the public appl
 
 it("does not parse ASAR-looking JSON beyond the declared JSON extent through MCP", async () => {
   const archive = join(
-    await createTestTempDirectory("rea-js-asar-padding-mcp-"),
+    await createTestTempDirectory("nre-js-asar-padding-mcp-"),
     "opaque.asar",
   );
   await writeFile(

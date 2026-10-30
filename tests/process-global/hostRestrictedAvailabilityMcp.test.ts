@@ -62,7 +62,7 @@ const connect = async (
   ) => Promise<Record<string, unknown>>;
   readonly close: () => Promise<void>;
 }> => {
-  const directory = await createTestTempDirectory("rea-host-restricted-mcp-");
+  const directory = await createTestTempDirectory("nre-host-restricted-mcp-");
   const path = (name: string) => join(directory, name);
   const session = createTestBinarySession(() => {
     throw new Error("binary analysis must not start during status discovery");
@@ -72,14 +72,14 @@ const connect = async (
     { kind: "session", session },
     {
       environment: {
-        REA_TSHARK_COMMAND: path("tshark"),
-        REA_SIGROK_COMMAND: path("sigrok-cli"),
-        REA_BINWALK_COMMAND: path("binwalk"),
-        REA_UNBLOB_COMMAND: path("unblob"),
-        REA_PWNTOOLS_PYTHON: path("python3"),
-        REA_WAKARU_COMMAND: path("wakaru"),
-        REA_EVM_PRLIMIT_COMMAND: path("missing-prlimit"),
-        REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+        NRE_TSHARK_COMMAND: path("tshark"),
+        NRE_SIGROK_COMMAND: path("sigrok-cli"),
+        NRE_BINWALK_COMMAND: path("binwalk"),
+        NRE_UNBLOB_COMMAND: path("unblob"),
+        NRE_PWNTOOLS_PYTHON: path("python3"),
+        NRE_WAKARU_COMMAND: path("wakaru"),
+        NRE_EVM_PRLIMIT_COMMAND: path("missing-prlimit"),
+        NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
       },
       ...options,
     },

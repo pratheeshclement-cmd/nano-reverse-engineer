@@ -49,7 +49,7 @@ it
   "projects $kind regex $mode through CLI with exact wire identity",
   async ({ kind, mode }) => {
     process.exitCode = undefined;
-    const home = await createTestTempDirectory("rea-hopper-regex-cli-");
+    const home = await createTestTempDirectory("nre-hopper-regex-cli-");
     const target = join(home, "sample");
     await copyFile("/usr/bin/true", target);
     const launcher = new HopperFixtureLauncher(
@@ -84,7 +84,7 @@ it
       {
         HOME: home,
         HOPPER_LAUNCHER_PATH: process.execPath,
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
     );
     const output: unknown = JSON.parse(run.stdout);

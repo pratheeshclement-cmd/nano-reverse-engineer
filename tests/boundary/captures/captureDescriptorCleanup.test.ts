@@ -37,7 +37,7 @@ it
   ])(
   "retains failed %s descriptors and retries them before further acquisition and shutdown",
   async (member) => {
-    const directory = await createTestTempDirectory("rea-capture-descriptor-");
+    const directory = await createTestTempDirectory("nre-capture-descriptor-");
     const path = join(directory, "recording.pcap");
     const command = join(directory, "tshark.mjs");
     const limiter = join(directory, "limiter");
@@ -53,8 +53,8 @@ it
     const provider = new TsharkCaptureProvider(
       {
         ...process.env,
-        REA_TSHARK_COMMAND: command,
-        REA_TSHARK_PRLIMIT_COMMAND: limiter,
+        NRE_TSHARK_COMMAND: command,
+        NRE_TSHARK_PRLIMIT_COMMAND: limiter,
       },
       (input) => {
         launches += 1;

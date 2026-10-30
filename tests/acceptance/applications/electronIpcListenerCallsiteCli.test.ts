@@ -18,7 +18,7 @@ import {
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "counts exposed IPC listener callsites once and retains bridge paths through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-electron-ipc-listener-");
+    const root = await createTestTempDirectory("nre-electron-ipc-listener-");
     await Promise.all([
       writeFile(
         join(root, "package.json"),

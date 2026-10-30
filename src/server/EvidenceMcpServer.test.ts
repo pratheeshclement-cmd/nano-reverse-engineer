@@ -136,7 +136,7 @@ describe("Modern protocol error delivery", () => {
     });
     const responses: unknown[] = [];
     const transport = new StreamableHTTPClientTransport(
-      new URL("http://rea-test.invalid/mcp"),
+      new URL("http://nre-test.invalid/mcp"),
       {
         fetch: async (url, init) => {
           const response = await handler.fetch(new Request(url, init));

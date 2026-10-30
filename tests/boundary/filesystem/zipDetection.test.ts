@@ -27,7 +27,7 @@ describe("ZIP signature detection", () => {
   ] as const)(
     "routes representative ZIP signature $signature through inventory and target parsing",
     async ({ signature, archive }) => {
-      const root = await createTestTempDirectory("rea-zip-signature-");
+      const root = await createTestTempDirectory("nre-zip-signature-");
       const path = join(root, "input");
       await writeFile(path, Buffer.from(signature));
       expect(
@@ -45,7 +45,7 @@ describe("ZIP signature detection", () => {
   );
 
   it("uses ZIP magic before the filename suffix", async () => {
-    const root = await createTestTempDirectory("rea-zip-suffix-");
+    const root = await createTestTempDirectory("nre-zip-suffix-");
     const apk = join(root, "renamed.apk");
     const program = join(root, "program.apk");
     await writeFile(apk, Buffer.from([0x50, 0x4b, 0x03, 0x04]));
@@ -59,7 +59,7 @@ describe("ZIP signature detection", () => {
   });
 
   it("requires container magic for asar, pkg, and dmg suffixes", async () => {
-    const root = await createTestTempDirectory("rea-container-magic-");
+    const root = await createTestTempDirectory("nre-container-magic-");
     const asar = join(root, "app.asar");
     const textAsar = join(root, "notes.asar");
     const pkg = join(root, "install.pkg");
@@ -104,7 +104,7 @@ describe("ZIP signature detection", () => {
   it.each([[], [0x50], [0x50, 0x4b], [0x50, 0x4b, 0x03]])(
     "rejects an incomplete signature %j",
     async (...bytes) => {
-      const root = await createTestTempDirectory("rea-zip-short-");
+      const root = await createTestTempDirectory("nre-zip-short-");
       const path = join(root, "input");
       await writeFile(path, Buffer.from(bytes));
       expect(
@@ -123,7 +123,7 @@ describe("nested container family", () => {
   };
 
   it("takes ZIP families from member bytes, not member suffixes", async () => {
-    const root = await createTestTempDirectory("rea-nested-zip-family-");
+    const root = await createTestTempDirectory("nre-nested-zip-family-");
     const path = join(root, "outer.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("inner-text.apk", new TextReader("just some text\n"));
@@ -160,7 +160,7 @@ describe("nested container family", () => {
   it.skipIf(process.platform === "win32")(
     "does not name a container family for a symlink it did not follow",
     async () => {
-      const root = await createTestTempDirectory("rea-nested-symlink-family-");
+      const root = await createTestTempDirectory("nre-nested-symlink-family-");
       const directory = join(root, "application");
       await mkdir(directory);
       await writeFile(join(directory, "real.apk"), await plainZip());
@@ -249,7 +249,7 @@ describe("ZIP archives after leading bytes", () => {
   ])(
     "admits a ZIP after an unclaimed script stub with $style",
     async ({ adjust, comment }) => {
-      const root = await createTestTempDirectory("rea-zip-leading-");
+      const root = await createTestTempDirectory("nre-zip-leading-");
       const plain = join(root, "plain.zip");
       const prefixed = join(root, "installer.bin");
       const zip = await memberZip();
@@ -283,7 +283,7 @@ describe("ZIP archives after leading bytes", () => {
   );
 
   it("keeps the root App Pack family for a ZIP after a script stub", async () => {
-    const root = await createTestTempDirectory("rea-zip-leading-app-pack-");
+    const root = await createTestTempDirectory("nre-zip-leading-app-pack-");
     const path = join(root, "Example.app");
     await writeFile(
       path,
@@ -311,7 +311,7 @@ describe("ZIP archives after leading bytes", () => {
   ])(
     "keeps a $family-led file with an appended ZIP out of the ZIP route",
     async ({ leading }) => {
-      const root = await createTestTempDirectory("rea-zip-claimed-lead-");
+      const root = await createTestTempDirectory("nre-zip-claimed-lead-");
       const path = join(root, "program");
       await writeFile(path, withLeadingBytes(await memberZip(), leading, true));
       expect(
@@ -354,7 +354,7 @@ describe("ZIP archives after leading bytes", () => {
       },
     },
   ])("does not locate a trailing ZIP with $shape", async ({ mutate }) => {
-    const root = await createTestTempDirectory("rea-zip-leading-negative-");
+    const root = await createTestTempDirectory("nre-zip-leading-negative-");
     const path = join(root, "input.bin");
     await writeFile(
       path,
@@ -377,7 +377,7 @@ describe("package signature byte identity", () => {
   ])(
     "rejects high-bit aliases of $extension magic at both admission boundaries",
     async ({ extension, signature, offset, size }) => {
-      const root = await createTestTempDirectory("rea-package-magic-");
+      const root = await createTestTempDirectory("nre-package-magic-");
       const path = join(root, `input.${extension}`);
       const bytes = Buffer.alloc(size);
       bytes.write(signature, offset, "ascii");
@@ -470,7 +470,7 @@ describe("raw disk image signatures", () => {
       bytes: rawImage((bytes) => volumeHeader(bytes, "HX", 5)),
     },
   ])("admits $layout as a DMG at both boundaries", async ({ bytes }) => {
-    const root = await createTestTempDirectory("rea-raw-dmg-");
+    const root = await createTestTempDirectory("nre-raw-dmg-");
     const path = join(root, "image.dmg");
     await writeFile(path, bytes);
     await expectDmgAtBothBoundaries(path, true);
@@ -524,7 +524,7 @@ describe("raw disk image signatures", () => {
       bytes: Buffer.from("This is not a disk image.\n".repeat(64)),
     },
   ])("refuses $blob named as a DMG at both boundaries", async ({ bytes }) => {
-    const root = await createTestTempDirectory("rea-raw-dmg-negative-");
+    const root = await createTestTempDirectory("nre-raw-dmg-negative-");
     const path = join(root, "image.dmg");
     await writeFile(path, bytes);
     await expectDmgAtBothBoundaries(path, false);

@@ -64,7 +64,7 @@ export const analyzeJavaScriptDirectory = async (
         "--format",
         "json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(0);
     document = response.json;

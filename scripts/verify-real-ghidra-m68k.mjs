@@ -57,20 +57,20 @@ assert.equal(
   "7679358409efee4c5c2465f9a47158c4d49e0415ba12b3170898440db7ea0bc9",
 );
 await mkdir(join(root, "build"), { recursive: true });
-const workspace = await mkdtemp(join(root, "build", "rea-m68k-proof-"));
+const workspace = await mkdtemp(join(root, "build", "nre-m68k-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "image.bin");
 await writeFile(path, bytes);
-const entrypoint = join(root, "scripts", "rea.mjs");
+const entrypoint = join(root, "scripts", "nre.mjs");
 const env = {
   ...process.env,
   TMPDIR: runtime,
   TMP: runtime,
   TEMP: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -78,7 +78,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-m68k-proof", version: "1" });
+const client = new Client({ name: "nre-real-m68k-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);
@@ -230,7 +230,7 @@ try {
   // Ghidra projects end with their sessions; on macOS the server keeps its
   // process-token helper under TMPDIR until shutdown, checked after close.
   assert.deepEqual(
-    (await readdir(runtime)).filter((name) => name.startsWith("rea-ghidra-")),
+    (await readdir(runtime)).filter((name) => name.startsWith("nre-ghidra-")),
     [],
     "Owned Ghidra runtime survived close",
   );

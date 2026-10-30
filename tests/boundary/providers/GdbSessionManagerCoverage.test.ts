@@ -1352,7 +1352,7 @@ it("does not infer detached state when the inferior verifier observes an exited 
 });
 
 it("retains the GDB session while an unknown descendant holds output after leader exit", async () => {
-  directory ??= await mkdtemp(join(tmpdir(), "rea-gdb-coverage-"));
+  directory ??= await mkdtemp(join(tmpdir(), "nre-gdb-coverage-"));
   const tty = join(directory, "inferior-output");
   await writeFile(tty, "");
   const fake = createFakeSpawner((_child, token, command) => {
@@ -1579,7 +1579,7 @@ const managerWithFakeSpawner = (
 ): GdbSessionManager => {
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: "fake-gdb" },
+    environment: { NRE_GDB_COMMAND: "fake-gdb" },
     spawnProcess,
     verifyInferiorOutputSink: async () => undefined,
     ...options,
@@ -1612,7 +1612,7 @@ const startWithVerifiedInferiorTty = async (
 };
 
 const createProvider = async (body: string): Promise<string> => {
-  directory ??= await mkdtemp(join(tmpdir(), "rea-gdb-coverage-"));
+  directory ??= await mkdtemp(join(tmpdir(), "nre-gdb-coverage-"));
   const provider = join(directory, `fake-gdb-${managers.length}.mjs`);
   await writeFile(provider, `#!${process.execPath}\n${body}`);
   await chmod(provider, 0o700);
@@ -1625,7 +1625,7 @@ const managerFor = async (
 ): Promise<GdbSessionManager> => {
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: await createProvider(body) },
+    environment: { NRE_GDB_COMMAND: await createProvider(body) },
     ...options,
   });
   managers.push(manager);
@@ -1685,7 +1685,7 @@ it("rejects a pre-cancelled GDB start and an unconfigured executable", async () 
 
   const missing = await new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: join(tmpdir(), "does-not-exist-gdb") },
+    environment: { NRE_GDB_COMMAND: join(tmpdir(), "does-not-exist-gdb") },
   }).start();
   expect(missing.ok).toBe(false);
   if (!missing.ok) {
@@ -1694,7 +1694,7 @@ it("rejects a pre-cancelled GDB start and an unconfigured executable", async () 
     expect(projectAnalysisError(missing.error)).toMatchObject({
       code: "capability_unavailable",
       message: expect.stringContaining("does-not-exist-gdb"),
-      remediation: { action: expect.stringContaining("REA_GDB_COMMAND") },
+      remediation: { action: expect.stringContaining("NRE_GDB_COMMAND") },
       details: {
         diagnostics: {
           boundary: "provider-launch",
@@ -1713,7 +1713,7 @@ ${responsiveProvider()}
 `);
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
   });
   managers.push(manager);
 
@@ -1729,7 +1729,7 @@ it("retains ownership when GDB startup fails before its prompt and stop is incom
   const provider = await createProvider("process.exit(0);\n");
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
     stopProcess: async (session, name) => {
       stopCalls += 1;
       if (stopCalls === 1) {
@@ -1804,7 +1804,7 @@ it.each([
     );
     expect(started.error.cause).toBeDefined();
     expect(started.error.partialObservation).toMatchObject({
-      predicate_type: "rea.debugger.startup-observation",
+      predicate_type: "nre.debugger.startup-observation",
     });
     expect(started.error.cleanup).toMatchObject({
       reason: "simulated startup stop uncertainty",
@@ -1859,7 +1859,7 @@ it("returns startup timeout when the MI prompt never arrives", async () => {
   );
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
     startupTimeoutMs: 20,
   });
   managers.push(manager);
@@ -1939,7 +1939,7 @@ it("retains startup timeout without partial evidence when cleanup is uncertain",
   );
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
     startupTimeoutMs: 20,
     stopProcess: async (session, name) => {
       stopCalls += 1;
@@ -2022,7 +2022,7 @@ it("handles a start signal that becomes aborted during listener registration", a
   });
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
   });
   managers.push(manager);
 
@@ -2290,8 +2290,8 @@ it("retains a multi-run console command through its completion query before disp
       );
       child.stdout.write('*stopped,reason="exited-normally"\n');
     } else if (command === "-gdb-show mi-async") completionToken = token;
-    else if (command.includes("REA_NEXT_COMMAND"))
-      child.stdout.write(`~"REA_NEXT_COMMAND\\n"\n${token}^done\n`);
+    else if (command.includes("NRE_NEXT_COMMAND"))
+      child.stdout.write(`~"NRE_NEXT_COMMAND\\n"\n${token}^done\n`);
     else
       child.stdout.write(
         command.includes("list-thread-groups")
@@ -2311,11 +2311,11 @@ it("retains a multi-run console command through its completion query before disp
   });
   const follower = manager.execute(
     started.value.session_id,
-    "echo REA_NEXT_COMMAND\\n",
+    "echo NRE_NEXT_COMMAND\\n",
   );
   await expect.poll(() => completionToken).not.toBe("");
   expect(settled).toBe(false);
-  expect(commands.some((command) => command.includes("REA_NEXT_COMMAND"))).toBe(
+  expect(commands.some((command) => command.includes("NRE_NEXT_COMMAND"))).toBe(
     false,
   );
 
@@ -2323,7 +2323,7 @@ it("retains a multi-run console command through its completion query before disp
   child.stdout.write(
     '*running,thread-id="all"\n*stopped,reason="exited-normally"\n',
   );
-  child.stdout.write('~"REA_SOURCE_TAIL\\n"\n(gdb) \n');
+  child.stdout.write('~"NRE_SOURCE_TAIL\\n"\n(gdb) \n');
   expect(settled).toBe(false);
   child.stdout.write(`${completionToken}^done,value="off"\n(gdb) \n`);
   const result = await source;
@@ -2332,7 +2332,7 @@ it("retains a multi-run console command through its completion query before disp
     mi: `${sourceToken}^running`,
     completion_status: "complete",
     output_truncated: false,
-    console: '~"REA_SOURCE_TAIL\\n"',
+    console: '~"NRE_SOURCE_TAIL\\n"',
   });
   expect(
     result.value.result.records.filter((record) =>
@@ -2347,7 +2347,7 @@ it("retains a multi-run console command through its completion query before disp
   });
   const next = await follower;
   if (!next.ok) throw next.error;
-  expect(next.value.result.console).toBe('~"REA_NEXT_COMMAND\\n"');
+  expect(next.value.result.console).toBe('~"NRE_NEXT_COMMAND\\n"');
   expect(
     next.value.result.records.some((record) => record.startsWith("*stopped")),
   ).toBe(false);
@@ -2414,7 +2414,7 @@ it("retains unknown completion and partial Evidence when the completion query fa
   const fake = createFakeSpawner((child, token, command) => {
     if (command.includes("source commands.gdb"))
       child.stdout.write(
-        `${token}^running\n*stopped,reason="exited-normally"\n~"REA_SOURCE_TAIL\\n"\n`,
+        `${token}^running\n*stopped,reason="exited-normally"\n~"NRE_SOURCE_TAIL\\n"\n`,
       );
     else if (command === "-gdb-show mi-async")
       child.stdout.write(`${token}^error,msg="completion query failed"\n`);
@@ -2434,7 +2434,7 @@ it("retains unknown completion and partial Evidence when the completion query fa
     partialObservation: {
       normalized_result: {
         completion_status: "unknown",
-        console: '~"REA_SOURCE_TAIL\\n"',
+        console: '~"NRE_SOURCE_TAIL\\n"',
       },
     },
   });
@@ -3138,7 +3138,7 @@ it("retains a session when closing cannot confirm the debugger process stopped",
   const provider = await createProvider(responsiveProvider());
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
     stopProcess: async (session, name) => {
       stopCalls += 1;
       if (stopCalls === 1)
@@ -3191,7 +3191,7 @@ it("preserves a command timeout when stopping the owned process rejects", async 
   );
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
     commandTimeoutMs: 25,
     stopProcess: async (session, name) => {
       stopCalls += 1;
@@ -3712,7 +3712,7 @@ it.each(["incomplete", "rejected"] as const)(
         resources: [started.value.session_id],
       });
       expect(failed.error.partialObservation).toMatchObject({
-        predicate_type: "rea.debugger.console-observation",
+        predicate_type: "nre.debugger.console-observation",
         raw_result: {
           command: "will-fail",
           records: ['~"protocol output before failure"'],

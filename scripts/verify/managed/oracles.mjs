@@ -93,10 +93,10 @@ async function runManagedAppManifestSelfTest(context) {
 }
 
 async function runOptionalManagedAppManifest(context) {
-  const manifestPath = process.env.REA_MANAGED_APP_MANIFEST_PATH;
+  const manifestPath = process.env.NRE_MANAGED_APP_MANIFEST_PATH;
   if (manifestPath === undefined) return null;
   if (manifestPath.trim().length === 0)
-    throw new Error("REA_MANAGED_APP_MANIFEST_PATH is set but empty");
+    throw new Error("NRE_MANAGED_APP_MANIFEST_PATH is set but empty");
   const resolvedManifestPath = resolve(process.cwd(), manifestPath);
   const text = await readFile(resolvedManifestPath, "utf8");
   let manifest;
@@ -115,15 +115,15 @@ async function runOptionalManagedAppManifest(context) {
 }
 
 async function runOptionalIlspyOracle(context) {
-  const ilspyPath = process.env.REA_ILSPY_CMD_PATH;
+  const ilspyPath = process.env.NRE_ILSPY_CMD_PATH;
   if (ilspyPath === undefined) return null;
   ensureIlspy(
     ilspyPath.trim().length > 0,
-    "REA_ILSPY_CMD_PATH is set but empty",
+    "NRE_ILSPY_CMD_PATH is set but empty",
   );
   ensureIlspy(
     isAbsolute(ilspyPath),
-    "REA_ILSPY_CMD_PATH must be an absolute path",
+    "NRE_ILSPY_CMD_PATH must be an absolute path",
   );
   await ensureExecutable(ilspyPath);
   const versionOutput = await runIlspy(ilspyPath, ["--version"], 64 * 1024);
@@ -177,7 +177,7 @@ async function runOptionalIlspyOracle(context) {
   });
   const imported = reconstructionImport.value.normalized_result;
   return {
-    env: "REA_ILSPY_CMD_PATH",
+    env: "NRE_ILSPY_CMD_PATH",
     configured: true,
     version,
     executable_sha256: executableSha256,

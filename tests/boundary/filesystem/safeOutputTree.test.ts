@@ -25,7 +25,7 @@ import { ArtifactReaderFailure } from "../../../src/artifacts/ArtifactReader.js"
 
 describe("safe artifact output cleanup", () => {
   it("adopts an empty caller directory without taking authority to remove it", async () => {
-    const parent = await createTestTempDirectory("rea-admitted-output-");
+    const parent = await createTestTempDirectory("nre-admitted-output-");
     const output = join(parent, "output");
     await mkdir(output);
     const tree = await SafeOutputTree.create(output, process.platform, {
@@ -42,7 +42,7 @@ describe("safe artifact output cleanup", () => {
   it.skipIf(process.platform !== "linux")(
     "closes the parent descriptor when the output disappears before commit",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-");
+      const parent = await createTestTempDirectory("nre-safe-output-");
       const output = join(parent, "published");
       const tree = await SafeOutputTree.create(output);
       await rm(output, { recursive: true });
@@ -69,7 +69,7 @@ describe("safe artifact output file identity admission", () => {
   it.skipIf(process.platform === "win32")(
     "retains an O_EXCL file handle until its identity can be retried",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-admit-");
+      const parent = await createTestTempDirectory("nre-safe-output-admit-");
       const output = join(parent, "published");
       const destination = join(output, "payload.txt");
       const displaced = join(parent, "owned-payload.txt");
@@ -124,7 +124,7 @@ describe("safe artifact output setup ownership", () => {
   it.skipIf(process.platform === "win32")(
     "returns its exact tree owner when setup fails after root identity capture",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-setup-");
+      const parent = await createTestTempDirectory("nre-safe-output-setup-");
       const output = join(parent, "published");
       const blocker = join(output, "unowned.txt");
       const prototypeHandle = await open(join(parent, "handle"), "w");
@@ -172,7 +172,7 @@ describe("safe artifact output tree identity", () => {
   it.skipIf(process.platform === "win32")(
     "refuses a replaced root and retries cleanup when the owned root is restored",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-root-");
+      const parent = await createTestTempDirectory("nre-safe-output-root-");
       const output = join(parent, "published");
       const displaced = join(parent, "owned-original");
       const outside = join(parent, "outside");
@@ -212,7 +212,7 @@ describe("safe artifact output tree identity", () => {
   it.skipIf(process.platform === "win32")(
     "refuses a replaced nested parent without touching it and retries after restoration",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-parent-");
+      const parent = await createTestTempDirectory("nre-safe-output-parent-");
       const output = join(parent, "published");
       const nested = join(output, "nested");
       const displaced = join(parent, "owned-nested");
@@ -261,7 +261,7 @@ describe("safe artifact output tree identity", () => {
   it.skipIf(process.platform === "win32")(
     "preserves an outside file when a tracked output file is replaced by a symlink",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-file-");
+      const parent = await createTestTempDirectory("nre-safe-output-file-");
       const output = join(parent, "published");
       const tracked = join(output, "nested", "file.txt");
       const displaced = join(parent, "owned-file.txt");
@@ -294,7 +294,7 @@ describe("safe artifact output tree identity", () => {
 });
 
 it("retains an untracked regular entry and retries after it is removed", async () => {
-  const parent = await createTestTempDirectory("rea-safe-output-untracked-");
+  const parent = await createTestTempDirectory("nre-safe-output-untracked-");
   const output = join(parent, "published");
   const untracked = join(output, "untracked.txt");
   const tree = await SafeOutputTree.create(output);
@@ -320,7 +320,7 @@ it("retains an untracked regular entry and retries after it is removed", async (
 });
 describe("safe artifact output tree", () => {
   it("removes only its owned tree after digest failure and proves absence", async () => {
-    const parent = await createTestTempDirectory("rea-safe-output-");
+    const parent = await createTestTempDirectory("nre-safe-output-");
     const output = join(parent, "published");
     const tree = await SafeOutputTree.create(output);
     await expect(
@@ -340,7 +340,7 @@ describe("safe artifact output tree", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "reports the owned residual root when rollback lacks directory permissions",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-rollback-");
+      const parent = await createTestTempDirectory("nre-safe-output-rollback-");
       const output = join(parent, "published");
       const tree = await SafeOutputTree.create(output);
       const bytes = Buffer.from("retained until rollback can retry");
@@ -366,7 +366,7 @@ describe("safe artifact output tree", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "retains cleanup progress when one owned sibling is not writable",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-siblings-");
+      const parent = await createTestTempDirectory("nre-safe-output-siblings-");
       const output = join(parent, "published");
       const completed = join(output, "completed");
       const blocked = join(output, "blocked");
@@ -412,7 +412,7 @@ describe("safe artifact output tree", () => {
   );
 
   it("publishes files while building and preserves them after sealing", async () => {
-    const parent = await createTestTempDirectory("rea-safe-output-");
+    const parent = await createTestTempDirectory("nre-safe-output-");
     const output = join(parent, "published");
     const tree = await SafeOutputTree.create(output);
     const bytes = Buffer.from("visible before seal");
@@ -434,7 +434,7 @@ describe("safe artifact output tree", () => {
   });
 
   it("returns detached cleanup reports", async () => {
-    const parent = await createTestTempDirectory("rea-safe-output-");
+    const parent = await createTestTempDirectory("nre-safe-output-");
     const tree = await SafeOutputTree.create(join(parent, "published"));
     const cleanup = await tree.rollback();
     if (cleanup.status !== "complete") throw new Error("expected cleanup");
@@ -455,7 +455,7 @@ describe("safe artifact output tree", () => {
   });
 
   it("publishes without POSIX-only directory chmod or fsync on Windows", async () => {
-    const parent = await createTestTempDirectory("rea-safe-output-");
+    const parent = await createTestTempDirectory("nre-safe-output-");
     const output = join(parent, "published");
     const tree = await SafeOutputTree.create(output, "win32");
     const bytes = Buffer.from("windows output");
@@ -478,7 +478,7 @@ describe("safe artifact output Windows stream paths", () => {
     "nested/hello.txt::$DATA",
     "folder:stream/file.txt",
   ])("refuses Windows stream syntax before creating %s", async (path) => {
-    const parent = await createTestTempDirectory("rea-safe-output-stream-");
+    const parent = await createTestTempDirectory("nre-safe-output-stream-");
     const output = join(parent, "published");
     const tree = await SafeOutputTree.create(output, "win32");
     const bytes = Buffer.from("regular file content");
@@ -508,7 +508,7 @@ describe("safe artifact output Windows stream paths", () => {
   it.each(["Folder/Icon\r", "Fold\ter/file.txt"])(
     "refuses Windows control characters before creating %j",
     async (path) => {
-      const parent = await createTestTempDirectory("rea-safe-output-control-");
+      const parent = await createTestTempDirectory("nre-safe-output-control-");
       const output = join(parent, "published");
       const tree = await SafeOutputTree.create(output, "win32");
       const bytes = Buffer.from("regular file content");

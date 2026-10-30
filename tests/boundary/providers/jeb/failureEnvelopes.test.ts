@@ -17,7 +17,7 @@ const requestSchema = z.object({
     .optional(),
 });
 
-// Exercise the SDK decoder and the public REA tool together. The producer serves
+// Exercise the SDK decoder and the public NRE tool together. The producer serves
 // both documented envelope encodings without mocking either MCP client.
 const startProducer = async (
   payload: JsonValue,
@@ -133,7 +133,7 @@ it.each(
   async ({ payload, message, encoding }) => {
     const producer = await startProducer(payload, encoding);
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: producer.endpoint },
+      environment: { NRE_JEB_MCP_URL: producer.endpoint },
     });
     const session = createTestBinarySession(() => {
       throw new Error("JEB must not start a deep provider");

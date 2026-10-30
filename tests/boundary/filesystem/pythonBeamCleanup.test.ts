@@ -81,7 +81,7 @@ it.each(
 )(
   "$name preserves acquired facts and resolves cleanup after retries: $stage",
   async ({ operation, bytes, create, cancelDuringClose, failRead }) => {
-    const root = await createTestTempDirectory("rea-python-beam-close-owner-");
+    const root = await createTestTempDirectory("nre-python-beam-close-owner-");
     const path = join(root, "selected-artifact");
     await fileSystem.writeFile(path, bytes);
     const releases: (() => Promise<void>)[] = [];
@@ -165,7 +165,7 @@ it.each(
 it.each([{ source: "BEAM successful close" }, null])(
   "preserves BEAM cancellation during successful close with reason %j",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-beam-successful-close-");
+    const root = await createTestTempDirectory("nre-beam-successful-close-");
     const path = join(root, "selected.beam");
     const bytes = erlangBeamFixture();
     await fileSystem.writeFile(path, bytes);

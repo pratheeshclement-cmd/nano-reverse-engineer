@@ -20,7 +20,7 @@ const fixture = async (
   installedVersion?: string,
   omitDevDependency = false,
 ) => {
-  const root = await createTestTempDirectory("rea-deps-");
+  const root = await createTestTempDirectory("nre-deps-");
   await mkdir(join(root, "node_modules"));
   await writeFile(
     join(root, "package-lock.json"),
@@ -150,7 +150,7 @@ describe("dependency install freshness", () => {
       GOMAXPROCS: "1",
       GOMEMLIMIT: "384MiB",
       UV_THREADPOOL_SIZE: "2",
-      REA_TEST_UNLISTED_ENV: "filtered",
+      NRE_TEST_UNLISTED_ENV: "filtered",
     };
 
     const built = await runNpm(root, ["run", "build:cached"], environment);
@@ -161,7 +161,7 @@ describe("dependency install freshness", () => {
       GOMAXPROCS: "1",
       GOMEMLIMIT: "384MiB",
       UV_THREADPOOL_SIZE: "2",
-      REA_TEST_UNLISTED_ENV: null,
+      NRE_TEST_UNLISTED_ENV: null,
     });
 
     const cached = await runTurbo(root, {
@@ -177,7 +177,7 @@ describe("dependency install freshness", () => {
 });
 
 const createBuildCacheFixture = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-build-cache-guard-");
+  const root = await createTestTempDirectory("nre-build-cache-guard-");
   const packageJson = asRecord(
     JSON.parse(await readFile(join(sourceRoot, "package.json"), "utf8")),
   );
@@ -208,7 +208,7 @@ const createBuildCacheFixture = async (): Promise<string> => {
     "scripts/lib/verifier-source-loader.mjs",
     "src/domain/skillManifest.ts",
     "src/domain/result.ts",
-    ".agents/skills/reverse-engineer-anything/SKILL.md",
+    ".agents/skills/nano-reverse-engineer/SKILL.md",
     "src/generatedPackageMetadata.ts",
   ];
   await Promise.all(
@@ -231,7 +231,7 @@ const createBuildCacheFixture = async (): Promise<string> => {
   await writeFile(
     join(root, "scripts/cache-fixture-build.mjs"),
     `import { mkdir, writeFile } from "node:fs/promises";
-await writeFile("resource-controls.json", JSON.stringify(Object.fromEntries(["GOMAXPROCS", "GOMEMLIMIT", "UV_THREADPOOL_SIZE", "REA_TEST_UNLISTED_ENV"].map((name) => [name, process.env[name] ?? null]))));
+await writeFile("resource-controls.json", JSON.stringify(Object.fromEntries(["GOMAXPROCS", "GOMEMLIMIT", "UV_THREADPOOL_SIZE", "NRE_TEST_UNLISTED_ENV"].map((name) => [name, process.env[name] ?? null]))));
 await mkdir("dist", { recursive: true });
 await writeFile("dist/cache-fixture.js", "built");
 await writeFile("dist/catalogIdentity.js", "export const FULL_CATALOG_IDENTITY = { counts: { mcp_tools: 1 } };\\n");

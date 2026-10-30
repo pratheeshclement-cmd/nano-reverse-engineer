@@ -27,7 +27,7 @@ describe("MCP input schema profile configuration", () => {
     (value) => {
       const parsed = parseMcpInputSchemaProfile(value);
       if (parsed.ok) throw new Error("Expected invalid profile");
-      expect(parsed.error.message).toContain("REA_MCP_INPUT_SCHEMA_PROFILE");
+      expect(parsed.error.message).toContain("NRE_MCP_INPUT_SCHEMA_PROFILE");
     },
   );
 

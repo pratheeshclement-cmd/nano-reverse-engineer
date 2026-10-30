@@ -18,7 +18,7 @@ afterEach(async () => {
 });
 
 it("returns keyed archive evidence with root provenance and unknown executable identity", async () => {
-  const bundlePath = await mkdtemp(join(tmpdir(), "rea-resource-reader-"));
+  const bundlePath = await mkdtemp(join(tmpdir(), "nre-resource-reader-"));
   temporaryDirectories.push(bundlePath);
   await mkdir(join(bundlePath, "Resources"));
   await writeFile(

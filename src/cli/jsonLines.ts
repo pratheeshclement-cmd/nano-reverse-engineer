@@ -9,14 +9,14 @@ import { jsonParts } from "../domain/jsonSerialization.js";
 export const JSON_LINES_PROTOCOL = "jsonl/v1";
 
 interface JsonLinesErrorRecord {
-  readonly $rea: typeof JSON_LINES_PROTOCOL;
+  readonly $nre: typeof JSON_LINES_PROTOCOL;
   readonly type: "error";
   readonly ok: false;
   readonly result: unknown;
 }
 
 interface JsonLinesMetadataRecord {
-  readonly $rea: typeof JSON_LINES_PROTOCOL;
+  readonly $nre: typeof JSON_LINES_PROTOCOL;
   readonly type: "metadata";
   readonly records: {
     readonly path: readonly string[];
@@ -283,11 +283,11 @@ const selectCollection = (
     );
   }
   for (const [index, record] of collection.records.entries()) {
-    if (isRecord(record) && Object.hasOwn(record, "$rea"))
+    if (isRecord(record) && Object.hasOwn(record, "$nre"))
       return refuse(
         "uses the field JSON Lines reserves for control records",
-        [observe([...collection.path, index, "$rea"], record.$rea)],
-        "Nested $rea values are ordinary data.",
+        [observe([...collection.path, index, "$nre"], record.$nre)],
+        "Nested $nre values are ordinary data.",
       );
   }
   return ok(collection);
@@ -336,7 +336,7 @@ export const prepareJsonLines = (
 export const jsonLinesErrorRecord = (
   result: unknown,
 ): JsonLinesErrorRecord => ({
-  $rea: JSON_LINES_PROTOCOL,
+  $nre: JSON_LINES_PROTOCOL,
   type: "error" as const,
   ok: false as const,
   result,
@@ -359,7 +359,7 @@ export function* jsonLinesRecords(plan: JsonLinesPlan): Generator<unknown> {
   yield* plan.records;
   if (plan.context !== undefined || plan.path.length > 0) {
     const metadata: JsonLinesMetadataRecord = {
-      $rea: JSON_LINES_PROTOCOL,
+      $nre: JSON_LINES_PROTOCOL,
       type: "metadata",
       records: {
         path: plan.path,

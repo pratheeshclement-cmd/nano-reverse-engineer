@@ -12,7 +12,7 @@ const contract = toolContract("inspect_native_exports");
 cliTest(
   "retains export rows when their ELF version metadata is unavailable",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-version-coverage-");
+    const root = await createTestTempDirectory("nre-elf-version-coverage-");
     const path = join(root, "versioned.so");
     await writeFile(
       path,
@@ -43,7 +43,7 @@ cliTest(
 cliTest(
   "reports defined ELF symbols named by the version-requirement table",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-version-requirements-");
+    const root = await createTestTempDirectory("nre-elf-version-requirements-");
     const path = join(root, "copy-relocated-exports");
     const bytes = elfExportImage({
       symbols: [{ name: "stdout", type: 1, value: 0x28268n, version: 3 }],
@@ -77,7 +77,7 @@ cliTest(
 cliTest(
   "preserves UTF-8 GNU version names and their exact bytes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-version-utf8-");
+    const root = await createTestTempDirectory("nre-elf-version-utf8-");
     const path = join(root, "versioned.so");
     await writeFile(
       path,

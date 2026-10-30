@@ -130,7 +130,10 @@ export async function verifyPackagePack({ root, workspace, commands }) {
     (await commands.exec("tar", ["-xOf", tarball, "package/package.json"]))
       .stdout,
   );
-  if (packedManifest.mcpName !== "io.github.morluto/rea")
+  if (
+    packedManifest.mcpName !==
+    "io.github.pratheeshclement-cmd/nano-reverse-engineer"
+  )
     throw new Error("package did not retain its MCP Registry ownership marker");
   const packedLock = JSON.parse(
     (
@@ -185,10 +188,10 @@ export async function verifyPackagePack({ root, workspace, commands }) {
   )
     throw new Error("package retained a lifecycle-dependent PTY installation");
   if (
-    packedManifest.bin?.rea !== "scripts/rea.mjs" ||
-    packedManifest.bin?.["rea-agents"] !== "scripts/rea.mjs"
+    packedManifest.bin?.nre !== "scripts/nre.mjs" ||
+    packedManifest.bin?.["nano-reverse-engineer"] !== "scripts/nre.mjs"
   )
-    throw new Error("package did not expose both rea command entry points");
+    throw new Error("package did not expose both nre command entry points");
   if (!packedFiles.includes("package/scripts/lib/cli-process-environment.mjs"))
     throw new Error("package omitted the CLI process environment owner");
   if (packedFiles.some((path) => path.startsWith("package/.agents/")))
@@ -205,7 +208,7 @@ export async function verifyPackagePack({ root, workspace, commands }) {
     await commands.exec("tar", [
       "-xOf",
       tarball,
-      "package/skills/reverse-engineer-anything/SKILL.md",
+      "package/skills/nano-reverse-engineer/SKILL.md",
     ])
   ).stdout;
   const skillMetadata = parseSkillManifestMetadata(skill);
@@ -244,11 +247,11 @@ export async function verifyPackagePack({ root, workspace, commands }) {
       manifest.skills !== "./skills" ||
       (path.startsWith(".codex")
         ? manifest.mcpServers !== "./.codex-plugin/mcp.json" ||
-          serverConfig.mcpServers?.rea?.cwd !== "." ||
-          serverConfig.mcpServers?.rea?.startup_timeout_sec !== 30
+          serverConfig.mcpServers?.nre?.cwd !== "." ||
+          serverConfig.mcpServers?.nre?.startup_timeout_sec !== 30
         : false) ||
-      serverConfig.mcpServers?.rea?.command !== "node" ||
-      JSON.stringify(serverConfig.mcpServers?.rea?.args) !==
+      serverConfig.mcpServers?.nre?.command !== "node" ||
+      JSON.stringify(serverConfig.mcpServers?.nre?.args) !==
         JSON.stringify(expectedArgs)
     )
       throw new Error(
@@ -259,7 +262,7 @@ export async function verifyPackagePack({ root, workspace, commands }) {
       : [manifest.icon];
     for (const icon of icons)
       if (
-        icon !== "./assets/rea-plugin.png" ||
+        icon !== "./assets/nre-plugin.png" ||
         !packedFiles.includes(`package/${icon.slice(2)}`)
       )
         throw new Error(`Packaged plugin ${path} is missing its shared icon`);

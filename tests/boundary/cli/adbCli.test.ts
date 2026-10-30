@@ -33,7 +33,7 @@ it
   ] as const)(
   "validates the screencap PNG header before publishing: %s",
   async (kind) => {
-    const workspace = await createTestWorkspace("rea-adb-screen-cli-");
+    const workspace = await createTestWorkspace("nre-adb-screen-cli-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const png = Buffer.from(
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC",
@@ -60,7 +60,7 @@ exit 1
     const result = await execFileOutput(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "capture-adb-screen",
         "device",
         "--output-directory",
@@ -68,7 +68,7 @@ exit 1
         "--json",
       ],
       {
-        env: { ...process.env, REA_ADB_PATH: adb },
+        env: { ...process.env, NRE_ADB_PATH: adb },
         timeout: 20_000,
         stopSignal: "SIGTERM",
         maxBuffer: 1024 * 1024,
@@ -114,7 +114,7 @@ it.skipIf(process.platform === "win32").each([
   { exit: 1, stdout: "unexpected probe output", stderr: "", overwrite: false },
   { exit: 2, stdout: "", stderr: "", overwrite: false },
 ])("refuses an ambiguous destination probe before push: %j", async (probe) => {
-  const workspace = await createTestWorkspace("rea-adb-probe-cli-");
+  const workspace = await createTestWorkspace("nre-adb-probe-cli-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const source = await workspace.write("payload.bin", "replacement");
   await workspace.write("device-file", "original");
@@ -140,7 +140,7 @@ exit 1
   const result = await execFileOutput(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/nre.mjs",
       "push-adb-file",
       "device",
       source,
@@ -149,7 +149,7 @@ exit 1
       "--json",
     ],
     {
-      env: { ...process.env, REA_ADB_PATH: adb },
+      env: { ...process.env, NRE_ADB_PATH: adb },
       timeout: 20_000,
       stopSignal: "SIGTERM",
       maxBuffer: 1024 * 1024,
@@ -176,7 +176,7 @@ exit 1
 it.skipIf(process.platform === "win32")(
   "reports the file placed inside a push destination directory and preserves executable staging",
   async () => {
-    const workspace = await createTestWorkspace("rea-adb-directory-push-cli-");
+    const workspace = await createTestWorkspace("nre-adb-directory-push-cli-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const source = await workspace.write("payload.bin", "#!/bin/sh\n");
     await chmod(source, 0o755);
@@ -198,7 +198,7 @@ exit 1
     await chmod(adb, 0o755);
     const output = await serve(
       ["push-adb-file", "device", source, "/data/local/tmp/drop/", "--json"],
-      { REA_ADB_PATH: adb },
+      { NRE_ADB_PATH: adb },
     );
     expect(output.exitCode).toBe(0);
     const evidence = JSON.parse(output.stdout) as {
@@ -222,22 +222,22 @@ it.each([
   [
     ["inspect-adb-client", "--json"],
     "/nonexistent/adb",
-    "The selected adb binary was not found: /nonexistent/adb. Set REA_ADB_PATH",
+    "The selected adb binary was not found: /nonexistent/adb. Set NRE_ADB_PATH",
   ],
   [
     ["list-adb-devices", "--json"],
     "/nonexistent/adb",
-    "The selected adb binary was not found: /nonexistent/adb. Set REA_ADB_PATH",
+    "The selected adb binary was not found: /nonexistent/adb. Set NRE_ADB_PATH",
   ],
   [
     ["list-adb-devices", "--json"],
     "relative/adb",
-    "REA_ADB_PATH must be an absolute path to the adb binary.",
+    "NRE_ADB_PATH must be an absolute path to the adb binary.",
   ],
 ])(
-  "%j with REA_ADB_PATH=%s names the host requirement",
+  "%j with NRE_ADB_PATH=%s names the host requirement",
   async (argv, binary, reason) => {
-    const result = await serve(argv, { REA_ADB_PATH: binary });
+    const result = await serve(argv, { NRE_ADB_PATH: binary });
     expectConfigurationRefusal(result, reason);
   },
 );
@@ -305,7 +305,7 @@ it("retains safe structured constraints for ADB selectors", async () => {
   ];
   for (const { argv, path, expected, maximum } of cases) {
     const result = await serve([...argv, "--json"], {
-      REA_ADB_PATH: "/path/that/does/not/exist",
+      NRE_ADB_PATH: "/path/that/does/not/exist",
     });
     expect(result.exitCode, path).toBe(1);
     expect(JSON.parse(result.stdout), path).toMatchObject({
@@ -321,7 +321,7 @@ it("retains safe structured constraints for ADB selectors", async () => {
   }
   const both = await serve(
     ["start-adb-activity", "bad serial", "bad action", "--json"],
-    { REA_ADB_PATH: "/path/that/does/not/exist" },
+    { NRE_ADB_PATH: "/path/that/does/not/exist" },
   );
   expect(both.exitCode).toBe(1);
   expect(JSON.parse(both.stdout)).toMatchObject({
@@ -348,7 +348,7 @@ it.each(["string:key", ":", "string"])(
         "--format",
         "json",
       ],
-      { REA_ADB_PATH: "/path/that/does/not/exist" },
+      { NRE_ADB_PATH: "/path/that/does/not/exist" },
     );
 
     const error = JSON.parse(result.stdout);
@@ -366,7 +366,7 @@ it.each(["string:key", ":", "string"])(
 it.each([16, 17])(
   "enforces the activity extra count before host admission: %d entries",
   async (count) => {
-    const root = await createTestTempDirectory("rea-adb-extra-limit-");
+    const root = await createTestTempDirectory("nre-adb-extra-limit-");
     const missingAdb = join(root, "missing-adb");
     const extras = Array.from({ length: count }, (_, index) => [
       "--extra",
@@ -375,7 +375,7 @@ it.each([16, 17])(
     const result = await execFileOutput(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "start-adb-activity",
         "emulator-5554",
         "android.intent.action.VIEW",
@@ -383,7 +383,7 @@ it.each([16, 17])(
         "--json",
       ],
       {
-        env: { ...process.env, REA_ADB_PATH: missingAdb },
+        env: { ...process.env, NRE_ADB_PATH: missingAdb },
         timeout: 20_000,
         stopSignal: "SIGTERM",
         maxBuffer: 1024 * 1024,
@@ -400,7 +400,7 @@ it.each([16, 17])(
     if (count === 16) {
       expectConfigurationRefusal(
         result,
-        `The selected adb binary was not found: ${missingAdb}. Set REA_ADB_PATH`,
+        `The selected adb binary was not found: ${missingAdb}. Set NRE_ADB_PATH`,
       );
     } else {
       expect(JSON.parse(result.stdout)).toMatchObject({
@@ -415,7 +415,7 @@ it.each([16, 17])(
 it.skipIf(process.platform === "win32")(
   "starts an explicitly selected nested Android activity through the CLI",
   async () => {
-    const workspace = await createTestWorkspace("rea-adb-nested-activity-cli-");
+    const workspace = await createTestWorkspace("nre-adb-nested-activity-cli-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const adb = await workspace.write(
       "adb",
@@ -444,7 +444,7 @@ exit 1
         "json",
         "--full-output",
       ],
-      { REA_ADB_PATH: adb },
+      { NRE_ADB_PATH: adb },
     );
     expect(result.exitCode).toBe(0);
     const output = JSON.parse(result.stdout);
@@ -490,7 +490,7 @@ it.each([
         "--format",
         "json",
       ],
-      { REA_ADB_PATH: "/path/that/does/not/exist" },
+      { NRE_ADB_PATH: "/path/that/does/not/exist" },
     );
 
     expect(JSON.parse(result.stdout)).toMatchObject({ code });
@@ -500,7 +500,7 @@ it.each([
 it.skipIf(process.platform === "win32")(
   "preserves requested reinstall mode without claiming prior package state",
   async () => {
-    const workspace = await createTestWorkspace("rea-adb-install-state-");
+    const workspace = await createTestWorkspace("nre-adb-install-state-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const apk = await workspace.write("app with spaces.apk", "apk");
     const adb = await workspace.write(
@@ -549,7 +549,7 @@ exit 1
           "json",
           "--full-output",
         ],
-        { REA_ADB_PATH: adb },
+        { NRE_ADB_PATH: adb },
       );
       expect(result.exitCode).toBe(0);
       return installEnvelope.parse(JSON.parse(result.stdout));
@@ -633,7 +633,7 @@ it("requires the output directory option on pull", async () => {
 it.skipIf(process.platform === "win32")(
   "refuses a trailing device separator through the CLI before adb or output effects",
   async () => {
-    const workspace = await createTestWorkspace("rea-adb-cli-pull-");
+    const workspace = await createTestWorkspace("nre-adb-cli-pull-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const adb = await workspace.write(
       "adb",
@@ -657,7 +657,7 @@ exit 0
         output,
         "--json",
       ],
-      { REA_ADB_PATH: adb },
+      { NRE_ADB_PATH: adb },
     );
     expect(JSON.parse(result.stdout)).toMatchObject({
       code: "invalid_request",

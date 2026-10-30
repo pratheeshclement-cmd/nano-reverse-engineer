@@ -247,7 +247,7 @@ const requireBrowser = (
   browser === undefined
     ? err(
         new AnalysisCapabilityUnavailableError(
-          "rea-cdp-browser",
+          "nre-cdp-browser",
           operation,
           "browser observation provider is not configured",
         ),

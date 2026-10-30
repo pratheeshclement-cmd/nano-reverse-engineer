@@ -8,7 +8,7 @@
    the capture through the analysis view service with the capture as retained
    Evidence, and prepare it: unavailable when its catalog exceeds the
    discovery budget under the served name or it cannot be derived.
-2. Add `environmentStateDocument.ts` to validate `rea-state/v1` documents
+2. Add `environmentStateDocument.ts` to validate `nre-state/v1` documents
    against the served types and views, and `environmentStateStore.ts` for the
    live store with reset, atomic replace and the `data/get` snapshot.
 3. Export `selectsRecordedLine` and the body-taking `replayAnswer` from
@@ -41,5 +41,5 @@
    behaviour; document default serving, `--replay-only`, the fallback, the
    answers, the data plane, the card and the export.
 
-No dependency, provider or REA tool contract changes. The only new network
+No dependency, provider or NRE tool contract changes. The only new network
 activity is an `https://` download that a `data/add` call names.

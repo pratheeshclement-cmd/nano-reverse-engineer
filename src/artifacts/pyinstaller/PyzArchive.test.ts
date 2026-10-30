@@ -70,7 +70,7 @@ it("reports an entry that extends outside the PYZ as an integrity error", async 
 it.each(["PYZ\0", "BAD\0"])(
   "rejects an oversized sparse table before deferred signature rejection (%s)",
   async (signature) => {
-    const root = await createTestTempDirectory("rea-pyz-table-budget-");
+    const root = await createTestTempDirectory("nre-pyz-table-budget-");
     const path = join(root, "image.pyz");
     const header = Buffer.alloc(12);
     header.write(signature);
@@ -137,7 +137,7 @@ const int32 = (value: number): Buffer => {
 };
 
 const readImage = async (bytes: Buffer, declaredSize = bytes.length) => {
-  const root = await createTestTempDirectory("rea-pyz-file-");
+  const root = await createTestTempDirectory("nre-pyz-file-");
   const path = join(root, "image.pyz");
   await writeFile(path, bytes);
   const handle = await open(path, "r");

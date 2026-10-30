@@ -64,7 +64,7 @@ class CoreContextTests(unittest.TestCase):
             request = stage / "request.json"
             reply = stage / "reply.json"
             request.write_text(json.dumps({"gdbinit": str(plugin), "architecture": architecture, "snapshot_path": str(root / "object.snapshot"), "reply_path": str(reply)}))
-            with patch.dict(sys.modules, modules), patch.dict(os.environ, REA_CORE_CONTEXT_REQUEST=str(request)):
+            with patch.dict(sys.modules, modules), patch.dict(os.environ, NRE_CORE_CONTEXT_REQUEST=str(request)):
                 runpy.run_path(str(BRIDGE))
             result = json.loads(reply.read_text())
         return result, commands, reads, queries

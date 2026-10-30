@@ -32,7 +32,7 @@ itWithCaptureCapability.each([
 ] as const)(
   "normalizes sampled child output and preserves original bytes with pids=$pids through $adapter",
   async ({ adapter, pids }) => {
-    const root = await createTestTempDirectory("rea-descendant-pid-adapter-");
+    const root = await createTestTempDirectory("nre-descendant-pid-adapter-");
     const identityPath = join(root, "identity.json");
     const scenarioPath = join(root, "scenario.json");
     const scenario = {
@@ -86,7 +86,7 @@ itWithCaptureCapability.each([
         const { stdout } = await exec(
           process.execPath,
           [
-            "scripts/rea.mjs",
+            "scripts/nre.mjs",
             "capture-process",
             scenarioPath,
             "--format",

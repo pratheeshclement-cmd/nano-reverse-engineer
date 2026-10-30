@@ -39,7 +39,7 @@ const createLedgerEvidence = (
   ledger: ReconstructionObligationLedger,
 ): Evidence =>
   createEvidence(undefined, JAVASCRIPT_APPLICATION_WORKFLOW_PROVIDER, {
-    predicateType: "rea.reconstruction-obligation-ledger",
+    predicateType: "nre.reconstruction-obligation-ledger",
     operation: OPERATION,
     parameters: {
       ledger_id: ledger.ledger_id,

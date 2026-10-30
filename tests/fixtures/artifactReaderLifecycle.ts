@@ -27,7 +27,7 @@ interface LifecycleFixture {
 
 const fixture = async (bytes: Buffer): Promise<string> => {
   const path = join(
-    await createTestTempDirectory("rea-reader-lifecycle-"),
+    await createTestTempDirectory("nre-reader-lifecycle-"),
     "image",
   );
   await writeFile(path, bytes);

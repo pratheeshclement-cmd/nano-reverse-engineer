@@ -60,7 +60,7 @@ export const withoutPackageRunnerIdentity = (
     ),
   );
 
-/** Bind the selected REA entrypoint to the runtime already executing setup. */
+/** Bind the selected NRE entrypoint to the runtime already executing setup. */
 export const currentClientRegistrationCommand = (
   selection: {
     readonly platform?: NodeJS.Platform;
@@ -116,7 +116,7 @@ const clientRegistrationPackageReference = (
   return undefined;
 };
 
-/** Check that one parsed command points to REA's MCP entry point. */
+/** Check that one parsed command points to NRE's MCP entry point. */
 export type ClientRegistrationCommandIdentity = "owned" | "foreign" | "unknown";
 
 /** Compare entrypoint paths without turning failed resolution into a foreign identity. */
@@ -180,7 +180,7 @@ const sameFileExecutableAlias = (
   return selected;
 };
 
-/** Prefer an executable PATH alias that proves the same selected REA file. */
+/** Prefer an executable PATH alias that proves the same selected NRE file. */
 const registrationEntrypointPath = (
   entrypoint: string,
   environment: Readonly<NodeJS.ProcessEnv>,
@@ -236,7 +236,7 @@ export const equivalentClientRegistrationCommands = (
 
 export interface ClientRegistrationCommandFacts {
   readonly identity: ClientRegistrationCommandIdentity;
-  /** Execution form is separate from ownership of the selected REA file. */
+  /** Execution form is separate from ownership of the selected NRE file. */
   readonly launch: "runtime_script" | "direct" | "package_runner" | "unknown";
   /** Selected absolute launcher/script path; excludes package and unresolved PATH commands. */
   readonly entrypoint: string | undefined;

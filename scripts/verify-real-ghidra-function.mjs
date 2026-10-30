@@ -56,24 +56,24 @@ export async function verifyDebugFunctionOperations(
   client,
   { procedures, strings, entry },
 ) {
-  const leaf = requireProcedure(procedures, "rea_ghidra_inventory_leaf");
-  const branch = requireProcedure(procedures, "rea_ghidra_inventory_branch");
+  const leaf = requireProcedure(procedures, "nre_ghidra_inventory_leaf");
+  const branch = requireProcedure(procedures, "nre_ghidra_inventory_branch");
   const indirect = requireProcedure(
     procedures,
-    "rea_ghidra_inventory_indirect",
+    "nre_ghidra_inventory_indirect",
   );
   const switchProcedure = requireProcedure(
     procedures,
-    "rea_ghidra_inventory_switch",
+    "nre_ghidra_inventory_switch",
   );
   const denseSwitchProcedure = requireProcedure(
     procedures,
-    "rea_ghidra_inventory_dense_switch",
+    "nre_ghidra_inventory_dense_switch",
   );
   const main =
     findValue(procedures, "main") ?? requireProcedure(procedures, "entry");
   const entryString = strings.find(
-    (item) => item.value === "REA_GHIDRA_INVENTORY_ENTRY",
+    (item) => item.value === "NRE_GHIDRA_INVENTORY_ENTRY",
   );
   if (entryString === undefined)
     throw new Error("Ghidra debug string function probe is unavailable");
@@ -117,7 +117,7 @@ export async function verifyDebugFunctionOperations(
     throw new Error("Direct call target resolution drifted");
   const missingType = await functionCall(client, "inspect_native_data_type", {
     document: null,
-    type: "/REA_MISSING_TYPE",
+    type: "/NRE_MISSING_TYPE",
   });
   if (missingType.status !== "unavailable")
     throw new Error("Missing native type was not explicit");
@@ -159,7 +159,7 @@ export async function verifyDebugFunctionOperations(
   });
   const terminalProcedure = requireProcedure(
     procedures,
-    "rea_ghidra_inventory_terminal_call",
+    "nre_ghidra_inventory_terminal_call",
   );
   const terminalObservations = await Promise.all(
     [
@@ -342,7 +342,7 @@ async function analyzeEntryDossier(client, entry, branch, indirect) {
   assertDossier(entryDossier, {
     address: entry.address,
     expectedCallees: [branch.address, indirect.address],
-    expectedString: "REA_GHIDRA_INVENTORY_ENTRY",
+    expectedString: "NRE_GHIDRA_INVENTORY_ENTRY",
     requireAssembly: true,
   });
   return entryDossier;
@@ -434,7 +434,7 @@ async function verifyConcurrentRequests(client, entry, leaf) {
 export async function verifyJumpTableDenseSwitch(client, procedures) {
   const denseSwitchProcedure = requireProcedure(
     procedures,
-    "rea_ghidra_inventory_dense_switch",
+    "nre_ghidra_inventory_dense_switch",
   );
   const dossier = await functionCall(client, "analyze_function", {
     procedure: denseSwitchProcedure.address,
@@ -472,10 +472,10 @@ export async function verifyStrippedFunctionOperations(client, entryString) {
   });
   assertDossier(dossier, {
     address: procedure.address,
-    expectedString: "REA_GHIDRA_INVENTORY_ENTRY",
+    expectedString: "NRE_GHIDRA_INVENTORY_ENTRY",
     requireAssembly: true,
   });
-  if (matchesSymbol(dossier.procedure.name, "rea_ghidra_inventory_entry"))
+  if (matchesSymbol(dossier.procedure.name, "nre_ghidra_inventory_entry"))
     throw new Error(
       `Ghidra stripped dossier retained a source symbol: ${JSON.stringify(dossier.procedure)}`,
     );
@@ -490,13 +490,13 @@ export async function verifyCrossFormatOperations({
   strings,
 }) {
   const message = strings.find(
-    (item) => item.value === "REA_GHIDRA_CROSS_FORMAT",
+    (item) => item.value === "NRE_GHIDRA_CROSS_FORMAT",
   );
   if (message === undefined)
     throw new Error(`${variant} string inventory missed the source oracle`);
   const entry =
-    procedures.find((item) => matchesSymbol(item.value, "rea_cross_entry")) ??
-    names.find((item) => matchesSymbol(item.value, "rea_cross_entry"));
+    procedures.find((item) => matchesSymbol(item.value, "nre_cross_entry")) ??
+    names.find((item) => matchesSymbol(item.value, "nre_cross_entry"));
   if (entry === undefined)
     throw new Error(`${variant} did not retain the exported entry symbol`);
   const entryAddress = entry.address;
@@ -535,7 +535,7 @@ export async function verifyCrossFormatOperations({
   });
   assertDossier(stringDossier, {
     address: messageOwner.procedure.address,
-    expectedString: "REA_GHIDRA_CROSS_FORMAT",
+    expectedString: "NRE_GHIDRA_CROSS_FORMAT",
   });
 
   const branchAddress = await findCrossBranchAddress(client, variant, callees);
@@ -582,7 +582,7 @@ async function findCrossBranchAddress(client, variant, callees) {
 
 export async function verifyNativeTypeLayout(client, typeNames) {
   const layoutSymbol = typeNames.find((item) =>
-    matchesSymbol(item.value, "rea_ghidra_inventory_layout"),
+    matchesSymbol(item.value, "nre_ghidra_inventory_layout"),
   );
   if (layoutSymbol === undefined)
     throw new Error("Native layout fixture symbol unavailable");
@@ -617,7 +617,7 @@ export async function verifyNativeTypeLayout(client, typeNames) {
     payload.fields.length !== 2 ||
     state.kind !== "enum" ||
     !state.members.some(
-      (member) => member.name === "REA_FIXTURE_READY" && member.value === "3",
+      (member) => member.name === "NRE_FIXTURE_READY" && member.value === "3",
     )
   )
     throw new Error("Nested union or enum layout drifted");
@@ -630,7 +630,7 @@ export async function verifyRelativeSwitch(client, procedures, entrySize) {
     document: null,
     address: null,
   });
-  const procedure = requireProcedure(names, "rea_relative_switch");
+  const procedure = requireProcedure(names, "nre_relative_switch");
   const dossier = await functionCall(client, "analyze_function", {
     procedure: procedure.address,
   });
@@ -691,7 +691,7 @@ export async function verifyRelativeSignedSwitch(client, selectorBias = 0) {
     document: null,
     address: null,
   });
-  const procedure = requireProcedure(names, "rea_relative_switch_signed");
+  const procedure = requireProcedure(names, "nre_relative_switch_signed");
   const dossier = await functionCall(client, "analyze_function", {
     procedure: procedure.address,
   });
@@ -782,12 +782,12 @@ export async function verifyRelativeSignedSwitch(client, selectorBias = 0) {
 }
 
 export async function verifyNativeValueTrace(client, procedures, target) {
-  const entry = requireProcedure(procedures, "rea_ghidra_inventory_entry");
+  const entry = requireProcedure(procedures, "nre_ghidra_inventory_entry");
   const names = await inventoryCall(client, "list_names", {
     document: null,
     address: null,
   });
-  const global = requireProcedure(names, "rea_ghidra_inventory_global");
+  const global = requireProcedure(names, "nre_ghidra_inventory_global");
   return verifyNativeValueE2e(target, entry.address, global.address);
 }
 

@@ -11,12 +11,12 @@ const clients = [
   { name: "grok_build", path: ".grok/config.toml" },
 ] as const;
 
-/** Parsed values other than REA's registration. */
+/** Parsed values other than NRE's registration. */
 const unrelatedValues = (text: string) => {
   const document = parseToml(text);
   const servers = document.mcp_servers;
   if (typeof servers === "object" && servers !== null) {
-    Reflect.deleteProperty(servers, "rea");
+    Reflect.deleteProperty(servers, "nre");
     if (Object.keys(servers).length === 0) delete document.mcp_servers;
   }
   return document;
@@ -24,21 +24,21 @@ const unrelatedValues = (text: string) => {
 
 const scenarios = [
   {
-    name: "a stale REA table between other tables",
+    name: "a stale NRE table between other tables",
     original: [
       "# root explanation",
       'model = "x" # inline model note',
       "",
-      "# about rea",
-      "[mcp_servers.rea]",
-      "# inside the rea table",
+      "# about nre",
+      "[mcp_servers.nre]",
+      "# inside the nre table",
       'command = "npx"',
-      'args = ["-y", "rea-agents@6.1.0", "mcp"]',
+      'args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]',
       "",
-      "# between rea and its environment",
-      "[mcp_servers.rea.env]",
+      "# between nre and its environment",
+      "[mcp_servers.nre.env]",
       'OLD = "value"',
-      "# after the rea environment",
+      "# after the nre environment",
       "",
       "# about the other server",
       "[mcp_servers.other]",
@@ -50,25 +50,25 @@ const scenarios = [
     comments: [
       "# root explanation",
       'model = "x" # inline model note',
-      "# about rea",
-      "# inside the rea table",
-      "# between rea and its environment",
-      "# after the rea environment",
+      "# about nre",
+      "# inside the nre table",
+      "# between nre and its environment",
+      "# after the nre environment",
       "# about the other server",
       'command = "other" # other inline note',
       "# trailing note about the file",
     ],
   },
   {
-    name: "a leading REA table and a final note without a line break",
+    name: "a leading NRE table and a final note without a line break",
     original: [
-      "# about rea",
-      "[mcp_servers.rea]",
+      "# about nre",
+      "[mcp_servers.nre]",
       'command = "npx"',
-      'args = ["-y", "rea-agents@6.1.0", "mcp"]',
+      'args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]',
       "# trailing note without a line break",
     ].join("\n"),
-    comments: ["# about rea", "# trailing note without a line break"],
+    comments: ["# about nre", "# trailing note without a line break"],
   },
 ] as const;
 
@@ -76,7 +76,7 @@ for (const scenario of scenarios)
   cliTest(
     `TOML client setup and uninstall keep comments around ${scenario.name}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-toml-comments-");
+      const home = await createTestTempDirectory("nre-toml-comments-");
       const paths = clients.map(({ path }) => join(home, path));
       for (const path of paths) {
         await mkdir(dirname(path), { recursive: true });
@@ -123,12 +123,12 @@ for (const scenario of scenarios)
         configured.push(text);
         for (const comment of scenario.comments)
           expect(text, path).toContain(comment);
-        expect(text, path).not.toContain("rea-agents@6.1.0");
+        expect(text, path).not.toContain("nano-reverse-engineer@6.1.0");
         expect(unrelatedValues(text), path).toEqual(
           unrelatedValues(scenario.original),
         );
-        expect(parseToml(text), path).toHaveProperty("mcp_servers.rea.command");
-        expect(await readFile(`${path}.rea.backup`, "utf8"), path).toBe(
+        expect(parseToml(text), path).toHaveProperty("mcp_servers.nre.command");
+        expect(await readFile(`${path}.nre.backup`, "utf8"), path).toBe(
           scenario.original,
         );
       }
@@ -151,11 +151,11 @@ for (const scenario of scenarios)
         remaining.push(text);
         for (const comment of scenario.comments)
           expect(text, path).toContain(comment);
-        expect(parseToml(text), path).not.toHaveProperty("mcp_servers.rea");
+        expect(parseToml(text), path).not.toHaveProperty("mcp_servers.nre");
         expect(unrelatedValues(text), path).toEqual(
           unrelatedValues(scenario.original),
         );
-        // Setup ended the file with REA's table; removing it keeps that break.
+        // Setup ended the file with NRE's table; removing it keeps that break.
         expect(text.endsWith("\n"), path).toBe(true);
       }
       // Both TOML clients share one editor, so their text matches.

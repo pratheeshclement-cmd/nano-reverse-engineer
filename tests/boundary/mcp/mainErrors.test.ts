@@ -63,7 +63,7 @@ describe("MCP runtime errors", () => {
   it("imports the compiled runtime when argv[1] is a missing synthetic path", () => {
     const runtimeUrl = pathToFileURL(resolve("dist/main.js")).href;
     const script = [
-      'process.argv[1] = "/rea-test-missing-entrypoint/main.js";',
+      'process.argv[1] = "/nre-test-missing-entrypoint/main.js";',
       `await import(${JSON.stringify(runtimeUrl)});`,
       'console.log("IMPORT_OK");',
     ].join("\n");

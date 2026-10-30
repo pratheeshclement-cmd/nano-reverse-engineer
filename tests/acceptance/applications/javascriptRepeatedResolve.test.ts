@@ -7,7 +7,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains consecutive native resolver relationships through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-repeat-resolve-");
+    const root = await createTestTempDirectory("nre-repeat-resolve-");
     await writeFixtureFiles(root, {
       "main.cjs":
         'require.resolve("./first.js");require.resolve("./second.js");',

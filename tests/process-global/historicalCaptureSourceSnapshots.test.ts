@@ -83,7 +83,7 @@ const selectedSource = async (
   mode: typeof fault.mode,
   sensitive = false,
 ) => {
-  const root = await createTestTempDirectory("rea-capture-source-snapshot-");
+  const root = await createTestTempDirectory("nre-capture-source-snapshot-");
   const capturePath = join(root, "selected.har");
   const descriptorPath = join(root, "private-descriptor.pb");
   const text = JSON.stringify(historicalHar());

@@ -16,7 +16,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("keeps real provider replay and persisted Evidence independent of caller edits", async () => {
   const directory = await createTestTempDirectory(
-    "rea-snapshot-result-ownership-",
+    "nre-snapshot-result-ownership-",
   );
   const path = join(directory, "application.exe");
   await writeFile(path, buildManagedPeFixture());
@@ -68,7 +68,7 @@ it("keeps real provider replay and persisted Evidence independent of caller edit
 });
 
 it("reruns ambiguous imported observations without changing their historical Evidence", async () => {
-  const directory = await createTestTempDirectory("rea-snapshot-provenance-");
+  const directory = await createTestTempDirectory("nre-snapshot-provenance-");
   const path = join(directory, "application.exe");
   const originalPath = join(directory, "original.json");
   const ambiguousPath = join(directory, "ambiguous.json");
@@ -150,7 +150,7 @@ it("reruns ambiguous imported observations without changing their historical Evi
   if (!replayed.ok) throw replayed.error;
   expect(replayed.value.result).toEqual(observed.value.result);
   expect(replayed.value.limitations).toContain(
-    "Loaded from a local REA analysis snapshot; this call did not re-run the provider.",
+    "Loaded from a local NRE analysis snapshot; this call did not re-run the provider.",
   );
   const controlClosed = await session.close();
   if (!controlClosed.ok) throw controlClosed.error;
@@ -179,7 +179,7 @@ it("reruns ambiguous imported observations without changing their historical Evi
   if (!fresh.ok) throw fresh.error;
   expect(fresh.value.result).toEqual(observed.value.result);
   expect(fresh.value.limitations).not.toContain(
-    "Loaded from a local REA analysis snapshot; this call did not re-run the provider.",
+    "Loaded from a local NRE analysis snapshot; this call did not re-run the provider.",
   );
   expect(session.evidenceById(original.evidence_id)).toEqual(original);
   expect(session.evidenceById(alternative.evidence_id)).toEqual(alternative);

@@ -91,7 +91,7 @@ cliTest.for(
     },
     { cli },
   ) => {
-    const root = await createTestTempDirectory("rea-preload-resolve-owner-");
+    const root = await createTestTempDirectory("nre-preload-resolve-owner-");
     await writeFixtureFiles(root, {
       "package.json": JSON.stringify({ main: mainFile }),
       [mainFile]: `throw new Error('Static fixture must never execute');${mainFile.endsWith(".mjs") ? "import {BrowserWindow} from 'electron';" : "const {BrowserWindow}=require('electron');"}${declaration}${scopeStart}new BrowserWindow({webPreferences:{preload:${expression}}});${scopeEnd}`,

@@ -39,7 +39,7 @@ afterEach(() => {
 it.each([0, 23, 8192])(
   "reads the complete bounded prefix and full extent through short native reads (%i bytes)",
   async (length) => {
-    const root = await createTestTempDirectory("rea-header-prefix-");
+    const root = await createTestTempDirectory("nre-header-prefix-");
     const path = join(root, "decompile");
     const bytes = Buffer.alloc(length, 0x42);
     await writeFile(path, bytes);
@@ -77,7 +77,7 @@ it.each([0, 23, 8192])(
 it.skipIf(process.platform === "win32")(
   "follows the caller-selected executable symlink",
   async () => {
-    const root = await createTestTempDirectory("rea-header-symlink-");
+    const root = await createTestTempDirectory("nre-header-symlink-");
     const path = join(root, "actual"),
       selected = join(root, "selected");
     await writeFile(path, "selected executable");
@@ -101,7 +101,7 @@ it.skipIf(process.platform === "win32")(
 it.each(["replace", "grow", "shrink", "disappear"] as const)(
   "rejects a changed executable prefix (%s)",
   async (change) => {
-    const root = await createTestTempDirectory("rea-header-change-");
+    const root = await createTestTempDirectory("nre-header-change-");
     const path = join(root, "decompile"),
       replacement = join(root, "replacement");
     await writeFile(path, "original");
@@ -139,7 +139,7 @@ it.each(["replace", "grow", "shrink", "disappear"] as const)(
 it.each(["completed", "physical", "close"] as const)(
   "retains the exact descriptor and primary observation across final-close cancellation (%s)",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-header-retry-");
+    const root = await createTestTempDirectory("nre-header-retry-");
     const path = join(root, "decompile"),
       bytes = Buffer.from("executable prefix");
     await writeFile(path, bytes);
@@ -259,7 +259,7 @@ it("does not open or adopt foreign resources from an opaque pre-aborted reason",
 it.each([null, "caller stopped header inspection"])(
   "retains completed prefix facts after successful final close and cancellation (%j)",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-header-late-cancel-");
+    const root = await createTestTempDirectory("nre-header-late-cancel-");
     const path = join(root, "decompile");
     await writeFile(path, "header");
     const controller = new AbortController(),

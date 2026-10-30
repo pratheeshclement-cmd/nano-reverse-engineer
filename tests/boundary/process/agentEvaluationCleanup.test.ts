@@ -34,7 +34,7 @@ for (const { denied, keep } of [
       : {},
     async () => {
       const directory = await createTestTempDirectory(
-        "rea-agent-eval-cleanup-",
+        "nre-agent-eval-cleanup-",
       );
       const receipt = join(directory, "receipt.json");
       const command = join(directory, "codex-fixture.mjs");
@@ -76,10 +76,10 @@ process.exitCode = 1;
             {
               env: {
                 ...process.env,
-                REA_CODEX_CLI: command,
-                REA_AGENT_EVAL_ROOT: parent,
-                REA_AGENT_EVAL_TIMEOUT_MS: "10000",
-                REA_AGENT_EVAL_KEEP_FIXTURES: String(keep),
+                NRE_CODEX_CLI: command,
+                NRE_AGENT_EVAL_ROOT: parent,
+                NRE_AGENT_EVAL_TIMEOUT_MS: "10000",
+                NRE_AGENT_EVAL_KEEP_FIXTURES: String(keep),
               },
               timeout: Math.min(2_147_483_647, preparationBudgetMs + 15_000),
               stopSignal: "SIGTERM",

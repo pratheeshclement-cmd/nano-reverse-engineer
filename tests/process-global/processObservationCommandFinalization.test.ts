@@ -69,7 +69,7 @@ const createDelayedCommand = async (directory: string) => {
 const expectOwnedCommandToFinishOnAbort = async (
   run: (signal: AbortSignal, directory: string) => Promise<unknown>,
 ): Promise<void> => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-process-command-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-process-command-"));
   const command = await createDelayedCommand(directory);
   const controller = new AbortController();
   const reason = new Error("cancel owned process command");
@@ -141,7 +141,7 @@ const processEntry = {
 it.skipIf(process.platform === "win32")(
   "waits for the owned ps command to exit when sampling stops",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-process-sampler-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-process-sampler-"));
     const readyPath = join(directory, "ready");
     const donePath = join(directory, "done");
     const psPath = join(directory, "ps");
@@ -223,7 +223,7 @@ it
 const expectDarwinReaderCommandToFinishOnAbort = async (
   operation: "read" | "identities",
 ): Promise<void> => {
-  const directory = await mkdtemp(join(tmpdir(), `rea-darwin-${operation}-`));
+  const directory = await mkdtemp(join(tmpdir(), `nre-darwin-${operation}-`));
   const command = await createDelayedCommand(directory);
   const reader = await createFakeDarwinReader(directory, command);
   const controller = new AbortController();

@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const codexSource = (invalid: string): string =>
   [
     'caller_root = "keep"',
-    "[mcp_servers.rea]",
+    "[mcp_servers.nre]",
     `command = "${PRODUCT_IDENTITY.cliBinary}"`,
     'args = ["mcp"]',
     invalid,
@@ -53,7 +53,7 @@ it.each([
       caller_root: "keep",
       mcp: {
         servers: {
-          rea: {
+          nre: {
             type: "local",
             command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
             environment: { CALLER_SETTING: 42 },
@@ -71,7 +71,7 @@ it.each([
 ])(
   "removes the owned $client registration despite $invalid",
   async (sample) => {
-    const home = await createTestTempDirectory("rea-registration-ownership-");
+    const home = await createTestTempDirectory("nre-registration-ownership-");
     const configPath = join(home, sample.path);
     const environment = {
       CODEX_HOME: join(home, ".codex"),
@@ -102,7 +102,7 @@ it.each([
       expect(sample.parse(await readFile(configPath, "utf8"))).toEqual(
         sample.remaining,
       );
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(
         sample.source,
       );
     } finally {
@@ -111,15 +111,15 @@ it.each([
   },
 );
 
-it("retains an OpenCode remote registration with a REA-like command", async () => {
-  const home = await createTestTempDirectory("rea-registration-remote-owner-");
+it("retains an OpenCode remote registration with a NRE-like command", async () => {
+  const home = await createTestTempDirectory("nre-registration-remote-owner-");
   const configPath = join(home, ".config/opencode/opencode.json");
   const environment = { XDG_CONFIG_HOME: join(home, ".config") };
   const source = JSON.stringify({
     caller_root: "keep",
     mcp: {
       servers: {
-        rea: {
+        nre: {
           type: "remote",
           url: "https://caller.example/mcp",
           command: [PRODUCT_IDENTITY.cliBinary, "mcp"],

@@ -39,7 +39,7 @@ const goViewTest = mcpTest.extend<{
   };
 }>({
   goViews: async ({ mcp }, use) => {
-    const root = await createTestTempDirectory("rea-go-views-");
+    const root = await createTestTempDirectory("nre-go-views-");
     const path = join(root, "application");
     const fixture = createGoBinaryFixture({
       goVersion: "go1.26.0",
@@ -329,7 +329,7 @@ goViewTest(
 mcpTest(
   "keeps unavailable Go metadata unknown in summaries and empty pages",
   async ({ mcp }) => {
-    const root = await createTestTempDirectory("rea-go-absent-view-");
+    const root = await createTestTempDirectory("nre-go-absent-view-");
     const path = join(root, "application");
     await writeFile(path, createGoBinaryFixture({ omitBuildInfo: true }).bytes);
     const session = createTestBinarySession(() => {

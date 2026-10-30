@@ -5,10 +5,10 @@
 .set noreorder
 .text
 .p2align 2
-.globl rea_mips_probe
-.type rea_mips_probe, @function
-.ent rea_mips_probe
-rea_mips_probe:
+.globl nre_mips_probe
+.type nre_mips_probe, @function
+.ent nre_mips_probe
+nre_mips_probe:
     addiu $2, $4, 0x1234
     beq $4, $0, .Lzero
     nop
@@ -18,7 +18,7 @@ rea_mips_probe:
     addiu $2, $0, 7
     jr $31
     nop
-.end rea_mips_probe
-.size rea_mips_probe, .-rea_mips_probe
+.end nre_mips_probe
+.size nre_mips_probe, .-nre_mips_probe
 .set pop
 .section .note.GNU-stack,"",@progbits

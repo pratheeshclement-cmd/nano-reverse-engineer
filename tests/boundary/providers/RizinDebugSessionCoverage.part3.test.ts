@@ -585,7 +585,7 @@ it.skipIf(process.platform === "win32").each([false, true])(
     });
     let retained = true;
     const manager = createManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       {
         spawnProcess: injected.spawnProcess,
         stopProcess: async () => {

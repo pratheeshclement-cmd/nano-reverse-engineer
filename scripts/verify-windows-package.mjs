@@ -25,7 +25,7 @@ import { completeVerifierRun, createVerifierRun } from "./lib/verifier-run.mjs";
 
 const verifierRun = createVerifierRun();
 const root = process.cwd();
-const workspace = await mkdtemp(join(tmpdir(), "rea-windows-package-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-windows-package-"));
 const workspaceOwner = {
   path: workspace,
   close: () => rm(workspace, { recursive: true, force: true }),
@@ -61,12 +61,12 @@ try {
       (name) => `bridge/ghidra/${name}`,
     ),
     "native/windows/build/manifest.json",
-    "native/windows/build/rea-windows-x64.node",
+    "native/windows/build/nre-windows-x64.node",
     "dist/android/JadxWorkspaceRoot.js",
     "dist/main.js",
     "dist/cli.js",
-    "scripts/rea-android-workspace-guardian.mjs",
-    "scripts/rea.mjs",
+    "scripts/nre-android-workspace-guardian.mjs",
+    "scripts/nre.mjs",
   ])
     if (!packagedPaths.has(required))
       throw new Error(`Windows package omitted ${required}`);
@@ -80,13 +80,13 @@ try {
   const entry = join(
     prefix,
     "node_modules",
-    "rea-agents",
+    "nano-reverse-engineer",
     "scripts",
-    "rea.mjs",
+    "nre.mjs",
   );
   const environment = {
     ...process.env,
-    REA_ANALYSIS_PROVIDER: "auto",
+    NRE_ANALYSIS_PROVIDER: "auto",
   };
   const help = await commands.exec(process.execPath, [entry, "--help"], {
     env: environment,
@@ -105,7 +105,7 @@ try {
     env: environment,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-windows-package", version: "1.0.0" });
+  const client = new Client({ name: "nre-windows-package", version: "1.0.0" });
   let toolCount = 0;
   await withVerifierCleanup(async () => {
     await client.connect(server);
@@ -190,10 +190,10 @@ try {
     const config = parseJsonc(text);
     const registration =
       id === "opencode"
-        ? config.mcp?.rea
+        ? config.mcp?.nre
         : id === "vscode"
-          ? config.servers?.rea
-          : config.mcpServers?.rea;
+          ? config.servers?.nre
+          : config.mcpServers?.nre;
     const actualCommand =
       id === "opencode"
         ? registration?.command
@@ -243,8 +243,8 @@ try {
     prefix,
     packageRoot:
       process.platform === "win32"
-        ? join(prefix, "node_modules", "rea-agents")
-        : join(prefix, "lib", "node_modules", "rea-agents"),
+        ? join(prefix, "node_modules", "nano-reverse-engineer")
+        : join(prefix, "lib", "node_modules", "nano-reverse-engineer"),
     tarball,
     workspace,
     environment,

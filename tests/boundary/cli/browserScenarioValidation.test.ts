@@ -30,7 +30,7 @@ const serveJson = async (
 
 /** Register only the scenario commands, with a provider that must never run. */
 const registerValidatingCli = () => {
-  const cli = Cli.create("rea-scenario-validation-test", { sync: false });
+  const cli = Cli.create("nre-scenario-validation-test", { sync: false });
   const createProvider = vi.fn((): never => {
     throw new Error("validation must not construct a browser provider");
   });
@@ -358,7 +358,7 @@ cliTest.for(["launch", "connect"] as const)(
           ...launchScenario,
           browser:
             mode === "launch"
-              ? { mode, executable_path: "/nonexistent/rea-validation-browser" }
+              ? { mode, executable_path: "/nonexistent/nre-validation-browser" }
               : {
                   mode,
                   cdp_endpoint: "http://127.0.0.1:1",
@@ -374,7 +374,7 @@ cliTest.for(["launch", "connect"] as const)(
         "--json",
       ],
       environment: {
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
         SESSION_TOKEN: "validation-unread-secret",
       },
     });
@@ -387,7 +387,7 @@ cliTest.for(["launch", "connect"] as const)(
 cliTest(
   "validates stdin and caller-relative file paths with canonical diagnostics",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-scenario-validation-");
+    const root = await createTestTempDirectory("nre-scenario-validation-");
     const input = JSON.stringify(launchScenario);
     await writeFile(join(root, "valid.json"), input);
     await writeFile(

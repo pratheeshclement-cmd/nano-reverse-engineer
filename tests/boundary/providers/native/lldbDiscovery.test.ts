@@ -23,7 +23,7 @@ for (const [reason, code] of [
   ["cancelled", "cancelled"],
 ] as const)
   it(`preserves LLDB discovery ${reason} through the native provider client`, async () => {
-    const directory = await createTestTempDirectory("rea-lldb-discovery-");
+    const directory = await createTestTempDirectory("nre-lldb-discovery-");
     const target = join(directory, "inert-header.macho");
     await writeFile(target, thinMach(0xfeedfacf, 0x0100000c));
     const controller = new AbortController();

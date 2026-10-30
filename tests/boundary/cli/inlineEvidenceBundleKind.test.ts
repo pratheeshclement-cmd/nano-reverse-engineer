@@ -21,7 +21,7 @@ cliTest(
         result: { observed: true },
       },
     );
-    const root = await createTestTempDirectory("rea-inline-bundle-kind-");
+    const root = await createTestTempDirectory("nre-inline-bundle-kind-");
     const call = await cli.sharedMcpCall?.();
     if (call === undefined) throw new Error("Expected MCP session");
     const cases = [

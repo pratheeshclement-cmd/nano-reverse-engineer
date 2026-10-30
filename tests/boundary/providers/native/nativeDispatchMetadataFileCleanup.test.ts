@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 
 /** Open a real target and make only its admitted descriptor's close reject until released. */
 const fixture = async (bindActualDigest: boolean, admissionFailure?: Error) => {
-  const root = await createTestTempDirectory("rea-native-dispatch-close-");
+  const root = await createTestTempDirectory("nre-native-dispatch-close-");
   const path = join(root, "fixture.macho");
   await writeFile(path, "bound target bytes");
   const probe = await open(path, "r");

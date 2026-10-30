@@ -15,7 +15,7 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 it.skipIf(process.platform === "win32")(
   "binds relative Hopper launchers once for availability, profile and real bridge lifecycle",
   async () => {
-    const root = await createTestTempDirectory("rea-hopper-relative-launcher-");
+    const root = await createTestTempDirectory("nre-hopper-relative-launcher-");
     const away = join(root, "away");
     await mkdir(away);
     await mkdir(join(root, "physical/child"), { recursive: true });
@@ -33,8 +33,8 @@ it.skipIf(process.platform === "win32")(
       import { readFileSync, writeFileSync } from 'node:fs';
       const bootstrap = readFileSync(process.argv[process.argv.indexOf('-Y') + 1], 'utf8');
       const setting = name => JSON.parse(bootstrap.split('\\n').find(line => line.startsWith(name + ' = ')).slice(name.length + 3));
-      writeFileSync(process.env.REA_LAUNCHER_MARKER, process.env.REA_SELECTED_LAUNCHER);
-      process.argv = [process.execPath, ${JSON.stringify(fakeBridge)}, setting('REA_SOCKET'), setting('REA_TOKEN'), setting('REA_RUN_ID')];
+      writeFileSync(process.env.NRE_LAUNCHER_MARKER, process.env.NRE_SELECTED_LAUNCHER);
+      process.argv = [process.execPath, ${JSON.stringify(fakeBridge)}, setting('NRE_SOCKET'), setting('NRE_TOKEN'), setting('NRE_RUN_ID')];
       await import(${JSON.stringify(fakeBridge)});
     `,
     );
@@ -60,10 +60,10 @@ it.skipIf(process.platform === "win32")(
       const results = [];
       for (const selected of ['my-hopper', './my-hopper', 'link/../my-hopper']) {
         process.chdir(root);
-        const config = parseConfig({ HOPPER_LAUNCHER_PATH: selected, HOPPER_LOADER_ARGS_JSON: '["--fixture"]', REA_HOPPER_STARTUP_TIMEOUT_MS: '3000' });
+        const config = parseConfig({ HOPPER_LAUNCHER_PATH: selected, HOPPER_LOADER_ARGS_JSON: '["--fixture"]', NRE_HOPPER_STARTUP_TIMEOUT_MS: '3000' });
         if (!config.ok) throw config.error;
         const marker = root + '/marker-' + results.length;
-        const provider = new HopperProvider(config.value, silentLogger, { REA_LAUNCHER_MARKER: marker }, 'darwin');
+        const provider = new HopperProvider(config.value, silentLogger, { NRE_LAUNCHER_MARKER: marker }, 'darwin');
         process.chdir(${JSON.stringify(away)});
         const availability = provider.inspectAvailability();
         const profile = await provider.resolveAnalysisProfile(target.value);

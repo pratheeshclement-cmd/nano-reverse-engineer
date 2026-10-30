@@ -119,7 +119,7 @@ const readCompactUnsignedBytes = (
 ): bigint => {
   if (byteCount > payload.length - at) fail("BEAM atom table is truncated.");
   // OTP's unpack_varint only accepts values that fit a signed machine word.
-  // For REA's supported 64-bit runtime target, that is at most eight bytes.
+  // For NRE's supported 64-bit runtime target, that is at most eight bytes.
   const maxValue = 9_223_372_036_854_775_807n;
   let value = 0n;
   for (let index = 0; index < byteCount; index += 1) {

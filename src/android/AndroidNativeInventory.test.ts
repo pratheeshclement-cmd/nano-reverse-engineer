@@ -29,7 +29,7 @@ const inventory = () => ({
 });
 const tools = (value: unknown): JadxToolPort => ({
   json: async (name, input) => {
-    expect(name).toBe("rea_native_declarations");
+    expect(name).toBe("nre_native_declarations");
     expect(input).toEqual({ path: SNAPSHOT });
     return value as JsonValue;
   },

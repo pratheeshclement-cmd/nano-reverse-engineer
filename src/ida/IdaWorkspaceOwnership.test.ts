@@ -103,7 +103,7 @@ describe("IDA workspace ownership before input preparation", () => {
       const { root, target } = await createIdaTarget();
       roots.push(root);
       const linked = join(
-        await createTestTempDirectory("rea-ida-link-"),
+        await createTestTempDirectory("nre-ida-link-"),
         "root",
       );
       await symlink(root, linked);
@@ -146,7 +146,7 @@ describe("IDA workspace ownership before input preparation", () => {
       expect(failed.ok).toBe(false);
       if (!failed.ok) expect(failed.error.message).toContain("target changed");
       const workspace = (await readdir(root)).find((name) =>
-        name.startsWith("rea-ida-"),
+        name.startsWith("nre-ida-"),
       );
       expect(workspace).toBeDefined();
       expect(producer.calls.some(({ name }) => name === "idb_open")).toBe(

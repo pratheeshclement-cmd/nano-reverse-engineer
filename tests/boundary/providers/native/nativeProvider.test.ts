@@ -58,7 +58,7 @@ const writeFixturePlist = async (path: string): Promise<void> => {
 };
 
 const inspectionFixture = async (high = false) => {
-  directory = await createTestTempDirectory("rea-native-macho-");
+  directory = await createTestTempDirectory("nre-native-macho-");
   const path = join(directory, "fixture");
   const segment = Buffer.alloc(152);
   segment.writeUInt32LE(0x19, 0);
@@ -248,7 +248,7 @@ describe("native macOS provider discovery", () => {
 
 describe("native command output collection", () => {
   it("retries discovery and resamples the executable after its tool path is replaced", async () => {
-    directory = await createTestTempDirectory("rea-native-tool-identity-");
+    directory = await createTestTempDirectory("nre-native-tool-identity-");
     const executable = join(directory, "fixture-tool");
     const source = (value: string): string =>
       `#!/bin/sh\nprintf '%s\\n' '${value}'\n`;
@@ -401,7 +401,7 @@ describe("native command failure capture and limits", () => {
 
   it("projects the ownership helper prerequisite when a command cannot be supervised", async () => {
     const inspection = new DarwinProcessOwnershipInspectionError(
-      "Direct Darwin helper compilation requires absolute REA_DARWIN_SWIFTC_PATH and SDKROOT paths.",
+      "Direct Darwin helper compilation requires absolute NRE_DARWIN_SWIFTC_PATH and SDKROOT paths.",
     );
     const runner = new XcrunCommandRunner(
       {},
@@ -465,7 +465,7 @@ describe("native owned cancellation boundary", () => {
   it.skipIf(process.platform === "win32")(
     "projects an owned Node command cancellation with its exact reason and captured output",
     async () => {
-      directory = await createTestTempDirectory("rea-native-cancel-boundary-");
+      directory = await createTestTempDirectory("nre-native-cancel-boundary-");
       const ready = join(directory, "ready");
       const nodeSource = [
         'process.stdout.write("native output before cancellation", () => {',
@@ -549,12 +549,12 @@ describe("native cancellation cleanup provenance", () => {
   it.skipIf(process.platform === "win32")(
     "resolves only the owners that succeed when cleanup retries cover multiple native commands",
     async () => {
-      directory = await createTestTempDirectory("rea-native-mixed-cleanup-");
+      directory = await createTestTempDirectory("nre-native-mixed-cleanup-");
       const executable = join(directory, "native-tool");
       const nodeSource =
         'require("node:fs").writeFileSync(require("node:path").join(' +
         JSON.stringify(directory) +
-        ', process.env.REA_PROCESS_RUN_ID), "ready"); setInterval(() => {}, 1000);\n';
+        ', process.env.NRE_PROCESS_RUN_ID), "ready"); setInterval(() => {}, 1000);\n';
       await writeFile(executable, "#!" + process.execPath + "\n" + nodeSource, {
         mode: 0o700,
       });
@@ -700,7 +700,7 @@ describe("native returned cleanup ownership", () => {
   it.skipIf(process.platform === "win32")(
     "resolves a returned command error when its exact retained owner later stops",
     async () => {
-      directory = await createTestTempDirectory("rea-native-cleanup-retry-");
+      directory = await createTestTempDirectory("nre-native-cleanup-retry-");
       const ready = join(directory, "ready");
       const executable = join(directory, "native-tool");
       await writeFile(
@@ -1379,7 +1379,7 @@ describe("native macOS provider inspection", () => {
   });
 
   it("supports architectures, signatures, plists, and ordered demangling", async () => {
-    directory = await createTestTempDirectory("rea-native-");
+    directory = await createTestTempDirectory("nre-native-");
     const app = join(directory, "Fixture.app");
     const executable = join(app, "Contents/MacOS/Fixture");
     await mkdir(join(app, "Contents/MacOS"), { recursive: true });
@@ -1429,7 +1429,7 @@ describe("native macOS provider inspection", () => {
 
 describe("native macOS provider raw results", () => {
   it("records command provenance once, in the normalized result", async () => {
-    directory = await createTestTempDirectory("rea-native-");
+    directory = await createTestTempDirectory("nre-native-");
     const app = join(directory, "Fixture.app");
     const executable = join(app, "Contents/MacOS/Fixture");
     await mkdir(join(app, "Contents/MacOS"), { recursive: true });
@@ -1473,7 +1473,7 @@ describe("native macOS provider raw results", () => {
 
 describe("native plist defaults for iOS-style bundles", () => {
   it("defaults to the Info.plist the bundle program was resolved from", async () => {
-    directory = await createTestTempDirectory("rea-native-flat-");
+    directory = await createTestTempDirectory("nre-native-flat-");
     const app = join(directory, "Flat.app");
     const executable = join(app, "Flat");
     await mkdir(app, { recursive: true });
@@ -1496,7 +1496,7 @@ describe("native plist defaults for iOS-style bundles", () => {
 });
 
 it("rejects malformed selected plist bytes before mocked conversion can invent facts", async () => {
-  directory = await createTestTempDirectory("rea-native-malformed-plist-");
+  directory = await createTestTempDirectory("nre-native-malformed-plist-");
   const app = join(directory, "Malformed.app");
   const path = join(app, "Contents/Info.plist");
   await mkdir(join(app, "Contents"), { recursive: true });
@@ -1543,7 +1543,7 @@ class PrototypeEntitlementsRunner extends FixtureRunner {
 
 describe("native signature entitlements", () => {
   it("retains own entitlement dictionary keys through signature Evidence", async () => {
-    directory = await createTestTempDirectory("rea-signature-entitlements-");
+    directory = await createTestTempDirectory("nre-signature-entitlements-");
     const executable = join(directory, "fixture");
     await writeFile(executable, "fixture");
     const client = new NativeMacOSProvider(
@@ -1588,7 +1588,7 @@ class VerboseCodeSignFailureRunner extends FixtureRunner {
 
 describe("native signature failure diagnostics", () => {
   it("bounds accepted nonzero codesign output once it becomes a failure", async () => {
-    directory = await createTestTempDirectory("rea-signature-failure-");
+    directory = await createTestTempDirectory("nre-signature-failure-");
     const executable = join(directory, "fixture");
     await writeFile(executable, "fixture");
     const client = new NativeMacOSProvider(
@@ -1610,7 +1610,7 @@ describe("native signature failure diagnostics", () => {
 
 describe("native dispatch metadata error results", () => {
   it("preserves tagged cancellation and integrity failures", async () => {
-    directory = await createTestTempDirectory("rea-dispatch-errors-");
+    directory = await createTestTempDirectory("nre-dispatch-errors-");
     const targetPath = join(directory, "fixture.macho");
     await writeFile(targetPath, "bound target bytes");
     const client = new NativeMacOSProvider(

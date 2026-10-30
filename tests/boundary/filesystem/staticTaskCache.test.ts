@@ -72,7 +72,7 @@ const writeTaskFixture = async (
   await writeFile(
     join(root, "package.json"),
     JSON.stringify({
-      name: "rea-static-task-cache-fixture",
+      name: "nre-static-task-cache-fixture",
       version: "1.0.0",
       private: true,
       type: "module",
@@ -84,11 +84,11 @@ const writeTaskFixture = async (
   await writeFile(
     join(root, "package-lock.json"),
     JSON.stringify({
-      name: "rea-static-task-cache-fixture",
+      name: "nre-static-task-cache-fixture",
       version: "1.0.0",
       lockfileVersion: 3,
       packages: {
-        "": { name: "rea-static-task-cache-fixture", version: "1.0.0" },
+        "": { name: "nre-static-task-cache-fixture", version: "1.0.0" },
       },
     }),
   );
@@ -124,9 +124,9 @@ const taskHash = (root: string, task: string, cacheDirectory: string) => {
 };
 
 it("restores a real lint report across cold, warm, and fresh consumer checkouts", async () => {
-  const producer = await createTestTempDirectory("rea-static-cache-producer-");
-  const consumer = await createTestTempDirectory("rea-static-cache-consumer-");
-  const cache = await createTestTempDirectory("rea-static-cache-store-");
+  const producer = await createTestTempDirectory("nre-static-cache-producer-");
+  const consumer = await createTestTempDirectory("nre-static-cache-consumer-");
+  const cache = await createTestTempDirectory("nre-static-cache-store-");
   const script = "node scripts/ci/static-check-report.mjs lint";
   for (const root of [producer, consumer]) {
     await mkdir(join(root, "scripts/ci"), { recursive: true });
@@ -208,8 +208,8 @@ it("restores a real lint report across cold, warm, and fresh consumer checkouts"
 it.each(["workflow", "action manifest"])(
   "invalidates Knip for GitHub %s entrypoints and module contents",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-knip-github-inputs-");
-    const cache = await createTestTempDirectory("rea-knip-github-cache-");
+    const root = await createTestTempDirectory("nre-knip-github-inputs-");
+    const cache = await createTestTempDirectory("nre-knip-github-cache-");
     for (const directory of [
       "src",
       ".github/workflows",
@@ -234,7 +234,7 @@ it.each(["workflow", "action manifest"])(
     );
     await writeFile(join(root, "src/main.js"), 'console.log("ready");\n');
     const modulePath = join(root, ".github/actions/fault.mjs");
-    const invalidModule = 'import "rea-ci-controlled-yaml-dependency";\n';
+    const invalidModule = 'import "nre-ci-controlled-yaml-dependency";\n';
     await writeFile(modulePath, invalidModule);
     const workflow = (entry: string) =>
       JSON.stringify({
@@ -291,7 +291,7 @@ it.each(["workflow", "action manifest"])(
     expect(invalid.status, invalid.stdout + invalid.stderr).not.toBe(0);
     expect(invalid.stdout).toMatch(/Cached:\s+0 cached/u);
     expect(invalid.stdout + invalid.stderr).toContain(
-      "rea-ci-controlled-yaml-dependency",
+      "nre-ci-controlled-yaml-dependency",
     );
 
     // A reachable module can change dependencies without another manifest edit.
@@ -310,7 +310,7 @@ it.each(["workflow", "action manifest"])(
     ).not.toBe(0);
     expect(changedModule.stdout).toMatch(/Cached:\s+0 cached/u);
     expect(changedModule.stdout + changedModule.stderr).toContain(
-      "rea-ci-controlled-yaml-dependency",
+      "nre-ci-controlled-yaml-dependency",
     );
   },
 );
@@ -403,8 +403,8 @@ it.each([
 ])(
   "rejects a changed $label after warming real compiler tasks",
   async ({ path, content, diagnostic, invalidatesCompile }) => {
-    const root = await createTestTempDirectory("rea-compiler-cache-inputs-");
-    const cache = await createTestTempDirectory("rea-compiler-cache-store-");
+    const root = await createTestTempDirectory("nre-compiler-cache-inputs-");
+    const cache = await createTestTempDirectory("nre-compiler-cache-store-");
     await mkdir(join(root, "docs/.vitepress"), { recursive: true });
     await mkdir(join(root, ".github/actions"), { recursive: true });
     for (const directory of ["src", "tests", "scripts"])
@@ -539,8 +539,8 @@ it.each([
 );
 
 it("invalidates checker task hashes for Node, ignore, and VitePress config changes", async () => {
-  const root = await createTestTempDirectory("rea-static-cache-inputs-");
-  const cache = await createTestTempDirectory("rea-static-cache-hashes-");
+  const root = await createTestTempDirectory("nre-static-cache-inputs-");
+  const cache = await createTestTempDirectory("nre-static-cache-hashes-");
   await mkdir(join(root, "docs/.vitepress"), { recursive: true });
   await mkdir(join(root, "src"), { recursive: true });
   await mkdir(join(root, "tests"), { recursive: true });
@@ -629,8 +629,8 @@ it("invalidates checker task hashes for Node, ignore, and VitePress config chang
 it.skipIf(resolveTypeScriptCompiler().name !== "tsrs")(
   "does not replay an official compiler success for a Rust compiler error",
   async () => {
-    const root = await createTestTempDirectory("rea-cross-compiler-cache-");
-    const cache = await createTestTempDirectory("rea-cross-compiler-store-");
+    const root = await createTestTempDirectory("nre-cross-compiler-cache-");
+    const cache = await createTestTempDirectory("nre-cross-compiler-store-");
     const require = createRequire(import.meta.url);
     await mkdir(join(root, "scripts"));
     await mkdir(join(root, "src"));

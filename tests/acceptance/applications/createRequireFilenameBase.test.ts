@@ -11,7 +11,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "resolves proven createRequire filenames from their own directory through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-create-require-base-");
+    const root = await createTestTempDirectory("nre-create-require-base-");
     await writeFixtureFiles(root, {
       "main.mjs": `import { createRequire } from "node:module";
 const nested = createRequire(new URL("./nested/anchor.cjs", import.meta.url));

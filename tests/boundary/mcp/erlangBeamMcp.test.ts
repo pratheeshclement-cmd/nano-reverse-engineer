@@ -46,7 +46,7 @@ mcpTest(
         readOnlyHint: false,
         idempotentHint: true,
       });
-      const root = await createTestTempDirectory("rea-beam-mcp-");
+      const root = await createTestTempDirectory("nre-beam-mcp-");
       const path = join(root, "app.beam");
       await writeFile(path, erlangBeamFixture("mcp_mod"));
       const response = await client.callTool({
@@ -89,7 +89,7 @@ mcpTest(
   "returns recovery for the actual exhausted BEAM allowance",
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
-    const root = await createTestTempDirectory("rea-beam-capacity-");
+    const root = await createTestTempDirectory("nre-beam-capacity-");
     try {
       for (const [label, bytes, settings, remediation] of [
         [
@@ -136,7 +136,7 @@ mcpTest(
 mcpTest(
   "refuses BEAM summary before file access without retention and still delivers complete output",
   async ({ mcp }) => {
-    const root = await createTestTempDirectory("rea-beam-no-retention-");
+    const root = await createTestTempDirectory("nre-beam-no-retention-");
     const service = new BeamService(new BeamProvider());
     const server = new EvidenceMcpServer(
       { name: "beam-no-retention", version: "1" },

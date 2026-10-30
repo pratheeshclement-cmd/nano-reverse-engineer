@@ -17,34 +17,34 @@ typedef struct {
   uint8_t spi_flash_mode;
   uint8_t reserv3[2];
   uint32_t reserv2[18];
-} rea_app_desc_t;
+} nre_app_desc_t;
 
-_Static_assert(sizeof(rea_app_desc_t) == 256, "esp_app_desc_t is 256 bytes");
+_Static_assert(sizeof(nre_app_desc_t) == 256, "esp_app_desc_t is 256 bytes");
 
 __attribute__((section(".flash.appdesc"), used))
-const rea_app_desc_t rea_app_desc = {
+const nre_app_desc_t nre_app_desc = {
     .magic_word = 0xABCD5432,
     .secure_version = 3,
-    .version = "rea-verify-1",
-    .project_name = "rea_esp_image",
+    .version = "nre-verify-1",
+    .project_name = "nre_esp_image",
     .time = "00:00:00",
     .date = "Jan  1 2026",
-    .idf_ver = "v6.1-rea",
+    .idf_ver = "v6.1-nre",
     .max_efuse_blk_rev_full = 199,
     .mmu_page_size = 16,
 };
 
 __attribute__((section(".flash.rodata"), used))
-const char rea_message[] = "REA ESP image verification";
+const char nre_message[] = "NRE ESP image verification";
 
 __attribute__((section(".flash.text"), used, noinline)) int
-rea_flash_function(int value) {
-  return value * 3 + rea_message[value & 7];
+nre_flash_function(int value) {
+  return value * 3 + nre_message[value & 7];
 }
 
-__attribute__((section(".dram0.data"), used)) volatile int rea_counter = 7;
+__attribute__((section(".dram0.data"), used)) volatile int nre_counter = 7;
 
-__attribute__((section(".iram0.text"), used, noreturn)) void rea_entry(void) {
+__attribute__((section(".iram0.text"), used, noreturn)) void nre_entry(void) {
   for (;;)
-    rea_counter = rea_flash_function(rea_counter);
+    nre_counter = nre_flash_function(nre_counter);
 }

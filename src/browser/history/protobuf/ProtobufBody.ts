@@ -43,7 +43,7 @@ export const decodeProtobufBody = async (
 ): Promise<ProtobufDecoding> => {
   const result: ProtobufDecoding = {
     ...source,
-    decoder: "rea-protobuf-wire-v1",
+    decoder: "nre-protobuf-wire-v1",
     framing,
     offset_basis:
       framing === "grpc-web-text" ? "base64-decoded-body" : "retained-body",

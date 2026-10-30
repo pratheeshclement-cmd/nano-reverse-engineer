@@ -24,17 +24,17 @@ describe("real Hopper fixture binding", () => {
         largeOracle: {
           symbolPrefix: "_rea_inventory_",
           symbolCount: 1_205,
-          stringPrefix: "REA_INVENTORY_",
+          stringPrefix: "NRE_INVENTORY_",
           stringCount: 1_205,
         },
         oracle: {
           mainProcedure: "main",
-          entryProcedure: "rea_entry",
-          branchProcedure: "rea_branch",
-          leafProcedure: "rea_leaf",
-          entryString: "REA_C_ENTRY",
-          leafString: "REA_C_LEAF",
-          globalName: "rea_c_global",
+          entryProcedure: "nre_entry",
+          branchProcedure: "nre_branch",
+          leafProcedure: "nre_leaf",
+          entryString: "NRE_C_ENTRY",
+          leafString: "NRE_C_LEAF",
+          globalName: "nre_c_global",
         },
       },
     );
@@ -47,16 +47,18 @@ describe("real Hopper fixture binding", () => {
       /digest/u,
     );
 
-    const outside = await createTestTempDirectory("rea-hopper-outside-");
-    try {
-      await writeFile(join(outside, "c"), "primary");
-      await rm(join(root ?? "", "c"));
-      await symlink(join(outside, "c"), join(root ?? "", "c"));
-      await expect(loadRealHopperFixtureTargets(manifest)).rejects.toThrow(
-        /escapes/u,
-      );
-    } finally {
-      await rm(outside, { recursive: true, force: true });
+    if (process.platform !== "win32") {
+      const outside = await createTestTempDirectory("nre-hopper-outside-");
+      try {
+        await writeFile(join(outside, "c"), "primary");
+        await rm(join(root ?? "", "c"));
+        await symlink(join(outside, "c"), join(root ?? "", "c"));
+        await expect(loadRealHopperFixtureTargets(manifest)).rejects.toThrow(
+          /escapes/u,
+        );
+      } finally {
+        await rm(outside, { recursive: true, force: true });
+      }
     }
   });
 
@@ -80,7 +82,7 @@ describe("real Hopper fixture binding", () => {
 });
 
 const fixtureManifest = async (): Promise<string> => {
-  root = await createTestTempDirectory("rea-hopper-fixture-");
+  root = await createTestTempDirectory("nre-hopper-fixture-");
   const primary = Buffer.from("primary");
   const secondary = Buffer.from("secondary");
   await Promise.all([
@@ -100,12 +102,12 @@ const fixtureManifest = async (): Promise<string> => {
           expectations: {
             hopperOracle: {
               mainProcedure: "main",
-              entryProcedure: "rea_entry",
-              branchProcedure: "rea_branch",
-              leafProcedure: "rea_leaf",
-              entryString: "REA_C_ENTRY",
-              leafString: "REA_C_LEAF",
-              globalName: "rea_c_global",
+              entryProcedure: "nre_entry",
+              branchProcedure: "nre_branch",
+              leafProcedure: "nre_leaf",
+              entryString: "NRE_C_ENTRY",
+              leafString: "NRE_C_LEAF",
+              globalName: "nre_c_global",
             },
           },
         },
@@ -121,7 +123,7 @@ const fixtureManifest = async (): Promise<string> => {
           expectations: {
             symbolPrefix: "_rea_inventory_",
             symbolCount: 1_205,
-            stringPrefix: "REA_INVENTORY_",
+            stringPrefix: "NRE_INVENTORY_",
             stringCount: 1_205,
           },
         },

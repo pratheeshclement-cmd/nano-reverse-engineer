@@ -37,7 +37,7 @@ cliTest.for([
 ])(
   "counts each renderer IPC observation once for $shape",
   async ({ preload, counts, dynamic }, { cli }) => {
-    const root = await createTestTempDirectory("rea-electron-ipc-constant-");
+    const root = await createTestTempDirectory("nre-electron-ipc-constant-");
     await Promise.all([
       writeFile(
         join(root, "package.json"),

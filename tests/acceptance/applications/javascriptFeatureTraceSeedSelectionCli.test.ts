@@ -160,7 +160,7 @@ const traceThroughCli = async (
   application: unknown,
   scenario: Pick<SeedScenario, "name" | "seed">,
 ) => {
-  const root = await createTestTempDirectory("rea-feature-seed-request-");
+  const root = await createTestTempDirectory("nre-feature-seed-request-");
   const input = join(root, "trace.json");
   await writeFile(
     input,
@@ -231,7 +231,7 @@ const expectTrace = (trace: Trace, scenario: SeedScenario): void => {
 cliTest(
   "discovers and traces direct call argument literals",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-call-literal-");
+    const root = await createTestTempDirectory("nre-call-literal-");
     await writeFile(
       join(root, "module.js"),
       'client.rpc("proc_named", 7, false, unknown);\n',
@@ -301,7 +301,7 @@ cliTest(
 cliTest(
   "discovers semantic-only labels with paged CLI and MCP follow-up",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-feature-semantic-label-");
+    const root = await createTestTempDirectory("nre-feature-semantic-label-");
     await writeFile(
       join(root, "module.js"),
       "function uniqueSemanticCandidate(uniqueSemanticCandidate) { return uniqueSemanticCandidate; }\nuniqueSemanticCandidate(1);\n",
@@ -391,7 +391,7 @@ cliTest(
 cliTest(
   "matches feature seeds against node IDs and preserved route values through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-feature-seed-selection-");
+    const root = await createTestTempDirectory("nre-feature-seed-selection-");
     await writeFile(
       join(root, "routes.js"),
       `const notificationRoute = { path: "/accounts/preferences/notifications" };\nconst tinyRoute = { path: "/tiny" };\nmodule.exports = { notificationRoute, tinyRoute };\n`,
@@ -421,7 +421,7 @@ cliTest(
 cliTest(
   "normalizes API seed defaults before deriving matching and missing trace identities through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-feature-seed-defaults-");
+    const root = await createTestTempDirectory("nre-feature-seed-defaults-");
     await writeFile(
       join(root, "preload.js"),
       `

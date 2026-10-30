@@ -141,7 +141,7 @@ const authenticatedEvidenceSchema = evidenceSchema.superRefine(
         code: "custom",
         path: ["evidence_id"],
         message: usesPre66NullCoverageIdentity(withoutId, evidenceId)
-          ? "Evidence uses an earlier relationship_coverage identity commitment: explicit null was omitted from that digest. Recreate this observation with the current REA release; re-exporting the old bundle cannot update its identity."
+          ? "Evidence uses an earlier relationship_coverage identity commitment: explicit null was omitted from that digest. Recreate this observation with the current NRE release; re-exporting the old bundle cannot update its identity."
           : "Evidence semantic identifier does not match its record",
       });
   },
@@ -453,7 +453,7 @@ const normalizeEvidenceObservation = (
       version: provider.version,
     },
     analysis_profile: observation.analysisProfile ?? null,
-    predicate_type: observation.predicateType ?? "rea.analysis",
+    predicate_type: observation.predicateType ?? "nre.analysis",
     operation: observation.operation,
     parameters: observation.parameters,
     raw_result: observation.rawResult ?? null,

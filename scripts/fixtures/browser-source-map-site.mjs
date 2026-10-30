@@ -5,10 +5,10 @@ import { isAbsolute } from "node:path";
 
 /** Generate a real compiler map and serve only source-owned fixture code. */
 export async function startBrowserSourceMapSite(options = {}) {
-  const command = process.env.REA_WEB_SOURCE_MAP_COMPILER;
+  const command = process.env.NRE_WEB_SOURCE_MAP_COMPILER;
   if (!command || !isAbsolute(command))
     throw new Error(
-      "verify:browser:source-maps requires absolute REA_WEB_SOURCE_MAP_COMPILER pointing to isolated esbuild 0.25.10 lib/main.js",
+      "verify:browser:source-maps requires absolute NRE_WEB_SOURCE_MAP_COMPILER pointing to isolated esbuild 0.25.10 lib/main.js",
     );
   await access(command);
   const compiler = await import(pathToFileURL(command).href);

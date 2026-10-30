@@ -41,7 +41,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 });
 
 it("preserves a physical read failure when abort arrives during successful final close", async () => {
-  const root = await createTestTempDirectory("rea-fuse-completion-failure-");
+  const root = await createTestTempDirectory("nre-fuse-completion-failure-");
   const path = join(root, "selected");
   await writeFile(path, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
   const controller = new AbortController();
@@ -72,7 +72,7 @@ it("preserves a physical read failure when abort arrives during successful final
 });
 
 it("retains completed Evidence and resolved bundle identity after successful-close cancellation", async () => {
-  const root = await createTestTempDirectory("rea-fuse-completion-evidence-");
+  const root = await createTestTempDirectory("nre-fuse-completion-evidence-");
   const bundle = join(root, "Authored.app");
   const path = join(
     bundle,
@@ -158,7 +158,7 @@ vi.mock("./ElectronFuseReader.js", async (importOriginal) => {
 it.each([null, { caller: "reader handoff" }, undefined])(
   "retains completed Evidence after reader finalization and before provider continuation (%j)",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-fuse-reader-handoff-");
+    const root = await createTestTempDirectory("nre-fuse-reader-handoff-");
     const path = join(root, "selected");
     await writeFile(path, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
     const provider = new ElectronFuseProvider();

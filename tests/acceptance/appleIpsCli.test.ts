@@ -13,7 +13,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "decodes escape-dense IPS text within the selected Node heap",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-ips-escaped-");
+    const root = await createTestTempDirectory("nre-apple-ips-escaped-");
     const path = join(root, "escaped.ips");
     const name = "\n".repeat(7_500_000);
     await writeFile(
@@ -50,7 +50,7 @@ cliTest(
 cliTest(
   "reports Apple IPS crash facts through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-ips-cli-");
+    const root = await createTestTempDirectory("nre-apple-ips-cli-");
     const path = join(root, "report.ips");
     await writeFile(path, appleIpsBytes());
     const constrained = await cli.run({
@@ -90,7 +90,7 @@ cliTest(
 cliTest(
   "preserves empty IPS source text through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-ips-empty-");
+    const root = await createTestTempDirectory("nre-apple-ips-empty-");
     const path = join(root, "empty.ips");
     await writeFile(
       path,
@@ -135,7 +135,7 @@ cliTest(
 cliTest(
   "keeps producer-shaped Rosetta registers through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-ips-rosetta-");
+    const root = await createTestTempDirectory("nre-apple-ips-rosetta-");
     const path = join(root, "translated.ips");
     await writeFile(path, appleIpsRosettaBytes());
     const cliReply = await cli.run({
@@ -197,7 +197,7 @@ cliTest(
 cliTest(
   "resolves a relative IPS path against the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-ips-cli-rel-");
+    const root = await createTestTempDirectory("nre-apple-ips-cli-rel-");
     await writeFile(join(root, "report.ips"), appleIpsBytes());
     const result = await cli.run({
       arguments: ["inspect-apple-ips", "report.ips", "--json"],
@@ -207,13 +207,13 @@ cliTest(
     const evidence = toolContract("inspect_apple_ips").outputSchema.parse(
       result.json,
     );
-    expect(evidence.normalized_result.process.name).toBe("rea-crash-fixture");
+    expect(evidence.normalized_result.process.name).toBe("nre-crash-fixture");
     expect(evidence.subject?.local_path).toBe(join(root, "report.ips"));
   },
 );
 
 cliTest("reports a truncated IPS as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-apple-ips-cli-bad-");
+  const root = await createTestTempDirectory("nre-apple-ips-cli-bad-");
   const path = join(root, "broken.ips");
   await writeFile(path, appleIpsBytes({ truncateBody: true }));
   const result = await cli.run({

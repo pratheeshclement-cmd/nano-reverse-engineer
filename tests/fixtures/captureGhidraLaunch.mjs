@@ -32,7 +32,7 @@ await writeFile(
       _JAVA_OPTIONS: process.env._JAVA_OPTIONS,
       JAVA_HOME: process.env.JAVA_HOME,
       PATH: process.env.PATH,
-      REA_PROCESS_RUN_ID: process.env.REA_PROCESS_RUN_ID,
+      NRE_PROCESS_RUN_ID: process.env.NRE_PROCESS_RUN_ID,
     },
     descriptor_mode: (await stat(descriptorPath)).mode & 0o777,
     descriptor_has_token: typeof descriptor.token === "string",

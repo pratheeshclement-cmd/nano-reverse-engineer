@@ -13,7 +13,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "managed CLI preserves malformed prefix evidence without a complete CIL fingerprint",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-cil-prefix-");
+    const root = await createTestTempDirectory("nre-managed-cil-prefix-");
     for (const [name, il, status, coverage] of [
       ["dangling", [0xfe, 0x13], "malformed", "partial"],
       ["complete", [0x00, 0x2a], "present", "complete"],
@@ -59,7 +59,7 @@ cliTest(
   "managed CLI inspects malformed MethodSpecs used by isolated non-call instructions",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-managed-methodspec-operands-",
+      "nre-managed-methodspec-operands-",
     );
     for (const [opcode, name, operandKind] of [
       [0x71, "ldobj", "type"],
@@ -137,7 +137,7 @@ cliTest(
 cliTest(
   "managed CLI retains metadata and CIL after repeated local constructor owner lookups",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-row-lookup-");
+    const root = await createTestTempDirectory("nre-managed-row-lookup-");
     const path = join(root, "local-attributes.dll");
     await writeFile(
       path,
@@ -203,7 +203,7 @@ cliTest(
 cliTest(
   "managed CLI separates .NET Standard API targets from runtime evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-runtime-family-");
+    const root = await createTestTempDirectory("nre-managed-runtime-family-");
     for (const [name, targetFramework, readyToRun, runtimeFamily] of [
       ["standard", ".NETStandard,Version=v2.0", false, "unknown"],
       ["core", ".NETCoreApp,Version=v8.0", false, "modern-dotnet"],
@@ -284,7 +284,7 @@ cliTest(
 cliTest(
   "managed CLI qualifies a local nested custom-attribute type name",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-nested-attribute-");
+    const root = await createTestTempDirectory("nre-managed-nested-attribute-");
     const path = join(root, "nested-attribute.dll");
     await writeFile(
       path,
@@ -317,7 +317,7 @@ cliTest(
 cliTest(
   "managed CLI preserves evidence, filters, envelopes, and bounded token counts",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-cli-output-");
+    const root = await createTestTempDirectory("nre-managed-cli-output-");
     const path = join(root, "fixture.dll");
     await writeFile(
       path,
@@ -330,7 +330,7 @@ cliTest(
     expect(result.exitCode).toBe(0);
     expect(result.json).toMatchObject({
       operation: "inspect_managed_members",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "nre-dotnet-static" },
       subject: { local_path: path },
       normalized_result: {
         methods: [
@@ -399,7 +399,7 @@ cliTest(
     });
     expect(jsonl.exitCode).toBe(1);
     expect(jsonl.json).toMatchObject({
-      $rea: "jsonl/v1",
+      $nre: "jsonl/v1",
       type: "error",
       result: {
         code: "invalid_request",
@@ -422,7 +422,7 @@ cliTest(
 cliTest(
   "managed CLI rejects repeated or empty type selections as invalid input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-cli-types-");
+    const root = await createTestTempDirectory("nre-managed-cli-types-");
     const path = join(root, "fixture.dll");
     await writeFile(path, buildManagedPeFixture());
     for (const [types, message] of [
@@ -454,7 +454,7 @@ cliTest(
 cliTest(
   "managed CLI bounds CIL claims by section virtual ranges",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-virtual-size-");
+    const root = await createTestTempDirectory("nre-managed-virtual-size-");
     for (const virtualSectionSize of [0, 0x800, 0x801, 0x802]) {
       // The two-byte tiny method starts at RVA 0x2800. Its header alone fits
       // at size 0x801, and its full CIL fits exactly at size 0x802.
@@ -504,7 +504,7 @@ cliTest(
 cliTest(
   "managed CLI distinguishes raw padding from overlapping virtual sections",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-section-identity-");
+    const root = await createTestTempDirectory("nre-managed-section-identity-");
     for (const virtualSectionSize of [0x800, 0x900]) {
       const bytes = buildManagedPeFixture({ virtualSectionSize });
       const coff = bytes.readUInt32LE(0x3c) + 4;
@@ -553,7 +553,7 @@ cliTest(
 cliTest(
   "managed CLI reports a section table past EOF as invalid input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-cli-sections-");
+    const root = await createTestTempDirectory("nre-managed-cli-sections-");
     const path = join(root, "fixture.dll");
     const bytes = buildManagedPeFixture();
     const pe = bytes.readUInt32LE(0x3c);
@@ -586,7 +586,7 @@ cliTest(
 cliTest(
   "managed CLI refuses non-PE executables as unsupported targets",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-non-pe-");
+    const root = await createTestTempDirectory("nre-managed-non-pe-");
     for (const [name, bytes, format] of [
       ["native.elf", elf(2, 1, 0x3e), "elf"],
       ["native.macho", thinMach(0xfeedfacf, 0x01000007), "mach-o"],
@@ -622,7 +622,7 @@ cliTest(
 cliTest(
   "managed CLI retains target frameworks with multi-byte SerString lengths",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-serstring-");
+    const root = await createTestTempDirectory("nre-managed-serstring-");
     for (const length of [0x80, 0x4000]) {
       const targetFramework = "A".repeat(length);
       const path = join(root, `framework-${length}.dll`);
@@ -650,7 +650,7 @@ cliTest(
 cliTest(
   "managed CLI renders type names and preserves unresolved operands",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-signature-names-");
+    const root = await createTestTempDirectory("nre-managed-signature-names-");
     const path = join(root, "names.dll");
     await writeFile(
       path,

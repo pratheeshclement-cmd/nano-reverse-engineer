@@ -16,7 +16,7 @@ const scenarios = [
   "supplemental-binary-table",
 ] as const;
 const fixture = async (scenario: (typeof scenarios)[number]) => {
-  const root = await createTestTempDirectory("rea-integer-ambiguity-");
+  const root = await createTestTempDirectory("nre-integer-ambiguity-");
   const fields =
     scenario === "integer-collision"
       ? { first: "__FIRST__", second: "__SECOND__" }
@@ -150,7 +150,7 @@ cliTest.for(scenarios)(
     const item = await fixture(scenario);
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", item.path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode).toBe(0);
     verify(

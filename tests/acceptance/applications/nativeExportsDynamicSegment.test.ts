@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps unenumerated ELF dynamic exports unsupported through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-elf-dynamic-exports-");
+    const root = await createTestTempDirectory("nre-elf-dynamic-exports-");
     const mcp =
       surface === "stdio MCP" ? await connectLocalToolsMcp() : undefined;
     for (const encoding of [

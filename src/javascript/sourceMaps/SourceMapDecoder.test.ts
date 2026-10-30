@@ -38,7 +38,7 @@ it("preserves the exact caller reason before source-map admission", async () => 
 
 it("retains failed cleanup ownership and retries it before another decode", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-source-map-cleanup-retry-test-",
+    prefix: "nre-source-map-cleanup-retry-test-",
   });
   let cleanupAttempts = 0;
   const dependencies: SourceMapDecoderDependencies = {
@@ -121,7 +121,7 @@ it("retains failed cleanup ownership and retries it before another decode", asyn
 
 it("settles every source-map cleanup failure when final close releases the exact runtime", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-source-map-final-cleanup-test-",
+    prefix: "nre-source-map-final-cleanup-test-",
   });
   let attempts = 0;
   let denyCleanup = true;
@@ -185,7 +185,7 @@ it("settles every source-map cleanup failure when final close releases the exact
 
 it("attributes cleanup resources to the remaining process and directory owners", async () => {
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-source-map-mixed-cleanup-test-",
+    prefix: "nre-source-map-mixed-cleanup-test-",
   });
   let denyProcessRelease = true;
   let denyRootRelease = true;

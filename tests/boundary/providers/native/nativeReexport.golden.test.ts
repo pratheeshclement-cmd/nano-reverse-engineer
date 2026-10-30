@@ -16,7 +16,7 @@ import {
 } from "../../../fixtures/nativeCommands.js";
 
 it("retains native re-export dependencies alongside ordinary and identity commands", async () => {
-  const directory = await createTestTempDirectory("rea-reexport-");
+  const directory = await createTestTempDirectory("nre-reexport-");
   try {
     const path = join(directory, "libOuter.dylib");
     await writeFile(

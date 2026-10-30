@@ -24,7 +24,7 @@ const automaticProfiles = [
 cliTest(
   "admits complete MIME facts without repairing malformed protobuf parameters through CLI/MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-mime-admission-");
+    const root = await createTestTempDirectory("nre-protobuf-mime-admission-");
     const call = await cli.sharedMcpCall!();
     for (const [index, [mime, problem]] of automaticProfiles.entries()) {
       const path = join(root, `${index}.har`);
@@ -97,7 +97,7 @@ cliTest(
   "keeps an excluded HAR MIME unknown beside a visible contradictory header through CLI/MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-protobuf-har-mime-unknown-",
+      "nre-protobuf-har-mime-unknown-",
     );
     const path = join(root, "capture.har");
     const original = protobufHar(
@@ -174,7 +174,7 @@ cliTest(
 cliTest(
   "sanitizes visible HAR gRPC transport while its authoritative MIME is excluded through MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-har-transport-");
+    const root = await createTestTempDirectory("nre-protobuf-har-transport-");
     const path = join(root, "capture.har");
     const trailer = protobufFrame(
       Buffer.from("authorization: Bearer fixture-only\r\n"),
@@ -228,7 +228,7 @@ cliTest(
 cliTest(
   "retains caller-selected raw interpretation and the invalid recorded MIME through CLI/MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-mime-explicit-");
+    const root = await createTestTempDirectory("nre-protobuf-mime-explicit-");
     const path = join(root, "capture.har");
     const mime = 'application/protobuf;encoding="binary';
     const original = protobufHar(body, mime);

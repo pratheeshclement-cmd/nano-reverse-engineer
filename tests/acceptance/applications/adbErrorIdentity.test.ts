@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "keeps device, remote file and host file refusals distinct through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-adb-error-identity-");
+    const root = await createTestTempDirectory("nre-adb-error-identity-");
     const binary = join(root, "adb");
     const source = join(root, "source.bin");
     await writeFile(source, "caller bytes");
@@ -36,8 +36,8 @@ process.exit(1);
     const environment = {
       HOME: root,
       USERPROFILE: root,
-      REA_ADB_PATH: binary,
-      REA_LOG_LEVEL: "silent",
+      NRE_ADB_PATH: binary,
+      NRE_LOG_LEVEL: "silent",
     };
     const { client, call } = await connectLocalToolsMcp(environment);
     for (const scenario of [

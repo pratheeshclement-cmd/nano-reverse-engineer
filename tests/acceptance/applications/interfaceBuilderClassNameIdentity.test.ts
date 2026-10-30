@@ -15,7 +15,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 const appWithClassNameArchive = async (): Promise<string> => {
   const app = join(
-    await createTestTempDirectory("rea-ib-class-name-identity-"),
+    await createTestTempDirectory("nre-ib-class-name-identity-"),
     "Fixture.app",
   );
   const contents = join(app, "Contents");
@@ -64,7 +64,7 @@ cliTest(
     const app = await appWithClassNameArchive();
     const cliResult = await cli.run({
       arguments: ["decode-interface-builder", app, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(cliResult.exitCode, cliResult.stderr).toBe(0);
     const contract = toolContract("decode_interface_builder");
@@ -72,11 +72,11 @@ cliTest(
 
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       env: {
         PATH: process.env.PATH ?? "",
-        REA_LOG_LEVEL: "silent",
-        REA_ANALYSIS_PROVIDER: "auto",
+        NRE_LOG_LEVEL: "silent",
+        NRE_ANALYSIS_PROVIDER: "auto",
       },
       stderr: "pipe",
     });

@@ -9,7 +9,7 @@ import { asarHeaderBytes } from "../../fixtures/asarHeader.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("rechecks cached Electron ASAR headers against a lowered runtime admission", async () => {
-  const root = await createTestTempDirectory("rea-settings-cache-");
+  const root = await createTestTempDirectory("nre-settings-cache-");
   const archive = join(root, "cached.asar");
   await writeFile(
     archive,

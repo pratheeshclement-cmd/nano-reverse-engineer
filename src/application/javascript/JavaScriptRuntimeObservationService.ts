@@ -123,7 +123,7 @@ const requireProvider = (
   provider === undefined
     ? err(
         new AnalysisCapabilityUnavailableError(
-          "rea-v8-inspector",
+          "nre-v8-inspector",
           operation,
           "V8 Inspector observation provider is not configured",
         ),

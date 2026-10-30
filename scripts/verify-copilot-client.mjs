@@ -31,23 +31,23 @@ assert(
   "Native Copilot CLI verifier requires POSIX; Windows is unverified",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_COPILOT_COMMAND ?? "copilot";
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_COPILOT_COMMAND ?? "copilot";
 const mode = process.argv[2] ?? "call";
-const model = process.env.REA_VERIFY_COPILOT_MODEL ?? "gpt-5.4";
-const wireModel = process.env.REA_VERIFY_COPILOT_WIRE_MODEL ?? model;
+const model = process.env.NRE_VERIFY_COPILOT_MODEL ?? "gpt-5.4";
+const wireModel = process.env.NRE_VERIFY_COPILOT_WIRE_MODEL ?? model;
 const inputSchemaProfile =
-  process.env.REA_VERIFY_COPILOT_SCHEMA_PROFILE ?? "full";
+  process.env.NRE_VERIFY_COPILOT_SCHEMA_PROFILE ?? "full";
 assert(
   ["full", "compact"].includes(inputSchemaProfile),
-  "REA_VERIFY_COPILOT_SCHEMA_PROFILE must be full or compact",
+  "NRE_VERIFY_COPILOT_SCHEMA_PROFILE must be full or compact",
 );
 assert(
   ["chat", "call"].includes(mode),
   "Usage: verify-copilot-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-copilot-client-"));
+const lab = await mkdtemp(join(tmpdir(), "nre-copilot-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -56,7 +56,7 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
 );
 let clientVersion = null;
 let fixture;
@@ -97,7 +97,7 @@ await withVerifierCleanup(async () => {
       COPILOT_PROVIDER_WIRE_MODEL: wireModel,
       COPILOT_PROVIDER_MAX_PROMPT_TOKENS: "1000000",
       COPILOT_PROVIDER_MAX_OUTPUT_TOKENS: "4096",
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     try {
       clientVersion = (
@@ -109,7 +109,7 @@ await withVerifierCleanup(async () => {
       ).stdout.trim();
     } catch (cause) {
       throw new Error(
-        `Copilot CLI preflight failed for ${command}; install Copilot CLI or set REA_VERIFY_COPILOT_COMMAND. ${String(cause)}`,
+        `Copilot CLI preflight failed for ${command}; install Copilot CLI or set NRE_VERIFY_COPILOT_COMMAND. ${String(cause)}`,
         { cause },
       );
     }
@@ -140,25 +140,25 @@ await withVerifierCleanup(async () => {
         wireModels.push(body.model);
         // Auxiliary requests without tools cannot execute the analyst's workflow.
         if (tools.length === 0)
-          return { role: "assistant", content: "REA fixture title" };
+          return { role: "assistant", content: "NRE fixture title" };
         const analysis = tools.find((t) =>
           t.name.endsWith("analyze_javascript_application"),
         );
-        assert(analysis, "Copilot CLI must expose the REA analysis tool");
+        assert(analysis, "Copilot CLI must expose the NRE analysis tool");
         const prefix = analysis.name.slice(
           0,
           -"analyze_javascript_application".length,
         );
         const expected = TOOL_CONTRACTS.map((t) => prefix + t.name).sort();
-        const reaTools = tools.filter((t) => expected.includes(t.name));
-        catalogSize = reaTools.length;
+        const nreTools = tools.filter((t) => expected.includes(t.name));
+        catalogSize = nreTools.length;
         assert.deepEqual(
-          reaTools.map((t) => t.name).sort(),
+          nreTools.map((t) => t.name).sort(),
           expected,
-          "Copilot CLI must forward the complete REA catalog",
+          "Copilot CLI must forward the complete NRE catalog",
         );
         if (schemasChecked === 0) {
-          for (const tool of reaTools) {
+          for (const tool of nreTools) {
             assert(
               tool.parameters,
               `${tool.name}: missing advertised input schema`,
@@ -200,7 +200,7 @@ await withVerifierCleanup(async () => {
         }
         if (mode === "chat" || evidenceSeen) {
           finalSeen = true;
-          return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+          return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
         }
         assert(
           requestIndex <= 8,
@@ -221,11 +221,11 @@ await withVerifierCleanup(async () => {
           const skill = tools.find((t) => t.name === "skill");
           assert(skill, "Copilot CLI must expose its native skill tool");
           skillRequested = true;
-          return call(skill.name, { skill: "reverse-engineer-anything" });
+          return call(skill.name, { skill: "nano-reverse-engineer" });
         }
         assert(
           skillLoaded,
-          "Copilot CLI must load the installed personal REA skill",
+          "Copilot CLI must load the installed personal NRE skill",
         );
         const spilled = replies.find(
           (message) =>
@@ -274,7 +274,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const result = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
       await writeFile(
@@ -307,14 +307,14 @@ await withVerifierCleanup(async () => {
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert(configured.includes("unrelated-server"));
 
     const repeated = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/nre.mjs"),
         "setup",
         "--client",
         "copilot_cli",
@@ -325,21 +325,21 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     // Bind both choices explicitly: the server's default can change independently
     // of the profile this verifier promises to exercise and records in its receipt.
     const customized = JSON.parse(configured);
-    assert(customized.mcpServers.rea);
-    customized.mcpServers.rea.env = {
-      ...customized.mcpServers.rea.env,
-      REA_MCP_INPUT_SCHEMA_PROFILE: inputSchemaProfile,
+    assert(customized.mcpServers.nre);
+    customized.mcpServers.nre.env = {
+      ...customized.mcpServers.nre.env,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: inputSchemaProfile,
     };
     await writeFile(configPath, JSON.stringify(customized, null, 2));
     const installedSkill = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",
     );
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: nano-reverse-engineer"));
     const skillLines = installedSkill.split("\n");
     const headerEnd = skillLines.indexOf("---", 1);
     assert(
@@ -364,9 +364,9 @@ await withVerifierCleanup(async () => {
       });
       await writeFile(join(lab, `${name}.stdout`), result.stdout);
       await writeFile(join(lab, `${name}.stderr`), result.stderr);
-      if (name === "mcp-list") assert(result.stdout.includes("rea"));
+      if (name === "mcp-list") assert(result.stdout.includes("nre"));
       if (name === "skill-list")
-        assert(result.stdout.includes("reverse-engineer-anything"));
+        assert(result.stdout.includes("nano-reverse-engineer"));
     }
     const response = await saveVerifierCommandOutput(
       () =>
@@ -383,13 +383,13 @@ await withVerifierCleanup(async () => {
             model,
             "--allow-tool=skill",
             "--allow-tool=read",
-            "--allow-tool=rea(analyze_javascript_application)",
+            "--allow-tool=nre(analyze_javascript_application)",
             "--add-dir",
             target,
             "--prompt",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use the REA skill and tools to analyze the JavaScript directory ${target}. Report the result.`,
+              : `Use the NRE skill and tools to analyze the JavaScript directory ${target}. Report the result.`,
           ],
           {
             env: { ...environment, COPILOT_PROVIDER_BASE_URL: fixture.baseUrl },
@@ -418,7 +418,7 @@ await withVerifierCleanup(async () => {
       events.some(
         (event) =>
           event.type === "assistant.message" &&
-          event.data.content === "REA_CLIENT_COMPATIBILITY_OK",
+          event.data.content === "NRE_CLIENT_COMPATIBILITY_OK",
       ),
       "Copilot must finish with the expected native assistant message",
     );

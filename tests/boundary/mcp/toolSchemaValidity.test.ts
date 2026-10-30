@@ -457,11 +457,11 @@ const advertiseAndEnforceProcessEnvironmentKeyConstraint =
       const valid = { executable: "node", environment: { APP_MODE: "test" } };
       const reserved = {
         executable: "node",
-        environment: { REA_PROCESS_RUN_ID: "caller-value" },
+        environment: { NRE_PROCESS_RUN_ID: "caller-value" },
       };
       const reservedWithTrailingNewline = {
         executable: "node",
-        environment: { "REA_PROCESS_RUN_ID\n": "caller-value" },
+        environment: { "NRE_PROCESS_RUN_ID\n": "caller-value" },
       };
       expect(validate(valid)).toBe(true);
       expect(contract.inputSchema.safeParse(valid).success).toBe(true);
@@ -925,7 +925,7 @@ it("rejects unresolved output-schema references even for uncalled tools", () => 
 });
 
 it("validates each tool independently when output schema IDs repeat", () => {
-  const outputSchema = { $id: "urn:rea:test:shared-output", type: "string" };
+  const outputSchema = { $id: "urn:nre:test:shared-output", type: "string" };
   const errors = advertisedSchemaErrors([
     { name: "first", inputSchema: { type: "object" }, outputSchema },
     {
@@ -998,7 +998,7 @@ it("checks client array constraints in schema positions while preserving literal
 it.each([false, true])(
   "rejects references to another tool's nested IDs (earlier compilation fails: %s)",
   (invalidPrevious) => {
-    const nestedId = "urn:rea:test:nested-output";
+    const nestedId = "urn:nre:test:nested-output";
     const errors = advertisedSchemaErrors([
       {
         name: "first",

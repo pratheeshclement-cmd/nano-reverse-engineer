@@ -26,7 +26,7 @@ const findOwnedEntries = async (root, directory = root) => {
 
 const canonicalTemporaryRoot = await realpath(tmpdir());
 const isolatedTemporaryRoot = await mkdtemp(
-  join(canonicalTemporaryRoot, "rea-test-hygiene-"),
+  join(canonicalTemporaryRoot, "nre-test-hygiene-"),
 );
 
 await withVerifierCleanup(async () => {

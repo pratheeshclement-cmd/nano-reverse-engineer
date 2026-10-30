@@ -42,22 +42,22 @@ it.each([
 
 it("keeps __proto__ text in strings, comments, and similar keys", () => {
   const text = plist(
-    "<dict><!-- <key>__proto__</key> --><key> __proto__ </key><string><![CDATA[<key>__proto__</key>]]></string><key>__rea_prototype_key__</key><string>__proto__</string></dict>",
+    "<dict><!-- <key>__proto__</key> --><key> __proto__ </key><string><![CDATA[<key>__proto__</key>]]></string><key>__nre_prototype_key__</key><string>__proto__</string></dict>",
   );
   expect(parseXmlPropertyList(text)).toEqual({
     value: {
       " __proto__ ": "<key>__proto__</key>",
-      __rea_prototype_key__: "__proto__",
+      __nre_prototype_key__: "__proto__",
     },
   });
 });
 
 it("keeps a segmented entity-encoded key that decodes to the placeholder", () => {
   const text = plist(
-    "<dict><key>&#95;&#95;rea<![CDATA[_prototype_key__]]></key><string>kept</string><key>__proto__</key><string>x</string></dict>",
+    "<dict><key>&#95;&#95;nre<![CDATA[_prototype_key__]]></key><string>kept</string><key>__proto__</key><string>x</string></dict>",
   );
   expect(parseXmlPropertyList(text)).toEqual({
-    value: { __rea_prototype_key__: "kept", ["__proto__"]: "x" },
+    value: { __nre_prototype_key__: "kept", ["__proto__"]: "x" },
   });
 });
 
@@ -137,13 +137,13 @@ it.each([
 it("preserves OpenStep dictionary and array autodetection", () => {
   expect(
     parseXmlPropertyList(
-      "  { CFBundleExecutable = App; values = (one, two); __rea_prototype_key__ = kept; }",
+      "  { CFBundleExecutable = App; values = (one, two); __nre_prototype_key__ = kept; }",
     ),
   ).toEqual({
     value: {
       CFBundleExecutable: "App",
       values: ["one", "two"],
-      __rea_prototype_key__: "kept",
+      __nre_prototype_key__: "kept",
     },
   });
   expect(parseXmlPropertyList("(one, two)")).toEqual({

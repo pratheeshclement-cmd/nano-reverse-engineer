@@ -18,7 +18,7 @@ vi.mock(
     captureProcessScenario: vi.fn(async () =>
       err(
         new AnalysisCapabilityUnavailableError(
-          "rea-process",
+          "nre-process",
           "capture_process_scenario",
           "recorded by test",
         ),
@@ -34,14 +34,14 @@ afterEach(async () => {
 });
 
 it("captures MCP process scenarios with the server's selected environment", async () => {
-  vi.stubEnv("REA_CAPTURE_SELECTION_MARKER", "ambient");
-  vi.stubEnv("REA_CAPTURE_AMBIENT_ONLY", "ambient");
+  vi.stubEnv("NRE_CAPTURE_SELECTION_MARKER", "ambient");
+  vi.stubEnv("NRE_CAPTURE_AMBIENT_ONLY", "ambient");
   const session = createTestBinarySession(() => {
     throw new Error("Process capture must not launch a binary provider");
   });
   const server = createServer(
     { kind: "session", session },
-    { environment: { REA_CAPTURE_SELECTION_MARKER: "selected" } },
+    { environment: { NRE_CAPTURE_SELECTION_MARKER: "selected" } },
   );
   const client = new Client({ name: "capture-environment", version: "1" });
   resources.push(client, server, session);
@@ -57,5 +57,5 @@ it("captures MCP process scenarios with the server's selected environment", asyn
 
   expect(result.isError).toBe(true);
   const environment = vi.mocked(captureProcessScenario).mock.lastCall?.[3];
-  expect(environment).toEqual({ REA_CAPTURE_SELECTION_MARKER: "selected" });
+  expect(environment).toEqual({ NRE_CAPTURE_SELECTION_MARKER: "selected" });
 });

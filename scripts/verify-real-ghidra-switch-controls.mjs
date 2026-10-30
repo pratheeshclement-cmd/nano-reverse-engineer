@@ -52,7 +52,7 @@ export async function verifySwitchEvidenceControls({
   const { cleanupOwnedProcessGroup } =
     await import("../dist/process/ProcessOwnership.js");
   const bridge = await realpath(
-    join(dirname(entrypoint), "../bridge/ghidra/ReaGhidraBridge.java"),
+    join(dirname(entrypoint), "../bridge/ghidra/NreGhidraBridge.java"),
   );
   const fixtures = fileURLToPath(
     new URL("../tests/conformance/ghidra", import.meta.url),
@@ -73,7 +73,7 @@ export async function verifySwitchEvidenceControls({
       "-scriptPath",
       `${fixtures};${dirname(bridge)}`,
       "-postScript",
-      "ReaSwitchEvidenceProbe.java",
+      "NreSwitchEvidenceProbe.java",
       bridge,
       "-deleteProject",
     ],
@@ -94,14 +94,14 @@ export async function verifySwitchEvidenceControls({
     const output = `${snapshot.stdout.text}\n${snapshot.stderr.text}`;
     assert.equal(snapshot.exitCode, 0, output);
     const reports = [
-      ...output.matchAll(/REA_SWITCH_EVIDENCE_PROBE_JSON (\{[^\r\n]*\})/gu),
+      ...output.matchAll(/NRE_SWITCH_EVIDENCE_PROBE_JSON (\{[^\r\n]*\})/gu),
     ];
     assert.equal(
       reports.length,
       1,
       `Expected one production guard report: ${output}`,
     );
-    assert.ok(output.includes("REA_SWITCH_EVIDENCE_PROBE_COMPLETE"), output);
+    assert.ok(output.includes("NRE_SWITCH_EVIDENCE_PROBE_COMPLETE"), output);
     const report = JSON.parse(reports[0][1]);
     assertControlReport(
       report,

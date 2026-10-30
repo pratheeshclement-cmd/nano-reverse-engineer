@@ -13,7 +13,7 @@ import type { BinaryTarget } from "../../../../src/domain/binaryTargetTypes.js";
 
 describe("artifact extraction identity", () => {
   it("uses code-point order for path-independent extraction identities", async () => {
-    const root = await createTestTempDirectory("rea-extract-order-");
+    const root = await createTestTempDirectory("nre-extract-order-");
     const source = join(root, "source.zip");
     await writeOrderedZip(source, ["ä.js", "a.js", "Z.js"]);
     const result = await new ArtifactProvider(process.env)

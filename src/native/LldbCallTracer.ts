@@ -87,7 +87,7 @@ const lldbGraceRecovery = (
 };
 
 const BRIDGE = fileURLToPath(
-  new URL("../../bridge/native/rea_lldb_tracer.py", import.meta.url),
+  new URL("../../bridge/native/nre_lldb_tracer.py", import.meta.url),
 );
 
 /** JSON the LLDB bridge writes after a completed run. */
@@ -178,7 +178,7 @@ export interface NativeCallTrace {
   readonly run: z.infer<typeof tracedSchema>;
   readonly stdout: CapturedOutput;
   readonly stderr: CapturedOutput;
-  /** REA confirmed the traced process no longer exists. */
+  /** NRE confirmed the traced process no longer exists. */
   readonly terminated: boolean;
 }
 
@@ -210,7 +210,7 @@ export interface NativeCallTracer {
 const ATTACH_REMEDIATION =
   "Allow debugging for this user (Developer Tools access: `DevToolsSecurity -enable`, or membership in the _developer group). A hardened-runtime target is debuggable only with the com.apple.security.get-task-allow entitlement; inspect_signature reports hardened_runtime and entitlements.";
 
-/** Production tracer: `lldb --batch` running the REA LLDB bridge. */
+/** Production tracer: `lldb --batch` running the NRE LLDB bridge. */
 export class LldbCallTracer implements NativeCallTracer {
   private readonly environment: NodeJS.ProcessEnv;
   #tail: Promise<void> = Promise.resolve();
@@ -249,7 +249,7 @@ export class LldbCallTracer implements NativeCallTracer {
     if (pendingCleanup !== undefined) return err(pendingCleanup);
     const lldb = await this.resolveTool("lldb", signal);
     if (!lldb.ok) return err(this.#discoveryFailure(lldb.error));
-    const root = await PrivateRuntimeRoot.create({ prefix: "rea-lldb-" });
+    const root = await PrivateRuntimeRoot.create({ prefix: "nre-lldb-" });
     const paths = lldbRuntimePaths(root.path);
     const owner: RetainedLldbResources = {
       root,
@@ -550,7 +550,7 @@ export class LldbCallTracer implements NativeCallTracer {
       {
         unavailableMessage: LLDB_REQUIREMENT,
         timeoutRecovery: {
-          userMessage: `LLDB discovery reached REA's ${String(DEFAULT_NATIVE_COMMAND_TIMEOUT_MS)}ms xcrun deadline. This is not the client deadline.`,
+          userMessage: `LLDB discovery reached NRE's ${String(DEFAULT_NATIVE_COMMAND_TIMEOUT_MS)}ms xcrun deadline. This is not the client deadline.`,
           remediationAction:
             "Inspect the retained discovery output and cleanup state, then resolve the xcrun/toolchain condition before retrying. This LLDB discovery deadline has no runtime override; duration_ms controls the later target observation window.",
         },
@@ -649,7 +649,7 @@ export class LldbCallTracer implements NativeCallTracer {
         "-o",
         `command script import ${quote(BRIDGE)}`,
         "-o",
-        `rea_trace ${paths.config}`,
+        `nre_trace ${paths.config}`,
       ],
       {
         deadlineMs: input.duration_ms + DEADLINE_GRACE_MS,
@@ -673,7 +673,7 @@ export class LldbCallTracer implements NativeCallTracer {
     retained.processStopped =
       exited.cleanupOwner === undefined && exited.cleanupFailure === undefined;
     retained.targetStopped = !exited.targetLaunched;
-    // The bridge publishes its result once, at the end of rea_trace. Once LLDB
+    // The bridge publishes its result once, at the end of nre_trace. Once LLDB
     // stopped, an interrupted run still owns that result's target facts, while
     // only an exited LLDB selects it as the primary outcome.
     const readback =
@@ -957,7 +957,7 @@ export class LldbCallTracer implements NativeCallTracer {
   }
 }
 
-/** LLDB command arguments are quoted; the bridge path is REA's own install path. */
+/** LLDB command arguments are quoted; the bridge path is NRE's own install path. */
 const quote = (value: string): string =>
   `"${value.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
 

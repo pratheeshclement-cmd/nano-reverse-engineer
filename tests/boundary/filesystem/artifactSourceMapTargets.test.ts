@@ -14,7 +14,7 @@ it.each([
 ])(
   "admits only a regular mapped file while retaining ZIP containment (%s)",
   async (target) => {
-    const root = await createTestTempDirectory("rea-map-target-kind-");
+    const root = await createTestTempDirectory("nre-map-target-kind-");
     const path = join(root, "sample.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     if (target.startsWith("directory") && target !== "directory-map")

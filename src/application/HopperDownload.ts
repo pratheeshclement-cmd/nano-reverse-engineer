@@ -88,7 +88,7 @@ const fetchHopperResponse = async (
     if (selected.protocol !== "https:") return undefined;
     const response = await fetch(requested, {
       redirect: "manual",
-      headers: { accept: "application/json", "user-agent": "rea-installer" },
+      headers: { accept: "application/json", "user-agent": "nre-installer" },
       signal,
     });
     if (!REDIRECT_STATUSES.has(response.status)) return response;

@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "Electron resource sizes preserve unknown values and invalid-metadata coverage",
   async ({ cli, onTestFinished }) => {
-    const root = await createTestTempDirectory("rea-electron-resource-sizes-");
+    const root = await createTestTempDirectory("nre-electron-resource-sizes-");
     const main = join(root, "index.html");
     await writeFile(main, "<html/>");
     const sizes = [-1, 0, 128, undefined, "4", null];

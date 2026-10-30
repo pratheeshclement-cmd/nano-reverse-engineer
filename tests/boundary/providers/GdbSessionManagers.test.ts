@@ -22,7 +22,7 @@ describe("persistent debugger session managers", () => {
   });
 
   it("runs a correlated GDB MI command, reports status, and closes its owned process", async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-manager-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-manager-"));
     const provider = join(directory, "fake-gdb.mjs");
     await writeFile(
       provider,
@@ -48,7 +48,7 @@ process.stdin.on("data", (chunk) => {
     await chmod(provider, 0o700);
     const manager = new GdbSessionManager({
       platform: "linux",
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
 
@@ -70,7 +70,7 @@ process.stdin.on("data", (chunk) => {
   });
 
   it("does not start GDB when it rejects the required auto-load setting", async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-autoload-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-autoload-"));
     const provider = join(directory, "fake-gdb-reject.mjs");
     await writeFile(
       provider,
@@ -94,7 +94,7 @@ process.stdin.on("data", (chunk) => {
     await chmod(provider, 0o700);
     const manager = new GdbSessionManager({
       platform: "linux",
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
 

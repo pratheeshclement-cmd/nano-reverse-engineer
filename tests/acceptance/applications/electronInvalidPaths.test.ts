@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "reports every unresolved Electron path through CLI and MCP without launching",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-invalid-paths-");
+    const root = await createTestTempDirectory("nre-electron-invalid-paths-");
     const application = join(root, "main.js");
     await writeFile(application, "module.exports = {};\n");
     const missing = {
@@ -22,7 +22,7 @@ cliTest(
     await writeFile(requestPath, JSON.stringify(missing));
     const response = await cli.run({
       arguments: ["capture-electron-scenario", requestPath, "--format", "json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode).toBe(1);
     const expectedIssues = Object.entries(missing).map(([field, path]) => ({
@@ -93,7 +93,7 @@ const createElectronApplication = async (root: string) => {
 cliTest.skipIf(isWindows)(
   "rejects a non-executable Electron executable_path before launch through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-not-executable-");
+    const root = await createTestTempDirectory("nre-electron-not-executable-");
     const application = await createElectronApplication(root);
     const executable = join(root, "not-an-executable.txt");
     await writeFile(executable, "plain text");
@@ -108,7 +108,7 @@ cliTest.skipIf(isWindows)(
 
     const response = await cli.run({
       arguments: ["capture-electron-scenario", requestPath, "--format", "json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode).toBe(1);
     expect(response.json).toMatchObject({
@@ -137,7 +137,7 @@ cliTest.skipIf(isWindows)(
 cliTest.skipIf(isWindows)(
   "returns a typed failure when an executable exits before Electron starts and keeps the MCP server and its Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-early-exit-");
+    const root = await createTestTempDirectory("nre-electron-early-exit-");
     const application = await createElectronApplication(root);
     const executable = join(root, "exits-immediately");
     await writeFile(executable, "#!/bin/sh\nexit 0\n");
@@ -152,7 +152,7 @@ cliTest.skipIf(isWindows)(
 
     const response = await cli.run({
       arguments: ["capture-electron-scenario", requestPath, "--format", "json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode).toBe(1);
     expect(response.json).toMatchObject({
@@ -195,7 +195,7 @@ cliTest.skipIf(isWindows)(
 cliTest(
   "rejects a file URL path field without resolving an invented local path",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-file-url-");
+    const root = await createTestTempDirectory("nre-electron-file-url-");
     const application = join(root, "main.js");
     await writeFile(application, "module.exports = {};\n");
     const response = await cli.run({
@@ -208,7 +208,7 @@ cliTest(
         "--format",
         "json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode).toBe(1);
     expect(response.json).toMatchObject({

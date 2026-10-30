@@ -8,20 +8,20 @@ a device. HAR/SAZ/mitmproxy web-capture workflows remain separate.
 
 Supply an existing TShark 4.x installation **on Linux**, with util-linux
 `prlimit` available at `/usr/bin/prlimit`. Override its absolute path with
-`REA_TSHARK_PRLIMIT_COMMAND` if required. Unsupported hosts, including macOS
+`NRE_TSHARK_PRLIMIT_COMMAND` if required. Unsupported hosts, including macOS
 and Windows, are refused before inspection because this integration requires
 an enforced address-space limit.
 
 TShark selection follows the same rule as [`inspect_pcap_capture`](pcap-analysis.md):
-an absolute `REA_TSHARK_COMMAND`, otherwise `tshark` from the first absolute
-`PATH` entry that holds an executable file. A relative `REA_TSHARK_COMMAND` is
+an absolute `NRE_TSHARK_COMMAND`, otherwise `tshark` from the first absolute
+`PATH` entry that holds an executable file. A relative `NRE_TSHARK_COMMAND` is
 refused rather than looked up. Either way the selected executable is resolved,
 hashed and rechecked after each run, and Evidence records its
 `selection_source` (`environment` or `path`):
 
 ```sh
-export REA_TSHARK_COMMAND=/absolute/path/to/tshark   # optional when tshark is on PATH
-rea inspect-packet-capture /artifacts/device.pcapng \
+export NRE_TSHARK_COMMAND=/absolute/path/to/tshark   # optional when tshark is on PATH
+nre inspect-packet-capture /artifacts/device.pcapng \
   --fields ip.addr --fields udp.port --fields data.data \
   --display_filter 'udp' --format json
 ```
@@ -132,14 +132,14 @@ No arbitrary process flags are accepted.
 
 ```sh
 npm run build:cached
-REA_TSHARK_COMMAND=/absolute/path/to/tshark node scripts/verify-packet-capture.mjs
+NRE_TSHARK_COMMAND=/absolute/path/to/tshark node scripts/verify-packet-capture.mjs
 ```
 
 The verifier generates its own Ethernet/IPv4/UDP/DNS and Bluetooth HCI PCAPs.
 It exercises real compiled CLI/MCP parity, advertised schemas, repeated/missing
 fields, filtering, decode-as, both pass modes, a packet limit before matching
 frames, Evidence persistence, failure diagnostics, source identity and cleanup.
-An optional positional REA entrypoint verifies an installed package.
+An optional positional NRE entrypoint verifies an installed package.
 
 The real-tool lane requires Linux and TShark 4.x. A separate kernel-limit
 regression checks the inherited soft/hard limits and verifies an oversized
@@ -160,9 +160,9 @@ failed cleanup remains owned and can be retried.
 registration glossary before selecting fields for capture inspection:
 
 ```sh
-rea inspect-packet-fields --query usb
-rea inspect-packet-fields --kind fields --protocol usb --query idVendor
-rea inspect-packet-fields --kind fields --protocol udp --all
+nre inspect-packet-fields --query usb
+nre inspect-packet-fields --kind fields --protocol usb --query idVendor
+nre inspect-packet-fields --kind fields --protocol udp --all
 ```
 
 `kind` defaults to `protocols`; `fields` selects field definitions. `protocol`

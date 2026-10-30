@@ -199,7 +199,7 @@ describe("Hopper relationship coverage", () => {
         .mockImplementation((method) =>
           Promise.resolve(
             ok(
-              method === "rea_caller_base"
+              method === "nre_caller_base"
                 ? {
                     target: identity("0x1000"),
                     instructions: ["0x1000"],
@@ -207,13 +207,13 @@ describe("Hopper relationship coverage", () => {
                     callers: [],
                     callers_complete: true,
                   }
-                : method === "rea_caller_scan_target"
+                : method === "nre_caller_scan_target"
                   ? {
                       target: identity("0x1000"),
                       instructions: ["0x1000"],
                       instructions_complete: true,
                     }
-                  : method === "rea_caller_scan_page"
+                  : method === "nre_caller_scan_page"
                     ? {
                         start: 0,
                         next: 0,
@@ -302,8 +302,8 @@ describe("Hopper caller reconciliation failures", () => {
     const callTool = vi
       .spyOn(HopperClient.prototype, "callTool")
       .mockImplementation((method) => {
-        if (method === "rea_caller_base") return Promise.resolve(ok(native));
-        if (method !== "rea_caller_scan_page") return Promise.resolve(ok(null));
+        if (method === "nre_caller_base") return Promise.resolve(ok(native));
+        if (method !== "nre_caller_scan_page") return Promise.resolve(ok(null));
         pages += 1;
         if (pages === 1)
           return Promise.resolve(
@@ -324,7 +324,7 @@ describe("Hopper caller reconciliation failures", () => {
         return Promise.resolve(
           err(
             new AnalysisOutputError(
-              "rea_caller_scan_page",
+              "nre_caller_scan_page",
               "bridge page failed",
             ),
           ),

@@ -55,7 +55,7 @@ const publish = async (
   detail: "summary" | "complete",
   publication: Record<string, unknown>,
 ) => {
-  const root = await createTestTempDirectory("rea-evidence-output-");
+  const root = await createTestTempDirectory("nre-evidence-output-");
   const target = await family.target(root);
   const destination = join(root, "parent.json");
   const marker = join(root, "signal.json");
@@ -72,9 +72,9 @@ const publish = async (
     ],
     environment: {
       HOME: root,
-      REA_LOG_LEVEL: "silent",
-      REA_TEST_EVIDENCE_PUBLICATION: JSON.stringify({
-        prefix: join(await realpath(root), ".rea-write-"),
+      NRE_LOG_LEVEL: "silent",
+      NRE_TEST_EVIDENCE_PUBLICATION: JSON.stringify({
+        prefix: join(await realpath(root), ".nre-write-"),
         marker,
         ...publication,
       }),
@@ -82,7 +82,7 @@ const publish = async (
     },
   });
   const staging = (await readdir(root)).filter((name) =>
-    name.startsWith(".rea-write-"),
+    name.startsWith(".nre-write-"),
   );
   return { reply, destination, marker, staging };
 };

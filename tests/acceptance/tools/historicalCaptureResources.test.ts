@@ -16,7 +16,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../../scripts/nre.mjs", import.meta.url));
 const entry = JSON.stringify({
   startedDateTime: "2026-01-01T00:00:00.000Z",
   time: 1,
@@ -54,7 +54,7 @@ const jobLimit = NODE_CAPTURE_PROCESS_MEMORY_LIMIT_BYTES;
 it.skipIf(process.versions.bun !== undefined && jobLimit === null)(
   "reports real HAR memory exhaustion through CLI and MCP and preserves server usability",
   async () => {
-    const root = await createTestTempDirectory("rea-har-capacity-");
+    const root = await createTestTempDirectory("nre-har-capacity-");
     const path = join(root, "caller-marked.har");
     const dense = capture(34_098);
     expect(Buffer.byteLength(dense)).toBeLessThan(
@@ -79,7 +79,7 @@ it.skipIf(process.versions.bun !== undefined && jobLimit === null)(
             setting: "capture.decoder_old_generation_mib",
             effective_value: 192,
             source: "default",
-            rea_restart_required: false,
+            nre_restart_required: false,
           },
           reported_limits:
             jobLimit === null
@@ -101,7 +101,7 @@ it.skipIf(process.versions.bun !== undefined && jobLimit === null)(
       },
     });
     expect(JSON.stringify(response)).not.toContain("caller-marked");
-    expect(JSON.stringify(response)).not.toContain("rea doctor");
+    expect(JSON.stringify(response)).not.toContain("nre doctor");
     const remediation = String(exhausted.error.remediation?.action ?? "");
     expect(remediation).toContain(
       captureDecoderHeapRecovery(DEFAULT_CAPTURE_DECODER_HEAP),
@@ -128,7 +128,7 @@ it.skipIf(process.versions.bun !== undefined && jobLimit === null)(
           setting: "capture.decoder_old_generation_mib",
           effective_value: 192,
           source: "default",
-          rea_restart_required: false,
+          nre_restart_required: false,
         },
       },
       remediation: {
@@ -150,13 +150,13 @@ it.skipIf(process.versions.bun !== undefined && jobLimit === null)(
     });
     const controlText = JSON.stringify(control.structuredContent);
     expect(controlText).toContain(
-      "The effective REA_CAPTURE_DECODER_OLD_GENERATION_MIB value is 192 MiB (source default; default 192 MiB, floor 8 MiB, maximum 16384 MiB).",
+      "The effective NRE_CAPTURE_DECODER_OLD_GENERATION_MIB value is 192 MiB (source default; default 192 MiB, floor 8 MiB, maximum 16384 MiB).",
     );
     expect(controlText).toContain("source default");
     expect(controlText).toContain("floor 8 MiB");
     expect(controlText).toContain("maximum 16384 MiB");
     expect(controlText).toContain(
-      "Set REA_CAPTURE_DECODER_OLD_GENERATION_MIB in the environment that starts REA",
+      "Set NRE_CAPTURE_DECODER_OLD_GENERATION_MIB in the environment that starts NRE",
     );
     await truncate(path, WEB_NETWORK_CAPTURE_LIMITS.inputBytes + 1);
     const oversized = await call("inspect_web_network_capture", {

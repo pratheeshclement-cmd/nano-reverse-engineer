@@ -27,7 +27,7 @@ import {
 } from "./environmentExport.js";
 
 it("retains the admitted tarball descriptor and refuses a pathname replacement during output", async () => {
-  const root = await createTestTempDirectory("rea-tarball-instance-");
+  const root = await createTestTempDirectory("nre-tarball-instance-");
   const files = await writeEnvironmentServeFiles(root);
   const inputs = await readEnvironmentExportInputs(
     files.manifestPath,
@@ -67,7 +67,9 @@ it("retains the admitted tarball descriptor and refuses a pathname replacement d
     });
     expect(
       Buffer.compare(
-        await readFile(join(directory, "envs/grafana-example/rea-agents.tgz")),
+        await readFile(
+          join(directory, "envs/grafana-example/nano-reverse-engineer.tgz"),
+        ),
         originalBytes,
       ),
     ).toBe(0);
@@ -77,7 +79,7 @@ it("retains the admitted tarball descriptor and refuses a pathname replacement d
 });
 
 it("keeps tarball ownership when the admitted inode grows during output", async () => {
-  const root = await createTestTempDirectory("rea-tarball-growth-");
+  const root = await createTestTempDirectory("nre-tarball-growth-");
   const files = await writeEnvironmentServeFiles(root);
   const inputs = await readEnvironmentExportInputs(
     files.manifestPath,
@@ -96,7 +98,10 @@ it("keeps tarball ownership when the admitted inode grows during output", async 
       ...args: Parameters<SafeOutputTree["write"]>
     ) {
       const [relative] = args;
-      if (!grown && relative === "envs/grafana-example/rea-agents.tgz") {
+      if (
+        !grown &&
+        relative === "envs/grafana-example/nano-reverse-engineer.tgz"
+      ) {
         grown = true;
         await appendFile(tarball, Buffer.alloc(1024 * 1024, 0x42));
       }
@@ -116,7 +121,7 @@ it("keeps tarball ownership when the admitted inode grows during output", async 
         _tag: "AnalysisOutputError",
         operation: "environment-export",
         reason:
-          "Extracted content exceeds the inventoried size: envs/grafana-example/rea-agents.tgz",
+          "Extracted content exceeds the inventoried size: envs/grafana-example/nano-reverse-engineer.tgz",
       },
     });
     if (result.ok)
@@ -129,7 +134,7 @@ it("keeps tarball ownership when the admitted inode grows during output", async 
 });
 
 it("uses confirmed publication after the output owner's descriptor cleanup completes", async () => {
-  const root = await createTestTempDirectory("rea-bundle-published-");
+  const root = await createTestTempDirectory("nre-bundle-published-");
   const files = await writeEnvironmentServeFiles(root);
   const inputs = await readEnvironmentExportInputs(
     files.manifestPath,
@@ -175,7 +180,7 @@ it.skipIf(process.platform === "win32")(
   "returns a tagged permission refusal for an existing read-only empty directory",
   async (context) => {
     await requirePermissionDenial(context, "directory-write");
-    const root = await createTestTempDirectory("rea-bundle-readonly-");
+    const root = await createTestTempDirectory("nre-bundle-readonly-");
     const files = await writeEnvironmentServeFiles(root);
     const inputs = await readEnvironmentExportInputs(
       files.manifestPath,
@@ -214,7 +219,7 @@ it.skipIf(process.platform === "win32")(
   "names the nested path when write permission is lost after earlier files",
   async (context) => {
     await requirePermissionDenial(context, "directory-write");
-    const root = await createTestTempDirectory("rea-bundle-later-denied-");
+    const root = await createTestTempDirectory("nre-bundle-later-denied-");
     const files = await writeEnvironmentServeFiles(root);
     const inputs = await readEnvironmentExportInputs(
       files.manifestPath,
@@ -278,7 +283,7 @@ it.each([
 ] as const)(
   "reports a later $failure with its own recovery",
   async ({ failure, error }) => {
-    const root = await createTestTempDirectory("rea-bundle-later-failure-");
+    const root = await createTestTempDirectory("nre-bundle-later-failure-");
     const files = await writeEnvironmentServeFiles(root);
     const inputs = await readEnvironmentExportInputs(
       files.manifestPath,
@@ -324,7 +329,7 @@ it
   .each(["replace-root", "foreign-entry", "symlink-parent"] as const)(
   "refuses publication after an actual output transition: %s",
   async (transition) => {
-    const root = await createTestTempDirectory("rea-bundle-output-transition-");
+    const root = await createTestTempDirectory("nre-bundle-output-transition-");
     const files = await writeEnvironmentServeFiles(root);
     const inputs = await readEnvironmentExportInputs(
       files.manifestPath,

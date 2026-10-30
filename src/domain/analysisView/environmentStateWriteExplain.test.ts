@@ -752,8 +752,8 @@ it.each<[string, string, WriteEffect, string | null]>([
 it.each<[string, string, Record<string, string> | undefined]>([
   [
     "/orgs/{org}/repos/{repo}",
-    "/orgs/acme/repos/rea",
-    { org: "acme", repo: "rea" },
+    "/orgs/acme/repos/nre",
+    { org: "acme", repo: "nre" },
   ],
   ["/orgs/{org}", "/orgs/a%20b%2Fc/", { org: "a b/c" }],
   ["/orgs/{org}", "/orgs/%E0%A4%A", { org: "%E0%A4%A" }],

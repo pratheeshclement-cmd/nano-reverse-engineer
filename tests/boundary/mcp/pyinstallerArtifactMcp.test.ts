@@ -104,7 +104,7 @@ const assertMetadataQueries = async (
 };
 
 const writeExecutable = async (opaque: boolean): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-pyinstaller-mcp-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-mcp-");
   const path = join(directory, "hello");
   await writeFile(
     path,
@@ -164,7 +164,7 @@ const writeExecutable = async (opaque: boolean): Promise<string> => {
 
 const writeSurrogateNamespaceExecutable = async (): Promise<string> => {
   const directory = await createTestTempDirectory(
-    "rea-pyinstaller-mcp-surrogate-",
+    "nre-pyinstaller-mcp-surrogate-",
   );
   const path = join(directory, "surrogate-name");
   const namespace = Buffer.concat([
@@ -327,7 +327,7 @@ it.each([false, true])(
 it("preserves legacy CArchive identities and modern bytecode derivation through inspect_artifact", async () => {
   const fixture = cArchiveBytecodeExecutable();
   const directory = await createTestTempDirectory(
-    "rea-pyinstaller-mcp-bytecode-",
+    "nre-pyinstaller-mcp-bytecode-",
   );
   const path = join(directory, "bytecode-layouts");
   await writeFile(path, fixture.archive);
@@ -480,7 +480,7 @@ it.each([
       toc: Buffer.from([0x4e]),
     });
     if (version === null) payload.writeUInt32BE(0xffffffff, 8);
-    const directory = await createTestTempDirectory("rea-opaque-pyz-metadata-");
+    const directory = await createTestTempDirectory("nre-opaque-pyz-metadata-");
     const path = join(directory, "opaque-header");
     await writeFile(
       path,
@@ -602,7 +602,7 @@ it.each([false, true])(
   "preserves PYZ member roles through MCP inventory and extraction (encryption marker=%s)",
   async (encrypted) => {
     const files = encrypted ? [] : PYZ_ROLE_FILES;
-    const directory = await createTestTempDirectory("rea-pyz-roles-mcp-");
+    const directory = await createTestTempDirectory("nre-pyz-roles-mcp-");
     const path = join(directory, "roles");
     await writeFile(
       path,

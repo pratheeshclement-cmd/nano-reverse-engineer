@@ -203,7 +203,7 @@ it.for<PlistSourceCase>([
     },
     { onTestFinished },
   ) => {
-    const root = await createTestTempDirectory("rea-plist-source-format-");
+    const root = await createTestTempDirectory("nre-plist-source-format-");
     const path = join(root, "selected.plist");
     await writeFile(path, contents);
     const client = new NativeMacOSProvider(
@@ -242,7 +242,7 @@ interface PlistConversionCommand {
 const inspectConvertedPlist = async (
   conversions: readonly PlistConversionCommand[],
 ) => {
-  const root = await createTestTempDirectory("rea-plist-conversion-");
+  const root = await createTestTempDirectory("nre-plist-conversion-");
   const path = join(root, "selected numbers.plist");
   await writeFile(path, OPENSTEP);
   const signal = new AbortController().signal;

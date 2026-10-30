@@ -4,14 +4,14 @@ import { validateNativeAotReport } from "./NativeAotReport.js";
 /** NativeAOT-specific prerequisites and report interpretation behind the extension boundary. */
 export const nativeAotAdapter: GhidraExtensionAdapter = {
   id: "nativeaot",
-  entryClass: "rea.extensions.nativeaot.NativeAotExtension",
+  entryClass: "nre.extensions.nativeaot.NativeAotExtension",
   configuredPath: (config) => config.ghidraNativeAotJar,
   unsupportedReason: (target, platform) =>
     platform !== "linux"
       ? {
           constraint: "host",
           reason:
-            "NativeAOT recovery is verified on Linux only; omit REA_GHIDRA_NATIVEAOT_JAR for ordinary native analysis.",
+            "NativeAOT recovery is verified on Linux only; omit NRE_GHIDRA_NATIVEAOT_JAR for ordinary native analysis.",
         }
       : !["elf", "pe"].includes(target.format) ||
           target.architecture !== "x86_64" ||
@@ -19,7 +19,7 @@ export const nativeAotAdapter: GhidraExtensionAdapter = {
         ? {
             constraint: "target",
             reason:
-              "NativeAOT recovery requires an x86-64 ELF or native PE target on Linux; PE/CLI and ReadyToRun assemblies use inspect_managed_artifact; omit REA_GHIDRA_NATIVEAOT_JAR for ordinary native analysis.",
+              "NativeAOT recovery requires an x86-64 ELF or native PE target on Linux; PE/CLI and ReadyToRun assemblies use inspect_managed_artifact; omit NRE_GHIDRA_NATIVEAOT_JAR for ordinary native analysis.",
           }
         : null,
   validate: validateNativeAotReport,

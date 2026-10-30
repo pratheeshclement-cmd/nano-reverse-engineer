@@ -13,7 +13,7 @@ import { processTest } from "../../support/process/processFixture.js";
 // Records once if the lane's root disappears while this stand-in browser still runs.
 const browserSource = `
 import { appendFileSync, existsSync, readdirSync } from "node:fs";
-const rootExists = () => readdirSync(process.env.OWNER_TMP).some((name) => name.startsWith("rea-request-e2e-"));
+const rootExists = () => readdirSync(process.env.OWNER_TMP).some((name) => name.startsWith("nre-request-e2e-"));
 let seen = false;
 setInterval(() => {
   if (existsSync(process.env.OWNER_RELEASE)) process.exit(0);
@@ -81,7 +81,7 @@ processTest.skipIf(process.platform === "win32")(
   "stops a failed capture's CLI and the browser it launched before removing the request lane's root",
   { timeout: 40_000 },
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-browser-request-owner-");
+    const root = await createTestTempDirectory("nre-browser-request-owner-");
     const tmp = join(root, "tmp");
     await mkdir(tmp);
     const cli = join(root, "cli.mjs");
@@ -110,13 +110,13 @@ import { systemProcessOwnershipHost } from ${JSON.stringify(observations)};
 import { liveProcesses } from ${JSON.stringify(tree)};
 let failure;
 try {
-  await verifyBrowserRequestSteps("/rea-unlaunched-browser", process.env.OWNER_CLI);
+  await verifyBrowserRequestSteps("/nre-unlaunched-browser", process.env.OWNER_CLI);
 } catch (cause) {
   failure = { name: cause?.name ?? typeof cause, message: cause?.message ?? String(cause) };
 }
 const { pids } = JSON.parse(await readFile(process.env.OWNER_READY, "utf8"));
 const live = liveProcesses(await systemProcessOwnershipHost.listProcesses()).filter(({ pid }) => pids.includes(pid)).map(({ pid }) => pid);
-const roots = (await readdir(process.env.OWNER_TMP)).filter((name) => name.startsWith("rea-request-e2e-"));
+const roots = (await readdir(process.env.OWNER_TMP)).filter((name) => name.startsWith("nre-request-e2e-"));
 process.stdout.write(JSON.stringify({ pids, live, roots, failure }));
 `,
     );

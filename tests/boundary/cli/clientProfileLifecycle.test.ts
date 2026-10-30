@@ -18,7 +18,7 @@ cliTest(
   "uninstall refuses a foreign OpenCode fallback across configuration layers",
   async ({ cli }) => {
     const home = await createTestTempDirectory(
-      "rea-uninstall-layered-fallback-cli-",
+      "nre-uninstall-layered-fallback-cli-",
     );
     const directory = join(home, "opencode");
     await mkdir(directory, { recursive: true });
@@ -27,13 +27,13 @@ cliTest(
     const claude = join(home, ".claude.json");
     const legacy = JSON.stringify({
       mcp: {
-        rea: { type: "local", command: ["/usr/bin/false"], enabled: true },
+        nre: { type: "local", command: ["/usr/bin/false"], enabled: true },
       },
     });
     const native = JSON.stringify({
       mcp: {
         servers: {
-          rea: {
+          nre: {
             type: "local",
             command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
             disabled: false,
@@ -45,7 +45,7 @@ cliTest(
     await writeFile(upper, native);
     const claudeOriginal = JSON.stringify({
       mcpServers: {
-        rea: { command: PRODUCT_IDENTITY.cliBinary, args: ["mcp"] },
+        nre: { command: PRODUCT_IDENTITY.cliBinary, args: ["mcp"] },
       },
     });
     await writeFile(claude, claudeOriginal);
@@ -74,17 +74,17 @@ cliTest(
     expect(await readFile(lower, "utf8")).toBe(legacy);
     expect(await readFile(upper, "utf8")).toBe(native);
     expect(await readFile(claude, "utf8")).toBe(claudeOriginal);
-    await expect(access(`${claude}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${claude}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
-    await expect(access(`${upper}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${upper}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     // A foreign later fragment can inherit fields from an owned V1 entry.
     const ownedLegacy = JSON.stringify({
       mcp: {
         servers: {},
-        rea: {
+        nre: {
           type: "local",
           command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
           enabled: true,
@@ -92,7 +92,7 @@ cliTest(
       },
     });
     const foreignPartial = JSON.stringify({
-      mcp: { servers: { rea: { command: ["/usr/bin/false"] } } },
+      mcp: { servers: { nre: { command: ["/usr/bin/false"] } } },
     });
     await writeFile(lower, ownedLegacy);
     await writeFile(upper, foreignPartial);
@@ -102,7 +102,7 @@ cliTest(
     expect(await readFile(lower, "utf8")).toBe(ownedLegacy);
     expect(await readFile(upper, "utf8")).toBe(foreignPartial);
     expect(await readFile(claude, "utf8")).toBe(claudeOriginal);
-    await expect(access(`${lower}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${lower}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
@@ -111,7 +111,7 @@ cliTest(
     const removed = await run();
     expect(removed.exitCode, removed.stderr).toBe(0);
     expect(removed.json).toMatchObject({ status: "complete" });
-    expect(await readFile(upper, "utf8")).not.toContain('"rea"');
+    expect(await readFile(upper, "utf8")).not.toContain('"nre"');
   },
 );
 
@@ -119,7 +119,7 @@ cliTest(
   "uninstall reports completed file removals beside a later OpenCode failure and recovers",
   async ({ cli }) => {
     const home = await createTestTempDirectory(
-      "rea-uninstall-layered-failure-",
+      "nre-uninstall-layered-failure-",
     );
     const directory = join(home, "opencode");
     await mkdir(directory, { recursive: true });
@@ -127,16 +127,16 @@ cliTest(
     const second = join(directory, "opencode.jsonc");
     const original = JSON.stringify({
       mcp: {
-        rea: {
+        nre: {
           type: "local",
-          command: ["npx", "-y", "rea-agents@6.7.0", "mcp"],
+          command: ["npx", "-y", "nano-reverse-engineer@6.7.0", "mcp"],
         },
       },
       unrelated: "keep",
     });
     await writeFile(first, original);
     await writeFile(second, original);
-    await mkdir(`${second}.rea.backup`);
+    await mkdir(`${second}.nre.backup`);
     const run = () =>
       cli.run({
         arguments: ["uninstall", "--json"],
@@ -182,10 +182,10 @@ cliTest(
       mcp: {},
       unrelated: "keep",
     });
-    expect(await readFile(`${first}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${first}.nre.backup`, "utf8")).toBe(original);
     expect(await readFile(second, "utf8")).toBe(original);
 
-    await rm(`${second}.rea.backup`, { recursive: true });
+    await rm(`${second}.nre.backup`, { recursive: true });
     const recovered = await run();
     expect(recovered.exitCode, recovered.stderr).toBe(0);
     expect(recovered.json).toMatchObject({ status: "complete" });
@@ -193,8 +193,8 @@ cliTest(
       mcp: {},
       unrelated: "keep",
     });
-    expect(await readFile(`${first}.rea.backup`, "utf8")).toBe(original);
-    expect(await readFile(`${second}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${first}.nre.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${second}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -282,7 +282,7 @@ const groups = [
 cliTest(
   "uninstall purge retains unrelated data behind a managed-root symlink",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-uninstall-root-link-");
+    const root = await createTestTempDirectory("nre-uninstall-root-link-");
     const home = join(root, "home");
     const unrelated = join(root, "unrelated-application");
     await mkdir(home);
@@ -290,7 +290,7 @@ cliTest(
       await mkdir(join(unrelated, name), { recursive: true });
       await writeFile(join(unrelated, name, "keep.txt"), `unrelated ${name}`);
     }
-    const managedRoot = join(home, ".rea");
+    const managedRoot = join(home, ".nre");
     await symlink(
       unrelated,
       managedRoot,
@@ -330,7 +330,7 @@ for (const group of groups) {
   cliTest(
     `${group.name} lifecycle follows the selected roots`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-client-profile-");
+      const home = await createTestTempDirectory("nre-client-profile-");
       const environment: NodeJS.ProcessEnv = { HOME: home, USERPROFILE: home };
       for (const testCase of group.cases)
         for (const [key, value] of Object.entries(testCase.env))
@@ -341,7 +341,7 @@ for (const group of groups) {
       const profiles = group.cases.map((testCase) => ({
         ...testCase,
         config: join(home, testCase.config),
-        skillDirectory: join(home, testCase.skill, "reverse-engineer-anything"),
+        skillDirectory: join(home, testCase.skill, "nano-reverse-engineer"),
       }));
       const clientArguments = profiles.flatMap(({ client }) => [
         "--client",
@@ -388,7 +388,7 @@ for (const group of groups) {
         await expect(access(config)).resolves.toBeUndefined();
         expect(
           await readFile(join(skillDirectory, "SKILL.md"), "utf8"),
-        ).toContain("reverse-engineer-anything");
+        ).toContain("nano-reverse-engineer");
       }
       await expect(access(join(home, "config.toml"))).rejects.toMatchObject({
         code: "ENOENT",
@@ -421,8 +421,8 @@ for (const group of groups) {
           await writeFile(
             config,
             original.replace(
-              "[mcp_servers.rea]",
-              "[mcp_servers.rea]\ndisabled = true",
+              "[mcp_servers.nre]",
+              "[mcp_servers.nre]\ndisabled = true",
             ),
           );
           expect(
@@ -455,7 +455,7 @@ for (const group of groups) {
 }
 
 cliTest("uninstall names each retained skill directory", async ({ cli }) => {
-  const home = await createTestTempDirectory("rea-uninstall-skill-paths-");
+  const home = await createTestTempDirectory("nre-uninstall-skill-paths-");
   const shared = join(home, ".agents", "skills", PRODUCT_IDENTITY.skillName);
   const claude = join(home, ".claude", "skills", PRODUCT_IDENTITY.skillName);
   for (const directory of [shared, claude]) {
@@ -485,7 +485,7 @@ cliTest("uninstall names each retained skill directory", async ({ cli }) => {
     ["claude_code", claude],
   ] as const) {
     expect(skill?.detail).toContain(
-      `${client} (${directory}): retained (Skill manifest is not REA-owned.)`,
+      `${client} (${directory}): retained (Skill manifest is not NRE-owned.)`,
     );
     expect(await readFile(join(directory, "SKILL.md"), "utf8")).toBe(
       "---\nname: unrelated\n---\n",

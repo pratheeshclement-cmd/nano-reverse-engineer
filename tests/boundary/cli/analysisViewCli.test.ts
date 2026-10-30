@@ -49,7 +49,7 @@ import { inspectEvidenceBundle } from "../../../src/application/investigation/In
 cliTest(
   "authenticates an exact portable parent for non-managed views and rejects ambiguous or altered sources",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-analysis-bundle-cli-");
+    const root = await createTestTempDirectory("nre-analysis-bundle-cli-");
     const path = join(root, "bundle.json");
     const parent = analysisViewLayoutEvidence();
     const view = {
@@ -144,7 +144,7 @@ cliTest(
 cliTest(
   "preserves native relationship coverage independently of exhausted CLI pages",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-native-coverage-cli-");
+    const root = await createTestTempDirectory("nre-native-coverage-cli-");
     const parent = analysisViewNativeEvidence({
       status: "partial",
       limited_directions: ["callees"],
@@ -181,7 +181,7 @@ cliTest(
 cliTest(
   "reads typed module references through the public CLI with canonical Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-module-reference-cli-");
+    const root = await createTestTempDirectory("nre-module-reference-cli-");
     const request = join(root, "request.json");
     const parent = analysisViewJavaScriptEvidence(
       analysisViewJavaScriptAnalysisWithSource(),
@@ -214,7 +214,7 @@ cliTest(
 cliTest(
   "projects opted-in query names through compiled CLI without query values",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-query-names-cli-");
+    const root = await createTestTempDirectory("nre-query-names-cli-");
     const path = join(root, "view.json");
     const capture = analysisViewCaptureFixture();
     capture.records = capture.records.slice(0, 2);
@@ -264,7 +264,7 @@ cliTest(
 cliTest(
   "projects portable artifact inventory after the original ZIP is removed",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-inventory-view-cli-");
+    const root = await createTestTempDirectory("nre-inventory-view-cli-");
     const archive = join(root, "fixture.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("main.js", new TextReader("console.log('portable');\n"));
@@ -371,7 +371,7 @@ cliTest(
   "preserves artifact parent schema diagnostics through the application and CLI",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-inventory-diagnostics-cli-",
+      "nre-inventory-diagnostics-cli-",
     );
     const archive = join(root, "fixture.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -505,7 +505,7 @@ cliTest(
 cliTest(
   "admits portable captures before parsing and preserves capture caveats",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-inline-capture-cli-");
+    const root = await createTestTempDirectory("nre-inline-capture-cli-");
     const path = join(root, "view.json");
     const environment = {
       HOME: root,
@@ -577,7 +577,7 @@ cliTest(
 cliTest(
   "discovers native records from a complete portable bundle using the shared workflow",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-discovery-cli-");
+    const root = await createTestTempDirectory("nre-evidence-discovery-cli-");
     const parent = createEvidence(
       { path: "/fixtures/native.exe", format: "pe", sha256: "a".repeat(64) },
       { id: "ghidra", name: "Ghidra", version: "12.1.4" },
@@ -623,7 +623,7 @@ cliTest(
   "formats the full caller-admitted native inventory page as Markdown and JSON",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-native-inventory-markdown-",
+      "nre-native-inventory-markdown-",
     );
     const input = join(root, "view.json");
     const rowCount = 150_000;
@@ -658,7 +658,7 @@ cliTest(
       HOME: root,
       XDG_CONFIG_HOME: root,
       XDG_CACHE_HOME: root,
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
     };
 
     {
@@ -707,7 +707,7 @@ cliTest(
 cliTest(
   "projects one section from a JSON file of inline layout Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-analysis-view-cli-");
+    const root = await createTestTempDirectory("nre-analysis-view-cli-");
     const parent = analysisViewLayoutEvidence();
     const request = {
       source: { kind: "inline", evidence: parent },
@@ -743,7 +743,7 @@ cliTest(
 cliTest(
   "reports empty retained layout collections without invented index bounds",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-empty-layout-view-cli-");
+    const root = await createTestTempDirectory("nre-empty-layout-view-cli-");
     const empty = analysisViewLayoutEvidence(binaryLayoutFixture());
     for (const collection of ["sections", "symbols"] as const) {
       const result = await cli.run({
@@ -816,7 +816,7 @@ cliTest(
 cliTest(
   "projects native function pseudocode without requiring Ghidra",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-native-view-cli-");
+    const root = await createTestTempDirectory("nre-native-view-cli-");
     const parent = createEvidence(
       { path: "/fixtures/native.exe", format: "pe", sha256: "a".repeat(64) },
       { id: "ghidra", name: "Ghidra", version: "12.1.4" },
@@ -898,7 +898,7 @@ cliTest(
 );
 
 cliTest("rejects malformed JSON before projection", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-analysis-view-cli-bad-");
+  const root = await createTestTempDirectory("nre-analysis-view-cli-bad-");
   const result = await cli.run({
     arguments: ["inspect-analysis-view", "{", "--json"],
     environment: {
@@ -916,7 +916,7 @@ cliTest("rejects malformed JSON before projection", async ({ cli }) => {
 });
 
 cliTest("rejects a request that omits source", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-analysis-view-cli-missing-");
+  const root = await createTestTempDirectory("nre-analysis-view-cli-missing-");
   const input = join(root, "missing-source.json");
   await writeFile(input, JSON.stringify({ view: { kind: "summary" } }));
   const result = await cli.run({
@@ -942,7 +942,7 @@ for (const [view, reason] of [
   cliTest(
     `reports correction details for ${reason} view kind`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-view-variant-");
+      const root = await createTestTempDirectory("nre-view-variant-");
       const input = join(root, "view.json");
       await writeFile(
         input,
@@ -983,7 +983,7 @@ for (const [view, reason] of [
 cliTest(
   "decodes HAR credentials and projects recorded API paths through the compiled workflows",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-surface-cli-");
+    const root = await createTestTempDirectory("nre-surface-cli-");
     const fixture = apiSurfaceHar();
     const entry = fixture.log.entries[0]!;
     const urls = [
@@ -1060,7 +1060,7 @@ cliTest(
 cliTest(
   "projects an environment manifest from an Evidence file through the compiled CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-file-cli-");
+    const root = await createTestTempDirectory("nre-evidence-file-cli-");
     const capturePath = join(root, "capture.json");
     const parent = analysisViewCaptureEvidence(
       environmentManifestCaptureFixture(),
@@ -1103,7 +1103,7 @@ cliTest(
 cliTest(
   "projects an environment manifest through the compiled CLI without recorded values",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-environment-manifest-cli-");
+    const root = await createTestTempDirectory("nre-environment-manifest-cli-");
     const path = join(root, "view.json");
     await writeFile(
       path,
@@ -1174,7 +1174,7 @@ cliTest(
 cliTest(
   "extracts an environment state through the compiled CLI with recorded values",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-environment-state-cli-");
+    const root = await createTestTempDirectory("nre-environment-state-cli-");
     const path = join(root, "view.json");
     await writeFile(
       path,
@@ -1233,7 +1233,7 @@ cliTest.for([
 ])(
   "keeps the pre-write environment state through the compiled CLI for $spelling",
   async ({ starts }, { cli }) => {
-    const root = await createTestTempDirectory("rea-state-chronology-cli-");
+    const root = await createTestTempDirectory("nre-state-chronology-cli-");
     const path = join(root, "view.json");
     const entries = starts.map((startedDateTime, ordinal) => ({
       startedDateTime,
@@ -1294,7 +1294,7 @@ cliTest.for([
 cliTest(
   "decodes a Grafana-shaped HAR and projects its environment manifest through the compiled workflows",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-manifest-chain-cli-");
+    const root = await createTestTempDirectory("nre-manifest-chain-cli-");
     const capturePath = join(root, "capture.har");
     await writeFile(capturePath, JSON.stringify(environmentManifestHar()));
     const capture = await cli.run({
@@ -1354,7 +1354,7 @@ cliTest.for(
 )(
   "retains inline projection when $signal ($delivery) is queued during final sealing",
   async ({ signal, status, delivery }, { cli }) => {
-    const root = await createTestTempDirectory("rea-inline-view-signal-");
+    const root = await createTestTempDirectory("nre-inline-view-signal-");
     const parent = analysisViewLayoutEvidence(),
       marker = join(root, "signal.json");
     const preload = resolve(
@@ -1371,8 +1371,8 @@ cliTest.for(
       ],
       environment: {
         HOME: root,
-        REA_LOG_LEVEL: "silent",
-        REA_TEST_EVIDENCE_COMPLETION: JSON.stringify({
+        NRE_LOG_LEVEL: "silent",
+        NRE_TEST_EVIDENCE_COMPLETION: JSON.stringify({
           operation: "inspect_analysis_view",
           parent_evidence_id: parent.evidence_id,
           marker,

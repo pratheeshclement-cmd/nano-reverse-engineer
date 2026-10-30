@@ -32,7 +32,7 @@ it("keeps the 16 MiB ceiling when the setting is unset", () => {
   );
   const environment = parseEnvironment({});
   if (!environment.ok) throw new Error("doctor rejected an unset ceiling");
-  expect(environment.value.REA_BRIDGE_MAX_REQUEST_BYTES).toBeUndefined();
+  expect(environment.value.NRE_BRIDGE_MAX_REQUEST_BYTES).toBeUndefined();
 });
 
 it("accepts a caller-selected ceiling inside the floor and maximum", () => {
@@ -45,7 +45,7 @@ it("accepts a caller-selected ceiling inside the floor and maximum", () => {
     [BRIDGE_MAX_REQUEST_BYTES_SETTING]: "8192",
   });
   if (!environment.ok) throw new Error("doctor rejected a valid ceiling");
-  expect(environment.value.REA_BRIDGE_MAX_REQUEST_BYTES).toBe(8192);
+  expect(environment.value.NRE_BRIDGE_MAX_REQUEST_BYTES).toBe(8192);
 });
 
 it("sets the maximum to the serialized string bound minus the framing LF", () => {
@@ -90,7 +90,7 @@ it("locks the floor to the authenticated frame of the largest bounded symbol nam
   for (const character of command)
     if (character === '"' || character === "\\") estimated += 1;
   const hello = Buffer.byteLength(
-    JSON.stringify({ kind: "rea-auth-v2", nonce: "ab".repeat(32) }),
+    JSON.stringify({ kind: "nre-auth-v2", nonce: "ab".repeat(32) }),
   );
   expect(hopper).toBe(6322);
   expect(framed).toBe(7464);

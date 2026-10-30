@@ -13,10 +13,9 @@ import { constants } from "node:fs";
 import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { parseArgs } from "node:util";
+import { parseArgs, promisify } from "node:util";
 import { performance } from "node:perf_hooks";
 import { execFile } from "node:child_process";
-import { promisify } from "node:util";
 
 const { values } = parseArgs({
   options: {
@@ -725,23 +724,23 @@ const { Ajv2020 } = await import(
 const environment = {
   PATH: process.env.PATH,
   JAVA_HOME: resolve(values["java-home"]),
-  REA_JADX_MCP_JAR: resolve(values.jar),
-  REA_JADX_HEAP_MIB: "1024",
-  REA_JADX_ACTIVE_PROCESSOR_COUNT: "2",
+  NRE_JADX_MCP_JAR: resolve(values.jar),
+  NRE_JADX_HEAP_MIB: "1024",
+  NRE_JADX_ACTIVE_PROCESSOR_COUNT: "2",
   NODE_OPTIONS: "--max-old-space-size=3072",
   UV_THREADPOOL_SIZE: "2",
-  REA_LOG_LEVEL: "silent",
-  REA_MCP_TOOL_FAMILIES:
+  NRE_LOG_LEVEL: "silent",
+  NRE_MCP_TOOL_FAMILIES:
     values.pages || values["retained-removal"]
       ? "android,application,session"
       : values.proof
         ? "android,session"
         : "android",
-  REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
+  NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [join(repo, "scripts/rea.mjs"), "mcp"],
+  args: [join(repo, "scripts/nre.mjs"), "mcp"],
   cwd: repo,
   env: environment,
   stderr: "pipe",
@@ -752,7 +751,7 @@ transport.stderr?.on("data", (chunk) => {
   if (stderr.length < 65536)
     stderr += chunk.toString().slice(0, 65536 - stderr.length);
 });
-const client = new Client({ name: "rea-real-android-jni", version: "1" });
+const client = new Client({ name: "nre-real-android-jni", version: "1" });
 const calls = [],
   runs = [],
   parents = [];
@@ -1020,7 +1019,7 @@ if (values.cli) {
   const { path: _path, ...query } = queries[0];
   const proof = join(output, "cli-evidence.json");
   const args = [
-    join(repo, "scripts/rea.mjs"),
+    join(repo, "scripts/nre.mjs"),
     "inspect-android-jni-bindings",
     target,
     "--query",

@@ -944,7 +944,7 @@ describe("export writes in function evaluation contexts", () => {
 });
 
 it("retains namespace re-export bindings and provenance through stdio MCP and CLI", async () => {
-  const root = await createTestTempDirectory("rea-namespace-reexports-");
+  const root = await createTestTempDirectory("nre-namespace-reexports-");
   const declarations = [
     { clause: "* as ns", name: "ns", imported: "*" },
     {
@@ -1052,7 +1052,7 @@ it("retains namespace re-export bindings and provenance through stdio MCP and CL
 });
 
 it("excludes erased namespace type exports through stdio MCP and CLI", async () => {
-  const root = await createTestTempDirectory("rea-namespace-type-exports-");
+  const root = await createTestTempDirectory("nre-namespace-type-exports-");
   const path = join(root, "barrel.mts");
   await Promise.all([
     writeFile(
@@ -1212,7 +1212,7 @@ const runCli = async (args: readonly string[]): Promise<unknown> => {
     requestTimeoutMs: 20_000,
   });
   const environment = Object.fromEntries(
-    Object.entries({ ...process.env, REA_LOG_LEVEL: "silent" }).filter(
+    Object.entries({ ...process.env, NRE_LOG_LEVEL: "silent" }).filter(
       (entry): entry is [string, string] => entry[1] !== undefined,
     ),
   );
@@ -1230,7 +1230,7 @@ const analyzeVersions = async (
   exportName: string,
   fileName = "app.mjs",
 ) => {
-  const root = await createTestTempDirectory("rea-exported-function-bindings-");
+  const root = await createTestTempDirectory("nre-exported-function-bindings-");
   const leftRoot = join(root, "left");
   const rightRoot = join(root, "right");
   await Promise.all([mkdir(leftRoot), mkdir(rightRoot)]);
@@ -1309,11 +1309,11 @@ const getMcpClient = async (): Promise<Client> => {
   if (mcpConnection === undefined) {
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: {
         PATH: process.env.PATH ?? "",
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
         ...INLINE_EVIDENCE_MCP_ENVIRONMENT,
       },
       stderr: "pipe",

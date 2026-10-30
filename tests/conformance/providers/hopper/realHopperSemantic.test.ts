@@ -32,17 +32,17 @@ describe("Hopper verifier semantic fixture resolution", () => {
     [
       "duplicate",
       [
-        { address: "0x1000", value: "rea_entry" },
-        { address: "0x2000", value: "_rea_entry" },
+        { address: "0x1000", value: "nre_entry" },
+        { address: "0x2000", value: "_nre_entry" },
       ],
     ],
-    ["wrong name", [{ address: "0x1000", value: "rea_other" }]],
+    ["wrong name", [{ address: "0x1000", value: "nre_other" }]],
   ])("rejects %s search evidence", async (_label, items) => {
     await expect(
       resolveFixtureProcedure(
         clientWithItems(items),
         {},
-        "rea_entry",
+        "nre_entry",
         normalize,
       ),
     ).rejects.toThrow(/exactly one Hopper procedure/u);

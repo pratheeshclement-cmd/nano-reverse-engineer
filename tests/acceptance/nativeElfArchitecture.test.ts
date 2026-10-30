@@ -13,7 +13,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "preserves classifier-known Hexagon ELF identity through Go and Rust CLI/MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-machine-identity-");
+    const root = await createTestTempDirectory("nre-elf-machine-identity-");
     const { client, call } = await connectLocalToolsMcp();
     for (const language of ["go", "rust"] as const) {
       const operation =

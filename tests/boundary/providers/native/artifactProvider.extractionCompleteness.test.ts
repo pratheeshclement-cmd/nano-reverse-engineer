@@ -26,7 +26,7 @@ it.for([false, true])(
   "preserves source traversal coverage when invalid-byte names are present: %s",
   async (invalidName, context) => {
     if (invalidName && process.platform !== "linux") context.skip();
-    const root = await createTestTempDirectory("rea-extract-coverage-");
+    const root = await createTestTempDirectory("nre-extract-coverage-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "visible.txt"), "retained");
@@ -56,7 +56,7 @@ it.for([false, true])(
 it.skipIf(process.platform !== "linux")(
   "retains newly unknown materialization traversal after a complete inventory",
   async () => {
-    const root = await createTestTempDirectory("rea-extract-late-coverage-");
+    const root = await createTestTempDirectory("nre-extract-late-coverage-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "visible.txt"), "retained");
@@ -87,7 +87,7 @@ it.skipIf(process.platform !== "linux")(
 it.each(["file", "directory"] as const)(
   "rolls back when an inventoried %s disappears before extraction",
   async (removedKind) => {
-    const root = await createTestTempDirectory("rea-extract-missing-");
+    const root = await createTestTempDirectory("nre-extract-missing-");
     const source = join(root, "source");
     await mkdir(join(source, "z"), { recursive: true });
     // Equal bytes share an artifact node, but both occurrences must be copied.
@@ -119,7 +119,7 @@ it.each(["file", "directory"] as const)(
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "rolls back when a previously inventoried directory becomes unreadable",
   async () => {
-    const root = await createTestTempDirectory("rea-extract-denied-late-");
+    const root = await createTestTempDirectory("nre-extract-denied-late-");
     const source = join(root, "source");
     const child = join(source, "child");
     await mkdir(child, { recursive: true });
@@ -142,7 +142,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 );
 
 it("still refuses a regular file added after inventory and rolls back", async () => {
-  const root = await createTestTempDirectory("rea-extract-added-");
+  const root = await createTestTempDirectory("nre-extract-added-");
   const source = join(root, "source");
   await mkdir(source);
   await writeFile(join(source, "a.txt"), "original\n");
@@ -162,7 +162,7 @@ it
   "retains unknown filename coverage established during %s",
   async (phase) => {
     const root = await createTestTempDirectory(
-      "rea-extract-unknown-traversal-",
+      "nre-extract-unknown-traversal-",
     );
     const source = join(root, "source");
     await mkdir(source);
@@ -199,7 +199,7 @@ it
 it.each(["inventory", "materialization"] as const)(
   "retains typed unknown coverage from only the %s producer stage",
   async (phase) => {
-    const root = await createTestTempDirectory("rea-extract-stage-coverage-");
+    const root = await createTestTempDirectory("nre-extract-stage-coverage-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "known.txt"), "retained bytes\n");
@@ -250,7 +250,7 @@ it.each(["inventory", "materialization"] as const)(
 );
 
 it("normalizes an NFD omission once across inventory and materialization", async () => {
-  const root = await createTestTempDirectory("rea-extract-omission-nfc-");
+  const root = await createTestTempDirectory("nre-extract-omission-nfc-");
   const source = join(root, "source");
   await mkdir(source);
   await writeFile(join(source, "known.txt"), "retained bytes\n");
@@ -301,7 +301,7 @@ it("normalizes an NFD omission once across inventory and materialization", async
 });
 
 it("rolls back when cancellation arrives while closing the materialization reader", async () => {
-  const root = await createTestTempDirectory("rea-extract-cancel-close-");
+  const root = await createTestTempDirectory("nre-extract-cancel-close-");
   const source = join(root, "source");
   await mkdir(source);
   await writeFile(join(source, "payload.txt"), "complete payload\n");
@@ -337,7 +337,7 @@ it("rolls back when cancellation arrives while closing the materialization reade
 });
 
 it("preserves every equal-content occurrence and copies a nested ASAR as its containing file", async () => {
-  const root = await createTestTempDirectory("rea-extract-nested-");
+  const root = await createTestTempDirectory("nre-extract-nested-");
   const source = join(root, "source");
   const nested = join(root, "nested");
   await mkdir(source);
@@ -365,7 +365,7 @@ it("preserves every equal-content occurrence and copies a nested ASAR as its con
 });
 
 it("ignores unavailable members of a nested ASAR but refuses them as active entries", async () => {
-  const root = await createTestTempDirectory("rea-extract-nested-unpacked-");
+  const root = await createTestTempDirectory("nre-extract-nested-unpacked-");
   const contents = join(root, "contents");
   await mkdir(join(contents, "native"), { recursive: true });
   await writeFile(join(contents, "main.js"), "export default 1;\n");

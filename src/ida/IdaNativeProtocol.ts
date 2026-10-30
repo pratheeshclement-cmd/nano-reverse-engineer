@@ -83,10 +83,10 @@ export const nativeXrefsSchema = z
   .length(1);
 
 /**
- * Native regexes fold bytes, while REA's insensitive literal search uses
+ * Native regexes fold bytes, while NRE's insensitive literal search uses
  * ECMAScript Unicode simple case folding. Non-ASCII patterns can match ASCII
  * values (for example long s matches S), so leave those queries unfiltered.
- * For ASCII patterns include every non-ASCII value, then apply REA's predicate.
+ * For ASCII patterns include every non-ASCII value, then apply NRE's predicate.
  * Ill-formed UTF-16 cannot cross upstream JSON/UTF-8.
  */
 export const nativeLiteralSearchPattern = (

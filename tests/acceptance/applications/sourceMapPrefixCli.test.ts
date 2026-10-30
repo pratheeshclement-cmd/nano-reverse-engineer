@@ -12,7 +12,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps missing source-map mappings partial while retaining explicit declarations through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-source-map-mappings-");
+    const root = await createTestTempDirectory("nre-source-map-mappings-");
     const original = "export const answer: number = 42;";
     const cases = [
       {
@@ -104,7 +104,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "recovers retained prefixed source-map originals and byte identity through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-retained-map-prefix-");
+    const root = await createTestTempDirectory("nre-retained-map-prefix-");
     const original = "export const answer: number = 42;";
     const mapText = `\uFEFF)]}'retained response\r\n${JSON.stringify({
       version: 3,
@@ -160,7 +160,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains nullable source-map declarations and aligned content through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-nullable-map-");
+    const root = await createTestTempDirectory("nre-nullable-map-");
     const original = "export const answer: number = 42;";
     const unnamed = "retained source text without a declared name";
     const maps = {
@@ -284,7 +284,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains valid declarations beside non-string source-map names through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-invalid-map-source-");
+    const root = await createTestTempDirectory("nre-invalid-map-source-");
     const mapText = JSON.stringify({
       version: 3,
       sources: [42, "discarded.ts"],
@@ -345,7 +345,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps external indexed sections unknown while retaining embedded siblings through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-external-indexed-map-");
+    const root = await createTestTempDirectory("nre-external-indexed-map-");
     const url = "https://app.test/maps/part.map?revision=7";
     const mapText = JSON.stringify({
       version: 3,
@@ -421,7 +421,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves source-root declarations and URL path identity through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-source-root-identity-");
+    const root = await createTestTempDirectory("nre-source-root-identity-");
     const cases = [
       {
         sourceRoot: "https://cdn.example/src//",

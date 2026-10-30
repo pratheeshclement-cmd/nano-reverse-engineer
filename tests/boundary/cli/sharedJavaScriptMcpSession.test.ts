@@ -243,7 +243,7 @@ cliTest(
   async ({ cli }) => {
     const first = await useFileSession(cli);
     expect(await useFileSession(cli)).toBe(first);
-    const root = await writeApplication("rea-shared-mcp-");
+    const root = await writeApplication("nre-shared-mcp-");
     const analyzed = await analyzeJavaScriptDirectory("stdio MCP", cli, root);
     expect(
       analyzed.graph.nodes.some(({ kind }) => kind === "electron-renderer"),
@@ -255,7 +255,7 @@ cliTest(
   "reuses that stdio MCP session for a later case in the file",
   async ({ cli }) => {
     await useFileSession(cli);
-    const root = await writeApplication("rea-shared-mcp-later-");
+    const root = await writeApplication("nre-shared-mcp-later-");
     const analyzed = await analyzeJavaScriptDirectory("stdio MCP", cli, root);
     expect(
       analyzed.graph.nodes.some(({ kind }) => kind === "electron-renderer"),

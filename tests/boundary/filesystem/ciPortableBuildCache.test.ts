@@ -22,7 +22,7 @@ const script = fileURLToPath(
 const first = { taskId: "compile", hash: "0123456789abcdef" };
 const second = { taskId: "artifacts:skills", hash: "fedcba9876543210" };
 const plan = { tasks: [first, second] };
-const prefix = "rea-portable-build-v2-Linux-X64-toolchain";
+const prefix = "nre-portable-build-v2-Linux-X64-toolchain";
 const output = ".cache/ci-build-cache";
 const manifestName = "portable-build-cache.json";
 
@@ -43,7 +43,7 @@ function run(
 }
 
 async function fixture() {
-  const root = await createTestTempDirectory("rea-ci-portable-cache-");
+  const root = await createTestTempDirectory("nre-ci-portable-cache-");
   await mkdir(join(root, ".turbo/cache"), { recursive: true });
   return root;
 }

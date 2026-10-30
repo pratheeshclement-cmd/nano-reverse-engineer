@@ -21,7 +21,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "public ASAR inspection and extraction use the selected alias companion",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-asar-selected-cli-");
+    const root = await createTestTempDirectory("nre-asar-selected-cli-");
     const source = join(root, "source");
     const selected = join(root, "app.asar");
     const canonical = join(root, "content-addressed-archive");

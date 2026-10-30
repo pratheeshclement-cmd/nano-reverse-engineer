@@ -196,7 +196,7 @@ it.each([
     expect(incomplete).toMatchObject({
       code: "cleanup_incomplete",
       details: {
-        resources: [expect.stringContaining("rea-flutter-")],
+        resources: [expect.stringContaining("nre-flutter-")],
         partial_observation: {
           operation,
           caller_input_path: apk,

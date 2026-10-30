@@ -30,7 +30,7 @@ mcpTest(
         readOnlyHint: false,
         idempotentHint: true,
       });
-      const root = await createTestTempDirectory("rea-pe-config-mcp-");
+      const root = await createTestTempDirectory("nre-pe-config-mcp-");
       const path = join(root, "app.exe");
       const bytes = peLoadConfigImage();
       await writeFile(path, bytes);

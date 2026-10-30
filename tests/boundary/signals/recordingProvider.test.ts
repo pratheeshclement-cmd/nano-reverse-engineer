@@ -78,7 +78,7 @@ const fixture = async (
   failCleanup = false,
   recordingName?: string,
 ) => {
-  const directory = await createTestTempDirectory("rea-signal-test-");
+  const directory = await createTestTempDirectory("nre-signal-test-");
   const path = join(
     directory,
     recordingName ??
@@ -103,8 +103,8 @@ const fixture = async (
   const provider = new SigrokRecordingProvider(
     {
       ...process.env,
-      REA_SIGROK_COMMAND: configuredCommand,
-      REA_SIGROK_PRLIMIT_COMMAND: configuredCommand,
+      NRE_SIGROK_COMMAND: configuredCommand,
+      NRE_SIGROK_PRLIMIT_COMMAND: configuredCommand,
     },
     async (input) => {
       calls++;
@@ -1045,7 +1045,7 @@ it.each([
 
 it("refuses unsupported hosts before launching or allocating a workspace", async () => {
   const provider = new SigrokRecordingProvider(
-    { REA_SIGROK_COMMAND: process.execPath },
+    { NRE_SIGROK_COMMAND: process.execPath },
     async () => {
       throw new Error("Must not launch");
     },
@@ -1130,7 +1130,7 @@ it("preserves termination signal and effective file ceiling as a resource failur
     capturedOutput: { signal: "SIGXFSZ", stderr: "before file limit\n" },
   });
   expect(analysisErrorRemediationAction(result.error)).toContain(
-    "REA retains the tighter inherited limit",
+    "NRE retains the tighter inherited limit",
   );
 });
 
@@ -1403,7 +1403,7 @@ it("classifies completed nonzero version probes as configuration failures for bo
     if (result.ok) throw new Error("Expected version admission refusal");
     expect(projectAnalysisError(result.error)).toMatchObject({
       code: "capability_unavailable",
-      message: expect.stringContaining("REA_SIGROK_COMMAND"),
+      message: expect.stringContaining("NRE_SIGROK_COMMAND"),
       details: {
         captured_output: {
           exit_code: 1,

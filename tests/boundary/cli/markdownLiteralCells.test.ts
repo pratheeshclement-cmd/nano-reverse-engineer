@@ -85,7 +85,7 @@ const tableColumnByHeader = (html: string, header: string): string[] => {
 cliTest(
   "preserves literal Evidence keys and values when Markdown tables are rendered",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-markdown-literal-cells-");
+    const root = await createTestTempDirectory("nre-markdown-literal-cells-");
     const path = join(root, "bundle.json");
     const literal =
       "`code` **bold** _name_ ~~deleted~~ [label](target) ![alt](image)";
@@ -198,7 +198,7 @@ cliTest(
 cliTest(
   "keeps scalar markers, edge spaces, and emoji-like names literal in rendered reports",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-markdown-literal-markers-");
+    const root = await createTestTempDirectory("nre-markdown-literal-markers-");
     const path = join(root, "bundle.json");
     const result = {
       container: "::: details",
@@ -265,7 +265,7 @@ cliTest(
 cliTest(
   "preserves safetensors identifier edge spaces in rendered CLI tables",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-edge-spaces-");
+    const root = await createTestTempDirectory("nre-model-edge-spaces-");
     const path = join(root, "model.safetensors");
     const names = ["  leading ", "leading", "trailing  ", "plain"];
     const header = JSON.stringify(
@@ -314,7 +314,7 @@ cliTest(
 cliTest(
   "preserves literal scalar, array, and heading Evidence facts",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-markdown-literal-text-");
+    const root = await createTestTempDirectory("nre-markdown-literal-text-");
     const path = join(root, "bundle.json");
     const literal = "**literal** [source](wrong) <T> &copy;";
     const heading = "**key**\n# injected";

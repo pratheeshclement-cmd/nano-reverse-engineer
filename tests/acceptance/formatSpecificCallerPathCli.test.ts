@@ -13,7 +13,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "retains format-specific CLI selections in complete and published Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-format-caller-path-");
+    const root = await createTestTempDirectory("nre-format-caller-path-");
     const model = join(root, "model.safetensors");
     const elf = join(root, "image.elf");
     await writeFile(model, safetensorsFixture().bytes);

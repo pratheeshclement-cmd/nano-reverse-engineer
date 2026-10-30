@@ -115,7 +115,7 @@ describe.skipIf(process.platform === "win32")(
 );
 
 describePosix("Hopper target leases", () => {
-  it("reports the owning REA session for a duplicate target and profile", async () => {
+  it("reports the owning NRE session for a duplicate target and profile", async () => {
     const directory = await temporaryDirectory();
     const targetPath = await temporaryTarget();
     const first = await acquireHopperTargetLease({
@@ -415,7 +415,7 @@ const temporaryTarget = async (parent?: string): Promise<string> => {
 };
 
 const temporaryDirectory = async (): Promise<string> => {
-  const directory = await mkdtemp(join("/tmp", "rea-hl-"));
+  const directory = await mkdtemp(join("/tmp", "nre-hl-"));
   directories.push(directory);
   return directory;
 };

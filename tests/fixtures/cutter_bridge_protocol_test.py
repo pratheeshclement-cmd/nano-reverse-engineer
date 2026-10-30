@@ -32,8 +32,8 @@ def _install_host_stubs():
 
 
 _install_host_stubs()
-MODULE_PATH = Path(__file__).parents[2] / "bridge" / "cutter" / "rea_bridge.py"
-spec = importlib.util.spec_from_file_location("rea_cutter_bridge_test", MODULE_PATH)
+MODULE_PATH = Path(__file__).parents[2] / "bridge" / "cutter" / "nre_bridge.py"
+spec = importlib.util.spec_from_file_location("nre_cutter_bridge_test", MODULE_PATH)
 bridge = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = bridge
 spec.loader.exec_module(bridge)
@@ -232,7 +232,7 @@ class ResponseEncodingTest(unittest.TestCase):
     def assert_authenticated_response(self, frame):
         expected = hmac.new(
             self.server.token.encode(),
-            f"rea-cutter-response-v2:{self.server.session_id}:{'a' * 64}:{'b' * 64}:{frame['response']}".encode(),
+            f"nre-cutter-response-v2:{self.server.session_id}:{'a' * 64}:{'b' * 64}:{frame['response']}".encode(),
             hashlib.sha256,
         ).hexdigest()
         self.assertTrue(hmac.compare_digest(frame["proof"], expected))
@@ -424,7 +424,7 @@ class ProtocolProducerTest(unittest.TestCase):
     def test_stalled_hello_does_not_block_the_next_client(self):
         stalled = socket.create_connection(("127.0.0.1", self.server.port), timeout=2)
         try:
-            _send(stalled, {"kind": "rea-auth-v2", "nonce": "b" * 64})
+            _send(stalled, {"kind": "nre-auth-v2", "nonce": "b" * 64})
             challenge = _frame(stalled)
             self.assertEqual(challenge["session_id"], self.server.session_id)
             started = time.monotonic()
@@ -441,7 +441,7 @@ class ProtocolProducerTest(unittest.TestCase):
     def test_status_does_not_complete_an_earlier_connection_still_reading(self):
         earlier = socket.create_connection(("127.0.0.1", self.server.port), timeout=2)
         try:
-            _send(earlier, {"kind": "rea-auth-v2", "nonce": "c" * 64})
+            _send(earlier, {"kind": "nre-auth-v2", "nonce": "c" * 64})
             challenge = _frame(earlier)
             earlier_ordinal = challenge["nonce"][:16]
             self.assertEqual(earlier_ordinal, "0000000000000001")
@@ -470,7 +470,7 @@ class ProtocolProducerTest(unittest.TestCase):
         bridge.MAX_CONNECTION_WORKERS = 1
         stalled = socket.create_connection(("127.0.0.1", self.server.port), timeout=2)
         try:
-            _send(stalled, {"kind": "rea-auth-v2", "nonce": "d" * 64})
+            _send(stalled, {"kind": "nre-auth-v2", "nonce": "d" * 64})
             self.assertEqual(_frame(stalled)["session_id"], self.server.session_id)
             rejected = socket.create_connection(("127.0.0.1", self.server.port), timeout=2)
             try:
@@ -502,7 +502,7 @@ class ProtocolProducerTest(unittest.TestCase):
         original = threading.Thread.start
 
         def start(thread):
-            if thread.name == "rea-cutter-bridge-connection":
+            if thread.name == "nre-cutter-bridge-connection":
                 calls["n"] += 1
                 if calls["n"] == 1:
                     raise RuntimeError("cannot start new thread")
@@ -529,7 +529,7 @@ class ProtocolProducerTest(unittest.TestCase):
 
     def test_rejects_legacy_peers_before_ui_dispatch(self):
         with socket.create_connection(("127.0.0.1", self.server.port), timeout=2) as connection:
-            connection.sendall((json.dumps({"kind": "rea-auth-v1", "nonce": "a" * 64}) + "\n").encode())
+            connection.sendall((json.dumps({"kind": "nre-auth-v1", "nonce": "a" * 64}) + "\n").encode())
             with connection.makefile("rb") as reader:
                 reply = json.loads(reader.readline())
         self.assertEqual(reply, {"ok": False, "error": "authentication-failed"})
@@ -537,7 +537,7 @@ class ProtocolProducerTest(unittest.TestCase):
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
-        os.environ["REA_CUTTER_BRIDGE_DIR"] = self.temp.name
+        os.environ["NRE_CUTTER_BRIDGE_DIR"] = self.temp.name
         self.dispatcher = Dispatcher()
         self.server = bridge._BridgeServer(self.dispatcher)
         bridge.SOCKET_TIMEOUT_SECONDS = 0.1
@@ -550,27 +550,27 @@ class ProtocolProducerTest(unittest.TestCase):
     def tearDown(self):
         self.server.stop()
         self.server.join(timeout=2)
-        os.environ.pop("REA_CUTTER_BRIDGE_DIR", None)
+        os.environ.pop("NRE_CUTTER_BRIDGE_DIR", None)
         self.temp.cleanup()
 
     def exchange(self, request):
         token = self.server.token.encode()
         client_nonce = os.urandom(32).hex()
         with socket.create_connection(("127.0.0.1", self.server.port), timeout=1) as connection:
-            _send(connection, {"kind": "rea-auth-v2", "nonce": client_nonce})
+            _send(connection, {"kind": "nre-auth-v2", "nonce": client_nonce})
             challenge = _frame(connection)
             self.assertEqual(challenge["session_id"], self.server.session_id)
             server_nonce = challenge["nonce"]
-            expected_server = hmac.new(token, f"rea-cutter-server-v2:{self.server.session_id}:{client_nonce}:{server_nonce}".encode(), hashlib.sha256).hexdigest()
+            expected_server = hmac.new(token, f"nre-cutter-server-v2:{self.server.session_id}:{client_nonce}:{server_nonce}".encode(), hashlib.sha256).hexdigest()
             self.assertTrue(hmac.compare_digest(challenge["proof"], expected_server))
             request_bytes = json.dumps(request, separators=(",", ":"))
-            proof = hmac.new(token, f"rea-cutter-client-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{request_bytes}".encode(), hashlib.sha256).hexdigest()
+            proof = hmac.new(token, f"nre-cutter-client-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{request_bytes}".encode(), hashlib.sha256).hexdigest()
             _send(connection, {"request": request_bytes, "proof": proof})
             frame = _frame(connection)
             if "response" not in frame:
                 return frame, client_nonce
             response = frame["response"]
-            expected_response = hmac.new(token, f"rea-cutter-response-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{response}".encode(), hashlib.sha256).hexdigest()
+            expected_response = hmac.new(token, f"nre-cutter-response-v2:{self.server.session_id}:{client_nonce}:{server_nonce}:{response}".encode(), hashlib.sha256).hexdigest()
             self.assertTrue(hmac.compare_digest(frame["proof"], expected_response))
             return json.loads(response), client_nonce
 
@@ -583,7 +583,7 @@ class ProtocolProducerTest(unittest.TestCase):
     def test_client_chosen_session_uuid_without_secret_proof_is_not_authenticated(self):
         client_nonce = os.urandom(32).hex()
         with socket.create_connection(("127.0.0.1", self.server.port), timeout=1) as connection:
-            _send(connection, {"kind": "rea-auth-v2", "nonce": client_nonce})
+            _send(connection, {"kind": "nre-auth-v2", "nonce": client_nonce})
             _frame(connection)
             request_bytes = json.dumps({"kind": "status", "session_id": "client-chosen-session"}, separators=(",", ":"))
             _send(connection, {"request": request_bytes, "proof": "0" * 64})
@@ -738,7 +738,7 @@ class ProtocolProducerTest(unittest.TestCase):
             response = frame["response"]
             expected = hmac.new(
                 self.server.token.encode(),
-                f"rea-cutter-response-v2:{self.server.session_id}:{'a' * 64}:{'b' * 64}:{response}".encode(),
+                f"nre-cutter-response-v2:{self.server.session_id}:{'a' * 64}:{'b' * 64}:{response}".encode(),
                 hashlib.sha256,
             ).hexdigest()
             self.assertTrue(hmac.compare_digest(frame["proof"], expected))
@@ -794,9 +794,9 @@ class RequestFrameLimitTest(unittest.TestCase):
 
 def _load_cutter_bridge(suffix, raw):
     """Import a fresh plugin module under one explicit ceiling."""
-    name = "rea_cutter_bridge_limit_%s" % suffix
+    name = "nre_cutter_bridge_limit_%s" % suffix
     sys.modules.pop(name, None)
-    setting = "REA_BRIDGE_MAX_REQUEST_BYTES"
+    setting = "NRE_BRIDGE_MAX_REQUEST_BYTES"
     previous = os.environ.get(setting)
     if raw is None:
         os.environ.pop(setting, None)
@@ -855,7 +855,7 @@ class BridgeRequestCeilingTest(unittest.TestCase):
             lowered._BridgeServer._receive_frame(
                 _BufferedSocket(accepted + b" " + b"\n")
             )
-        self.assertIn("REA_BRIDGE_MAX_REQUEST_BYTES", str(lowered_error.exception))
+        self.assertIn("NRE_BRIDGE_MAX_REQUEST_BYTES", str(lowered_error.exception))
         raised = _load_cutter_bridge("raised", str(17 * 1024 * 1024))
         self.assertEqual(raised.MAX_FRAME_BYTES, 17 * 1024 * 1024)
         self.assertEqual(raised._authenticated_frame_timeout_seconds(), 17)
@@ -950,7 +950,7 @@ class BridgeRequestCeilingTest(unittest.TestCase):
         self.assertIsNone(response["current_file"])
         self.assertNotIn("cutter_version", response)
         self.assertIn("unknown", response["message"])
-        self.assertIn("REA_BRIDGE_MAX_REQUEST_BYTES", response["message"])
+        self.assertIn("NRE_BRIDGE_MAX_REQUEST_BYTES", response["message"])
         short = dict(status)
         short["current_file"] = "/tmp/fresh.bin"
         short["cutter_version"] = "v" * 4000
@@ -992,7 +992,7 @@ class BridgeRequestCeilingTest(unittest.TestCase):
         self.assertIsNone(response["current_file"])
         self.assertIsNone(response["output"])
         self.assertTrue(response["output_truncated"])
-        self.assertIn("REA_BRIDGE_MAX_REQUEST_BYTES", response["message"])
+        self.assertIn("NRE_BRIDGE_MAX_REQUEST_BYTES", response["message"])
         short = dict(value)
         short["current_file"] = "/tmp/fresh.bin"
         short["output"] = "A" * 10000
@@ -1024,7 +1024,7 @@ class BridgeRequestCeilingTest(unittest.TestCase):
         for raw in ("7463", "536870888", "0", "-1", "abc", "016777216", "٨١٩٢"):
             with self.assertRaises(RuntimeError) as caught:
                 _load_cutter_bridge("invalid_%s" % raw, raw)
-            self.assertIn("REA_BRIDGE_MAX_REQUEST_BYTES", str(caught.exception))
+            self.assertIn("NRE_BRIDGE_MAX_REQUEST_BYTES", str(caught.exception))
 
 
 if __name__ == "__main__":

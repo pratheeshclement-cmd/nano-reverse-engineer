@@ -116,7 +116,7 @@ const dossierWithReference = (
 const observe = (
   digit: string,
   value: ReturnType<typeof dossier>,
-  providerId = "rea-workflow",
+  providerId = "nre-workflow",
   relationshipCoverage: RelationshipCoverage | null = { status: "complete" },
 ): Evidence =>
   createEvidence(
@@ -383,7 +383,7 @@ describe("function comparison address-derived call names", () => {
           observe(
             "7",
             calling("0x2000"),
-            "rea-workflow",
+            "nre-workflow",
             diagnostic === undefined
               ? { status: "complete" }
               : { status: "complete", diagnostics: [diagnostic] },
@@ -433,7 +433,7 @@ describe("function call relationship coverage", () => {
       const right = observe(
         "b",
         dossier("return 0;", "0x2000"),
-        "rea-workflow",
+        "nre-workflow",
         coverage,
       );
       const result = compareFunctions(
@@ -462,13 +462,13 @@ describe("function call relationship coverage", () => {
     const left = observe(
       "c",
       dossier("return 0;", "0x1000"),
-      "rea-workflow",
+      "nre-workflow",
       coverage,
     );
     const right = observe(
       "d",
       dossier("return 0;", "0x2000"),
-      "rea-workflow",
+      "nre-workflow",
       coverage,
     );
     expect(
@@ -658,7 +658,7 @@ describe("function comparison ordering controls", () => {
           sha256: digit.repeat(64),
           format: "mach-o",
         },
-        { id: "rea-workflow", name: "REA workflow", version: "1" },
+        { id: "nre-workflow", name: "NRE workflow", version: "1" },
         {
           operation: "analyze_function",
           parameters: enhancedInputSchemas.analyze_function.parse({
@@ -863,11 +863,11 @@ describe("function comparison unresolved text", () => {
 describe("function comparison", () => {
   it("retains complete call coverage diagnostics without blocking observed-set equality", () => {
     const diagnostic = "Indirect calls remain unresolved.";
-    const left = observe("a", dossier("return 0;", "0x1000"), "rea-workflow", {
+    const left = observe("a", dossier("return 0;", "0x1000"), "nre-workflow", {
       status: "complete",
       diagnostics: [diagnostic],
     });
-    const right = observe("b", dossier("return 0;", "0x2000"), "rea-workflow", {
+    const right = observe("b", dossier("return 0;", "0x2000"), "nre-workflow", {
       status: "complete",
       diagnostics: [diagnostic],
     });
@@ -885,12 +885,12 @@ describe("function comparison", () => {
 
   it("retains diagnostics alongside incomplete call coverage blockers", () => {
     const diagnostic = "Indirect calls remain unresolved.";
-    const left = observe("c", dossier("return 0;", "0x1000"), "rea-workflow", {
+    const left = observe("c", dossier("return 0;", "0x1000"), "nre-workflow", {
       status: "partial",
       limitations: ["Provider read limit reached."],
       diagnostics: [diagnostic],
     });
-    const right = observe("d", dossier("return 0;", "0x2000"), "rea-workflow", {
+    const right = observe("d", dossier("return 0;", "0x2000"), "nre-workflow", {
       status: "partial",
       limitations: ["Provider read limit reached."],
       diagnostics: [diagnostic],

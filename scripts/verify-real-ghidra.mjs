@@ -72,27 +72,27 @@ const expectedNativeTarget = nativeFixtureTarget(
   process.platform,
   process.arch,
 );
-const fixtureRoot = await mkdtemp(join(tmpdir(), "rea-ghidra-fixtures-"));
+const fixtureRoot = await mkdtemp(join(tmpdir(), "nre-ghidra-fixtures-"));
 const sourcePath = fileURLToPath(
   new URL("../tests/conformance/ghidra/inventory.c", import.meta.url),
 );
 const crossFormatSourcePath = fileURLToPath(
   new URL("../tests/conformance/ghidra/cross-format.c", import.meta.url),
 );
-const debugPath = join(fixtureRoot, "rea-ghidra-inventory-debug");
-const layoutPath = join(fixtureRoot, "rea-ghidra-layout.o");
-const strippedPath = join(fixtureRoot, "rea-ghidra-inventory-stripped");
-const jumpTablePath = join(fixtureRoot, "rea-ghidra-inventory-jump");
-const arm64ElfPath = join(fixtureRoot, "rea-ghidra-cross-arm64");
-const peObjectPath = join(fixtureRoot, "rea-ghidra-cross-x86_64.obj");
-const pePath = join(fixtureRoot, "rea-ghidra-cross-x86_64.exe");
-const peImportLibraryPath = join(fixtureRoot, "rea-ghidra-cross-x86_64.lib");
-const machObjectPath = join(fixtureRoot, "rea-ghidra-cross-x86_64.o");
-const malformedPath = join(fixtureRoot, "rea-ghidra-malformed");
-const compiler = process.env.REA_CC ?? "cc";
-const clang = process.env.REA_CLANG ?? "clang";
-const lld = process.env.REA_LLD ?? "ld.lld";
-const lldLink = process.env.REA_LLD_LINK ?? "lld-link";
+const debugPath = join(fixtureRoot, "nre-ghidra-inventory-debug");
+const layoutPath = join(fixtureRoot, "nre-ghidra-layout.o");
+const strippedPath = join(fixtureRoot, "nre-ghidra-inventory-stripped");
+const jumpTablePath = join(fixtureRoot, "nre-ghidra-inventory-jump");
+const arm64ElfPath = join(fixtureRoot, "nre-ghidra-cross-arm64");
+const peObjectPath = join(fixtureRoot, "nre-ghidra-cross-x86_64.obj");
+const pePath = join(fixtureRoot, "nre-ghidra-cross-x86_64.exe");
+const peImportLibraryPath = join(fixtureRoot, "nre-ghidra-cross-x86_64.lib");
+const machObjectPath = join(fixtureRoot, "nre-ghidra-cross-x86_64.o");
+const malformedPath = join(fixtureRoot, "nre-ghidra-malformed");
+const compiler = process.env.NRE_CC ?? "cc";
+const clang = process.env.NRE_CLANG ?? "clang";
+const lld = process.env.NRE_LLD ?? "ld.lld";
+const lldLink = process.env.NRE_LLD_LINK ?? "lld-link";
 const lane = crossFormat
   ? "cross-format"
   : aarch64JumpTableOnly
@@ -232,7 +232,7 @@ try {
       "-static",
       "-fuse-ld=lld",
       crossFormatSourcePath,
-      "-Wl,-e,rea_cross_start",
+      "-Wl,-e,nre_cross_start",
       "-o",
       arm64ElfPath,
     ]);
@@ -247,10 +247,10 @@ try {
       peObjectPath,
     ]);
     await exec(lldLink, [
-      "/entry:rea_cross_start",
+      "/entry:nre_cross_start",
       "/subsystem:console",
       "/nodefaultlib",
-      "/export:rea_cross_entry",
+      "/export:nre_cross_entry",
       `/implib:${peImportLibraryPath}`,
       `/out:${pePath}`,
       peObjectPath,
@@ -369,7 +369,7 @@ async function verifyNativeApiCli(
   const { stdout } = await exec(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/nre.mjs",
       "inspect-native-api",
       targetPath,
       denseSwitch.address,
@@ -422,8 +422,8 @@ async function verifyNativeApiCli(
   );
   if (
     evidence.operation !== "inspect_native_api" ||
-    evidence.provider?.id !== "rea-workflow" ||
-    evidence.analysis_profile?.provider?.id !== "rea-workflow" ||
+    evidence.provider?.id !== "nre-workflow" ||
+    evidence.analysis_profile?.provider?.id !== "nre-workflow" ||
     boundary?.available !== true
   )
     throw new Error(
@@ -496,7 +496,7 @@ async function verifyTarget(targetPath, variant, expectedTarget = null) {
         ? {}
         : { javaHome: process.env.JAVA_HOME }),
       bridgeScriptPath: fileURLToPath(
-        new URL("../bridge/ghidra/ReaGhidraBridge.java", import.meta.url),
+        new URL("../bridge/ghidra/NreGhidraBridge.java", import.meta.url),
       ),
       platform: installation.platform,
     }),
@@ -549,8 +549,8 @@ async function verifyTarget(targetPath, variant, expectedTarget = null) {
               (expectedNativeTarget.format === "elf" &&
                 expectedNativeTarget.architecture === "x86_64"),
             denseSwitchSymbol: crossArm64Elf
-              ? "rea_cross_dense_switch"
-              : "rea_ghidra_inventory_dense_switch",
+              ? "nre_cross_dense_switch"
+              : "nre_ghidra_inventory_dense_switch",
             client,
           })
         : null;

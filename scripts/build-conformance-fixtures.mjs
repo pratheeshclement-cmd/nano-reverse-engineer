@@ -16,7 +16,7 @@ const exec = promisify(execFile);
 const root = process.cwd();
 const sourceRoot = join(root, "tests/conformance");
 const outputRoot = resolve(
-  process.env.REA_CONFORMANCE_BUILD ?? join(root, "build/conformance"),
+  process.env.NRE_CONFORMANCE_BUILD ?? join(root, "build/conformance"),
 );
 const hostPlatform = platform();
 if (hostPlatform !== "darwin" && hostPlatform !== "linux")
@@ -61,10 +61,10 @@ async function buildPortableFixtures() {
       join(outputRoot, "c"),
     ],
     expectations: {
-      symbols: ["rea_entry", "rea_branch", "rea_leaf", "rea_c_global"].map(
+      symbols: ["nre_entry", "nre_branch", "nre_leaf", "nre_c_global"].map(
         (name) => `${symbolPrefix}${name}`,
       ),
-      strings: ["REA_C_ENTRY", "REA_C_LEAF"],
+      strings: ["NRE_C_ENTRY", "NRE_C_LEAF"],
       hopperOracle: HOPPER_C_ORACLE,
     },
   });
@@ -81,11 +81,11 @@ async function buildPortableFixtures() {
       ],
       expectations: {
         symbols: [
-          `${symbolPrefix}rea_version_entry`,
-          `${symbolPrefix}rea_version_leaf`,
-          ...(second ? [`${symbolPrefix}rea_added`] : []),
+          `${symbolPrefix}nre_version_entry`,
+          `${symbolPrefix}nre_version_leaf`,
+          ...(second ? [`${symbolPrefix}nre_added`] : []),
         ],
-        strings: [second ? "REA_VERSION_TWO" : "REA_VERSION_ONE"],
+        strings: [second ? "NRE_VERSION_TWO" : "NRE_VERSION_ONE"],
       },
     });
   }
@@ -102,9 +102,9 @@ async function buildPortableFixtures() {
       join(outputRoot, "large"),
     ],
     expectations: {
-      symbolPrefix: `${symbolPrefix}rea_inventory_`,
+      symbolPrefix: `${symbolPrefix}nre_inventory_`,
       symbolCount: LARGE_FIXTURE_COUNT,
-      stringPrefix: "REA_INVENTORY_",
+      stringPrefix: "NRE_INVENTORY_",
       stringCount: LARGE_FIXTURE_COUNT,
     },
   });
@@ -144,7 +144,7 @@ async function buildDarwinFixtures() {
     ],
     expectations: {
       symbols: ["_napi_register_module_v1"],
-      strings: ["reaProbeOne", "reaProbeTwo", "reaProbeThree"],
+      strings: ["nreProbeOne", "nreProbeTwo", "nreProbeThree"],
     },
   });
   try {
@@ -164,7 +164,7 @@ async function buildDarwinFixtures() {
       ],
       expectations: {
         strings: [
-          "REA_SWIFT_EXECUTE",
+          "NRE_SWIFT_EXECUTE",
           "REAService",
           "REARecord",
           "REAState",

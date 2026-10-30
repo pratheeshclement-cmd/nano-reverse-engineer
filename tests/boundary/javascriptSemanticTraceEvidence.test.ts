@@ -23,7 +23,7 @@ const SEMANTIC_GRAPH_ID = `jsrg_${"0".repeat(64)}`;
 afterAll(closeCliResources);
 
 it("reports invalid nested semantic graph Evidence as caller input through CLI and SDK MCP", async () => {
-  const root = await createTestTempDirectory("rea-semantic-trace-input-");
+  const root = await createTestTempDirectory("nre-semantic-trace-input-");
   await mkdir(join(root, "src"));
   await writeFile(
     join(root, "src", "main.js"),
@@ -130,7 +130,7 @@ it("reports invalid nested semantic graph Evidence as caller input through CLI a
 });
 
 it("excludes local exports from writes-only traces through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-semantic-export-trace-");
+  const root = await createTestTempDirectory("nre-semantic-export-trace-");
   await mkdir(join(root, "src"));
   await writeFile(
     join(root, "src", "main.js"),
@@ -202,7 +202,7 @@ it("excludes local exports from writes-only traces through CLI and MCP", async (
 });
 
 it("traces exact empty property names through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-semantic-empty-property-");
+  const root = await createTestTempDirectory("nre-semantic-empty-property-");
   await writeFile(
     join(root, "main.js"),
     "const routes = {'': 'HOME', x: 'NAMED'}; const root = routes['']; const named = routes.x;\n",
@@ -274,7 +274,7 @@ it("traces exact empty property names through CLI and MCP", async () => {
 });
 
 it("traces transformed operands through CLI and advertised MCP output", async () => {
-  const root = await createTestTempDirectory("rea-semantic-expression-trace-");
+  const root = await createTestTempDirectory("nre-semantic-expression-trace-");
   await writeFile(
     join(root, "main.js"),
     'const base = "https://example.test"; const url = base + "/x"; fetch(url); consume("only-direct"); const nested = "nested-token"; const box = { url: wrap(nested + "/x") };',
@@ -335,7 +335,7 @@ it("traces transformed operands through CLI and advertised MCP output", async ()
 });
 
 it("reports offered semantic capacity when a large template exceeds it", async () => {
-  const root = await createTestTempDirectory("rea-semantic-expression-budget-");
+  const root = await createTestTempDirectory("nre-semantic-expression-budget-");
   const expressions = Array.from({ length: 500 }, () => "${base}").join("");
   await writeFile(
     join(root, "main.js"),

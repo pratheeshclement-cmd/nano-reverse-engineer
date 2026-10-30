@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "keeps unresolved endpoint text separate from an equal exact literal through version comparison",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-endpoint-correspondence-");
+    const root = await createTestTempDirectory("nre-endpoint-correspondence-");
     const applications = [];
     for (const [name, source] of [
       ["before", "fetch(API_BASE);"],

@@ -260,7 +260,7 @@ const tsharkLocatable = (environment: Readonly<NodeJS.ProcessEnv>): boolean => {
       ) !== undefined
     );
   } catch {
-    // A relative REA_TSHARK_COMMAND is configuration the tool reports at execution.
+    // A relative NRE_TSHARK_COMMAND is configuration the tool reports at execution.
     return false;
   }
 };
@@ -284,7 +284,7 @@ const installSessionToolAvailability = (
     javascriptRecovery: wakaruHostSupported(platform, arch),
   };
   const pwntools =
-    verifiedHost.pwntools && isAbsolute(environment.REA_PWNTOOLS_PYTHON ?? "");
+    verifiedHost.pwntools && isAbsolute(environment.NRE_PWNTOOLS_PYTHON ?? "");
   // Injected services own their availability on any host. Otherwise no
   // configuration lets an integration pass its execution host check.
   const outsideVerifiedHost = (injected: unknown, supported: boolean) =>
@@ -337,30 +337,30 @@ const installSessionToolAvailability = (
       signalRecordingEnabled:
         options.signalRecording !== undefined ||
         (verifiedHost.signalRecording &&
-          isAbsolute(environment.REA_SIGROK_COMMAND ?? "")),
+          isAbsolute(environment.NRE_SIGROK_COMMAND ?? "")),
       wasmArtifactEnabled:
         options.wasmArtifact !== undefined ||
-        isAbsolute(environment.REA_WABT_BIN_DIRECTORY ?? ""),
+        isAbsolute(environment.NRE_WABT_BIN_DIRECTORY ?? ""),
       evmInterfaceEnabled:
         options.evmInterface !== undefined || verifiedHost.evmInterface,
       webModuleResolutionEnabled:
         options.webModuleTrace !== undefined ||
-        isAbsolute(environment.REA_BROWSER_EXECUTABLE ?? ""),
+        isAbsolute(environment.NRE_BROWSER_EXECUTABLE ?? ""),
       recordedCrashEnabled: options.recordedCrash !== undefined || pwntools,
       binaryLayoutEnabled: options.binaryLayout !== undefined || pwntools,
       firmwareInspectionEnabled:
         options.firmwareAnalysis !== undefined ||
         (verifiedHost.firmware &&
-          isAbsolute(environment.REA_BINWALK_COMMAND ?? "")),
+          isAbsolute(environment.NRE_BINWALK_COMMAND ?? "")),
       firmwareExtractionEnabled:
         options.firmwareAnalysis !== undefined ||
         (verifiedHost.firmware &&
-          isAbsolute(environment.REA_UNBLOB_COMMAND ?? "")),
+          isAbsolute(environment.NRE_UNBLOB_COMMAND ?? "")),
       browserObservationEnabled: options.browserObservation !== undefined,
       javascriptRecoveryEnabled:
         options.javascriptRecovery !== undefined ||
         (verifiedHost.javascriptRecovery &&
-          isAbsolute(environment.REA_WAKARU_COMMAND ?? "")),
+          isAbsolute(environment.NRE_WAKARU_COMMAND ?? "")),
       browserScenarioEnabled: options.browserScenarioCapture !== undefined,
       electronObservationEnabled: options.electronObservation !== undefined,
       electronAutomationEnabled:
@@ -520,7 +520,7 @@ export const createServer = (
       compactInputPresentation,
       selectedOutputSchemaProfile,
       advertisedToolFamilies,
-      environment.REA_MCP_MAX_INPUT_ELEMENTS,
+      environment.NRE_MCP_MAX_INPUT_ELEMENTS,
     );
   server.analysisSettings = analysisSettings;
   if (options.mcpServer !== undefined) {
@@ -638,7 +638,7 @@ export const createServer = (
           result.status === "rejected" ? [result.reason] : [],
         );
         if (failures.length > 0)
-          throw new AggregateError(failures, "REA provider cleanup failed");
+          throw new AggregateError(failures, "NRE provider cleanup failed");
       })
       .catch((cause: unknown) => {
         providerClose = undefined;
@@ -686,7 +686,7 @@ export const createServer = (
     );
     if (failures.length === 1) throw failures[0];
     if (failures.length > 1)
-      throw new AggregateError(failures, "REA server cleanup failed");
+      throw new AggregateError(failures, "NRE server cleanup failed");
   };
   const recordUnknown =
     session === undefined
@@ -1186,7 +1186,7 @@ const selectToolResultDelivery = (
 ): ToolResultDelivery => {
   if (selected !== undefined) return selected;
   const configured = parseMcpResponseBudget(
-    environment.REA_MCP_MAX_RESPONSE_BYTES,
+    environment.NRE_MCP_MAX_RESPONSE_BYTES,
   );
   if (!configured.ok) throw configured.error;
   return createToolResultDelivery(configured.value);
@@ -1196,7 +1196,7 @@ const outputSchemaProfile = (
   environment: Readonly<NodeJS.ProcessEnv>,
 ): McpOutputSchemaProfile => {
   const configured = parseMcpOutputSchemaProfile(
-    environment.REA_MCP_OUTPUT_SCHEMA_PROFILE,
+    environment.NRE_MCP_OUTPUT_SCHEMA_PROFILE,
   );
   if (!configured.ok) throw configured.error;
   return configured.value ?? "full";
@@ -1206,7 +1206,7 @@ const selectCompactInputSchemaPresentation = (
   environment: Readonly<NodeJS.ProcessEnv>,
 ): CompactInputSchemaPresentation | undefined => {
   const configured = parseMcpInputSchemaProfile(
-    environment.REA_MCP_INPUT_SCHEMA_PROFILE,
+    environment.NRE_MCP_INPUT_SCHEMA_PROFILE,
   );
   if (!configured.ok) throw configured.error;
   return compactPresentationForMcpInputSchemaProfile(configured.value);
@@ -1239,7 +1239,7 @@ const createSessionRecorders = (
 const selectAdvertisedToolFamilies = (
   environment: Readonly<NodeJS.ProcessEnv>,
 ): ReadonlySet<string> | undefined => {
-  const configured = parseMcpToolFamilies(environment.REA_MCP_TOOL_FAMILIES);
+  const configured = parseMcpToolFamilies(environment.NRE_MCP_TOOL_FAMILIES);
   if (!configured.ok) throw configured.error;
   return configured.value === undefined ? undefined : new Set(configured.value);
 };

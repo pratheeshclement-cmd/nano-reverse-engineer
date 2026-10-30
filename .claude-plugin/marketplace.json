@@ -1,18 +1,18 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "rea",
+  "name": "nre",
   "description": "Nano Reverse Engineer with agents, from app behavior down to native binaries.",
   "owner": {
-    "name": "morluto",
-    "url": "https://github.com/morluto"
+    "name": "pratheeshclement-cmd",
+    "url": "https://github.com/pratheeshclement-cmd"
   },
   "plugins": [
     {
-      "name": "rea",
+      "name": "nre",
       "description": "Nano Reverse Engineer with agents, from app behavior down to native binaries.",
       "source": {
         "source": "npm",
-        "package": "rea-agents",
+        "package": "nano-reverse-engineer",
         "version": "6.8.0"
       },
       "category": "development"

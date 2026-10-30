@@ -11,7 +11,7 @@ import { analyzeArtifactFiles } from "../../../fixtures/javascriptArtifactAnalys
 import { immutableArtifactGraph } from "../../../fixtures/javascriptArtifactGraph.js";
 
 it("keeps an endpoint uncertain after mutation through a declared inherited field", async () => {
-  const root = await createTestTempDirectory("rea-js-erased-field-");
+  const root = await createTestTempDirectory("nre-js-erased-field-");
   await writeFile(
     join(root, "app.ts"),
     `
@@ -45,7 +45,7 @@ it("keeps an endpoint uncertain after mutation through a declared inherited fiel
 });
 
 it("keeps ambiguous endpoint candidates inferred through artifact graph projection", async () => {
-  const root = await createTestTempDirectory("rea-js-endpoint-certainty-");
+  const root = await createTestTempDirectory("nre-js-endpoint-certainty-");
   await writeFile(join(root, "app.js"), 'form.get("shared"); fetch("shared");');
   const snapshot = await scanCanonicalArtifactInventory(root, {});
   const reader = createJavaScriptArtifactReader(root, "directory");
@@ -111,7 +111,7 @@ it("keeps ambiguous endpoint candidates inferred through artifact graph projecti
 
 it("preserves partial and exact endpoint identity through graph projection", async () => {
   const root = await createTestTempDirectory(
-    "rea-js-endpoint-partial-identity-",
+    "nre-js-endpoint-partial-identity-",
   );
   await writeFile(
     join(root, "app.js"),
@@ -161,7 +161,7 @@ it("preserves partial and exact endpoint identity through graph projection", asy
 });
 
 it("projects path data records as inferred route candidates", async () => {
-  const root = await createTestTempDirectory("rea-js-route-property-");
+  const root = await createTestTempDirectory("nre-js-route-property-");
   await writeFile(
     join(root, "app.js"),
     'const ops = [{ type: "set", path: "updatedAt", value: 1 }];\n' +

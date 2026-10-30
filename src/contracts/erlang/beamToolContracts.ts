@@ -21,7 +21,7 @@ export const inspectErlangBeamRequestSchema = z
     inspectErlangBeamInputSchema.extend(erlangBeamCompleteDeliveryShape),
     inspectErlangBeamInputSchema.extend(erlangBeamSummaryDeliveryShape),
   ])
-  .meta({ "x-rea-root-discriminator": "detail" });
+  .meta({ "x-nre-root-discriminator": "detail" });
 
 /** Static BEAM inspection is independent of active native-analysis providers. */
 export const ERLANG_BEAM_TOOL_CONTRACTS = [

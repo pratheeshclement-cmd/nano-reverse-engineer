@@ -93,7 +93,7 @@ describe("reconstruction obligation ledger residual graph input", () => {
       undefined,
       { id: "fixture", name: "Fixture", version: "1" },
       {
-        predicateType: "rea.residual-unknown-mutation",
+        predicateType: "nre.residual-unknown-mutation",
         operation: "record_unknown",
         parameters: {},
         result: { question: input.question },
@@ -139,7 +139,7 @@ describe("reconstruction obligation ledger residual graph input", () => {
         undefined,
         { id: "fixture", name: "Fixture", version: "1" },
         {
-          predicateType: "rea.residual-unknown-mutation",
+          predicateType: "nre.residual-unknown-mutation",
           operation: "record_unknown",
           parameters: {},
           result: { question: input.question },
@@ -188,7 +188,7 @@ describe("reconstruction obligation ledger process provider admission", () => {
     ["current provider", PROCESS_PROVIDER, true],
     [
       "supported legacy name",
-      { ...PROCESS_PROVIDER, name: "REA deterministic process harness" },
+      { ...PROCESS_PROVIDER, name: "NRE deterministic process harness" },
       true,
     ],
     ["foreign id", { ...PROCESS_PROVIDER, id: "foreign-process" }, false],

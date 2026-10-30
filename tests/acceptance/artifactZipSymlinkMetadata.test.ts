@@ -13,7 +13,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "reports ZIP symlinks from type bits when Unix permission bits are absent",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-zip-symlink-metadata-");
+    const root = await createTestTempDirectory("nre-zip-symlink-metadata-");
     const archivePath = join(root, "symlinks.zip");
     await writeFile(archivePath, await zipSymlinkMetadataFixture());
 

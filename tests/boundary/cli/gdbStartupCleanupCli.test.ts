@@ -154,7 +154,7 @@ it.each(["ENOENT", "EACCES", "EPERM"] as const)(
     });
     const manager = new GdbSessionManager({
       platform: "linux",
-      environment: { REA_GDB_COMMAND: selected },
+      environment: { NRE_GDB_COMMAND: selected },
       spawnProcess,
     });
     const command = registerGdbCommand(() => manager);
@@ -167,7 +167,7 @@ it.each(["ENOENT", "EACCES", "EPERM"] as const)(
       expect(result).toMatchObject({
         code: "capability_unavailable",
         message: expect.stringContaining(JSON.stringify(selected)),
-        remediation: { action: expect.stringContaining("REA_GDB_COMMAND") },
+        remediation: { action: expect.stringContaining("NRE_GDB_COMMAND") },
         details: {
           reason: launchFailure.message,
           diagnostics: {

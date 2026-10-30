@@ -13,7 +13,7 @@ export const openProductionTarget = async (
   onTestFinished: (handler: OnTestFinishedHandler) => void,
   path: string,
 ): Promise<Client> => {
-  const configured = parseConfig({ REA_ANALYSIS_PROVIDER: "auto" });
+  const configured = parseConfig({ NRE_ANALYSIS_PROVIDER: "auto" });
   if (!configured.ok) throw configured.error;
   const session = createBinarySession(
     configured.value,

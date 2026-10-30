@@ -54,7 +54,7 @@ const fixture = (little: boolean, count = 2): Buffer => {
   return bytes;
 };
 const writeFixture = async (bytes: Buffer) => {
-  const directory = await createTestTempDirectory("rea-mips-shared-test-");
+  const directory = await createTestTempDirectory("nre-mips-shared-test-");
   const path = join(directory, "shared.elf");
   await writeFile(path, bytes);
   return path;

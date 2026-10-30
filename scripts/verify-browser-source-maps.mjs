@@ -7,10 +7,10 @@ import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 import { requireOrdinaryWindowsVerifierCaller } from "./lib/windows-ordinary-user-verifier.mjs";
 
 await requireOrdinaryWindowsVerifierCaller();
-const executable = process.env.REA_BROWSER_EXECUTABLE;
+const executable = process.env.NRE_BROWSER_EXECUTABLE;
 if (!executable || !isAbsolute(executable))
   throw new Error(
-    "verify:browser:source-maps requires absolute REA_BROWSER_EXECUTABLE pointing to caller-supplied Chromium",
+    "verify:browser:source-maps requires absolute NRE_BROWSER_EXECUTABLE pointing to caller-supplied Chromium",
   );
 await access(executable);
 const run = createVerifierRun();

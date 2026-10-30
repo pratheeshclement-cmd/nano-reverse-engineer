@@ -57,7 +57,7 @@ export const captureProcessScenarioFile = async (
       );
     const progress = createProgressReporter(
       async (update) => {
-        process.stderr.write(`${JSON.stringify({ rea_progress: update })}\n`);
+        process.stderr.write(`${JSON.stringify({ nre_progress: update })}\n`);
       },
       { minimumIntervalMs: 100 },
     );
@@ -230,7 +230,7 @@ const cliAnalysisError = (error: AnalysisError): ProcessCliErrorOutput => ({
  * Tell the user what happened; do not ask them to run the command again.
  */
 export const PROCESS_UNEXPECTED_FAILURE_REMEDIATION =
-  "Do not repeat this command. Tell the user the process command could not complete and ask them to check the input files, then run `rea doctor`.";
+  "Do not repeat this command. Tell the user the process command could not complete and ask them to check the input files, then run `nre doctor`.";
 
 /** Preserve typed failures and local diagnostics at the process CLI boundary. */
 const projectProcessCliError = (

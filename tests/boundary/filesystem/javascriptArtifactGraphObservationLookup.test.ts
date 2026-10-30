@@ -16,7 +16,7 @@ import type {
 } from "../../../src/application/javascript/JavaScriptArtifactAnalysisTypes.js";
 
 it("uses the first structured observation when paths repeat", async () => {
-  const root = await createTestTempDirectory("rea-artifact-graph-index-");
+  const root = await createTestTempDirectory("nre-artifact-graph-index-");
   await Promise.all([
     writeFile(join(root, "package.json"), JSON.stringify({ name: "fixture" })),
     writeFile(join(root, "data.json"), JSON.stringify({ actual: true })),
@@ -127,7 +127,7 @@ it("uses the first structured observation when paths repeat", async () => {
 });
 
 it("preserves unknown omitted-key count for unavailable JSON", async () => {
-  const root = await createTestTempDirectory("rea-unavailable-json-");
+  const root = await createTestTempDirectory("nre-unavailable-json-");
   await Promise.all([
     writeFile(join(root, "package.json"), JSON.stringify({ name: "fixture" })),
     writeFile(join(root, "config.json"), Buffer.from([0xff])),
@@ -165,7 +165,7 @@ it("preserves unknown omitted-key count for unavailable JSON", async () => {
 });
 
 it("preserves unknown omitted-key count for unselected JSON", async () => {
-  const root = await createTestTempDirectory("rea-unselected-json-");
+  const root = await createTestTempDirectory("nre-unselected-json-");
 
   await Promise.all([
     writeFile(join(root, "package.json"), JSON.stringify({ name: "fixture" })),
@@ -210,7 +210,7 @@ it("preserves unknown omitted-key count for unselected JSON", async () => {
 });
 
 it("preserves unknown omitted-key count for unselected uppercase JSON", async () => {
-  const root = await createTestTempDirectory("rea-unselected-uppercase-json-");
+  const root = await createTestTempDirectory("nre-unselected-uppercase-json-");
 
   await Promise.all([
     writeFile(join(root, "package.json"), JSON.stringify({ name: "fixture" })),

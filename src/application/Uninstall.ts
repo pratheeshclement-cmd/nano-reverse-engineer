@@ -125,7 +125,7 @@ export interface UninstallItem extends UninstallAction {
   readonly actions?: readonly UninstallAction[];
 }
 
-/** Structured, idempotent result of removing REA-owned state. */
+/** Structured, idempotent result of removing NRE-owned state. */
 export interface UninstallResult {
   readonly status: "complete" | "failed";
   readonly items: readonly UninstallItem[];
@@ -152,7 +152,7 @@ export interface UninstallHost {
 }
 
 /**
- * Remove only REA-owned registrations and managed files, optionally including
+ * Remove only NRE-owned registrations and managed files, optionally including
  * local state. A client configuration that cannot be read safely stops the
  * operation before anything is removed; one that fails during removal stops
  * the remaining removals.
@@ -181,14 +181,14 @@ export const runUninstall = async (
             item(
               "uninstall",
               "skipped",
-              "No REA registration, skill, or data was removed. Repair each failed configuration, then rerun uninstall.",
+              "No NRE registration, skill, or data was removed. Repair each failed configuration, then rerun uninstall.",
             ),
           ]
         : await removeAll(clients, purgeData, host);
     items.push({
       name: "analysis_engine",
       status: "retained",
-      detail: "Hopper is not owned by REA uninstall.",
+      detail: "Hopper is not owned by NRE uninstall.",
     });
     const reported = collapseUninstallItems(
       projectSharedRegistrations(items, clients),
@@ -287,7 +287,7 @@ const projectSharedRegistrations = (
 };
 
 /**
- * Ownership is a readable, recognizable REA-owned row, never the shared
+ * Ownership is a readable, recognizable NRE-owned row, never the shared
  * file's existence. An unrelated malformed file must not establish ownership;
  * it stays retained without blocking other removals.
  */
@@ -319,7 +319,7 @@ const hasOwnershipEvidence = async (
     }
     const removal = clientRegistrationRemoval(parsed, original, client);
     // Refusing the edit never retracts the owned-row fact: an effective
-    // REA-owned row shadowed by a foreign duplicate still proves ownership,
+    // NRE-owned row shadowed by a foreign duplicate still proves ownership,
     // so later read failures stay blocking instead of softening to retained.
     const owned = removal.ok ? removal.value : removal.error.owned;
     if (owned.removeNative || owned.legacyPath !== undefined) return true;
@@ -439,7 +439,7 @@ const sharedConfigPaths = (
   });
 };
 
-/** Create uninstall effects contained to detected client configs and REA-owned paths. */
+/** Create uninstall effects contained to detected client configs and NRE-owned paths. */
 export const systemUninstallHost = (
   selectedHome: string | undefined = undefined,
   selectedFileSystem: UninstallFileSystem | undefined = undefined,
@@ -497,7 +497,7 @@ export const systemUninstallHost = (
                 unresolved: false,
               },
           );
-          // Only definitive absence may soften failures for storage REA does
+          // Only definitive absence may soften failures for storage NRE does
           // not own: a denied or failed probe leaves applicability unresolved,
           // and unresolved applicability must not downgrade shared-config
           // failures to retained. A denied product-local path means an unknown
@@ -548,7 +548,7 @@ export const systemUninstallHost = (
           return item(client.name, "failed", removal.error.detail);
         // ZCode switches the entire server table to its shared fallback once
         // the last native server disappears. Inspect the table it would load,
-        // not just the REA row: unrelated servers may otherwise become active.
+        // not just the NRE row: unrelated servers may otherwise become active.
         if (
           client.format === "zcode" &&
           removal.value.removeNative &&
@@ -586,7 +586,7 @@ export const systemUninstallHost = (
               return item(
                 client.name,
                 "failed",
-                "Removing REA's last native ZCode server would activate retained fallback servers; no change was made. Review the fallback configuration, then rerun uninstall.",
+                "Removing NRE's last native ZCode server would activate retained fallback servers; no change was made. Review the fallback configuration, then rerun uninstall.",
               );
           }
         }
@@ -647,7 +647,7 @@ export const systemUninstallHost = (
             return item(
               client.name,
               "failed",
-              "Removing REA's registration would activate or change an unowned OpenCode registration in another configuration layer, including a possible V1 fallback; no change was made. Remove or replace that registration manually, then rerun uninstall.",
+              "Removing NRE's registration would activate or change an unowned OpenCode registration in another configuration layer, including a possible V1 fallback; no change was made. Remove or replace that registration manually, then rerun uninstall.",
             );
         }
         if (
@@ -723,9 +723,9 @@ export const systemUninstallHost = (
 };
 
 /**
- * Every user file that can hold REA's registration for one client. An MSIX
+ * Every user file that can hold NRE's registration for one client. An MSIX
  * package can read either its private copy or the AppData file, and earlier
- * setups wrote the AppData file, so both lose REA's entry.
+ * setups wrote the AppData file, so both lose NRE's entry.
  */
 const uninstallConfigPaths = (client: SetupClient): readonly string[] => [
   ...new Set([
@@ -744,7 +744,7 @@ const registrationPresent = (parsed: ClientConfigurationDocument): boolean => {
   const name = PRODUCT_IDENTITY.mcpServerKey;
   return (
     Object.hasOwn(parsed.servers, name) ||
-    // Beside a native OpenCode V2 table, OpenCode also loads a V1 `mcp.rea`.
+    // Beside a native OpenCode V2 table, OpenCode also loads a V1 `mcp.nre`.
     legacyClientServerPath(parsed, name) !== undefined ||
     // Harness ownership is the stable entry id. A stale or malformed launcher
     // still belongs to that id, and so does a direct patch that projects no row.
@@ -786,7 +786,7 @@ const readClientConfigurationText = async (
         cleanup.primary instanceof InvalidUtf8FileError
           ? "Configuration is not valid UTF-8 and was not changed; its resources could not be released. Repair it, then rerun uninstall."
           : "Configuration could not be read or its resources could not be released. Check file permissions, then rerun uninstall.";
-      // An unreleased handle is REA's own incomplete cleanup, never foreign-
+      // An unreleased handle is NRE's own incomplete cleanup, never foreign-
       // storage uncertainty: it must stop removal outright, so later removals
       // and purge cannot outrun the failure that close() reports afterwards.
       if (cleanup.cleanup !== undefined)
@@ -820,7 +820,7 @@ const readClientConfiguration = async (
         client.name,
         applicabilityUnverified ? "retained" : "failed",
         applicabilityUnverified
-          ? `Product applicability could not be established. Shared configuration was retained without blocking other REA removals. ${detail}`
+          ? `Product applicability could not be established. Shared configuration was retained without blocking other NRE removals. ${detail}`
           : detail,
       ),
     );
@@ -931,9 +931,9 @@ const clientRegistrationRemoval = (
   return ok(ownership);
 };
 
-const SHADOWED_UNOWNED_MEMBER_DETAIL = `Configuration repeats the "${PRODUCT_IDENTITY.mcpServerKey}" member, and an earlier duplicate is not REA-owned; removing the registration the client reads would activate an earlier duplicate, so no change was made. Remove the duplicate members manually, then rerun uninstall.`;
+const SHADOWED_UNOWNED_MEMBER_DETAIL = `Configuration repeats the "${PRODUCT_IDENTITY.mcpServerKey}" member, and an earlier duplicate is not NRE-owned; removing the registration the client reads would activate an earlier duplicate, so no change was made. Remove the duplicate members manually, then rerun uninstall.`;
 
-const UNOWNED_LEGACY_FALLBACK_DETAIL = `OpenCode falls back to the V1 "mcp.${PRODUCT_IDENTITY.mcpServerKey}" entry, which is not REA-owned; removing REA's native registration would activate it, so no change was made. Remove or replace that V1 entry manually, then rerun uninstall.`;
+const UNOWNED_LEGACY_FALLBACK_DETAIL = `OpenCode falls back to the V1 "mcp.${PRODUCT_IDENTITY.mcpServerKey}" entry, which is not NRE-owned; removing NRE's native registration would activate it, so no change was made. Remove or replace that V1 entry manually, then rerun uninstall.`;
 
 /** Preserve the bytes uninstall is about to edit and return the backup holding them. */
 const backupClientConfiguration = async (
@@ -950,7 +950,7 @@ const backupClientConfiguration = async (
     );
   try {
     const preserved = await preserveCurrentRecoveryBackup(
-      `${client.configPath}.rea.backup`,
+      `${client.configPath}.nre.backup`,
       transactionPath,
       original,
       options,
@@ -993,7 +993,7 @@ const removeClient = async (
       "A Cordis expression may produce registration rows, so the patch was retained without changes.",
     );
   if (!registrationPresent(parsed))
-    return item(client.name, "skipped", "REA registration is absent.");
+    return item(client.name, "skipped", "NRE registration is absent.");
   const removal = clientRegistrationRemoval(parsed, original, client);
   if (!removal.ok) return item(client.name, "failed", removal.error.detail);
   const { removeNative, legacyPath } = removal.value;
@@ -1002,7 +1002,7 @@ const removeClient = async (
     return item(
       client.name,
       "retained",
-      "The rea-named registration is not REA-owned.",
+      "The nre-named registration is not NRE-owned.",
     );
   const blocker = writeBlocker?.();
   if (blocker !== undefined) return item(client.name, "failed", blocker);
@@ -1024,7 +1024,7 @@ const removeClient = async (
       client.format,
       original,
       editedPaths,
-      // clientRegistrationRemoval admitted only names whose repeats REA owns.
+      // clientRegistrationRemoval admitted only names whose repeats NRE owns.
       { removeShadowedMembersAt: editedPaths },
     );
   } catch {
@@ -1146,7 +1146,7 @@ const purgeSelectedData = async (
   if (platform === "darwin" || platform === "linux") {
     const defaultCache = defaultKunaCacheDirectory(home, environment, platform);
     directories.push(defaultCache);
-    const custom = environment.REA_KUNA_CACHE_DIR;
+    const custom = environment.NRE_KUNA_CACHE_DIR;
     // Lexical spellings identify the default namespace for reporting.
     // Removal still uses the owned-path checks below. Other selections
     // remain separately reported without resolving symbolic links.
@@ -1171,7 +1171,7 @@ const purgeSelectedData = async (
   // Resolve selections before a managed namespace removal can delete cwd.
   // Keep the existing result and removal order after planning those facts.
   items.unshift(
-    ...(await purgeManagedData(appendCallerPath(home, ".rea"), fileSystem, [
+    ...(await purgeManagedData(appendCallerPath(home, ".nre"), fileSystem, [
       "cache",
       "state",
     ])),
@@ -1198,7 +1198,7 @@ const purgeManagedData = async (
         item(
           name,
           "retained",
-          `REA did not remove this item because its managed data root ${root} is ${linked ? "a symbolic link" : "not a directory"}. Verify the root before removing its data manually.`,
+          `NRE did not remove this item because its managed data root ${root} is ${linked ? "a symbolic link" : "not a directory"}. Verify the root before removing its data manually.`,
         ),
       );
   } catch (cause: unknown) {
@@ -1235,7 +1235,7 @@ const removeManagedPath = async (
       return item(
         name,
         "retained",
-        "REA did not remove this item because its managed path is a symbolic link. Verify the link target before removing it manually.",
+        "NRE did not remove this item because its managed path is a symbolic link. Verify the link target before removing it manually.",
       );
     await fileSystem.remove(path);
     return item(name, "removed", `Removed ${path}.`);
@@ -1345,7 +1345,7 @@ const inspectManagedSkill = async (
       : item(name, "failed", "Skill manifest could not be read.");
   }
   if (!isManagedSkillManifest(content))
-    return item(name, "retained", "Skill manifest is not REA-owned.");
+    return item(name, "retained", "Skill manifest is not NRE-owned.");
 
   return undefined;
 };
@@ -1377,7 +1377,7 @@ const removeManagedSkill = async (
       item(
         name,
         "retained",
-        "REA ownership manifest was retained because a managed file could not be safely removed.",
+        "NRE ownership manifest was retained because a managed file could not be safely removed.",
       ),
     );
   else {
@@ -1407,7 +1407,7 @@ const removeManagedSkill = async (
   return item(
     name,
     removed ? "removed" : "skipped",
-    "REA-managed skill files were removed; other files were preserved.",
+    "NRE-managed skill files were removed; other files were preserved.",
   );
 };
 

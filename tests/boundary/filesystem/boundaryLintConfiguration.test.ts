@@ -30,7 +30,7 @@ const lint = (path: string) => {
 };
 
 it("enforces boundary and stock correctness rules through the repository config", async () => {
-  const root = await createTestTempDirectory("rea-boundary-lint-");
+  const root = await createTestTempDirectory("nre-boundary-lint-");
   const path = join(root, "boundary-probe.ts");
   const imports = [
     'import { readFile } from "node:fs/promises";',
@@ -61,8 +61,8 @@ it("enforces boundary and stock correctness rules through the repository config"
     { code: "eslint(no-async-promise-executor)", severity: "error" },
     { code: "eslint(no-unreachable)", severity: "error" },
     { code: "eslint(no-unsafe-optional-chaining)", severity: "error" },
-    { code: "rea(cancellation-cause)", severity: "error" },
-    { code: "rea(no-buffer-deep-equality)", severity: "error" },
+    { code: "nre(cancellation-cause)", severity: "error" },
+    { code: "nre(no-buffer-deep-equality)", severity: "error" },
   ]);
 
   await writeFile(
@@ -77,6 +77,6 @@ it("enforces boundary and stock correctness rules through the repository config"
   const corrected = lint(path);
   expect(corrected.status).toBe(0);
   expect(
-    corrected.diagnostics.filter(({ code }) => code?.startsWith("rea(")),
+    corrected.diagnostics.filter(({ code }) => code?.startsWith("nre(")),
   ).toEqual([]);
 });

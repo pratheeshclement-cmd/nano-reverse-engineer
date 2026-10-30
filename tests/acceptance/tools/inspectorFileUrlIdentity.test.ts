@@ -10,7 +10,7 @@ import { connectLocalToolsMcp } from "../../fixtures/localToolsMcp.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("preserves file URL scheme spelling and script identity after real Inspector state changes", async () => {
-  const root = await createTestTempDirectory("rea-inspector-file-url-");
+  const root = await createTestTempDirectory("nre-inspector-file-url-");
   const source = join(root, "source #参数%.cjs");
   const runner = join(root, "runner.cjs");
   const sourceText = "globalThis.fileUrlProbe = true;\n";

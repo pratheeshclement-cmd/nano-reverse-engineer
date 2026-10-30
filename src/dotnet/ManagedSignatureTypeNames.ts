@@ -22,7 +22,7 @@ interface TypeLink {
 }
 
 /**
- * Deepest type nesting REA names, counting the outermost type as 1. Real
+ * Deepest type nesting NRE names, counting the outermost type as 1. Real
  * assemblies nest a few levels; the cap bounds the walk a hostile chain of
  * NestedClass rows or TypeRef ResolutionScopes can force per operand.
  */

@@ -75,7 +75,7 @@ afterEach(() => {
 it.each(["hash", "snapshot"] as const)(
   "rejects cancellation during the final %s fallback inspection and closes the descriptor",
   async (operation) => {
-    const directory = await createTestTempDirectory("rea-fs-fallback-cancel-");
+    const directory = await createTestTempDirectory("nre-fs-fallback-cancel-");
     const path = join(directory, "observed-file");
     await writeFile(path, "captured bytes");
     const expected = await lstat(path);
@@ -138,7 +138,7 @@ it.each(["hash", "snapshot"] as const)(
 );
 
 it("keeps an unchanged fallback digest and closes its descriptor", async () => {
-  const directory = await createTestTempDirectory("rea-fs-fallback-digest-");
+  const directory = await createTestTempDirectory("nre-fs-fallback-digest-");
   const path = join(directory, "observed-file");
   const bytes = Buffer.from("captured bytes");
   await writeFile(path, bytes);

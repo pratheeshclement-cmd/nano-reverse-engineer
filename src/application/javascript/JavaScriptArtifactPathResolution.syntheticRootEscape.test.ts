@@ -5,7 +5,7 @@ import { JavaScriptJsonDocuments } from "./JavaScriptJsonDocuments.js";
 import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
 
 const files = new Map(
-  ["app/main.mjs", "shared/window.cjs", "rea-artifact/shared/window.cjs"].map(
+  ["app/main.mjs", "shared/window.cjs", "nre-artifact/shared/window.cjs"].map(
     (path) => [
       path,
       {
@@ -24,10 +24,10 @@ const files = new Map(
 const jsonDocuments = new JavaScriptJsonDocuments();
 
 it.each([
-  "../../rea-artifact/shared/window.cjs",
-  "../%2e%2e/rea-artifact/shared/window.cjs",
-  "%2e%2e/%2e%2e/rea-artifact/shared/window.cjs",
-  "../../rea-artifact/shared/../shared/window.cjs",
+  "../../nre-artifact/shared/window.cjs",
+  "../%2e%2e/nre-artifact/shared/window.cjs",
+  "%2e%2e/%2e%2e/nre-artifact/shared/window.cjs",
+  "../../nre-artifact/shared/../shared/window.cjs",
 ])(
   "retains above-root traversal before synthetic URL normalization: %s",
   (declaredPath) => {
@@ -51,7 +51,7 @@ it.each([
   ["./discard%2Fsegment/../../shared/window.cjs", "shared/window.cjs"],
   ["./discard%/../../shared/window.cjs", "shared/window.cjs"],
   ["./%252e%252e/../../shared/window.cjs", "shared/window.cjs"],
-  ["../rea-artifact/shared/window.cjs", "rea-artifact/shared/window.cjs"],
+  ["../nre-artifact/shared/window.cjs", "nre-artifact/shared/window.cjs"],
 ])(
   "retains an inside-root URL without banning synthetic-looking names: %s",
   (declaredPath, target) => {

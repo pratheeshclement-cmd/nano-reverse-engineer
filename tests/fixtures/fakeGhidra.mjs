@@ -2,7 +2,7 @@ import { rename, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 
 const configuration = JSON.parse(
-  process.env.REA_GHIDRA_FIXTURE_CONFIG ?? "null",
+  process.env.NRE_GHIDRA_FIXTURE_CONFIG ?? "null",
 );
 const {
   endpointPath,
@@ -385,7 +385,7 @@ const sessionInfo = ({
   targetSha256: sha256,
   timedOut,
 }) => ({
-  name: "REA Ghidra bridge",
+  name: "NRE Ghidra bridge",
   run_id: sessionRunId,
   profile_digest: digest,
   provider: { id: "ghidra", version },

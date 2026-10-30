@@ -36,7 +36,7 @@ const fixture = (width: number, postTable: boolean): Buffer => {
 cliTest(
   "preserves post-table keyed archive strings through offset normalization",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-post-table-");
+    const root = await createTestTempDirectory("nre-keyed-post-table-");
     for (const [width, postTable] of [
       [1, true],
       [3, true],

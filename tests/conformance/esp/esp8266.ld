@@ -1,4 +1,4 @@
-ENTRY(rea_entry)
+ENTRY(nre_entry)
 /*
  * The bootloader fixture placed in ESP8266 DRAM and IRAM
  * (esptool v5.6.0 targets/esp8266.py MEMORY_MAP), so esptool writes an

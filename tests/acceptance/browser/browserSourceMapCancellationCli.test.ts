@@ -19,7 +19,7 @@ processTest.skipIf(process.platform === "win32")(
     const child = processes.spawn(
       process.execPath,
       [
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/nre.mjs"),
         "analyze-web-bundle",
         browser.endpoint,
         "allowed-page",

@@ -69,7 +69,7 @@ const command = vi.hoisted(() => {
     },
     async remove(path: string) {
       const ownedPath = String(path);
-      if (ownedPath.includes("rea-process-token-")) {
+      if (ownedPath.includes("nre-process-token-")) {
         events.push(`root-remove:${ownedPath}`);
         if (failRootRemovals > 0) {
           failRootRemovals -= 1;

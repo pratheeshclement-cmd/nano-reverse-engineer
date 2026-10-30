@@ -12,7 +12,7 @@ import { artifactExtractionResultSchema } from "../../../../src/domain/artifactG
 import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js";
 
 it("preserves a real ZIP stream's caller cancellation through extraction rollback", async () => {
-  const root = await createTestTempDirectory("rea-extract-zip-cancellation-");
+  const root = await createTestTempDirectory("nre-extract-zip-cancellation-");
   const source = join(root, "source.zip");
   const bytes = new Uint8Array(512 * 1024).fill(0x71);
   const writer = new ZipWriter(new Uint8ArrayWriter());

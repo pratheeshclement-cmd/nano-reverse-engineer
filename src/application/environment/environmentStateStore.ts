@@ -55,9 +55,9 @@ const collectionHistoryCost = (
   return 64 + Buffer.byteLength(collection, "utf8") + sequenceBytes;
 };
 
-/** What `data/get` reports: the current state as a `rea-state/v1` document. */
+/** What `data/get` reports: the current state as a `nre-state/v1` document. */
 export interface StateSnapshot {
-  readonly rea_state: {
+  readonly nre_state: {
     readonly version: 1;
     readonly state_evidence_id: string;
     readonly types: readonly StateType[];
@@ -77,7 +77,7 @@ const snapshotOf = (
   entities: readonly StateEntity[],
   documents: readonly HeldDocument[],
 ): StateSnapshot => ({
-  rea_state: {
+  nre_state: {
     version: 1,
     state_evidence_id: state.evidenceId,
     types: state.types,

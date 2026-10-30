@@ -31,12 +31,12 @@ const exec = promisify(execFile);
 
 const captureViaCli = async (scenario: Record<string, unknown>) => {
   const scenarioPath = join(
-    await createTestTempDirectory("rea-fs-scenario-"),
+    await createTestTempDirectory("nre-fs-scenario-"),
     "scenario.json",
   );
   await writeFile(scenarioPath, JSON.stringify(scenario));
   const { stdout } = await exec(process.execPath, [
-    "scripts/rea.mjs",
+    "scripts/nre.mjs",
     "capture-process",
     scenarioPath,
     "--format",
@@ -84,7 +84,7 @@ it
   "preserves selected-root permission denial and earlier snapshot facts through %s",
   { timeout: 20_000 },
   async (adapter, context) => {
-    const root = await createTestTempDirectory("rea-fs-root-denial-adapter-");
+    const root = await createTestTempDirectory("nre-fs-root-denial-adapter-");
     const denied = join(root, "denied");
     const selected = join(denied, "unobserved");
     const healthy = join(root, "healthy.txt");
@@ -226,7 +226,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
     if (example === undefined)
       throw new Error("Missing report capture example");
     const scenario = processScenarioSchema.parse(JSON.parse(example));
-    const root = await createTestTempDirectory("rea-full-report-adapter-");
+    const root = await createTestTempDirectory("nre-full-report-adapter-");
     const evidence = await (adapter === "cli" ? captureViaCli : captureViaMcp)({
       ...scenario,
       executable: process.execPath,
@@ -265,7 +265,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
   async (adapter) => {
     const runCapture = adapter === "cli" ? captureViaCli : captureViaMcp;
     for (const shortfall of [0, 1]) {
-      const root = await createTestTempDirectory("rea-report-cumulative-");
+      const root = await createTestTempDirectory("nre-report-cumulative-");
       const periodic = Buffer.from('{"status":"running"}');
       const final = Buffer.from('{"status":"complete"}');
       await writeFile(join(root, "periodic.json"), periodic);
@@ -321,7 +321,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "reports unknown absence instead of deletion in truncated %s capture Evidence",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-fs-coverage-adapter-");
+    const root = await createTestTempDirectory("nre-fs-coverage-adapter-");
     await writeFile(join(root, "z.txt"), "unchanged");
     const scenario = {
       executable: process.execPath,
@@ -360,7 +360,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 itWithCaptureCapability.each(["cli", "mcp"] as const)(
   "reports unknown content after a same-size rewrite without digests through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-fs-content-adapter-");
+    const root = await createTestTempDirectory("nre-fs-content-adapter-");
     const file = join(root, "changed.txt");
     await writeFile(file, "before");
     const scenario = {
@@ -410,9 +410,9 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
 it.skipIf(CAPTURE_SKIP_REASON || process.platform === "win32")(
   "keeps unfollowed descendant absence unknown through MCP Evidence and comparison",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-symlink-adapter-");
+    const root = await createTestTempDirectory("nre-fs-symlink-adapter-");
     const target = await createTestTempDirectory(
-      "rea-fs-symlink-adapter-target-",
+      "nre-fs-symlink-adapter-target-",
     );
     await mkdir(join(root, "subtree"));
     await writeFile(join(root, "subtree", "z.txt"), "unchanged");
@@ -456,7 +456,7 @@ it
   .each(["cli", "mcp"] as const)(
   "retains stable root and nested symlink uncertainty with known sibling effects through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-fs-stable-link-adapter-");
+    const root = await createTestTempDirectory("nre-fs-stable-link-adapter-");
     const reports = join(root, "real", "reports");
     await mkdir(reports, { recursive: true });
     await symlink("real/reports", join(root, "link"));
@@ -531,7 +531,7 @@ itWithCaptureCapability.each(["cli", "mcp"] as const)(
       "fs.writeFileSync('state','regular file');",
       "fs.writeFileSync('target','regular file');fs.symlinkSync('target','state');",
     ]) {
-      const root = await createTestTempDirectory("rea-fs-obstructed-root-");
+      const root = await createTestTempDirectory("nre-fs-obstructed-root-");
       await mkdir(join(root, "state"));
       const evidence = await runCapture({
         executable: process.execPath,
@@ -581,7 +581,7 @@ it
   .each(["cli", "mcp"] as const)(
   "keeps roots behind a newly unsearchable ancestor unobserved through %s",
   async (adapter) => {
-    const root = await createTestTempDirectory("rea-fs-denied-root-");
+    const root = await createTestTempDirectory("nre-fs-denied-root-");
     await mkdir(join(root, "state"));
     await writeFile(join(root, "state", "present.json"), "payload");
     await symlink("state", join(root, "alias"));
@@ -634,7 +634,7 @@ itWithCaptureCapability(
   "retains raw symlink target mutations through the real capture CLI",
   { timeout: 20_000 },
   async () => {
-    const root = await createTestTempDirectory("rea-symlink-byte-cli-");
+    const root = await createTestTempDirectory("nre-symlink-byte-cli-");
     await symlink(Buffer.from([0x61, 0xff]), join(root, "link"));
     const evidence = await captureViaCli({
       executable: process.execPath,

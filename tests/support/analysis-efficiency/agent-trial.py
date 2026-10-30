@@ -1,4 +1,4 @@
-"""Evaluate one real Codex CLI task with an isolated REA MCP registration."""
+"""Evaluate one real Codex CLI task with an isolated NRE MCP registration."""
 
 import argparse
 import hashlib
@@ -53,7 +53,7 @@ def main():
     parser.add_argument('--capture-tool-context', action='store_true',
                         help='Retain owned tool/usage items; excludes account/ambient state')
     parser.add_argument('--guide-enabled-tools', action='store_true',
-                        help='Opt-in exact-name discovery guidance for selected REA tools')
+                        help='Opt-in exact-name discovery guidance for selected NRE tools')
     args = parser.parse_args()
     if args.guide_enabled_tools and args.enabled_tools is None:
         parser.error('--guide-enabled-tools requires --enabled-tools')
@@ -77,7 +77,7 @@ def main():
     node = shutil.which('node')
     if subprocess.check_output([node, '--version'], text=True).strip() != 'v24.18.0':
         raise SystemExit('Use pinned Node 24.18.0 on PATH')
-    provider_env = {'REA_LOG_LEVEL': 'silent', 'NODE_OPTIONS': '--max-old-space-size=512'}
+    provider_env = {'NRE_LOG_LEVEL': 'silent', 'NODE_OPTIONS': '--max-old-space-size=512'}
     if args.providers:
         declared = json.loads(args.providers.read_text())
         if not isinstance(declared, dict) or not all(
@@ -119,9 +119,9 @@ def main():
         'NODE_OPTIONS': '--max-old-space-size=512',
     })
     target_digest = file_digest(Path(args.artifact_path)) if args.artifact_path else None
-    command_args = [str(repository / 'scripts/rea.mjs'), 'mcp']
+    command_args = [str(repository / 'scripts/nre.mjs'), 'mcp']
     instruction = (
-        'Use the registered REA MCP server for this investigation. Static analysis '
+        'Use the registered NRE MCP server for this investigation. Static analysis '
         'only: do not execute target code, fetch URLs, launch a GUI, or modify targets. '
         'Preserve observations, derivations, inferences, limitations, and real Evidence IDs. '
         'An Evidence value has evidence_id, normalized_result and limitations; '
@@ -134,7 +134,7 @@ def main():
     )
     if args.authority == 'browser':
         instruction = (
-            'Use the registered REA tools for the explicitly selected public browser scenario. '
+            'Use the registered NRE tools for the explicitly selected public browser scenario. '
             'Launching the selected headless browser with a fresh empty profile and observing '
             'the supplied public URL is authorized. Keep all actions within that scenario. '
             'No injected code, credentials, unrelated targets, shell/file tools or other agents. '
@@ -149,7 +149,7 @@ def main():
         )
     if args.guide_enabled_tools:
         instruction += (
-            ' Configured REA tool function names for this trial: '
+            ' Configured NRE tool function names for this trial: '
             + json.dumps(['mcp__rea__' + name for name in enabled_tools])
             + '. For discovery select only these exact names from ALL_TOOLS and '
             'return only their metadata. Preserve the original analyst question, '
@@ -166,16 +166,16 @@ def main():
         'code_mode = ' + ('true' if args.mode == 'client-code' else 'false'),
         'code_mode_only = ' + ('true' if args.mode == 'client-code' else 'false'),
         '[history]', 'persistence = "none"',
-        '[mcp_servers.rea]', 'command = ' + quote(node),
+        '[mcp_servers.nre]', 'command = ' + quote(node),
         'args = ' + quote(command_args), 'startup_timeout_sec = 60',
         'tool_timeout_sec = 600',
         *([] if enabled_tools is None else ['enabled_tools = ' + quote(enabled_tools)]),
-        '[mcp_servers.rea.env]',
+        '[mcp_servers.nre.env]',
         *[key + ' = ' + quote(value) for key, value in provider_env.items()],
     ]) + '\n'
     # MCP read-only hints cover normal static tools. Explicitly authorize only
     # the session-opening primitive needed by the requested native tasks.
-    config += '[mcp_servers.rea.tools.open_binary]\napproval_mode = "approve"\n'
+    config += '[mcp_servers.nano-reverse-engineer.open_binary]\napproval_mode = "approve"\n'
     for tool in ['analyze_javascript_application', 'inspect_analysis_view',
                  'inspect_android_package', 'search_android_classes',
                  'inspect_android_class', 'inspect_android_method',
@@ -190,7 +190,7 @@ def main():
                  'import_evidence_bundle', 'list_unknowns', 'verify_unknown_resolution',
                  'capture_browser_scenario',
                  'resolve_containing_procedure', 'analyze_function', 'close_binary']:
-        config += '[mcp_servers.rea.tools.' + tool + ']\napproval_mode = "approve"\n'
+        config += '[mcp_servers.nano-reverse-engineer.' + tool + ']\napproval_mode = "approve"\n'
     try:
         if source_auth.exists():
             shutil.copyfile(source_auth, auth)
@@ -219,7 +219,7 @@ def main():
             'enabled_tools': enabled_tools,
             'authority': args.authority,
             'runtime_files_sha256': runtime_digest,
-            'runtime_dispatcher_sha256': file_digest(repository / 'scripts/rea.mjs'),
+            'runtime_dispatcher_sha256': file_digest(repository / 'scripts/nre.mjs'),
             'package_lock_sha256': file_digest(repository / 'package-lock.json'),
             'experiment_sources_sha256': {
                 name: hashlib.sha256((experiment / name).read_bytes()).hexdigest()

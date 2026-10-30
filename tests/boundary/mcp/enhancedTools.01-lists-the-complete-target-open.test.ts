@@ -132,7 +132,7 @@ const fixturePort = (): AnalysisOperationPort => ({
             graph: {
               target_sha256: "a".repeat(64),
               provider: {
-                id: "rea-artifact-graph",
+                id: "nre-artifact-graph",
                 version: "1",
                 tool_version: "fixture",
               },
@@ -264,7 +264,7 @@ describe("enhanced MCP tools", () => {
   // oxlint-disable-next-line max-lines-per-function -- one exhaustive registration test guards the public tool catalog.
   it("executes all enhanced tools through production registration", async () => {
     const client = await connect();
-    const outputParent = await mkdtemp(join(tmpdir(), "rea-decompile-all-"));
+    const outputParent = await mkdtemp(join(tmpdir(), "nre-decompile-all-"));
     decompileOutput = outputParent;
     const calls = [
       ["get_objc_classes", { pattern: "Fixture" }],

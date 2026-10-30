@@ -17,12 +17,12 @@ const REFUSAL =
   "Processor or compiler specification overrides cannot replace the admitted raw-binary import.";
 
 const openRawArm = async (languageId: string | undefined) => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-profile-refusal-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-profile-refusal-"));
   const path = join(directory, "image.bin");
   await writeFile(path, Buffer.from([0, 0, 160, 225]));
   const config = parseConfig({
     GHIDRA_INSTALL_DIR: "/opt/ghidra_12.1.4_PUBLIC",
-    ...(languageId === undefined ? {} : { REA_GHIDRA_LANGUAGE_ID: languageId }),
+    ...(languageId === undefined ? {} : { NRE_GHIDRA_LANGUAGE_ID: languageId }),
   });
   if (!config.ok) throw config.error;
   let clients = 0;
@@ -75,7 +75,7 @@ it("returns configuration diagnostics when a language override conflicts with th
     code: "configuration_invalid",
     message: expect.stringContaining(REFUSAL),
     details: {
-      settings: [{ setting: "REA_GHIDRA_LANGUAGE_ID", constraint: REFUSAL }],
+      settings: [{ setting: "NRE_GHIDRA_LANGUAGE_ID", constraint: REFUSAL }],
     },
   });
 });

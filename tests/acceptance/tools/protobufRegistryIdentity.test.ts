@@ -85,7 +85,7 @@ cliTest(
   "refuses ambiguous registry identities independently of declaration order through CLI/MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-protobuf-registry-identity-",
+      "nre-protobuf-registry-identity-",
     );
     const capture = join(root, "capture.har");
     const text = protobufHar(Buffer.from([8, 1]), "application/x-protobuf");
@@ -160,7 +160,7 @@ cliTest(
 cliTest(
   "keeps empty-package, package, parent and case-sensitive registry identities distinct",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-registry-scopes-");
+    const root = await createTestTempDirectory("nre-protobuf-registry-scopes-");
     const capture = join(root, "capture.har");
     const descriptor = join(root, "scopes.pb");
     const definition = create(FileDescriptorSetSchema, {

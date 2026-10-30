@@ -8,7 +8,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves static API identity through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-static-api-identity-");
+    const root = await createTestTempDirectory("nre-static-api-identity-");
     await writeFixtureFiles(root, {
       "package.json": JSON.stringify({ main: "main.mjs", type: "module" }),
       "main.mjs": `

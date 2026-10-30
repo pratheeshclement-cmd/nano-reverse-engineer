@@ -31,7 +31,7 @@ const cache = (
 });
 
 describe("Turbo snapshot retention", () => {
-  const prefix = "rea-static-v1-Linux-X64-";
+  const prefix = "nre-static-v1-Linux-X64-";
 
   it("keeps the two newest snapshots and the saved key", () => {
     const keepKey = `${prefix}saved`;
@@ -65,7 +65,7 @@ describe("Turbo snapshot retention", () => {
   });
 
   it("keeps two generations of the deep and Knip snapshot families", () => {
-    const deep = "rea-static-deep-v1-Linux-X64-";
+    const deep = "nre-static-deep-v1-Linux-X64-";
     const knip = "knip-meta-v1-Linux-";
     expect(
       selectPrefixDeletions(
@@ -90,7 +90,7 @@ describe("Turbo snapshot retention", () => {
   });
 
   it("retains the newest portable snapshots without a caller keep key", () => {
-    const portable = "rea-portable-build-v2-Linux-X64-";
+    const portable = "nre-portable-build-v2-Linux-X64-";
     const deletions = selectPrefixDeletions(
       [
         cache(7, `${portable}one`, "2026-10-20T01:00:00Z"),
@@ -107,7 +107,7 @@ describe("Turbo snapshot retention", () => {
       selectPrefixDeletions([], { prefix: "npm-download-Linux-x64-" }),
     ).toThrow(/one Turbo family/u);
     expect(() =>
-      selectPrefixDeletions([], { prefix: "rea-static-v1-" }),
+      selectPrefixDeletions([], { prefix: "nre-static-v1-" }),
     ).toThrow(/one Turbo family/u);
     expect(() =>
       selectPrefixDeletions([], { prefix: "knip-meta-v1-" }),
@@ -124,7 +124,7 @@ describe("Turbo snapshot retention", () => {
     expect(() =>
       selectPrefixDeletions([], {
         prefix,
-        keepKey: "rea-static-v1-Windows-X64-other",
+        keepKey: "nre-static-v1-Windows-X64-other",
       }),
     ).toThrow(/keep key/u);
   });
@@ -257,15 +257,15 @@ describe("npm download duplicate retention", () => {
   it("refuses a Turbo snapshot in the download list", () => {
     expect(() =>
       selectNpmDownloadDuplicateDeletions([
-        cache(1, "rea-static-v1-Linux-X64-sha", "2026-10-20T01:00:00Z"),
+        cache(1, "nre-static-v1-Linux-X64-sha", "2026-10-20T01:00:00Z"),
       ]),
     ).toThrow(/non-download/u);
   });
 });
 
 describe("retention orchestration", () => {
-  const repository = "morluto/rea";
-  const prefix = "rea-static-v1-Linux-X64-";
+  const repository = "pratheeshclement-cmd/nano-reverse-engineer";
+  const prefix = "nre-static-v1-Linux-X64-";
 
   it("deletes nothing when a later list is incomplete", async () => {
     const deleted: number[] = [];
@@ -321,7 +321,7 @@ describe("retention orchestration", () => {
   it("applies every family only after both lists succeed", async () => {
     const deleted: number[] = [];
     const keepKey = `${prefix}saved`;
-    const portable = "rea-portable-build-v2-Linux-X64-";
+    const portable = "nre-portable-build-v2-Linux-X64-";
     const result = await retainCaches({
       repository,
       request: async (_method, endpoint) => {
@@ -394,8 +394,8 @@ describe("retention orchestration", () => {
 });
 
 describe("repeated cache ids", () => {
-  const repository = "morluto/rea";
-  const prefix = "rea-static-v1-Linux-X64-";
+  const repository = "pratheeshclement-cmd/nano-reverse-engineer";
+  const prefix = "nre-static-v1-Linux-X64-";
 
   it("treats one cache id on two pages as a single snapshot", () => {
     const keepKey = `${prefix}saved`;
@@ -436,7 +436,7 @@ describe("repeated cache ids", () => {
 });
 
 it("runs retention from the command line without deleting on an unsafe prefix", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-cache-retention-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-cache-retention-"));
   const log = join(root, "gh.log");
   const gh = join(root, "gh");
   await writeFile(
@@ -453,7 +453,7 @@ exit 1
       env: {
         ...process.env,
         PATH: `${root}${delimiter}${process.env.PATH ?? ""}`,
-        CI_REPOSITORY: "morluto/rea",
+        CI_REPOSITORY: "pratheeshclement-cmd/nano-reverse-engineer",
         CACHE_PREFIX: "npm-download-Linux-x64-",
         CACHE_KEEP_KEY: "npm-download-Linux-x64-lock",
       },

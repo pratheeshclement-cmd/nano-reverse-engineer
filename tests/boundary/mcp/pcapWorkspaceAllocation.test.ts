@@ -28,7 +28,7 @@ type Allocate = (
 const inspectWith = async (allocate: Allocate, path: string) => {
   const create = PrivateRuntimeRoot.create.bind(PrivateRuntimeRoot);
   vi.spyOn(PrivateRuntimeRoot, "create").mockImplementation((options = {}) =>
-    options.prefix === "rea-pcap-"
+    options.prefix === "nre-pcap-"
       ? allocate(options, create)
       : create(options),
   );
@@ -42,8 +42,8 @@ const inspectWith = async (allocate: Allocate, path: string) => {
   });
   const provider = new PcapProvider({
     environment: {
-      REA_TSHARK_COMMAND: join(stubs, "tshark-stub.sh"),
-      REA_CAPINFOS_COMMAND: join(stubs, "capinfos-stub.sh"),
+      NRE_TSHARK_COMMAND: join(stubs, "tshark-stub.sh"),
+      NRE_CAPINFOS_COMMAND: join(stubs, "capinfos-stub.sh"),
     },
   });
   const server = createServer(
@@ -86,7 +86,7 @@ it.each<readonly [string, string]>([
 ])(
   "reports real %s allocation under %s as an unusable workspace, not a size limit",
   async (code) => {
-    const root = await createTestTempDirectory("rea-pcap-workspace-");
+    const root = await createTestTempDirectory("nre-pcap-workspace-");
     const parent = join(root, "parent");
     if (code === "ENOTDIR") await writeFile(parent, "not a directory");
     else {
@@ -121,7 +121,7 @@ it.each<readonly [string, string]>([
           path:
             code === "ENOTDIR"
               ? `${parent}/.`
-              : (expect.stringContaining(join(parent, "rea-pcap-")) as unknown),
+              : (expect.stringContaining(join(parent, "nre-pcap-")) as unknown),
           system_code: code,
         },
       },
@@ -131,14 +131,14 @@ it.each<readonly [string, string]>([
 );
 
 it("reaches input admission when the workspace parent is usable", async () => {
-  const root = await createTestTempDirectory("rea-pcap-workspace-");
+  const root = await createTestTempDirectory("nre-pcap-workspace-");
   const error = await inspectWith(
     (options, create) => create({ ...options, parent: root }),
     join(root, "missing.pcap"),
   );
   expect(error.code).toBe("invalid_request");
   expect(
-    (await readdir(root)).filter((name) => name.startsWith("rea-pcap-")),
+    (await readdir(root)).filter((name) => name.startsWith("nre-pcap-")),
   ).toEqual([]);
 });
 
@@ -151,8 +151,8 @@ it.each([
 ])(
   "classifies simulated %s allocation by its storage or descriptor cause",
   async (code, expected, recovery) => {
-    const root = await createTestTempDirectory("rea-pcap-workspace-");
-    const template = join(root, "rea-pcap-XXXXXX");
+    const root = await createTestTempDirectory("nre-pcap-workspace-");
+    const template = join(root, "nre-pcap-XXXXXX");
     const error = await inspectWith(
       () => Promise.reject(systemError(code, template)),
       join(root, "missing.pcap"),
@@ -180,7 +180,7 @@ it.each([
 test.skipIf(process.platform === "win32" || !nonRoot)(
   "removes a partially prepared workspace whose contents cannot be created",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-workspace-");
+    const root = await createTestTempDirectory("nre-pcap-workspace-");
     let workspace: string | undefined;
     const error = await inspectWith(
       async (options, create) => {
@@ -204,13 +204,13 @@ test.skipIf(process.platform === "win32" || !nonRoot)(
       },
     });
     expect(
-      (await readdir(root)).filter((name) => name.startsWith("rea-pcap-")),
+      (await readdir(root)).filter((name) => name.startsWith("nre-pcap-")),
     ).toEqual([]);
   },
 );
 
 it("still reports a capture over the snapshot budget as a file-size limit", async () => {
-  const root = await createTestTempDirectory("rea-pcap-workspace-");
+  const root = await createTestTempDirectory("nre-pcap-workspace-");
   const capture = join(root, "oversized.pcap");
   // Sparse: one byte over the 2 GiB owned-snapshot allowance, no data blocks.
   const handle = await open(capture, "w");
@@ -228,6 +228,6 @@ it("still reports a capture over the snapshot budget as a file-size limit", asyn
     },
   });
   expect(
-    (await readdir(root)).filter((name) => name.startsWith("rea-pcap-")),
+    (await readdir(root)).filter((name) => name.startsWith("nre-pcap-")),
   ).toEqual([]);
 });

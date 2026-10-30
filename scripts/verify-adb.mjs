@@ -14,7 +14,7 @@ const options = parseArguments(process.argv.slice(2));
 if (options.help) {
   process.stdout.write(
     "Usage: npm run verify:adb [-- --serial SERIAL --pull PACKAGE]\n" +
-      "Requires a caller-selected adb binary (REA_ADB_PATH or PATH) and a\n" +
+      "Requires a caller-selected adb binary (NRE_ADB_PATH or PATH) and a\n" +
       "connected device or emulator. Verifies all five operations against\n" +
       "the live device; --pull acquires a real package and re-digests the\n" +
       "files on disk against the returned SHA-256 values.\n",
@@ -277,7 +277,7 @@ try {
     }
 
     if (pullCandidate !== null) {
-      const directory = await mkdtemp(join(tmpdir(), "rea-adb-verify-"));
+      const directory = await mkdtemp(join(tmpdir(), "nre-adb-verify-"));
       try {
         const pull = await run("pull_adb_package", {
           serial,
@@ -314,14 +314,14 @@ try {
 
     // File transfer: push one lane-owned file, verify both digests, pull it
     // back, then clean up the device copy through the same fixed argv surface.
-    const transferRoot = await mkdtemp(join(tmpdir(), "rea-adb-transfer-"));
+    const transferRoot = await mkdtemp(join(tmpdir(), "nre-adb-transfer-"));
     try {
-      const payload = join(transferRoot, "rea-verify.txt");
-      const payloadBytes = "rea adb transfer verification\n";
+      const payload = join(transferRoot, "nre-verify.txt");
+      const payloadBytes = "nre adb transfer verification\n";
       await import("node:fs/promises").then((fs) =>
         fs.writeFile(payload, payloadBytes),
       );
-      const deviceTarget = `/data/local/tmp/rea-verify-${Date.now()}.txt`;
+      const deviceTarget = `/data/local/tmp/nre-verify-${Date.now()}.txt`;
       await verifyTransferRoundtrip({
         adbBinary: client?.client.binary_path,
         serial,
@@ -329,7 +329,7 @@ try {
         devicePath: deviceTarget,
         outputDirectory: transferRoot,
       });
-      const screenRoot = await mkdtemp(join(tmpdir(), "rea-adb-screen-"));
+      const screenRoot = await mkdtemp(join(tmpdir(), "nre-adb-screen-"));
       try {
         const screen = await run("capture_adb_screen", {
           serial,
@@ -357,7 +357,7 @@ try {
           );
       }
       if (options.installApk !== null && options.installApk !== undefined) {
-        const probePackage = "com.rea.adb.probe";
+        const probePackage = "com.nre.adb.probe";
         const installedProbe = await run("install_adb_package", {
           serial,
           apk_path: options.installApk,
@@ -372,7 +372,7 @@ try {
           );
           const resolved = await run("resolve_adb_packages", {
             serial,
-            query: "rea.adb.probe",
+            query: "nre.adb.probe",
           });
           if (resolved !== null)
             check(
@@ -420,7 +420,7 @@ try {
             );
           const afterRemoval = await run("resolve_adb_packages", {
             serial,
-            query: "rea.adb.probe",
+            query: "nre.adb.probe",
           });
           if (afterRemoval !== null)
             check(

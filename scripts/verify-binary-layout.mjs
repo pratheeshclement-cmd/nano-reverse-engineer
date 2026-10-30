@@ -28,9 +28,9 @@ import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 import { sectionNameFixtures } from "./lib/elf-section-name-fixtures.mjs";
 import { withLargeResultMcp } from "./lib/large-result-mcp.mjs";
 
-const verifyLargeMcp = process.env.REA_VERIFY_LARGE_ELF_MCP === "1";
-const python = process.env.REA_PWNTOOLS_PYTHON;
-const strace = process.env.REA_VERIFY_STRACE_COMMAND;
+const verifyLargeMcp = process.env.NRE_VERIFY_LARGE_ELF_MCP === "1";
+const python = process.env.NRE_PWNTOOLS_PYTHON;
+const strace = process.env.NRE_VERIFY_STRACE_COMMAND;
 if (
   process.platform !== "linux" ||
   process.arch !== "x64" ||
@@ -38,7 +38,7 @@ if (
   !isAbsolute(strace ?? "")
 )
   throw new Error(
-    "verify:binary:layout requires Linux x64, absolute REA_PWNTOOLS_PYTHON (pwntools 4.15.0/pyelftools 0.33/Unicorn 2.1.2) and REA_VERIFY_STRACE_COMMAND. gcc, ld, strip and the i686/ARM/MIPS/MIPSel linux-gnu cross gcc and readelf must be available. No target is executed.",
+    "verify:binary:layout requires Linux x64, absolute NRE_PWNTOOLS_PYTHON (pwntools 4.15.0/pyelftools 0.33/Unicorn 2.1.2) and NRE_VERIFY_STRACE_COMMAND. gcc, ld, strip and the i686/ARM/MIPS/MIPSel linux-gnu cross gcc and readelf must be available. No target is executed.",
   );
 const run = createVerifierRun();
 const execute = promisify(execFile);
@@ -72,9 +72,9 @@ for (const command of [
   }
 }
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const root = await PrivateRuntimeRoot.create({
-  prefix: "rea-layout-verifier-",
+  prefix: "nre-layout-verifier-",
 });
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
@@ -82,9 +82,9 @@ const environment = Object.fromEntries(
 const limitedPython = join(root.path, "limited-python");
 const limitedEnvironment = (option) => ({
   ...environment,
-  REA_PWNTOOLS_PYTHON: limitedPython,
-  REA_VERIFY_LIMITED_PYTHON: python,
-  REA_VERIFY_LIMIT_OPTION: option,
+  NRE_PWNTOOLS_PYTHON: limitedPython,
+  NRE_VERIFY_LIMITED_PYTHON: python,
+  NRE_VERIFY_LIMIT_OPTION: option,
 });
 const client = new Client({ name: "binary-layout-verifier", version: "1" });
 const transport = new StdioClientTransport({
@@ -1363,7 +1363,7 @@ try {
   const brokenPython = join(root.path, "broken-configured-python");
   await writeFile(
     brokenPython,
-    "#!/rea-missing-configured-python-interpreter\n",
+    "#!/nre-missing-configured-python-interpreter\n",
     { mode: 0o700 },
   );
   const unmarkedLaunchers = [];
@@ -1383,7 +1383,7 @@ try {
   ]) {
     const selectedEnvironment = {
       ...environment,
-      REA_PWNTOOLS_PYTHON: configuredPython,
+      NRE_PWNTOOLS_PYTHON: configuredPython,
     };
     const selectedClient = new Client({
       name: "unavailable-layout-verifier",

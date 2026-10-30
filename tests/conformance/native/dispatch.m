@@ -21,9 +21,9 @@
 @end
 
 @interface NSString (ReaDispatchAdditions)
-- (NSUInteger)reaFixtureLength;
+- (NSUInteger)nreFixtureLength;
 @end
 @implementation NSString (ReaDispatchAdditions)
-- (NSUInteger)reaFixtureLength { return self.length; }
+- (NSUInteger)nreFixtureLength { return self.length; }
 @end
 int main(void) { return 0; }

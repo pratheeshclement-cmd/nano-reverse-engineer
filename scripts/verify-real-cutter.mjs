@@ -18,7 +18,7 @@ import { promisify } from "node:util";
 import { createServer } from "../dist/server/createServer.js";
 
 const execFileAsync = promisify(execFile);
-const cli = resolve("scripts/rea.mjs");
+const cli = resolve("scripts/nre.mjs");
 const runCli = async (...arguments_) => {
   const { stdout } = await execFileAsync(
     process.execPath,
@@ -32,7 +32,7 @@ const runCli = async (...arguments_) => {
   return JSON.parse(stdout);
 };
 
-const projectRoot = await mkdtemp(join(tmpdir(), "rea-cutter-smoke-"));
+const projectRoot = await mkdtemp(join(tmpdir(), "nre-cutter-smoke-"));
 const projectPath = join(projectRoot, "smoke.rzdb");
 const rizinQuote = (value) =>
   `"${value.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
@@ -59,7 +59,7 @@ try {
   assert.equal(
     discovery.discovery_status,
     "sessions_found",
-    "Open upstream Cutter with the REA plugin before running this smoke test.",
+    "Open upstream Cutter with the NRE plugin before running this smoke test.",
   );
   assert.ok(discovery.sessions.length > 0);
   const session = discovery.sessions[0];
@@ -68,9 +68,9 @@ try {
     session.cutter_version,
     "The upstream Cutter API did not report its version.",
   );
-  if (process.env.REA_CUTTER_EXPECTED_VERSION !== undefined)
+  if (process.env.NRE_CUTTER_EXPECTED_VERSION !== undefined)
     assert.ok(
-      session.cutter_version.includes(process.env.REA_CUTTER_EXPECTED_VERSION),
+      session.cutter_version.includes(process.env.NRE_CUTTER_EXPECTED_VERSION),
       "The live Cutter version did not match the configured version.",
     );
   assert.ok(
@@ -89,7 +89,7 @@ try {
     "ij",
     "--json-output",
   );
-  assert.equal(inspection.predicate_type, "rea.cutter.command-observation");
+  assert.equal(inspection.predicate_type, "nre.cutter.command-observation");
   assert.ok(
     Object.hasOwn(inspection, "raw_result"),
     "Cutter ij result was not retained as Evidence.",
@@ -103,7 +103,7 @@ try {
     },
   );
   const mcpClient = new Client({
-    name: "rea-cutter-upstream-smoke",
+    name: "nre-cutter-upstream-smoke",
     version: "1",
   });
   const [clientTransport, serverTransport] =
@@ -140,7 +140,7 @@ try {
     await mcpServer.close();
   }
 
-  const annotation = `rea-smoke-${randomUUID()}`;
+  const annotation = `nre-smoke-${randomUUID()}`;
   await runCli(
     "cutter-command",
     session.session_id,
@@ -182,7 +182,7 @@ try {
     String(session.document_generation),
     "CC. @ entry0",
   );
-  assert.equal(recovered.predicate_type, "rea.cutter.command-observation");
+  assert.equal(recovered.predicate_type, "nre.cutter.command-observation");
   assert.ok(
     String(recovered.raw_result).includes(annotation),
     "The saved project did not preserve the analysis comment after reopening.",

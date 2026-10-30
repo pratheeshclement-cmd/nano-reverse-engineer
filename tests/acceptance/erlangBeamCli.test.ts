@@ -66,7 +66,7 @@ const extendedFirstAtomLength = (): Buffer => {
 };
 
 cliTest("reports BEAM exports through the public CLI", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-beam-cli-");
+  const root = await createTestTempDirectory("nre-beam-cli-");
   const path = join(root, "app.beam");
   await writeFile(path, erlangBeamFixture("cli_mod"));
   const result = await cli.run({
@@ -85,7 +85,7 @@ cliTest("reports BEAM exports through the public CLI", async ({ cli }) => {
 cliTest(
   "inspects empty optional BEAM chunks through CLI and MCP without losing source evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-empty-chunks-");
+    const root = await createTestTempDirectory("nre-beam-empty-chunks-");
     // Append an inert chunk to the compiler fixture; no bytecode is executed.
     const original = erlangBeamOtp29Fixture();
     const extension = erlangBeamChunksFixture([["FunT", Buffer.alloc(0)]]);
@@ -104,7 +104,7 @@ cliTest(
         label: "lambda",
         bytes: emptyLambda,
         chunk: "FunT",
-        module: "rea_beam_fixture",
+        module: "nre_beam_fixture",
         atomEncoding: "utf8",
         exportedFunction: "hello",
       },
@@ -164,7 +164,7 @@ cliTest(
 cliTest(
   "decodes the last atom table while retaining every chunk occurrence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-repeated-atoms-");
+    const root = await createTestTempDirectory("nre-beam-repeated-atoms-");
     const original = erlangBeamOtp29Fixture();
     const decoy = oneAtomBeam(0).subarray(12);
     const repeated = Buffer.concat([
@@ -182,7 +182,7 @@ cliTest(
     const report = completeBeamEvidenceSchema.parse(
       result.json,
     ).normalized_result;
-    expect(report.module).toBe("rea_beam_fixture");
+    expect(report.module).toBe("nre_beam_fixture");
     expect(report.exports).toContainEqual({
       function_index: 2,
       function: "hello",
@@ -203,7 +203,7 @@ cliTest(
 cliTest(
   "inspects an OTP 29 BEAM with an extended compact atom length and preserves source identity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-extended-atom-");
+    const root = await createTestTempDirectory("nre-beam-extended-atom-");
     const controlPath = join(root, "control.beam");
     const extendedPath = join(root, "extended.beam");
     const controlBytes = erlangBeamOtp29Fixture();
@@ -220,7 +220,7 @@ cliTest(
     };
     const control = await inspect(controlPath);
     const extended = await inspect(extendedPath);
-    expect(extended.normalized_result.module).toBe("rea_beam_fixture");
+    expect(extended.normalized_result.module).toBe("nre_beam_fixture");
     expect(extended.normalized_result.atoms).toEqual(
       control.normalized_result.atoms,
     );
@@ -245,7 +245,7 @@ cliTest(
 cliTest(
   "inspects BEAM chunks with nonzero alignment padding and preserves payload identity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-padding-");
+    const root = await createTestTempDirectory("nre-beam-padding-");
     const cleanPath = join(root, "padding-zero.beam");
     const paddedPath = join(root, "padding-nonzero.beam");
     await writeFile(cleanPath, oneAtomBeam(0));
@@ -276,7 +276,7 @@ cliTest(
 cliTest(
   "inspects the declared BEAM form while retaining trailing bytes in artifact identity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-trailer-");
+    const root = await createTestTempDirectory("nre-beam-trailer-");
     const controlPath = join(root, "control.beam");
     const trailingPath = join(root, "trailing.beam");
     const formBytes = erlangBeamOtp29Fixture();
@@ -317,7 +317,7 @@ cliTest(
 cliTest(
   "rejects a BEAM chunk whose required alignment bytes are truncated",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-padding-short-");
+    const root = await createTestTempDirectory("nre-beam-padding-short-");
     const path = join(root, "padding-truncated.beam");
     const bytes = oneAtomBeam(0x7f).subarray(0, 27);
     bytes.writeUInt32BE(19, 4);
@@ -336,7 +336,7 @@ cliTest(
 cliTest(
   "resolves a relative BEAM path against the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-cli-rel-");
+    const root = await createTestTempDirectory("nre-beam-cli-rel-");
     await writeFile(join(root, "app.beam"), erlangBeamFixture());
     const result = await cli.run({
       arguments: ["inspect-erlang-beam", "app.beam", "--json"],
@@ -349,7 +349,7 @@ cliTest(
 );
 
 cliTest("rejects an empty BEAM path before reading", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-beam-cli-path-");
+  const root = await createTestTempDirectory("nre-beam-cli-path-");
   const result = await cli.run({
     arguments: ["inspect-erlang-beam", "", "--json"],
     cwd: root,
@@ -359,7 +359,7 @@ cliTest("rejects an empty BEAM path before reading", async ({ cli }) => {
 });
 
 cliTest("reports a truncated BEAM as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-beam-cli-bad-");
+  const root = await createTestTempDirectory("nre-beam-cli-bad-");
   const path = join(root, "broken.beam");
   await writeFile(path, Buffer.from("FOR1"));
   const result = await cli.run({

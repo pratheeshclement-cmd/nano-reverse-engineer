@@ -55,7 +55,7 @@ describe("reconstruction obligation ledger CLI parity", () => {
       const { stdout } = await execute(
         process.execPath,
         [
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "build-reconstruction-obligation-ledger",
           JSON.stringify(variant),
           "--json",
@@ -101,7 +101,7 @@ describe("reconstruction obligation ledger CLI bundle validation", () => {
     const accepted = await execute(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "build-reconstruction-obligation-ledger",
         JSON.stringify(input),
         "--json",
@@ -120,7 +120,7 @@ describe("reconstruction obligation ledger CLI bundle validation", () => {
       await execute(
         process.execPath,
         [
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "build-reconstruction-obligation-ledger",
           JSON.stringify(input),
           "--json",
@@ -161,7 +161,7 @@ describe("reconstruction obligation ledger CLI bundle validation", () => {
     const { stdout } = await execute(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "build-reconstruction-obligation-ledger",
         JSON.stringify(input),
         "--json",
@@ -174,7 +174,7 @@ describe("reconstruction obligation ledger CLI bundle validation", () => {
     );
     expect(JSON.parse(stdout)).toMatchObject({
       operation: "build_reconstruction_obligation_ledger",
-      predicate_type: "rea.reconstruction-obligation-ledger",
+      predicate_type: "nre.reconstruction-obligation-ledger",
       normalized_result: {
         schema: "ReconstructionObligationLedger",
         status: "unknown",
@@ -187,7 +187,7 @@ describe("reconstruction obligation ledger CLI bundle validation", () => {
     const { stdout } = await execute(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "build-reconstruction-obligation-ledger",
         JSON.stringify(mixedAuthorityRequest()),
         "--json",
@@ -254,7 +254,7 @@ describe("reconstruction obligation ledger CLI contradictions", () => {
       const { stdout } = await execute(
         process.execPath,
         [
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "build-reconstruction-obligation-ledger",
           JSON.stringify({
             ...input,
@@ -288,7 +288,7 @@ describe("reconstruction obligation ledger CLI contradictions", () => {
 cliTest(
   "retains authentic dynamic-event uncertainty through analysis and ledger CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ledger-semantic-");
+    const root = await createTestTempDirectory("nre-ledger-semantic-");
     await writeFile(
       join(root, "package.json"),
       JSON.stringify({ name: "sample-app", version: "1.0.0", main: "main.js" }),
@@ -382,7 +382,7 @@ describe("reconstruction proof applicability through CLI", () => {
         const { stdout } = await execute(
           process.execPath,
           [
-            "scripts/rea.mjs",
+            "scripts/nre.mjs",
             "build-reconstruction-obligation-ledger",
             JSON.stringify(input),
             "--json",

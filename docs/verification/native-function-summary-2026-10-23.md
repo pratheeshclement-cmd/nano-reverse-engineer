@@ -8,7 +8,7 @@ function Evidence stays in the session and can be selected by the returned
 keeps the historical full reply. Delivery detail stays outside provider inputs
 and parent Evidence identity. This MCP default is a breaking change.
 
-CLI `rea function` still defaults to complete output. Opting into summary
+CLI `nre function` still defaults to complete output. Opting into summary
 requires an exclusive `--evidence_output` bundle destination. The authenticated
 bundle can be paged by an absolute `evidence-file` source and explicit record
 ID after the provider closes. Plain records also honor an explicit ID.
@@ -144,6 +144,6 @@ cross-process cache. Complete evidence remains available at the caller's file.
   explicit source commits above.
 
 Raw exchanges, protocol observations, control failures, scripts and resource
-receipts are retained under `/tmp/rea-maintenance-20261023/5660/`. Provider
+receipts are retained under `/tmp/nre-maintenance-20261023/5660/`. Provider
 projects, generated binaries, build outputs and local planning files are not
 committed.

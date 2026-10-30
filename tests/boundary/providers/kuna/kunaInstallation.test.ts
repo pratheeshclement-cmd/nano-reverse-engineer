@@ -20,14 +20,14 @@ import { makeLauncher, ownedGroupCleanup } from "./kunaVersionProbeProcess.js";
 const it = test.skipIf(process.platform === "win32");
 
 it("identifies a caller-selected kuna by version and digest", async () => {
-  const root = await createTestTempDirectory("rea-kuna-install-");
+  const root = await createTestTempDirectory("nre-kuna-install-");
   const kuna = await writeFakeKuna(root);
   const link = join(root, "current-kuna");
   await symlink(kuna, link);
 
   const result = await inspectKunaInstallation({
-    REA_KUNA_COMMAND: link,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: link,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
   });
 
   expect(result).toMatchObject({
@@ -44,7 +44,7 @@ it("identifies a caller-selected kuna by version and digest", async () => {
         .digest("hex"),
     },
   });
-  // The probe runs inside REA's cache home with no inherited PATH.
+  // The probe runs inside NRE's cache home with no inherited PATH.
   expect(await fakeKunaCalls(kuna)).toEqual([
     {
       pid: expect.any(Number),
@@ -59,7 +59,7 @@ it("identifies a caller-selected kuna by version and digest", async () => {
 
 it("refuses to pair version output with executable bytes replaced during the probe", async () => {
   const root = await createTestTempDirectory(
-    "rea-kuna-replaced-during-version-",
+    "nre-kuna-replaced-during-version-",
   );
   const kuna = join(root, "kuna");
   const replacement = `#!${process.execPath}\nconsole.log("kuna 1.900");\n`;
@@ -75,8 +75,8 @@ fs.renameSync(process.argv[1] + ".new", process.argv[1]);
   const before = await readFile(kuna);
 
   const result = await inspectKunaInstallation({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
   });
   const after = await readFile(kuna);
 
@@ -100,12 +100,12 @@ fs.renameSync(process.argv[1] + ".new", process.argv[1]);
 });
 
 it("accepts another release but reports it as unverified", async () => {
-  const root = await createTestTempDirectory("rea-kuna-unverified-");
+  const root = await createTestTempDirectory("nre-kuna-unverified-");
   const kuna = await writeFakeKuna(root, {
     version: { stdout: "kuna 1.900\n" },
   });
 
-  const result = await inspectKunaInstallation({ REA_KUNA_COMMAND: kuna });
+  const result = await inspectKunaInstallation({ NRE_KUNA_COMMAND: kuna });
 
   expect(result).toMatchObject({
     ok: true,
@@ -114,13 +114,13 @@ it("accepts another release but reports it as unverified", async () => {
 });
 
 it("refuses a version line it cannot recognize", async () => {
-  const root = await createTestTempDirectory("rea-kuna-garbled-");
+  const root = await createTestTempDirectory("nre-kuna-garbled-");
   const kuna = await writeFakeKuna(root, {
     version: { stdout: "Kuna decompiler, built today\n" },
   });
 
   expect(
-    await inspectKunaInstallation({ REA_KUNA_COMMAND: kuna }),
+    await inspectKunaInstallation({ NRE_KUNA_COMMAND: kuna }),
   ).toMatchObject({
     ok: false,
     error: {
@@ -131,11 +131,11 @@ it("refuses a version line it cannot recognize", async () => {
 });
 
 it("reports a failed version probe with its exit status", async () => {
-  const root = await createTestTempDirectory("rea-kuna-probe-exit-");
+  const root = await createTestTempDirectory("nre-kuna-probe-exit-");
   const kuna = await writeFakeKuna(root, { version: { exit: 3 } });
 
   expect(
-    await inspectKunaInstallation({ REA_KUNA_COMMAND: kuna }),
+    await inspectKunaInstallation({ NRE_KUNA_COMMAND: kuna }),
   ).toMatchObject({
     ok: false,
     error: {
@@ -147,13 +147,13 @@ it("reports a failed version probe with its exit status", async () => {
 });
 
 it("reports a missing or non-executable command as executable_missing", async () => {
-  const root = await createTestTempDirectory("rea-kuna-missing-");
+  const root = await createTestTempDirectory("nre-kuna-missing-");
   const kuna = await writeFakeKuna(root);
   await chmod(kuna, 0o644);
 
   for (const command of [kuna, join(root, "absent"), root])
     expect(
-      await inspectKunaInstallation({ REA_KUNA_COMMAND: command }),
+      await inspectKunaInstallation({ NRE_KUNA_COMMAND: command }),
     ).toMatchObject({
       ok: false,
       error: { code: "executable_missing", diagnostics: { command } },
@@ -166,12 +166,12 @@ it("distinguishes an unset command from an invalid one", async () => {
     error: { code: "not_configured", diagnostics: { configured: false } },
   });
   expect(
-    await inspectKunaInstallation({ REA_KUNA_COMMAND: "bin/kuna" }),
+    await inspectKunaInstallation({ NRE_KUNA_COMMAND: "bin/kuna" }),
   ).toMatchObject({
     ok: false,
     error: {
       code: "open_options_invalid",
-      diagnostics: { configured: true, setting: "REA_KUNA_COMMAND" },
+      diagnostics: { configured: true, setting: "NRE_KUNA_COMMAND" },
     },
   });
 });
@@ -179,7 +179,7 @@ it("distinguishes an unset command from an invalid one", async () => {
 it("declares Windows hosts unsupported before touching the command", async () => {
   expect(
     await inspectKunaInstallation(
-      { REA_KUNA_COMMAND: "/opt/kuna/kuna" },
+      { NRE_KUNA_COMMAND: "/opt/kuna/kuna" },
       { platform: "win32" },
     ),
   ).toMatchObject({ ok: false, error: { code: "unsupported_host" } });
@@ -187,13 +187,13 @@ it("declares Windows hosts unsupported before touching the command", async () =>
 
 it("parses cache, timeout and job settings at the configuration boundary", () => {
   const environment = {
-    REA_KUNA_COMMAND: "/opt/kuna/kuna",
+    NRE_KUNA_COMMAND: "/opt/kuna/kuna",
     HOME: "/home/analyst",
   };
   expect(readKunaConfiguration(environment, "linux")).toMatchObject({
     ok: true,
     value: {
-      cacheRoot: "/home/analyst/.cache/rea/kuna",
+      cacheRoot: "/home/analyst/.cache/nre/kuna",
       cacheMaxBytes: 4 * 1024 ** 3,
       projectTimeoutMs: 1_800_000,
       functionTimeoutMs: 120_000,
@@ -206,18 +206,18 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
       { ...environment, XDG_CACHE_HOME: "/var/cache/analyst" },
       "linux",
     ),
-  ).toMatchObject({ value: { cacheRoot: "/var/cache/analyst/rea/kuna" } });
+  ).toMatchObject({ value: { cacheRoot: "/var/cache/analyst/nre/kuna" } });
   expect(readKunaConfiguration(environment, "darwin")).toMatchObject({
-    value: { cacheRoot: "/home/analyst/Library/Caches/rea/kuna" },
+    value: { cacheRoot: "/home/analyst/Library/Caches/nre/kuna" },
   });
   expect(
     readKunaConfiguration(
       {
         ...environment,
-        REA_KUNA_CACHE_MAX_BYTES: "2097152",
-        REA_KUNA_PROJECT_TIMEOUT_MS: "60000",
-        REA_KUNA_TIMEOUT_MS: "5000",
-        REA_KUNA_JOBS: "3",
+        NRE_KUNA_CACHE_MAX_BYTES: "2097152",
+        NRE_KUNA_PROJECT_TIMEOUT_MS: "60000",
+        NRE_KUNA_TIMEOUT_MS: "5000",
+        NRE_KUNA_JOBS: "3",
       },
       "linux",
     ),
@@ -230,13 +230,13 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
     },
   });
   for (const [setting, value] of [
-    ["REA_KUNA_CACHE_DIR", "relative/cache"],
-    ["REA_KUNA_CACHE_MAX_BYTES", "1024"],
-    ["REA_KUNA_CACHE_MAX_BYTES", "4GiB"],
-    ["REA_KUNA_PROJECT_TIMEOUT_MS", "0"],
-    ["REA_KUNA_TIMEOUT_MS", "-1"],
-    ["REA_KUNA_JOBS", "33"],
-    ["REA_KUNA_JOBS", "0"],
+    ["NRE_KUNA_CACHE_DIR", "relative/cache"],
+    ["NRE_KUNA_CACHE_MAX_BYTES", "1024"],
+    ["NRE_KUNA_CACHE_MAX_BYTES", "4GiB"],
+    ["NRE_KUNA_PROJECT_TIMEOUT_MS", "0"],
+    ["NRE_KUNA_TIMEOUT_MS", "-1"],
+    ["NRE_KUNA_JOBS", "33"],
+    ["NRE_KUNA_JOBS", "0"],
   ] as const)
     expect(
       readKunaConfiguration({ ...environment, [setting]: value }, "linux"),
@@ -247,12 +247,12 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
 });
 
 it("stops a version probe that ignores SIGTERM instead of waiting on it", async () => {
-  const root = await createTestTempDirectory("rea-kuna-probe-term-");
+  const root = await createTestTempDirectory("nre-kuna-probe-term-");
   const kuna = await writeFakeKuna(root, { version: { ignoreTerm: true } });
   const started = Date.now();
 
   const result = await inspectKunaInstallation(
-    { REA_KUNA_COMMAND: kuna },
+    { NRE_KUNA_COMMAND: kuna },
     // Allow owned-process identity preparation, then exercise the stopped child.
     { probeTimeoutMs: 4_000 },
   );
@@ -274,7 +274,7 @@ it("stops a version probe that ignores SIGTERM instead of waiting on it", async 
 }, 20_000);
 
 it("keeps a version deadline ahead of cancellation during its joined stop", async () => {
-  const root = await createTestTempDirectory("rea-kuna-deadline-first-");
+  const root = await createTestTempDirectory("nre-kuna-deadline-first-");
   const command = join(root, "probe.cjs");
   const stopped = join(root, "stopped");
   const release = join(root, "release");
@@ -313,8 +313,8 @@ setTimeout(() => process.exit(9), 10000).unref();
   const controller = new AbortController();
   const pending = inspectKunaInstallation(
     {
-      REA_KUNA_COMMAND: command,
-      REA_KUNA_CACHE_DIR: join(root, "cache"),
+      NRE_KUNA_COMMAND: command,
+      NRE_KUNA_CACHE_DIR: join(root, "cache"),
     },
     {
       signal: controller.signal,
@@ -359,13 +359,13 @@ setTimeout(() => process.exit(9), 10000).unref();
 });
 
 it("retains an admitted lookup failure when cancellation arrives during settlement", async () => {
-  const root = await createTestTempDirectory("rea-kuna-lookup-failure-");
+  const root = await createTestTempDirectory("nre-kuna-lookup-failure-");
   const command = join(root, "missing-kuna");
   const controller = new AbortController();
   const pending = inspectKunaInstallation(
     {
-      REA_KUNA_COMMAND: command,
-      REA_KUNA_CACHE_DIR: join(root, "cache"),
+      NRE_KUNA_COMMAND: command,
+      NRE_KUNA_CACHE_DIR: join(root, "cache"),
     },
     { signal: controller.signal },
   );
@@ -384,14 +384,14 @@ it("retains an admitted lookup failure when cancellation arrives during settleme
 });
 
 it("preserves an already-cancelled caller before admitting a lookup", async () => {
-  const root = await createTestTempDirectory("rea-kuna-preabort-lookup-");
+  const root = await createTestTempDirectory("nre-kuna-preabort-lookup-");
   const controller = new AbortController();
   const reason = { request: "cancel before lookup" };
   controller.abort(reason);
   const cause: unknown = await inspectKunaInstallation(
     {
-      REA_KUNA_COMMAND: join(root, "missing-kuna"),
-      REA_KUNA_CACHE_DIR: join(root, "cache"),
+      NRE_KUNA_COMMAND: join(root, "missing-kuna"),
+      NRE_KUNA_CACHE_DIR: join(root, "cache"),
     },
     { signal: controller.signal },
   ).then(
@@ -405,14 +405,14 @@ it.each(["darwin", "linux"] as const)(
   "preserves native traversal in default cache roots on %s",
   (platform) => {
     const home = "/workspace/alias/../home";
-    const environment = { REA_KUNA_COMMAND: "/tools/kuna", HOME: home };
+    const environment = { NRE_KUNA_COMMAND: "/tools/kuna", HOME: home };
     const configured = readKunaConfiguration(environment, platform);
     expect(configured).toMatchObject({
       value: {
         cacheRoot:
           platform === "darwin"
-            ? `${home}/Library/Caches/rea/kuna`
-            : `${home}/.cache/rea/kuna`,
+            ? `${home}/Library/Caches/nre/kuna`
+            : `${home}/.cache/nre/kuna`,
       },
     });
     if (platform === "linux")
@@ -422,7 +422,7 @@ it.each(["darwin", "linux"] as const)(
           platform,
         ),
       ).toMatchObject({
-        value: { cacheRoot: "/workspace/alias/../cache/rea/kuna" },
+        value: { cacheRoot: "/workspace/alias/../cache/nre/kuna" },
       });
   },
 );

@@ -65,7 +65,7 @@ afterEach(async () => {
 describe("decompile_all MCP caveats", () => {
   it("retains all observed caveats across unreadable and conflicting resumes", async () => {
     const parent = await createTestTempDirectory(
-      "rea-decompile-resume-caveats-",
+      "nre-decompile-resume-caveats-",
     );
     const output = join(parent, "out");
     const selected = join(output, "functions", "0x1000.c");
@@ -158,7 +158,7 @@ describe("decompile_all MCP caveats", () => {
     expect(calls).not.toContain("procedure_pseudo_code");
   });
   it("returns a bounded caveat summary and keeps each function's caveats in its file", async () => {
-    const parent = await createTestTempDirectory("rea-decompile-caveats-");
+    const parent = await createTestTempDirectory("nre-decompile-caveats-");
     const client = await connect(addressCaveats);
     const result = await client.callTool({
       name: "decompile_all",
@@ -190,7 +190,7 @@ describe("decompile_all MCP caveats", () => {
 });
 
 it("keeps long-name failures inside the tool window and complete in the index", async () => {
-  const parent = await createTestTempDirectory("rea-decompile-long-failures-");
+  const parent = await createTestTempDirectory("nre-decompile-long-failures-");
   const output = join(parent, "out");
   const names = Array.from(
     { length: 32 },
@@ -250,7 +250,7 @@ it("keeps long-name failures inside the tool window and complete in the index", 
 it.each(["procedure_info", "procedure_pseudo_code"] as const)(
   "reports %s cleanup failure through MCP while retaining completed files",
   async (operation) => {
-    const parent = await createTestTempDirectory("rea-decompile-cleanup-");
+    const parent = await createTestTempDirectory("nre-decompile-cleanup-");
     const output = join(parent, "out");
     const failure = new AnalysisOutputError(
       operation,

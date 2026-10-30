@@ -459,7 +459,7 @@ export class GhidraProvider implements AnalysisProviderCandidate {
       } catch (cause: unknown) {
         return err(
           ghidraFileFailure(cause, "resolve_analysis_profile", {
-            setting: "REA_GHIDRA_LANGUAGE_ID",
+            setting: "NRE_GHIDRA_LANGUAGE_ID",
           }),
         );
       }
@@ -667,9 +667,9 @@ export class GhidraProvider implements AnalysisProviderCandidate {
 /** The selected project, not the target or provider, is what this host cannot serve. */
 const existingProjectUnsupported = (): ConfigurationError => {
   const constraint =
-    "Existing-project mode supports native ELF/PE/Mach-O programs on POSIX without fresh-import loader preparation or pinned language overrides; unset REA_GHIDRA_PROJECT_PATH to use fresh import for this target/host.";
+    "Existing-project mode supports native ELF/PE/Mach-O programs on POSIX without fresh-import loader preparation or pinned language overrides; unset NRE_GHIDRA_PROJECT_PATH to use fresh import for this target/host.";
   return new ConfigurationError(constraint, {
-    settings: [{ setting: "REA_GHIDRA_PROJECT_PATH", constraint }],
+    settings: [{ setting: "NRE_GHIDRA_PROJECT_PATH", constraint }],
   });
 };
 

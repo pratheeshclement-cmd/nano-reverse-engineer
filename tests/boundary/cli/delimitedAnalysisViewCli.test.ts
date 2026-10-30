@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "exports selected artifact inventory columns through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-delimited-view-cli-");
+    const root = await createTestTempDirectory("nre-delimited-view-cli-");
     const request = join(root, "view.json");
     const parent = ARTIFACT_COMPARISON_EXAMPLE.left;
     await writeFile(
@@ -50,7 +50,7 @@ cliTest(
         JSON.parse(
           result.stdout
             .slice(0, metadataEnd)
-            .slice("# rea-delimited-v1 ".length),
+            .slice("# nre-delimited-v1 ".length),
         ),
       ).toMatchObject({
         format,

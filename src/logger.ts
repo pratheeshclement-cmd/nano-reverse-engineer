@@ -6,7 +6,7 @@ export const createLogger = (mode: "mcp" | "cli", level: LogLevel): Logger =>
   pino(
     {
       level,
-      base: { application: "rea", mode },
+      base: { application: "nre", mode },
     },
     pino.destination({ dest: 2, sync: false }),
   );

@@ -32,7 +32,7 @@ it.each(["draft-2020-12", "draft-07"] as const)(
     const projectedOutput = output["~standard"].jsonSchema.output({ target });
     const { $id, ...withoutId } = projectedOutput;
     expect($id).toBe(
-      `urn:rea:tool-output:sha256:${digestCanonicalValue({ target, schema: withoutId }, "Tool output schema")}`,
+      `urn:nre:tool-output:sha256:${digestCanonicalValue({ target, schema: withoutId }, "Tool output schema")}`,
     );
     for (const projected of [projectedInput, projectedOutput]) {
       const properties = projected.properties as Record<string, unknown>;

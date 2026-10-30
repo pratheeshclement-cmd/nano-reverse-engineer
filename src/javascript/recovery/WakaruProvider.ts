@@ -124,7 +124,7 @@ export class WakaruProvider implements JavaScriptRecoveryPort {
         this.#resources,
         options?.signal,
       );
-      root = await mkdtemp(join(tmpdir(), "rea-wakaru-"));
+      root = await mkdtemp(join(tmpdir(), "nre-wakaru-"));
       const inputs = join(root, "inputs");
       const staging = join(root, "modules");
       await mkdir(inputs, { mode: 0o700 });

@@ -100,7 +100,7 @@ it("keeps malformed JSON as an invalid observation", async () => {
 });
 
 it("reuses parsed package and JSON facts while building the public graph", async () => {
-  const root = await createTestTempDirectory("rea-json-document-graph-");
+  const root = await createTestTempDirectory("nre-json-document-graph-");
   await writeFixtureFiles(root, {
     "main.cjs": 'require("./dep"); require("./config.json");',
     "dep/package.json": '{"main":"index.cjs"}',

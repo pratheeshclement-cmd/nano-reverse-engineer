@@ -27,7 +27,7 @@ const parent = (): AnalysisViewParent => {
     },
     {
       id: "go-build-info",
-      name: "REA Go build-information reader",
+      name: "NRE Go build-information reader",
       version: "1",
     },
     {

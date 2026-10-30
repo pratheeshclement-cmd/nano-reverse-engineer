@@ -102,7 +102,7 @@ it("delivers provider-owned diagnostic keys without narrowing their JSON facts",
 
 describe("provider selection over MCP", () => {
   it("keeps open_binary and binary_session binding semantics exact", async () => {
-    directory = await createTestTempDirectory("rea-provider-mcp-");
+    directory = await createTestTempDirectory("nre-provider-mcp-");
     const target = join(directory, "fixture.hop");
     await writeFile(target, "fixture");
     const starts: string[] = [];
@@ -236,7 +236,7 @@ describe("provider selection over MCP", () => {
 });
 
 it("offers admitted providers and retains unconfigured rejections", async () => {
-  directory = await createTestTempDirectory("rea-provider-mcp-mixed-");
+  directory = await createTestTempDirectory("nre-provider-mcp-mixed-");
   const target = join(directory, "fixture.hop");
   await writeFile(target, "fixture");
   const starts: string[] = [];
@@ -438,7 +438,7 @@ const connectDetailFixture = async (starts: string[]) => {
 
 describe("binary_session detail over MCP", () => {
   it("defaults to a summary that keeps every decision fact and names what complete detail adds", async () => {
-    directory = await createTestTempDirectory("rea-session-detail-mcp-");
+    directory = await createTestTempDirectory("nre-session-detail-mcp-");
     const target = join(directory, "fixture.hop");
     await writeFile(target, "fixture");
     const starts: string[] = [];
@@ -629,7 +629,7 @@ const structured = (result: CallToolResult): Record<string, unknown> =>
     : z.record(z.string(), z.unknown()).parse(result.structuredContent);
 
 it("retains attributed mixed profile cleanup through registered MCP calls and partial retry", async () => {
-  directory = await createTestTempDirectory("rea-profile-completion-mcp-");
+  directory = await createTestTempDirectory("nre-profile-completion-mcp-");
   const path = join(directory, "fixture.hop");
   await writeFile(path, "fixture");
   const starts: string[] = [];

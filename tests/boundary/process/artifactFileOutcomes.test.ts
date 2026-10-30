@@ -67,7 +67,7 @@ const createFileOutcomeFixture = async ({
   failure,
   resource,
 }: FileOutcomeControl) => {
-  const root = await createTestTempDirectory("rea-file-primary-");
+  const root = await createTestTempDirectory("nre-file-primary-");
   const inputPath = join(root, "input");
   const command = join(root, "producer.mjs");
   const limiter = resource === "limiter" ? join(root, "limiter") : command;
@@ -114,10 +114,10 @@ const createFileOutcomeFixture = async ({
   const provider = new Provider(
     {
       ...process.env,
-      REA_SIGROK_COMMAND: command,
-      REA_SIGROK_PRLIMIT_COMMAND: limiter,
-      REA_TSHARK_COMMAND: command,
-      REA_TSHARK_PRLIMIT_COMMAND: limiter,
+      NRE_SIGROK_COMMAND: command,
+      NRE_SIGROK_PRLIMIT_COMMAND: limiter,
+      NRE_TSHARK_COMMAND: command,
+      NRE_TSHARK_PRLIMIT_COMMAND: limiter,
     },
     async (options) => {
       launches++;

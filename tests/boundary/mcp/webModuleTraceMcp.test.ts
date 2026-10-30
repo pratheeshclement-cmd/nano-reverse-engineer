@@ -330,12 +330,12 @@ it.each([
 const moduleTraceShutdownFailure = (shutdown: unknown): AnalysisError => {
   if (!(shutdown instanceof AggregateError))
     throw new Error("expected session shutdown failure");
-  expect(shutdown.message).toBe("REA session cleanup failed");
+  expect(shutdown.message).toBe("NRE session cleanup failed");
   expect(shutdown.errors).toHaveLength(1);
   const providers: unknown = shutdown.errors[0];
   if (!(providers instanceof AggregateError))
     throw new Error("expected provider shutdown failure");
-  expect(providers.message).toBe("REA provider cleanup failed");
+  expect(providers.message).toBe("NRE provider cleanup failed");
   expect(providers.errors).toHaveLength(1);
   const failure: unknown = providers.errors[0];
   if (!(failure instanceof AnalysisError))
@@ -375,7 +375,7 @@ const createModuleFinalizationHarness = async (
     },
   );
   const resolver = new NativeModuleResolver(
-    { REA_BROWSER_EXECUTABLE: "/browser" },
+    { NRE_BROWSER_EXECUTABLE: "/browser" },
     (options) => {
       launches += 1;
       return launcher(options);

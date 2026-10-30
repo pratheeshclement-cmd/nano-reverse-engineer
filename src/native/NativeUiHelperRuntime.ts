@@ -43,12 +43,12 @@ export const createNativeUiHelperRuntime = (
     }
   });
   const prepare = async (signal: AbortSignal): Promise<string> => {
-    root = await mkdtemp(join(tmpdir(), "rea-native-ui-"));
+    root = await mkdtemp(join(tmpdir(), "nre-native-ui-"));
     const output = join(root, "observer");
     const main = join(root, "main.swift");
     await symlink(
       fileURLToPath(
-        new URL("../../bridge/native/ReaNativeUI.swift", import.meta.url),
+        new URL("../../bridge/native/NreNativeUI.swift", import.meta.url),
       ),
       main,
     );

@@ -1,6 +1,6 @@
 # Recorded crash evidence
 
-`inspect_recorded_crash` / `rea inspect-recorded-crash` inspect a caller-selected
+`inspect_recorded_crash` / `nre inspect-recorded-crash` inspect a caller-selected
 Linux ELF64 little-endian core independently of an active binary target. Apple
 `.ips` crash reports use the separate [Apple IPS](apple-ips.md) workflow. Two
 architecture profiles are interpreted, x86-64 and AArch64; each binds registers
@@ -8,12 +8,12 @@ to its own `NT_PRSTATUS` layout, and any other `e_machine` is refused as
 `unsupported_target` before note interpretation.
 
 ```sh
-export REA_PWNTOOLS_PYTHON=/absolute/existing/venv/bin/python
-rea inspect-recorded-crash ./crash.core --json
+export NRE_PWNTOOLS_PYTHON=/absolute/existing/venv/bin/python
+nre inspect-recorded-crash ./crash.core --json
 ```
 
 The selected Python needs unchanged pwntools 4.15.0, pyelftools 0.33 and Unicorn 2.1.2.
-REA does not install these dependencies. ELFFile/its original ELF structures and
+NRE does not install these dependencies. ELFFile/its original ELF structures and
 pwntools' original Linux amd64 and aarch64 ctypes provide parsing and ABI layout.
 The adapter adds bounds, representation preservation and lifecycle ownership.
 The initial Linux note profile accepts System V/unspecified and GNU/Linux OSABI
@@ -59,10 +59,10 @@ interpretation completeness and signal-thread association remain unknown.
 ## Optional debugger mapping context
 
 ```sh
-export REA_PWNDBG_GDB=/absolute/existing/gdb
-export REA_PWNDBG_GDBINIT=/absolute/unchanged/pwndbg/gdbinit.py
-export REA_PWNDBG_VENV_PATH=/absolute/existing/pwndbg-venv
-rea inspect-recorded-crash ./crash.core --debugger-context --json
+export NRE_PWNDBG_GDB=/absolute/existing/gdb
+export NRE_PWNDBG_GDBINIT=/absolute/unchanged/pwndbg/gdbinit.py
+export NRE_PWNDBG_VENV_PATH=/absolute/existing/pwndbg-venv
+nre inspect-recorded-crash ./crash.core --debugger-context --json
 ```
 
 MCP uses `{ "path": "/artifacts/crash.core", "include_debugger_context": true }`.
@@ -103,7 +103,7 @@ debugger context is `observed`.
 
 Initial Linux x64 limits: 32 MiB input, 64 MiB decoder reply, 1 MiB diagnostics per
 stage, 30 seconds owned wall deadline per stage, 3 GiB address-space soft ceiling
-and 30 seconds CPU soft ceiling. `REA_PWNTOOLS_MAX_INPUT_BYTES` raises the input
+and 30 seconds CPU soft ceiling. `NRE_PWNTOOLS_MAX_INPUT_BYTES` raises the input
 bound alone, up to 1 GiB, and returns `provider_unavailable` when it is not a
 decimal integer in range; the reply, diagnostic and deadline bounds stay fixed, so a
 large core that outruns them still fails explicitly instead of partially. Tighter

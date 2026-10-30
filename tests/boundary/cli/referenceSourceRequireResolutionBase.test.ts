@@ -10,9 +10,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "resolves a proven createRequire URL base and preserves unsupported alternatives",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-require-base-");
+    const root = await createTestTempDirectory("nre-reference-require-base-");
     const config = await createTestTempDirectory(
-      "rea-reference-require-base-config-",
+      "nre-reference-require-base-config-",
     );
     await mkdir(join(root, "sub"), { recursive: true });
     await Promise.all([
@@ -76,10 +76,10 @@ cliTest(
   "honors supported require.resolve search options and leaves alternate paths unknown",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-reference-require-resolve-paths-",
+      "nre-reference-require-resolve-paths-",
     );
     const config = await createTestTempDirectory(
-      "rea-reference-require-resolve-paths-config-",
+      "nre-reference-require-resolve-paths-config-",
     );
     await mkdir(join(root, "sub"), { recursive: true });
     await Promise.all([

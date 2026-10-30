@@ -43,7 +43,7 @@ const { values } = parseArgs({
 const compilerOnly = values["compiler-oracle-only"];
 const entrypoint =
   values.entrypoint === undefined
-    ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
+    ? fileURLToPath(new URL("./nre.mjs", import.meta.url))
     : resolve(values.entrypoint);
 assert.ok(
   process.platform === "linux" && process.arch === "x64",
@@ -51,11 +51,11 @@ assert.ok(
 );
 const exec = promisify(execFile);
 const commands = {
-  gcc: process.env.REA_GCC ?? "gcc",
-  clang: process.env.REA_CLANG ?? "clang",
-  nm: process.env.REA_NM ?? "nm",
-  objdump: process.env.REA_OBJDUMP ?? "objdump",
-  strip: process.env.REA_STRIP ?? "strip",
+  gcc: process.env.NRE_GCC ?? "gcc",
+  clang: process.env.NRE_CLANG ?? "clang",
+  nm: process.env.NRE_NM ?? "nm",
+  objdump: process.env.NRE_OBJDUMP ?? "objdump",
+  strip: process.env.NRE_STRIP ?? "strip",
 };
 const versions = {};
 for (const [role, command] of Object.entries(commands)) {
@@ -87,7 +87,7 @@ if (!compilerOnly) {
   assert.equal(installation.status, "available", JSON.stringify(installation));
 }
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-switch-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-switch-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const source = join(workspace, "switch.c");
@@ -128,7 +128,7 @@ try {
     const stripped = join(workspace, `${compiler}-stripped`);
     await copyFile(original, stripped);
     await exec(commands.strip, ["--strip-all", stripped]);
-    // Byte/physical target oracle survives removal of the names that REA could use.
+    // Byte/physical target oracle survives removal of the names that NRE could use.
     assertCompiledSwitchOracle(await readFile(stripped), fixtures, disassembly);
     for (const [variant, path] of [
       ["optimized", original],
@@ -141,7 +141,7 @@ try {
       assert.equal(
         digest(await readFile(path)),
         sha256,
-        "REA analysis changed original compiled fixture",
+        "NRE analysis changed original compiled fixture",
       );
       results.push({
         compiler,
@@ -172,7 +172,7 @@ try {
 } finally {
   try {
     assert.deepEqual(
-      (await readdir(runtime)).filter((name) => name.startsWith("rea-ghidra-")),
+      (await readdir(runtime)).filter((name) => name.startsWith("nre-ghidra-")),
       [],
       "Owned Ghidra runtime survived close",
     );
@@ -194,9 +194,9 @@ async function verifyTarget(path, sha256, fixtures, variant) {
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
     TMPDIR: runtime,
-    REA_LOG_LEVEL: "silent",
-    REA_ANALYSIS_PROVIDER: "ghidra",
-    REA_PROCESS_RUN_ID: run.run_id,
+    NRE_LOG_LEVEL: "silent",
+    NRE_ANALYSIS_PROVIDER: "ghidra",
+    NRE_PROCESS_RUN_ID: run.run_id,
     GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR,
     ...(process.env.JAVA_HOME === undefined
       ? {}
@@ -208,7 +208,7 @@ async function verifyTarget(path, sha256, fixtures, variant) {
     env,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-real-switch-proof", version: "1" });
+  const client = new Client({ name: "nre-real-switch-proof", version: "1" });
   let opened = false;
   let stderr = "";
   const observations = [];
@@ -302,8 +302,8 @@ async function verifyTarget(path, sha256, fixtures, variant) {
 function assertWorkflowIdentity(evidence, sha256) {
   assert.equal(evidence.subject.digest.sha256, sha256);
   assert.equal(evidence.operation, "inspect_native_api");
-  assert.equal(evidence.provider.id, "rea-workflow");
-  assert.equal(evidence.analysis_profile.provider.id, "rea-workflow");
+  assert.equal(evidence.provider.id, "nre-workflow");
+  assert.equal(evidence.analysis_profile.provider.id, "nre-workflow");
   assert.equal(
     evidence.analysis_profile.parameters.upstream_analysis_profile.parameters
       .language_id,

@@ -54,7 +54,7 @@ const report = (): CompletionVerifierReport => ({
 
 const generate = (input: unknown = report(), skillSha256 = digest("a")) =>
   createCompletionLedgerArtifacts(input, [
-    { skill_id: "reverse-engineer-anything", sha256: skillSha256 },
+    { skill_id: "nano-reverse-engineer", sha256: skillSha256 },
   ]);
 
 const firstClaim = (input: CompletionVerifierReport) => {

@@ -59,7 +59,7 @@ jobs:
           python3 - <<'PYTHON'
           import hashlib, os, urllib.request, zipfile
           from pathlib import Path
-          root = Path(os.environ["RUNNER_TEMP"]) / "rea-apk-signature-sdk"
+          root = Path(os.environ["RUNNER_TEMP"]) / "nre-apk-signature-sdk"
           packages = [
               ("build-tools_r36.1_linux.zip", "a7b5889e4a79fcf3b0976bef40d401f4240fb1eed891d9d91169da1111e11d78", 64195204, "build-tools/36.1.0", {"apksigner", "aapt2", "lib/apksigner.jar", "source.properties"}),
               ("platform-36_r02.zip", "37607369a28c5b640b3a7998868d45898ebcb777565a0e85f9acf36f29631d2e", 65878410, "platforms/android-36", {"android.jar", "source.properties"}),

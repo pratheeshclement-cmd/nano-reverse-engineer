@@ -16,17 +16,17 @@ import { requireMcpOutput } from "./lib/mcp-verifier-results.mjs";
 import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 
 const execute = promisify(execFile);
-const compiler = process.env.REA_VERIFY_GO_COMMAND ?? "go";
-if (process.env.REA_VERIFY_GO_COMMAND !== undefined && !isAbsolute(compiler))
+const compiler = process.env.NRE_VERIFY_GO_COMMAND ?? "go";
+if (process.env.NRE_VERIFY_GO_COMMAND !== undefined && !isAbsolute(compiler))
   throw new Error(
-    "REA_VERIFY_GO_COMMAND must be an absolute Go compiler path.",
+    "NRE_VERIFY_GO_COMMAND must be an absolute Go compiler path.",
   );
 let compilerVersion = null;
 const run = createVerifierRun();
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-go-verifier-" });
+const root = await PrivateRuntimeRoot.create({ prefix: "nre-go-verifier-" });
 // Keep Go's directory enumeration below the private root's Windows ownership lease.
 const sourceRoot = join(root.path, "source");
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );
@@ -83,7 +83,7 @@ try {
     ).stdout.trim();
   } catch (cause) {
     throw new Error(
-      "verify:go:binary requires Go on PATH or absolute REA_VERIFY_GO_COMMAND; Go is only a fixture producer, not a REA runtime dependency.",
+      "verify:go:binary requires Go on PATH or absolute NRE_VERIFY_GO_COMMAND; Go is only a fixture producer, not a NRE runtime dependency.",
       { cause },
     );
   }
@@ -272,7 +272,7 @@ async function prepareFixture() {
   await mkdir(join(sourceRoot, "oracle"));
   await writeFile(
     join(sourceRoot, "go.mod"),
-    "module example.test/rea-go-fixture\n\ngo 1.20\n\nrequire example.test/dependency v1.2.3\nreplace example.test/dependency => ./dependency\n",
+    "module example.test/nre-go-fixture\n\ngo 1.20\n\nrequire example.test/dependency v1.2.3\nreplace example.test/dependency => ./dependency\n",
   );
   await writeFile(
     join(sourceRoot, "dependency", "go.mod"),
@@ -280,7 +280,7 @@ async function prepareFixture() {
   );
   await writeFile(
     join(sourceRoot, "dependency", "dependency.go"),
-    'package dependency\nfunc Value() string { return "REA fixture" }\n',
+    'package dependency\nfunc Value() string { return "NRE fixture" }\n',
   );
   await writeFile(
     join(sourceRoot, "main.go"),

@@ -19,7 +19,7 @@ for (const bits of [32, 64] as const) {
   cliTest(
     `rejects non-MZ PE${String(bits)} imports across CLI and MCP`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-pe-imports-signature-");
+      const root = await createTestTempDirectory("nre-pe-imports-signature-");
       const call = await cli.sharedMcpCall!();
       for (const [name, prefix] of [
         ["zz", Buffer.from("ZZ")],
@@ -71,7 +71,7 @@ for (const bits of [32, 64] as const) {
 cliTest(
   "distinguishes pefile's bounded name read from an invalid import name",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-import-name-");
+    const root = await createTestTempDirectory("nre-pe-import-name-");
     const call = await cli.sharedMcpCall!();
     for (const [label, name, reason] of [
       ["long", "A".repeat(513), /512-byte read limit/u],
@@ -114,7 +114,7 @@ cliTest(
 cliTest(
   "reports native and managed Linux AMD64 PE imports through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-imports-cli-");
+    const root = await createTestTempDirectory("nre-pe-imports-cli-");
     const call = await cli.sharedMcpCall!();
     for (const managed of [false, true]) {
       const bytes = peImportImage({ bits: 64 });
@@ -167,7 +167,7 @@ cliTest(
 cliTest(
   "resolves a relative PE path against the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-imports-cli-rel-");
+    const root = await createTestTempDirectory("nre-pe-imports-cli-rel-");
     await writeFile(join(root, "unsigned.exe"), peWithoutImportTableFixture());
     const result = await cli.run({
       arguments: ["inspect-pe-imports", "unsigned.exe", "--json"],
@@ -183,7 +183,7 @@ cliTest(
 );
 
 cliTest("reports a truncated PE as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-pe-imports-cli-bad-");
+  const root = await createTestTempDirectory("nre-pe-imports-cli-bad-");
   const path = join(root, "broken.exe");
   await writeFile(path, Buffer.from("MZ"));
   const result = await cli.run({
@@ -200,7 +200,7 @@ cliTest(
   "preserves directory declarations and partial rows at RVA and mapping boundaries",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-pe-imports-cli-directory-rva-",
+      "nre-pe-imports-cli-directory-rva-",
     );
     for (const [kind, rva, retained, mappingGap] of [
       ["standard", 0xffffffec, 1, false],
@@ -245,7 +245,7 @@ cliTest(
 cliTest(
   "retains a partial inventory when an IAT RVA overflows",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-imports-cli-overflow-");
+    const root = await createTestTempDirectory("nre-pe-imports-cli-overflow-");
     for (const bits of [32, 64] as const) {
       const bytes = peImportImage({ bits });
       bytes.writeUInt32LE(
@@ -282,7 +282,7 @@ cliTest(
   "keeps complete facts when pefile cannot see the same import table",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-pe-imports-cli-compatibility-",
+      "nre-pe-imports-cli-compatibility-",
     );
     const functions = Array.from({ length: 140 }, (_, i) => ({
       name: `Function${String(i).padStart(3, "0")}`,

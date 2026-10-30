@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "preserves uncertainty from a member write through with scope",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-with-member-write-");
+    const root = await createTestTempDirectory("nre-with-member-write-");
     await writeFile(
       join(root, "main.cjs"),
       `

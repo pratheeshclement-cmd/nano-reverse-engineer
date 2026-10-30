@@ -13,7 +13,7 @@ import { parseClientConfiguration } from "../../../src/application/ClientConfigu
 it.each(["native", "legacy"])(
   "retains an owned %s lower layer when a foreign upper layer inherits its fields",
   async (dialect) => {
-    const home = await createTestTempDirectory("rea-opencode-layered-foreign-");
+    const home = await createTestTempDirectory("nre-opencode-layered-foreign-");
     const directory = join(home, ".config/opencode");
     await mkdir(directory, { recursive: true });
     const lower = join(directory, "opencode.json");
@@ -23,9 +23,9 @@ it.each(["native", "legacy"])(
         ? {
             mcp: {
               servers: {
-                rea: {
+                nre: {
                   type: "local",
-                  command: ["rea", "mcp"],
+                  command: ["nre", "mcp"],
                   disabled: false,
                 },
               },
@@ -34,12 +34,12 @@ it.each(["native", "legacy"])(
         : {
             mcp: {
               servers: {},
-              rea: { type: "local", command: ["rea", "mcp"], enabled: true },
+              nre: { type: "local", command: ["nre", "mcp"], enabled: true },
             },
           },
     );
     const partial = JSON.stringify({
-      mcp: { servers: { rea: { command: ["/usr/bin/false"] } } },
+      mcp: { servers: { nre: { command: ["/usr/bin/false"] } } },
     });
     await writeFile(lower, owned);
     await writeFile(upper, partial);
@@ -54,7 +54,7 @@ it.each(["native", "legacy"])(
             sourcePath,
           })),
         ),
-      )?.servers.rea;
+      )?.servers.nre;
     const before = await effective();
     expect(before).toMatchObject({
       type: "local",
@@ -82,18 +82,18 @@ it.each(["native", "legacy"])(
 );
 
 it("preflights a foreign legacy registration across OpenCode layers before removal", async () => {
-  const home = await createTestTempDirectory("rea-opencode-layered-uninstall-");
+  const home = await createTestTempDirectory("nre-opencode-layered-uninstall-");
   const directory = join(home, ".config/opencode");
   await mkdir(directory, { recursive: true });
   const lower = join(directory, "opencode.json");
   const upper = join(directory, "opencode.jsonc");
   const legacy = JSON.stringify({
-    mcp: { rea: { type: "local", command: ["/usr/bin/false"], enabled: true } },
+    mcp: { nre: { type: "local", command: ["/usr/bin/false"], enabled: true } },
   });
   const native = JSON.stringify({
     mcp: {
       servers: {
-        rea: { type: "local", command: ["rea", "mcp"], disabled: false },
+        nre: { type: "local", command: ["nre", "mcp"], disabled: false },
       },
     },
   });
@@ -114,10 +114,10 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   );
   expect(await readFile(lower, "utf8")).toBe(legacy);
   expect(await readFile(upper, "utf8")).toBe(native);
-  await expect(access(`${lower}.rea.backup`)).rejects.toMatchObject({
+  await expect(access(`${lower}.nre.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
-  await expect(access(`${upper}.rea.backup`)).rejects.toMatchObject({
+  await expect(access(`${upper}.nre.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 
@@ -130,7 +130,7 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   expect(removed.items).toContainEqual(
     expect.objectContaining({ name: "opencode", status: "removed" }),
   );
-  expect(await readFile(upper, "utf8")).not.toContain('"rea"');
+  expect(await readFile(upper, "utf8")).not.toContain('"nre"');
 
   // Removing a shadowed owned registration does not activate a registration
   // that was already selected from a later layer.
@@ -138,7 +138,7 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   const foreignNative = JSON.stringify({
     mcp: {
       servers: {
-        rea: { type: "local", command: ["/usr/bin/false"], disabled: false },
+        nre: { type: "local", command: ["/usr/bin/false"], disabled: false },
       },
     },
   });
@@ -148,7 +148,7 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
     systemUninstallHost(home, undefined, environment),
   );
   expect(alreadyForeign.status).toBe("complete");
-  expect(await readFile(lower, "utf8")).not.toContain('"rea"');
+  expect(await readFile(lower, "utf8")).not.toContain('"nre"');
   expect(await readFile(upper, "utf8")).toBe(foreignNative);
 
   // The same control applies when the shadowed owned row uses V1 syntax.
@@ -157,7 +157,7 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
     JSON.stringify({
       mcp: {
         servers: {},
-        rea: { type: "local", command: ["rea", "mcp"], enabled: true },
+        nre: { type: "local", command: ["nre", "mcp"], enabled: true },
       },
     }),
   );
@@ -166,6 +166,6 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
     systemUninstallHost(home, undefined, environment),
   );
   expect(legacyAlreadyForeign.status).toBe("complete");
-  expect(await readFile(lower, "utf8")).not.toContain('"rea"');
+  expect(await readFile(lower, "utf8")).not.toContain('"nre"');
   expect(await readFile(upper, "utf8")).toBe(foreignNative);
 });

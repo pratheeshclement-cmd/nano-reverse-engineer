@@ -14,7 +14,7 @@ export async function readNpmRelease(version, request = fetch) {
   return readQualifiedNpmRelease(version, releaseNpmTag(version), request);
 }
 
-/** REA update follows stable latest even when the candidate is published on next. */
+/** NRE update follows stable latest even when the candidate is published on next. */
 export function stableUpdateVersion(version, published) {
   if (published.status !== "published" || published.taggedVersion !== version)
     throw new Error(`npm does not select ${version} on its release channel`);
@@ -43,7 +43,7 @@ export async function waitForNpmRelease(
     if (attempt < attempts) await pause(15_000);
   }
   throw new Error(
-    `rea-agents@${version} was not visible on npm after 120 attempts over 30 minutes`,
+    `nano-reverse-engineer@${version} was not visible on npm after 120 attempts over 30 minutes`,
   );
 }
 
@@ -63,7 +63,7 @@ async function main() {
   if (process.env.GITHUB_STEP_SUMMARY !== undefined) {
     await appendFile(
       process.env.GITHUB_STEP_SUMMARY,
-      `npm: rea-agents@${version} is published, matches the qualified tarball, and is selected by ${published.tag}.\n`,
+      `npm: nano-reverse-engineer@${version} is published, matches the qualified tarball, and is selected by ${published.tag}.\n`,
     );
   }
   process.stdout.write(`${JSON.stringify({ version, ...published })}\n`);

@@ -128,7 +128,7 @@ const lpBuf = (bytes: Uint8Array): Buffer =>
 let dir: string;
 const provider = new ApkSignatureProvider();
 beforeAll(async () => {
-  dir = await mkdtemp(join(tmpdir(), "rea-apk-sig-"));
+  dir = await mkdtemp(join(tmpdir(), "nre-apk-sig-"));
 });
 afterAll(async () => {
   await provider.close();

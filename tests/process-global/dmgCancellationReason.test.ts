@@ -40,7 +40,7 @@ import { translateArtifactFailure } from "../../src/artifacts/ArtifactOperationF
 it.skipIf(process.platform !== "darwin").each([false, true])(
   "preserves exact DMG caller reason and settles the command before return (pre-aborted: %s)",
   async (preAborted) => {
-    const root = await createTestTempDirectory("rea-dmg-cancellation-reason-");
+    const root = await createTestTempDirectory("nre-dmg-cancellation-reason-");
     state.marker = join(root, "ready");
     state.calls = 0;
     const reason = { requested: "stop verify" };

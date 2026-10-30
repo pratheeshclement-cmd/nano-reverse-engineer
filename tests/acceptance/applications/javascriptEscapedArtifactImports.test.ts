@@ -9,7 +9,7 @@ cliTest.for(
   (["CLI", "stdio MCP"] as const).flatMap((surface) =>
     [
       {
-        request: "../../rea-artifact/shared/window.cjs",
+        request: "../../nre-artifact/shared/window.cjs",
         status: "rejected",
       },
       { request: "../shared/window.cjs", status: "resolved" },
@@ -18,7 +18,7 @@ cliTest.for(
 )(
   "keeps ESM request $request within its real artifact boundary through $surface",
   async ({ surface, request, status }, { cli }) => {
-    const root = await createTestTempDirectory("rea-esm-artifact-escape-");
+    const root = await createTestTempDirectory("nre-esm-artifact-escape-");
     await writeFixtureFiles(root, {
       "a/package.json": '{"main":"main.mjs"}',
       "a/main.mjs": `throw new Error('Static fixture must never execute');import ${JSON.stringify(request)};`,

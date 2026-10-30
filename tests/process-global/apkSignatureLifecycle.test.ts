@@ -71,7 +71,7 @@ const deferred = () => {
   return { promise, resolve: () => complete() };
 };
 beforeAll(async () => {
-  root = await mkdtemp(join(tmpdir(), "rea-apk-lifecycle-"));
+  root = await mkdtemp(join(tmpdir(), "nre-apk-lifecycle-"));
   path = join(root, "unsigned.apk");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("classes.dex", new TextReader("x"));

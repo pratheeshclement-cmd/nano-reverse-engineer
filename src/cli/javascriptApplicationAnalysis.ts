@@ -109,7 +109,7 @@ export const runCliJavaScriptApplicationAnalysis = async (
     await import("../application/javascript/JavaScriptApplicationService.js");
   const progress = createProgressReporter(
     async (update) => {
-      process.stderr.write(`${JSON.stringify({ rea_progress: update })}\n`);
+      process.stderr.write(`${JSON.stringify({ nre_progress: update })}\n`);
     },
     { minimumIntervalMs: 0 },
   );

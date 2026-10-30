@@ -18,7 +18,7 @@ import { OwnedFileHandle } from "../filesystem/OwnedFileHandle.js";
 import type { ArtifactEntry } from "./ArtifactReader.js";
 
 const sliceOwnershipFixture = async () => {
-  const root = await createTestTempDirectory("rea-slice-ownership-");
+  const root = await createTestTempDirectory("nre-slice-ownership-");
   const path = join(root, "fat");
   const bytes = Buffer.concat([
     Buffer.from(machoImage({ cpu: CPU.x86_64 })),
@@ -99,7 +99,7 @@ describe("Mach-O cleanup exceptions", () => {
 
 describe("Mach-O command cleanup lifecycle", () => {
   it("waits for active lipo capture before cleanup and preserves its failure", async () => {
-    const root = await createTestTempDirectory("rea-slices-close-race-");
+    const root = await createTestTempDirectory("nre-slices-close-race-");
     const binary = join(root, "input");
     await writeFile(binary, Buffer.from("fixture"));
     let finishCommand!: (
@@ -195,7 +195,7 @@ describe("Mach-O command cleanup lifecycle", () => {
 
 describe("MachOSliceArtifactReader hidden architectures", () => {
   it("retains Apple's hidden ARM64 row separately from the declared FAT count", async () => {
-    const root = await createTestTempDirectory("rea-hidden-arm64-slices-");
+    const root = await createTestTempDirectory("nre-hidden-arm64-slices-");
     const binary = join(root, "fat");
     const armv7 = { type: 12, subtype: 9 };
     const armv7Image = machoImage({ cpu: armv7, wide: false });
@@ -240,7 +240,7 @@ describe("MachOSliceArtifactReader hidden architectures", () => {
   });
 
   it("rejects a lipo hidden ARM64 claim when its physical header disagrees", async () => {
-    const root = await createTestTempDirectory("rea-hidden-arm64-mismatch-");
+    const root = await createTestTempDirectory("nre-hidden-arm64-mismatch-");
     const binary = join(root, "fat");
     const armv7 = { type: 12, subtype: 9 };
     const armv7Image = machoImage({ cpu: armv7, wide: false });
@@ -288,7 +288,7 @@ describe("MachOSliceArtifactReader hidden architectures", () => {
 
 describe("MachOSliceArtifactReader", () => {
   it("classifies malformed successful lipo output at the reader boundary", async () => {
-    const root = await createTestTempDirectory("rea-slices-malformed-lipo-");
+    const root = await createTestTempDirectory("nre-slices-malformed-lipo-");
     const binary = join(root, "fat");
     await writeFile(
       binary,
@@ -331,7 +331,7 @@ describe("MachOSliceArtifactReader", () => {
   });
 
   it("keeps a borrowed source usable after idle and active cancelled slice reads", async () => {
-    const root = await createTestTempDirectory("rea-slices-cancelled-");
+    const root = await createTestTempDirectory("nre-slices-cancelled-");
     const binary = join(root, "fat");
     const x86 = machoImage({ cpu: CPU.x86_64 });
     const arm = Buffer.concat([
@@ -497,7 +497,7 @@ describe("universal slices outside the structural index", () => {
     }[],
     withRanges = true,
   ) => {
-    const root = await createTestTempDirectory("rea-slices-unsupported-");
+    const root = await createTestTempDirectory("nre-slices-unsupported-");
     const binary = join(root, "fat");
     await writeFile(binary, fatImage(slices));
     const reader = new MachOSliceArtifactReader(

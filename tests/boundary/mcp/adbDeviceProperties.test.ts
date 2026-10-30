@@ -50,7 +50,7 @@ for (const scenario of scenarios) {
   it.skipIf(process.platform === "win32").each(["cli", "mcp"] as const)(
     `preserves ${scenario.title} through %s`,
     async (adapter) => {
-      const workspace = await createTestWorkspace("rea-adb-properties-");
+      const workspace = await createTestWorkspace("nre-adb-properties-");
       onTestFinished(() => removeTestWorkspace(workspace.root));
       const binary = await workspace.write(
         "adb",
@@ -75,9 +75,9 @@ exit 1
       if (adapter === "cli") {
         const output = await execFileOutput(
           process.execPath,
-          ["scripts/rea.mjs", ...scenario.argv],
+          ["scripts/nre.mjs", ...scenario.argv],
           {
-            env: { ...process.env, REA_ADB_PATH: binary },
+            env: { ...process.env, NRE_ADB_PATH: binary },
             timeout: 20_000,
             stopSignal: "SIGTERM",
             maxBuffer: 1024 * 1024,
@@ -96,7 +96,7 @@ exit 1
           },
           {
             adbDeviceAnalysis: new AdbProvider({
-              environment: { REA_ADB_PATH: binary },
+              environment: { NRE_ADB_PATH: binary },
             }),
           },
         );

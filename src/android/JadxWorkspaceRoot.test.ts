@@ -37,7 +37,7 @@ it("decodes a Windows guardian path across split UTF-8 stdout writes", async () 
     value: "win32",
   });
   const parent = "C:\\Users\\研究者\\AppData\\Local\\Temp";
-  const path = win32.join(parent, `rea-android-${"a".repeat(32)}`);
+  const path = win32.join(parent, `nre-android-${"a".repeat(32)}`);
   const child = Object.assign(new EventEmitter(), {
     stdin: new PassThrough(),
     stdout: new PassThrough(),

@@ -14,7 +14,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "retains large event names and emitter-scoped listener ownership through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-event-payload-");
+    const root = await createTestTempDirectory("nre-event-payload-");
     const name = "payload/ğ".repeat(80_000);
     const lookalike = `value-sha256:${createHash("sha256").update(JSON.stringify(name)).digest("hex")}`;
     const source = [
@@ -45,7 +45,7 @@ cliTest(
     const client = new Client({ name: "event-payload-e2e", version: "1" });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: { PATH: process.env.PATH ?? "" },
       stderr: "pipe",

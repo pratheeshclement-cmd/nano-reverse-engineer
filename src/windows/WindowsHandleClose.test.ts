@@ -22,7 +22,7 @@ describe.skipIf(process.platform === "win32" && compilerMissing)(
         new URL("../../native/windows/src/", import.meta.url),
       );
       const source = join(include, "handle_close_test.cc");
-      const directory = await mkdtemp(join(tmpdir(), "rea-handle-close-"));
+      const directory = await mkdtemp(join(tmpdir(), "nre-handle-close-"));
       const binary = join(directory, "handle-close-test");
       try {
         await run(

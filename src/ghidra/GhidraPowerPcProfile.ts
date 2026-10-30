@@ -37,7 +37,7 @@ export const ghidraPowerPcUnsupportedReason = (
 };
 
 /**
- * The language the lane imports with, unless REA_GHIDRA_LANGUAGE_ID already
+ * The language the lane imports with, unless NRE_GHIDRA_LANGUAGE_ID already
  * selected one through the committed profile.
  */
 export const ghidraPowerPcLanguage = (

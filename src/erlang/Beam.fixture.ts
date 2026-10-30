@@ -113,7 +113,7 @@ export const erlangBeamManyAtomsFixture = (count: number): Buffer => {
  * Compiler-produced BEAM: `erlc +deterministic` from Erlang/OTP 29 (compiler
  * 10.0.2), which writes the OTP 28+ compact AtU8 layout. Source:
  *
- *     -module(rea_beam_fixture).
+ *     -module(nre_beam_fixture).
  *     -export([hello/1]).
  *     hello(Name) -> lists:reverse(Name).
  */

@@ -28,7 +28,7 @@ cliTest.for(["valid", "invalid-type", "empty"] as const)(
       { operation: "inspect_binary_layout", parameters: {}, result },
     );
     const path = join(
-      await createTestTempDirectory("rea-layout-view-diagnostics-"),
+      await createTestTempDirectory("nre-layout-view-diagnostics-"),
       "request.json",
     );
     await writeFile(

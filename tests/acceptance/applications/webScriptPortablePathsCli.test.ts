@@ -11,7 +11,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 cliTest(
   "keeps portable URL characters in exported module relationships",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-web-script-portable-");
+    const root = await createTestTempDirectory("nre-web-script-portable-");
     const capturePath = join(root, "capture.json");
     const output = join(root, "output");
     const filenames = ["chunk+abc.js", "cash$flow.js", "a&b.js"];

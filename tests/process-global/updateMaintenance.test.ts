@@ -19,11 +19,11 @@ import { systemUpdateHost } from "../../src/application/UpdateRuntime.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { cliTest } from "../support/cli/cliFixture.js";
 
-const entryPoint = resolve("scripts/rea.mjs");
+const entryPoint = resolve("scripts/nre.mjs");
 let home: string;
 
 beforeEach(async () => {
-  home = await createTestTempDirectory("rea-update-maintenance-");
+  home = await createTestTempDirectory("nre-update-maintenance-");
   for (const [name, value] of Object.entries({
     HOME: home,
     USERPROFILE: home,
@@ -71,17 +71,17 @@ const writeSkill = async (content: string): Promise<string> => {
 };
 
 const staleCodex =
-  '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@0.1.0", "mcp"]\n';
+  '[mcp_servers.nre]\ncommand = "npx"\nargs = ["-y", "nano-reverse-engineer@0.1.0", "mcp"]\n';
 const action = {
   id: "configure_client:codex",
   kind: "configure_client",
   label: "Codex",
   target: "/test/.codex/config.toml",
-  detail: "Refresh the pinned REA version",
+  detail: "Refresh the pinned NRE version",
   external: false,
   operation: "update",
-  backupPath: "/test/.codex/config.toml.rea.backup",
-  commands: ["rea mcp"],
+  backupPath: "/test/.codex/config.toml.nre.backup",
+  commands: ["nre mcp"],
 };
 
 describe("OMP integration maintenance", () => {
@@ -89,7 +89,7 @@ describe("OMP integration maintenance", () => {
     const entry = { type: "stdio", command: entryPoint, args: ["mcp"] };
     await writeClient(
       "omp",
-      JSON.stringify({ mcpServers: { rea: { ...entry, enabled: false } } }),
+      JSON.stringify({ mcpServers: { nre: { ...entry, enabled: false } } }),
     );
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env),
@@ -97,8 +97,8 @@ describe("OMP integration maintenance", () => {
     await writeClient(
       "omp",
       JSON.stringify({
-        mcpServers: { rea: { ...entry, enabled: false } },
-        enabledServers: ["rea"],
+        mcpServers: { nre: { ...entry, enabled: false } },
+        enabledServers: ["nre"],
       }),
     );
     await expect(
@@ -109,16 +109,16 @@ describe("OMP integration maintenance", () => {
   it("preserves Grok Build disabled_mcp_servers during maintenance planning", async () => {
     // Strict identity: a user-disabled integration must never be selected
     // for maintenance, even with a healthy owned entry underneath.
-    const registration = `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entryPoint)}, "mcp"]\nstartup_timeout_sec = 30\n`;
+    const registration = `[mcp_servers.nre]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entryPoint)}, "mcp"]\nstartup_timeout_sec = 30\n`;
     const configPath = await writeClient(
       "grok_build",
-      `disabled_mcp_servers = ["rea", "other"]\n${registration}`,
+      `disabled_mcp_servers = ["nre", "other"]\n${registration}`,
     );
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env),
     ).resolves.toMatchObject({ clients: [] });
     expect(await readFile(configPath, "utf8")).toContain(
-      'disabled_mcp_servers = ["rea", "other"]',
+      'disabled_mcp_servers = ["nre", "other"]',
     );
     await writeFile(
       configPath,
@@ -137,7 +137,7 @@ describe("maintenance activation and layered configuration", () => {
       "cursor",
       JSON.stringify({
         mcpServers: {
-          rea: { command: join(home, "removed-release", "rea"), args: ["mcp"] },
+          nre: { command: join(home, "removed-release", "nre"), args: ["mcp"] },
         },
       }),
     );
@@ -176,7 +176,7 @@ describe("maintenance activation and layered configuration", () => {
     const originalLower = JSON.stringify({
       mcp: {
         servers: {
-          rea: { type: "local", command: [entryPoint, "mcp"], disabled: true },
+          nre: { type: "local", command: [entryPoint, "mcp"], disabled: true },
         },
       },
     });
@@ -195,7 +195,7 @@ describe("maintenance activation and layered configuration", () => {
       JSON.stringify({
         mcp: {
           servers: {
-            rea: { command: entryPoint, args: ["mcp"], enable: false },
+            nre: { command: entryPoint, args: ["mcp"], enable: false },
           },
         },
       }),
@@ -214,7 +214,7 @@ describe("maintenance activation and layered configuration", () => {
     await writeFile(
       fallbackPath,
       JSON.stringify({
-        mcpServers: { rea: { command: entryPoint, args: ["mcp"] } },
+        mcpServers: { nre: { command: entryPoint, args: ["mcp"] } },
       }),
     );
 
@@ -231,7 +231,7 @@ describe("maintenance activation and layered configuration", () => {
     await writeFile(
       join(directory, "opencode.json"),
       JSON.stringify({
-        mcp: { rea: { type: "local", command: [entryPoint, "mcp"] } },
+        mcp: { nre: { type: "local", command: [entryPoint, "mcp"] } },
       }),
     );
     await writeClient("opencode", JSON.stringify({ theme: "user-selected" }));
@@ -247,16 +247,16 @@ describe("registration ownership in maintenance", () => {
     await writeClient("claude_code", '{"mcpServers":{}}');
     await writeClient(
       "cursor",
-      '{"mcpServers":{"rea":{"command":"foreign-server","args":[]}}}',
+      '{"mcpServers":{"nre":{"command":"foreign-server","args":[]}}}',
     );
     await writeClient(
       "opencode",
-      '{"mcp":{"rea":{"type":"local","command":["npx","-y","rea-agents@0.1.0","mcp"],"enabled":false}}}',
+      '{"mcp":{"nre":{"type":"local","command":["npx","-y","nano-reverse-engineer@0.1.0","mcp"],"enabled":false}}}',
     );
     await writeClient(
       "vscode",
       JSON.stringify({
-        servers: { rea: { type: "stdio", command: entryPoint, args: ["mcp"] } },
+        servers: { nre: { type: "stdio", command: entryPoint, args: ["mcp"] } },
       }),
     );
     expect(
@@ -303,7 +303,7 @@ describe("registration ownership in maintenance", () => {
   });
 });
 
-describe("existing REA integration maintenance", () => {
+describe("existing NRE integration maintenance", () => {
   it("does not install a missing skill or overwrite an unrelated skill", async () => {
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env),
@@ -322,9 +322,9 @@ describe("existing REA integration maintenance", () => {
     });
   });
 
-  it("includes an existing REA skill and leaves files untouched", async () => {
+  it("includes an existing NRE skill and leaves files untouched", async () => {
     const path = await writeSkill(
-      `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# REA\n`,
+      `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# NRE\n`,
     );
     const original = await readFile(path, "utf8");
     await expect(
@@ -440,7 +440,7 @@ describe("shared registration maintenance", () => {
       JSON.stringify({
         mcpServers: {
           other: { command: "other-server" },
-          rea: { command: entryPoint, args: ["mcp"] },
+          nre: { command: entryPoint, args: ["mcp"] },
         },
       }),
     );
@@ -467,7 +467,10 @@ describe("shared registration maintenance", () => {
       "freebuff",
       JSON.stringify({
         mcpServers: {
-          rea: { command: "npx", args: ["-y", "rea-agents@0.1.0", "mcp"] },
+          nre: {
+            command: "npx",
+            args: ["-y", "nano-reverse-engineer@0.1.0", "mcp"],
+          },
         },
       }),
     );
@@ -481,7 +484,7 @@ describe("shared registration maintenance", () => {
     await writeClient(
       "freebuff",
       JSON.stringify({
-        mcpServers: { rea: { command: "foreign-server", args: [] } },
+        mcpServers: { nre: { command: "foreign-server", args: [] } },
       }),
     );
     await expect(
@@ -501,7 +504,7 @@ describe("shared registration maintenance", () => {
       "freebuff",
       JSON.stringify({
         mcpServers: {
-          rea: { command: entryPoint, args: ["mcp"], enable: false },
+          nre: { command: entryPoint, args: ["mcp"], enable: false },
         },
       }),
     );
@@ -521,7 +524,7 @@ describe("updated executable maintenance planning", () => {
   it("runs real setup as a noninteractive dry run and creates no new integrations or backups", async () => {
     const configPath = await writeClient("codex", staleCodex);
     const untouched = await writeClient("claude_code", '{"mcpServers":{}}');
-    const skillContent = `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# REA\n`;
+    const skillContent = `---\nname: ${PRODUCT_IDENTITY.skillName}\nmetadata:\n  version: "1"\n---\n# NRE\n`;
     const skillPath = await writeSkill(skillContent);
     vi.stubEnv("npm_command", "exec");
     const result = await planIntegrationMaintenance(
@@ -556,10 +559,10 @@ describe("updated executable maintenance planning", () => {
     expect(await readFile(configPath, "utf8")).toBe(staleCodex);
     expect(await readFile(untouched, "utf8")).toBe('{"mcpServers":{}}');
     expect(await readFile(skillPath, "utf8")).toBe(skillContent);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${configPath}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
-    await expect(access(`${skillPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${skillPath}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(
@@ -630,9 +633,9 @@ describe("update subprocess boundaries", () => {
       });
   });
 
-  it("verifies the requested package entry rather than PATH's rea", async () => {
+  it("verifies the requested package entry rather than PATH's nre", async () => {
     const packageRoot = join(home, "package");
-    const script = join(packageRoot, "scripts", "rea.mjs");
+    const script = join(packageRoot, "scripts", "nre.mjs");
     await mkdir(dirname(script), { recursive: true });
     await writeFile(script, 'process.stdout.write("3.3.0\\n")');
     await expect(
@@ -662,11 +665,11 @@ const createBunUpdateFixture = async (
   await mkdir(join(packageRoot, "scripts"), { recursive: true });
   await writeFile(
     join(globalDirectory, "package.json"),
-    '{"dependencies":{"rea-agents":"3.2.1"}}\n',
+    '{"dependencies":{"nano-reverse-engineer":"3.2.1"}}\n',
   );
   await writeFile(versionPath, "3.2.1");
   await writeFile(
-    join(packageRoot, "scripts", "rea.mjs"),
+    join(packageRoot, "scripts", "nre.mjs"),
     `import { readFileSync } from "node:fs";\nprocess.stdout.write(readFileSync(${JSON.stringify(versionPath)}, "utf8") + "\\n");\n`,
   );
   const binDirectory = join(root, "bin");
@@ -703,7 +706,7 @@ const createBunUpdateFixture = async (
 it.skipIf(process.platform === "win32")(
   "distinguishes a missing npm metadata launcher from a started registry probe",
   async () => {
-    const root = await createTestTempDirectory("rea-npm-probe-failure-");
+    const root = await createTestTempDirectory("nre-npm-probe-failure-");
     const bin = join(root, "bin");
     await mkdir(bin);
     const host = systemUpdateHost(root, home, { ...process.env, PATH: bin });
@@ -738,7 +741,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "reports a Bun metadata launcher lost after a successful version probe",
   async () => {
-    const root = await createTestTempDirectory("rea-bun-metadata-launch-");
+    const root = await createTestTempDirectory("nre-bun-metadata-launch-");
     const fixture = await createBunUpdateFixture(root, "1.4.2", 0, 0);
     await writeFile(
       join(fixture.binDirectory, "bun"),
@@ -774,7 +777,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32").each(["failed", "missing"] as const)(
   "reports a %s local Bun probe without attempting release lookup",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-bun-probe-failure-");
+    const root = await createTestTempDirectory("nre-bun-probe-failure-");
     const fixture = await createBunUpdateFixture(root, "1.4.2", 0, 0);
     const executable = join(fixture.binDirectory, "bun");
     if (mode === "missing") await rm(executable);
@@ -838,7 +841,7 @@ describe("Bun global installation update", () => {
       installExitCode,
     ) => {
       // A recording `bun` on PATH crosses the real subprocess boundary without registry access.
-      const root = await createTestTempDirectory("rea-update-bun-");
+      const root = await createTestTempDirectory("nre-update-bun-");
       const {
         globalDirectory,
         packageRoot,
@@ -891,7 +894,7 @@ describe("Bun global installation update", () => {
           currentVersion: "3.2.1",
           latestVersion: null,
           reason: "version-check",
-          remediation: `REA updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(bunVersion)}. Upgrade Bun manually, then rerun rea update.`,
+          remediation: `NRE updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(bunVersion)}. Upgrade Bun manually, then rerun nre update.`,
         });
         expect(invocations).toEqual([versionInvocation]);
         expect(await readFile(versionPath, "utf8")).toBe("3.2.1");

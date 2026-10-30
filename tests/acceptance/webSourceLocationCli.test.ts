@@ -17,7 +17,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "accepts numeric UTF-16 coordinates and runs the actual owned source-map codec without a browser",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-source-map-cli-");
+    const root = await createTestTempDirectory("nre-source-map-cli-");
     const fixture = webSourceLocationFixture(
       JSON.stringify({
         version: 3,
@@ -51,8 +51,8 @@ cliTest(
         "--json",
       ],
       environment: {
-        REA_LOG_LEVEL: "silent",
-        REA_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
+        NRE_LOG_LEVEL: "silent",
+        NRE_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
         CLANG_MODULE_CACHE_PATH: map,
       },
       timeoutMs: 45000,
@@ -89,7 +89,7 @@ cliTest(
       },
     });
     const limitation =
-      "Source names and sourceRoot are reported declarations. REA derives resolved URLs using WHATWG URL resolution; the pinned upstream codec decodes mappings. No original source is fetched or executed.";
+      "Source names and sourceRoot are reported declarations. NRE derives resolved URLs using WHATWG URL resolution; the pinned upstream codec decodes mappings. No original source is fetched or executed.";
     expect(response.json).toMatchObject({
       limitations: expect.arrayContaining([limitation]),
       normalized_result: { limitations: expect.arrayContaining([limitation]) },
@@ -97,12 +97,12 @@ cliTest(
     const transport = new StdioClientTransport({
       command: process.execPath,
       args: [
-        fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../scripts/nre.mjs", import.meta.url)),
         "mcp",
       ],
       env: {
         ...getDefaultEnvironment(),
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
         CLANG_MODULE_CACHE_PATH: map,
       },
       stderr: "pipe",
@@ -141,7 +141,7 @@ cliTest(
         "0",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
       timeoutMs: 45000,
     });
     expect(invalid.exitCode).toBe(1);
@@ -171,14 +171,14 @@ cliTest(
 cliTest(
   "applies the shared version constraint to nested indexed maps through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-indexed-map-version-");
+    const root = await createTestTempDirectory("nre-indexed-map-version-");
     const fixture = webSourceLocationFixture();
     await mkdir(join(root, "files", "modules"), { recursive: true });
     await writeFile(join(root, "files", "modules", "main.js"), fixture.source);
     const manifest = join(root, "manifest.json").replaceAll("\\", "/");
     await writeFile(manifest, JSON.stringify(fixture.manifest));
     const { call } = await connectLocalToolsMcp({
-      REA_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
+      NRE_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
     });
     const leaf: unknown = JSON.parse(fixture.sourceMap.text);
     for (const [index, version] of [3, 2, null, undefined, "3"].entries()) {
@@ -208,8 +208,8 @@ cliTest(
           "--json",
         ],
         environment: {
-          REA_LOG_LEVEL: "silent",
-          REA_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
+          NRE_LOG_LEVEL: "silent",
+          NRE_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
         },
         timeoutMs: 45_000,
       });
@@ -284,7 +284,7 @@ cliTest(
 cliTest(
   "traces empty equal-offset sections while rejecting decreasing offsets and represented overlaps",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-empty-indexed-map-");
+    const root = await createTestTempDirectory("nre-empty-indexed-map-");
     const fixture = webSourceLocationFixture();
     await mkdir(join(root, "files", "modules"), { recursive: true });
     await writeFile(join(root, "files", "modules", "main.js"), fixture.source);
@@ -329,7 +329,7 @@ cliTest(
           String(sample.nextColumn),
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
         timeoutMs: 45_000,
       });
       const response = await call("trace_web_source_location", {
@@ -384,7 +384,7 @@ cliTest(
 cliTest(
   "resolves empty-sourceRoot sources against the map URL through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-empty-source-root-");
+    const root = await createTestTempDirectory("nre-empty-source-root-");
     // webpack 5 and tsc emit `"sourceRoot": ""` for map-relative sources.
     const text = JSON.stringify({
       version: 3,
@@ -414,8 +414,8 @@ cliTest(
         "--json",
       ],
       environment: {
-        REA_LOG_LEVEL: "silent",
-        REA_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
+        NRE_LOG_LEVEL: "silent",
+        NRE_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
       },
       timeoutMs: 45_000,
     });
@@ -442,7 +442,7 @@ cliTest(
       },
     });
     const { call } = await connectLocalToolsMcp({
-      REA_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
+      NRE_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
     });
     const response = await call("trace_web_source_location", {
       manifest_path: manifest,

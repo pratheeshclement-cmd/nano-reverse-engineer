@@ -39,7 +39,7 @@ import { machoImage } from "../../src/artifacts/apple/MachoImage.fixture.js";
 it.each([false, true])(
   "retains automatic dylib-root reader cleanup authority after native-close failure (blocked: %s)",
   async (blocked) => {
-    const parent = await createTestTempDirectory("rea-dyld-directory-owner-");
+    const parent = await createTestTempDirectory("nre-dyld-directory-owner-");
     const root = join(parent, "Fixture.app");
     await mkdir(join(root, "Contents", "MacOS"), { recursive: true });
     await writeFile(

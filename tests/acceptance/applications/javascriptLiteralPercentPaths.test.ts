@@ -27,7 +27,7 @@ cliTest.for(
 )(
   "keeps loadFile roots unknown after an Electron application path setter through $surface ($setter)",
   async ({ surface, setter }, { cli }) => {
-    const root = await createTestTempDirectory("rea-app-path-setter-");
+    const root = await createTestTempDirectory("nre-app-path-setter-");
     const change =
       setter === "direct"
         ? 'const { app } = require("electron"); app.setAppPath("/runtime/changed");'
@@ -79,7 +79,7 @@ cliTest.for(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "propagates the application owner into an inventoried ASAR through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-asar-inward-");
+    const root = await createTestTempDirectory("nre-asar-inward-");
     const source = join(root, "source");
     const application = join(root, "application");
     await writeFixtureFiles(source, {
@@ -143,7 +143,7 @@ cliTest.for(
 )(
   "retains possible owners for a module across a nested ASAR boundary through $surface (dynamic=$dynamic)",
   async ({ surface, dynamic }, { cli }) => {
-    const root = await createTestTempDirectory("rea-asar-module-gap-");
+    const root = await createTestTempDirectory("nre-asar-module-gap-");
     const source = join(root, "source");
     const application = join(root, "application");
     await writeFixtureFiles(source, {
@@ -204,7 +204,7 @@ cliTest.for(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "resolves a proven application page across a nested ASAR boundary through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-asar-outer-page-");
+    const root = await createTestTempDirectory("nre-asar-outer-page-");
     const source = join(root, "source");
     const application = join(root, "application");
     await writeFixtureFiles(source, {
@@ -362,7 +362,7 @@ const writeRuntimeFixture = async (root: string): Promise<void> => {
     "ambiguous/dist%2Findex.html": "unproven application target",
     "ambiguous/sub/dist%2Findex.html": "unproven nested application target",
   });
-  const archiveSource = await createTestTempDirectory("rea-loadfile-asar-");
+  const archiveSource = await createTestTempDirectory("nre-loadfile-asar-");
   await writeFixtureFiles(archiveSource, {
     "package.json": JSON.stringify({ main: "sub/main.cjs" }),
     "sub/package.json": JSON.stringify({ type: "commonjs" }),
@@ -385,7 +385,7 @@ const writeRuntimeFixture = async (root: string): Promise<void> => {
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "does not invent a nested default-entry owner without index.js through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-empty-default-owner-");
+    const root = await createTestTempDirectory("nre-empty-default-owner-");
     for (const [directory, metadata] of [
       ["empty", { main: "" }],
       ["absent", {}],
@@ -428,7 +428,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains non-string main evidence while following Node index entries through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-invalid-main-owner-");
+    const root = await createTestTempDirectory("nre-invalid-main-owner-");
     for (const [index, main] of [123, false, null, {}, []].entries()) {
       await writeFixtureFiles(root, {
         [`a${index}/package.json`]: JSON.stringify({
@@ -502,7 +502,7 @@ cliTest.for(
 )(
   "keeps unselected package ownership unknown through $surface for $source (selected owner: $selectedOwner)",
   async ({ surface, source, selectedOwner }, { cli }) => {
-    const root = await createTestTempDirectory("rea-selected-loadfile-");
+    const root = await createTestTempDirectory("nre-selected-loadfile-");
     await writeRuntimeFixture(root);
     if (selectedOwner)
       await writeFixtureFiles(root, {
@@ -551,7 +551,7 @@ cliTest.for(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps omitted launch owners unknown between identical ASAR occurrences through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-selected-asar-owner-");
+    const root = await createTestTempDirectory("nre-selected-asar-owner-");
     await writeRuntimeFixture(root);
     const { graph } = await analyzeJavaScriptDirectory(surface, cli, root, {
       sourcePaths: [
@@ -606,7 +606,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains a selected entry owner and confines loadFile after applying its root through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-proven-partial-owner-");
+    const root = await createTestTempDirectory("nre-proven-partial-owner-");
     await writeFixtureFiles(root, {
       "app/package.json": JSON.stringify({ main: "main.cjs" }),
       "app/main.cjs":
@@ -660,7 +660,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps absolute loadFile host paths unknown through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-loadfile-absolute-");
+    const root = await createTestTempDirectory("nre-loadfile-absolute-");
     await writeFixtureFiles(root, {
       "app/package.json": JSON.stringify({ main: "main.cjs" }),
       "app/main.cjs":
@@ -698,7 +698,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves literal-percent runtime paths through %s without executing source",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-runtime-percent-");
+    const root = await createTestTempDirectory("nre-runtime-percent-");
     await writeRuntimeFixture(root);
     const { graph } = await analyzeJavaScriptDirectory(surface, cli, root);
     for (const [sourcePath, targetRoot, declared] of (
@@ -813,7 +813,7 @@ cliTest.for(
 )(
   "retains unread competing launch owners across an ASAR boundary through $surface ($owner)",
   async ({ surface, owner }, { cli }) => {
-    const root = await createTestTempDirectory("rea-unread-asar-owner-");
+    const root = await createTestTempDirectory("nre-unread-asar-owner-");
     const source = join(root, "source");
     const application = join(root, "application");
     await writeFixtureFiles(source, {
@@ -896,7 +896,7 @@ cliTest.for(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps every application root unknown when three owners import one setter through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-shared-app-setter-");
+    const root = await createTestTempDirectory("nre-shared-app-setter-");
     await writeFixtureFiles(root, {
       "shared/change.cjs":
         'const { app } = require("electron"); app.setAppPath("/runtime/changed");',
@@ -948,7 +948,7 @@ cliTest.for(
 )(
   "retains package main ownership after an ASAR escape through $surface ($request)",
   async ({ surface, request }, { cli }) => {
-    const root = await createTestTempDirectory("rea-asar-metadata-");
+    const root = await createTestTempDirectory("nre-asar-metadata-");
     const source = join(root, "source");
     const application = join(root, "application");
     const directory =

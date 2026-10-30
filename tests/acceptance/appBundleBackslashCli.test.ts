@@ -14,7 +14,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform !== "darwin")(
   "inspects a bundle with a literal backslash in its executable name",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-app-backslash-");
+    const root = await createTestTempDirectory("nre-app-backslash-");
     const app = join(root, "Back.app");
     const programs = join(app, "Contents", "MacOS");
     const executable = join(programs, "App\\Name");

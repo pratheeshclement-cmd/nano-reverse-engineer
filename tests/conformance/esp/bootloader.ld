@@ -1,4 +1,4 @@
-ENTRY(rea_entry)
+ENTRY(nre_entry)
 /*
  * RAM-only ESP32-C3 layout, as a second-stage bootloader has. The addresses
  * are in the DRAM and IRAM ranges of ESP-IDF v6.1

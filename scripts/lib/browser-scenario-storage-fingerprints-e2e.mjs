@@ -13,8 +13,8 @@ import {
 } from "./browser-scenario-verifier.mjs";
 import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 
-const secretVariable = "REA_BROWSER_FINGERPRINT_VERIFIER_SECRET";
-const secret = "rea-storage-fingerprint-private";
+const secretVariable = "NRE_BROWSER_FINGERPRINT_VERIFIER_SECRET";
+const secret = "nre-storage-fingerprint-private";
 const utf8Digest = (value) => createHash("sha256").update(value).digest("hex");
 const literal = (value) => ({ source: "literal", value });
 const secretReference = { source: "secret", secret_id: "storage_secret" };
@@ -34,7 +34,7 @@ const scenarioFor = (executable, origin, value) => {
     storage: {
       // The shared site's favicon response also sets this same cookie.
       cookies: [
-        ["rea-root-cookie", literal("root-fixture")],
+        ["nre-root-cookie", literal("root-fixture")],
         ["ordinary", literal("ordinary-value")],
         ["secret", secretReference],
       ].map(([name, value]) => ({
@@ -136,7 +136,7 @@ export async function verifyScenarioStorageFingerprints(executable, origin) {
   process.env[secretVariable] = secret;
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
+    args: [fileURLToPath(new URL("../nre.mjs", import.meta.url)), "mcp"],
     env: process.env,
     stderr: "pipe",
   });

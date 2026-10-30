@@ -8,7 +8,7 @@ import { observePosixProcess } from "../../support/process/observePosixProcess.j
 it.skipIf(process.platform === "win32")(
   "distinguishes absent, zombie, running, and unknown ps observations",
   async () => {
-    const directory = await createTestTempDirectory("rea-posix-process-state-");
+    const directory = await createTestTempDirectory("nre-posix-process-state-");
     const checker = join(directory, "ps");
     const previousPath = process.env.PATH;
     const setChecker = async (body: string): Promise<void> => {

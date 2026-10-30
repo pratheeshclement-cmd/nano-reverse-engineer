@@ -121,7 +121,7 @@ const factories = (
 it.each([false, true])(
   "retains actual artifact sources and caller path after final-close cancellation (cleanup fails: %s)",
   async (closeFails) => {
-    const root = await createTestTempDirectory("rea-artifact-final-close-");
+    const root = await createTestTempDirectory("nre-artifact-final-close-");
     const source = join(root, "source");
     const archive = join(root, "fixture.asar");
     await mkdir(source);

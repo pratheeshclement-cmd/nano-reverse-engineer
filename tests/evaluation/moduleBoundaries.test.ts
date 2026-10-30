@@ -236,7 +236,7 @@ describe("module import syntax and source discovery", () => {
   });
 
   it("reports malformed source with the selected file and parsing reason", async () => {
-    const temporary = await createTestTempDirectory("rea-module-syntax-");
+    const temporary = await createTestTempDirectory("nre-module-syntax-");
     await mkdir(join(temporary, "src", "domain"), { recursive: true });
     await writeFile(join(temporary, "src/domain/probe.ts"), "import {");
     const result = spawnSync(
@@ -254,7 +254,7 @@ describe("module import syntax and source discovery", () => {
   });
 
   it("checks untracked source files and ignores cached paths removed during a move", async () => {
-    const temporary = await createTestTempDirectory("rea-module-discovery-");
+    const temporary = await createTestTempDirectory("nre-module-discovery-");
     await mkdir(join(temporary, "src", "domain"), { recursive: true });
     await writeFile(join(temporary, "src/domain/old.ts"), "export const x=1;");
     await execute("git", ["init", "--quiet"], { cwd: temporary });
@@ -278,7 +278,7 @@ describe("module import syntax and source discovery", () => {
   });
 
   it("discovers forbidden nested sources without a Git worktree", async () => {
-    const temporary = await createTestTempDirectory("rea-module-no-git-");
+    const temporary = await createTestTempDirectory("nre-module-no-git-");
     await mkdir(join(temporary, "src", "domain", "nested"), {
       recursive: true,
     });
@@ -297,7 +297,7 @@ describe("module import syntax and source discovery", () => {
   });
 
   it("discovers sources in an ignored archive nested under an ancestor Git worktree", async () => {
-    const outer = await createTestTempDirectory("rea-module-ancestor-git-");
+    const outer = await createTestTempDirectory("nre-module-ancestor-git-");
     const archive = join(outer, "archive");
     await writeFile(join(outer, ".gitignore"), "archive/\n");
     await execute("git", ["init", "--quiet"], { cwd: outer });
@@ -329,7 +329,7 @@ describe("test lane import boundaries", () => {
   ];
 
   it("checks the test-lane import matrix in one lint invocation", async () => {
-    const temporary = await createTestTempDirectory("rea-test-lane-");
+    const temporary = await createTestTempDirectory("nre-test-lane-");
     const config = await writeRepositoryOxlintConfiguration(temporary);
     for (const [file, dependency] of cases) {
       await mkdir(dirname(join(temporary, file)), { recursive: true });

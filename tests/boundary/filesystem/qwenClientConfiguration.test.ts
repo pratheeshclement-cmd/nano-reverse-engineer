@@ -68,7 +68,7 @@ describe("Qwen Code configuration paths", () => {
 
 describe("Qwen Code client lifecycle", () => {
   const qwenClient = async () => {
-    const home = await createTestTempDirectory("rea-qwen-");
+    const home = await createTestTempDirectory("nre-qwen-");
     const client = qwenPath(home, process.platform, {});
     if (client?.markerPath === undefined)
       throw new Error("missing Qwen Code client");
@@ -76,7 +76,7 @@ describe("Qwen Code client lifecycle", () => {
     return { home, client };
   };
 
-  it("registers rea in mcpServers while preserving unrelated settings and comments", async () => {
+  it("registers nre in mcpServers while preserving unrelated settings and comments", async () => {
     const { home, client } = await qwenClient();
     await writeFile(
       client.configPath,
@@ -96,7 +96,7 @@ describe("Qwen Code client lifecycle", () => {
       model: { name: "qwen3-coder-plus" },
       mcpServers: {
         other: { command: "other-server" },
-        rea: { command: command[0], args: command.slice(1) },
+        nre: { command: command[0], args: command.slice(1) },
       },
     });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -131,7 +131,7 @@ describe("Qwen Code profile setup", () => {
   it.each([false, true])(
     "installs and removes the shared skill with a custom home: %s",
     async (customHome) => {
-      const home = await createTestTempDirectory("rea-qwen-profile-");
+      const home = await createTestTempDirectory("nre-qwen-profile-");
       const profile = join(home, customHome ? "qwen-profile" : ".qwen");
       const environment = {
         HOME: home,
@@ -155,7 +155,7 @@ describe("Qwen Code profile setup", () => {
       const skill = join(home, ".agents", "skills", PRODUCT_IDENTITY.skillName);
       await writeFile(join(skill, "user-notes.txt"), "user-authored");
       expect(await readFile(join(skill, "SKILL.md"), "utf8")).toContain(
-        "reverse-engineer-anything",
+        "nano-reverse-engineer",
       );
       expect(await setup.clientNeedsConfigure(client, {}, command)).toBe(false);
       expect(await setup.skillNeedsInstall([client.name])).toBe(false);

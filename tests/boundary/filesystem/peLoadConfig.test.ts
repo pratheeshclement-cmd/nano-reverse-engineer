@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("PE import stable filesystem boundary", () => {
   it("reports non-file and malformed PE selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-pe-load-config-files-");
+    const root = await createTestTempDirectory("nre-pe-load-config-files-");
     const path = join(root, "app.exe");
     const alias = join(root, "alias.exe");
     const malformed = join(root, "malformed.exe");
@@ -42,7 +42,7 @@ describe("PE import stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-pe-load-config-budget-");
+    const root = await createTestTempDirectory("nre-pe-load-config-budget-");
     const path = join(root, "app.exe");
     await writeFile(path, peLoadConfigImage());
     const service = createPeLoadConfigService();
@@ -58,7 +58,7 @@ describe("PE import stable filesystem boundary", () => {
   });
 
   it("names the exhausted callback budget", async () => {
-    const root = await createTestTempDirectory("rea-pe-config-limit-");
+    const root = await createTestTempDirectory("nre-pe-config-limit-");
     const path = join(root, "app.exe");
     await writeFile(path, peLoadConfigImage());
     const service = createPeLoadConfigService();
@@ -79,7 +79,7 @@ describe("PE import stable filesystem boundary", () => {
   it.each(["control", "close-failure", "close-cancel", "close-both"] as const)(
     "retains completed PE acquisition through %s",
     async (mode) => {
-      const root = await createTestTempDirectory("rea-pe-config-finalize-");
+      const root = await createTestTempDirectory("nre-pe-config-finalize-");
       const path = join(root, "app.exe");
       const bytes = peLoadConfigImage();
       await writeFile(path, bytes);

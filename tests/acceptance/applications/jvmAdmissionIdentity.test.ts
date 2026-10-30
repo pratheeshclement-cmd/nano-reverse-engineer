@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "refuses JVM CPU lookalikes consistently across the admission prefix through CLI and stdio MCP",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-jvm-admission-");
+    const directory = await createTestTempDirectory("nre-jvm-admission-");
     const { call } = await connectLocalToolsMcp();
     for (const constantBytes of [4000, 9000]) {
       const path = join(directory, `class-${constantBytes}.class`);

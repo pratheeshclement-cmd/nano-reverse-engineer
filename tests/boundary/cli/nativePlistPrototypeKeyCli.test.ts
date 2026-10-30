@@ -16,7 +16,7 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "inspects a $0 plist and retains the prototype-named key",
       async ([, extra], { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-proto-");
+        const directory = await createTestTempDirectory("nre-plist-proto-");
         const app = join(directory, "Proto.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -31,8 +31,8 @@ describe.skipIf(process.platform !== "darwin")(
         const result = await cli.run({
           arguments: ["inspect-plist", app, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(result.exitCode).toBe(0);

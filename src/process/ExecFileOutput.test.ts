@@ -34,7 +34,7 @@ const waitForFile = async (path: string): Promise<boolean> => {
 it.each([undefined, "SIGTERM"] as const)(
   "retains native spawn error facts with stop signal %s",
   async (stopSignal) => {
-    const directory = await createTestTempDirectory("rea-exec-missing-");
+    const directory = await createTestTempDirectory("nre-exec-missing-");
     const command = join(directory, "missing-executable");
     await expect(
       execFileBytes(
@@ -149,7 +149,7 @@ describe("execFileOutput", () => {
   it.skipIf(process.platform === "win32").each(["stdout", "stderr"] as const)(
     "escalates %s overflow and preserves capacity failure when the timeout follows",
     async (stream) => {
-      const directory = await createTestTempDirectory("rea-exec-overflow-");
+      const directory = await createTestTempDirectory("nre-exec-overflow-");
       const identity = join(directory, "pid");
       const overflowSignal = join(directory, "overflow-signal");
       const script = [
@@ -192,7 +192,7 @@ describe("execFileOutput", () => {
     "preserves earlier cancellation and reports output truncated during stop",
     async () => {
       const directory = await createTestTempDirectory(
-        "rea-exec-abort-overflow-",
+        "nre-exec-abort-overflow-",
       );
       const ready = join(directory, "ready");
       const script = [
@@ -251,7 +251,7 @@ describe("execFileOutput cancellation lifecycle", () => {
     ] as const)(
     "stops an aborted process with exact %s reason and settles after it exits",
     async (reason) => {
-      const directory = await createTestTempDirectory("rea-exec-stop-");
+      const directory = await createTestTempDirectory("nre-exec-stop-");
       const ready = join(directory, "ready");
       const stopped = join(directory, "stopped");
       // The child records the signal it received only after a cleanup delay.
@@ -295,7 +295,7 @@ describe("execFileOutput cancellation lifecycle", () => {
   it.skipIf(process.platform === "win32")(
     "keeps the first stop reason when timeout arrives during abort cleanup",
     async () => {
-      const directory = await createTestTempDirectory("rea-exec-double-stop-");
+      const directory = await createTestTempDirectory("nre-exec-double-stop-");
       const ready = join(directory, "ready");
       const script = [
         'const fs = require("node:fs");',
@@ -340,7 +340,7 @@ describe.skipIf(process.platform === "win32")(
   "execFileOutput stop signal at a timeout",
   () => {
     it("stops a timed-out process with the caller's signal and reports the timeout", async () => {
-      const directory = await createTestTempDirectory("rea-exec-timeout-");
+      const directory = await createTestTempDirectory("nre-exec-timeout-");
       const stopped = join(directory, "stopped");
       // The child exits cleanly once it has recorded the signal it received.
       const script = [
@@ -368,20 +368,20 @@ describe.skipIf(process.platform === "win32")(
       async (timeout) => {
         // Starting this command would fail with ENOENT instead.
         await expect(
-          execFileOutput("/nonexistent/rea-command", [], {
+          execFileOutput("/nonexistent/nre-command", [], {
             timeout,
             stopSignal: "SIGINT",
           }),
         ).rejects.toMatchObject({ code: "ERR_OUT_OF_RANGE" });
         await expect(
-          execFileOutput("/nonexistent/rea-command", [], { timeout }),
+          execFileOutput("/nonexistent/nre-command", [], { timeout }),
         ).rejects.toMatchObject({ code: "ERR_OUT_OF_RANGE" });
       },
     );
 
     it("preserves a child failure's missing signal when reporting timeout", async () => {
       const directory = await createTestTempDirectory(
-        "rea-exec-missing-signal-",
+        "nre-exec-missing-signal-",
       );
       const ready = join(directory, "ready");
       const script = [
@@ -464,7 +464,7 @@ describe.skipIf(process.platform === "win32")(
   () => {
     it("keeps overflowing command scratch files until its inherited-pipe descendant finishes", async () => {
       const directory = await createTestTempDirectory(
-        "rea-exec-overflow-pipes-",
+        "nre-exec-overflow-pipes-",
       );
       const scratch = join(directory, "scratch");
       const ready = join(directory, "descendant.pid");
@@ -534,7 +534,7 @@ describe.skipIf(process.platform === "win32")(
     }, 15_000);
 
     it("keeps scratch files until an inherited-pipe descendant closes them", async () => {
-      const directory = await createTestTempDirectory("rea-exec-inherited-");
+      const directory = await createTestTempDirectory("nre-exec-inherited-");
       const scratch = join(directory, "scratch");
       const finished = join(directory, "finished.json");
       const pidPath = join(directory, "child.pid");
@@ -717,7 +717,7 @@ it.skipIf(process.platform === "win32").each([
 ] as const)(
   "owns root exit $code before inherited-pipe $action",
   async ({ code, action }) => {
-    const directory = await createTestTempDirectory("rea-exec-exit-pipes-");
+    const directory = await createTestTempDirectory("nre-exec-exit-pipes-");
     const exited = join(directory, "root-exited");
     const release = join(directory, "release");
     const descendant = [

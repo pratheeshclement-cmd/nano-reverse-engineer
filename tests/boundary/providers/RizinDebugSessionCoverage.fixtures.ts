@@ -219,7 +219,7 @@ export const createRizinCoverageHarness = (
     body: string,
     shebang = "#!/usr/bin/env node",
   ): Promise<string> => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-coverage-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-coverage-"));
     directories.add(directory);
     latestDirectory = directory;
     const provider = join(directory, "fake-rizin.mjs");
@@ -231,7 +231,7 @@ export const createRizinCoverageHarness = (
     provider: string,
     options: RizinTestManagerOptions = {},
   ): Promise<{ manager: RizinDebugSessionManager; sessionId: string }> => {
-    const manager = createManager({ REA_RIZIN_COMMAND: provider }, options);
+    const manager = createManager({ NRE_RIZIN_COMMAND: provider }, options);
     const result = await manager.start({
       path: "/tmp/coverage-target",
       inferior_tty: await rizinTestInferiorTty(),
@@ -244,7 +244,7 @@ export const createRizinCoverageHarness = (
     options: RizinTestManagerOptions = {},
   ) => {
     const manager = createManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       { ...options, spawnProcess },
     );
     const started = await manager.start({

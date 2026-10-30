@@ -56,7 +56,7 @@ afterEach(() => {
 });
 
 const fixture = async (outcome: "decoded" | "failed" = "decoded") => {
-  const workspace = await createTestWorkspace("rea-pwntools-finalization-");
+  const workspace = await createTestWorkspace("nre-pwntools-finalization-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("selected.elf");
   await writeFile(path, Buffer.alloc(128));
@@ -118,7 +118,7 @@ it.runIf(supportedHost).each(["decoded", "failed"] as const)(
     const { path, root, launch } = await fixture(outcome);
     let removals = 0;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       launch,
       async () => ({
         path: root.path,
@@ -162,7 +162,7 @@ it.runIf(supportedHost)(
     const { path, root, launch } = await fixture();
     let stops = 0;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (input) => {
         const launched = await launch(input);
         return {
@@ -195,7 +195,7 @@ it.runIf(supportedHost)(
     let stops = 0;
     let removalAllowed = false;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (input) => {
         const launched = await launch(input);
         return {
@@ -245,7 +245,7 @@ it.runIf(supportedHost)(
     const { path, root, launch } = await fixture();
     let removalAllowed = false;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       launch,
       async () => ({
         path: root.path,
@@ -283,7 +283,7 @@ it.runIf(supportedHost)(
     const reason = { stage: "final cleanup" };
     let removals = 0;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       launch,
       async () => ({
         path: root.path,
@@ -343,7 +343,7 @@ it.runIf(supportedHost)(
     const reason = { stage: "snapshot write" };
     const controller = new AbortController();
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       launch,
       async () => {
         controller.abort(reason);
@@ -373,7 +373,7 @@ it.runIf(supportedHost).each(["AbortError-name", "same-as-reason"])(
     );
     const controller = new AbortController();
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       launch,
       async () => {
         controller.abort(
@@ -403,7 +403,7 @@ it.runIf(supportedHost)(
       | Awaited<ReturnType<typeof spawnOwnedProviderProcess>>["process"]
       | undefined;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (input) => {
         const launched = await spawnOwnedProviderProcess({
           ...input,
@@ -447,7 +447,7 @@ it.runIf(supportedHost)(
     const reason = { stage: "failed final cleanup" };
     let removalAllowed = false;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       launch,
       async () => ({
         path: root.path,

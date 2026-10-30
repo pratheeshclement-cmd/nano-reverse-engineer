@@ -11,7 +11,7 @@ import { dotnetBundleFixture } from "./dotnet/DotnetBundle.fixture.js";
 import * as pckLocation from "./GodotPckLocation.js";
 
 it("distinguishes examined absence from unexamined formats and honors cancellation on a cached result", async () => {
-  const root = await createTestTempDirectory("rea-embedded-probe-facts-");
+  const root = await createTestTempDirectory("nre-embedded-probe-facts-");
   const path = join(root, "plain");
   await writeFile(path, "plain bytes without an embedded archive");
   const locate = vi.spyOn(pckLocation, "locateGodotPck");
@@ -50,7 +50,7 @@ it("distinguishes examined absence from unexamined formats and honors cancellati
 });
 
 it("leaves a failed probe unexamined so a subsequent successful observation can be retained", async () => {
-  const root = await createTestTempDirectory("rea-embedded-probe-failure-");
+  const root = await createTestTempDirectory("nre-embedded-probe-failure-");
   const path = join(root, "plain");
   await writeFile(path, "plain bytes without an embedded archive");
   const failure = Object.assign(new Error("injected read failure"), {
@@ -74,7 +74,7 @@ it("leaves a failed probe unexamined so a subsequent successful observation can 
 });
 
 it("reuses a located .NET header only for the same source and honors cached cancellation", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-probe-facts-");
+  const root = await createTestTempDirectory("nre-dotnet-probe-facts-");
   const path = join(root, "host");
   const fixture = dotnetBundleFixture();
   await writeFile(path, fixture.bytes);
@@ -121,7 +121,7 @@ it("reuses a located .NET header only for the same source and honors cached canc
 });
 
 it("keeps a failed .NET probe unexamined before a successful absence observation", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-probe-retry-");
+  const root = await createTestTempDirectory("nre-dotnet-probe-retry-");
   const path = join(root, "plain");
   await writeFile(path, "plain bytes");
   const failure = new Error("injected marker read failure");

@@ -40,7 +40,7 @@ export interface PwntoolsFailureContext {
   readonly timeoutMs?: number;
 }
 
-const fixedPwntoolsBudgets = `cpuSeconds is ${String(PWNTOOLS_LIMITS.cpuSeconds)}. The output allowance is ${String(PWNTOOLS_LIMITS.outputBytes)} bytes, the diagnostic allowance is ${String(PWNTOOLS_LIMITS.diagnosticBytes)} bytes, and the address-space allowance is ${String(PWNTOOLS_LIMITS.addressSpaceBytes)} bytes. This release has no runtime override for those budgets. pwntools_timeout_ms does not raise them. Artifact admission stays REA_PWNTOOLS_MAX_INPUT_BYTES (default ${String(PWNTOOLS_LIMITS.inputBytes)} bytes).`;
+const fixedPwntoolsBudgets = `cpuSeconds is ${String(PWNTOOLS_LIMITS.cpuSeconds)}. The output allowance is ${String(PWNTOOLS_LIMITS.outputBytes)} bytes, the diagnostic allowance is ${String(PWNTOOLS_LIMITS.diagnosticBytes)} bytes, and the address-space allowance is ${String(PWNTOOLS_LIMITS.addressSpaceBytes)} bytes. This release has no runtime override for those budgets. pwntools_timeout_ms does not raise them. Artifact admission stays NRE_PWNTOOLS_MAX_INPUT_BYTES (default ${String(PWNTOOLS_LIMITS.inputBytes)} bytes).`;
 
 /** Name the file-size cap and any reported effective limit, not address space. */
 const fileSizeAllowance = (reportedBytes: number | undefined): string => {
@@ -276,7 +276,7 @@ const classifyPwntoolsDecoderFailure = (
           cause,
           ...(cause.reason === "limit"
             ? {
-                userMessage: `${cause.message} Admitted artifact bytes use REA_PWNTOOLS_MAX_INPUT_BYTES (default ${String(PWNTOOLS_LIMITS.inputBytes)} bytes, maximum 1073741824). The 1073741824-byte maximum has no runtime override. Restart REA after changing the environment value. pwntools_timeout_ms does not raise this allowance. ${fixedPwntoolsBudgets}`,
+                userMessage: `${cause.message} Admitted artifact bytes use NRE_PWNTOOLS_MAX_INPUT_BYTES (default ${String(PWNTOOLS_LIMITS.inputBytes)} bytes, maximum 1073741824). The 1073741824-byte maximum has no runtime override. Restart NRE after changing the environment value. pwntools_timeout_ms does not raise this allowance. ${fixedPwntoolsBudgets}`,
               }
             : {}),
         },
@@ -287,7 +287,7 @@ const classifyPwntoolsDecoderFailure = (
               cause.reason === "limit" ? "out_of_range" : "invalid_format",
             message:
               cause.reason === "limit"
-                ? `${cause.message} REA_PWNTOOLS_MAX_INPUT_BYTES defaults to ${String(PWNTOOLS_LIMITS.inputBytes)} bytes.`
+                ? `${cause.message} NRE_PWNTOOLS_MAX_INPUT_BYTES defaults to ${String(PWNTOOLS_LIMITS.inputBytes)} bytes.`
                 : cause.message,
           },
         ],
@@ -385,7 +385,7 @@ export const pwntoolsUnavailable = (
         code: "provider_unavailable",
         reason,
         diagnostics: {
-          configuration_key: context.configurationKey ?? "REA_PWNTOOLS_PYTHON",
+          configuration_key: context.configurationKey ?? "NRE_PWNTOOLS_PYTHON",
           executable_path: path,
           ...(systemCode === undefined ? {} : { system_code: systemCode }),
         },

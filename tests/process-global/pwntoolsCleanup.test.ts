@@ -45,7 +45,7 @@ afterEach(() => {
 });
 
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-pwntools-cleanup-");
+  const workspace = await createTestWorkspace("nre-pwntools-cleanup-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = join(workspace.root, "selected.elf");
   await writeFile(path, "source-owned-seam-bytes");
@@ -63,7 +63,7 @@ it.runIf(supportedHost)(
     let rootRemovalAllowed = false;
     let releaseFixture: (() => Promise<void>) | undefined;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (input) => {
         launches++;
         ownedPath = input.cwd ?? "";
@@ -182,7 +182,7 @@ it.runIf(supportedHost)(
       prefix: "owned-",
     });
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (input) => {
         launches++;
         return spawnOwnedProviderProcess({
@@ -247,7 +247,7 @@ it.runIf(supportedHost)(
     });
     let launches = 0;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (input) => {
         launches++;
         entered?.();

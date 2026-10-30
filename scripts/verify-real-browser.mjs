@@ -52,10 +52,10 @@ import { verifyScenarioStorageFingerprints } from "./lib/browser-scenario-storag
 import { verifyScenarioServiceWorkers } from "./lib/browser-scenario-service-workers-e2e.mjs";
 import { verifyBrowserUrlUserInfo } from "./lib/browser-url-userinfo-e2e.mjs";
 
-const SCENARIO_SECRET_VALUE = "rea-browser-verifier-secret";
-const SCENARIO_URL_SECRET_VALUE = "rea-browser-url-verifier-secret";
-process.env.REA_BROWSER_VERIFIER_SECRET = SCENARIO_SECRET_VALUE;
-process.env.REA_BROWSER_VERIFIER_URL = SCENARIO_URL_SECRET_VALUE;
+const SCENARIO_SECRET_VALUE = "nre-browser-verifier-secret";
+const SCENARIO_URL_SECRET_VALUE = "nre-browser-url-verifier-secret";
+process.env.NRE_BROWSER_VERIFIER_SECRET = SCENARIO_SECRET_VALUE;
+process.env.NRE_BROWSER_VERIFIER_URL = SCENARIO_URL_SECRET_VALUE;
 const verifierRun = createVerifierRun();
 
 await requireOrdinaryWindowsVerifierCaller();
@@ -127,7 +127,7 @@ await withVerifierCleanup(async () => {
   const source = withSource.value.scripts.items.find(
     (script) =>
       script.source.included &&
-      script.source.artifact.text.includes("reaSourceMarker"),
+      script.source.artifact.text.includes("nreSourceMarker"),
   );
   if (source === undefined)
     throw new Error(
@@ -446,8 +446,8 @@ async function verifyPublicBundle(endpoint, target, origin) {
   assertBundleAnalysis(evidence.normalized_result);
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [fileURLToPath(new URL("./rea.mjs", import.meta.url)), "mcp"],
-    env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+    args: [fileURLToPath(new URL("./nre.mjs", import.meta.url)), "mcp"],
+    env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
     stderr: "pipe",
   });
   const client = new Client({ name: "browser-bundle-e2e", version: "1" });
@@ -540,7 +540,7 @@ async function verifyPageScopedTransport(provider, proxy, origin) {
 
 async function browserExecutable() {
   const candidates = [
-    process.env.REA_BROWSER_EXECUTABLE,
+    process.env.NRE_BROWSER_EXECUTABLE,
     process.argv[2],
     "/usr/bin/google-chrome-stable",
     "/usr/bin/google-chrome",
@@ -559,7 +559,7 @@ async function browserExecutable() {
     }
   }
   throw new Error(
-    "No Chrome-family executable found; set REA_BROWSER_EXECUTABLE to run real-browser verification",
+    "No Chrome-family executable found; set NRE_BROWSER_EXECUTABLE to run real-browser verification",
   );
 }
 

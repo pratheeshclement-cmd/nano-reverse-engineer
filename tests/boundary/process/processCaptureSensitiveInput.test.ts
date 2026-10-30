@@ -20,7 +20,7 @@ for (const sensitive of [true, false]) {
   itWithCaptureCapability(
     `${sensitive ? "redacts" : "preserves unmarked"} echoed input across retained terminal representations`,
     async () => {
-      const root = await createTestTempDirectory("rea-sensitive-process-");
+      const root = await createTestTempDirectory("nre-sensitive-process-");
       const result = await captureProcessScenario(
         processScenarioSchema.parse({
           executable: process.execPath,
@@ -154,7 +154,7 @@ for (const sensitive of [true, false]) {
 itWithCaptureCapability(
   "retains safe terminal facts after cancellation during a private echo",
   async () => {
-    const root = await createTestTempDirectory("rea-private-cancel-");
+    const root = await createTestTempDirectory("nre-private-cancel-");
     const controller = new AbortController();
     const result = await captureProcessScenario(
       processScenarioSchema.parse({

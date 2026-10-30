@@ -3,7 +3,7 @@
 #include <winternl.h>
 #include <cstddef>
 
-namespace rea {
+namespace nre {
 
 static std::wstring hex(const unsigned char* bytes, size_t count) {
   constexpr wchar_t digits[] = L"0123456789abcdef";
@@ -720,7 +720,7 @@ static napi_value snapshot(napi_env env, napi_value rootValue, Runtime& root,
   napi_value promise;
   check(napi_create_promise(env, &work->deferred, &promise));
   check(napi_create_reference(env, rootValue, 1, &work->rootReference));
-  const auto label = string(env, std::string("REA admitted Windows snapshot"));
+  const auto label = string(env, std::string("NRE admitted Windows snapshot"));
   root.snapshotCancelled.store(false);
   try {
     check(napi_create_async_work(env, nullptr, label, copySnapshot, completeSnapshot, work.get(), &work->work));
@@ -841,4 +841,4 @@ napi_value filesystemCall(napi_env env, const std::wstring& operation,
   throw Failure("Unknown native filesystem operation", L"", ERROR_INVALID_PARAMETER);
 }
 
-} // namespace rea
+} // namespace nre

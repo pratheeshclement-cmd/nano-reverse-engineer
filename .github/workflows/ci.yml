@@ -160,9 +160,9 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .turbo/cache/
-          key: rea-static-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-${{ github.sha }}
+          key: nre-static-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-${{ github.sha }}
           # Turbo validates each task's inputs after restoring this snapshot.
-          restore-keys: rea-static-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-
+          restore-keys: nre-static-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-
       - name: Validate workflow syntax and expressions
         if: needs.changes.outputs.workflows == 'true'
         run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 -shellcheck= -pyflakes=
@@ -222,8 +222,8 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: .turbo/cache/
-          key: rea-static-deep-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-${{ github.sha }}
-          restore-keys: rea-static-deep-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-
+          key: nre-static-deep-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-${{ github.sha }}
+          restore-keys: nre-static-deep-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.nvmrc', '.npmrc', 'package-lock.json') }}-
       - name: Restore Knip analysis cache
         id: knip-cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -322,19 +322,19 @@ jobs:
       - run: npm ci
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: rea-test-runtime
+          name: nre-test-runtime
           path: .
       - name: Run complete portable suite with coverage
         if: needs.changes.outputs.tier == 'full'
         run: npm run test:ci:shard:run -- --shard=${{ matrix.shard }}
         env:
-          REA_CI_TEST_HISTORY: .cache/ci-test-history/test-results.json
+          NRE_CI_TEST_HISTORY: .cache/ci-test-history/test-results.json
       - name: Run built-dependent tests for fast feedback
         if: needs.changes.outputs.tier == 'fast'
         run: npm run test:built -- --reporter=default --reporter=blob --shard=${{ matrix.shard }}
         env:
           VITEST_BLOB_LABEL: built
-          REA_CI_TEST_HISTORY: .cache/ci-test-history/test-results.json
+          NRE_CI_TEST_HISTORY: .cache/ci-test-history/test-results.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !cancelled() }}
         with:
@@ -437,7 +437,7 @@ jobs:
           path: .cache/ci-test-history
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: rea-test-runtime
+          name: nre-test-runtime
           path: |
             dist/
             skills/
@@ -459,7 +459,7 @@ jobs:
           node scripts/ci/portable-build-cache.mjs snapshot < .cache/ci-build-plan.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: rea-build-cache
+          name: nre-build-cache
           path: .cache/ci-build-cache/
           include-hidden-files: true
           if-no-files-found: error
@@ -697,7 +697,7 @@ jobs:
       - run: npm ci
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: rea-build-cache
+          name: nre-build-cache
           path: .turbo/cache/
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -709,7 +709,7 @@ jobs:
       - run: npm run verify:package
         env:
           npm_config_cache: ${{ steps.npm-cache.outputs.path }}
-          REA_VERIFIED_PACKAGE_DIRECTORY: ${{ needs.changes.outputs.tier == 'full' && matrix.platform == 'linux' && matrix.architecture == 'x64' && '.cache/verified-package' || '' }}
+          NRE_VERIFIED_PACKAGE_DIRECTORY: ${{ needs.changes.outputs.tier == 'full' && matrix.platform == 'linux' && matrix.architecture == 'x64' && '.cache/verified-package' || '' }}
       - name: Verify real Node Inspector discovery and observation
         timeout-minutes: 10
         run: npm run verify:inspector
@@ -741,11 +741,11 @@ jobs:
       - run: npm ci
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: rea-build-cache
+          name: nre-build-cache
           path: .turbo/cache/
       - name: Verify Apple artifact formats and metadata
         env:
-          REA_ARTIFACT_NODE_COMPILE_CACHE: ${{ runner.temp }}/rea-artifact-node-cache
+          NRE_ARTIFACT_NODE_COMPILE_CACHE: ${{ runner.temp }}/nre-artifact-node-cache
         run: |
           npm run verify:keyed-archive
           npm run verify:asset-catalog
@@ -803,7 +803,7 @@ jobs:
       - run: npm ci
       - name: Verify static CLI/MCP journeys and synthetic report conformance
         env:
-          REA_READINESS_REPORT_PATH: readiness-report.json
+          NRE_READINESS_REPORT_PATH: readiness-report.json
         run: |
           set -o pipefail
           npm run verify:readiness | tee readiness-summary.json
@@ -841,7 +841,7 @@ jobs:
         run: npm run typecheck -- --checkers 2
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: rea-build-cache
+          name: nre-build-cache
           path: .turbo/cache/
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -991,7 +991,7 @@ jobs:
           path: |
             docs/public/product-catalog.json
             docs/verification/managed-conformance-*.json
-            skills/reverse-engineer-anything
+            skills/nano-reverse-engineer
           if-no-files-found: error
 
   # Provider lanes wait for fast static and the portable build, not deep static.
@@ -1002,7 +1002,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-browser.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   binary_layout:
@@ -1012,7 +1012,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-binary-layout.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   evm:
@@ -1022,7 +1022,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-evm-interface.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   apk_signature:
@@ -1032,7 +1032,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-apk-signature.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   javascript_recovery:
@@ -1042,7 +1042,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-javascript-recovery.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   recorded_crash:
@@ -1052,7 +1052,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-recorded-crash.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   web_network:
@@ -1062,7 +1062,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-web-network-captures.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   web_runtime:
@@ -1072,7 +1072,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-web-runtime.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   web_source_map:
@@ -1082,7 +1082,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-web-source-map.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   agentenv:
@@ -1092,7 +1092,7 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     uses: ./.github/workflows/real-agentenv.yml
     with:
-      build_cache_artifact: rea-build-cache
+      build_cache_artifact: nre-build-cache
       remote_cache_write: ${{ inputs.remote_cache_write == true || (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) }}
 
   nativeaot:

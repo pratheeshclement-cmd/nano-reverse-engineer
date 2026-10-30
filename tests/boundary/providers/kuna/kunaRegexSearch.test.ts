@@ -18,7 +18,7 @@ it.each([
   "bounds $operation regex $mode and settles its worker",
   async ({ mode, operation }) => {
     const { kuna, target, cacheRoot, profile } = await session(
-      "rea-kuna-regex-",
+      "nre-kuna-regex-",
       {
         stringRows: [
           { text: `${"a".repeat(40)}!`, address: 4096 },
@@ -35,7 +35,7 @@ it.each([
     const script = `
 import assert from "node:assert/strict";
 import { KunaProvider } from ${JSON.stringify(pathToFileURL(resolve("dist/kuna/KunaProvider.js")).href)};
-const provider = new KunaProvider(${JSON.stringify({ REA_KUNA_COMMAND: kuna, REA_KUNA_CACHE_DIR: cacheRoot })});
+const provider = new KunaProvider(${JSON.stringify({ NRE_KUNA_COMMAND: kuna, NRE_KUNA_CACHE_DIR: cacheRoot })});
 const client = provider.createClient(${JSON.stringify(target)}, ${JSON.stringify(profile)});
 try {
   assert.equal((await client.execute(${JSON.stringify(operation === "search_strings" ? "list_strings" : "procedure_assembly")}, ${operation === "search_strings" ? "{}" : '{procedure:"0x1000"}'})).ok, true);
@@ -49,12 +49,12 @@ try {
     assert.equal(matched.error.resource, "cpu");
     assert.equal(matched.error.reportedLimits.matching_deadline_ms, 5000);
     assert.equal(matched.error.reportedLimits.matching_deadline_source, "default");
-    assert.equal(matched.error.reason.includes("REA_REGEX_MATCHING_DEADLINE_MS"), true);
-    assert.equal(matched.error.remediationAction.includes("REA_REGEX_MATCHING_DEADLINE_MS"), true);
+    assert.equal(matched.error.reason.includes("NRE_REGEX_MATCHING_DEADLINE_MS"), true);
+    assert.equal(matched.error.remediationAction.includes("NRE_REGEX_MATCHING_DEADLINE_MS"), true);
     assert.equal(matched.error.reason.includes("no runtime override"), false);
     assert.equal(matched.error.remediationAction.includes("no runtime override"), false);
     const limitation = provider.capabilities().find((capability) => capability.operation === ${JSON.stringify(operation)}).limitations.join(" ");
-    assert.equal(limitation.includes("REA_REGEX_MATCHING_DEADLINE_MS"), true);
+    assert.equal(limitation.includes("NRE_REGEX_MATCHING_DEADLINE_MS"), true);
     assert.equal(limitation.includes("source default"), true);
     assert.equal(limitation.includes("no runtime override"), false);
   }
@@ -94,9 +94,9 @@ console.log("bounded and healthy");
   },
 );
 
-it("uses REA_REGEX_MATCHING_DEADLINE_MS from the selected environment", async () => {
+it("uses NRE_REGEX_MATCHING_DEADLINE_MS from the selected environment", async () => {
   const { kuna, target, cacheRoot, profile } = await session(
-    "rea-kuna-regex-deadline-",
+    "nre-kuna-regex-deadline-",
     {
       functions: [
         { name: `${"a".repeat(40)}!`, addr: "0x1000" },
@@ -107,14 +107,14 @@ it("uses REA_REGEX_MATCHING_DEADLINE_MS from the selected environment", async ()
   const script = `
 import assert from "node:assert/strict";
 import { KunaProvider } from ${JSON.stringify(pathToFileURL(resolve("dist/kuna/KunaProvider.js")).href)};
-process.env.REA_REGEX_MATCHING_DEADLINE_MS = "10000";
+process.env.NRE_REGEX_MATCHING_DEADLINE_MS = "10000";
 const provider = new KunaProvider(${JSON.stringify({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: cacheRoot,
-    REA_REGEX_MATCHING_DEADLINE_MS: "200",
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: cacheRoot,
+    NRE_REGEX_MATCHING_DEADLINE_MS: "200",
   })});
 const limitation = provider.capabilities().find((capability) => capability.operation === "search_procedures").limitations.join(" ");
-assert.equal(limitation.includes("REA_REGEX_MATCHING_DEADLINE_MS"), true);
+assert.equal(limitation.includes("NRE_REGEX_MATCHING_DEADLINE_MS"), true);
 assert.equal(limitation.includes("200"), true);
 assert.equal(limitation.includes("source setting"), true);
 assert.equal(limitation.includes("no runtime override"), false);
@@ -129,8 +129,8 @@ try {
   assert.equal(matched.error.resource, "cpu");
   assert.equal(matched.error.reportedLimits.matching_deadline_ms, 200);
   assert.equal(matched.error.reportedLimits.matching_deadline_source, "setting");
-  assert.equal(matched.error.reason.includes("REA_REGEX_MATCHING_DEADLINE_MS"), true);
-  assert.equal(matched.error.remediationAction.includes("REA_REGEX_MATCHING_DEADLINE_MS"), true);
+  assert.equal(matched.error.reason.includes("NRE_REGEX_MATCHING_DEADLINE_MS"), true);
+  assert.equal(matched.error.remediationAction.includes("NRE_REGEX_MATCHING_DEADLINE_MS"), true);
   assert.equal(matched.error.reason.includes("source setting"), true);
   assert.equal(matched.error.reason.includes("no runtime override"), false);
 } finally {

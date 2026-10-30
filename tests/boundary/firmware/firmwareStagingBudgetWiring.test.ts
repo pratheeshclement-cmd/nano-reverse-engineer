@@ -23,7 +23,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
  */
 
 it("refuses staging bytes at the schema ceiling with the ceiling recovery", async () => {
-  const root = await createTestTempDirectory("rea-firmware-ceiling-bytes-");
+  const root = await createTestTempDirectory("nre-firmware-ceiling-bytes-");
   // A sparse file reports its declared size without storing the bytes, so the
   // refusal is exercised at the real schema ceiling rather than a toy budget.
   const sparse = await open(join(root, "oversized.bin"), "w");
@@ -64,7 +64,7 @@ it("refuses staging bytes at the schema ceiling with the ceiling recovery", asyn
 });
 
 it("still offers a raise for a budget below the schema ceiling", async () => {
-  const root = await createTestTempDirectory("rea-firmware-below-ceiling-");
+  const root = await createTestTempDirectory("nre-firmware-below-ceiling-");
   await writeFile(join(root, "one.bin"), "12");
 
   const rejected = await inventoryFirmwareOutput(

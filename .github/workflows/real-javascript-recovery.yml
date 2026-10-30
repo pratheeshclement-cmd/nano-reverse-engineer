@@ -53,14 +53,14 @@ jobs:
       - name: Fetch pinned Wakaru release into the job workspace
         shell: bash
         run: |
-          mkdir -p "$RUNNER_TEMP/rea-wakaru"
-          curl --fail --location --retry 3 https://github.com/pionxzh/wakaru/releases/download/v1.14.0/wakaru-linux-x64.tar.gz -o "$RUNNER_TEMP/rea-wakaru/release.tar.gz"
-          tar -xzf "$RUNNER_TEMP/rea-wakaru/release.tar.gz" -C "$RUNNER_TEMP/rea-wakaru" wakaru
-          printf '%s  %s\n' 664fa06782a61eda7ed15885134b52525fd565dd77607e642062ceb6cd927c38 "$RUNNER_TEMP/rea-wakaru/wakaru" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/nre-wakaru"
+          curl --fail --location --retry 3 https://github.com/pionxzh/wakaru/releases/download/v1.14.0/wakaru-linux-x64.tar.gz -o "$RUNNER_TEMP/nre-wakaru/release.tar.gz"
+          tar -xzf "$RUNNER_TEMP/nre-wakaru/release.tar.gz" -C "$RUNNER_TEMP/nre-wakaru" wakaru
+          printf '%s  %s\n' 664fa06782a61eda7ed15885134b52525fd565dd77607e642062ceb6cd927c38 "$RUNNER_TEMP/nre-wakaru/wakaru" | sha256sum --check
       - name: Install isolated fixture compilers
-        run: npm install --prefix "$RUNNER_TEMP/rea-fixture-compilers" --ignore-scripts --no-audit --no-fund esbuild@0.25.10 webpack@5.101.3
+        run: npm install --prefix "$RUNNER_TEMP/nre-fixture-compilers" --ignore-scripts --no-audit --no-fund esbuild@0.25.10 webpack@5.101.3
       - run: npm run build:cached
       - run: npm run verify:javascript:recovery
         env:
-          REA_WAKARU_COMMAND: ${{ runner.temp }}/rea-wakaru/wakaru
-          REA_JAVASCRIPT_FIXTURE_TOOLS: ${{ runner.temp }}/rea-fixture-compilers
+          NRE_WAKARU_COMMAND: ${{ runner.temp }}/nre-wakaru/wakaru
+          NRE_JAVASCRIPT_FIXTURE_TOOLS: ${{ runner.temp }}/nre-fixture-compilers

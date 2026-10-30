@@ -128,7 +128,7 @@ describe("native IDA attached protocol", () => {
       path,
       JSON.stringify({ command: "first-server", mode: "attached" }),
     );
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const factoryRegistrations: string[] = [];
     const provider = new IdaProvider(config.value, {}, (registration) => {
@@ -169,7 +169,7 @@ describe("native IDA attached protocol", () => {
     const { root, target } = await fixture();
     const path = join(root, "independent-registration.json");
     await writeFile(path, JSON.stringify({ command: "first-server" }));
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const provider = new IdaProvider(config.value, {});
     const controller = new AbortController();
@@ -213,7 +213,7 @@ describe("IDA selected registration factories", () => {
   it("retains every concurrently resolved registration factory without eviction", async () => {
     const { root, target } = await fixture();
     const path = join(root, "many-registrations.json");
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const observed: string[] = [];
     const producer = new RecordingIdaMcp(target);
@@ -309,7 +309,7 @@ describe("IDA selected registration factories", () => {
       path,
       JSON.stringify({ url: "http://127.0.0.1:13337/mcp", protocol: "native" }),
     );
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const provider = new IdaProvider(config.value, {}, () => {
       throw new Error("Unexpected discovery startup");
@@ -733,7 +733,7 @@ describe("native IDA literal matching", () => {
       if (typeof args.pattern !== "string")
         throw new Error("Invalid fixture pattern");
       // Exercise a byte-oriented producer seam, including Unicode candidates
-      // whose final matching semantics belong to REA, not the upstream regex.
+      // whose final matching semantics belong to NRE, not the upstream regex.
       const regex = new RegExp(
         Buffer.from(args.pattern).toString("latin1"),
         "i",

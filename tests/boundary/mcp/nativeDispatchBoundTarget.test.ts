@@ -15,13 +15,13 @@ type Replacement = "missing" | "directory" | "loop" | "unreadable";
 // Real native-macos dispatch acquisition, through the compiled stdio server.
 // The self-authored Mach-O fixture is only read, never executed.
 const inspectReplacements = async (replacements: readonly Replacement[]) => {
-  const root = await createTestTempDirectory("rea-dispatch-bound-target-");
+  const root = await createTestTempDirectory("nre-dispatch-bound-target-");
   const path = join(root, "fixture.macho");
   const bytes = objcRecordBudgetMacho("class");
   await writeFile(path, bytes);
   const env: Record<string, string> = {
     PATH: process.env.PATH ?? "",
-    REA_LOG_LEVEL: "silent",
+    NRE_LOG_LEVEL: "silent",
   };
   for (const key of [
     "HOME",
@@ -38,7 +38,7 @@ const inspectReplacements = async (replacements: readonly Replacement[]) => {
   const client = new Client({ name: "dispatch-bound-target", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: process.cwd(),
     env,
     stderr: "pipe",
@@ -97,7 +97,7 @@ const inspectReplacements = async (replacements: readonly Replacement[]) => {
           }[replacement];
           expect(error.details?.reason).toContain(code);
         }
-        expect(error.remediation.action).not.toContain("rea doctor");
+        expect(error.remediation.action).not.toContain("nre doctor");
       } finally {
         if (replacement === "unreadable") await chmod(path, 0o600);
       }

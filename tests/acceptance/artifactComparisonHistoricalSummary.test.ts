@@ -37,7 +37,7 @@ const resealSummary = (
 };
 
 it("compares a historical alias summary through its retained complete MCP parent and rejects resealed false facts", async () => {
-  const root = await createTestTempDirectory("rea-historical-summary-mcp-");
+  const root = await createTestTempDirectory("nre-historical-summary-mcp-");
   const path = join(root, "original.plist");
   await writeFile(
     path,
@@ -144,12 +144,12 @@ it("compares a historical alias summary through its retained complete MCP parent
 });
 
 it("rejects a fabricated pre-coverage FIT summary while accepting its current projection", async () => {
-  const root = await createTestTempDirectory("rea-fit-summary-identity-");
+  const root = await createTestTempDirectory("nre-fit-summary-identity-");
   const path = join(root, "boot.itb");
   await writeFile(path, FIT_EMBEDDED);
   const { call } = await connectLocalToolsMcp({
-    REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-    REA_MCP_TOOL_FAMILIES: "artifact,application,session",
+    NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+    NRE_MCP_TOOL_FAMILIES: "artifact,application,session",
   });
   const opened = await call("open_binary", { path });
   expect(opened.isError, JSON.stringify(opened)).not.toBe(true);

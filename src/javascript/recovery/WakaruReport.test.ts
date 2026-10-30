@@ -32,7 +32,7 @@ const execution = {
 };
 
 it("names the fixed report allowance when provenance.json exceeds 8 MiB", async () => {
-  const root = await createTestTempDirectory("rea-wakaru-provenance-size-");
+  const root = await createTestTempDirectory("nre-wakaru-provenance-size-");
   const provenancePath = join(root, "provenance.json");
   await writeFile(provenancePath, "");
   await truncate(provenancePath, RECOVERY_LIMITS.reportBytes + 1);
@@ -57,7 +57,7 @@ it("names the fixed report allowance when provenance.json exceeds 8 MiB", async 
 
 it("keeps a malformed provenance report distinct from the fixed report allowance", async () => {
   const root = await createTestTempDirectory(
-    "rea-wakaru-provenance-malformed-",
+    "nre-wakaru-provenance-malformed-",
   );
   const provenancePath = join(root, "provenance.json");
   await writeFile(provenancePath, "{");
@@ -71,7 +71,7 @@ it("keeps a malformed provenance report distinct from the fixed report allowance
     throw new Error("Expected a wrapped Wakaru report refusal");
   const projected = projectAnalysisError(refusal);
   expect(projected.message).toBe(
-    "Analysis could not complete. Run `rea doctor` and review the reported details; repeating the unchanged request is not expected to succeed.",
+    "Analysis could not complete. Run `nre doctor` and review the reported details; repeating the unchanged request is not expected to succeed.",
   );
   expect(projected.remediation.action).toBe(projected.message);
   expect(JSON.stringify(projected)).not.toContain("report allowance");
@@ -79,7 +79,7 @@ it("keeps a malformed provenance report distinct from the fixed report allowance
 });
 
 it("rejects malformed UTF-8 provenance bytes and retains literal replacement characters", async () => {
-  const root = await createTestTempDirectory("rea-wakaru-provenance-utf8-");
+  const root = await createTestTempDirectory("nre-wakaru-provenance-utf8-");
   const provenancePath = join(root, "provenance.json");
   const prefix = Buffer.from('{"format":"');
   const suffix = Buffer.from('","strategy":"safe","modules":{}}');
@@ -109,7 +109,7 @@ it("rejects malformed UTF-8 provenance bytes and retains literal replacement cha
 });
 
 it("rejects malformed UTF-8 emitted source maps without rejecting literal replacement characters", async () => {
-  const root = await createTestTempDirectory("rea-wakaru-sourcemap-utf8-");
+  const root = await createTestTempDirectory("nre-wakaru-sourcemap-utf8-");
   const mapPath = join(root, "module.js.map");
   const prefix = Buffer.from('{"version":3,"sources":["');
   const suffix = Buffer.from('"],"names":[],"mappings":""}');

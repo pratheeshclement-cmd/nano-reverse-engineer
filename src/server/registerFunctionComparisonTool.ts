@@ -77,7 +77,7 @@ export const registerFunctionComparisonTool = (
             undefined,
             FUNCTION_COMPARISON_PROVIDER,
             {
-              predicateType: "rea.function-comparison",
+              predicateType: "nre.function-comparison",
               operation: contract.name,
               parameters: {
                 left_evidence_id: leftEvidence.evidence_id,

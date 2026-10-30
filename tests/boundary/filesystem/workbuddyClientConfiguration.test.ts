@@ -54,7 +54,7 @@ describe("WorkBuddy configuration paths", () => {
     expect(
       skillDestinations("/home/a", ["workbuddy"]).map(({ path }) => path),
     ).toEqual([
-      join("/home/a", ".workbuddy", "skills", "reverse-engineer-anything"),
+      join("/home/a", ".workbuddy", "skills", "nano-reverse-engineer"),
     ]);
     expect(
       skillDestinations("C:\\Users\\a", ["workbuddy"], {}, "win32").map(
@@ -65,7 +65,7 @@ describe("WorkBuddy configuration paths", () => {
         "C:\\Users\\a",
         ".workbuddy",
         "skills",
-        "reverse-engineer-anything",
+        "nano-reverse-engineer",
       ),
     ]);
   });
@@ -73,7 +73,7 @@ describe("WorkBuddy configuration paths", () => {
 
 describe("WorkBuddy JSON registration", () => {
   const workbuddyClient = async () => {
-    const home = await createTestTempDirectory("rea-workbuddy-");
+    const home = await createTestTempDirectory("nre-workbuddy-");
     const client = workbuddyPath(home, process.platform);
     if (client?.markerPath === undefined)
       throw new Error("missing WorkBuddy client");
@@ -81,7 +81,7 @@ describe("WorkBuddy JSON registration", () => {
     return { home, client };
   };
 
-  it("upserts rea into mcpServers while preserving unrelated settings", async () => {
+  it("upserts nre into mcpServers while preserving unrelated settings", async () => {
     const { home, client } = await workbuddyClient();
     await writeFile(
       client.configPath,
@@ -97,7 +97,7 @@ describe("WorkBuddy JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -126,7 +126,7 @@ describe("WorkBuddy JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.unrelated).toEqual({ setting: true });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -139,13 +139,13 @@ describe("WorkBuddy JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the nre entry on uninstall", async () => {
     const { home, client } = await workbuddyClient();
     await writeFile(
       client.configPath,
@@ -162,6 +162,6 @@ describe("WorkBuddy JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toBeUndefined();
+    expect(parsed.mcpServers.nre).toBeUndefined();
   });
 });

@@ -8,7 +8,7 @@ import { z } from "zod";
 /** Fresh Swift SDK cache took ~88s on the supported Intel macOS VM. */
 export const DEFAULT_SWIFTC_COMPILE_TIMEOUT_MS = 120_000;
 
-/** Parse REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS; absent keeps Ghidra decompiles unbounded. */
+/** Parse NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS; absent keeps Ghidra decompiles unbounded. */
 export const ghidraDecompileTimeoutSchema = z
   .string()
   .regex(/^[1-9]\d*$/u, "must be a positive decimal integer")

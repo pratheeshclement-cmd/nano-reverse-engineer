@@ -9,22 +9,22 @@ each exported name, exercising the merge that must preserve richer dyld facts.
 Generate the executable locally; do not check its binary into the repository:
 
 ```sh
-cat > /tmp/rea-inventory.c <<'C'
+cat > /tmp/nre-inventory.c <<'C'
 #include <stdio.h>
 __attribute__((weak)) int fixture_weak(void) { return 2; }
 int fixture_export(void) { return 1; }
 __asm__(".globl _fixture_absolute\n.set _fixture_absolute, 0x42");
 int main(void) { puts("fixture"); return fixture_export() + fixture_weak(); }
 C
-xcrun clang /tmp/rea-inventory.c -o /tmp/rea-inventory
-xcrun file -b /tmp/rea-inventory
-xcrun lipo -detailed_info /tmp/rea-inventory
-xcrun otool -l /tmp/rea-inventory
-xcrun nm -gjU /tmp/rea-inventory
-xcrun dyld_info -imports /tmp/rea-inventory
-xcrun dyld_info -exports /tmp/rea-inventory
-xcrun dwarfdump --uuid /tmp/rea-inventory
-xcrun vtool -show-build /tmp/rea-inventory
+xcrun clang /tmp/nre-inventory.c -o /tmp/nre-inventory
+xcrun file -b /tmp/nre-inventory
+xcrun lipo -detailed_info /tmp/nre-inventory
+xcrun otool -l /tmp/nre-inventory
+xcrun nm -gjU /tmp/nre-inventory
+xcrun dyld_info -imports /tmp/nre-inventory
+xcrun dyld_info -exports /tmp/nre-inventory
+xcrun dwarfdump --uuid /tmp/nre-inventory
+xcrun vtool -show-build /tmp/nre-inventory
 ```
 
 Addresses, UUIDs and build versions may vary with the installed toolchain; the

@@ -4,11 +4,11 @@
 // Entries are signed byte offsets from Lsigned_base (no scaling), so cases
 // before the base encode negative offsets. A zero entry means "no case body"
 // and is routed through the CBZ before the branch. The source labels and the
-// immediates below are the oracle; no REA or Ghidra result defines them.
+// immediates below are the oracle; no NRE or Ghidra result defines them.
 //   case 0 -> 200, 1 -> 201, 2 -> 202, 3 -> null path (250), 4 -> 204,
 //   selector >= 5 -> default (-1).
-#ifndef REA_SELECTOR_BIAS
-#define REA_SELECTOR_BIAS 0
+#ifndef NRE_SELECTOR_BIAS
+#define NRE_SELECTOR_BIAS 0
 #endif
 // Nonzero variants switch on the original selector (bias .. bias+4),
 // while the guarded table index is selector - bias.
@@ -19,10 +19,10 @@
 _rea_relative_switch_signed:
 #else
 .text
-.globl rea_relative_switch_signed
-.type rea_relative_switch_signed,%function
+.globl nre_relative_switch_signed
+.type nre_relative_switch_signed,%function
 .p2align 2
-rea_relative_switch_signed:
+nre_relative_switch_signed:
 #endif
 #if defined(__APPLE__)
   adrp x5, Lsigned_table@PAGE
@@ -31,8 +31,8 @@ rea_relative_switch_signed:
   adrp x5, Lsigned_table
   add x5, x5, :lo12:Lsigned_table
 #endif
-#if REA_SELECTOR_BIAS != 0
-  sub w8, w0, #REA_SELECTOR_BIAS
+#if NRE_SELECTOR_BIAS != 0
+  sub w8, w0, #NRE_SELECTOR_BIAS
   cmp w8, #5
   b.cs Lsigned_default
   ldrsh x6, [x5, w8, uxtw #1]
@@ -66,7 +66,7 @@ Lsigned_default:
   mov w0, #-1
   ret
 #if !defined(__APPLE__)
-.size rea_relative_switch_signed, .-rea_relative_switch_signed
+.size nre_relative_switch_signed, .-nre_relative_switch_signed
 #endif
 
 #if defined(__APPLE__)

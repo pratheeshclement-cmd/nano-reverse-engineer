@@ -91,7 +91,7 @@ export function createAgentEvaluationCommands({
         'approval_policy="never"',
         ...approvedTools.flatMap((name) => [
           "-c",
-          `mcp_servers.rea.tools.${name}.approval_mode="approve"`,
+          `mcp_servers.nano-reverse-engineer.${name}.approval_mode="approve"`,
         ]),
         ...(optionalModel === undefined ? [] : ["--model", optionalModel]),
         prompt,

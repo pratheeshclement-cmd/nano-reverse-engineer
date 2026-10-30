@@ -47,7 +47,7 @@ it.each([null, "requested stop", new Error("requested stop")])(
       return jebPrimaryResponses[tool]!;
     });
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: fixture.endpoint },
+      environment: { NRE_JEB_MCP_URL: fixture.endpoint },
     });
     const caller = new AbortController();
     const pending = provider.execute(
@@ -104,7 +104,7 @@ it.each([false, true])(
         await nativeClose.call(this);
       });
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: fixture.endpoint },
+      environment: { NRE_JEB_MCP_URL: fixture.endpoint },
     });
     try {
       const result = await provider.execute(
@@ -145,7 +145,7 @@ it("retains completed JEB Evidence when the caller aborts after the tool returns
     return result;
   });
   const provider = new JebProvider({
-    environment: { REA_JEB_MCP_URL: fixture.endpoint },
+    environment: { NRE_JEB_MCP_URL: fixture.endpoint },
   });
   try {
     const service = new JebAnalysisService(provider);
@@ -192,7 +192,7 @@ it("preserves an SDK HTTP tool failure when the caller aborts after rejection", 
     }
   });
   const provider = new JebProvider({
-    environment: { REA_JEB_MCP_URL: fixture.endpoint },
+    environment: { NRE_JEB_MCP_URL: fixture.endpoint },
   });
   try {
     const result = await provider.execute(
@@ -228,7 +228,7 @@ it("validates a completed catalog page before a late handoff abort", async () =>
     return result;
   });
   const provider = new JebProvider({
-    environment: { REA_JEB_MCP_URL: fixture.endpoint },
+    environment: { NRE_JEB_MCP_URL: fixture.endpoint },
   });
   try {
     const result = await provider.execute(
@@ -276,7 +276,7 @@ it.each(["client", "transport", "both"] as const)(
         await nativeTransportClose.call(this);
       });
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: fixture.endpoint },
+      environment: { NRE_JEB_MCP_URL: fixture.endpoint },
     });
     try {
       const result = await provider.execute({
@@ -496,7 +496,7 @@ it.each([false, true])(
       });
     const controller = new AbortController();
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: fixture.endpoint },
+      environment: { NRE_JEB_MCP_URL: fixture.endpoint },
     });
     const pending = provider.execute(
       { operation: "list_jeb_units", input: { count: 2, index: 0 } },

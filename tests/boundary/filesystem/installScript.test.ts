@@ -22,9 +22,9 @@ const execFileAsync = promisify(execFile);
 // `uname` in createFixture reports `x86_64` / `Linux`, so the host labels
 // resolve to `linux/x64`.
 const UNSUPPORTED_NODE_RECOVERY_LINUX_X64 =
-  "REA installation failed: Node.js 20.0.0 is unsupported.\n" +
+  "NRE installation failed: Node.js 20.0.0 is unsupported.\n" +
   "\n" +
-  "REA requires Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), or 26.12.1+. Install one via:\n" +
+  "NRE requires Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), or 26.12.1+. Install one via:\n" +
   "  nvm:  nvm install 24 && nvm use 24      (https://github.com/nvm-sh/nvm)\n" +
   "  fnm:  fnm install 24 && fnm use 24      (https://github.com/Schniz/fnm)\n" +
   "  Direct download for linux/x64:\n" +
@@ -72,19 +72,19 @@ describe("installer Node.js admission", { timeout: 20_000 }, () => {
 });
 
 describe("curl installer scenarios", { timeout: 20_000 }, () => {
-  it("installs only a pinned REA CLI with closed stdin", async () => {
+  it("installs only a pinned NRE CLI with closed stdin", async () => {
     const fixture = await createFixture();
     const result = await runInstaller(fixture, ["--version", "0.3.0"]);
-    expect(result.stdout).toContain("REA 0.3.0 is installed");
+    expect(result.stdout).toContain("NRE 0.3.0 is installed");
     expect(result.stdout).toContain("Run ");
     expect(await readFile(fixture.npmLog, "utf8")).toContain(
       "install --global --prefix",
     );
-    expect(await readFile(fixture.reaLog, "utf8")).toBe("--version\n");
+    expect(await readFile(fixture.nreLog, "utf8")).toBe("--version\n");
     expect(await readdir(fixture.temporary)).toEqual([]);
   });
 
-  it("resolves and validates the latest REA release tag", async () => {
+  it("resolves and validates the latest NRE release tag", async () => {
     const fixture = await createFixture();
     const result = await runInstaller(fixture);
     expect(result.stdout).toContain("Version: 0.3.0");
@@ -115,55 +115,55 @@ describe("curl installer scenarios", { timeout: 20_000 }, () => {
       "unreadable Node version",
       ["--version", "0.3.0"],
       { FAKE_NODE_VERSION: "invalid" },
-      "REA installation failed: the active Node.js version could not be read. Check that node works and is on PATH, then retry.\n",
+      "NRE installation failed: the active Node.js version could not be read. Check that node works and is on PATH, then retry.\n",
     ],
     [
       "release lookup",
       [],
       { FAKE_CURL_FAIL: "1" },
-      "REA installation failed: the latest REA release could not be resolved. Check network access or pass --version VERSION, then retry.\n",
+      "NRE installation failed: the latest NRE release could not be resolved. Check network access or pass --version VERSION, then retry.\n",
     ],
     [
       "release response",
       [],
       { FAKE_CURL_BODY: "not-json" },
-      "REA installation failed: the release response was invalid. Retry later or pass --version VERSION.\n",
+      "NRE installation failed: the release response was invalid. Retry later or pass --version VERSION.\n",
     ],
     [
       "release tag",
       [],
       { FAKE_CURL_BODY: '{"tag_name":"unrelated-1.0.0"}' },
-      "REA installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
+      "NRE installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
     ],
     [
       "npm failure",
       ["--version", "0.3.0"],
       { FAKE_NPM_FAIL: "1" },
-      "REA installation failed: npm could not install REA. Check registry access and npm permissions, then retry.\n",
+      "NRE installation failed: npm could not install NRE. Check registry access and npm permissions, then retry.\n",
     ],
     [
       "npm prefix",
       ["--version", "0.3.0"],
       { FAKE_PLATFORM: "Darwin", FAKE_NPM_PREFIX_FAIL: "1" },
-      "REA installation failed: the npm global prefix could not be read. Repair the npm configuration, then retry.\n",
+      "NRE installation failed: the npm global prefix could not be read. Repair the npm configuration, then retry.\n",
     ],
     [
       "missing installed command",
       ["--version", "0.3.0"],
       { FAKE_NPM_SKIP_BINARY: "1" },
-      "REA installation failed: npm completed without installing the rea command. Check the npm global bin directory and PATH, then retry.\n",
+      "NRE installation failed: npm completed without installing the nre command. Check the npm global bin directory and PATH, then retry.\n",
     ],
     [
       "unreadable installed version",
       ["--version", "0.3.0"],
       { FAKE_REA_VERSION_FAIL: "1" },
-      "REA installation failed: the installed REA version could not be read. Reinstall the requested version, then retry.\n",
+      "NRE installation failed: the installed NRE version could not be read. Reinstall the requested version, then retry.\n",
     ],
     [
       "version mismatch",
       ["--version", "0.3.0"],
       { FAKE_REA_VERSION: "9.9.9" },
-      "REA installation failed: installed version 9.9.9 does not match 0.3.0. Reinstall the requested version, then retry.\n",
+      "NRE installation failed: installed version 9.9.9 does not match 0.3.0. Reinstall the requested version, then retry.\n",
     ],
   ] as const)(
     "fails closed with actionable recovery for %s",
@@ -189,7 +189,7 @@ describe("curl installer scenarios", { timeout: 20_000 }, () => {
       }),
     ).rejects.toMatchObject({
       stderr:
-        "REA installation failed: curl is required. Install curl, then rerun this installer.\n",
+        "NRE installation failed: curl is required. Install curl, then rerun this installer.\n",
     });
   });
 });
@@ -201,7 +201,7 @@ describe("installer reported version", { timeout: 20_000 }, () => {
       runInstaller(fixture, ["--version", "0.3.0"], { FAKE_REA_VERSION: "" }),
     ).rejects.toMatchObject({
       stderr:
-        "REA installation failed: the installed REA version could not be read. Reinstall the requested version, then retry.\n",
+        "NRE installation failed: the installed NRE version could not be read. Reinstall the requested version, then retry.\n",
     });
   });
 });
@@ -256,9 +256,9 @@ describe("installer TTY fallback", { timeout: 20_000 }, () => {
 
     expect(exitCode).toBe(0);
     expect(output).toContain(
-      `Run ${join(fixture.home, ".local/bin/rea")} setup to configure Hopper and agents.`,
+      `Run ${join(fixture.home, ".local/bin/nre")} setup to configure Hopper and agents.`,
     );
-    expect(await readFile(fixture.reaLog, "utf8")).toBe("--version\n");
+    expect(await readFile(fixture.nreLog, "utf8")).toBe("--version\n");
     expect(await readFile(fixture.installerStderrLog, "utf8")).toBe("");
   });
 });
@@ -349,7 +349,7 @@ describe(
       await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
         code: "ENOENT",
       });
-      await expect(readFile(fixture.reaLog, "utf8")).rejects.toMatchObject({
+      await expect(readFile(fixture.nreLog, "utf8")).rejects.toMatchObject({
         code: "ENOENT",
       });
     });
@@ -385,7 +385,7 @@ describe("Linux user-prefix installer", { timeout: 20_000 }, () => {
       "--global",
       "--prefix",
       join(home, ".local"),
-      "rea-agents@0.3.0",
+      "nano-reverse-engineer@0.3.0",
       "",
     ]);
     expect((await readFile(argvLog)).toString()).toBe(printed.stdout);
@@ -400,13 +400,13 @@ describe("native macOS installer", { timeout: 20_000 }, () => {
       FAKE_NPM_PREFIX: join(fixture.home, "npm global prefix"),
     });
     expect(result.stdout).toContain(
-      "  Command: npm install --global rea-agents@0.3.0\n",
+      "  Command: npm install --global nano-reverse-engineer@0.3.0\n",
     );
-    expect(result.stdout).toContain("REA 0.3.0 is installed");
+    expect(result.stdout).toContain("NRE 0.3.0 is installed");
     expect(await readFile(fixture.npmLog, "utf8")).toBe(
-      "prefix --global\ninstall --global rea-agents@0.3.0\n",
+      "prefix --global\ninstall --global nano-reverse-engineer@0.3.0\n",
     );
-    expect(await readFile(fixture.reaLog, "utf8")).toBe("--version\n");
+    expect(await readFile(fixture.nreLog, "utf8")).toBe("--version\n");
     expect(await readdir(fixture.temporary)).toEqual([]);
   });
 });
@@ -419,7 +419,7 @@ describe("installer semantic version parsing", { timeout: 20_000 }, () => {
     ).rejects.toMatchObject({
       stdout: "",
       stderr:
-        "REA installation failed: version must be an exact semantic version.\n",
+        "NRE installation failed: version must be an exact semantic version.\n",
     });
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -439,7 +439,7 @@ describe("installer semantic version parsing", { timeout: 20_000 }, () => {
       ).rejects.toMatchObject({
         stdout: "",
         stderr:
-          "REA installation failed: version must be an exact semantic version.\n",
+          "NRE installation failed: version must be an exact semantic version.\n",
       });
       await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
         code: "ENOENT",
@@ -460,10 +460,10 @@ describe("installer semantic version parsing", { timeout: 20_000 }, () => {
     expect(failure).toBeInstanceOf(Error);
     const stderr = getProcessOutput(failure, "stderr");
     expect(stderr).toBe(
-      "REA installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
+      "NRE installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
     );
     expect(getProcessOutput(failure, "stdout")).not.toContain(
-      "REA install plan",
+      "NRE install plan",
     );
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -486,17 +486,17 @@ describe("installer semantic version parsing", { timeout: 20_000 }, () => {
   it("rejects build metadata in the latest release tag before printing a plan", async () => {
     const fixture = await createFixture();
     const failure = await runInstaller(fixture, [], {
-      FAKE_CURL_BODY: '{"tag_name":"rea-agents-1.2.3+build.01"}',
+      FAKE_CURL_BODY: '{"tag_name":"nano-reverse-engineer-1.2.3+build.01"}',
     }).then(
       () => undefined,
       (cause: unknown) => cause,
     );
     expect(failure).toBeInstanceOf(Error);
     expect(getProcessOutput(failure, "stderr")).toBe(
-      "REA installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
+      "NRE installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
     );
     expect(getProcessOutput(failure, "stdout")).not.toContain(
-      "REA install plan",
+      "NRE install plan",
     );
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -507,11 +507,11 @@ describe("installer semantic version parsing", { timeout: 20_000 }, () => {
     const fixture = await createFixture();
     await expect(
       runInstaller(fixture, [], {
-        FAKE_CURL_BODY: '{"tag_name":"rea-agents-1.2.3-01"}',
+        FAKE_CURL_BODY: '{"tag_name":"nano-reverse-engineer-1.2.3-01"}',
       }),
     ).rejects.toMatchObject({
       stderr:
-        "REA installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
+        "NRE installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
     });
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -524,7 +524,7 @@ interface InstallerFixture {
   readonly bin: string;
   readonly temporary: string;
   readonly npmLog: string;
-  readonly reaLog: string;
+  readonly nreLog: string;
   readonly installerStderrLog: string;
 }
 
@@ -543,12 +543,12 @@ const getProcessOutput = (
 };
 
 const createFixture = async (): Promise<InstallerFixture> => {
-  const root = await createTestTempDirectory("rea-install-test-");
+  const root = await createTestTempDirectory("nre-install-test-");
   const home = join(root, "home");
   const bin = join(root, "bin");
   const temporary = join(root, "tmp");
   const npmLog = join(root, "npm.log");
-  const reaLog = join(root, "rea.log");
+  const nreLog = join(root, "nre.log");
   const installerStderrLog = join(root, "installer.stderr.log");
   await Promise.all([mkdir(home), mkdir(bin), mkdir(temporary)]);
   await Promise.all([
@@ -577,19 +577,19 @@ while [ "$#" -gt 0 ]; do
 done
 [ "\${FAKE_NPM_SKIP_BINARY:-}" = "1" ] && exit 0
 mkdir -p "$prefix/bin"
-cp "$FAKE_REA_SOURCE" "$prefix/bin/rea"
-chmod +x "$prefix/bin/rea"
+cp "$FAKE_REA_SOURCE" "$prefix/bin/nre"
+chmod +x "$prefix/bin/nre"
 `,
     ),
     executable(
       join(bin, "curl"),
       `#!/bin/sh
 [ "\${FAKE_CURL_FAIL:-}" = "1" ] && exit 1
-if [ -n "\${FAKE_CURL_BODY:-}" ]; then printf '%s' "$FAKE_CURL_BODY"; else printf '%s' '{"tag_name":"rea-agents-0.3.0"}'; fi
+if [ -n "\${FAKE_CURL_BODY:-}" ]; then printf '%s' "$FAKE_CURL_BODY"; else printf '%s' '{"tag_name":"nano-reverse-engineer-0.3.0"}'; fi
 `,
     ),
     executable(
-      join(bin, "rea-source"),
+      join(bin, "nre-source"),
       `#!/bin/sh
 printf '%s\n' "$*" >> "$FAKE_REA_LOG"
 [ "\${FAKE_REA_VERSION_FAIL:-}" = "1" ] && exit 1
@@ -601,7 +601,7 @@ exit 0
       symlink(`/usr/bin/${command}`, join(bin, command)),
     ),
   ]);
-  return { home, bin, temporary, npmLog, reaLog, installerStderrLog };
+  return { home, bin, temporary, npmLog, nreLog, installerStderrLog };
 };
 
 const executable = async (path: string, source: string): Promise<void> => {
@@ -617,8 +617,8 @@ const installerEnvironment = (
   TMPDIR: fixture.temporary,
   PATH: `${fixture.bin}:/usr/bin:/bin`,
   FAKE_NPM_LOG: fixture.npmLog,
-  FAKE_REA_LOG: fixture.reaLog,
-  FAKE_REA_SOURCE: join(fixture.bin, "rea-source"),
+  FAKE_REA_LOG: fixture.nreLog,
+  FAKE_REA_SOURCE: join(fixture.bin, "nre-source"),
   FAKE_NPM_PREFIX: join(fixture.home, ".npm-global"),
 });
 

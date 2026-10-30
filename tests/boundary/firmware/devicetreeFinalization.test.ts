@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.each(["control", "close-failure", "close-cancel", "close-both"] as const)(
   "retains completed devicetree acquisition through %s",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-dtb-finalization-");
+    const root = await createTestTempDirectory("nre-dtb-finalization-");
     const path = join(root, "board.dtb");
     const bytes = devicetreeFixture();
     await writeFile(path, bytes);

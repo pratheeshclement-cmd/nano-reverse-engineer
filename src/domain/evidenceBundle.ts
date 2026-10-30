@@ -133,7 +133,7 @@ export const createEvidenceBundle = (
         : [],
     ),
     captures: sortedRecords.flatMap((evidence) =>
-      evidence.predicate_type === "rea.process-capture"
+      evidence.predicate_type === "nre.process-capture"
         ? [
             {
               evidence_id: evidence.evidence_id,
@@ -179,7 +179,7 @@ export const evidenceBundleForTarget = (
         return (
           record?.subject?.digest.sha256 === sha256 ||
           (mutationEvidenceIds.has(evidenceId) &&
-            record?.predicate_type === "rea.residual-unknown-mutation")
+            record?.predicate_type === "nre.residual-unknown-mutation")
         );
       });
     });
@@ -260,7 +260,7 @@ const describeEvidenceBundleFailure = (
       cause,
       message:
         cause instanceof z.ZodError
-          ? `Evidence bundle does not match the bundle schema ${describeValidationFailure(cause)}. Supply an unmodified bundle produced by this REA identity format. Recreate observations from earlier formats; re-exporting an old bundle does not update its identities.`
+          ? `Evidence bundle does not match the bundle schema ${describeValidationFailure(cause)}. Supply an unmodified bundle produced by this NRE identity format. Recreate observations from earlier formats; re-exporting an old bundle does not update its identities.`
           : `Evidence bundle validation failed: ${describeValidationFailure(cause)}. Recreate or re-export the bundle, then try again.`,
     };
   }
@@ -464,7 +464,7 @@ const validateVerifiedResolution = (
     return (
       unknown.supporting_evidence_ids.includes(evidenceId) &&
       evidence !== undefined &&
-      evidence.predicate_type !== "rea.residual-unknown-mutation" &&
+      evidence.predicate_type !== "nre.residual-unknown-mutation" &&
       evidenceQualifies(unknown, evidence)
     );
   });

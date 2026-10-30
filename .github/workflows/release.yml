@@ -53,7 +53,7 @@ jobs:
             -f query='query($owner:String!,$name:String!,$endCursor:String) {
               repository(owner:$owner,name:$name) {
                 nameWithOwner
-                pullRequests(first:100,after:$endCursor,states:OPEN,baseRefName:"main",labels:["rea:release-notes-finalized"]) {
+                pullRequests(first:100,after:$endCursor,states:OPEN,baseRefName:"main",labels:["nre:release-notes-finalized"]) {
                   nodes { number headRefName headRepository { nameWithOwner } }
                   pageInfo { hasNextPage endCursor }
                 }

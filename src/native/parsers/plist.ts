@@ -328,7 +328,7 @@ const projectPlistXml = (
   } catch (cause: unknown) {
     return err(plistOutputError(cause, failureReason));
   }
-  // The XML decoder turns <integer> and <real> into numbers before REA sees
+  // The XML decoder turns <integer> and <real> into numbers before NRE sees
   // them, rounding integers beyond the exact range.
   let exactIntegerCount = 0;
   let ambiguousNumberCount = 0;

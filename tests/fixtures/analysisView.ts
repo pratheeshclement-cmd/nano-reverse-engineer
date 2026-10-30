@@ -209,12 +209,12 @@ export const analysisViewJavaScriptEvidence = (
       sha256: analysis.root_artifact_sha256,
     },
     {
-      id: "rea-javascript-application",
-      name: "REA JavaScript application analyzer",
+      id: "nre-javascript-application",
+      name: "NRE JavaScript application analyzer",
       version: "1",
     },
     {
-      predicateType: "rea.javascript-application-analysis",
+      predicateType: "nre.javascript-application-analysis",
       operation: "analyze_javascript_application",
       parameters: { input_path: analysis.input_path, format: analysis.format },
       result: analysis,

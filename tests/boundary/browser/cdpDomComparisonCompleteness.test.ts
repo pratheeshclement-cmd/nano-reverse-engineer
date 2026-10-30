@@ -232,7 +232,7 @@ describe("DOM evidence through the public CLI", () => {
     "preserves omissions and independently proven frame changes",
     async ({ cli }) => {
       const { state, inspect } = await startBrowser();
-      const root = await createTestTempDirectory("rea-dom-comparison-");
+      const root = await createTestTempDirectory("nre-dom-comparison-");
       const before = join(root, "before.json");
       const after = join(root, "after.json");
       await writeFile(before, JSON.stringify({ inspection: await inspect() }));

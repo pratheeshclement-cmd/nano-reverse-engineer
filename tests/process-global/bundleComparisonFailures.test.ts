@@ -52,7 +52,7 @@ it.each(["missing", "invalid", "cleanup"])(
   "retains the right bundle close owner when the left bundle has a %s failure",
   async (leftFailure) => {
     const directory = await createTestTempDirectory(
-      "rea-bundle-mixed-cleanup-",
+      "nre-bundle-mixed-cleanup-",
     );
     const { path: rightPath } = await validBundleFile(directory, "right.json");
     const leftPath = join(directory, "left.json");
@@ -112,7 +112,7 @@ it.each([
   "preserves unexpected process validation failures while reading a bundle: $name",
   async (failure) => {
     const directory = await createTestTempDirectory(
-      "rea-bundle-capture-failure-",
+      "nre-bundle-capture-failure-",
     );
     const path = join(directory, "bundle.json");
     await writeFile(
@@ -138,7 +138,7 @@ it.each(unexpectedBundleFailures)(
   "preserves unexpected bundle authentication failures in mutable and immutable readers: $name",
   async (failure) => {
     const directory = await createTestTempDirectory(
-      "rea-bundle-reader-failure-",
+      "nre-bundle-reader-failure-",
     );
     const { path } = await validBundleFile(directory);
     spyOnBundleParse(failure);
@@ -155,7 +155,7 @@ it.each(unexpectedBundleFailures)(
   "does not publish output or retain resources when bundle authentication throws: $name",
   async (failure) => {
     const directory = await createTestTempDirectory(
-      "rea-bundle-write-failure-",
+      "nre-bundle-write-failure-",
     );
     const { bundle } = await validBundleFile(directory, "input.json");
     const outputPath = join(directory, "output.json");
@@ -178,7 +178,7 @@ it.each(unexpectedBundleFailures)(
   "preserves unexpected bundle authentication failures through SDK import: $name",
   async (failure) => {
     const directory = await createTestTempDirectory(
-      "rea-bundle-import-failure-",
+      "nre-bundle-import-failure-",
     );
     const { path } = await validBundleFile(directory);
     const session = createTestBinarySession(() => {
@@ -217,7 +217,7 @@ it.each(unexpectedBundleFailures)(
   "preserves the session ledger when bundle authentication throws: $name",
   async (failure) => {
     const directory = await createTestTempDirectory(
-      "rea-ledger-import-failure-",
+      "nre-ledger-import-failure-",
     );
     const { bundle } = await validBundleFile(directory);
     const existing = evidenceDomain.createEvidence(
@@ -248,7 +248,7 @@ it.each(unexpectedBundleFailures)(
   "propagates unexpected standalone-record classification failures: $name",
   async (failure) => {
     const directory = await createTestTempDirectory(
-      "rea-bundle-classifier-failure-",
+      "nre-bundle-classifier-failure-",
     );
     const path = join(directory, "record.json");
     const record = processEvidence();
@@ -274,7 +274,7 @@ it.each([
   "keeps an internal comparison failure distinct from damaged Evidence: $name",
   async (failure) => {
     const directory = await createTestTempDirectory(
-      "rea-bundle-compute-failure-",
+      "nre-bundle-compute-failure-",
     );
     const path = join(directory, "bundle.json");
     await writeFile(
@@ -341,7 +341,7 @@ it.each([
   "retries retained read cleanup through the standalone %s owner",
   async (command) => {
     const directory = await createTestTempDirectory(
-      "rea-standalone-bundle-cleanup-",
+      "nre-standalone-bundle-cleanup-",
     );
     const { path } = await validBundleFile(directory);
     const output = join(directory, "output.json");
@@ -397,7 +397,7 @@ it.each([
   "inspect-evidence-bundle",
 ])("handles SIGINT during the standalone %s input close", async (command) => {
   const directory = await createTestTempDirectory(
-    "rea-standalone-bundle-cancel-",
+    "nre-standalone-bundle-cancel-",
   );
   const { path } = await validBundleFile(directory);
   const output = join(directory, "output.json");
@@ -439,7 +439,7 @@ it.each(["compare", "inspect-evidence-bundle"])(
   "retains completed %s output when SIGINT is queued during projection",
   async (command) => {
     const directory = await createTestTempDirectory(
-      "rea-standalone-bundle-projection-",
+      "nre-standalone-bundle-projection-",
     );
     const { path, bundle } = await validBundleFile(directory);
     const queueInterrupt = () => {
@@ -502,7 +502,7 @@ it.each(["before-commit", "after-commit", "cleanup-retry"])(
   "preserves standalone export publication facts on SIGINT at %s",
   async (phase) => {
     const directory = await createTestTempDirectory(
-      "rea-standalone-export-publication-",
+      "nre-standalone-export-publication-",
     );
     const { path, bundle } = await validBundleFile(directory);
     const output = join(directory, "output.json");

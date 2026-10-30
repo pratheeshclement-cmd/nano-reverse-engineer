@@ -13,18 +13,18 @@ cliTest
   ])(
   "reports actual Kuna purge effects for $label",
   async ({ suffix, retained }, { cli }) => {
-    const home = await createTestTempDirectory("rea-kuna-purge-cli-");
+    const home = await createTestTempDirectory("nre-kuna-purge-cli-");
     const cacheRoot = join(
       home,
       process.platform === "darwin" ? "Library/Caches" : "cache",
     );
-    const cache = join(cacheRoot, "rea", "kuna");
+    const cache = join(cacheRoot, "nre", "kuna");
     const custom = `${cache}${suffix}`;
     await mkdir(cache, { recursive: true });
     await mkdir(custom, { recursive: true });
     await writeFile(join(cache, "owned"), "owned cache");
     await writeFile(join(custom, "selected"), "caller evidence");
-    const sibling = join(cacheRoot, "rea", "caller-evidence");
+    const sibling = join(cacheRoot, "nre", "caller-evidence");
     await writeFile(sibling, "unrelated evidence");
 
     const result = await cli.run({
@@ -41,7 +41,7 @@ cliTest
           "system/gemini-defaults.json",
         ),
         GEMINI_CLI_TRUSTED_FOLDERS_PATH: join(home, ".gemini/trusted.json"),
-        REA_KUNA_CACHE_DIR: custom,
+        NRE_KUNA_CACHE_DIR: custom,
       },
     });
     expect(result.exitCode, result.stdout + result.stderr).toBe(0);

@@ -74,7 +74,7 @@ cliTest(
     );
     const evidence = analysisViewCaptureEvidence(capture);
     const before = JSON.stringify(evidence);
-    const root = await createTestTempDirectory("rea-retained-response-facts-");
+    const root = await createTestTempDirectory("nre-retained-response-facts-");
     const { call } = await connectLocalToolsMcp();
     for (const kind of ["api-surface", "environment-manifest"] as const) {
       const request = { source: { kind: "inline", evidence }, view: { kind } };

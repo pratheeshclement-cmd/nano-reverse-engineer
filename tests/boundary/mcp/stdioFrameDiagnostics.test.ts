@@ -22,12 +22,12 @@ workspaceCliTest.for([
     const home = workspace.path("home");
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       env: {
         PATH: process.env.PATH ?? "",
         HOME: home,
-        REA_LOG_LEVEL: "error",
-        REA_MCP_OUTPUT_SCHEMA_PROFILE: profile,
+        NRE_LOG_LEVEL: "error",
+        NRE_MCP_OUTPUT_SCHEMA_PROFILE: profile,
       },
       stderr: "pipe",
     });

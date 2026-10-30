@@ -8,7 +8,7 @@ import { processTest } from "../../support/process/processFixture.js";
 processTest.skipIf(process.platform !== "win32")(
   "pins default ADB, Apktool and update launches to the selected Windows PATH",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-windows-tool-selection-");
+    const root = await createTestTempDirectory("nre-windows-tool-selection-");
     const working = join(root, "project");
     const trusted = join(root, "selected tools");
     const marker = join(root, "selected-update.txt");
@@ -41,7 +41,7 @@ processTest.skipIf(process.platform !== "win32")(
       import { UpdateCommandRunner } from ${moduleUrl("application/UpdateCommandRunner")};
       const environment = { ...process.env };
       for (const key of Object.keys(environment))
-        if (['path', 'pathext', 'nodefaultcurrentdirectoryinexepath', 'rea_adb_path', 'rea_apktool_command'].includes(key.toLowerCase())) delete environment[key];
+        if (['path', 'pathext', 'nodefaultcurrentdirectoryinexepath', 'nre_adb_path', 'nre_apktool_command'].includes(key.toLowerCase())) delete environment[key];
       environment.Path = ${JSON.stringify(trusted)};
       environment.PathExt = '.EXE;.CMD';
       const adb = await resolveAdbBinary(environment);
@@ -96,7 +96,7 @@ processTest.skipIf(process.platform !== "win32")(
 processTest.skipIf(process.platform !== "win32")(
   "runs real npm update metadata probes from a project containing an npm launcher",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-windows-real-npm-");
+    const root = await createTestTempDirectory("nre-windows-real-npm-");
     const marker = join(root, "project-launcher.txt");
     await writeFile(
       join(root, "npm.cmd"),

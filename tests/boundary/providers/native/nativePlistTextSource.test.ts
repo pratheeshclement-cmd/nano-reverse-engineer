@@ -142,7 +142,7 @@ it.for<TextSourceCase>([
     conversions: [{ format: "json", output: '{"name":"UTF32 control"}' }],
   },
 ])("owns $name interpretation before optional conversion", async (fixture) => {
-  const root = await createTestTempDirectory("rea-plist-text-source-");
+  const root = await createTestTempDirectory("nre-plist-text-source-");
   const path = join(root, "selected.plist");
   await writeFile(path, fixture.bytes);
   const replay = new NativeFixtureRunner({ file: fixture.description });

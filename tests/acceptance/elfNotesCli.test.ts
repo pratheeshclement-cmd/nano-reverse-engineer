@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { cliTest } from "../support/cli/cliFixture.js";
 
 cliTest("reports a GNU build-id through the public CLI", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-elf-notes-cli-");
+  const root = await createTestTempDirectory("nre-elf-notes-cli-");
   const path = join(root, "program");
   await writeFile(path, elfNoteFixture({ ownership: "program" }));
   const result = await cli.run({
@@ -33,7 +33,7 @@ cliTest("reports a GNU build-id through the public CLI", async ({ cli }) => {
 cliTest(
   "resolves section note names from zlib and Zstandard string tables through the CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-notes-compressed-cli-");
+    const root = await createTestTempDirectory("nre-elf-notes-compressed-cli-");
     for (const compressionType of [1, 2]) {
       const path = join(root, `program-${String(compressionType)}`);
       const bytes = compressedElfNoteFixture(64, true, compressionType);
@@ -59,7 +59,7 @@ cliTest(
 cliTest(
   "keeps GNU notes when a section-name offset is outside its string table",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-notes-name-cli-");
+    const root = await createTestTempDirectory("nre-elf-notes-name-cli-");
     const path = join(root, "program");
     const bytes = elfNoteWithUnreadableSectionNameFixture("outside");
     await writeFile(path, bytes);
@@ -89,7 +89,7 @@ cliTest(
 cliTest(
   "resolves a relative ELF path against the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-notes-cli-rel-");
+    const root = await createTestTempDirectory("nre-elf-notes-cli-rel-");
     await writeFile(
       join(root, "unsigned"),
       elfNoteFixture({ ownership: "none" }),
@@ -108,7 +108,7 @@ cliTest(
 );
 
 cliTest("reports a truncated ELF as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-elf-notes-cli-bad-");
+  const root = await createTestTempDirectory("nre-elf-notes-cli-bad-");
   const path = join(root, "broken");
   await writeFile(path, Buffer.from("\x7fELF"));
   const result = await cli.run({
@@ -124,7 +124,7 @@ cliTest("reports a truncated ELF as invalid input", async ({ cli }) => {
 cliTest(
   "reports compressed note storage as unsupported without mutation",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-notes-storage-cli-");
+    const root = await createTestTempDirectory("nre-elf-notes-storage-cli-");
     const path = join(root, "debug-notes.o");
     const bytes = compressedElfNoteSectionFixture();
     await writeFile(path, bytes);
@@ -145,7 +145,7 @@ cliTest(
 cliTest(
   "reports valid extended numbering as unsupported without mutation",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-notes-extended-cli-");
+    const root = await createTestTempDirectory("nre-elf-notes-extended-cli-");
     const path = join(root, "extended-count.elf");
     await writeFile(path, elfExtendedSectionCountFixture());
     const before = await readFile(path);
@@ -164,7 +164,7 @@ cliTest(
 cliTest(
   "rejects dangling section-name references and preserves sectionless notes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-elf-notes-presence-cli-");
+    const root = await createTestTempDirectory("nre-elf-notes-presence-cli-");
     const path = join(root, "program");
     for (const ownership of ["program", "none"] as const) {
       const bytes = elfNoteFixture({ ownership });

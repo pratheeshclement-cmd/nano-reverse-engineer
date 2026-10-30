@@ -10,7 +10,7 @@ const PLUGIN_MANIFEST_PATHS = [
 ];
 const inlinePluginManifestSchema = versionSchema.extend({
   mcpServers: z.object({
-    rea: z.object({
+    nre: z.object({
       command: z.literal("node"),
       args: z.tuple([
         z.literal("${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs"),
@@ -24,7 +24,7 @@ const codexPluginManifestSchema = versionSchema.extend({
 });
 const codexServerConfigSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({
+    nre: z.object({
       command: z.literal("node"),
       args: z.tuple([
         z.literal("./scripts/plugin-mcp-launcher.mjs"),
@@ -212,13 +212,15 @@ async function validateCandidate(git, sha, version, commits) {
     }),
   );
   const npmPackage = server.packages.find(
-    (entry) => entry.identifier === "rea-agents",
+    (entry) => entry.identifier === "nano-reverse-engineer",
   );
   if (npmPackage === undefined)
-    throw new Error("server.json is missing the rea-agents package.");
+    throw new Error(
+      "server.json is missing the nano-reverse-engineer package.",
+    );
   versions.push(
     ["server.json", server.version],
-    ["server.json rea-agents package", npmPackage.version],
+    ["server.json nano-reverse-engineer package", npmPackage.version],
   );
   // A stale manifest keeps the previous plugin cache key or launches the
   // previous server, so both are version authority like server.json.
@@ -238,7 +240,7 @@ async function validateCandidate(git, sha, version, commits) {
             codexServerConfigSchema,
           )
         : manifest;
-    launches.push([path, server.mcpServers.rea.args[1]]);
+    launches.push([path, server.mcpServers.nre.args[1]]);
   }
   // Catalogs are generated and checked from this candidate by the release job;
   // they are not version authority stored in the immutable source tree.
@@ -352,7 +354,7 @@ export async function inspectReleaseCheckpoint(git, options) {
       `Expected release ${expectedVersion} must advance published baseline ${baselineVersion}.`,
     );
   }
-  const baselineTag = `refs/tags/rea-agents-${baselineVersion}`;
+  const baselineTag = `refs/tags/nano-reverse-engineer-${baselineVersion}`;
   const baselineSha = await resolveBaseline(git, baselineTag);
   await requireAncestor(
     git,

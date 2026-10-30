@@ -75,7 +75,7 @@ describe("process CLI error projection", () => {
 
 describe("process CLI file cancellation", () => {
   it("projects pre-aborted file reads as cancellation", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-cancel-");
+    const root = await createTestTempDirectory("nre-process-cli-cancel-");
     const controller = new AbortController();
     controller.abort();
     expect(
@@ -112,7 +112,7 @@ describe("process CLI file cancellation", () => {
   ] as const)(
     "stops streamed $workflow $input reads after cancellation",
     async ({ workflow, input }) => {
-      const root = await createTestTempDirectory("rea-process-cli-stream-");
+      const root = await createTestTempDirectory("nre-process-cli-stream-");
       const paths = {
         scenario: join(root, "scenario.json"),
         left: join(root, "left.json"),
@@ -197,7 +197,7 @@ it.each(
 )(
   "preserves a $reader descriptor $label when cancellation arrives after the read fails",
   async ({ physical, reader }) => {
-    const root = await createTestTempDirectory("rea-process-cli-late-io-");
+    const root = await createTestTempDirectory("nre-process-cli-late-io-");
     const path = join(root, "scenario.json");
     const input = JSON.stringify({
       executable: process.execPath,
@@ -228,7 +228,7 @@ it.each(
 
 it("keeps a physical read primary when its cause is also the abort reason", async () => {
   const root = await createTestTempDirectory(
-    "rea-process-cli-identical-abort-",
+    "nre-process-cli-identical-abort-",
   );
   const path = join(root, "scenario.json");
   await writeFile(
@@ -282,7 +282,7 @@ describe("process CLI input diagnostics", () => {
   });
 
   it("projects missing, malformed JSON, and invalid scenario files", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-diagnostics-");
+    const root = await createTestTempDirectory("nre-process-cli-diagnostics-");
     const malformed = join(root, "malformed.json");
     const invalid = join(root, "invalid.json");
     const invalidUtf8 = join(root, "invalid-utf8.json");
@@ -403,7 +403,7 @@ describe("process CLI input diagnostics", () => {
 describe("process CLI file cleanup", () => {
   it("retries a transient input close refusal before validating the scenario", async () => {
     const root = await createTestTempDirectory(
-      "rea-process-cli-cleanup-retry-",
+      "nre-process-cli-cleanup-retry-",
     );
     const path = join(root, "scenario.json");
     await writeFile(path, "{}");
@@ -434,7 +434,7 @@ describe("process CLI file cleanup", () => {
   ] as const)(
     "preserves the open-file owner when $operation close fails (cancelled: $cancelDuringClose)",
     async ({ operation, cancelDuringClose }) => {
-      const root = await createTestTempDirectory("rea-process-cli-cleanup-");
+      const root = await createTestTempDirectory("nre-process-cli-cleanup-");
       const path = join(root, "scenario.json");
       await writeFile(path, JSON.stringify({ executable: process.execPath }));
       const controller = new AbortController();
@@ -482,7 +482,7 @@ describe("process CLI file cleanup", () => {
 describe("process CLI UTF-8 input diagnostics", () => {
   it("names a leading byte-order mark instead of quoting it as a token", async () => {
     const path = join(
-      await createTestTempDirectory("rea-process-cli-diagnostics-"),
+      await createTestTempDirectory("nre-process-cli-diagnostics-"),
       "scenario.json",
     );
     await writeFile(path, '\uFEFF{"executable":"/bin/echo"}');
@@ -498,7 +498,7 @@ describe("process CLI UTF-8 input diagnostics", () => {
 
 const processCaptureEvidence = () =>
   createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "nre.process-capture",
     operation: "capture_process_scenario",
     parameters: {},
     result: EMPTY_PROCESS_CAPTURE_EXAMPLE,

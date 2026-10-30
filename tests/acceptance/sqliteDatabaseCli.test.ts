@@ -38,7 +38,7 @@ const digest = (bytes: Buffer): string =>
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "unions SQLite cell slices with numeric cell paths",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-mixed-filter-");
+    const root = await createTestTempDirectory("nre-sqlite-mixed-filter-");
     const path = join(root, "selected.db");
     const database = new DatabaseSync(path);
     try {
@@ -63,7 +63,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
           "--filter-output",
           filter,
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode, result.stdout + result.stderr).toBe(0);
       expect(result.json).toEqual({
@@ -82,7 +82,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "--filter-output",
         `${base}[0,1].value,${base}.length`,
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(refused.exitCode).toBe(1);
     expect(refused.json).toMatchObject({
@@ -95,7 +95,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "projects selected SQLite matrix cells through consecutive output slices",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-matrix-filter-");
+    const root = await createTestTempDirectory("nre-sqlite-matrix-filter-");
     const path = join(root, "selected.db");
     const database = new DatabaseSync(path);
     try {
@@ -119,7 +119,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "--filter-output",
         "normalized_result.rows.values[0,1][0,1].value",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode, result.stdout + result.stderr).toBe(0);
     expect(result.json).toEqual({
@@ -132,7 +132,7 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
   cliTest.skipIf(expectedErrno === "ELOOP" && process.platform === "win32")(
     `reports an initial ${expectedErrno} path failure through CLI and MCP`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-sqlite-path-failure-");
+      const root = await createTestTempDirectory("nre-sqlite-path-failure-");
       const path =
         expectedErrno === "ELOOP"
           ? join(root, "cycle-a", "selected.db")
@@ -143,7 +143,7 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
       }
       const result = await cli.run({
         arguments: ["inspect-sqlite-database", path, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode).toBe(1);
       const expectedError = {
@@ -169,7 +169,7 @@ for (const expectedErrno of ["ELOOP", "ENAMETOOLONG"] as const) {
 cliTest(
   "reports the combined database and WAL byte budget through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-size-budget-");
+    const root = await createTestTempDirectory("nre-sqlite-size-budget-");
     const path = join(root, "selected.db");
     const walPath = `${path}-wal`;
     const maximum = 256 * 1024 * 1024;
@@ -193,7 +193,7 @@ cliTest(
         "60000",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const { call } = await connectLocalToolsMcp();
     const mcpResponse = await call("inspect_sqlite_database", {
@@ -241,7 +241,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32" || !SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reports an unavailable capability when a closed database sidecar path is too long",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-long-basename-");
+    const root = await createTestTempDirectory("nre-sqlite-long-basename-");
     const path = join(root, "x".repeat(255));
     const originalPath = join(root, "selected.db");
     const database = new DatabaseSync(originalPath);
@@ -263,7 +263,7 @@ cliTest.skipIf(process.platform === "win32" || !SQLITE_NATIVE_LIMITS_AVAILABLE)(
 
     const cliResult = await cli.run({
       arguments: ["inspect-sqlite-database", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const { call } = await connectLocalToolsMcp();
     const mcpResult = await call("inspect_sqlite_database", { path });
@@ -299,7 +299,7 @@ cliTest.skipIf(process.platform === "win32" || !SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "bounds default context and projects exact columns without evaluating unrelated cells",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-selective-");
+    const root = await createTestTempDirectory("nre-sqlite-selective-");
     const path = join(root, "selected.db");
     const database = new DatabaseSync(path);
     try {
@@ -399,7 +399,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "42000",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(cliResult.exitCode, cliResult.stdout + cliResult.stderr).toBe(0);
     expect(cliResult.json).toMatchObject({
@@ -425,7 +425,7 @@ cliTest(
   async ({ cli }) => {
     const result = await cli.run({
       arguments: ["capabilities", "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode, result.stdout + result.stderr).toBe(0);
     const status = z
@@ -487,7 +487,7 @@ cliTest(
 cliTest.skipIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reports the required native SQLite limits capability through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-unavailable-");
+    const root = await createTestTempDirectory("nre-sqlite-unavailable-");
     const path = join(root, "selected.db");
     const database = new DatabaseSync(path);
     try {
@@ -497,7 +497,7 @@ cliTest.skipIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
     }
     const result = await cli.run({
       arguments: ["inspect-sqlite-database", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode).toBe(1);
     expect(result.json).toMatchObject({
@@ -517,7 +517,7 @@ cliTest.skipIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "accepts small samples above 1000 rows within the real resource budgets",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-row-budget-");
+    const root = await createTestTempDirectory("nre-sqlite-row-budget-");
     const path = join(root, "rows.db");
     const database = new DatabaseSync(path);
     try {
@@ -539,7 +539,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
           String(limit),
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode, result.stdout + result.stderr).toBe(0);
       expect(result.json).toMatchObject({
@@ -617,7 +617,7 @@ cliTest
   .for(["DELETE", "PERSIST", "TRUNCATE"])(
   "inspects a real %s SQLite schema and lossless selected records identically through CLI and MCP",
   async (journalMode, { cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-public-");
+    const root = await createTestTempDirectory("nre-sqlite-public-");
     const path = join(root, "selected.db");
     createLosslessSnapshot(path, journalMode);
     const original = await readFile(path);
@@ -635,9 +635,9 @@ cliTest
       ],
       cwd: root,
       environment: {
-        REA_LOG_LEVEL: "silent",
-        REA_ANALYSIS_PROVIDER: "ghidra",
-        REA_GHIDRA_HOME: "/unconfigured/ghidra",
+        NRE_LOG_LEVEL: "silent",
+        NRE_ANALYSIS_PROVIDER: "ghidra",
+        NRE_GHIDRA_HOME: "/unconfigured/ghidra",
       },
     });
     expect(result.exitCode, result.stdout + result.stderr).toBe(0);
@@ -739,7 +739,7 @@ cliTest
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "includes uncheckpointed committed WAL data without modifying the source database or sidecars",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-wal-public-");
+    const root = await createTestTempDirectory("nre-sqlite-wal-public-");
     const path = join(root, "wal.db");
     const database = new DatabaseSync(path);
     onTestFinished(() => database.close());
@@ -760,7 +760,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "committed",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode, result.stdout + result.stderr).toBe(0);
     expect(result.json).toMatchObject({
@@ -800,7 +800,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "returns actionable public errors for corrupt input, unknown or ambiguous tables and invalid record choices",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-errors-public-");
+    const root = await createTestTempDirectory("nre-sqlite-errors-public-");
     const path = join(root, "invalid.db");
     const { call } = await connectLocalToolsMcp();
     // Distinct malformed selections each name their own selected path.
@@ -820,7 +820,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
       };
       const corrupt = await cli.run({
         arguments: ["inspect-sqlite-database", selected, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(corrupt.exitCode).toBe(1);
       expect(corrupt.json).toMatchObject(expectedError);
@@ -862,7 +862,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "search_data",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(ambiguous.exitCode).toBe(1);
     expect(ambiguous.stdout).toContain("shadow table");
@@ -882,7 +882,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "absent",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(missing.exitCode).toBe(1);
     expect(missing.stdout).toContain("absent");
@@ -907,7 +907,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reports inventory projections beyond SQLite bind capacity through CLI and MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-sqlite-inventory-capacity-",
+      "nre-sqlite-inventory-capacity-",
     );
     const path = join(root, "selected.db");
     const producer = new DatabaseSync(path);
@@ -938,7 +938,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "1",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(control.exitCode, control.stdout + control.stderr).toBe(0);
     expect(control.json).toMatchObject({
@@ -967,7 +967,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "1",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const input = {
       path,
@@ -979,7 +979,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
     // Admit this fixture's array elements and root members so the test still
     // reaches SQLite's own capacity boundary rather than transport admission.
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_MAX_INPUT_ELEMENTS: String(
+      NRE_MCP_MAX_INPUT_ELEMENTS: String(
         columns.length + Object.keys(input).length,
       ),
     });
@@ -1007,7 +1007,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reports unavailable application-collation rows with schema-only recovery through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-collation-public-");
+    const root = await createTestTempDirectory("nre-sqlite-collation-public-");
     const path = createSqliteApplicationCollationFixture(root);
     const before = await sourceState(path);
     const { call } = await connectLocalToolsMcp();
@@ -1019,7 +1019,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "database",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const schemaResponse = await call("inspect_sqlite_database", {
       path,
@@ -1058,7 +1058,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "items",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const response = await call("inspect_sqlite_database", {
       path,
@@ -1093,11 +1093,11 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "attributes an unevaluable generated column to its selection, not the readable database path",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-generated-");
+    const root = await createTestTempDirectory("nre-sqlite-generated-");
     const path = join(root, "hashes.db");
     const producer = new DatabaseSync(path);
     try {
-      // The producing application supplies a function REA's connection lacks.
+      // The producing application supplies a function NRE's connection lacks.
       producer.function(
         "application_digest",
         { deterministic: true },
@@ -1112,7 +1112,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
     }
     const before = await readFile(path);
     const { call } = await connectLocalToolsMcp();
-    const message = `SQLite cannot evaluate selected column(s) of table "t" on REA's read-only connection: "b": unknown function: application_digest()`;
+    const message = `SQLite cannot evaluate selected column(s) of table "t" on NRE's read-only connection: "b": unknown function: application_digest()`;
     const expectedError = {
       code: "capability_unavailable",
       retryable: false,
@@ -1134,7 +1134,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
           ...(columns ?? []).flatMap((column) => ["--column", column]),
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode, result.stdout + result.stderr).toBe(1);
       expect(result.json).toMatchObject(expectedError);
@@ -1156,7 +1156,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "a",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(base.exitCode, base.stdout + base.stderr).toBe(0);
     expect(base.json).toMatchObject({
@@ -1188,7 +1188,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "reads sqlite_schema rows through CLI and MCP in every schema scope",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-schema-table-");
+    const root = await createTestTempDirectory("nre-sqlite-schema-table-");
     const path = join(root, "selected.db");
     const writer = new DatabaseSync(path);
     try {
@@ -1250,7 +1250,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "returns complete UTF-16 schemas through the worker and public CLI when JSON fits",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-large-catalog-");
+    const root = await createTestTempDirectory("nre-sqlite-large-catalog-");
     for (const [encoding, scope] of [
       ["UTF-16le", "inventory"],
       ["UTF-16be", "database"],
@@ -1264,7 +1264,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
           scope,
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       const evidence = parseEvidence(response.json);
@@ -1291,7 +1291,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "keeps selected table metadata tied to exact schema-name bytes through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-invalid-name-");
+    const root = await createTestTempDirectory("nre-sqlite-invalid-name-");
     const path = join(root, "selected.db");
     const producer = new DatabaseSync(path);
     try {
@@ -1358,7 +1358,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
         "1",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const { call } = await connectLocalToolsMcp();
     const mcpResult = await call("inspect_sqlite_database", {
@@ -1412,7 +1412,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
 cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
   "folds ASCII trigger spelling without merging non-ASCII UTF-16 table names",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sqlite-utf16-identity-");
+    const root = await createTestTempDirectory("nre-sqlite-utf16-identity-");
     const { call } = await connectLocalToolsMcp();
     for (const encoding of ["UTF-16le", "UTF-16be"]) {
       const path = join(root, `${encoding}.db`);
@@ -1429,7 +1429,7 @@ cliTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE)(
       const original = await readFile(path);
       const result = await cli.run({
         arguments: ["inspect-sqlite-database", path, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode, result.stderr).toBe(0);
       expect(result.json).toMatchObject({

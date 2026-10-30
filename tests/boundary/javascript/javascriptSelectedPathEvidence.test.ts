@@ -20,7 +20,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "retains selected JavaScript path separately from resolved identity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-selected-path-");
+    const root = await createTestTempDirectory("nre-js-selected-path-");
     const physicalPath = join(root, "physical-app");
     const selectedPath = join(root, "selected-app");
     await mkdir(physicalPath);
@@ -41,7 +41,7 @@ cliTest(
         "directory",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(cliResponse.exitCode, cliResponse.stderr).toBe(0);
     const cliEvidence = parseEvidence(cliResponse.json);
@@ -50,7 +50,7 @@ cliTest(
       const relativeResponse = await cli.run({
         arguments: [command, "./selected-app", "--json"],
         cwd: root,
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(relativeResponse.exitCode, relativeResponse.stderr).toBe(0);
       const relativeEvidence = parseEvidence(relativeResponse.json);
@@ -63,7 +63,7 @@ cliTest(
       );
     }
 
-    const { call } = await connectLocalToolsMcp({ REA_LOG_LEVEL: "silent" });
+    const { call } = await connectLocalToolsMcp({ NRE_LOG_LEVEL: "silent" });
     const aliasResponse = await call("analyze_javascript_application", {
       input_path: selectedPath,
       format: "directory",
@@ -154,12 +154,12 @@ cliTest.for([
 ])(
   "$command rejects an empty path instead of analyzing the working directory",
   async ({ command, rejection }, { cli }) => {
-    const root = await createTestTempDirectory("rea-js-empty-path-");
+    const root = await createTestTempDirectory("nre-js-empty-path-");
     await writeFile(join(root, "main.js"), "export const value = 7;\n");
     const response = await cli.run({
       arguments: [command, "", "--json"],
       cwd: root,
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(1);
     expect(response.json).toMatchObject(rejection);

@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("Erlang BEAM stable filesystem boundary", () => {
   it("reports non-file and malformed BEAM selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-beam-files-");
+    const root = await createTestTempDirectory("nre-beam-files-");
     const path = join(root, "app.beam");
     const alias = join(root, "alias.beam");
     const malformed = join(root, "malformed.beam");
@@ -43,7 +43,7 @@ describe("Erlang BEAM stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-beam-budget-");
+    const root = await createTestTempDirectory("nre-beam-budget-");
     const path = join(root, "app.beam");
     await writeFile(path, erlangBeamFixture());
     const service = createBeamService();
@@ -61,7 +61,7 @@ describe("Erlang BEAM stable filesystem boundary", () => {
   });
 
   it("stops combined table rows at the shared budget", async () => {
-    const root = await createTestTempDirectory("rea-beam-rows-");
+    const root = await createTestTempDirectory("nre-beam-rows-");
     const path = join(root, "rows.beam");
     const below = Math.floor(MAX_INSPECT_ERLANG_BEAM_TABLE_ROWS / 2);
     await writeFile(

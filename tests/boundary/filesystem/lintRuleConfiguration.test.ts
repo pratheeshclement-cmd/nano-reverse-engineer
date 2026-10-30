@@ -37,7 +37,7 @@ const cases: readonly AcceptanceCase[] = [
     `,
     exitCode: 1,
     diagnostics: [
-      { code: "rea(no-evidence-json-preadmission)", severity: "error" },
+      { code: "nre(no-evidence-json-preadmission)", severity: "error" },
     ],
   },
   {
@@ -50,7 +50,7 @@ const cases: readonly AcceptanceCase[] = [
     `,
     exitCode: 1,
     diagnostics: [
-      { code: "rea(no-evidence-json-preadmission)", severity: "error" },
+      { code: "nre(no-evidence-json-preadmission)", severity: "error" },
     ],
   },
   {
@@ -77,7 +77,7 @@ const cases: readonly AcceptanceCase[] = [
     `,
     exitCode: 1,
     diagnostics: [
-      { code: "rea(no-positional-tool-contract)", severity: "error" },
+      { code: "nre(no-positional-tool-contract)", severity: "error" },
     ],
   },
   {
@@ -87,11 +87,11 @@ const cases: readonly AcceptanceCase[] = [
       import { afterEach } from "vitest";
       import { rm } from "node:fs/promises";
       import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
-      const root = await createTestTempDirectory("rea-lint-rule-");
+      const root = await createTestTempDirectory("nre-lint-rule-");
       afterEach(() => rm(root, { recursive: true, force: true }));
     `,
     exitCode: 1,
-    diagnostics: [{ code: "rea(no-fixture-root-cleanup)", severity: "error" }],
+    diagnostics: [{ code: "nre(no-fixture-root-cleanup)", severity: "error" }],
   },
   {
     name: "allows explicit root deletion outside fixture teardown",
@@ -99,7 +99,7 @@ const cases: readonly AcceptanceCase[] = [
     source: `
       import { rm } from "node:fs/promises";
       import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
-      const root = await createTestTempDirectory("rea-lint-rule-");
+      const root = await createTestTempDirectory("nre-lint-rule-");
       await rm(root, { recursive: true, force: true });
     `,
     exitCode: 0,
@@ -230,7 +230,7 @@ const relocateImports = (scenario: AcceptanceCase, path: string): string => {
 
 for (const scenario of cases) {
   processTest(scenario.name, async ({ processes }) => {
-    const project = await createTestTempDirectory("rea-lint-configuration-");
+    const project = await createTestTempDirectory("nre-lint-configuration-");
     const configuration = await writeRepositoryOxlintConfiguration(project);
     const path = join(project, scenario.filename);
     await mkdir(dirname(path), { recursive: true });
@@ -272,7 +272,7 @@ for (const scenario of cases) {
 processTest(
   "preserves portable regex escapes while fixing unnecessary ones",
   async ({ processes }) => {
-    const project = await createTestTempDirectory("rea-lint-regex-fix-");
+    const project = await createTestTempDirectory("nre-lint-regex-fix-");
     const configuration = await writeRepositoryOxlintConfiguration(project);
     const path = join(project, applicationSource);
     await mkdir(dirname(path), { recursive: true });

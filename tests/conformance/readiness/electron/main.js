@@ -27,7 +27,7 @@ app.whenReady().then(() => {
   }
   utilityProcess.fork(require.resolve("./utility.js"));
   const child = spawn(
-    process.env.REA_ELECTRON_NODE_EXECUTABLE ?? "node",
+    process.env.NRE_ELECTRON_NODE_EXECUTABLE ?? "node",
     ["-e", "setTimeout(() => {}, 100)"],
     { stdio: "ignore" },
   );

@@ -32,7 +32,7 @@ const capture = async () => {
         limitations: [],
         protobuf: [
           {
-            decoder: "rea-protobuf-wire-v1",
+            decoder: "nre-protobuf-wire-v1",
             pointer: "/response/content/text",
             content_type: "application/grpc-web+proto",
             body_sha256: "c".repeat(64),

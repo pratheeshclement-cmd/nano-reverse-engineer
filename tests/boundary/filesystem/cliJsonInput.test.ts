@@ -30,7 +30,7 @@ const runCli = async (arguments_: readonly string[]): Promise<unknown> => {
 
 describe("CLI JSON file selection", () => {
   it("accepts a symlink to a regular JSON file", async () => {
-    const root = await createTestTempDirectory("rea-json-input-symlink-");
+    const root = await createTestTempDirectory("nre-json-input-symlink-");
     const path = join(root, "input.json");
     const selected = join(root, "selected.json");
     await writeFile(path, '{"value":1}');
@@ -46,7 +46,7 @@ describe("CLI JSON file selection", () => {
     .each(["a named pipe", "a symlink to a named pipe"])(
     "rejects %s without waiting for a writer",
     async (kind) => {
-      const root = await createTestTempDirectory("rea-json-input-fifo-");
+      const root = await createTestTempDirectory("nre-json-input-fifo-");
       const fifoPath = join(root, "input.pipe");
       await promisify(execFile)("mkfifo", [fifoPath]);
       const selected =
@@ -105,7 +105,7 @@ describe("CLI JSON file selection", () => {
 
 describe("CLI JSON streamed input", () => {
   it("preserves native JSON meanings through chunked file parsing", async () => {
-    const root = await createTestTempDirectory("rea-json-input-chunks-");
+    const root = await createTestTempDirectory("nre-json-input-chunks-");
     const path = join(root, "input.json");
     const documents = [
       "null",
@@ -149,7 +149,7 @@ describe("CLI JSON streamed input", () => {
     "NaN",
     '"\u0001"',
   ])("rejects strict JSON syntax violations in files (%j)", async (text) => {
-    const root = await createTestTempDirectory("rea-json-input-invalid-");
+    const root = await createTestTempDirectory("nre-json-input-invalid-");
     const path = join(root, "input.json");
     for (const prefix of ["", " ".repeat(9 * 1024 * 1024)]) {
       await writeFile(path, `${prefix}${text}`);
@@ -165,7 +165,7 @@ describe("CLI JSON streamed input", () => {
   });
 
   it("names a leading byte-order mark in small and streamed files", async () => {
-    const root = await createTestTempDirectory("rea-json-input-bom-");
+    const root = await createTestTempDirectory("nre-json-input-bom-");
     const path = join(root, "input.json");
     for (const body of ["{}", `${" ".repeat(9 * 1024 * 1024)}{}`]) {
       await writeFile(path, `\uFEFF${body}`);
@@ -182,7 +182,7 @@ describe("CLI JSON streamed input", () => {
   it.each([Buffer.from([0xf0, 0x28, 0x8c, 0xbc]), Buffer.from([0xe2, 0x82])])(
     "rejects malformed and incomplete UTF-8 at a read boundary (%j)",
     async (invalid) => {
-      const root = await createTestTempDirectory("rea-json-input-utf8-");
+      const root = await createTestTempDirectory("nre-json-input-utf8-");
       const path = join(root, "input.json");
       await writeFile(
         path,
@@ -202,7 +202,7 @@ describe("CLI JSON streamed input", () => {
   );
 
   it("cancels a file parse and allows a following read", async () => {
-    const root = await createTestTempDirectory("rea-json-input-cancel-");
+    const root = await createTestTempDirectory("nre-json-input-cancel-");
     const path = join(root, "input.json");
     await writeFile(path, `${" ".repeat(9 * 1024 * 1024)}{"after":true}`);
     const controller = new AbortController();
@@ -225,7 +225,7 @@ describe("CLI JSON input", () => {
         details: { issues: [{ reason: "invalid_format", expected: "JSON" }] },
       },
     });
-    const root = await createTestTempDirectory("rea-json-input-");
+    const root = await createTestTempDirectory("nre-json-input-");
     const path = join(root, "input.json");
     await writeFile(path, '{"value":1}');
     expect(await parseCliJsonInput(path, "test-input")).toEqual({
@@ -262,7 +262,7 @@ describe("CLI JSON input", () => {
   ] as const)(
     "lists the system cause when %s cannot be read",
     async (kind, code) => {
-      const root = await createTestTempDirectory("rea-json-input-cause-");
+      const root = await createTestTempDirectory("nre-json-input-cause-");
       const path = kind === "a directory" ? root : join(root, "missing.json");
       expect(await parseCliJsonInput(path, "test-input")).toMatchObject({
         ok: false,
@@ -287,7 +287,7 @@ describe("CLI JSON input", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "projects a real permission denial as access_denied",
     async () => {
-      const root = await createTestTempDirectory("rea-json-input-denied-");
+      const root = await createTestTempDirectory("nre-json-input-denied-");
       const path = join(root, "input.json");
       await writeFile(path, "{}");
       await chmod(path, 0o000);
@@ -313,7 +313,7 @@ describe("CLI JSON input", () => {
 
 describe("CLI JSON file cancellation", () => {
   const writeSelection = async (): Promise<string> => {
-    const root = await createTestTempDirectory("rea-json-input-cancel-");
+    const root = await createTestTempDirectory("nre-json-input-cancel-");
     const path = join(root, "paths.json");
     await writeFile(path, JSON.stringify(["main.js", "package.json"]));
     return path;

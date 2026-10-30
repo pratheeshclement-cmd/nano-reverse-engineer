@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "traces reassignment inputs through the public analysis and trace commands",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-assignment-influence-");
+    const root = await createTestTempDirectory("nre-assignment-influence-");
     for (const [name, body, label] of [
       ["declaration", "const next = accel; return next;", "next"],
       ["variable", "speed = accel; return speed;", "speed"],

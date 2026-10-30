@@ -19,7 +19,7 @@ describe("Ghidra verifier timeout ownership", () => {
   it("preserves the selected startup budget for the direct client and public requests", () => {
     expect(
       resolveGhidraVerifierTimeouts({
-        REA_GHIDRA_STARTUP_TIMEOUT_MS: "600000",
+        NRE_GHIDRA_STARTUP_TIMEOUT_MS: "600000",
       }),
     ).toEqual({
       clientOptions: { startupTimeoutMs: 600_000 },
@@ -32,7 +32,7 @@ describe("Ghidra verifier timeout ownership", () => {
       MAX_TIMER_DELAY_MS - FILE_OFFSET_OPERATION_TIMEOUT_MS;
     expect(
       resolveGhidraVerifierTimeouts({
-        REA_GHIDRA_STARTUP_TIMEOUT_MS: String(startupTimeoutMs),
+        NRE_GHIDRA_STARTUP_TIMEOUT_MS: String(startupTimeoutMs),
       }),
     ).toEqual({
       clientOptions: { startupTimeoutMs },
@@ -61,10 +61,10 @@ describe("Ghidra verifier timeout ownership", () => {
 
   it("rejects a combined timer overflow before reading the target", async () => {
     vi.stubEnv(
-      "REA_GHIDRA_STARTUP_TIMEOUT_MS",
+      "NRE_GHIDRA_STARTUP_TIMEOUT_MS",
       String(MAX_TIMER_DELAY_MS - FILE_OFFSET_OPERATION_TIMEOUT_MS + 1),
     );
-    const absentTarget = join(tmpdir(), `rea-absent-${randomUUID()}`);
+    const absentTarget = join(tmpdir(), `nre-absent-${randomUUID()}`);
     await expect(
       verifyGhidraFileOffsets(absentTarget, "absent", "0x0"),
     ).rejects.toThrow(

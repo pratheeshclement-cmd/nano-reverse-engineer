@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const execute = promisify(execFile);
 
 it("reports a candidate endpoint through the worker boundary in the public CLI", async () => {
-  const root = await createTestTempDirectory("rea-endpoint-candidate-cli-");
+  const root = await createTestTempDirectory("nre-endpoint-candidate-cli-");
   // Retain ambiguous requests while excluding type-erased collection/config reads.
   await writeFile(
     join(root, "main.ts"),
@@ -69,7 +69,7 @@ it("reports a candidate endpoint through the worker boundary in the public CLI",
     await writeFile(join(root, name), source);
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/nre.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const result = javascriptApplicationAnalysisResultSchema.parse(
@@ -163,7 +163,7 @@ it("reports a candidate endpoint through the worker boundary in the public CLI",
 }, 20_000);
 
 it("preserves SQLite constructor certainty through the public worker and graph", async () => {
-  const root = await createTestTempDirectory("rea-storage-candidate-cli-");
+  const root = await createTestTempDirectory("nre-storage-candidate-cli-");
   await writeFile(
     join(root, "main.mjs"),
     `
@@ -176,7 +176,7 @@ it("preserves SQLite constructor certainty through the public worker and graph",
   );
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/nre.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const result = javascriptApplicationAnalysisResultSchema.parse(

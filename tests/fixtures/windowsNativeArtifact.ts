@@ -19,7 +19,7 @@ export const windowsNativeArtifactFixture = () => {
     architecture: "x64",
     abiVersion: 1,
     nodeApiVersion: 8,
-    artifact: "rea-windows-x64.node",
+    artifact: "nre-windows-x64.node",
     artifactSha256: createHash("sha256").update(bytes).digest("hex"),
   };
   return { bytes, manifest };

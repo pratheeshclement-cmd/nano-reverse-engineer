@@ -1,15 +1,15 @@
 # ESP images
 
-REA reads ESP32-family firmware images through `inspect-artifact` /
+NRE reads ESP32-family firmware images through `inspect-artifact` /
 `inspect_artifact` and `extract-artifact` / `extract_artifact`. OTA downloads,
 app partitions and second-stage bootloaders are all ESP images. Reading is
 static: no esptool, device or flash access is needed, and no code is run or
 disassembled.
 
 ```sh
-rea inspect-artifact ./firmware.bin --json
-rea inspect-artifact ./ota.bin --detail summary --evidence_output evidence.json --json
-rea extract-artifact ./firmware.bin --json
+nre inspect-artifact ./firmware.bin --json
+nre inspect-artifact ./ota.bin --detail summary --evidence_output evidence.json --json
+nre extract-artifact ./firmware.bin --json
 ```
 
 For MCP, open the file with `open_binary`, then call `inspect_artifact`. The
@@ -18,10 +18,10 @@ summary's `root_format_metadata` holds the image facts. Use its
 `extract_artifact` writes one file per segment and per signature block.
 
 For agent sessions, advertise the `session,artifact,application` tool families
-and consider setting both `REA_MCP_INPUT_SCHEMA_PROFILE` and
-`REA_MCP_OUTPUT_SCHEMA_PROFILE` to `compact`. The output profile bounds each
+and consider setting both `NRE_MCP_INPUT_SCHEMA_PROFILE` and
+`NRE_MCP_OUTPUT_SCHEMA_PROFILE` to `compact`. The output profile bounds each
 advertised output schema to 4,096 bytes by relaxing nested client validation;
-REA still validates complete results against the canonical contracts. Pair
+NRE still validates complete results against the canonical contracts. Pair
 this with retained summaries and selected inventory views to limit the context
 needed for one question. See [MCP contracts](mcp-contracts.md) for the profiles
 and their client compatibility tradeoffs.
@@ -140,7 +140,7 @@ example `segment-00.bin`, so two builds pair segments by position. Its
 ESP-IDF's `verify_load_addresses` rejects the image when a loaded segment is
 not entirely in the chip's DRAM, IRAM, RTC memory or SPM, or overlaps the
 bootloader's own stack, data or loader code. For example, an ESP32-C6
-segment at `0x43000000` is `loaded` here and rejected there. REA models no
+segment at `0x43000000` is `loaded` here and rejected there. NRE models no
 RAM ranges.
 
 Padding segments are inventoried and extractable, but are never load regions.
@@ -183,7 +183,7 @@ with `esp-image-signature-block` metadata:
 | `public_key_sha256`                | SHA-256 of the block's public key, the value eFuse key digests hold       |
 | `signature_status`                 | Always `unverified`                                                       |
 
-Signatures are observed, not verified: REA checks no public key, signature or
+Signatures are observed, not verified: NRE checks no public key, signature or
 eFuse. `public_key_sha256` is the digest espsecure `signature-info-v2`
 prints, so it can be compared with `espefuse summary`. An unknown version or
 `sha_version` leaves the layout-dependent fields `null`. A slot with the magic
@@ -216,7 +216,7 @@ is not applied.
 
 Undescribed bytes include other flash contents such as an app partition's
 stale data, a Secure Boot v1 signature, and the flash segments that esptool
-`--ram-only-header` writes after the checksum without counting them. REA
+`--ram-only-header` writes after the checksum without counting them. NRE
 reports their ranges and does not guess their structure. In the padding, in a
 sector without a valid block, in the sector's slack and after the sector, the
 first byte that is not erased starts a range to the end of that region. A
@@ -252,11 +252,11 @@ layouts, and the refusals. CLI and stdio MCP tests exercise the same artifact
 provider and advertised schemas.
 
 The optional real lane builds ELF files from source, converts them with
-esptool and compares REA's facts with `esptool image-info`:
+esptool and compares NRE's facts with `esptool image-info`:
 
 ```sh
-REA_RISCV_CLANG=/path/to/clang REA_RISCV_LLD=/path/to/ld.lld \
-REA_ESPTOOL_PYTHON=/path/to/python-with-esptool \
+NRE_RISCV_CLANG=/path/to/clang NRE_RISCV_LLD=/path/to/ld.lld \
+NRE_ESPTOOL_PYTHON=/path/to/python-with-esptool \
   npm run verify:esp-images
 ```
 
@@ -286,7 +286,7 @@ images. It then checks:
   `image-info` stops with "End of file reading segment"), and both ESP8266
   refusals.
 
-`REA_XTENSA_ESP32_GCC` adds an ESP32 (Xtensa) app built with Espressif's
+`NRE_XTENSA_ESP32_GCC` adds an ESP32 (Xtensa) app built with Espressif's
 `xtensa-esp32-elf-gcc`. Without it the report marks that image as skipped.
 
 Each command runs as a process tree owned by the shared verifier command

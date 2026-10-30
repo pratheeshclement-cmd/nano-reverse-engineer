@@ -34,7 +34,7 @@ mcpTest(
         readOnlyHint: false,
         idempotentHint: true,
       });
-      const root = await createTestTempDirectory("rea-elf-notes-mcp-");
+      const root = await createTestTempDirectory("nre-elf-notes-mcp-");
       const path = join(root, "program");
       await writeFile(path, elfNoteFixture({ bits: 32, ownership: "section" }));
       const response = await client.callTool({
@@ -79,7 +79,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-elf-notes-name-mcp-");
+      const root = await createTestTempDirectory("nre-elf-notes-name-mcp-");
       const path = join(root, "program");
       const bytes = elfNoteWithUnreadableSectionNameFixture("unterminated");
       await writeFile(path, bytes);
@@ -115,7 +115,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-elf-notes-storage-mcp-");
+      const root = await createTestTempDirectory("nre-elf-notes-storage-mcp-");
       const path = join(root, "debug-notes.o");
       const bytes = compressedElfNoteSectionFixture();
       await writeFile(path, bytes);
@@ -142,7 +142,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-elf-notes-extended-mcp-");
+      const root = await createTestTempDirectory("nre-elf-notes-extended-mcp-");
       const path = join(root, "extended-count.elf");
       await writeFile(path, elfExtendedSectionCountFixture());
       const before = await readFile(path);
@@ -169,7 +169,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-elf-notes-presence-mcp-");
+      const root = await createTestTempDirectory("nre-elf-notes-presence-mcp-");
       const path = join(root, "program");
       const bytes = elfNoteFixture({ ownership: "program" });
       bytes.writeUInt16LE(5, 62);

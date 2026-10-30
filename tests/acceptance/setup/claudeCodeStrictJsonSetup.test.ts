@@ -45,7 +45,7 @@ for (const [syntax, original] of [
   cliTest(
     `Claude Code setup, doctor, and uninstall refuse JSON with ${syntax}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-claude-strict-json-");
+      const home = await createTestTempDirectory("nre-claude-strict-json-");
       const config = join(home, ".claude.json");
       await writeFile(config, original);
       const run = runIn(cli, home);
@@ -82,7 +82,7 @@ for (const [syntax, original] of [
         ]),
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${config}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -92,7 +92,7 @@ for (const prefix of ["", "﻿"])
   cliTest(
     `Claude Code setup configures strict JSON with prefix ${JSON.stringify(prefix)}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-claude-strict-json-");
+      const home = await createTestTempDirectory("nre-claude-strict-json-");
       const config = join(home, ".claude.json");
       const original = `${prefix}{\n  "mcpServers": {\n    ${peer}\n  }\n}\n`;
       await writeFile(config, original);
@@ -104,13 +104,13 @@ for (const prefix of ["", "﻿"])
         status: "ready",
         clients: { claude_code: { status: "configured" } },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
       const configured = await readFile(config, "utf8");
       expect(configured.startsWith(`${prefix}{`)).toBe(true);
       expect(JSON.parse(configured.slice(prefix.length))).toMatchObject({
         mcpServers: {
           peer: { command: "/usr/bin/true", args: [] },
-          rea: { command: expect.any(String) },
+          nre: { command: expect.any(String) },
         },
       });
       const doctor = await run(doctorArguments);

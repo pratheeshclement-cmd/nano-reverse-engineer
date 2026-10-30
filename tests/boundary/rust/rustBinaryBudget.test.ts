@@ -8,7 +8,7 @@ import { createRustHashOverflowImage } from "../../fixtures/rust/image.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("refuses extra rustc paths without asking the caller to wait", async () => {
-  const root = await createTestTempDirectory("rea-rust-hash-budget-");
+  const root = await createTestTempDirectory("nre-rust-hash-budget-");
   const path = join(root, "many-hashes.elf");
   await writeFile(path, createRustHashOverflowImage());
   const result = await new RustBinaryProvider().inspect({ path });
@@ -29,7 +29,7 @@ it("refuses extra rustc paths without asking the caller to wait", async () => {
 });
 
 it("refuses an oversized Rust input without evidence-reply advice", async () => {
-  const root = await createTestTempDirectory("rea-rust-input-budget-");
+  const root = await createTestTempDirectory("nre-rust-input-budget-");
   const path = join(root, "large.elf");
   await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
   await truncate(path, RUST_BINARY_INPUT_BYTES + 1);

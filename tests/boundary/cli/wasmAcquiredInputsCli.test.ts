@@ -20,7 +20,7 @@ const sha256 = (bytes: Buffer | string): string =>
 cliTest.runIf(process.platform !== "win32")(
   "retains selected, candidate, and glue facts after simulated WABT rejection through CLI and stdio MCP",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-wasm-acquired-");
+    const directory = await createTestTempDirectory("nre-wasm-acquired-");
     const tools = join(directory, "tools");
     await mkdir(tools);
     for (const name of ["wasm-validate", "wasm-objdump", "wasm2wat"]) {
@@ -49,7 +49,7 @@ ${body}
       HOME: directory,
       XDG_CONFIG_HOME: directory,
       XDG_CACHE_HOME: directory,
-      REA_WABT_BIN_DIRECTORY: tools,
+      NRE_WABT_BIN_DIRECTORY: tools,
     };
     await Promise.all([
       writeFile(selected, selectedBytes),

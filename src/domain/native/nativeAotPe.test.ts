@@ -100,7 +100,7 @@ describe("read-only NativeAOT PE parser", () => {
       format_minor: 1,
       method_tables: 3,
       frozen_strings: [
-        { address: "0x140002300", value: "REA_NATIVEAOT_FROZEN" },
+        { address: "0x140002300", value: "NRE_NATIVEAOT_FROZEN" },
       ],
       derived_overlay: { address: "0x140002380", size_bytes: 1 },
       coverage: {

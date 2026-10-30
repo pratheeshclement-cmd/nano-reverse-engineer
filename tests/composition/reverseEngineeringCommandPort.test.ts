@@ -18,7 +18,7 @@ it("documents the shared combined capture limit for both command tools", () => {
 });
 
 it("uses provider profiles supplied through the application port", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-port-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-reverse-port-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
   const run = vi.fn(
@@ -29,7 +29,7 @@ it("uses provider profiles supplied through the application port", async () => {
     ) => ({ stdout: "injected", stderr: "" }),
   );
   const service = new ReverseEngineeringService({
-    environment: { REA_OBJDUMP_COMMAND: "ambient-objdump" },
+    environment: { NRE_OBJDUMP_COMMAND: "ambient-objdump" },
     commands: {
       objdump: () => ({
         executable: "injected-objdump",
@@ -67,9 +67,9 @@ it("uses provider profiles supplied through the application port", async () => {
 });
 
 it("does not reintroduce ambient variables absent from the captured provider environment", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-env-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-reverse-env-"));
   const path = join(directory, "fixture.bin");
-  const variable = "REA_TEST_LATE_PROVIDER_ENV";
+  const variable = "NRE_TEST_LATE_PROVIDER_ENV";
   const previous = process.env[variable];
   await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
   process.env[variable] = "late-ambient-value";
@@ -81,7 +81,7 @@ it("does not reintroduce ambient variables absent from the captured provider env
     ) => ({ stdout: "captured", stderr: "" }),
   );
   const service = new ReverseEngineeringService({
-    environment: { REA_OBJDUMP_COMMAND: "captured-objdump" },
+    environment: { NRE_OBJDUMP_COMMAND: "captured-objdump" },
     commands: {
       objdump: () => ({
         executable: "captured-objdump",
@@ -105,7 +105,7 @@ it("does not reintroduce ambient variables absent from the captured provider env
   try {
     await service.inspectWithObjdump({ path, operation: "file_headers" });
     expect(run.mock.calls[0]?.[2]?.env).toEqual({
-      REA_OBJDUMP_COMMAND: "captured-objdump",
+      NRE_OBJDUMP_COMMAND: "captured-objdump",
       PROFILE_VALUE: "explicit",
     });
   } finally {
@@ -117,7 +117,7 @@ it("does not reintroduce ambient variables absent from the captured provider env
 
 it("projects missing and non-file objdump targets with actionable path reasons", async () => {
   const directory = await mkdtemp(
-    join(tmpdir(), "rea-reverse-invalid-target-"),
+    join(tmpdir(), "nre-reverse-invalid-target-"),
   );
   const missing = join(directory, "missing.bin");
   const run = vi.fn(async () => ({ stdout: "", stderr: "" }));
@@ -184,7 +184,7 @@ it("projects missing and non-file objdump targets with actionable path reasons",
 
 it("keeps target preflight I/O failures out of invalid-input classification", async () => {
   const directory = await mkdtemp(
-    join(tmpdir(), "rea-reverse-target-io-failure-"),
+    join(tmpdir(), "nre-reverse-target-io-failure-"),
   );
   const path = join(directory, "fixture.bin");
   await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
@@ -252,7 +252,7 @@ it.each([
   "classifies selected target $code as correctable input",
   async ({ code, reason }) => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-reverse-target-path-error-"),
+      join(tmpdir(), "nre-reverse-target-path-error-"),
     );
     const path = join(directory, "fixture.bin");
     const pathFailure = Object.assign(new Error(`stat failed: ${code}`), {

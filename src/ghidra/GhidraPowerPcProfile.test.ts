@@ -79,7 +79,7 @@ describe("bounded Ghidra PowerPC admission", () => {
     const root =
       process.platform === "win32" ? join(process.cwd(), "build") : tmpdir();
     await mkdir(root, { recursive: true });
-    const ownedInstallDir = await mkdtemp(join(root, "rea-ghidra-ppc-"));
+    const ownedInstallDir = await mkdtemp(join(root, "nre-ghidra-ppc-"));
     onTestFinished(async () => {
       await rm(ownedInstallDir, { recursive: true, force: true });
     });
@@ -98,7 +98,7 @@ describe("bounded Ghidra PowerPC admission", () => {
     const ghidra = new GhidraProvider(
       configFor({
         GHIDRA_INSTALL_DIR: installDir,
-        REA_GHIDRA_LANGUAGE_ID: "PowerPC:BE:32:e500",
+        NRE_GHIDRA_LANGUAGE_ID: "PowerPC:BE:32:e500",
       }),
       silentLogger,
       {},

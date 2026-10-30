@@ -18,11 +18,11 @@ export async function verifyPackageUpdate({
   const metadataPath = join(packageRoot, "package.json");
   const metadata = JSON.parse(await readFile(metadataPath, "utf8"));
   const archive = await readFile(tarball);
-  const entry = join(packageRoot, "scripts", "rea.mjs");
+  const entry = join(packageRoot, "scripts", "nre.mjs");
   const home = join(workspace, "update-home");
   const codexPath = join(home, ".codex", "config.toml");
   const originalConfig =
-    '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@0.0.0", "mcp"]\n';
+    '[mcp_servers.nre]\ncommand = "npx"\nargs = ["-y", "nano-reverse-engineer@0.0.0", "mcp"]\n';
   await mkdir(dirname(codexPath), { recursive: true });
   await writeFile(codexPath, originalConfig);
   let fixtureFailure;
@@ -42,7 +42,7 @@ export async function verifyPackageUpdate({
   let registry;
   async function serveRegistry(request, response) {
     const pathname = new URL(request.url, registry).pathname;
-    if (pathname === "/rea-agents") {
+    if (pathname === "/nano-reverse-engineer") {
       response.setHeader("Content-Type", "application/json");
       response.end(
         JSON.stringify({

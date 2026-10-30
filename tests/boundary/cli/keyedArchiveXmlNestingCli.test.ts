@@ -24,12 +24,12 @@ for (const [name, xml] of [
   cliTest(
     `compiled CLI reports deeply nested XML ${name} as the decode limit`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-keyed-cli-depth-");
+      const root = await createTestTempDirectory("nre-keyed-cli-depth-");
       const path = join(root, "Deep.plist");
       await writeFile(path, xml);
       const output = await cli.run({
         arguments: ["inspect-keyed-archive", path, "--json"],
-        environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+        environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
       });
       expect(output.exitCode, output.stderr).toBe(1);
       expect(output.json).toMatchObject({
@@ -48,7 +48,7 @@ for (const [name, xml] of [
 cliTest(
   "compiled CLI decodes a shallow archive with opaque DOCTYPE markup",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-cli-doctype-");
+    const root = await createTestTempDirectory("nre-keyed-cli-doctype-");
     const path = join(root, "Shallow.plist");
     const archive = build({
       $archiver: "NSKeyedArchiver",
@@ -65,7 +65,7 @@ cliTest(
     );
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     expect(parseEvidence(output.json).normalized_result).toMatchObject({

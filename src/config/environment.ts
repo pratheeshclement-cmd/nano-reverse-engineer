@@ -46,29 +46,29 @@ import { parseJebMcpEndpoint } from "./jebMcpEndpoint.js";
 
 const environmentSchema = z.object({
   ...debuggerSessionLimitEnvironmentShape,
-  REA_ANALYSIS_PROVIDER: analysisProviderSelectorSchema.default("auto"),
-  REA_BRIDGE_MAX_REQUEST_BYTES: bridgeMaxRequestBytesSchema.optional(),
-  REA_MCP_MAX_RESPONSE_BYTES: mcpResponseBudgetSchema.optional(),
-  REA_MCP_MAX_INPUT_ELEMENTS: mcpInputBudgetSchema.optional(),
-  REA_ASAR_MAX_HEADER_BYTES: asarMaxHeaderBytesSchema.optional(),
-  REA_CAPTURE_DECODER_OLD_GENERATION_MIB:
+  NRE_ANALYSIS_PROVIDER: analysisProviderSelectorSchema.default("auto"),
+  NRE_BRIDGE_MAX_REQUEST_BYTES: bridgeMaxRequestBytesSchema.optional(),
+  NRE_MCP_MAX_RESPONSE_BYTES: mcpResponseBudgetSchema.optional(),
+  NRE_MCP_MAX_INPUT_ELEMENTS: mcpInputBudgetSchema.optional(),
+  NRE_ASAR_MAX_HEADER_BYTES: asarMaxHeaderBytesSchema.optional(),
+  NRE_CAPTURE_DECODER_OLD_GENERATION_MIB:
     captureDecoderOldGenerationMiBSchema.optional(),
-  REA_REGEX_MATCHING_DEADLINE_MS: regexMatchingDeadlineMsSchema.optional(),
-  REA_REGEX_WORKER_HEAP_REQUEST_MIB: regexWorkerHeapRequestMiBSchema.optional(),
-  REA_MCP_INITIALIZE_BUDGET_MS: mcpInitializeBudgetMsSchema.optional(),
-  REA_MCP_TOOLS_LIST_BUDGET_MS: mcpToolsListBudgetMsSchema.optional(),
-  REA_MCP_FIRST_CATALOG_BUDGET_MS: mcpFirstCatalogBudgetMsSchema.optional(),
-  REA_MCP_DOCTOR_DEADLINE_MS: mcpDoctorDeadlineMsSchema.optional(),
-  REA_MCP_INPUT_SCHEMA_PROFILE: mcpInputSchemaProfileSchema.optional(),
-  REA_MCP_TOOL_FAMILIES: mcpToolFamiliesSchema.optional(),
-  REA_MCP_OUTPUT_SCHEMA_PROFILE: mcpOutputSchemaProfileSchema.optional(),
-  REA_IDA_MCP_CONFIG: z
+  NRE_REGEX_MATCHING_DEADLINE_MS: regexMatchingDeadlineMsSchema.optional(),
+  NRE_REGEX_WORKER_HEAP_REQUEST_MIB: regexWorkerHeapRequestMiBSchema.optional(),
+  NRE_MCP_INITIALIZE_BUDGET_MS: mcpInitializeBudgetMsSchema.optional(),
+  NRE_MCP_TOOLS_LIST_BUDGET_MS: mcpToolsListBudgetMsSchema.optional(),
+  NRE_MCP_FIRST_CATALOG_BUDGET_MS: mcpFirstCatalogBudgetMsSchema.optional(),
+  NRE_MCP_DOCTOR_DEADLINE_MS: mcpDoctorDeadlineMsSchema.optional(),
+  NRE_MCP_INPUT_SCHEMA_PROFILE: mcpInputSchemaProfileSchema.optional(),
+  NRE_MCP_TOOL_FAMILIES: mcpToolFamiliesSchema.optional(),
+  NRE_MCP_OUTPUT_SCHEMA_PROFILE: mcpOutputSchemaProfileSchema.optional(),
+  NRE_IDA_MCP_CONFIG: z
     .string()
     .min(1)
-    .refine(isAbsolute, "REA_IDA_MCP_CONFIG must be absolute")
+    .refine(isAbsolute, "NRE_IDA_MCP_CONFIG must be absolute")
     .optional(),
-  REA_JEB_MCP_TIMEOUT_MS: providerStartupTimeoutSchema.optional(),
-  REA_JEB_MCP_URL: z
+  NRE_JEB_MCP_TIMEOUT_MS: providerStartupTimeoutSchema.optional(),
+  NRE_JEB_MCP_URL: z
     .string()
     .superRefine((value, context) => {
       const parsed = parseJebMcpEndpoint(value);
@@ -92,45 +92,45 @@ const environmentSchema = z.object({
     .min(1)
     .refine(isAbsolute, "JAVA_HOME must be absolute")
     .optional(),
-  REA_GHIDRA_NATIVEAOT_JAR: z
+  NRE_GHIDRA_NATIVEAOT_JAR: z
     .string()
     .min(1)
-    .refine(isAbsolute, "REA_GHIDRA_NATIVEAOT_JAR must be absolute")
+    .refine(isAbsolute, "NRE_GHIDRA_NATIVEAOT_JAR must be absolute")
     .optional(),
-  REA_GHIDRA_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema.default(
+  NRE_GHIDRA_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema.default(
     DEFAULT_GHIDRA_STARTUP_TIMEOUT_MS,
   ),
-  REA_HOPPER_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema.default(
+  NRE_HOPPER_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema.default(
     DEFAULT_HOPPER_STARTUP_TIMEOUT_MS,
   ),
-  REA_HOPPER_CALLER_SCAN_BUDGET_MS: providerStartupTimeoutSchema.default(
+  NRE_HOPPER_CALLER_SCAN_BUDGET_MS: providerStartupTimeoutSchema.default(
     DEFAULT_HOPPER_CALLER_SCAN_BUDGET_MS,
   ),
-  REA_SWIFTC_COMPILE_TIMEOUT_MS: providerStartupTimeoutSchema.default(
+  NRE_SWIFTC_COMPILE_TIMEOUT_MS: providerStartupTimeoutSchema.default(
     DEFAULT_SWIFTC_COMPILE_TIMEOUT_MS,
   ),
-  REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: ghidraDecompileTimeoutSchema.optional(),
-  REA_GHIDRA_PROJECT_PATH: ghidraProjectPathSchema.optional(),
-  REA_GHIDRA_PROGRAM_NAME: ghidraProgramNameSchema.optional(),
-  REA_GHIDRA_LANGUAGE_ID: ghidraLanguageIdSchema.optional(),
-  REA_GHIDRA_COMPILER_SPEC_ID: ghidraCompilerSpecIdSchema.optional(),
-  REA_GHIDRA_DISABLED_ANALYZERS: ghidraDisabledAnalyzersSchema.optional(),
-  REA_GHIDRA_SEED_FILE: z
+  NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: ghidraDecompileTimeoutSchema.optional(),
+  NRE_GHIDRA_PROJECT_PATH: ghidraProjectPathSchema.optional(),
+  NRE_GHIDRA_PROGRAM_NAME: ghidraProgramNameSchema.optional(),
+  NRE_GHIDRA_LANGUAGE_ID: ghidraLanguageIdSchema.optional(),
+  NRE_GHIDRA_COMPILER_SPEC_ID: ghidraCompilerSpecIdSchema.optional(),
+  NRE_GHIDRA_DISABLED_ANALYZERS: ghidraDisabledAnalyzersSchema.optional(),
+  NRE_GHIDRA_SEED_FILE: z
     .string()
     .min(1)
-    .refine(isAbsolute, "REA_GHIDRA_SEED_FILE must be absolute")
+    .refine(isAbsolute, "NRE_GHIDRA_SEED_FILE must be absolute")
     .optional(),
-  REA_ILSPY_CMD_PATH: z
+  NRE_ILSPY_CMD_PATH: z
     .string()
     .min(1)
-    .refine(isAbsolute, "REA_ILSPY_CMD_PATH must be absolute")
+    .refine(isAbsolute, "NRE_ILSPY_CMD_PATH must be absolute")
     .optional(),
   HOPPER_LAUNCHER_PATH: z.string().min(1).optional(),
   HOPPER_TARGET_PATH: z.string().min(1).optional(),
   HOPPER_TARGET_KIND: z.enum(["executable", "database"]).default("executable"),
   HOPPER_LOADER_ARGS_JSON: z.string().optional(),
-  REA_LOG_LEVEL: processStartConfigurationSchema.shape.REA_LOG_LEVEL,
-  REA_REFERENCE_SECRET_PATTERNS_JSON: z.string().default("[]"),
+  NRE_LOG_LEVEL: processStartConfigurationSchema.shape.NRE_LOG_LEVEL,
+  NRE_REFERENCE_SECRET_PATTERNS_JSON: z.string().default("[]"),
 });
 
 /** Parse the JEB-only timeout at its isolated provider-composition boundary. */
@@ -141,11 +141,11 @@ export const parseJebMcpTimeoutMs = (
   const parsed = providerStartupTimeoutSchema.safeParse(value);
   if (parsed.success) return ok(parsed.data);
   return err(
-    new ConfigurationError("Invalid REA environment configuration", {
+    new ConfigurationError("Invalid NRE environment configuration", {
       cause: parsed.error,
       settings: [
         {
-          setting: "REA_JEB_MCP_TIMEOUT_MS",
+          setting: "NRE_JEB_MCP_TIMEOUT_MS",
           constraint:
             parsed.error.issues[0]?.message ?? "must be a valid timeout",
         },
@@ -156,7 +156,7 @@ export const parseJebMcpTimeoutMs = (
 
 export type Environment = Omit<
   z.infer<typeof environmentSchema>,
-  "HOPPER_LOADER_ARGS_JSON" | "REA_REFERENCE_SECRET_PATTERNS_JSON"
+  "HOPPER_LOADER_ARGS_JSON" | "NRE_REFERENCE_SECRET_PATTERNS_JSON"
 > & {
   readonly loaderArgs: readonly string[];
   readonly referenceSecretPatterns: readonly string[];
@@ -185,7 +185,7 @@ export const parseEnvironmentValues = (
     }));
   if (invalidEntries.length > 0)
     return err(
-      new ConfigurationError("Invalid REA environment configuration", {
+      new ConfigurationError("Invalid NRE environment configuration", {
         settings: invalidEntries,
       }),
     );
@@ -197,7 +197,7 @@ export const parseEnvironmentValues = (
       constraint: issue.message,
     }));
     return err(
-      new ConfigurationError("Invalid REA environment configuration", {
+      new ConfigurationError("Invalid NRE environment configuration", {
         cause: parsed.error,
         settings,
       }),
@@ -205,14 +205,14 @@ export const parseEnvironmentValues = (
   }
   const {
     HOPPER_LOADER_ARGS_JSON: encodedLoaderArgs,
-    REA_REFERENCE_SECRET_PATTERNS_JSON: encodedSecretPatterns,
+    NRE_REFERENCE_SECRET_PATTERNS_JSON: encodedSecretPatterns,
     ...env
   } = parsed.data;
   const loaderArgs = parseLoaderArgs(encodedLoaderArgs);
   if (!loaderArgs.ok) return loaderArgs;
   const secretPatterns = parseStringArray(
     encodedSecretPatterns,
-    "REA_REFERENCE_SECRET_PATTERNS_JSON",
+    "NRE_REFERENCE_SECRET_PATTERNS_JSON",
   );
   if (!secretPatterns.ok) return secretPatterns;
   return ok({
@@ -231,23 +231,23 @@ export const parseEnvironment = (
   const parsed = parseEnvironmentValues(environment, unresolvedSettings);
   if (!parsed.ok) return parsed;
   const env = parsed.value;
-  const project = env.REA_GHIDRA_PROJECT_PATH;
+  const project = env.NRE_GHIDRA_PROJECT_PATH;
   const incompatible =
     project === undefined
-      ? env.REA_GHIDRA_PROGRAM_NAME === undefined ||
-        unresolvedSettings.has("REA_GHIDRA_PROJECT_PATH")
+      ? env.NRE_GHIDRA_PROGRAM_NAME === undefined ||
+        unresolvedSettings.has("NRE_GHIDRA_PROJECT_PATH")
         ? []
-        : ["REA_GHIDRA_PROGRAM_NAME"]
+        : ["NRE_GHIDRA_PROGRAM_NAME"]
       : [
-          "REA_GHIDRA_LANGUAGE_ID",
-          "REA_GHIDRA_COMPILER_SPEC_ID",
-          "REA_GHIDRA_SEED_FILE",
-          "REA_GHIDRA_DISABLED_ANALYZERS",
-          "REA_GHIDRA_NATIVEAOT_JAR",
+          "NRE_GHIDRA_LANGUAGE_ID",
+          "NRE_GHIDRA_COMPILER_SPEC_ID",
+          "NRE_GHIDRA_SEED_FILE",
+          "NRE_GHIDRA_DISABLED_ANALYZERS",
+          "NRE_GHIDRA_NATIVEAOT_JAR",
         ].filter(
           (setting) =>
             // Blank analyzer lists parse to no override, so they cannot conflict.
-            (setting === "REA_GHIDRA_DISABLED_ANALYZERS"
+            (setting === "NRE_GHIDRA_DISABLED_ANALYZERS"
               ? env[setting]
               : environment[setting]) !== undefined,
         );
@@ -258,23 +258,23 @@ export const parseEnvironment = (
           setting,
           constraint:
             project === undefined
-              ? "requires REA_GHIDRA_PROJECT_PATH"
+              ? "requires NRE_GHIDRA_PROJECT_PATH"
               : "Import and analysis overrides cannot be combined with an existing project",
         })),
       }),
     );
   // Ghidra's analyzeHeadless accepts -cspec only together with -processor.
   if (
-    env.REA_GHIDRA_COMPILER_SPEC_ID !== undefined &&
-    env.REA_GHIDRA_LANGUAGE_ID === undefined &&
-    !unresolvedSettings.has("REA_GHIDRA_LANGUAGE_ID")
+    env.NRE_GHIDRA_COMPILER_SPEC_ID !== undefined &&
+    env.NRE_GHIDRA_LANGUAGE_ID === undefined &&
+    !unresolvedSettings.has("NRE_GHIDRA_LANGUAGE_ID")
   )
     return err(
-      new ConfigurationError("Invalid REA environment configuration", {
+      new ConfigurationError("Invalid NRE environment configuration", {
         settings: [
           {
-            setting: "REA_GHIDRA_COMPILER_SPEC_ID",
-            constraint: "requires REA_GHIDRA_LANGUAGE_ID",
+            setting: "NRE_GHIDRA_COMPILER_SPEC_ID",
+            constraint: "requires NRE_GHIDRA_LANGUAGE_ID",
           },
         ],
       }),

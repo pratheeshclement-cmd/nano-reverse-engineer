@@ -10,7 +10,7 @@ import { cliTest, runFileCli } from "../support/cli/cliFixture.js";
 cliTest(
   "inspects ELF64 Go metadata with four-byte amd64p32 pointers through CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-go-amd64p32-cli-");
+    const root = await createTestTempDirectory("nre-go-amd64p32-cli-");
     const fixture = createGoBinaryFixture({
       format: "elf",
       bits: 64,

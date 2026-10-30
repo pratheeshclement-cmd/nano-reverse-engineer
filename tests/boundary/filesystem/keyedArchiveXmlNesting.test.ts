@@ -13,7 +13,7 @@ import { deeplyNestedXmlPlist } from "../../fixtures/keyedArchiveXmlNesting.js";
 it.each([129, 3000])(
   "reports XML nesting of %i levels as the keyed archive decode limit",
   async (depth) => {
-    const root = await createTestTempDirectory("rea-keyed-depth-");
+    const root = await createTestTempDirectory("nre-keyed-depth-");
     await writeFile(join(root, "Deep.plist"), deeplyNestedXmlPlist(depth));
     const rejected = await inspectBundleKeyedArchive({
       bundlePath: root,
@@ -42,7 +42,7 @@ it.each([
 ] as const)(
   "reports OpenStep %s before a deep suffix as %s at %s",
   async (prefix, code: OpenStepPropertyListCode, position) => {
-    const root = await createTestTempDirectory("rea-keyed-openstep-malformed-");
+    const root = await createTestTempDirectory("nre-keyed-openstep-malformed-");
     await writeFile(join(root, "Malformed.plist"), prefix + "(".repeat(130));
     const rejected = await inspectBundleKeyedArchive({
       bundlePath: root,
@@ -63,7 +63,7 @@ it.each([
 );
 
 it("retains the limit classification for syntactically valid deep OpenStep values", async () => {
-  const root = await createTestTempDirectory("rea-keyed-openstep-limit-");
+  const root = await createTestTempDirectory("nre-keyed-openstep-limit-");
   await writeFile(
     join(root, "Deep.plist"),
     "(".repeat(129) + "x" + ")".repeat(129),
@@ -87,7 +87,7 @@ it.each([
   "retains the named OpenStep depth limit after a completed %s",
   async (_name, document) => {
     const root = await createTestTempDirectory(
-      "rea-keyed-openstep-sibling-depth-",
+      "nre-keyed-openstep-sibling-depth-",
     );
     const deep = "(".repeat(30000) + "x" + ")".repeat(30000);
     await writeFile(join(root, "Deep.plist"), document(deep));

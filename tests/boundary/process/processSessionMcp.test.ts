@@ -27,7 +27,7 @@ afterEach(async () => {
 });
 
 it("rejects oversized initial and resize terminal buffers through MCP before launching", async () => {
-  const root = await createTestTempDirectory("rea-terminal-admission-");
+  const root = await createTestTempDirectory("nre-terminal-admission-");
   const marker = join(root, "launched");
   const session = createTestBinarySession(() => {
     throw new Error("Terminal admission must not launch a binary provider");
@@ -74,7 +74,7 @@ itWithCaptureCapability(
   "bounds normalized PTY text and preserves equal-size output through MCP",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-process-normalized-budget-",
+      "nre-process-normalized-budget-",
     );
     const session = createTestBinarySession(createCacheProvider([]));
     const server = createServer(
@@ -237,15 +237,15 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "resolves and inherits the server's selected environment through MCP",
   async () => {
-    const root = await createTestTempDirectory("rea-process-mcp-env-");
+    const root = await createTestTempDirectory("nre-process-mcp-env-");
     const bin = join(root, "bin");
-    const executable = join(bin, "rea-injected-process-probe");
+    const executable = join(bin, "nre-injected-process-probe");
     await mkdir(bin);
     await writeFile(
       executable,
       [
         "#!/bin/sh",
-        'printf "%s|%s\\n" "$REA_CAPTURE_INJECTED_MARKER" "$REA_CAPTURE_SCENARIO_OVERRIDE"',
+        'printf "%s|%s\\n" "$NRE_CAPTURE_INJECTED_MARKER" "$NRE_CAPTURE_SCENARIO_OVERRIDE"',
       ].join("\n"),
     );
     await chmod(executable, 0o755);
@@ -256,8 +256,8 @@ itWithCaptureCapability(
         logger: silentLogger,
         environment: {
           PATH: bin,
-          REA_CAPTURE_INJECTED_MARKER: "injected-value",
-          REA_CAPTURE_SCENARIO_OVERRIDE: "host-value",
+          NRE_CAPTURE_INJECTED_MARKER: "injected-value",
+          NRE_CAPTURE_SCENARIO_OVERRIDE: "host-value",
         },
       },
     );
@@ -271,9 +271,9 @@ itWithCaptureCapability(
     const result = await client.callTool({
       name: "capture_process_scenario",
       arguments: {
-        executable: "rea-injected-process-probe",
+        executable: "nre-injected-process-probe",
         working_directory: root,
-        environment: { REA_CAPTURE_SCENARIO_OVERRIDE: "scenario-value" },
+        environment: { NRE_CAPTURE_SCENARIO_OVERRIDE: "scenario-value" },
       },
     });
     expect(result.isError, JSON.stringify(result.content)).not.toBe(true);

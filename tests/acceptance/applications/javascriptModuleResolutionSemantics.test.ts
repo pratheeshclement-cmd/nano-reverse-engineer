@@ -13,7 +13,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves module classification and explicit source identities through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-module-owner-semantics-");
+    const root = await createTestTempDirectory("nre-module-owner-semantics-");
     const valid = {
       "legacy/x%2Ey.js": "node_modules/legacy/x.y.js",
       "mapped/encoded": "node_modules/mapped/x.y.js",

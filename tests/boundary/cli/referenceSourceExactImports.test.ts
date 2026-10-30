@@ -10,9 +10,9 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "preserves exact historical dynamic and exported import-equals edges",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-exact-imports-");
+    const root = await createTestTempDirectory("nre-reference-exact-imports-");
     const config = await createTestTempDirectory(
-      "rea-reference-exact-imports-config-",
+      "nre-reference-exact-imports-config-",
     );
     await Promise.all([
       writeFile(

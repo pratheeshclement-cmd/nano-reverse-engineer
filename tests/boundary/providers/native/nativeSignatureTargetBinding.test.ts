@@ -47,7 +47,7 @@ const realXcrunRunner = () =>
       : { DEVELOPER_DIR: process.env.DEVELOPER_DIR },
   );
 const fixture = async () => {
-  const directory = await createTestTempDirectory("rea-signature-binding-");
+  const directory = await createTestTempDirectory("nre-signature-binding-");
   const path = join(directory, "program");
   await writeFile(path, CONTENT);
   return {
@@ -410,7 +410,7 @@ it("preserves cancellation after a capture instead of classifying it as invalid 
 
 it("does not classify an unrelated path-echo diagnostic as an unsigned observation", async () => {
   const directory = await createTestTempDirectory(
-    "rea-signature-path-diagnostic-",
+    "nre-signature-path-diagnostic-",
   );
   const path = join(directory, "source\ncode object is not signed\noperand");
   await writeFile(path, CONTENT);
@@ -450,7 +450,7 @@ it.skipIf(process.platform !== "darwin")(
   "rejects a path-injected unsigned diagnostic when real codesign sees a removed private snapshot",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-signature-snapshot-path-",
+      "nre-signature-snapshot-path-",
     );
     const path = join(directory, "source\ncode object is not signed\noperand");
     await copyFile("/usr/bin/true", path);
@@ -497,7 +497,7 @@ it.skipIf(process.platform !== "darwin")(
   "accepts the exact unsigned diagnostic for a caller path containing that phrase",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-signature-real-unsigned-",
+      "nre-signature-real-unsigned-",
     );
     const path = join(directory, "source\ncode object is not signed\noperand");
     await copyFile("/usr/bin/true", path);
@@ -656,7 +656,7 @@ it("cleans the private snapshot when inspection throws", async () => {
 it.skipIf(process.platform !== "darwin")(
   "keeps real codesign bound to registered bytes during an ancestor directory swap",
   async () => {
-    const root = await createTestTempDirectory("rea-signature-swap-");
+    const root = await createTestTempDirectory("nre-signature-swap-");
     const selected = join(root, "selected");
     const replacement = join(root, "replacement");
     const saved = join(root, "saved");
@@ -666,8 +666,8 @@ it.skipIf(process.platform !== "darwin")(
     const replacementPath = join(replacement, "program");
     const run = promisify(execFile);
     for (const [program, identifier] of [
-      [path, "rea.original"],
-      [replacementPath, "rea.replacement"],
+      [path, "nre.original"],
+      [replacementPath, "nre.replacement"],
     ] as const) {
       await copyFile("/usr/bin/true", program);
       await run("/usr/bin/codesign", [
@@ -711,7 +711,7 @@ it.skipIf(process.platform !== "darwin")(
     if (!result.ok) throw result.error;
     expect(result.value.result).toMatchObject({
       signed: true,
-      identifier: "rea.original",
+      identifier: "nre.original",
     });
     expect(
       inspectSignatureSchema

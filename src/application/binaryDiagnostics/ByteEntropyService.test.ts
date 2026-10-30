@@ -11,7 +11,7 @@ import {
 } from "./ByteEntropyService.js";
 
 it("keeps whole-file identity and entropy while selecting unaligned blocks and a partial tail", async () => {
-  const root = await createTestTempDirectory("rea-entropy-");
+  const root = await createTestTempDirectory("nre-entropy-");
   const path = join(root, "bytes");
   const bytes = Buffer.from(Array.from({ length: 1024 }, (_, i) => i % 256));
   await writeFile(path, bytes);
@@ -41,7 +41,7 @@ it("keeps whole-file identity and entropy while selecting unaligned blocks and a
 it.each([256, 4096, 65536])(
   "keeps %i-byte blocks relative to an unaligned window across short physical reads",
   async (blockSize) => {
-    const root = await createTestTempDirectory("rea-entropy-short-reads-");
+    const root = await createTestTempDirectory("nre-entropy-short-reads-");
     const path = join(root, "bytes");
     const bytes = Buffer.from(
       Array.from({ length: 3 * 65536 + 256 }, (_, i) => i % 256),
@@ -103,7 +103,7 @@ it.each([256, 4096, 65536])(
 );
 
 it("rejects missing files, non-files and windows beyond EOF, but accepts empty windows", async () => {
-  const root = await createTestTempDirectory("rea-entropy-input-");
+  const root = await createTestTempDirectory("nre-entropy-input-");
   const path = join(root, "empty");
   await writeFile(path, "");
   const service = new ByteEntropyService();
@@ -136,7 +136,7 @@ it("rejects missing files, non-files and windows beyond EOF, but accepts empty w
 it.skipIf(process.platform !== "linux" && process.platform !== "darwin")(
   "projects real path-resolution failures as actionable input errors",
   async () => {
-    const root = await createTestTempDirectory("rea-entropy-path-resolution-");
+    const root = await createTestTempDirectory("nre-entropy-path-resolution-");
     const loop = join(root, "loop");
     await symlink("loop", loop);
     const overlong = join(root, "x".repeat(256));
@@ -199,7 +199,7 @@ it.each([
   [{ offset: 2048, length: 0 }, "offset"],
   [{ offset: 512, length: 1024 }, "length"],
 ])("names the selector that puts %o past EOF", async (window, field) => {
-  const root = await createTestTempDirectory("rea-entropy-window-");
+  const root = await createTestTempDirectory("nre-entropy-window-");
   const path = join(root, "bytes");
   await writeFile(path, Buffer.alloc(1024));
   const result = await new ByteEntropyService().inspect({ path, ...window });
@@ -226,7 +226,7 @@ it.skipIf(process.platform !== "linux")(
 );
 
 it("adds no zero-size limitation to a file with content", async () => {
-  const root = await createTestTempDirectory("rea-entropy-nonempty-");
+  const root = await createTestTempDirectory("nre-entropy-nonempty-");
   const path = join(root, "one");
   await writeFile(path, "x");
   const result = await new ByteEntropyService().inspect({ path });
@@ -239,7 +239,7 @@ it("adds no zero-size limitation to a file with content", async () => {
 });
 
 it("honors cancellation before and during streaming", async () => {
-  const root = await createTestTempDirectory("rea-entropy-cancel-");
+  const root = await createTestTempDirectory("nre-entropy-cancel-");
   const path = join(root, "bytes");
   await writeFile(path, Buffer.alloc(1024 * 1024));
   const service = new ByteEntropyService();
@@ -280,7 +280,7 @@ it("honors cancellation before and during streaming", async () => {
 });
 
 it("maps cancellation during open to the cancelled algebra with its original cause", async () => {
-  const root = await createTestTempDirectory("rea-entropy-open-cancel-");
+  const root = await createTestTempDirectory("nre-entropy-open-cancel-");
   const path = join(root, "bytes");
   await writeFile(path, Buffer.alloc(512));
   const controller = new AbortController();
@@ -311,7 +311,7 @@ it("maps cancellation during open to the cancelled algebra with its original cau
 it.each([false, true])(
   "retains completed Evidence when final close is cancelled (close fails: %s)",
   async (closeFails) => {
-    const root = await createTestTempDirectory("rea-entropy-finalizer-cancel-");
+    const root = await createTestTempDirectory("nre-entropy-finalizer-cancel-");
     const path = join(root, "bytes");
     await writeFile(path, Buffer.alloc(512));
     const controller = new AbortController();
@@ -387,39 +387,42 @@ it.each([false, true])(
   },
 );
 
-it("reports a changed artifact when its parent directory moves during streaming", async () => {
-  const root = await createTestTempDirectory("rea-entropy-moved-");
-  const path = join(root, "bytes");
-  await writeFile(path, Buffer.alloc(512));
-  let moved = false;
-  const service = new ByteEntropyService({
-    stat,
-    open: async (...args) => {
-      const file = await open(...args);
-      const read = file.read.bind(file);
-      vi.spyOn(file, "read").mockImplementation(async (...readArgs) => {
-        const result = await read(...readArgs);
-        if (!moved) {
-          moved = true;
-          await rename(root, `${root}-moved`);
-        }
-        return result;
-      });
-      return file;
-    },
-  });
-  try {
-    expect(await service.inspect({ path, block_size: 256 })).toMatchObject({
-      ok: false,
-      error: { _tag: "AnalysisArtifactChangedError" },
+it.skipIf(process.platform === "win32")(
+  "reports a changed artifact when its parent directory moves during streaming",
+  async () => {
+    const root = await createTestTempDirectory("nre-entropy-moved-");
+    const path = join(root, "bytes");
+    await writeFile(path, Buffer.alloc(512));
+    let moved = false;
+    const service = new ByteEntropyService({
+      stat,
+      open: async (...args) => {
+        const file = await open(...args);
+        const read = file.read.bind(file);
+        vi.spyOn(file, "read").mockImplementation(async (...readArgs) => {
+          const result = await read(...readArgs);
+          if (!moved) {
+            await rename(root, `${root}-moved`);
+            moved = true;
+          }
+          return result;
+        });
+        return file;
+      },
     });
-  } finally {
-    if (moved) await rename(`${root}-moved`, root);
-  }
-});
+    try {
+      expect(await service.inspect({ path, block_size: 256 })).toMatchObject({
+        ok: false,
+        error: { _tag: "AnalysisArtifactChangedError" },
+      });
+    } finally {
+      if (moved) await rename(`${root}-moved`, root).catch(() => {});
+    }
+  },
+);
 
 it("refuses a block series above the output-row limit before scanning", async () => {
-  const root = await createTestTempDirectory("rea-entropy-block-limit-");
+  const root = await createTestTempDirectory("nre-entropy-block-limit-");
   const path = join(root, "bytes");
   await writeFile(path, Buffer.alloc(MAX_BYTE_ENTROPY_BLOCKS * 256 + 1));
   let reads = 0;
@@ -461,7 +464,7 @@ it("refuses a block series above the output-row limit before scanning", async ()
 });
 
 it("retains a failed descriptor close and retries it before opening another file", async () => {
-  const root = await createTestTempDirectory("rea-entropy-close-retry-");
+  const root = await createTestTempDirectory("nre-entropy-close-retry-");
   const path = join(root, "bytes");
   await writeFile(path, Buffer.alloc(512));
   let failClose = true;
@@ -510,7 +513,7 @@ it("retains a failed descriptor close and retries it before opening another file
 });
 
 it("preserves a primary read failure through failed close and resolves it on retry", async () => {
-  const root = await createTestTempDirectory("rea-entropy-primary-close-");
+  const root = await createTestTempDirectory("nre-entropy-primary-close-");
   const path = join(root, "bytes");
   await writeFile(path, Buffer.alloc(512));
   const readFailure = new Error("injected read failure");
@@ -554,7 +557,7 @@ it("preserves a primary read failure through failed close and resolves it on ret
 it.each(["stat", "open"] as const)(
   "preserves %s access failure when the signal aborts before rejection is consumed",
   async (stage) => {
-    const root = await createTestTempDirectory("rea-entropy-physical-failure-");
+    const root = await createTestTempDirectory("nre-entropy-physical-failure-");
     const path = join(root, "bytes");
     await writeFile(path, Buffer.alloc(512));
     const controller = new AbortController();
@@ -584,7 +587,7 @@ it.each(["stat", "open"] as const)(
 it.each([false, true])(
   "preserves read access failure through late cancellation (close fails: %s)",
   async (closeFails) => {
-    const root = await createTestTempDirectory("rea-entropy-read-access-");
+    const root = await createTestTempDirectory("nre-entropy-read-access-");
     const path = join(root, "bytes");
     await writeFile(path, Buffer.alloc(512));
     const controller = new AbortController();

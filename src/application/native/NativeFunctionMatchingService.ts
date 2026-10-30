@@ -144,7 +144,7 @@ const matchWithAdmission = async (
   await checkpoint();
   const evidence = createEvidence(undefined, FUNCTION_COMPARISON_PROVIDER, {
     operation: OPERATION,
-    predicateType: "rea.native-function-matching",
+    predicateType: "nre.native-function-matching",
     confidence: "derived",
     authority: "analyst-inference",
     parameters: {

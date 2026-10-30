@@ -184,7 +184,7 @@ const featureListing = (variant: Variant) => {
 cliTest.skipIf(process.platform === "win32")(
   "preserves safe ADB listing numbers and partial raw evidence through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-adb-listing-numbers-");
+    const root = await createTestTempDirectory("nre-adb-listing-numbers-");
     const binary = join(root, "adb");
     const processes = join(root, "processes.txt");
     const features = join(root, "features.txt");
@@ -209,8 +209,8 @@ process.stdout.write(require('node:fs').readFileSync(path));
     const environment = {
       HOME: root,
       USERPROFILE: root,
-      REA_ADB_PATH: binary,
-      REA_LOG_LEVEL: "silent",
+      NRE_ADB_PATH: binary,
+      NRE_LOG_LEVEL: "silent",
     };
     const { call } = await connectLocalToolsMcp(environment);
     for (const variant of ["safe", "mixed", "capped"] as const) {

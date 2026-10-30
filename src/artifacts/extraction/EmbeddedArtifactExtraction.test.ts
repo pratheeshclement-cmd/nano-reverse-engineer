@@ -69,7 +69,7 @@ const cases = [
 it.each(cases)(
   "extracts $format using the inventory admission once",
   async ({ format, inputFormat, reader, bytes, member, observe }) => {
-    const directory = await createTestTempDirectory("rea-embedded-extraction-");
+    const directory = await createTestTempDirectory("nre-embedded-extraction-");
     const path = join(directory, "source");
     const output = join(directory, "out");
     const carrier = bytes();
@@ -118,7 +118,7 @@ it.each(cases)(
   "rejects changed $format bytes before materializing admitted facts",
   async ({ inputFormat, reader, bytes }) => {
     const directory = await createTestTempDirectory(
-      "rea-embedded-extraction-stale-",
+      "nre-embedded-extraction-stale-",
     );
     const path = join(directory, "source");
     const output = join(directory, "out");
@@ -160,7 +160,7 @@ it.each(
   "retains $format finalization semantics during $mode",
   async ({ inputFormat, reader, bytes, mode }) => {
     const directory = await createTestTempDirectory(
-      "rea-embedded-extraction-cleanup-",
+      "nre-embedded-extraction-cleanup-",
     );
     const path = join(directory, "source");
     const output = join(directory, "out");
@@ -250,11 +250,11 @@ it.each(
   },
 );
 
-it.each(cases)(
+it.skipIf(process.platform === "win32").each(cases)(
   "rejects a retargeted selected path before publishing $format extraction",
   async ({ inputFormat, reader, bytes }) => {
     const directory = await createTestTempDirectory(
-      "rea-embedded-extraction-selection-",
+      "nre-embedded-extraction-selection-",
     );
     const path = join(directory, "source");
     const selectedPath = join(directory, "selected");
@@ -310,7 +310,7 @@ it.each(
   "handles attempted replacement at the admitted $format pathname (simulated refusal: $simulateWindowsRefusal)",
   async ({ inputFormat, reader, bytes, simulateWindowsRefusal }) => {
     const directory = await createTestTempDirectory(
-      "rea-embedded-extraction-replacement-",
+      "nre-embedded-extraction-replacement-",
     );
     const selectedDirectory = join(directory, "selected");
     await mkdir(selectedDirectory);

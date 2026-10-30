@@ -2021,11 +2021,11 @@ it("keeps literal encoded wildcard text distinct from observed-response wildcard
 });
 
 it("normalizes wildcard paths without colliding with literal marker-like segments", async () => {
-  const parsed = clickSaving("/~rea-wildcard~/items/{*}");
+  const parsed = clickSaving("/~nre-wildcard~/items/{*}");
   const { page } = uiPage([
     {
       method: "POST",
-      url: `${ORIGIN}/~rea-wildcard~/items/42`,
+      url: `${ORIGIN}/~nre-wildcard~/items/42`,
       status: 201,
       body: '{"id":"42"}',
     },

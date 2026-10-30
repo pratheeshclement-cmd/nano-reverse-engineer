@@ -47,11 +47,11 @@ const requireFixture = createRequire(import.meta.url);
 // validators while every scenario still owns a separate application directory.
 const mcpTransport = new StdioClientTransport({
   command: process.execPath,
-  args: [resolve("scripts/rea.mjs"), "mcp"],
+  args: [resolve("scripts/nre.mjs"), "mcp"],
   cwd: process.cwd(),
   env: {
     PATH: process.env.PATH ?? "",
-    REA_LOG_LEVEL: "silent",
+    NRE_LOG_LEVEL: "silent",
     ...INLINE_EVIDENCE_MCP_ENVIRONMENT,
   },
   stderr: "pipe",
@@ -275,7 +275,7 @@ describe("Electron alias identity through stdio MCP", () => {
   ])(
     "recovers Electron boundaries through $name (#1656)",
     async ({ cliParity, main, preload, esm }) => {
-      const root = await createTestTempDirectory("rea-electron-alias-cli-");
+      const root = await createTestTempDirectory("nre-electron-alias-cli-");
       await Promise.all([
         writeFile(
           join(root, "package.json"),
@@ -433,7 +433,7 @@ describe("Electron unavailable identity through stdio MCP", () => {
   ])(
     "keeps Electron identity unresolved for $name (#1656)",
     async ({ cliParity, main, preload }) => {
-      const root = await createTestTempDirectory("rea-electron-alias-unknown-");
+      const root = await createTestTempDirectory("nre-electron-alias-unknown-");
       await Promise.all([
         writeFile(
           join(root, "package.json"),
@@ -468,7 +468,7 @@ describe("Electron unavailable identity through stdio MCP", () => {
 });
 
 it("preserves complete line-comment source-map URLs through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-source-map-url-cli-");
+  const root = await createTestTempDirectory("nre-source-map-url-cli-");
   const directives = [
     "//# sourceMappingURL=app.js.map?variant=a*modern",
     "//@ sourceMappingURL=app.js.map?variant=a*legacy",
@@ -537,7 +537,7 @@ it("preserves complete line-comment source-map URLs through CLI and MCP", async 
 }, 20_000);
 
 it("resolves source-map URL paths once without changing their declarations", async () => {
-  const root = await createTestTempDirectory("rea-source-map-encoding-cli-");
+  const root = await createTestTempDirectory("nre-source-map-encoding-cli-");
   const cases = [
     ["space%20part.js.map", "space part.js.map"],
     ["literal%25.js.map", "literal%.js.map"],
@@ -658,7 +658,7 @@ it("resolves source-map URL paths once without changing their declarations", asy
 
 describe("JavaScript application path CLI", () => {
   it("retains the admitted relative CLI selection and canonical artifact identity", async () => {
-    const root = await createTestTempDirectory("rea-relative-application-cli-");
+    const root = await createTestTempDirectory("nre-relative-application-cli-");
     await writeFile(join(root, "app.js"), "export const value = 1;\n");
     const relativePath = relative(process.cwd(), root);
     const admittedPath = absoluteCallerPath(relativePath);
@@ -687,7 +687,7 @@ describe("JavaScript application path CLI", () => {
 
   it("returns the self-import graph consistently through CLI and stdio MCP", async () => {
     const root = await createTestTempDirectory(
-      "rea-self-import-application-cli-",
+      "nre-self-import-application-cli-",
     );
     await writeSelfImportFixture(root);
 
@@ -709,7 +709,7 @@ describe("JavaScript application path CLI", () => {
   }, 20_000);
 
   it("preserves canonical Electron API aliases through CLI and stdio MCP", async () => {
-    const root = await createTestTempDirectory("rea-electron-api-alias-");
+    const root = await createTestTempDirectory("nre-electron-api-alias-");
     await writeElectronApiAliasApplication(root);
 
     const cliResult = z
@@ -770,7 +770,7 @@ describe("application workflow CLI parity", () => {
     ]);
     expect(traced).toMatchObject({
       operation: "trace_application_feature",
-      predicate_type: "rea.application-feature-trace",
+      predicate_type: "nre.application-feature-trace",
       normalized_result: {
         seed: { kind: "module", value: "renderer.js", match: "exact" },
         summary: {
@@ -792,7 +792,7 @@ describe("application workflow CLI parity", () => {
       },
     });
 
-    const root = await createTestTempDirectory("rea-application-cli-");
+    const root = await createTestTempDirectory("nre-application-cli-");
     const comparisonPath = join(root, "comparison.json");
     await writeFile(
       comparisonPath,
@@ -805,7 +805,7 @@ describe("application workflow CLI parity", () => {
     ]);
     expect(compared).toMatchObject({
       operation: "compare_application_versions",
-      predicate_type: "rea.application-version-comparison",
+      predicate_type: "nre.application-version-comparison",
       normalized_result: {
         summary: {
           unchanged: 0,
@@ -834,7 +834,7 @@ describe("application workflow CLI parity", () => {
     await assertSourceFileView(sourceCompared);
     expect(sourceCompared).toMatchObject({
       operation: "compare_source_to_bundle",
-      predicate_type: "rea.source-to-bundle-comparison",
+      predicate_type: "nre.source-to-bundle-comparison",
       normalized_result: {
         reference: { inventory_state: "complete" },
         summary: {
@@ -858,7 +858,7 @@ describe("application workflow CLI parity", () => {
   }, 20_000);
 
   it("traces the same authenticated semantic graph through the CLI", async () => {
-    const root = await createTestTempDirectory("rea-semantic-cli-");
+    const root = await createTestTempDirectory("nre-semantic-cli-");
     await writeFile(
       join(root, "app.js"),
       "function add(value) { return value + 1; } add(2);",
@@ -888,7 +888,7 @@ describe("application workflow CLI parity", () => {
     );
     expect(traced).toMatchObject({
       operation: "trace_javascript_semantics",
-      predicate_type: "rea.javascript-semantic-trace",
+      predicate_type: "nre.javascript-semantic-trace",
       normalized_result: {
         source_evidence_id: analyzed.value.evidence_id,
         source_graph_id: result.semantic_graph.graph_id,
@@ -898,7 +898,7 @@ describe("application workflow CLI parity", () => {
 });
 
 it("traces all endpoint carriers and their response consumers through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-endpoint-response-trace-");
+  const root = await createTestTempDirectory("nre-endpoint-response-trace-");
   const endpoint = "https://example.invalid/v1/data";
   const source = `export async function load() {
     const response = await fetch(${JSON.stringify(endpoint)});
@@ -1003,7 +1003,7 @@ it("traces all endpoint carriers and their response consumers through CLI and MC
 
 describe("rest parameter semantic trace CLI", () => {
   it("traces each ordinary rest argument to its parameter through public application Evidence", async () => {
-    const root = await createTestTempDirectory("rea-rest-arguments-cli-");
+    const root = await createTestTempDirectory("nre-rest-arguments-cli-");
     await writeFile(
       join(root, "app.js"),
       "function collect(first, ...rest) { return rest; } collect('first', 'second', 'third');",
@@ -1056,7 +1056,7 @@ describe("empty property key application CLI", () => {
   it.each(["const root = routes[''];", "const {'': root} = routes;"])(
     "analyzes a root-route dictionary with %s",
     async (read) => {
-      const root = await createTestTempDirectory("rea-empty-key-cli-");
+      const root = await createTestTempDirectory("nre-empty-key-cli-");
       await writeFile(
         join(root, "app.js"),
         `const routes = {'': 'HOME'}; ${read}`,
@@ -1087,7 +1087,7 @@ describe("empty property key application CLI", () => {
 
 describe("Webpack factory CommonJS export keys", () => {
   it("keeps exact static keys and omits computed names through CLI and MCP", async () => {
-    const root = await createTestTempDirectory("rea-webpack-export-keys-");
+    const root = await createTestTempDirectory("nre-webpack-export-keys-");
     const bundle = `globalThis.webpackChunkStaticExports.push([["main"], {
       1: function(module, exports, __webpack_require__) {${WEBPACK_FACTORY_BODY}},
       2: function(module) { module.exports = function realDefault() {}; },
@@ -1123,7 +1123,7 @@ describe("Webpack factory CommonJS export keys", () => {
       module.exports;
     `) as Record<string, unknown>;
     const oracleRoot = await createTestTempDirectory(
-      "rea-webpack-export-oracle-",
+      "nre-webpack-export-oracle-",
     );
     expect(Reflect.ownKeys(actual).sort()).toEqual([
       "",
@@ -1257,7 +1257,7 @@ describe("application workflow CLI input", () => {
 
 describe("application version source-scope MCP comparison", () => {
   it("keeps unselected parse scopes unknown through stdio MCP", async () => {
-    const root = await createTestTempDirectory("rea-version-scope-mcp-");
+    const root = await createTestTempDirectory("nre-version-scope-mcp-");
     await Promise.all([
       writeFile(
         join(root, "lib.js"),
@@ -1324,7 +1324,7 @@ describe("application version source-scope MCP comparison", () => {
 
 describe("application workflow CLI copy boundaries", () => {
   it("compares source values excluded from escaped rest and spread copies", async () => {
-    const root = await createTestTempDirectory("rea-copy-boundary-cli-");
+    const root = await createTestTempDirectory("nre-copy-boundary-cli-");
     const sources = [
       `export default function make() {
         function mutate(value) { value.changed = true; }
@@ -1396,7 +1396,7 @@ describe("application workflow CLI copy boundaries", () => {
 
 describe("application workflow CLI and MCP capture lifetimes", () => {
   it("compares captured primitives and source values after aliases are replaced", async () => {
-    const parent = await createTestTempDirectory("rea-capture-lifetime-cli-");
+    const parent = await createTestTempDirectory("nre-capture-lifetime-cli-");
     const root = join(parent, "fixtures # capture");
     await mkdir(root);
     const fields = [
@@ -1506,7 +1506,7 @@ describe("application workflow CLI and MCP capture lifetimes", () => {
 
 describe("application workflow CLI export Evidence", () => {
   it("compares primitive changes through local spread copies with CLI and stdio MCP", async () => {
-    const root = await createTestTempDirectory("rea-spread-copy-comparison-");
+    const root = await createTestTempDirectory("nre-spread-copy-comparison-");
     const [left, right] = await analyzeComparisonSources(root, [
       `export default () => {
         const o = { a: 1, b: 2 }; const box = { ...o };
@@ -1551,7 +1551,7 @@ describe("application workflow CLI export Evidence", () => {
   }, 20_000);
 
   it("preserves uncertainty after a helper can mutate an awaited return object", async () => {
-    const root = await createTestTempDirectory("rea-awaited-export-shape-cli-");
+    const root = await createTestTempDirectory("nre-awaited-export-shape-cli-");
     const sources = [
       `export default async function make() {
         const result = { kind: "record" };
@@ -1587,7 +1587,7 @@ describe("application workflow CLI export Evidence", () => {
   }, 20_000);
 
   it("compares exact export shapes from file-backed Evidence", async () => {
-    const root = await createTestTempDirectory("rea-export-shape-cli-");
+    const root = await createTestTempDirectory("nre-export-shape-cli-");
     const leftRoot = join(root, "left");
     const rightRoot = join(root, "right");
     await Promise.all([mkdir(leftRoot), mkdir(rightRoot)]);
@@ -1630,7 +1630,7 @@ describe("application workflow CLI export Evidence", () => {
     ]);
     expect(compared).toMatchObject({
       operation: "compare_javascript_export_shapes",
-      predicate_type: "rea.javascript-export-shape-comparison",
+      predicate_type: "nre.javascript-export-shape-comparison",
       normalized_result: {
         summary: { added: 1, removed: 0, changed: 0, unknown: 0 },
         changes: [
@@ -1649,7 +1649,7 @@ describe("application workflow CLI export Evidence", () => {
 describe("application workflow CLI export property presence", () => {
   it("reports tagged search property presence through compare-javascript-export-shapes", async () => {
     const root = await createTestTempDirectory(
-      "rea-export-shape-presence-cli-",
+      "nre-export-shape-presence-cli-",
     );
     const leftRoot = join(root, "left");
     const rightRoot = join(root, "right");
@@ -1825,7 +1825,7 @@ const analyzeComparisonSources = async (
 
 it("retains bundled isolated-world contextBridge APIs through dedicated and generic CLI routes", async () => {
   const root = await createTestTempDirectory(
-    "rea-context-bridge-isolated-cli-",
+    "nre-context-bridge-isolated-cli-",
   );
   await writeFile(
     join(root, "preload.js"),
@@ -1932,7 +1932,7 @@ const assertSourceFileView = async (sourceCompared: unknown) => {
     error: "Application workflow failed",
   });
 
-  const sourceViewRoot = await createTestTempDirectory("rea-cli-source-view-");
+  const sourceViewRoot = await createTestTempDirectory("nre-cli-source-view-");
   const referencePath = join(sourceViewRoot, "reference.json");
   const sourceComparisonPath = join(sourceViewRoot, "comparison.json");
   await writeFile(

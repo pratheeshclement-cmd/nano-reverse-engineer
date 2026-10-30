@@ -70,7 +70,7 @@ const fixture = async (
   activeVersion = false,
   artifactReader: typeof readStableArtifact = readStableArtifact,
 ) => {
-  const root = await createTestTempDirectory("rea-pcap-provider-cancel-");
+  const root = await createTestTempDirectory("nre-pcap-provider-cancel-");
   const tools = await writeTools(root, mode, activeVersion);
   const capture = join(root, "capture.pcap");
   await writeFile(capture, "controlled capture bytes");
@@ -103,8 +103,8 @@ const fixture = async (
   };
   const provider = new PcapProvider({
     environment: {
-      REA_TSHARK_COMMAND: tools.tshark,
-      REA_CAPINFOS_COMMAND: tools.capinfos,
+      NRE_TSHARK_COMMAND: tools.tshark,
+      NRE_CAPINFOS_COMMAND: tools.capinfos,
     },
     launcher,
     artifactReader,
@@ -116,7 +116,7 @@ const fixture = async (
 // The tshark version probe's owned process cleanup fails once, and the tool's
 // bytes appear changed when the probe re-reads it after the run.
 const probeCleanupFixture = async (rereadCloseFailure = false) => {
-  const root = await createTestTempDirectory("rea-pcap-probe-cleanup-");
+  const root = await createTestTempDirectory("nre-pcap-probe-cleanup-");
   const tools = await writeTools(root, "complete");
   const tshark = await realpath(tools.tshark);
   let tsharkReads = 0;
@@ -153,8 +153,8 @@ const probeCleanupFixture = async (rereadCloseFailure = false) => {
   };
   const provider = new PcapProvider({
     environment: {
-      REA_TSHARK_COMMAND: tools.tshark,
-      REA_CAPINFOS_COMMAND: tools.capinfos,
+      NRE_TSHARK_COMMAND: tools.tshark,
+      NRE_CAPINFOS_COMMAND: tools.capinfos,
     },
     launcher,
     artifactReader,

@@ -16,7 +16,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.for(["pubkey", "signature"])(
   "rejects nonzero BIT STRING padding in %s through the public CLI",
   async (field, { cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-bit-padding-");
+    const root = await createTestTempDirectory("nre-pe-cert-bit-padding-");
     const path = join(root, "padding.exe");
     const payload = pkcs7SignedDataFixture();
     const marker = Buffer.concat([
@@ -55,7 +55,7 @@ cliTest.for(["pubkey", "signature"])(
 cliTest(
   "reports PKCS#7 signer identity through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-cli-");
+    const root = await createTestTempDirectory("nre-pe-cert-cli-");
     const path = join(root, "signed.exe");
     await writeFile(path, peCertificateFixture());
     const result = await cli.run({
@@ -72,7 +72,7 @@ cliTest(
 );
 
 cliTest("reports unsigned attributes through CLI and MCP", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-pe-cert-unsigned-attrs-");
+  const root = await createTestTempDirectory("nre-pe-cert-unsigned-attrs-");
   const path = join(root, "timestamped.exe");
   const payload = pkcs7SignedDataFixture(undefined, undefined, undefined, [
     [1, 3, 6, 1, 4, 1, 311, 3, 3, 1],
@@ -100,7 +100,7 @@ cliTest("reports unsigned attributes through CLI and MCP", async ({ cli }) => {
 cliTest(
   "inspects SignedData with an indefinite constructed ContentInfo envelope",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-ber-cli-");
+    const root = await createTestTempDirectory("nre-pe-cert-ber-cli-");
     const path = join(root, "ber-signed.exe");
     const payload = pkcs7SignedDataIndefiniteEnvelopeFixture();
     await writeFile(path, peCertificateFixture(false, payload));
@@ -125,7 +125,7 @@ cliTest(
 cliTest(
   "resolves a relative PE path against the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-cli-rel-");
+    const root = await createTestTempDirectory("nre-pe-cert-cli-rel-");
     await writeFile(
       join(root, "unsigned.exe"),
       peWithoutCertificateTableFixture(),
@@ -144,7 +144,7 @@ cliTest(
 );
 
 cliTest("reports a truncated PE as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-pe-cert-cli-bad-");
+  const root = await createTestTempDirectory("nre-pe-cert-cli-bad-");
   const path = join(root, "broken.exe");
   await writeFile(path, Buffer.from("MZ"));
   const result = await cli.run({
@@ -160,7 +160,7 @@ cliTest("reports a truncated PE as invalid input", async ({ cli }) => {
 cliTest(
   "reports TeletexString compatibility text with its decoding limitation",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-cli-teletex-");
+    const root = await createTestTempDirectory("nre-pe-cert-cli-teletex-");
     const path = join(root, "teletex.exe");
     const payload = pkcs7SignedDataFixture("é");
     const nameAt = payload.indexOf(Buffer.from([0x0c, 0x02, 0xc3, 0xa9]));
@@ -178,7 +178,7 @@ cliTest(
     expect(
       evidence.normalized_result.entries[0]?.pkcs7?.certificates[0]?.issuer
         .text,
-    ).toBe("commonName=Âe, organizationName=REA Tests");
+    ).toBe("commonName=Âe, organizationName=NRE Tests");
     expect(evidence.normalized_result.limitations).toContain(
       "TeletexString values use OpenSSL's ISO-8859-1 compatibility mapping; this is not a full T.61 decoder.",
     );
@@ -188,7 +188,7 @@ cliTest(
 cliTest(
   "rejects a non-minimal PKCS#7 content OID through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-cli-oid-");
+    const root = await createTestTempDirectory("nre-pe-cert-cli-oid-");
     const path = join(root, "nonminimal.exe");
     const payload = pkcs7SignedDataIndefiniteEnvelopeFixture();
     expect([...payload.subarray(0, 5)]).toEqual([0x30, 0x80, 0x06, 0x09, 0x2a]);
@@ -212,7 +212,7 @@ cliTest(
 cliTest(
   "rejects surrogate pairs in BMPString certificate names and accepts valid neighboring code units",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-cli-bmp-");
+    const root = await createTestTempDirectory("nre-pe-cert-cli-bmp-");
     const path = join(root, "bmp.exe");
     const payload = pkcs7SignedDataFixture("ABCD");
     const nameAt = payload.indexOf(
@@ -242,14 +242,14 @@ cliTest(
     expect(
       evidence.normalized_result.entries[0]?.pkcs7?.certificates[0]?.issuer
         .text,
-    ).toBe("commonName=\ud7ff\ue000, organizationName=REA Tests");
+    ).toBe("commonName=\ud7ff\ue000, organizationName=NRE Tests");
   },
 );
 
 cliTest(
   "inventories repeated certificates within both decoder allowances",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-cli-repeated-");
+    const root = await createTestTempDirectory("nre-pe-cert-cli-repeated-");
     const path = join(root, "chain.exe");
     await writeFile(
       path,
@@ -288,7 +288,7 @@ cliTest.for([
 ])(
   "reports the fixed $allowance allowance as a resource constraint",
   async ({ certificates, limits, message }, { cli }) => {
-    const root = await createTestTempDirectory("rea-pe-cert-cli-allowance-");
+    const root = await createTestTempDirectory("nre-pe-cert-cli-allowance-");
     const path = join(root, "large.exe");
     await writeFile(
       path,

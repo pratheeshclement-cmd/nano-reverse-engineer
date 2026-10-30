@@ -244,7 +244,7 @@ const opaqueExecCallbackCommands = [
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves effective stdio, overloads and explicit unknowns through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-child-stdio-");
+    const root = await createTestTempDirectory("nre-child-stdio-");
     await writeFixtureFiles(root, {
       "entry.ts": `
         import {spawn,exec,execFile,fork} from "node:child_process";

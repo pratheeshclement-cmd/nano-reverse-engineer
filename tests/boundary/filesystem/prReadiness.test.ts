@@ -75,7 +75,7 @@ function fixture(changes: Partial<ReadinessPullRequest> = {}) {
     paginate,
   };
   const context = {
-    repo: { owner: "morluto", repo: "rea" },
+    repo: { owner: "pratheeshclement-cmd", repo: "nre" },
     payload: { pull_request: { number: 42 } },
     serverUrl: "https://github.com",
     runId: 123,
@@ -295,8 +295,8 @@ describe("GitHub status boundary", () => {
       },
     });
     expect(input.get).toHaveBeenCalledWith({
-      owner: "morluto",
-      repo: "rea",
+      owner: "pratheeshclement-cmd",
+      repo: "nre",
       pull_number: 42,
     });
   });
@@ -317,13 +317,13 @@ describe("Live PR-head identity", () => {
       );
     expect((await runReadinessCheck(input))?.state).toBe("success");
     expect(input.graphql).toHaveBeenNthCalledWith(1, expect.any(String), {
-      owner: "morluto",
-      name: "rea",
+      owner: "pratheeshclement-cmd",
+      name: "nre",
       after: null,
     });
     expect(input.graphql).toHaveBeenNthCalledWith(2, expect.any(String), {
-      owner: "morluto",
-      name: "rea",
+      owner: "pratheeshclement-cmd",
+      name: "nre",
       after: "next-page",
     });
     expect(input.createCommitStatus).toHaveBeenLastCalledWith(

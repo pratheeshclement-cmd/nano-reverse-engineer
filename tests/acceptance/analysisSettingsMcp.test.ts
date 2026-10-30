@@ -11,7 +11,7 @@ import { asarHeaderBytes } from "../fixtures/asarHeader.js";
 import { nativeMatchingNamedInventory } from "../fixtures/nativeFunctionMatching.js";
 
 it("advertises exact contracts and recovers a full large-index archive over one MCP connection", async () => {
-  const root = await createTestTempDirectory("rea-runtime-settings-");
+  const root = await createTestTempDirectory("nre-runtime-settings-");
   const archive = join(root, "application.asar");
   // Large header, small payload: tests index admission independently of input/member size.
   const first = Buffer.from("export const answer = 42;\n");
@@ -76,7 +76,7 @@ it("advertises exact contracts and recovers a full large-index archive over one 
     expect(updated.structuredContent).toMatchObject({
       revision: 1,
       active_work_changed: false,
-      rea_restart_required: false,
+      nre_restart_required: false,
     });
     const recovered = await invoke("inspect_artifact", {});
     expect(recovered.isError).not.toBe(true);
@@ -124,7 +124,7 @@ it.each(["0", "2147483648"])(
   "keeps invalid JADX launch timeout %s local and repairable through MCP",
   async (timeout) => {
     const { client, call } = await connectLocalToolsMcp({
-      REA_JADX_OPERATION_TIMEOUT_MS: timeout,
+      NRE_JADX_OPERATION_TIMEOUT_MS: timeout,
     });
     try {
       expect((await call("binary_session", {})).isError).not.toBe(true);
@@ -142,7 +142,7 @@ it.each(["0", "2147483648"])(
             configuration_error: {
               code: "configuration_invalid",
               details: {
-                settings: [{ setting: "REA_JADX_OPERATION_TIMEOUT_MS" }],
+                settings: [{ setting: "NRE_JADX_OPERATION_TIMEOUT_MS" }],
               },
             },
           },
@@ -225,7 +225,7 @@ it("lowers, restores and seeds the native matching allowance over MCP", async ()
   }
   const seeded = await connectLocalToolsMcp({
     ...INLINE_EVIDENCE_MCP_ENVIRONMENT,
-    REA_NATIVE_MATCHING_REPRESENTATION_BYTES: "4096",
+    NRE_NATIVE_MATCHING_REPRESENTATION_BYTES: "4096",
   });
   try {
     expect(
@@ -242,7 +242,7 @@ it("lowers, restores and seeds the native matching allowance over MCP", async ()
           launch_value: 4096,
           default_value: 100663296,
           source: "setting",
-          environment: "REA_NATIVE_MATCHING_REPRESENTATION_BYTES",
+          environment: "NRE_NATIVE_MATCHING_REPRESENTATION_BYTES",
         },
       ],
     });
@@ -259,7 +259,7 @@ it("lowers, restores and seeds the native matching allowance over MCP", async ()
   // runtime override repairs the effective allowance.
   const invalid = await connectLocalToolsMcp({
     ...INLINE_EVIDENCE_MCP_ENVIRONMENT,
-    REA_NATIVE_MATCHING_REPRESENTATION_BYTES: "0",
+    NRE_NATIVE_MATCHING_REPRESENTATION_BYTES: "0",
   });
   try {
     expect((await invalid.call("binary_session", {})).isError).not.toBe(true);
@@ -290,7 +290,7 @@ it("lowers, restores and seeds the native matching allowance over MCP", async ()
         action: expect.stringContaining("update_analysis_settings"),
       },
       details: {
-        settings: [{ setting: "REA_NATIVE_MATCHING_REPRESENTATION_BYTES" }],
+        settings: [{ setting: "NRE_NATIVE_MATCHING_REPRESENTATION_BYTES" }],
       },
     });
     const repaired = await invalid.call("update_analysis_settings", {

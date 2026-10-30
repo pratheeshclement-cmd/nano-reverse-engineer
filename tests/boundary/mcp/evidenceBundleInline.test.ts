@@ -19,7 +19,7 @@ import { createServer } from "../../../src/server/createServer.js";
 import { JSON_BYTE_ORDER_MARK_MESSAGE } from "../../../src/application/Utf8JsonInput.js";
 
 it("exports and imports GameCube DOL Evidence without losing its subject identity", async () => {
-  const root = await createTestTempDirectory("rea-dol-bundle-mcp-");
+  const root = await createTestTempDirectory("nre-dol-bundle-mcp-");
   const path = join(root, "bundle.json");
   const record = createEvidence(
     {
@@ -83,7 +83,7 @@ it("exports and imports GameCube DOL Evidence without losing its subject identit
 });
 
 it("preserves BOM recovery through public bundle import", async () => {
-  const root = await createTestTempDirectory("rea-bundle-bom-mcp-");
+  const root = await createTestTempDirectory("nre-bundle-bom-mcp-");
   const path = join(root, "bundle.json");
   await writeFile(path, "\uFEFF{}");
   const session = createTestBinarySession(() => {
@@ -146,7 +146,7 @@ it("returns the complete session Evidence bundle in the tool result", async () =
 });
 
 it("rejects bundle field stripping at MCP import without changing retained evidence", async () => {
-  const root = await createTestTempDirectory("rea-evidence-bundle-mcp-");
+  const root = await createTestTempDirectory("nre-evidence-bundle-mcp-");
   const sourceSession = createBundleSourceSession();
   const targetSession = createTestBinarySession(() => ({
     execute: () => Promise.resolve(observed(null)),
@@ -256,7 +256,7 @@ const createBundleSourceSession = () => {
       authority: "controlled-replay",
     }),
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: EMPTY_PROCESS_CAPTURE_EXAMPLE,

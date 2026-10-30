@@ -20,7 +20,7 @@ import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 /** Exercise selected network content through real CLI and stdio MCP, one browser at a time. */
 export async function verifyBrowserNetworkEvidence(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url)),
   attachment,
 ) {
   let site;
@@ -51,7 +51,7 @@ export async function verifyBrowserNetworkEvidence(
       secrets: [
         {
           secret_id: "network_secret",
-          environment_variable: "REA_NETWORK_FIXTURE_SECRET",
+          environment_variable: "NRE_NETWORK_FIXTURE_SECRET",
         },
       ],
       capture: {
@@ -65,9 +65,9 @@ export async function verifyBrowserNetworkEvidence(
     });
     const env = {
       ...process.env,
-      REA_LOG_LEVEL: "silent",
-      REA_NETWORK_FIXTURE_SECRET: networkFixtureSecret,
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      NRE_LOG_LEVEL: "silent",
+      NRE_NETWORK_FIXTURE_SECRET: networkFixtureSecret,
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-provider/hopper",
     };
     const { stdout } = await promisify(execFile)(
       process.execPath,

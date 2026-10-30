@@ -232,7 +232,7 @@ export class AnalysisProviderRegistry {
         "provider profile files",
       );
       const failure = new ProviderCleanupError(
-        "rea",
+        "nre",
         cleanup.resources,
         { reason: cleanup.reason },
         { cause },
@@ -253,7 +253,7 @@ export class AnalysisProviderRegistry {
     if (distinct.length === 0) return ok(null);
     if (distinct.length === 1) return err(distinct[0]!);
     const failure = new ProviderCleanupError(
-      "rea",
+      "nre",
       [...new Set(distinct.flatMap((failure) => failure.cleanupResources))],
       { reason: distinct.map((failure) => failure.message).join("; ") },
       { cause: new AggregateError(distinct) },
@@ -1008,7 +1008,7 @@ const providerInspectionFailure = (
             cause: primary.error.cause,
           },
         )
-      : new ProviderAdapterError("rea", context.operation, {
+      : new ProviderAdapterError("nre", context.operation, {
           ...options,
           userMessage: projectAnalysisError(primary.error).message,
           cause: new AggregateError(

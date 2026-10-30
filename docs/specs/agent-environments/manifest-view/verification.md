@@ -91,7 +91,7 @@ Findings repaired at their owning boundary:
 ## Hosted lane
 
 - `real-web-network-captures` (hosted ubuntu-24.04, workflow run
-  https://github.com/earakely-scale/rea/actions/runs/39097105064 on the fork
+  https://github.com/earakely-scale/nre/actions/runs/39097105064 on the fork
   at 2d95597f) passed with the manifest block of
   `scripts/verify-web-network-captures.mjs` executed against the lane's
   producer and mitmproxy captures. The first run at 61d35369 failed only in
@@ -125,7 +125,7 @@ unmeasured. Local real-tool verification ran on macOS arm64; the hosted Linux la
 
 ## Automated review findings on the PR (2026-10-18)
 
-Codex and Greptile left seven inline findings on morluto/rea#4954 at
+Codex and Greptile left seven inline findings on pratheeshclement-cmd/nano-reverse-engineer#4954 at
 b6d18d23; each was checked against the code and addressed in one follow-up
 commit, with a regression test where the behaviour is observable:
 

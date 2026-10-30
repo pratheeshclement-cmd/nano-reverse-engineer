@@ -12,7 +12,7 @@ import { zipWith } from "../../fixtures/apkSignature/v1SignatureBlock.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("checks parent subject identity again when signing facts are already cached", async () => {
-  const root = await createTestTempDirectory("rea-apk-cache-identity-");
+  const root = await createTestTempDirectory("nre-apk-cache-identity-");
   const path = join(root, "selected.apk");
   await writeFile(
     path,

@@ -22,22 +22,22 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { mcpTest } from "../../support/mcp/mcpFixture.js";
 
 const failedAdapters = [
-  ["browserObservation", "list_browser_targets", "rea-cdp-browser"],
+  ["browserObservation", "list_browser_targets", "nre-cdp-browser"],
   [
     "browserScenarioCapture",
     "capture_browser_scenario",
-    "rea-playwright-browser-scenario",
+    "nre-playwright-browser-scenario",
   ],
-  ["electronObservation", "list_electron_targets", "rea-cdp-electron"],
+  ["electronObservation", "list_electron_targets", "nre-cdp-electron"],
   [
     "electronActiveObservation",
     "capture_electron_scenario",
-    "rea-playwright-electron-active",
+    "nre-playwright-electron-active",
   ],
   [
     "javascriptRuntimeObservation",
     "list_javascript_runtime_targets",
-    "rea-v8-inspector",
+    "nre-v8-inspector",
   ],
 ] as const;
 
@@ -215,7 +215,7 @@ mcpTest.for(failedAdapters)(
       port === "electronObservation" ||
       port === "electronActiveObservation"
     ) {
-      const directory = await createTestTempDirectory("rea-optional-static-");
+      const directory = await createTestTempDirectory("nre-optional-static-");
       await writeFile(
         join(directory, "package.json"),
         JSON.stringify({ name: "optional-isolation", main: "index.js" }),

@@ -19,7 +19,7 @@ import { analysisViewResultSchema } from "../../../src/domain/analysisView/analy
 
 it("retains complete load-image facts and pages selected relocations through the advertised SDK contracts", async () => {
   const fixture = fixtureDosOverlapLoadImage();
-  const directory = await createTestTempDirectory("rea-mcp-load-summary-");
+  const directory = await createTestTempDirectory("nre-mcp-load-summary-");
   const targetPath = join(directory, "inert.exe");
   await writeFile(targetPath, fixture.bytes);
   const harness = await connectGhidraMcp(
@@ -136,7 +136,7 @@ it.each([
     if (state === "reversed-records") fixture.observation.relocations.reverse();
     if (state === "bad-source") source.modified_sha256 = "f".repeat(64);
     if (state === "bad-mapping") mapping.sha256 = "f".repeat(64);
-    const directory = await createTestTempDirectory("rea-mcp-mz-overlap-");
+    const directory = await createTestTempDirectory("nre-mcp-mz-overlap-");
     const targetPath = join(directory, "inert.exe");
     await writeFile(targetPath, fixture.bytes);
     const harness = await connectGhidraMcp(
@@ -357,7 +357,7 @@ it("retains unavailable Ghidra native API observations across provenance and exa
     expect(replay.evidence_id).not.toBe(first.evidence_id);
     expect(replay.limitations).toEqual(
       expect.arrayContaining([
-        expect.stringContaining("Loaded from a local REA analysis snapshot"),
+        expect.stringContaining("Loaded from a local NRE analysis snapshot"),
       ]),
     );
     const warmBundle = session.exportEvidenceBundle();

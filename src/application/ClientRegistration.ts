@@ -132,7 +132,7 @@ export const clientRegistrationOwnershipRemediation = (
   ownership: Exclude<ClientRegistrationCommandIdentity, "owned">,
   paths: readonly string[],
 ): string =>
-  `The existing "${PRODUCT_IDENTITY.mcpServerKey}" registration read from ${paths.join(", ")} has ${ownership} ownership and was not changed. Review its launcher and manually rename or remove that registration before rerunning setup. A different installation path does not prove REA ownership.`;
+  `The existing "${PRODUCT_IDENTITY.mcpServerKey}" registration read from ${paths.join(", ")} has ${ownership} ownership and was not changed. Review its launcher and manually rename or remove that registration before rerunning setup. A different installation path does not prove NRE ownership.`;
 
 /** Policy belongs to the client dialect, and is validated before refresh writes. */
 const validateClientPolicy = (
@@ -206,7 +206,7 @@ export const parseClientRegistration = (
   return ok(registration);
 };
 
-// These fields select REA's connection and activation. Everything else belongs
+// These fields select NRE's connection and activation. Everything else belongs
 // to the caller/client, including future policy keys. Client-specific timeout
 // defaults and preservation rules are applied below.
 const managedConnectionKeys = new Set([
@@ -224,7 +224,7 @@ const managedConnectionKeys = new Set([
   "httpUrl",
 ]);
 
-/** Whether a rea setup repair for this target preserves the row's
+/** Whether a nre setup repair for this target preserves the row's
  * `enable: false` instead of dropping it. Shared registration doubles as
  * ZCode's fallback, so the activation fact belongs to every reader; a repair
  * preserves it instead of silently re-enabling a row it does not own. A

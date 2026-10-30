@@ -33,28 +33,28 @@ if (process.env.GHIDRA_INSTALL_DIR === undefined)
 const exec = promisify(execFile);
 const run = createVerifierRun();
 const root = fileURLToPath(new URL("..", import.meta.url));
-const ca65 = process.env.REA_CA65 ?? "ca65";
-const ld65 = process.env.REA_LD65 ?? "ld65";
+const ca65 = process.env.NRE_CA65 ?? "ca65";
+const ld65 = process.env.NRE_LD65 ?? "ld65";
 const toolchain = {};
 for (const [name, command] of Object.entries({ ca65, ld65 })) {
   const version = await exec(command, ["--version"], { timeout: 10000 });
   toolchain[name] = (version.stdout + version.stderr).trim();
 }
 await mkdir(join(root, "build"), { recursive: true });
-const workspace = await mkdtemp(join(root, "build", "rea-6502-proof-"));
+const workspace = await mkdtemp(join(root, "build", "nre-6502-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "image.bin");
 const object = join(workspace, "image.o");
-const entrypoint = join(root, "scripts", "rea.mjs");
+const entrypoint = join(root, "scripts", "nre.mjs");
 const env = {
   ...process.env,
   TMPDIR: runtime,
   TMP: runtime,
   TEMP: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -62,7 +62,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-6502-proof", version: "1" });
+const client = new Client({ name: "nre-real-6502-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);

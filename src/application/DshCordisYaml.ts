@@ -15,7 +15,7 @@ import {
 } from "yaml";
 import { ConfigurationError } from "../domain/configurationErrors.js";
 
-/** Expression source is never a literal value and is never evaluated by REA. */
+/** Expression source is never a literal value and is never evaluated by NRE. */
 export class CordisExpression {
   readonly kind = "cordis-expression";
   constructor(readonly source: string) {}

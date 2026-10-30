@@ -70,17 +70,17 @@ jobs:
       - name: Acquire the pinned agentenv runner in isolated runner storage and check host Docker
         shell: bash
         run: |
-          runner_root="${RUNNER_TEMP}/rea-agentenv-runner"
+          runner_root="${RUNNER_TEMP}/nre-agentenv-runner"
           python -m venv "${runner_root}"
           "${runner_root}/bin/python" -m pip install --require-virtualenv --no-cache-dir 'agentenv-framework==0.9.1334'
           "${runner_root}/bin/agent-env" --version
           docker version --format '{{.Server.Version}}'
-          echo "REA_AGENT_ENV_COMMAND=${runner_root}/bin/agent-env" >> "${GITHUB_ENV}"
-          echo "REA_DOCKER_COMMAND=$(command -v docker)" >> "${GITHUB_ENV}"
+          echo "NRE_AGENT_ENV_COMMAND=${runner_root}/bin/agent-env" >> "${GITHUB_ENV}"
+          echo "NRE_DOCKER_COMMAND=$(command -v docker)" >> "${GITHUB_ENV}"
       - name: Pull the pinned framework's public ECR base images from mirror.gcr.io
         shell: bash
         run: |
-          package="$("${REA_AGENT_ENV_COMMAND%/agent-env}/python" -c 'import agent_env, pathlib; print(pathlib.Path(agent_env.__file__).parent)')"
+          package="$("${NRE_AGENT_ENV_COMMAND%/agent-env}/python" -c 'import agent_env, pathlib; print(pathlib.Path(agent_env.__file__).parent)')"
           grep -rhoE '^FROM +public\.ecr\.aws/docker/library/[^ ]+' --include='Dockerfile*' "${package}" | awk '{print $2}' | sort -u |
             while read -r image; do
               name=${image#public.ecr.aws/docker/library/}

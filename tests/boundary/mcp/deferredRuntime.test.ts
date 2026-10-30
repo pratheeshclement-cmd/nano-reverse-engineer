@@ -26,12 +26,12 @@ const connect = async (
 ) => {
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [...nodeArguments, resolve("scripts/rea.mjs"), "mcp"],
+    args: [...nodeArguments, resolve("scripts/nre.mjs"), "mcp"],
     cwd: process.cwd(),
     env: {
       PATH: process.env.PATH ?? "",
       HOME: process.env.HOME ?? "",
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
       ...environment,
     },
     stderr: "pipe",
@@ -56,23 +56,23 @@ it.each([
   { name: "deferred", environment: {}, eager: false },
   {
     name: "compact deferred",
-    environment: { REA_MCP_INPUT_SCHEMA_PROFILE: "compact" },
+    environment: { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact" },
     eager: false,
   },
   {
     name: "full deferred",
-    environment: { REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
+    environment: { NRE_MCP_INPUT_SCHEMA_PROFILE: "full" },
     eager: false,
   },
   {
     name: "output-off eager",
-    environment: { REA_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
+    environment: { NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
     eager: true,
   },
 ])(
   "loads compiled analysis at the intended phase for $name startup",
   async ({ environment, eager }) => {
-    const directory = await createTestTempDirectory("rea-mcp-module-loads-");
+    const directory = await createTestTempDirectory("nre-mcp-module-loads-");
     const log = join(directory, "loaded.jsonl");
     await writeFile(log, "");
     const modules = [
@@ -91,7 +91,7 @@ registerHooks({
     const source = loaded.source?.toString() ?? "";
     const names = modules.filter((name) =>
       url.endsWith("/dist/" + name) || source.includes("//#region dist/" + name + "\\n"));
-    if (url.endsWith("/scripts/rea.mjs")) names.push("entrypoint");
+    if (url.endsWith("/scripts/nre.mjs")) names.push("entrypoint");
     for (const name of names)
       appendFileSync(${JSON.stringify(log)}, JSON.stringify(name) + "\\n");
     return loaded;
@@ -141,7 +141,7 @@ it.each([
       ),
     );
     const { client, stderr } = await connect(mode, {
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
     });
     const before = await client.listTools();
     expect(before.tools).toEqual(recorded.tools);
@@ -221,7 +221,7 @@ it.each([
 
 it("composes a scoped registration instead of serving the recorded catalog", async () => {
   const { client, stderr } = await connect("legacy", {
-    REA_MCP_TOOL_FAMILIES: "session",
+    NRE_MCP_TOOL_FAMILIES: "session",
   });
   const advertised = (await client.listTools()).tools
     .map(({ name }) => name)
@@ -243,7 +243,7 @@ it("composes a scoped registration instead of serving the recorded catalog", asy
 });
 
 it("preserves connection creation time across deferred materialization", async () => {
-  const directory = await createTestTempDirectory("rea-mcp-started-at-");
+  const directory = await createTestTempDirectory("nre-mcp-started-at-");
   const clock = join(directory, "clock");
   const startedAt = "2020-01-01T00:00:00.000Z";
   await writeFile(clock, startedAt);
@@ -292,7 +292,7 @@ it.each([
 import assert from "node:assert/strict";
 import { runDeferred } from "./dist/main/deferredRuntime.js";
 import { parseConfig } from "./dist/config/parseConfig.js";
-const config = parseConfig({ HOME: process.env.HOME, REA_LOG_LEVEL: ${JSON.stringify(level)} });
+const config = parseConfig({ HOME: process.env.HOME, NRE_LOG_LEVEL: ${JSON.stringify(level)} });
 assert.equal(config.ok, true);
 const output = [];
 let closeCalls = 0;
@@ -329,7 +329,7 @@ console.log(JSON.stringify({ result, output, closeCalls, unregistrations }));
     } else {
       expect(JSON.parse(child.stderr)).toMatchObject({
         level: 50,
-        application: "rea",
+        application: "nre",
         mode: "mcp",
         layer: "server",
         error: "transport setup reason",
@@ -349,7 +349,7 @@ it("retains process cleanup ownership after partial startup and failed cleanup",
 import assert from "node:assert/strict";
 import { runDeferred } from "./dist/main/deferredRuntime.js";
 import { parseConfig } from "./dist/config/parseConfig.js";
-const config = parseConfig({ HOME: process.env.HOME, REA_LOG_LEVEL: "silent" });
+const config = parseConfig({ HOME: process.env.HOME, NRE_LOG_LEVEL: "silent" });
 assert.equal(config.ok, true);
 const handlers = [];
 const calls = [0, 0];
@@ -579,15 +579,15 @@ console.log("LATE_PUBLICATION_REFUSED");
 
 it.each([
   {},
-  { REA_MCP_INPUT_SCHEMA_PROFILE: "compact" },
-  { REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
-  { REA_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
+  { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact" },
+  { NRE_MCP_INPUT_SCHEMA_PROFILE: "full" },
+  { NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
 ])("preserves the configured catalog profile %j", async (environment) => {
   const { client } = await connect("legacy", environment);
   const before = await client.listTools();
   const catalog = JSON.parse(
     await readFile(
-      environment.REA_MCP_INPUT_SCHEMA_PROFILE === "full"
+      environment.NRE_MCP_INPUT_SCHEMA_PROFILE === "full"
         ? "dist/mcp-catalog-full.json"
         : "dist/mcp-catalog.json",
       "utf8",
@@ -595,7 +595,7 @@ it.each([
   );
   expect(before.tools).toHaveLength(catalog.tools.length);
   const expected =
-    environment.REA_MCP_OUTPUT_SCHEMA_PROFILE === "off"
+    environment.NRE_MCP_OUTPUT_SCHEMA_PROFILE === "off"
       ? catalog.tools.map(
           ({ outputSchema: _output, ...tool }: Record<string, unknown>) => tool,
         )
@@ -613,7 +613,7 @@ it("runs the real static artifact workflow after deferred initialization", async
   const { client } = await connect("legacy");
   const opened = await client.callTool({
     name: "open_binary",
-    arguments: { path: resolve("scripts/rea.mjs") },
+    arguments: { path: resolve("scripts/nre.mjs") },
   });
   expect(opened.isError, JSON.stringify(opened)).not.toBe(true);
   const inspected = await client.callTool({
@@ -644,7 +644,7 @@ const copyCompiledPackage = async (prefix: string): Promise<string> => {
   const directory = await createTestTempDirectory(prefix);
   await cp(resolve("dist"), join(directory, "dist"), { recursive: true });
   await mkdir(join(directory, "scripts/lib"), { recursive: true });
-  await cp(resolve("scripts/rea.mjs"), join(directory, "scripts/rea.mjs"));
+  await cp(resolve("scripts/nre.mjs"), join(directory, "scripts/nre.mjs"));
   // The launcher imports its process-environment owner, as the package ships it.
   await cp(
     resolve("scripts/lib/cli-process-environment.mjs"),
@@ -660,7 +660,7 @@ const copyCompiledPackage = async (prefix: string): Promise<string> => {
 };
 
 it("records the canonical catalog without a host account or ambient configuration", async () => {
-  const directory = await copyCompiledPackage("rea-catalog-without-account-");
+  const directory = await copyCompiledPackage("nre-catalog-without-account-");
   await cp(
     resolve("scripts/record-mcp-catalog.mjs"),
     join(directory, "scripts/record-mcp-catalog.mjs"),
@@ -685,8 +685,8 @@ syncBuiltinESMExports();
         TMPDIR: temporary,
         TMP: temporary,
         TEMP: temporary,
-        REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-        REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+        NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+        NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
       },
       encoding: "utf8",
       timeout: 30000,
@@ -713,7 +713,7 @@ it.each([
 ])(
   "preserves producer failure=$producerFails and settles every recorder owner with cleanup failures=$failures",
   async ({ failures, producerFails }) => {
-    const directory = await copyCompiledPackage("rea-catalog-cleanup-");
+    const directory = await copyCompiledPackage("nre-catalog-cleanup-");
     await cp(
       resolve("scripts/record-mcp-catalog.mjs"),
       join(directory, "scripts/record-mcp-catalog.mjs"),
@@ -811,11 +811,11 @@ registerHooks({
 );
 
 it("rejects a corrupted build-owned catalog before starting the connection", async () => {
-  const directory = await copyCompiledPackage("rea-corrupted-mcp-catalog-");
+  const directory = await copyCompiledPackage("nre-corrupted-mcp-catalog-");
   await writeFile(join(directory, "dist/mcp-catalog.json"), "{}");
   const child = spawnSync(
     process.execPath,
-    [join(directory, "scripts/rea.mjs"), "mcp"],
+    [join(directory, "scripts/nre.mjs"), "mcp"],
     { cwd: directory, input: "", encoding: "utf8", timeout: 10000 },
   );
   expect(child.error).toBeUndefined();
@@ -836,7 +836,7 @@ import { PassThrough } from "node:stream";
 import { serveStdio, StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import { runDeferred } from "./dist/main/deferredRuntime.js";
 import { parseConfig } from "./dist/config/parseConfig.js";
-const parsed = parseConfig({ REA_LOG_LEVEL: "silent" });
+const parsed = parseConfig({ NRE_LOG_LEVEL: "silent" });
 assert.equal(parsed.ok, true);
 const input = new PassThrough();
 const output = new PassThrough();
@@ -866,7 +866,7 @@ let release;
 const held = new Promise(resolve => { release = resolve; });
 let close;
 const result = await runDeferred({
-  env: { REA_LOG_LEVEL: "silent" }, stdin: input,
+  env: { NRE_LOG_LEVEL: "silent" }, stdin: input,
   serve: (factory, options) => serveStdio(factory, { ...options, transport: new StdioServerTransport(input, output) }),
   loadOptionalProviders: async () => { entered = true; await held; return {}; },
   captureShutdown: owned => { close = owned; },

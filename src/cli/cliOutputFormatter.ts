@@ -94,7 +94,7 @@ export interface PreparedDelimitedOutput {
   readonly format: "csv" | "tsv";
 }
 
-/** Keep REA's Markdown layout compatible with Incur while owning table safety. */
+/** Keep NRE's Markdown layout compatible with Incur while owning table safety. */
 export const formatCliOutput = (
   value: unknown,
   format: Formatter.Format | "csv" | "tsv",
@@ -248,7 +248,7 @@ export function* formatDelimitedOutputParts({
   lineEnding,
   format,
 }: PreparedDelimitedOutput): Generator<string> {
-  yield `# rea-delimited-v1 ${JSON.stringify(metadata)}${lineEnding}`;
+  yield `# nre-delimited-v1 ${JSON.stringify(metadata)}${lineEnding}`;
   yield `${encodedHeaders.join(delimiter)}${lineEnding}`;
   for (const row of rows)
     yield `${row

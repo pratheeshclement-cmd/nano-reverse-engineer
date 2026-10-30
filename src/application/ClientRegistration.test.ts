@@ -11,12 +11,12 @@ const client: SetupClient = {
 
 it("preserves every OpenCode environment key while normalizing its launcher", () => {
   const input = JSON.parse(
-    '{"type":"local","command":["rea","mcp"],"environment":{"__proto__":"operator","constructor":"selected","normal":"value"}}',
+    '{"type":"local","command":["nre","mcp"],"environment":{"__proto__":"operator","constructor":"selected","normal":"value"}}',
   );
   const result = parseClientRegistration(input, client);
   expect(result.ok).toBe(true);
   if (!result.ok) throw result.error;
-  expect(result.value.command).toBe("rea");
+  expect(result.value.command).toBe("nre");
   expect(result.value.args).toEqual(["mcp"]);
   expect(result.value.environment).toEqual(input.environment);
   const environment = result.value.environment;
@@ -30,7 +30,7 @@ it.each([42, null, {}])(
   (value) => {
     const environment = Object.fromEntries([["__proto__", value]]);
     const result = parseClientRegistration(
-      { type: "local", command: ["rea", "mcp"], environment },
+      { type: "local", command: ["nre", "mcp"], environment },
       client,
     );
     expect(result.ok).toBe(false);

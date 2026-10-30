@@ -11,9 +11,9 @@ import { verifyBrowserDomDestinations } from "./lib/browser-dom-destinations-e2e
 import { withVerifierCleanup } from "./lib/verifier-cleanup.mjs";
 import { requireOrdinaryWindowsVerifierCaller } from "./lib/windows-ordinary-user-verifier.mjs";
 
-const executable = process.env.REA_BROWSER_EXECUTABLE;
+const executable = process.env.NRE_BROWSER_EXECUTABLE;
 if (!executable)
-  throw new Error("verify:browser:dom requires REA_BROWSER_EXECUTABLE");
+  throw new Error("verify:browser:dom requires NRE_BROWSER_EXECUTABLE");
 await requireOrdinaryWindowsVerifierCaller();
 let profile;
 let site;
@@ -21,7 +21,7 @@ let context;
 let report;
 const browserResources = new ArtifactResourceScope();
 await withVerifierCleanup(async () => {
-  profile = await mkdtemp(join(tmpdir(), "rea-browser-dom-"));
+  profile = await mkdtemp(join(tmpdir(), "nre-browser-dom-"));
   browserResources.retain({
     kind: "lease",
     resource: profile,

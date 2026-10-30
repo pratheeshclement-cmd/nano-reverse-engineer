@@ -47,7 +47,7 @@ export const registerIl2cppCommands = (
       ghidraSeeds: localPathStringSchema
         .optional()
         .describe(
-          "Also write REA_GHIDRA_SEED_FILE function seeds named Type$$Method for every linked method; needs --binary",
+          "Also write NRE_GHIDRA_SEED_FILE function seeds named Type$$Method for every linked method; needs --binary",
         ),
       seedBase: z
         .string()

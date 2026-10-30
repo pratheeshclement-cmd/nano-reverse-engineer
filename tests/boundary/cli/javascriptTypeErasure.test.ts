@@ -9,7 +9,7 @@ for (const surface of ["CLI", "stdio MCP"] as const)
   cliTest(
     `excludes erased TypeScript reads and handler captures through ${surface}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-typescript-erasure-");
+      const root = await createTestTempDirectory("nre-typescript-erasure-");
       await writeFixtureFiles(root, {
         "main.cts": [
           'import type { Shape } from "./shape";',

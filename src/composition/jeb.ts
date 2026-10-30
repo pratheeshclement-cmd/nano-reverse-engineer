@@ -16,7 +16,7 @@ export const createJebAnalysisProvider = (
   connectionFactory?: JebMcpConnectionFactory,
 ): JebAnalysisPort => {
   const requestTimeout = parseJebMcpTimeoutMs(
-    environment.REA_JEB_MCP_TIMEOUT_MS,
+    environment.NRE_JEB_MCP_TIMEOUT_MS,
   );
   if (!requestTimeout.ok) return unconfiguredJebProvider(requestTimeout.error);
   try {
@@ -35,9 +35,9 @@ export const createJebAnalysisProvider = (
     const constraint =
       typeof cause.cause === "string" ? cause.cause : cause.message;
     return unconfiguredJebProvider(
-      new ConfigurationError("Invalid REA environment configuration", {
+      new ConfigurationError("Invalid NRE environment configuration", {
         cause,
-        settings: [{ setting: "REA_JEB_MCP_URL", constraint }],
+        settings: [{ setting: "NRE_JEB_MCP_URL", constraint }],
       }),
     );
   }
@@ -46,7 +46,7 @@ export const createJebAnalysisProvider = (
 const unconfiguredJebProvider = (
   error: ConfigurationError,
 ): JebAnalysisPort => {
-  const setting = error.settings[0]?.setting ?? "REA_JEB_MCP_URL";
+  const setting = error.settings[0]?.setting ?? "NRE_JEB_MCP_URL";
   return {
     inspectAvailability: () =>
       Promise.resolve({

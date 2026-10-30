@@ -135,7 +135,7 @@ export async function verifyLinuxHopperOwnerExit({
           const result = await execFileAsync(
             process.execPath,
             [
-              "scripts/rea.mjs",
+              "scripts/nre.mjs",
               "inspect",
               target,
               "--provider",

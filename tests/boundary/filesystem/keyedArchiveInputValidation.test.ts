@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.each(["bundle", "standalone"] as const)(
   "preserves selector schema failures through the %s provider boundary",
   async (kind) => {
-    const bundle = await createTestTempDirectory("rea-keyed-input-");
+    const bundle = await createTestTempDirectory("nre-keyed-input-");
     await mkdir(join(bundle, "Resources"));
     const info = join(bundle, "Info.plist");
     await writeFile(info, build({ CFBundleIdentifier: "org.example.static" }));

@@ -9,7 +9,7 @@ it
   .each(["version-refusal", "changed", "removed"] as const)(
   "attributes a shared %s installation failure independently to each caller",
   async (mode) => {
-    const fixture = await session("rea-kuna-installation-attribution-");
+    const fixture = await session("nre-kuna-installation-attribution-");
     if (mode === "version-refusal")
       await setFakeKunaBehavior(fixture.kuna, { version: { exit: 7 } });
     if (mode === "changed")
@@ -62,7 +62,7 @@ it
 it.skipIf(process.platform === "win32")(
   "preserves successful procedure search after installation acquisition",
   async () => {
-    const fixture = await session("rea-kuna-installation-search-control-");
+    const fixture = await session("nre-kuna-installation-search-control-");
     const client = fixture.open();
     try {
       const result = await client.execute("search_procedures", {

@@ -10,7 +10,7 @@ state are not website assets.
 
 The published npm Nre 4.1.0 package inspected the saved tab preload on
 7 October 2026, using Node.js 24.18.0. An independent source build of public
-checkpoint [`810fe53e`](https://github.com/morluto/Nre/tree/810fe53e) returned the
+checkpoint [`810fe53e`](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/tree/810fe53e) returned the
 same API and invoke findings. The page uses the published-package result.
 
 The successful `analyze_javascript_application` request inspected the extracted

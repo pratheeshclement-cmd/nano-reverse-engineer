@@ -5,7 +5,7 @@ into a deterministic list of reconstruction claims. The same workflow
 is available as:
 
 - MCP tool: `build_reconstruction_obligation_ledger`
-- CLI command: `rea build-reconstruction-obligation-ledger`
+- CLI command: `nre build-reconstruction-obligation-ledger`
 
 The ledger is conservative by design. Static Application Graph facts create
 candidate obligations; they do not prove runtime or process behavior. A required
@@ -33,7 +33,7 @@ returns an `unknown` ledger with zero obligations; absence of source Evidence
 never claims closure:
 
 ```sh
-rea build-reconstruction-obligation-ledger \
+nre build-reconstruction-obligation-ledger \
   '{
     "evidence_bundle": {
       "artifacts": [],
@@ -77,7 +77,7 @@ sample Evidence ID with an authenticated review record already present in
     "artifact_sha256": null,
     "application_node_id": null,
     "semantic_node_id": null,
-    "location": "rea --unknown-option"
+    "location": "nre --unknown-option"
   },
   "required": true,
   "required_case_kinds": ["positive", "negative", "malformed"],
@@ -348,9 +348,9 @@ Keep three checks separate:
   revision currently being evaluated.
 
 Proof producers supply observed Evidence with predicate type
-`rea.reconstruction-proof`, operation `verify_reconstruction_obligations`, and
+`nre.reconstruction-proof`, operation `verify_reconstruction_obligations`, and
 the following `normalized_result` shape, defined by
-`reconstructionObligationProofSchema`. REA evaluates retained results; this
+`reconstructionObligationProofSchema`. NRE evaluates retained results; this
 operation label does not expose a proof executor or run the manifest command.
 
 ```json
@@ -381,7 +381,7 @@ operation label does not expose a proof executor or run the manifest command.
 
 `owner_sha256` is the same lowercase 64-hex SHA-256 commitment supplied by the
 implementation owner in the manifest. The proof producer computes it from the
-same documented inputs and canonicalization described above; REA compares the
+same documented inputs and canonicalization described above; NRE compares the
 commitments and does not recompute them. The proof's `obligation_version` must
 exactly equal the evaluated obligation version, including for generated
 obligations. Increase that version when revising a reviewed requirement.

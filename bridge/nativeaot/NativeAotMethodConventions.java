@@ -1,4 +1,4 @@
-package rea.extensions.nativeaot;
+package nre.extensions.nativeaot;
 
 import ghidra.program.model.address.Address;
 import ghidra.program.model.listing.Program;

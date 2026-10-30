@@ -29,7 +29,7 @@ import {
   type Evidence,
 } from "../../../src/domain/evidence.js";
 import { createEvidenceBundle } from "../../../src/domain/evidenceBundle.js";
-import { REA_WORKFLOW_PROVIDER } from "../../../src/domain/investigationProviders.js";
+import { NRE_WORKFLOW_PROVIDER } from "../../../src/domain/investigationProviders.js";
 import { workflowAnalysisProfile } from "../../../src/application/WorkflowAnalysisProfile.js";
 import {
   analysisQueryId,
@@ -295,7 +295,7 @@ const withAlternateWorkflowProfile = (
   snapshot: AnalysisSnapshot,
   path: string,
   current: Evidence,
-  alternateProfile = createAnalysisProfile(REA_WORKFLOW_PROVIDER, {
+  alternateProfile = createAnalysisProfile(NRE_WORKFLOW_PROVIDER, {
     workflow: "binary_overview",
     fixture: "alternate-profile",
   }),
@@ -315,7 +315,7 @@ const withAlternateWorkflowProfile = (
       ? {}
       : { architecture: snapshot.target.architecture }),
   };
-  const alternateEvidence = createEvidence(subject, REA_WORKFLOW_PROVIDER, {
+  const alternateEvidence = createEvidence(subject, NRE_WORKFLOW_PROVIDER, {
     operation: current.operation,
     parameters: current.parameters,
     result,
@@ -333,7 +333,7 @@ const withAlternateWorkflowProfile = (
     execution: {
       result,
       rawResult: current.raw_result,
-      provider: REA_WORKFLOW_PROVIDER,
+      provider: NRE_WORKFLOW_PROVIDER,
       analysisProfile: alternateProfile,
       limitations: current.limitations,
       locations: current.locations,
@@ -362,7 +362,7 @@ const withEarlierHistoricalEvidence = (
         sha256: snapshot.target.sha256,
         format: "analysis-database",
       },
-      REA_WORKFLOW_PROVIDER,
+      NRE_WORKFLOW_PROVIDER,
       {
         operation: "binary_overview",
         parameters: {},
@@ -372,7 +372,7 @@ const withEarlierHistoricalEvidence = (
           "binary_overview",
         ),
         confidence: "derived",
-        limitations: ["Derived by an REA composed workflow."],
+        limitations: ["Derived by an NRE composed workflow."],
       },
     ),
   ).find((record) => record.evidence_id < current.evidence_id);
@@ -392,7 +392,7 @@ describe("snapshot output cleanup lifecycle", () => {
     "preserves the committed snapshot receipt after %s finalization and retry",
     async (failureKind) => {
       const fixture = await createSnapshotReplayFixture(
-        "rea-snapshot-close-failure-",
+        "nre-snapshot-close-failure-",
       );
       const provider = fixture.createProvider();
       const failure =
@@ -472,7 +472,7 @@ describe("snapshot output cleanup lifecycle", () => {
 
   it("returns completed analysis after retrying cleanup of a published snapshot", async () => {
     const fixture = await createSnapshotReplayFixture(
-      "rea-snapshot-cleanup-retry-",
+      "nre-snapshot-cleanup-retry-",
     );
     const cleanup = vi
       .spyOn(OwnedStagedOutput.prototype, "close")
@@ -496,7 +496,7 @@ describe("snapshot output cleanup lifecycle", () => {
   });
 
   it("saves snapshots after closing and reopening the same session", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-snapshot-reopen-");
+    const fixture = await createSnapshotReplayFixture("nre-snapshot-reopen-");
     const session = createTestBinarySession(fixture.createProvider());
     try {
       for (const index of [1, 2]) {
@@ -525,7 +525,7 @@ const verifyWindowsSnapshotAdmission = async (
   selectedPath: "direct" | "junction",
 ): Promise<void> => {
   const fixture = await createSnapshotReplayFixture(
-    "rea-direct-snapshot-junction-",
+    "nre-direct-snapshot-junction-",
   );
   const rawPath = join(dirname(fixture.path), "image.bin");
   await writeFile(rawPath, Buffer.from("a92a60", "hex"));
@@ -600,7 +600,7 @@ it.each([
 ] as const)(
   "refreshes unattributed $tool Evidence and replays the current revision",
   async (scenario) => {
-    const fixture = await createSnapshotReplayFixture("rea-prior-coverage-");
+    const fixture = await createSnapshotReplayFixture("nre-prior-coverage-");
     const limitation = "Original PDB names may be missing.";
     const provider = fixture.createProvider({
       supportedOperations: workflowProviderOperations,
@@ -619,7 +619,7 @@ it.each([
     );
     const saved = await readAnalysisSnapshot(fixture.snapshotPath);
     if (!saved.ok) throw saved.error;
-    const priorProfile = createAnalysisProfile(REA_WORKFLOW_PROVIDER, {
+    const priorProfile = createAnalysisProfile(NRE_WORKFLOW_PROVIDER, {
       upstream_analysis_profile: saved.value.binding.analysis_profile,
       ...(scenario.priorRevision === undefined
         ? {}
@@ -628,7 +628,7 @@ it.each([
     const prior = withAlternateWorkflowProfile(
       saved.value,
       fixture.path,
-      { ...first, limitations: ["Derived by an REA composed workflow."] },
+      { ...first, limitations: ["Derived by an NRE composed workflow."] },
       priorProfile,
     );
     const written = await withArtifactResourceScope((resources) =>
@@ -684,7 +684,7 @@ describe("direct analysis composed snapshot replay", () => {
     "reuses the previewed profile on a $tool snapshot miss",
     async (scenario) => {
       const fixture = await createSnapshotReplayFixture(
-        "rea-snapshot-miss-route-",
+        "nre-snapshot-miss-route-",
       );
       const profile = createAnalysisProfile(IDENTITY, { fixture: true });
       const provider = fixture.createProvider({
@@ -748,7 +748,7 @@ describe("direct analysis composed snapshot replay", () => {
   ] as const) {
     it(`persists and replays ${scenario.tool} without provider startup`, async () => {
       const fixture = await createSnapshotReplayFixture(
-        "rea-workflow-command-",
+        "nre-workflow-command-",
       );
       const provider = fixture.createProvider({
         identity: IDENTITY,
@@ -796,7 +796,7 @@ describe("Ghidra composed workflow snapshot replay", () => {
   ] as const)(
     "persists $tool with production Ghidra capability policies",
     async ({ tool, arguments: parameters }) => {
-      const fixture = await createSnapshotReplayFixture("rea-ghidra-workflow-");
+      const fixture = await createSnapshotReplayFixture("nre-ghidra-workflow-");
       const profile = createAnalysisProfile(
         { ...GHIDRA_PROVIDER_IDENTITY, version: "12.1.4" },
         { fixture: true },
@@ -846,7 +846,7 @@ describe("Ghidra composed workflow snapshot replay", () => {
 
 describe("binary overview snapshot replay", () => {
   it("replays the identical binary overview without provider startup or calls", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-workflow-snapshot-");
+    const fixture = await createSnapshotReplayFixture("nre-workflow-snapshot-");
     const provider = fixture.createProvider();
     const dependencies = fixture.dependencies(provider);
 
@@ -936,7 +936,7 @@ it.skipIf(process.platform === "win32")(
   "keeps a selected alias separate from the canonical snapshot query and refreshes its replay provenance",
   async () => {
     const fixture = await createSnapshotReplayFixture(
-      "rea-snapshot-selected-alias-",
+      "nre-snapshot-selected-alias-",
     );
     const alias = join(dirname(fixture.path), "selected-alias.hop");
     await symlink(fixture.path, alias);
@@ -1067,7 +1067,7 @@ describe("preview and active route policies", () => {
     "keeps $tool replay policy consistent across a composite route",
     async ({ tool, arguments: arguments_, replayed }) => {
       const fixture = await createSnapshotReplayFixture(
-        "rea-composite-replay-policy-",
+        "nre-composite-replay-policy-",
       );
       const provider = fixture.createProvider({
         supportedOperations: [...operations, "search_strings"],
@@ -1137,7 +1137,7 @@ describe("preview and active route policies", () => {
 
 describe("snapshot replay provider identity", () => {
   it("uses the resolved provider version when capability metadata omits it", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-profile-version-");
+    const fixture = await createSnapshotReplayFixture("nre-profile-version-");
     const unresolvedIdentity = { ...IDENTITY, version: null };
     const resolvedProfile = createAnalysisProfile(
       { ...IDENTITY, version: "launcher-sha256:fixture" },
@@ -1228,7 +1228,7 @@ describe("snapshot replay provider identity", () => {
 
 const assertEvidenceSurvivesSnapshotSaveFailure = async (): Promise<void> => {
   const fixture = await createSnapshotReplayFixture(
-    "rea-workflow-save-error-",
+    "nre-workflow-save-error-",
     join("missing", "snapshot.json"),
   );
   const provider = fixture.createProvider();
@@ -1266,7 +1266,7 @@ describe("workflow snapshot profile and cancellation binding", () => {
     assertEvidenceSurvivesSnapshotSaveFailure,
   );
   it("does not replay a valid entry from a different workflow profile", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-workflow-profile-");
+    const fixture = await createSnapshotReplayFixture("nre-workflow-profile-");
     const provider = fixture.createProvider();
     const dependencies = fixture.dependencies(provider);
     await runDirectAnalysis(
@@ -1310,7 +1310,7 @@ describe("workflow snapshot profile and cancellation binding", () => {
   });
 
   it("does not return a cached result when cancelled during route resolution", async () => {
-    const fixture = await createSnapshotReplayFixture("rea-workflow-cancel-");
+    const fixture = await createSnapshotReplayFixture("nre-workflow-cancel-");
     const provider = fixture.createProvider();
     const initialDependencies = fixture.dependencies(provider);
     await runDirectAnalysis(
@@ -1510,7 +1510,7 @@ const expectProfilelessWorkflowSnapshotRejections = async (
 
 it("retains a native dispatch workflow snapshot without a deep provider profile", async () => {
   const fixture = await createSnapshotReplayFixture(
-    "rea-native-dispatch-workflow-",
+    "nre-native-dispatch-workflow-",
   );
   const identity: ProviderIdentity = {
     id: "native-macos",

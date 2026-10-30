@@ -23,7 +23,7 @@ describe("local application workflow verifier", () => {
   });
 
   it("reports two-version and trace results", async () => {
-    const root = await createTestTempDirectory("rea-application-verifier-");
+    const root = await createTestTempDirectory("nre-application-verifier-");
     temporary.push(root);
     const fixtures = await writeVersionedJavaScriptApplicationFixtures(root);
     const { stdout } = await execute(
@@ -60,7 +60,7 @@ describe("local application workflow verifier", () => {
   }, 20_000);
 
   it("reports an added parser return field", async () => {
-    const root = await createTestTempDirectory("rea-shape-verifier-");
+    const root = await createTestTempDirectory("nre-shape-verifier-");
     temporary.push(root);
     const left = join(root, "left");
     const right = join(root, "right");

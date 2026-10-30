@@ -613,7 +613,7 @@ export const buildInterfaceBuilderAnalysis = (input: {
     graph: {
       target_sha256: input.targetSha256,
       provider: {
-        id: "rea-artifact-graph",
+        id: "nre-artifact-graph",
         version: "1",
         tool_version: input.toolVersion,
       },

@@ -16,7 +16,7 @@ const ARTIFACT_BYTES = DEFAULT_INPUT_BYTES + 1;
 
 /** Sparse regular file just larger than the shipped input bound. */
 const oversizedArtifact = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-pwntools-input-bound-");
+  const root = await createTestTempDirectory("nre-pwntools-input-bound-");
   const path = join(root, "recorded-core");
   const handle = await open(path, "w");
   await handle.truncate(ARTIFACT_BYTES);
@@ -29,10 +29,10 @@ const inspect = async (override?: string) => {
   const path = await oversizedArtifact();
   const provider = new PwntoolsLayoutProvider(
     {
-      REA_PWNTOOLS_PYTHON: process.execPath,
+      NRE_PWNTOOLS_PYTHON: process.execPath,
       ...(override === undefined
         ? {}
-        : { REA_PWNTOOLS_MAX_INPUT_BYTES: override }),
+        : { NRE_PWNTOOLS_MAX_INPUT_BYTES: override }),
     },
     async (spawn) =>
       spawnOwnedProviderProcess({
@@ -80,10 +80,10 @@ it.runIf(!unsupportedHost)(
     expect(projected.code).toBe("provider_unavailable");
     expect(projected.details).toMatchObject({
       rejections: [
-        { diagnostics: { configuration_key: "REA_PWNTOOLS_MAX_INPUT_BYTES" } },
+        { diagnostics: { configuration_key: "NRE_PWNTOOLS_MAX_INPUT_BYTES" } },
       ],
     });
-    expect(text).toContain("REA_PWNTOOLS_MAX_INPUT_BYTES must be a decimal");
+    expect(text).toContain("NRE_PWNTOOLS_MAX_INPUT_BYTES must be a decimal");
     expect(text).not.toContain("Selected artifact exceeds");
   },
 );

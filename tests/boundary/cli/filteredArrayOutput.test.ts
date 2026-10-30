@@ -92,7 +92,7 @@ it.each(["csv", "tsv"] as const)(
     );
     const [metadataLine, header, row] = output.trimEnd().split(/\r?\n/u);
     expect(
-      JSON.parse(metadataLine!.slice("# rea-delimited-v1 ".length)),
+      JSON.parse(metadataLine!.slice("# nre-delimited-v1 ".length)),
     ).toMatchObject({
       selected_path: ["normalized_result", "rows"],
       coverage: { total: 3, next_offset: 1 },
@@ -134,7 +134,7 @@ it("retains owning-view metadata when rows are selected through a nested page", 
   );
   const [metadataLine] = output.split(/\r?\n/u);
   expect(
-    JSON.parse(metadataLine!.slice("# rea-delimited-v1 ".length)),
+    JSON.parse(metadataLine!.slice("# nre-delimited-v1 ".length)),
   ).toMatchObject({
     selected_path: ["normalized_result", "page", "rows"],
     coverage: { total: 4, next_offset: 2 },
@@ -295,7 +295,7 @@ it.each(
         .map((line) => JSON.parse(line));
       expect(records.slice(0, -1)).toEqual([1, null, null]);
       expect(records.at(-1)).toMatchObject({
-        $rea: "jsonl/v1",
+        $nre: "jsonl/v1",
         type: "metadata",
         records: { path: ["data"], emitted: 3, source: 3, filter: "selected" },
         context: { ok: true, meta: { command: "rows" } },

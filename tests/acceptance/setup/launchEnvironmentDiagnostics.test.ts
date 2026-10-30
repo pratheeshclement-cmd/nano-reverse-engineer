@@ -8,7 +8,7 @@ cliTest(
   "identifies rejected launch overrides without blaming or changing a client file",
   async ({ cli }) => {
     const home = await createTestTempDirectory(
-      "rea-setup-override-diagnostic-",
+      "nre-setup-override-diagnostic-",
     );
     const config = join(home, ".claude.json");
     const environment = {
@@ -33,7 +33,7 @@ cliTest(
         environment: { ...environment, ...overrides },
       });
 
-    const absent = await run({ REA_ASAR_MAX_HEADER_BYTES: "0" });
+    const absent = await run({ NRE_ASAR_MAX_HEADER_BYTES: "0" });
     expect(absent.exitCode).toBe(1);
     expect(absent.json).toMatchObject({
       status: "needs_human",
@@ -41,7 +41,7 @@ cliTest(
       appliedActions: [],
       remediation: expect.stringContaining("launch overrides"),
     });
-    expect(absent.stdout).toContain("REA_ASAR_MAX_HEADER_BYTES");
+    expect(absent.stdout).toContain("NRE_ASAR_MAX_HEADER_BYTES");
     expect(absent.stdout).not.toContain(
       `Configuration ${config} has an invalid`,
     );
@@ -49,26 +49,26 @@ cliTest(
 
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: "rea", args: ["mcp"], env: { CALLER_KEY: "keep" } },
+        nre: { command: "nre", args: ["mcp"], env: { CALLER_KEY: "keep" } },
       },
     });
     await writeFile(config, original);
-    const existing = await run({ REA_BRIDGE_MAX_REQUEST_BYTES: "1" });
+    const existing = await run({ NRE_BRIDGE_MAX_REQUEST_BYTES: "1" });
     expect(existing.exitCode).toBe(1);
     expect(existing.json).toMatchObject({
       status: "needs_human",
       remediation: expect.stringContaining("launch overrides"),
     });
-    expect(existing.stdout).toContain("REA_BRIDGE_MAX_REQUEST_BYTES");
+    expect(existing.stdout).toContain("NRE_BRIDGE_MAX_REQUEST_BYTES");
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
     const invalidFile = JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        nre: {
+          command: "nre",
           args: ["mcp"],
           env: { HOPPER_LOADER_ARGS_JSON: "not-json" },
         },

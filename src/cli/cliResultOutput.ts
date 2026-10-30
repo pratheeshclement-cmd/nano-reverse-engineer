@@ -293,7 +293,7 @@ export const createCliResultOutput = (
       // The caller's parsed controls remain authoritative: the CLI may adapt
       // CSV/TSV to JSON for Incur without changing the requested presentation.
       if (format !== "jsonl" || !options.tokenCount) return normalized;
-      // Incur counts errors before REA can retain their diagnostic payload.
+      // Incur counts errors before NRE can retain their diagnostic payload.
       // Preserve operands using the shared builtin consumption rules.
       return normalized.filter(
         (token, index) => token !== "--token-count" || values.has(index),

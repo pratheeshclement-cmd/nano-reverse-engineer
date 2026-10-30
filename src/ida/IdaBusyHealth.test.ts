@@ -108,7 +108,7 @@ it("clamps the last pause to the remaining budget and stops without another read
     _tag: "AnalysisTimeoutError",
     timeoutMs: 350,
     userMessage: expect.stringContaining("350 ms"),
-    remediationAction: expect.stringContaining("REA_IDA_MCP_CONFIG"),
+    remediationAction: expect.stringContaining("NRE_IDA_MCP_CONFIG"),
   });
 });
 

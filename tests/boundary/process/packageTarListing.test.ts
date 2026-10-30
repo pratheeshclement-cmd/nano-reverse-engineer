@@ -17,7 +17,7 @@ const bridgeUrl = pathToFileURL(
 const bridge = "package/bridge/hopper_bridge.py";
 const members = [
   bridge,
-  "package/bridge/cutter/rea_bridge.py",
+  "package/bridge/cutter/nre_bridge.py",
   ...Object.values(GHIDRA_BRIDGE_SOURCES).map(
     (name) => `package/bridge/ghidra/${name}`,
   ),

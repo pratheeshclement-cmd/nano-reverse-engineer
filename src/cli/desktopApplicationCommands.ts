@@ -50,7 +50,7 @@ export const registerDesktopApplicationCommands = (
                   { signal },
                 ),
               service,
-              providerId: "rea-artifact-graph",
+              providerId: "nre-artifact-graph",
               operation: "inspect_desktop_application",
               signal,
               detail,

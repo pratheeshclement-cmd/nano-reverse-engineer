@@ -22,7 +22,7 @@ import {
   snapshotBinding,
   snapshotTarget,
 } from "../../domain/analysisSnapshot.js";
-import { REA_WORKFLOW_PROVIDER } from "../../domain/investigationProviders.js";
+import { NRE_WORKFLOW_PROVIDER } from "../../domain/investigationProviders.js";
 import { workflowAnalysisProfile } from "../WorkflowAnalysisProfile.js";
 import type {
   AnalysisOperation,
@@ -50,7 +50,7 @@ it.each(["provider", "workflow"] as const)(
       structuredClone(
         kind === "provider"
           ? ANALYSIS_SNAPSHOT_PROVIDER
-          : REA_WORKFLOW_PROVIDER,
+          : NRE_WORKFLOW_PROVIDER,
       ),
       {
         rawResult: { nested: { value: "raw" } },
@@ -121,7 +121,7 @@ it("exports independent nested query, workflow and Evidence payloads", () => {
     operation: "analyze_function",
     parameters,
     execution: {
-      ...createAnalysisExecution(result, REA_WORKFLOW_PROVIDER, {
+      ...createAnalysisExecution(result, NRE_WORKFLOW_PROVIDER, {
         subject: target,
         rawResult: result,
       }),
@@ -136,7 +136,7 @@ it("exports independent nested query, workflow and Evidence payloads", () => {
       rawResult: result,
       analysisProfile: profile,
     }),
-    createEvidence(target, REA_WORKFLOW_PROVIDER, {
+    createEvidence(target, NRE_WORKFLOW_PROVIDER, {
       operation: "analyze_function",
       confidence: "derived",
       parameters,
@@ -192,7 +192,7 @@ it.each(["provider", "workflow"] as const)(
     const operation =
       kind === "provider" ? "procedure_info" : "analyze_function";
     const provider =
-      kind === "provider" ? ANALYSIS_SNAPSHOT_PROVIDER : REA_WORKFLOW_PROVIDER;
+      kind === "provider" ? ANALYSIS_SNAPSHOT_PROVIDER : NRE_WORKFLOW_PROVIDER;
     const evidenceProfile =
       kind === "provider" ? profile : workflowAnalysisProfile(profile);
     const dependencies = [1, 2].map((source) =>
@@ -304,7 +304,7 @@ it.each(["provider", "workflow"] as const)(
     const profile = ANALYSIS_SNAPSHOT_PROFILE;
     const operation = kind === "provider" ? "procedure_info" : "trace_feature";
     const provider =
-      kind === "provider" ? ANALYSIS_SNAPSHOT_PROVIDER : REA_WORKFLOW_PROVIDER;
+      kind === "provider" ? ANALYSIS_SNAPSHOT_PROVIDER : NRE_WORKFLOW_PROVIDER;
     const analysisProfile =
       kind === "provider"
         ? profile
@@ -401,7 +401,7 @@ it("counts newly retained direct and workflow bindings when staging", () => {
     operation: "trace_feature",
     parameters: { query: "feature" },
     execution: {
-      ...createAnalysisExecution("workflow", REA_WORKFLOW_PROVIDER, {
+      ...createAnalysisExecution("workflow", NRE_WORKFLOW_PROVIDER, {
         subject: target,
       }),
       analysisProfile: workflowProfile,
@@ -414,7 +414,7 @@ it("counts newly retained direct and workflow bindings when staging", () => {
       result: "direct",
       analysisProfile: profile,
     }),
-    createEvidence(target, REA_WORKFLOW_PROVIDER, {
+    createEvidence(target, NRE_WORKFLOW_PROVIDER, {
       operation: "trace_feature",
       confidence: "derived",
       parameters: { query: "feature" },
@@ -582,7 +582,7 @@ describe("analysis snapshot cache capacity", () => {
     const target = ANALYSIS_SNAPSHOT_TARGET;
     const profile = ANALYSIS_SNAPSHOT_PROFILE;
     const execution = {
-      ...createAnalysisExecution("workflow", REA_WORKFLOW_PROVIDER, {
+      ...createAnalysisExecution("workflow", NRE_WORKFLOW_PROVIDER, {
         subject: target,
       }),
       analysisProfile: workflowAnalysisProfile(profile),
@@ -646,7 +646,7 @@ describe("analysis snapshot cache capacity", () => {
       target: snapshotTarget(target),
       binding: snapshotBinding(profile),
     });
-    const evidence = createEvidence(target, REA_WORKFLOW_PROVIDER, {
+    const evidence = createEvidence(target, NRE_WORKFLOW_PROVIDER, {
       operation: workflowInput.operation,
       confidence: "derived",
       parameters: workflowInput.parameters,
@@ -954,7 +954,7 @@ describe("analysis snapshot cache partitioning", () => {
     ).toMatchObject({
       provider: ANALYSIS_SNAPSHOT_PROVIDER,
       analysisProfile: ANALYSIS_SNAPSHOT_PROFILE,
-      limitations: [expect.stringContaining("local REA analysis snapshot")],
+      limitations: [expect.stringContaining("local NRE analysis snapshot")],
     });
     const changedProfile = createAnalysisProfile(ANALYSIS_SNAPSHOT_PROVIDER, {
       loader: "configured-override",
@@ -1111,14 +1111,14 @@ it("does not replay pre-envelope call graphs under the revised workflow profile"
     operation,
     parameters,
     execution: {
-      ...createAnalysisExecution(oldResult, REA_WORKFLOW_PROVIDER, {
+      ...createAnalysisExecution(oldResult, NRE_WORKFLOW_PROVIDER, {
         subject: target,
         rawResult: oldResult,
       }),
       analysisProfile: oldProfile,
     },
   });
-  const evidence = createEvidence(target, REA_WORKFLOW_PROVIDER, {
+  const evidence = createEvidence(target, NRE_WORKFLOW_PROVIDER, {
     operation,
     confidence: "derived",
     parameters,
@@ -1140,7 +1140,7 @@ it("does not replay pre-envelope call graphs under the revised workflow profile"
       bindingProfile: profile,
       operation,
       parameters,
-      provider: REA_WORKFLOW_PROVIDER,
+      provider: NRE_WORKFLOW_PROVIDER,
       evidenceProfile: revisedProfile,
     }),
   ).toBeUndefined();

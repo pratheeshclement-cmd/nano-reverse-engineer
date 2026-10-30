@@ -22,7 +22,7 @@ import { readEvidenceFileSource } from "./evidenceFileSource.js";
 
 describe("evidence-file source reads", () => {
   it("owns immutable authentication proofs for selected records and related bundle parents", async () => {
-    const root = await createTestTempDirectory("rea-evidence-file-proof-");
+    const root = await createTestTempDirectory("nre-evidence-file-proof-");
     const single = join(root, "single.json");
     const source = analysisViewNativeEvidence();
     const related = analysisViewCaptureEvidence();
@@ -95,7 +95,7 @@ describe("evidence-file source reads", () => {
       throw new Error("Expected cancelled analysis-view read");
     expect(cancelled.error.cause).toBe(reason);
     const path = join(
-      await createTestTempDirectory("rea-evidence-file-source-"),
+      await createTestTempDirectory("nre-evidence-file-source-"),
       "capture.json",
     );
     const parent = analysisViewCaptureEvidence();
@@ -108,7 +108,7 @@ describe("evidence-file source reads", () => {
   });
 
   it("projects the selected or only record of an Evidence bundle file", async () => {
-    const root = await createTestTempDirectory("rea-evidence-bundle-source-");
+    const root = await createTestTempDirectory("nre-evidence-bundle-source-");
     const native = analysisViewNativeEvidence();
     const capture = analysisViewCaptureEvidence();
     const single = join(root, "single.json");
@@ -167,7 +167,7 @@ describe("evidence-file source reads", () => {
 
 describe("evidence-file read failure provenance", () => {
   it("keeps a physical null read cause after the analysis-view request aborts", async () => {
-    const root = await createTestTempDirectory("rea-view-late-io-");
+    const root = await createTestTempDirectory("nre-view-late-io-");
     const path = join(root, "capture.json");
     await writeFile(path, JSON.stringify(analysisViewCaptureEvidence()));
     const controller = new AbortController();
@@ -193,7 +193,7 @@ describe("evidence-file read failure provenance", () => {
   });
 
   it("preserves identical physical and abort causes for analysis-view reads", async () => {
-    const root = await createTestTempDirectory("rea-view-identical-abort-");
+    const root = await createTestTempDirectory("nre-view-identical-abort-");
     const path = join(root, "capture.json");
     await writeFile(path, JSON.stringify(analysisViewCaptureEvidence()));
     const controller = new AbortController();
@@ -217,7 +217,7 @@ describe("evidence-file read failure provenance", () => {
   });
 
   it("preserves the caller cancellation reason during an analysis-view read", async () => {
-    const root = await createTestTempDirectory("rea-view-read-cancel-");
+    const root = await createTestTempDirectory("nre-view-read-cancel-");
     const path = join(root, "capture.json");
     await writeFile(path, JSON.stringify(analysisViewCaptureEvidence()));
     const reader = await holdFirstFileRead(path);
@@ -249,7 +249,7 @@ describe("evidence-file read failure provenance", () => {
   });
 
   it("does not treat a caller reason with physical-read shape as a physical read", async () => {
-    const root = await createTestTempDirectory("rea-view-opaque-cancel-");
+    const root = await createTestTempDirectory("nre-view-opaque-cancel-");
     const path = join(root, "capture.json");
     await writeFile(path, JSON.stringify(analysisViewCaptureEvidence()));
     const reader = await holdFirstFileRead(path);
@@ -283,7 +283,7 @@ describe("evidence-file read failure provenance", () => {
 });
 
 it("honors an explicit identity for a single-record Evidence file", async () => {
-  const root = await createTestTempDirectory("rea-evidence-file-selection-");
+  const root = await createTestTempDirectory("nre-evidence-file-selection-");
   const path = join(root, "record.json");
   const record = analysisViewNativeEvidence();
   const other = analysisViewCaptureEvidence();
@@ -303,7 +303,7 @@ it("honors an explicit identity for a single-record Evidence file", async () => 
 });
 
 it("keeps bundle-selection errors useful when operation labels exceed the reply budget", async () => {
-  const root = await createTestTempDirectory("rea-evidence-file-labels-");
+  const root = await createTestTempDirectory("nre-evidence-file-labels-");
   const path = join(root, "records.json");
   const operation = '\u0000"'.repeat(50_000);
   const records = [1, 2].map((ordinal) =>

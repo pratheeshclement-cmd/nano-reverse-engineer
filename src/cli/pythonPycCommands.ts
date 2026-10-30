@@ -64,7 +64,7 @@ export const registerPythonPycCommands = (
                 { signal },
               ),
             service,
-            providerId: "rea-python-pyc",
+            providerId: "nre-python-pyc",
             operation: "inspect_python_pyc",
             signal,
             detail: delivery.value.detail,

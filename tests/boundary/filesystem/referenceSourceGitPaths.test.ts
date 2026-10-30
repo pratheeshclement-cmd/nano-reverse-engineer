@@ -10,7 +10,7 @@ import { importReferenceSource } from "../../support/referenceSourceResourceScop
 it.skipIf(process.platform === "win32").each(["gitdir", "commondir"] as const)(
   "rejects non-directory traversal in a %s pointer without publishing decoy Git facts",
   async (pointer) => {
-    const root = await createTestTempDirectory("rea-reference-git-path-");
+    const root = await createTestTempDirectory("nre-reference-git-path-");
     const source = join(root, "source");
     const metadata = join(root, "metadata");
     await mkdir(source);

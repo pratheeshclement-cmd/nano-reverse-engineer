@@ -86,11 +86,11 @@ export interface WindowsNativeLoadHost {
 }
 
 const missingWindowsNativeFileReason = (file: string): string =>
-  `Missing packaged Windows native file native/windows/build/${file} (ENOENT). Restore both native/windows/build/manifest.json and native/windows/build/rea-windows-x64.node from the rea-agents@${PACKAGE_METADATA.version} tarball or build them with native/windows/README.md; no native artifact was loaded.`;
+  `Missing packaged Windows native file native/windows/build/${file} (ENOENT). Restore both native/windows/build/manifest.json and native/windows/build/nre-windows-x64.node from the nano-reverse-engineer@${PACKAGE_METADATA.version} tarball or build them with native/windows/README.md; no native artifact was loaded.`;
 
 /** Recovery when Windows refuses to load the verified artifact, for example by code-integrity policy. */
 export const WINDOWS_NATIVE_LOAD_REFUSED_REMEDIATION =
-  "The file matched the package manifest, so restoring or reinstalling it will not help. If Windows reports that an Application Control policy blocked the file, Smart App Control or an App Control for Business policy refused it. Windows native controls, which Ghidra and JADX need on Windows, stay unavailable; rea setup can still register clients. Run REA on a host whose policy allows this file, or ask the REA maintainers about a signed build.";
+  "The file matched the package manifest, so restoring or reinstalling it will not help. If Windows reports that an Application Control policy blocked the file, Smart App Control or an App Control for Business policy refused it. Windows native controls, which Ghidra and JADX need on Windows, stay unavailable; nre setup can still register clients. Run NRE on a host whose policy allows this file, or ask the NRE maintainers about a signed build.";
 
 const readPackagedWindowsNativeFile = <T>(file: string, read: () => T): T => {
   try {
@@ -115,7 +115,7 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "host",
-      reason: "REA Windows native controls require a Windows x64 host.",
+      reason: "NRE Windows native controls require a Windows x64 host.",
     };
   const nodeApiVersion = Number(host.nodeApiVersion);
   if (
@@ -125,7 +125,7 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "host",
-      reason: "REA Windows native controls require Node-API 8 or newer.",
+      reason: "NRE Windows native controls require Node-API 8 or newer.",
     };
   try {
     const manifest = parseWindowsNativeManifest(
@@ -146,7 +146,7 @@ export const loadWindowsNativeAuthority = (
       return {
         available: false,
         failureStage: "load",
-        reason: `REA Windows native controls are unavailable: Windows refused to load the verified native/windows/build/rea-windows-x64.node: ${cause instanceof Error ? cause.message : String(cause)} ${WINDOWS_NATIVE_LOAD_REFUSED_REMEDIATION}`,
+        reason: `NRE Windows native controls are unavailable: Windows refused to load the verified native/windows/build/nre-windows-x64.node: ${cause instanceof Error ? cause.message : String(cause)} ${WINDOWS_NATIVE_LOAD_REFUSED_REMEDIATION}`,
       };
     }
     const binding = bindingSchema.parse(loadedModule);
@@ -158,7 +158,7 @@ export const loadWindowsNativeAuthority = (
         available: false,
         failureStage: "self-test",
         retryable: true,
-        reason: `REA Windows native self-test failed: ${cause instanceof Error ? cause.message : String(cause)}`,
+        reason: `NRE Windows native self-test failed: ${cause instanceof Error ? cause.message : String(cause)}`,
       };
     }
     const parsed = inspectionSchema.safeParse(observed);
@@ -166,7 +166,7 @@ export const loadWindowsNativeAuthority = (
       return {
         available: false,
         failureStage: "inspection",
-        reason: `REA Windows native inspection is invalid: ${parsed.error.message}`,
+        reason: `NRE Windows native inspection is invalid: ${parsed.error.message}`,
       };
     const inspection = parsed.data;
     return { available: true, authority: { call: binding.call, inspection } };
@@ -174,7 +174,7 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "artifact",
-      reason: `REA Windows native controls are unavailable: ${cause instanceof Error ? cause.message : String(cause)}`,
+      reason: `NRE Windows native controls are unavailable: ${cause instanceof Error ? cause.message : String(cause)}`,
     };
   }
 };
@@ -201,7 +201,7 @@ export const systemWindowsNativeAuthority = (): WindowsNativeLoadResult => {
     readArtifact: () =>
       readFileSync(
         new URL(
-          "../../native/windows/build/rea-windows-x64.node",
+          "../../native/windows/build/nre-windows-x64.node",
           import.meta.url,
         ),
       ),
@@ -209,7 +209,7 @@ export const systemWindowsNativeAuthority = (): WindowsNativeLoadResult => {
       const value: unknown = createRequire(import.meta.url)(
         fileURLToPath(
           new URL(
-            "../../native/windows/build/rea-windows-x64.node",
+            "../../native/windows/build/nre-windows-x64.node",
             import.meta.url,
           ),
         ),

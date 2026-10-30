@@ -25,21 +25,21 @@ import {
 } from "./lib/mcp-verifier-results.mjs";
 import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 
-const executable = process.env.REA_MITMDUMP_COMMAND;
+const executable = process.env.NRE_MITMDUMP_COMMAND;
 if (
   process.platform !== "linux" ||
   executable === undefined ||
   !isAbsolute(executable)
 )
   throw new Error(
-    "verify:web:network-captures requires Linux and absolute REA_MITMDUMP_COMMAND for caller-supplied mitmdump 12.2.3",
+    "verify:web:network-captures requires Linux and absolute NRE_MITMDUMP_COMMAND for caller-supplied mitmdump 12.2.3",
   );
 await access(executable);
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
 const runtime = await PrivateRuntimeRoot.create({
-  prefix: "rea-history-verifier-",
+  prefix: "nre-history-verifier-",
 });
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
@@ -66,16 +66,16 @@ try {
         "--set",
         `confdir=${join(runtime.path, "config")}`,
         "--set",
-        `rea_fixture_root=${runtime.path}`,
+        `nre_fixture_root=${runtime.path}`,
         "--set",
-        `rea_adapter_path=${resolve(dirname(entrypoint), "../bridge/mitmproxy/capture.py")}`,
+        `nre_adapter_path=${resolve(dirname(entrypoint), "../bridge/mitmproxy/capture.py")}`,
         "-s",
         fileURLToPath(
           new URL("./fixtures/generate-mitmproxy-capture.py", import.meta.url),
         ),
       ],
       cwd: runtime.path,
-      runId: `rea-history-fixture-${randomUUID()}`,
+      runId: `nre-history-fixture-${randomUUID()}`,
       hostEnvironment: environment,
     },
     { timeoutMs: 30_000, diagnosticBytes: 1024 * 1024 },
@@ -1062,8 +1062,8 @@ function assertSensitiveLimitations(evidence, literals) {
   assert.equal(
     result.decoder.name,
     result.format === "har"
-      ? "REA HAR capture adapter"
-      : "REA offline native mitmproxy adapter",
+      ? "NRE HAR capture adapter"
+      : "NRE offline native mitmproxy adapter",
   );
   const texts = [
     evidence.limitations,

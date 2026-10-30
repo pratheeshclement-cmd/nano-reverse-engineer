@@ -12,7 +12,7 @@ const ampSettings = (home: string) =>
 cliTest(
   "mcp add preserves Amp environment and reports unreadable settings",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-amp-registration-");
+    const root = await createTestTempDirectory("nre-amp-registration-");
     const home = join(root, "home");
     const environment = {
       HOME: home,
@@ -26,15 +26,15 @@ cliTest(
         timeoutMs: 20_000,
       });
 
-    // An existing rea registration keeps its environment map and the file is
+    // An existing nre registration keeps its environment map and the file is
     // backed up before the refresh.
     const settingsPath = ampSettings(home);
     const original = JSON.stringify(
       {
         "amp.mcpServers": {
-          rea: {
+          nre: {
             command: "npx",
-            args: ["-y", "rea-agents@6.8.0", "mcp"],
+            args: ["-y", "nano-reverse-engineer@6.8.0", "mcp"],
             env: { KEEP_ME: "1" },
           },
           other: { command: "other" },
@@ -50,11 +50,11 @@ cliTest(
     const refreshed = await run(["mcp", "add", "--agent", "amp"]);
     expect(refreshed.exitCode, refreshed.stderr).toBe(0);
     const after = JSON.parse(await readFile(settingsPath, "utf8"));
-    expect(after["amp.mcpServers"].rea).toMatchObject({
+    expect(after["amp.mcpServers"].nre).toMatchObject({
       command: expect.any(String),
       env: { KEEP_ME: "1" },
     });
-    const registrationBackupPath = `${settingsPath}.rea.backup`;
+    const registrationBackupPath = `${settingsPath}.nre.backup`;
     expect(await readFile(registrationBackupPath, "utf8")).toBe(original);
     expect(refreshed.stderr).toContain(registrationBackupPath);
     expect(after.theme).toBe("dark");
@@ -65,7 +65,7 @@ cliTest(
     const equals = await run(["mcp", "add", "--agent=amp"]);
     expect(equals.exitCode, equals.stderr).toBe(0);
     const afterEquals = JSON.parse(await readFile(settingsPath, "utf8"));
-    expect(afterEquals["amp.mcpServers"].rea).toMatchObject({
+    expect(afterEquals["amp.mcpServers"].nre).toMatchObject({
       command: expect.any(String),
       env: { KEEP_ME: "1" },
     });
@@ -83,7 +83,7 @@ cliTest(
     // A malformed settings file is rejected instead of reporting success.
     const broken = join(root, "broken");
     const brokenSettings = ampSettings(broken);
-    const malformed = '{ "amp.mcpServers": { "rea": {} ';
+    const malformed = '{ "amp.mcpServers": { "nre": {} ';
     await mkdir(join(broken, ".config", "amp"), { recursive: true });
     await writeFile(brokenSettings, malformed);
     const rejected = await cli.run({
@@ -153,7 +153,7 @@ cliTest(
     // JSON.
     const backupHome = join(root, "backup-error");
     const backupSettings = ampSettings(backupHome);
-    const backupPath = `${backupSettings}.rea.backup`;
+    const backupPath = `${backupSettings}.nre.backup`;
     await mkdir(join(backupHome, ".config", "amp"), { recursive: true });
     await writeFile(backupSettings, '{"amp.mcpServers": {}}\n');
     await mkdir(backupPath);
@@ -172,10 +172,10 @@ cliTest(
 );
 
 it("keeps the first Amp registration backup and secures later recovery copies", async () => {
-  const root = await createTestTempDirectory("rea-amp-backup-permissions-");
+  const root = await createTestTempDirectory("nre-amp-backup-permissions-");
   const settingsPath = join(root, "settings.json");
   const settingsText =
-    '{"amp.mcpServers":{"rea":{"env":{"TOKEN":"secret"}}}}\n';
+    '{"amp.mcpServers":{"nre":{"env":{"TOKEN":"secret"}}}}\n';
   await writeFile(settingsPath, settingsText);
 
   const backup = await writeAmpRegistrationBackup(settingsPath, settingsText);
@@ -210,9 +210,9 @@ it("keeps the first Amp registration backup and secures later recovery copies", 
 });
 
 it("returns a tagged failure when the Amp backup path is occupied", async () => {
-  const root = await createTestTempDirectory("rea-amp-backup-occupied-");
+  const root = await createTestTempDirectory("nre-amp-backup-occupied-");
   const settingsPath = join(root, "settings.json");
-  const backupPath = `${settingsPath}.rea.backup`;
+  const backupPath = `${settingsPath}.nre.backup`;
   await writeFile(settingsPath, "{}\n");
   await mkdir(backupPath);
 

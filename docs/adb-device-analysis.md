@@ -1,8 +1,8 @@
 # ADB device inspection and acquisition
 
-REA inspects connected Android devices, reads device state, and transfers
+NRE inspects connected Android devices, reads device state, and transfers
 files and packages through the caller's `adb` binary. Emulators, USB
-devices, and network devices participate alike: REA neither starts nor
+devices, and network devices participate alike: NRE neither starts nor
 manages them and never installs platform tools. Every operation composes a
 fixed adb argument vector — caller values occupy positional arguments only
 and are quoted when adb forwards them to the device shell.
@@ -18,13 +18,13 @@ through the environment:
 
 ```sh
 # Optional: absolute path to the adb binary; without it, adb resolves from PATH.
-export REA_ADB_PATH=/absolute/path/to/adb
+export NRE_ADB_PATH=/absolute/path/to/adb
 ```
 
-REA never installs the Android SDK, an emulator, or a system image.
-Readiness is `rea inspect-adb-client`: it runs `adb version` and reports the
+NRE never installs the Android SDK, an emulator, or a system image.
+Readiness is `nre inspect-adb-client`: it runs `adb version` and reports the
 resolved binary, its version, and where it was selected from. A missing
-binary reports `capability_unavailable` with the `REA_ADB_PATH` remediation
+binary reports `capability_unavailable` with the `NRE_ADB_PATH` remediation
 rather than attempting an installation.
 The `binary_session` inventory uses the same bounded client-version probe; it
 does not query devices, start the adb server, or establish that a requested
@@ -34,45 +34,45 @@ serial is reachable. Device state is checked by each device operation.
 
 ```sh
 # Device identity
-rea inspect-adb-client
-rea list-adb-devices
-rea inspect-adb-device emulator-5554
-rea inspect-adb-display emulator-5554
-rea list-adb-features emulator-5554
-rea list-adb-services emulator-5554
+nre inspect-adb-client
+nre list-adb-devices
+nre inspect-adb-device emulator-5554
+nre inspect-adb-display emulator-5554
+nre list-adb-features emulator-5554
+nre list-adb-services emulator-5554
 
 # Find and acquire an app (the easy-get flow)
-rea resolve-adb-packages emulator-5554 whatsapp
-rea list-adb-packages emulator-5554 --scope third_party
-rea inspect-adb-package emulator-5554 com.whatsapp
-rea pull-adb-package emulator-5554 com.whatsapp --output-directory /tmp/acq
-rea inspect-android-package /tmp/acq/com.whatsapp/base.apk
+nre resolve-adb-packages emulator-5554 whatsapp
+nre list-adb-packages emulator-5554 --scope third_party
+nre inspect-adb-package emulator-5554 com.whatsapp
+nre pull-adb-package emulator-5554 com.whatsapp --output-directory /tmp/acq
+nre inspect-android-package /tmp/acq/com.whatsapp/base.apk
 
 # Device state and files
-rea list-adb-processes emulator-5554
-rea inspect-adb-window emulator-5554
-rea read-adb-setting emulator-5554 global adb_enabled
-rea read-adb-logcat emulator-5554 --count 200
-rea list-adb-directory emulator-5554 /data/data/com.whatsapp
-rea pull-adb-file emulator-5554 /data/local/tmp/notes.txt --output-directory /tmp/acq
-rea push-adb-file emulator-5554 /tools/frida-server /data/local/tmp/frida-server
-rea capture-adb-screen emulator-5554 --output-directory /tmp/shots
-rea collect-adb-bugreport emulator-5554 --output-directory /tmp/bugs
+nre list-adb-processes emulator-5554
+nre inspect-adb-window emulator-5554
+nre read-adb-setting emulator-5554 global adb_enabled
+nre read-adb-logcat emulator-5554 --count 200
+nre list-adb-directory emulator-5554 /data/data/com.whatsapp
+nre pull-adb-file emulator-5554 /data/local/tmp/notes.txt --output-directory /tmp/acq
+nre push-adb-file emulator-5554 /tools/frida-server /data/local/tmp/frida-server
+nre capture-adb-screen emulator-5554 --output-directory /tmp/shots
+nre collect-adb-bugreport emulator-5554 --output-directory /tmp/bugs
 
 # Package lifecycle and dynamic analysis (device-mutating)
-rea install-adb-package emulator-5554 /tmp/app.apk --replace
-rea start-adb-app emulator-5554 com.example.app
-rea read-adb-logcat emulator-5554 --pid 12345
-rea start-adb-activity emulator-5554 android.intent.action.VIEW --data-uri https://example.com
-rea stop-adb-app emulator-5554 com.example.app
-rea uninstall-adb-package emulator-5554 com.example.app
+nre install-adb-package emulator-5554 /tmp/app.apk --replace
+nre start-adb-app emulator-5554 com.example.app
+nre read-adb-logcat emulator-5554 --pid 12345
+nre start-adb-activity emulator-5554 android.intent.action.VIEW --data-uri https://example.com
+nre stop-adb-app emulator-5554 com.example.app
+nre uninstall-adb-package emulator-5554 com.example.app
 ```
 
 Equivalent MCP methods use the snake_case names (`list_adb_devices`,
 `pull_adb_package`, `resolve_adb_packages`, …). Device operations take
 `serial` exactly as `adb devices` reports it. The pulled APK set feeds the
 existing analysis families directly, for example
-`rea inspect-android-package /tmp/acq/<package>/base.apk`.
+`nre inspect-android-package /tmp/acq/<package>/base.apk`.
 
 ## Operations
 
@@ -123,12 +123,12 @@ preserves its focus declarations and display headers in source order.
 field. The singular `focused_window` and `focused_app` summarize that context;
 they do not establish device-wide focus. Multiple contexts or repeated fields
 produce `ambiguous` with null singular fields and all declarations retained.
-When no focus field was declared, the status is `unavailable`. REA reads the
+When no focus field was declared, the status is `unavailable`. NRE reads the
 displays section only when the windows section declares neither focus field.
 
 For `install_adb_package`, `replace_requested` records whether `-r` was sent.
 The `replaced` result is `null`: the successful install response does not say
-whether the package was installed fresh or replaced, and REA does not query the
+whether the package was installed fresh or replaced, and NRE does not query the
 device first. The install verdict and host APK digest remain available.
 
 Push and install consume a private snapshot of the selected local input. The
@@ -175,7 +175,7 @@ and during shutdown.
 - **Device paths are not host paths.** `base_apk_device_path` values live on
   the device filesystem. Only pulls and captures produce host-local paths,
   each paired with byte size and SHA-256 digest. A pulled file's host name is
-  the device path's final POSIX segment. REA preserves the original device
+  the device path's final POSIX segment. NRE preserves the original device
   path and filename; a missing final segment or `.`/`..` is refused before
   output creation. Windows hosts follow [Windows filename rules](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file),
   while POSIX hosts retain valid POSIX filenames such as names with spaces or
@@ -258,7 +258,7 @@ beyond already-connected devices (`adb connect`) are not exposed yet.
 ## Real verification
 
 `npm run verify:adb` exercises every operation against a live device. It
-requires `adb` (or `REA_ADB_PATH`) and any attached emulator or phone;
+requires `adb` (or `NRE_ADB_PATH`) and any attached emulator or phone;
 `--serial` selects one when several are attached, `--pull PACKAGE` pulls a
 real package and verifies the returned digests against the files on disk,
 and `--install-apk PATH` drives a full install → resolve → uninstall

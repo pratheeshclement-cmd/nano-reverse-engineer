@@ -281,7 +281,7 @@ export const systemUpdateHost = (
         if (bunVersion === null || lt(bunVersion, "1.2.17"))
           return err({
             kind: "unsupported-package-manager",
-            detail: `REA updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(version.value)}. Upgrade Bun manually, then rerun rea update.`,
+            detail: `NRE updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(version.value)}. Upgrade Bun manually, then rerun nre update.`,
           });
       }
       const result = await commands.runProbe(
@@ -314,7 +314,7 @@ export const systemUpdateHost = (
       const result = await commands.runProbe(
         [
           process.execPath,
-          join(installation.packageRoot, "scripts", "rea.mjs"),
+          join(installation.packageRoot, "scripts", "nre.mjs"),
           "--version",
         ],
         environment,
@@ -324,7 +324,7 @@ export const systemUpdateHost = (
     planMaintenance: (installation) =>
       planIntegrationMaintenance(
         home ?? homeDirectoryFromEnvironment(environment, process.platform),
-        join(installation.packageRoot, "scripts", "rea.mjs"),
+        join(installation.packageRoot, "scripts", "nre.mjs"),
         environment,
         async (command) => {
           const result = await commands.runProbe(command, environment);

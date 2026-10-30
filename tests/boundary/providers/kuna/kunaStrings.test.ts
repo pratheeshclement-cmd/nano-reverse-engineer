@@ -12,7 +12,7 @@ const scans = async (kuna: string) =>
   (await fakeKunaCalls(kuna)).filter(({ argv }) => argv[0] === "strings");
 
 it("shares a typed string scan across concurrent searches and exact address reads without analysis", async () => {
-  const { open, kuna } = await session("rea-kuna-strings-", {
+  const { open, kuna } = await session("nre-kuna-strings-", {
     stringDelayMs: 50,
   });
   const client = open();
@@ -24,7 +24,7 @@ it("shares a typed string scan across concurrent searches and exact address read
     expect(literal.result).toEqual([
       {
         address: "0x3000",
-        value: "REA fixture prompt",
+        value: "NRE fixture prompt",
         string: {
           encoding: "ascii",
           encoding_status: "observed",
@@ -108,7 +108,7 @@ it("shares a typed string scan across concurrent searches and exact address read
 });
 
 it("returns every encoding at an exact address in numeric inventory order", async () => {
-  const { open, kuna } = await session("rea-kuna-string-address-", {
+  const { open, kuna } = await session("nre-kuna-string-address-", {
     stringRows: [
       { address: 0x100, text: "later" },
       { address: 0x10, text: "hello", encoding: "utf8" },
@@ -162,7 +162,7 @@ it.each([
 ] as const)(
   "does not publish or cache a %s inventory",
   async (_label, behavior) => {
-    const { open, kuna } = await session("rea-kuna-strings-invalid-", behavior);
+    const { open, kuna } = await session("nre-kuna-strings-invalid-", behavior);
     const client = open();
     try {
       expect(
@@ -179,7 +179,7 @@ it.each([
 
 it("parses a scan larger than any fixed output buffer as it streams", async () => {
   const padding = 24 * 1024 * 1024;
-  const { open } = await session("rea-kuna-strings-large-", {
+  const { open } = await session("nre-kuna-strings-large-", {
     stringPadding: padding,
   });
   const client = open();
@@ -202,9 +202,9 @@ it("parses a scan larger than any fixed output buffer as it streams", async () =
 
 it("stops Kuna at the first contradictory row instead of awaiting the rest", async () => {
   const { open, kuna } = await session(
-    "rea-kuna-strings-reject-",
+    "nre-kuna-strings-reject-",
     { strings: "invalid-then-hang" },
-    { REA_KUNA_PROJECT_TIMEOUT_MS: "60000" },
+    { NRE_KUNA_PROJECT_TIMEOUT_MS: "60000" },
   );
   const client = open();
   try {
@@ -229,7 +229,7 @@ it("stops Kuna at the first contradictory row instead of awaiting the rest", asy
 });
 
 it("cancels one waiter without stopping the shared scan, and rebuilds in a fresh session", async () => {
-  const { open, kuna } = await session("rea-kuna-strings-waiters-", {
+  const { open, kuna } = await session("nre-kuna-strings-waiters-", {
     stringDelayMs: 200,
   });
   const first = open();
@@ -262,7 +262,7 @@ it("cancels one waiter without stopping the shared scan, and rebuilds in a fresh
 });
 
 it("drains a cancelled last scan before retrying", async () => {
-  const { open, kuna } = await session("rea-kuna-strings-retry-", {
+  const { open, kuna } = await session("nre-kuna-strings-retry-", {
     strings: "hang",
   });
   const client = open();
@@ -289,7 +289,7 @@ it("drains a cancelled last scan before retrying", async () => {
 it("retains metadata admission until a string process stop is proven", async () => {
   const cleanup = unprovenCleanupLauncher("strings");
   const { open, kuna } = await session(
-    "rea-kuna-strings-owner-",
+    "nre-kuna-strings-owner-",
     { strings: "hang" },
     {},
     cleanup.launcher,
@@ -337,19 +337,19 @@ it("retains metadata admission until a string process stop is proven", async () 
 
 it("uses the whole-program deadline independently of the single-function budget", async () => {
   const { open, kuna } = await session(
-    "rea-kuna-strings-deadline-",
+    "nre-kuna-strings-deadline-",
     { stringDelayMs: 200 },
     {
-      REA_KUNA_TIMEOUT_MS: "20",
-      REA_KUNA_PROJECT_TIMEOUT_MS: "1000",
+      NRE_KUNA_TIMEOUT_MS: "20",
+      NRE_KUNA_PROJECT_TIMEOUT_MS: "1000",
     },
   );
   expect(
     readKunaConfiguration(
       {
-        REA_KUNA_COMMAND: kuna,
-        REA_KUNA_TIMEOUT_MS: "20",
-        REA_KUNA_PROJECT_TIMEOUT_MS: "1000",
+        NRE_KUNA_COMMAND: kuna,
+        NRE_KUNA_TIMEOUT_MS: "20",
+        NRE_KUNA_PROJECT_TIMEOUT_MS: "1000",
       },
       process.platform,
     ),
@@ -394,11 +394,11 @@ it.each([
   "keeps per-waiter context for $mode failures started by $starter",
   async ({ starter, mode, tag }) => {
     const { open, kuna } = await session(
-      "rea-kuna-shared-string-failure-",
+      "nre-kuna-shared-string-failure-",
       mode === "oversize"
         ? { stringStderrBytes: KUNA_DIAGNOSTIC_BYTES + 1 }
         : { strings: mode },
-      { REA_KUNA_PROJECT_TIMEOUT_MS: mode === "hang" ? "500" : "5000" },
+      { NRE_KUNA_PROJECT_TIMEOUT_MS: mode === "hang" ? "500" : "5000" },
     );
     const client = open();
     try {
@@ -433,10 +433,10 @@ it.each([
           // Each waiter keeps the producer's setting and recovery.
           expect(projectAnalysisError(result.error)).toMatchObject({
             message:
-              "kuna strings did not finish within REA_KUNA_PROJECT_TIMEOUT_MS (500 ms).",
+              "kuna strings did not finish within NRE_KUNA_PROJECT_TIMEOUT_MS (500 ms).",
             remediation: {
               action:
-                "Raise REA_KUNA_PROJECT_TIMEOUT_MS in the environment that starts REA, then restart REA; it reads Kuna settings when it starts.",
+                "Raise NRE_KUNA_PROJECT_TIMEOUT_MS in the environment that starts NRE, then restart NRE; it reads Kuna settings when it starts.",
             },
           });
         }

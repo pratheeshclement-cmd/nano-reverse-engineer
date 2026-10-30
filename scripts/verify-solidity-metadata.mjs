@@ -5,10 +5,10 @@ import { pathToFileURL } from "node:url";
 import { performance } from "node:perf_hooks";
 import { inspectSolidityMetadata } from "../dist/evm/SolidityMetadata.js";
 
-const compilerModule = process.env.REA_VERIFY_SOLC_MODULE;
+const compilerModule = process.env.NRE_VERIFY_SOLC_MODULE;
 if (!isAbsolute(compilerModule ?? ""))
   throw new Error(
-    "Select an absolute caller-installed solc 0.8.30 module with REA_VERIFY_SOLC_MODULE.",
+    "Select an absolute caller-installed solc 0.8.30 module with NRE_VERIFY_SOLC_MODULE.",
   );
 const solc = (await import(pathToFileURL(compilerModule).href)).default;
 assert.equal(solc.version(), "0.8.30+commit.73712a01.Emscripten.clang");

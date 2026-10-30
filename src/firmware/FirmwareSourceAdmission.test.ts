@@ -21,7 +21,7 @@ afterEach(async () => {
 });
 
 const workspace = async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-firmware-source-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-firmware-source-"));
   roots.push(root);
   const staging = join(root, "stage");
   await mkdir(staging);

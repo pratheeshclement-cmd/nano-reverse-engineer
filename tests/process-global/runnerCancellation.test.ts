@@ -27,7 +27,7 @@ const runnerPath = fileURLToPath(
 it.runIf(process.platform !== "win32")(
   "holds ownership until an uncooperative command has finished cancellation",
   async () => {
-    const directory = await createTestTempDirectory("rea-runner-cancel-");
+    const directory = await createTestTempDirectory("nre-runner-cancel-");
     const runner = launch(
       directory,
       'process.on("SIGTERM", () => {}); process.stdout.write("ready"); setInterval(() => {}, 1000);',
@@ -48,7 +48,7 @@ it.runIf(process.platform !== "win32")(
 it.runIf(process.platform !== "win32")(
   "retains the lock when the command exits but a descendant ignores cancellation",
   async () => {
-    const directory = await createTestTempDirectory("rea-runner-descendant-");
+    const directory = await createTestTempDirectory("nre-runner-descendant-");
     const pidPath = join(directory, "descendant.pid");
     const activityPath = join(directory, "activity.log");
     const descendant = `
@@ -104,7 +104,7 @@ it.runIf(process.platform !== "win32")(
 it.runIf(process.platform === "win32")(
   "terminates the owned command after supervisor IPC cancellation",
   async () => {
-    const directory = await createTestTempDirectory("rea-runner-win-cancel-");
+    const directory = await createTestTempDirectory("nre-runner-win-cancel-");
     const gate = join(directory, "release-child");
     const started = join(directory, "child-started");
     const runner = launchSupervisor(directory, gatedCommand(gate, started));
@@ -138,7 +138,7 @@ it.runIf(process.platform === "win32")(
 async function exerciseWindowsGrandchild(
   cancellation: "message" | "disconnect",
 ): Promise<void> {
-  const directory = await createTestTempDirectory("rea-runner-win-tree-");
+  const directory = await createTestTempDirectory("nre-runner-win-tree-");
   const activityPath = join(directory, "grandchild-activity.log");
   const readyPath = join(directory, "grandchild-ready");
   const leaderExitedPath = join(directory, "leader-exited");
@@ -254,7 +254,7 @@ it.runIf(process.platform === "win32")(
   "stops the owned command after the supervisor IPC disconnects",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-runner-win-disconnect-",
+      "nre-runner-win-disconnect-",
     );
     const gate = join(directory, "release-child");
     const started = join(directory, "child-started");
@@ -279,7 +279,7 @@ it.runIf(process.platform === "win32")(
 );
 
 it("does not treat an old database timestamp as permission to replace a live owner", async () => {
-  const directory = await createTestTempDirectory("rea-runner-live-");
+  const directory = await createTestTempDirectory("nre-runner-live-");
   const runner = launch(
     directory,
     'process.stdout.write("ready"); setTimeout(() => {}, 1500);',
@@ -288,7 +288,7 @@ it("does not treat an old database timestamp as permission to replace a live own
     await runner.ready;
     const old = new Date("2000-01-01T00:00:00Z");
     await utimes(
-      join(directory, ".cache/rea-command-locks/test.sqlite"),
+      join(directory, ".cache/nre-command-locks/test.sqlite"),
       old,
       old,
     );
@@ -306,7 +306,7 @@ it("does not treat an old database timestamp as permission to replace a live own
 });
 
 it("preserves executable arguments through the public runner", async () => {
-  const directory = await createTestTempDirectory("rea-runner-argv-");
+  const directory = await createTestTempDirectory("nre-runner-argv-");
   const payload = 'spaces, "quotes", & ^ % ! (parens)';
   const code = "process.stdout.write(JSON.stringify(process.argv.slice(1)))";
   expect(
@@ -319,7 +319,7 @@ it("preserves executable arguments through the public runner", async () => {
 });
 
 it("preserves command stderr, warnings and exit status independently of supervisor notices", async () => {
-  const directory = await createTestTempDirectory("rea-runner-diagnostics-");
+  const directory = await createTestTempDirectory("nre-runner-diagnostics-");
   const stderr = 'authored command stderr: "quotes" & 雪\n';
   const result = await execute(directory, process.execPath, [
     "-e",
@@ -348,7 +348,7 @@ process.exitCode = 7;
 it.runIf(process.platform === "win32")(
   "launches an executable from a path containing spaces",
   async () => {
-    const directory = await createTestTempDirectory("rea-runner-spaced-exe-");
+    const directory = await createTestTempDirectory("nre-runner-spaced-exe-");
     const executable = join(directory, "node runtime", "node.exe");
     await mkdir(join(directory, "node runtime"), { recursive: true });
     await copyFile(process.execPath, executable);
@@ -367,7 +367,7 @@ it.runIf(process.platform === "win32")(
 it.runIf(process.platform === "win32")(
   "resolves bare node and Windows command shims without losing arguments",
   async () => {
-    const directory = await createTestTempDirectory("rea-runner-shims-");
+    const directory = await createTestTempDirectory("nre-runner-shims-");
     const payload = 'argument with spaces and "quotes" & ^ % !';
     const code = "process.stdout.write(JSON.stringify(process.argv.slice(1)))";
     expect(
@@ -416,7 +416,7 @@ it.runIf(process.platform === "win32")(
 it.runIf(process.platform !== "win32")(
   "recovers after abrupt owner death and keeps simultaneous contenders exclusive",
   async () => {
-    const directory = await createTestTempDirectory("rea-runner-recover-");
+    const directory = await createTestTempDirectory("nre-runner-recover-");
     // Killing the public runner disconnects its supervisor, which retains
     // ownership while cancelling the group before automatic OS lock release.
     const interrupted = launch(
@@ -650,7 +650,7 @@ function withTimeout<T>(
 it.runIf(process.platform !== "win32")(
   "retains lock ownership through a post-spawn child error until close",
   async () => {
-    const directory = await createTestTempDirectory("rea-runner-child-error-");
+    const directory = await createTestTempDirectory("nre-runner-child-error-");
     const readyPath = join(directory, "command-ready");
     const gatePath = join(directory, "allow-command-exit");
     const closedPath = join(directory, "command-closed");

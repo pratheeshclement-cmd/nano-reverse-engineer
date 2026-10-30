@@ -6,7 +6,7 @@ import { WebSocket } from "ws";
 process.stdout.write("Ready\n");
 const worker = spawn(
   process.execPath,
-  ["-e", 'process.title = "rea-reactive-worker"; setTimeout(() => {}, 750);'],
+  ["-e", 'process.title = "nre-reactive-worker"; setTimeout(() => {}, 750);'],
   { stdio: "ignore" },
 );
 // "Collecting" must reach the capture coordinator as an observation *after*
@@ -19,9 +19,9 @@ const worker = spawn(
 spawnSync(process.argv[2], ["probe"], { stdio: "ignore" });
 process.stdout.write("Collecting\n");
 await writeFile("reactive-result.txt", "created");
-await fetch(`${process.env.REA_REPLAY_HTTP_URL}/reactive`);
+await fetch(`${process.env.NRE_REPLAY_HTTP_URL}/reactive`);
 await new Promise((resolve, reject) => {
-  const socket = new WebSocket(process.env.REA_REPLAY_WEBSOCKET_URL);
+  const socket = new WebSocket(process.env.NRE_REPLAY_WEBSOCKET_URL);
   socket.once("open", () => socket.send("reactive-client"));
   socket.once("message", () => socket.close());
   socket.once("close", resolve);

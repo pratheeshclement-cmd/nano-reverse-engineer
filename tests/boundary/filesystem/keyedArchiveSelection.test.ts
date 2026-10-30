@@ -32,7 +32,7 @@ const archive = build({
 });
 
 const bundle = async () => {
-  const root = await createTestTempDirectory("rea-keyed-selection-");
+  const root = await createTestTempDirectory("nre-keyed-selection-");
   await mkdir(join(root, "Contents", "Resources"), { recursive: true });
   await writeFile(
     join(root, "Contents", "Resources", "Model.plist"),
@@ -103,7 +103,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "inspects an active standalone archive without opening unrelated directories",
   async () => {
-    const root = await createTestTempDirectory("rea-keyed-standalone-scope-");
+    const root = await createTestTempDirectory("nre-keyed-standalone-scope-");
     const path = join(root, "Model.plist");
     const bytes = Buffer.from(archive);
     const sha256 = createHash("sha256").update(bytes).digest("hex");
@@ -130,7 +130,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports the selected oversized archive limit despite an unreadable sibling",
   async () => {
-    const root = await createTestTempDirectory("rea-keyed-size-scope-");
+    const root = await createTestTempDirectory("nre-keyed-size-scope-");
     const path = join(root, "Large.plist");
     await writeFile(path, archive);
     await truncate(path, 64 * 1024 * 1024 + 1);
@@ -242,7 +242,7 @@ it.each([
 ] as const)(
   "names the property-list workflow available on a %s host",
   async (platform, action) => {
-    const root = await createTestTempDirectory("rea-keyed-kind-");
+    const root = await createTestTempDirectory("nre-keyed-kind-");
     const path = join(root, "Defaults.plist");
     const bytes = Buffer.from(build({ plain: true }));
     await writeFile(path, bytes);
@@ -296,7 +296,7 @@ it("selects a decomposed bundle path by its normalized spelling and reports the 
 });
 
 it("selects normalized intermediate directories while preserving their raw spelling", async () => {
-  const root = await createTestTempDirectory("rea-keyed-unicode-ancestors-");
+  const root = await createTestTempDirectory("nre-keyed-unicode-ancestors-");
   const directory = "Cafe\u0301/Neste\u0301";
   const rawPath = `${directory}/Model.plist`;
   await mkdir(join(root, directory), { recursive: true });
@@ -308,7 +308,7 @@ it("selects normalized intermediate directories while preserving their raw spell
 it.skipIf(process.platform === "darwin" || process.platform === "win32")(
   "rejects equivalent archive paths beneath distinct Unicode-equivalent directories",
   async () => {
-    const root = await createTestTempDirectory("rea-keyed-unicode-branches-");
+    const root = await createTestTempDirectory("nre-keyed-unicode-branches-");
     for (const directory of ["Caf\u00e9", "Cafe\u0301"]) {
       await mkdir(join(root, directory));
       await writeFile(join(root, directory, "Model.plist"), archive);

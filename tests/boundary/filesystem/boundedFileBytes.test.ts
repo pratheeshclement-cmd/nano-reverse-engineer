@@ -10,7 +10,7 @@ describe("bounded file byte reads", () => {
   it.each([0, 65_536])(
     "accepts a file exactly at the %i byte limit",
     async (limit) => {
-      const root = await createTestTempDirectory("rea-bounded-bytes-");
+      const root = await createTestTempDirectory("nre-bounded-bytes-");
       const path = join(root, "input");
       const content = Buffer.alloc(limit, 0x61);
       await writeFile(path, content);
@@ -29,7 +29,7 @@ describe("bounded file byte reads", () => {
   it.each([undefined, 5])(
     "preserves raw reasons or caller-owned cancellation with expected size %s",
     async (expectedSize) => {
-      const root = await createTestTempDirectory("rea-bounded-cancel-");
+      const root = await createTestTempDirectory("nre-bounded-cancel-");
       const path = join(root, "input");
       await writeFile(path, "hello");
       const handle = await open(path, "r");
@@ -62,7 +62,7 @@ describe("bounded file byte reads", () => {
   );
 
   it("stops after one overflow byte when a file grows beyond its admitted size", async () => {
-    const root = await createTestTempDirectory("rea-growing-bytes-");
+    const root = await createTestTempDirectory("nre-growing-bytes-");
     const path = join(root, "input");
     await writeFile(path, "0123456789");
     const handle = await open(path, "r");

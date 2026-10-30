@@ -25,8 +25,8 @@ export const createJavaScriptRuntimeObservationEvidence = (
   createEvidence(undefined, provider, {
     predicateType:
       operation === "list_javascript_runtime_targets"
-        ? "rea.javascript-runtime-target-list"
-        : "rea.javascript-runtime-observation",
+        ? "nre.javascript-runtime-target-list"
+        : "nre.javascript-runtime-observation",
     operation,
     parameters: parameters(input),
     result,

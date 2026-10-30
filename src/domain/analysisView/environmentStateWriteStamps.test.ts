@@ -18,7 +18,7 @@ import {
 
 const START = Date.UTC(2026, 2, 4, 5, 6, 0);
 const at = (ms: number): string => new Date(ms).toISOString();
-const EDITOR = { id: 1, email: "rea@example.test" };
+const EDITOR = { id: 1, email: "nre@example.test" };
 
 const created = (
   entity: JsonObject,

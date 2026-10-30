@@ -3,7 +3,10 @@ import { err, ok } from "../domain/result.js";
 import type { HopperClient } from "./HopperClient.js";
 import { reconcileHopperCallers } from "./HopperCallerReconciliation.js";
 import { AnalysisWorkScope } from "../application/AnalysisWorkScope.js";
-import { formatHopperCallerScanReason } from "../domain/native/hopperCallerReconciliation.js";
+import {
+  formatHopperCallerScanReason,
+  HOPPER_CALLER_SCAN_RETENTION_BYTES,
+} from "../domain/native/hopperCallerReconciliation.js";
 import {
   hopperCallerScanBudgetForMilliseconds,
   hopperCallerScanRecovery,
@@ -12,7 +15,6 @@ import {
   AnalysisOutputError,
   AnalysisResourceConstraintError,
 } from "../domain/analysisErrorCore.js";
-import { HOPPER_CALLER_SCAN_RETENTION_BYTES } from "../domain/native/hopperCallerReconciliation.js";
 
 const identity = (address: string) => ({
   address,
@@ -61,7 +63,7 @@ const page = (start: number) => ({
       : [{ caller, callees: [target.address], references: [compactEdge] }],
 });
 const reply = (method: string, start = 0) =>
-  method === "rea_caller_scan_target"
+  method === "nre_caller_scan_target"
     ? { target, instructions: [target.address], instructions_complete: true }
     : page(start);
 const base = {
@@ -148,7 +150,7 @@ it("builds one forward index for successive queries in a workflow", async () => 
     references: [edge],
   });
   expect(
-    callTool.mock.calls.filter(([method]) => method === "rea_caller_scan_page"),
+    callTool.mock.calls.filter(([method]) => method === "nre_caller_scan_page"),
   ).toHaveLength(2);
   scope.clear();
   await reconcileHopperCallers(
@@ -160,7 +162,7 @@ it("builds one forward index for successive queries in a workflow", async () => 
     250,
   );
   expect(
-    callTool.mock.calls.filter(([method]) => method === "rea_caller_scan_page"),
+    callTool.mock.calls.filter(([method]) => method === "nre_caller_scan_page"),
   ).toHaveLength(4);
 });
 it("links each compact call site to its owning caller address", async () => {
@@ -173,7 +175,7 @@ it("links each compact call site to its owning caller address", async () => {
   const callTool = vi.fn().mockImplementation((method: string) =>
     Promise.resolve(
       ok(
-        method === "rea_caller_scan_target"
+        method === "nre_caller_scan_target"
           ? reply(method)
           : {
               start: 0,
@@ -273,7 +275,7 @@ it("does not reuse a previous scan", async () => {
   callTool.mockImplementation((method, args: { start: number }) =>
     Promise.resolve(
       ok(
-        method === "rea_caller_scan_target"
+        method === "nre_caller_scan_target"
           ? reply(method)
           : {
               ...page(args.start),
@@ -333,7 +335,7 @@ it("preserves cancellation while reporting the last page", async () => {
     .mockImplementation((method: string) =>
       Promise.resolve(
         ok(
-          method === "rea_caller_scan_target"
+          method === "nre_caller_scan_target"
             ? reply(method)
             : { ...page(64), start: 0, next: 1, total: 1 },
         ),
@@ -377,13 +379,13 @@ it("preserves cancellation while reporting the last page", async () => {
 it("retains completed pages when a later scan page fails", async () => {
   let pages = 0;
   const callTool = vi.fn().mockImplementation((method: string) => {
-    if (method === "rea_caller_scan_target")
+    if (method === "nre_caller_scan_target")
       return Promise.resolve(ok(reply(method)));
     pages += 1;
     if (pages === 1) return Promise.resolve(ok(page(0)));
     return Promise.resolve(
       err(
-        new AnalysisOutputError("rea_caller_scan_page", "bridge page failed"),
+        new AnalysisOutputError("nre_caller_scan_page", "bridge page failed"),
       ),
     );
   });
@@ -414,7 +416,7 @@ it("reports a changing inventory as incomplete", async () => {
     .mockImplementation((method, args: { start: number }) =>
       Promise.resolve(
         ok(
-          method === "rea_caller_scan_target"
+          method === "nre_caller_scan_target"
             ? reply(method)
             : { ...page(args.start), total: args.start === 0 ? 65 : 66 },
         ),
@@ -476,7 +478,7 @@ it("refuses expanded reference copies that exceed the retained scan budget", asy
   const callTool = vi.fn().mockImplementation((method: string) =>
     Promise.resolve(
       ok(
-        method === "rea_caller_scan_target"
+        method === "nre_caller_scan_target"
           ? {
               target: heavy,
               instructions: [target.address],

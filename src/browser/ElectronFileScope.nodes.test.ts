@@ -9,7 +9,7 @@ import { asarHeaderBytes } from "../../tests/fixtures/asarHeader.js";
 import { CdpElectronProvider } from "./CdpElectronProvider.js";
 
 it("lists only ASAR members with regular-file declarations while preserving unrelated metadata", async () => {
-  const root = await realpath(await mkdtemp(join(tmpdir(), "rea-asar-node-")));
+  const root = await realpath(await mkdtemp(join(tmpdir(), "nre-asar-node-")));
   const archive = join(root, "app.asar");
   const files = {
     "empty.html": { size: 0, offset: "0" },

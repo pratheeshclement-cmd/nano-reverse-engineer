@@ -100,7 +100,7 @@ export const parseReconstructionProofEvidence = (
 ): ParsedProof => {
   if (evidence.confidence !== "observed") return err("unobserved-proof");
   if (
-    evidence.predicate_type !== "rea.reconstruction-proof" ||
+    evidence.predicate_type !== "nre.reconstruction-proof" ||
     evidence.operation !== "verify_reconstruction_obligations"
   )
     return err("unrecognized-proof");

@@ -8,7 +8,7 @@ import { analyzeJavaScriptApplication } from "../../../support/javascriptApplica
 import { javascriptApplicationAnalysisResultSchema } from "../../../../src/domain/javascript/javascriptApplicationAnalysis.js";
 
 it("distinguishes module-anchored and application-relative BrowserWindow loadFile calls", async () => {
-  const root = await createTestTempDirectory("rea-renderer-static-path-");
+  const root = await createTestTempDirectory("nre-renderer-static-path-");
   await mkdir(join(root, "src"));
   await Promise.all([
     writeFile(

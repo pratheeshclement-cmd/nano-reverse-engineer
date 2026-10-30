@@ -57,7 +57,7 @@ const verify = (document: unknown) => {
 cliTest.skipIf(CAPTURE_SKIP_REASON)(
   "withholds private stdin echoes in public CLI Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-private-cli-");
+    const root = await createTestTempDirectory("nre-private-cli-");
     const path = join(root, "scenario.json");
     await writeFile(path, JSON.stringify(scenarioFor(root)));
     const result = await cli.run({
@@ -74,7 +74,7 @@ cliTest.skipIf(CAPTURE_SKIP_REASON)(
 itWithCaptureCapability(
   "withholds private stdin echoes in advertised MCP Evidence",
   async () => {
-    const root = await createTestTempDirectory("rea-private-mcp-");
+    const root = await createTestTempDirectory("nre-private-mcp-");
     const { call } = await connectLocalToolsMcp();
     const result = await call("capture_process_scenario", scenarioFor(root));
     expect(result.isError).not.toBe(true);

@@ -33,7 +33,7 @@ const inspect = async (
 
 describe("ELF note provider failures", () => {
   it("projects compressed note sections as unsupported rather than malformed input", async () => {
-    const root = await createTestTempDirectory("rea-compressed-notes-");
+    const root = await createTestTempDirectory("nre-compressed-notes-");
     const path = join(root, "compressed.o");
     const bytes = elfNoteFixture({ ownership: "section" });
     const section = Number(bytes.readBigUInt64LE(40)) + 64;
@@ -48,7 +48,7 @@ describe("ELF note provider failures", () => {
     });
   });
   it("reports a note table past the end of the file as invalid input", async () => {
-    const root = await createTestTempDirectory("rea-elf-note-past-end-");
+    const root = await createTestTempDirectory("nre-elf-note-past-end-");
     const path = join(root, "program");
     await writeFile(path, elfNoteTablePastEnd());
     const result = await inspect(path);
@@ -69,7 +69,7 @@ describe("ELF note provider failures", () => {
 
   it("reports valid extended section numbering as an unsupported target", async () => {
     const root = await createTestTempDirectory(
-      "rea-elf-note-extended-numbering-",
+      "nre-elf-note-extended-numbering-",
     );
     const path = join(root, "extended-count.elf");
     await writeFile(path, elfExtendedSectionCountFixture());
@@ -87,7 +87,7 @@ describe("ELF note provider failures", () => {
   });
 
   it("names the note text budget instead of host memory", async () => {
-    const root = await createTestTempDirectory("rea-elf-note-text-budget-");
+    const root = await createTestTempDirectory("nre-elf-note-text-budget-");
     const path = join(root, "program");
     await writeFile(
       path,
@@ -113,7 +113,7 @@ describe("ELF note provider failures", () => {
   });
 
   it("keeps a caller file-size budget distinct from host memory", async () => {
-    const root = await createTestTempDirectory("rea-elf-note-file-budget-");
+    const root = await createTestTempDirectory("nre-elf-note-file-budget-");
     const path = join(root, "program");
     await writeFile(path, elfNoteFixture({ ownership: "program" }));
     const result = await inspect(path, { max_file_bytes: 64 });
@@ -134,7 +134,7 @@ describe("ELF note provider failures", () => {
     const namesOffset = Number(bytes.readBigUInt64LE(nameHeader + 24));
     const decodedNamesBytes = Number(bytes.readBigUInt64LE(namesOffset + 8));
     const minimumMaxFileBytes = bytes.length + decodedNamesBytes;
-    const root = await createTestTempDirectory("rea-elf-note-name-budget-");
+    const root = await createTestTempDirectory("nre-elf-note-name-budget-");
     const path = join(root, "compressed-names.elf");
     await writeFile(path, bytes);
 

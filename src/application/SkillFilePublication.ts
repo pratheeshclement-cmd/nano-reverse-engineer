@@ -87,7 +87,7 @@ export class SkillFilePublication {
   ): Promise<SkillFilePublication> {
     const parent = await realpath(dirname(path));
     const destination = join(parent, basename(path));
-    const directory = await mkdtemp(join(parent, ".rea-skill-"));
+    const directory = await mkdtemp(join(parent, ".nre-skill-"));
     const staging = await OwnedStagedOutput.create(directory);
     let publication: SkillFilePublication | undefined;
     try {

@@ -10,14 +10,14 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains configuration sources consumed by member access through %s",
   async (surface, { cli, processes }) => {
-    const root = await createTestTempDirectory("rea-config-reads-");
+    const root = await createTestTempDirectory("nre-config-reads-");
     await writeFixtureFiles(root, {
       "entry.mjs": [
-        "const length = process.env.REA_ENDPOINT.length;",
-        "const endpoint = process.env.REA_ENDPOINT;",
+        "const length = process.env.NRE_ENDPOINT.length;",
+        "const endpoint = process.env.NRE_ENDPOINT;",
         "const argumentLength = process.argv[2].length;",
         "const mode = process.argv[3].trim();",
-        "const optional = process.env.REA_MISSING?.length;",
+        "const optional = process.env.NRE_MISSING?.length;",
         "function shadow(process) { return process.env.LOCAL.length + process.argv[2].length; }",
         'const local = { env: { FAKE: "fake" }, argv: [0, 1, "abc"] };',
         'const control = shadow({ env: { LOCAL: "local" }, argv: [0, 1, "abc"] });',
@@ -27,7 +27,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
     const control = await processes.run(
       process.execPath,
       [join(root, "entry.mjs"), "abc", " mode "],
-      { env: { REA_ENDPOINT: "endpoint" }, timeoutMs: 15_000 },
+      { env: { NRE_ENDPOINT: "endpoint" }, timeoutMs: 15_000 },
     );
     expect(control.exitCode, control.stderr).toBe(0);
     expect(JSON.parse(control.stdout)).toEqual([
@@ -49,9 +49,9 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
     ).toEqual([
       ["argv", "2"],
       ["argv", "3"],
-      ["environment", "REA_ENDPOINT"],
-      ["environment", "REA_ENDPOINT"],
-      ["environment", "REA_MISSING"],
+      ["environment", "NRE_ENDPOINT"],
+      ["environment", "NRE_ENDPOINT"],
+      ["environment", "NRE_MISSING"],
     ]);
     expect(sources.every((node) => node.properties.value === null)).toBe(true);
     const endpoint = graph.nodes.find(
@@ -80,7 +80,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "does not claim an argv value after an unknown object selection escapes through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-config-escape-");
+    const root = await createTestTempDirectory("nre-config-escape-");
     await writeFixtureFiles(root, {
       "entry.mjs": [
         'throw new Error("static fixture must never execute");',

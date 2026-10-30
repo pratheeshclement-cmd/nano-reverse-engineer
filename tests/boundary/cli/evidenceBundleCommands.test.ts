@@ -68,7 +68,7 @@ const revisionBundle = () => {
 cliTest(
   "rejects empty Evidence path arguments before filesystem selection",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-empty-evidence-path-");
+    const root = await createTestTempDirectory("nre-empty-evidence-path-");
     const encoded = JSON.stringify(revisionBundle());
     await writeFile(join(root, "bundle.json"), encoded);
     for (const [args, field] of [
@@ -99,7 +99,7 @@ cliTest(
 cliTest(
   "preserves whitespace in selected Evidence filenames",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-spaced-path-");
+    const root = await createTestTempDirectory("nre-evidence-spaced-path-");
     const source = " bundle name.json";
     const output = " exported bundle.json";
     const bundle = revisionBundle();
@@ -161,7 +161,7 @@ cliTest(
 cliTest(
   "rejects directory exports with file-path recovery in both overwrite modes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-export-directory-cli-");
+    const root = await createTestTempDirectory("nre-export-directory-cli-");
     const source = join(root, "bundle.json");
     const output = join(root, "output");
     const sentinel = join(output, "keep.txt");
@@ -174,7 +174,7 @@ cliTest(
     for (const flags of [[], ["--overwrite"]]) {
       const result = await cli.run({
         arguments: ["evidence-export", source, output, ...flags, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode).toBe(1);
       expect(result.stderr).toBe("");
@@ -231,7 +231,7 @@ cliTest.for([
 ])(
   "explains a bundle BOM with the format owner's recovery through $0",
   async (operation, { cli }) => {
-    const root = await createTestTempDirectory("rea-bundle-bom-cli-");
+    const root = await createTestTempDirectory("nre-bundle-bom-cli-");
     const path = join(root, "bundle.json");
     const canonical = join(root, "canonical.json");
     const output = join(root, "exported.json");
@@ -249,7 +249,7 @@ cliTest.for([
             : ["compare", canonical, path];
     const result = await cli.run({
       arguments: [...arguments_, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode).toBe(1);
     expect(result.json).toMatchObject({
@@ -267,7 +267,7 @@ cliTest.for([
   "compare_bundles",
   "get_evidence_bundle",
 ])("attributes an early heap refusal to $0", async (operation, { cli }) => {
-  const root = await createTestTempDirectory("rea-bundle-operation-");
+  const root = await createTestTempDirectory("nre-bundle-operation-");
   const path = join(root, "parent.json");
   const output = join(root, "output.json");
   await writeFile(path, JSON.stringify(revisionBundle()));
@@ -282,7 +282,7 @@ cliTest.for([
   const result = await cli.run({
     arguments: [...arguments_, "--json"],
     environment: {
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
       NODE_OPTIONS: `--max-old-space-size=2048 --import=data:text/javascript;base64,${Buffer.from(preload).toString("base64")}`,
     },
   });
@@ -297,7 +297,7 @@ cliTest.for([
 cliTest(
   "reports standalone import counts for every unknown revision",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-import-");
+    const root = await createTestTempDirectory("nre-evidence-import-");
     const path = join(root, "bundle.json");
     await writeFile(path, JSON.stringify(revisionBundle()));
     const result = await cli.run({
@@ -311,7 +311,7 @@ cliTest(
 cliTest(
   "reports exported residual-unknown revision counts",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-export-counts-");
+    const root = await createTestTempDirectory("nre-evidence-export-counts-");
     for (const [label, bundle] of [
       ["empty", createEvidenceBundle([])],
       ["revisions", revisionBundle()],
@@ -347,7 +347,7 @@ cliTest(
 cliTest(
   "reports a standalone Evidence record as the wrong input file kind",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-record-input-");
+    const root = await createTestTempDirectory("nre-evidence-record-input-");
     const path = join(root, "record.json");
     const record = revisionBundle().records[0];
     if (record === undefined) throw new Error("Missing fixture Evidence");
@@ -368,7 +368,7 @@ cliTest(
 cliTest(
   "rejects altered Evidence and incomplete unknown history before reporting counts",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-import-invalid-");
+    const root = await createTestTempDirectory("nre-evidence-import-invalid-");
     const path = join(root, "bundle.json");
     const bundle = revisionBundle();
     for (const invalid of [
@@ -397,7 +397,7 @@ cliTest(
 cliTest(
   "preserves a selected own __proto__ member from complete bundle data",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-filter-proto-");
+    const root = await createTestTempDirectory("nre-evidence-filter-proto-");
     const path = join(root, "bundle.json");
     const result = jsonValueSchema.parse(
       JSON.parse('{"__proto__":{"answer":7},"normal":{"answer":7}}'),
@@ -438,7 +438,7 @@ cliTest(
 cliTest(
   "preserves cell text when formatting retained Evidence as Markdown",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-evidence-markdown-cells-");
+    const root = await createTestTempDirectory("nre-evidence-markdown-cells-");
     const path = join(root, "bundle.json");
     const result = {
       text: "left|right\\tail\nnext",
@@ -477,7 +477,7 @@ cliTest(
 cliTest(
   "diagnoses an obsolete explicit-null Evidence commitment without claiming the file was modified",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-legacy-coverage-identity-");
+    const root = await createTestTempDirectory("nre-legacy-coverage-identity-");
     const path = join(root, "legacy.json");
     const record = PRE_66_NULL_COVERAGE_EVIDENCE;
     const bundle = {

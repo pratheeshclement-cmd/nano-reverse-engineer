@@ -7,7 +7,7 @@ import noPositionalToolContract from "./rules/no-positional-tool-contract.mjs";
 import noSharedModuleMock from "./rules/no-shared-module-mock.mjs";
 
 export default {
-  meta: { name: "rea" },
+  meta: { name: "nre" },
   rules: {
     "no-buffer-deep-equality": noBufferDeepEquality,
     "cancellation-cause": cancellationCause,

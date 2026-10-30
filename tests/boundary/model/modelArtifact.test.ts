@@ -28,7 +28,7 @@ import {
 const hash = (bytes: Buffer) =>
   createHash("sha256").update(bytes).digest("hex");
 const providerAt = async (bytes: Buffer) => {
-  const root = await createTestTempDirectory("rea-model-reader-");
+  const root = await createTestTempDirectory("nre-model-reader-");
   const path = join(root, "content.without-format-extension");
   await writeFile(path, bytes);
   const provider = new ModelArtifactProvider();

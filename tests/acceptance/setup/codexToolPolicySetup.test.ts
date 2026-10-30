@@ -21,12 +21,12 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "Codex policy survives setup preview, refresh, doctor, repeat and uninstall",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-codex-tool-policy-");
+    const home = await createTestTempDirectory("nre-codex-tool-policy-");
     const config = join(home, ".codex/config.toml");
     const original = codexToolPolicySource(
       "tables",
       currentClientRegistrationCommand({
-        entrypointPath: resolve("scripts/rea.mjs"),
+        entrypointPath: resolve("scripts/nre.mjs"),
       }),
     );
     await mkdir(dirname(config), { recursive: true });
@@ -45,7 +45,7 @@ cliTest(
           USERPROFILE: home,
           CODEX_HOME: dirname(config),
           XDG_CONFIG_HOME: join(home, ".config"),
-          REA_GHIDRA_STARTUP_TIMEOUT_MS: "17000",
+          NRE_GHIDRA_STARTUP_TIMEOUT_MS: "17000",
         },
       });
     const doctorArguments = [
@@ -89,20 +89,20 @@ cliTest(
       model: "caller-model",
       mcp_servers: {
         other: { command: "other" },
-        rea: {
+        nre: {
           ...codexToolPolicy,
           startup_timeout_sec: 19,
           tool_timeout_sec: 999,
           env: {
             CALLER_SETTING: "kept exactly",
-            REA_GHIDRA_STARTUP_TIMEOUT_MS: "17000",
+            NRE_GHIDRA_STARTUP_TIMEOUT_MS: "17000",
           },
         },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     await assertMode(config);
-    await assertMode(`${config}.rea.backup`);
+    await assertMode(`${config}.nre.backup`);
     assertAligned((await run(doctorArguments)).json);
     const repeated = await run([...setupArguments, "--yes"]);
     expect(repeated.exitCode, repeated.stdout).toBe(0);
@@ -111,9 +111,9 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     await assertMode(config);
-    await assertMode(`${config}.rea.backup`);
+    await assertMode(`${config}.nre.backup`);
 
     const removed = await run(["uninstall", "--json"]);
     expect(removed.exitCode, removed.stdout).toBe(0);
@@ -121,6 +121,6 @@ cliTest(
       model: "caller-model",
       mcp_servers: { other: { command: "other" } },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
   },
 );

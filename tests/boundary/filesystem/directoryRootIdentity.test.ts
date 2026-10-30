@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.each(["before-open", "during-inspection", "during-stream"] as const)(
   "rejects replacement of the admitted physical root %s even when file identity survives",
   async (stage) => {
-    const root = await createTestTempDirectory("rea-directory-root-identity-");
+    const root = await createTestTempDirectory("nre-directory-root-identity-");
     const original = join(root, "original");
     await mkdir(original);
     await writeFile(join(original, "sample.txt"), "original content");
@@ -62,7 +62,7 @@ it.each(["before-open", "during-inspection", "during-stream"] as const)(
 );
 
 it("discards unverified desktop byte facts when the admitted root changes during inspection", async () => {
-  const root = await createTestTempDirectory("rea-desktop-root-identity-");
+  const root = await createTestTempDirectory("nre-desktop-root-identity-");
   const original = join(root, "original");
   const moved = join(root, "moved");
   await mkdir(original);

@@ -46,7 +46,7 @@ describe("JavaScript file URL paths", () => {
   it.each(urlCases)(
     "resolves %s to the file read by Node",
     async (reference, target, sourcePath) => {
-      const root = await createTestTempDirectory("rea-file-url-path-");
+      const root = await createTestTempDirectory("nre-file-url-path-");
       const sourceFile = join(root, sourcePath);
       await mkdir(dirname(sourceFile), { recursive: true });
       await writeFile(join(root, target), 'module.exports = "real preload";\n');
@@ -88,7 +88,7 @@ describe("JavaScript file URL paths", () => {
   );
 
   it("keeps a decoded absolute file URL unmapped without host ownership", async () => {
-    const root = await createTestTempDirectory("rea-literal-file-url-");
+    const root = await createTestTempDirectory("nre-literal-file-url-");
     await mkdir(join(root, "app"), { recursive: true });
     await writeFile(
       join(root, "app", "preload name.cjs"),

@@ -58,7 +58,7 @@ describe("guided prompt completion from live analysis", () => {
           ),
       },
     );
-    directory = await createTestTempDirectory("rea-prompt-completion-");
+    directory = await createTestTempDirectory("nre-prompt-completion-");
     const target = join(directory, "fixture.hop");
     await writeFile(target, "fixture");
     expect((await session.open(target)).ok).toBe(true);
@@ -93,7 +93,7 @@ it("offers only captures admitted by the process comparison identity", async () 
   const session = createTestBinarySession(() => client([]));
   const captureResult = jsonValueSchema.parse(EMPTY_PROCESS_CAPTURE_EXAMPLE);
   const unsupportedProvider = createEvidence(undefined, fixtureProvider, {
-    predicateType: "rea.process-capture",
+    predicateType: "nre.process-capture",
     operation: "capture_process_scenario",
     parameters: {},
     result: captureResult,
@@ -102,7 +102,7 @@ it("offers only captures admitted by the process comparison identity", async () 
     environment: fixtureEnvironment,
   });
   const wrongPredicate = createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.other-process-data",
+    predicateType: "nre.other-process-data",
     operation: "capture_process_scenario",
     parameters: {},
     result: captureResult,
@@ -139,7 +139,7 @@ describe("guided prompt completion from investigation records", () => {
       manifest: { ...legacyManifest, executable_sha256 },
     };
     const evidence = createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: legacyCapture,
@@ -160,7 +160,7 @@ describe("guided prompt completion from investigation records", () => {
   it("projects only validated typed identifiers from the evidence ledger", async () => {
     const session = createTestBinarySession(() => client([]));
     const invalidCapture = createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: {},
@@ -408,7 +408,7 @@ type InspectionCorruption =
 const createPagedInspectionEvidence = async (
   corruption?: InspectionCorruption,
 ) => {
-  directory = await createTestTempDirectory("rea-prompt-inspection-pages-");
+  directory = await createTestTempDirectory("nre-prompt-inspection-pages-");
   const path = join(directory, "fixture.app");
   await mkdir(path);
   await Promise.all([

@@ -30,7 +30,7 @@ import {
 it.each(["absent", "valid", "uninterpretable"] as const)(
   "preserves %s lipo fields through native observations and structural slice inventory",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-lipo-field-owner-");
+    const root = await createTestTempDirectory("nre-lipo-field-owner-");
     const path = join(root, "fat");
     const thin = machoImage({ cpu: CPU.arm64 });
     await writeFile(path, fatImage([{ cpu: CPU.arm64, bytes: thin }]));
@@ -117,7 +117,7 @@ it.each(["absent", "valid", "uninterpretable"] as const)(
 );
 
 it("does not replace a parsed contradictory lipo range with structural fallback", async () => {
-  const root = await createTestTempDirectory("rea-lipo-known-mismatch-");
+  const root = await createTestTempDirectory("nre-lipo-known-mismatch-");
   const path = join(root, "fat");
   const thin = machoImage({ cpu: CPU.arm64 });
   await writeFile(path, fatImage([{ cpu: CPU.arm64, bytes: thin }]));
@@ -141,7 +141,7 @@ it("does not replace a parsed contradictory lipo range with structural fallback"
 });
 
 it("refuses retained raw-field expansion as capacity rather than a malformed lipo record", async () => {
-  const root = await createTestTempDirectory("rea-lipo-field-capacity-");
+  const root = await createTestTempDirectory("nre-lipo-field-capacity-");
   const path = join(root, "fat");
   await writeFile(
     path,
@@ -226,7 +226,7 @@ it("refuses retained raw-field expansion as capacity rather than a malformed lip
 
 it("does not publish file locations beyond the selected binary slice", async () => {
   const path = join(
-    await createTestTempDirectory("rea-macho-location-"),
+    await createTestTempDirectory("nre-macho-location-"),
     "fixture",
   );
   const segment = Buffer.alloc(72);

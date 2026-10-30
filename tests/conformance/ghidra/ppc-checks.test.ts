@@ -33,11 +33,11 @@ Symbol table '.symtab' contains 7 entries:
    Num:    Value  Size Type    Bind   Vis      Ndx Name
      0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND
      1: 00000000     0 FILE    LOCAL  DEFAULT  ABS ppc.c
-     2: 10010180    48 FUNC    GLOBAL DEFAULT    4 rea_ppc_leaf
-     3: 1002023c     4 OBJECT  GLOBAL DEFAULT    5 rea_ppc_global
-     4: 100101b0   116 FUNC    GLOBAL DEFAULT    4 rea_ppc_entry
-     5: 100000f4    29 OBJECT  GLOBAL DEFAULT    1 rea_ppc_marker
-     6: 10010224    24 FUNC    GLOBAL DEFAULT    4 rea_ppc_probe
+     2: 10010180    48 FUNC    GLOBAL DEFAULT    4 nre_ppc_leaf
+     3: 1002023c     4 OBJECT  GLOBAL DEFAULT    5 nre_ppc_global
+     4: 100101b0   116 FUNC    GLOBAL DEFAULT    4 nre_ppc_entry
+     5: 100000f4    29 OBJECT  GLOBAL DEFAULT    1 nre_ppc_marker
+     6: 10010224    24 FUNC    GLOBAL DEFAULT    4 nre_ppc_probe
 `;
 const sha256 = "a".repeat(64);
 const image = {
@@ -80,7 +80,7 @@ describe("PowerPC real-verifier independent expectations", () => {
       type: 2,
       flags: 0,
     });
-    expect(parsed.symbols.rea_ppc_probe).toBe("0x10010224");
+    expect(parsed.symbols.nre_ppc_probe).toBe("0x10010224");
   });
 
   it.each([
@@ -97,7 +97,7 @@ describe("PowerPC real-verifier independent expectations", () => {
       "Flags:                             0x0",
       "Flags: 0x80000000",
     ],
-    ["missing symbol", "rea_ppc_probe", "unrelated_probe"],
+    ["missing symbol", "nre_ppc_probe", "unrelated_probe"],
   ])(
     "rejects %s instead of returning a guessed fixture interpretation",
     (_name, from, to) => {

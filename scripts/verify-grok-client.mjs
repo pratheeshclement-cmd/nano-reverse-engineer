@@ -21,15 +21,15 @@ assert(
   "Native Grok verifier requires POSIX; Windows is unverified",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_GROK_COMMAND ?? "grok";
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_GROK_COMMAND ?? "grok";
 const mode = process.argv[2] ?? "call";
 assert(
   ["chat", "call"].includes(mode),
   "Usage: verify-grok-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-grok-client-"));
+const lab = await mkdtemp(join(tmpdir(), "nre-grok-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -38,9 +38,9 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
 );
-const expectedNames = TOOL_CONTRACTS.map((tool) => "rea__" + tool.name).sort();
+const expectedNames = TOOL_CONTRACTS.map((tool) => "nre__" + tool.name).sort();
 let clientVersion = null;
 let expectedSkill;
 let turn = 0;
@@ -89,7 +89,7 @@ await withVerifierCleanup(async () => {
       XDG_DATA_HOME: join(lab, "data"),
       XDG_CONFIG_HOME: join(lab, "config"),
       XDG_CACHE_HOME: join(lab, "cache"),
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     const target = join(lab, "fixture α测试");
     await mkdir(target);
@@ -153,12 +153,12 @@ await withVerifierCleanup(async () => {
     };
     const diagnosticFile = join(lab, "native-doctor.json");
     const diagnosticCode =
-      "const fs=require('node:fs');const d=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));console.log(JSON.stringify({rea_client_diagnostic:{healthy:d.healthy,registrations:d.identity.registrations.filter(r=>r.client==='grok_build'),skill:d.identity.skill.state}}));";
+      "const fs=require('node:fs');const d=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));console.log(JSON.stringify({nre_client_diagnostic:{healthy:d.healthy,registrations:d.identity.registrations.filter(r=>r.client==='grok_build'),skill:d.identity.skill.state}}));";
     // Query the saved result through a native agent command. Only the facts needed
     // for this analyst question enter context; the complete named-schema Evidence
     // and its digest remain available in the native artifact.
     const recoveryCode =
-      "const fs=require('node:fs'),crypto=require('node:crypto');const bytes=fs.readFileSync(process.argv[1]),e=JSON.parse(bytes);const shapes=e.normalized_result.graph.nodes.flatMap(n=>n.observations).map(o=>o.properties).filter(p=>p.semantic_role==='export-return-shapes'&&p.exported_name==='result');console.log(JSON.stringify({rea_recovered:{evidence_id:e.evidence_id,subject:e.subject,operation:e.operation,artifact_sha256:crypto.createHash('sha256').update(bytes).digest('hex'),byte_length:bytes.length,shapes}}));";
+      "const fs=require('node:fs'),crypto=require('node:crypto');const bytes=fs.readFileSync(process.argv[1]),e=JSON.parse(bytes);const shapes=e.normalized_result.graph.nodes.flatMap(n=>n.observations).map(o=>o.properties).filter(p=>p.semantic_role==='export-return-shapes'&&p.exported_name==='result');console.log(JSON.stringify({nre_recovered:{evidence_id:e.evidence_id,subject:e.subject,operation:e.operation,artifact_sha256:crypto.createHash('sha256').update(bytes).digest('hex'),byte_length:bytes.length,shapes}}));";
     fixture = await createOpenAiModelFixture({
       directory: lab,
       prefix: "grok",
@@ -167,7 +167,7 @@ await withVerifierCleanup(async () => {
         if (!tools.some((tool) => tool.name === "search_tool"))
           return {
             role: "assistant",
-            content: "REA fixture auxiliary response",
+            content: "NRE fixture auxiliary response",
           };
         turn++;
         assert(
@@ -180,7 +180,7 @@ await withVerifierCleanup(async () => {
         );
         if (mode === "chat") {
           finalSeen = true;
-          return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+          return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
         }
         const replies = body.messages.filter(
           (message) => message.role === "tool",
@@ -205,7 +205,7 @@ await withVerifierCleanup(async () => {
             diagnosticsRequested = true;
             const diagnostic = [
               process.execPath,
-              join(runtimeRoot, "scripts/rea.mjs"),
+              join(runtimeRoot, "scripts/nre.mjs"),
               "doctor",
               "--client",
               "grok_build",
@@ -225,18 +225,18 @@ await withVerifierCleanup(async () => {
             return call("run_terminal_command", {
               command: `${diagnostic} > ${shellQuote(diagnosticFile)} && ${projection}`,
               description:
-                "Diagnose REA registration while native MCP discovery is pending",
+                "Diagnose NRE registration while native MCP discovery is pending",
             });
           }
           if (lastTool === "run_terminal_command") {
             const line = last
               .split("\n")
-              .find((item) => item.startsWith('{"rea_client_diagnostic":'));
+              .find((item) => item.startsWith('{"nre_client_diagnostic":'));
             assert(
               line,
-              "Native REA diagnostics failed or did not return the selected status",
+              "Native NRE diagnostics failed or did not return the selected status",
             );
-            const diagnostic = JSON.parse(line).rea_client_diagnostic;
+            const diagnostic = JSON.parse(line).nre_client_diagnostic;
             assert.equal(diagnostic.healthy, true);
             assert.equal(diagnostic.skill, "aligned");
             assert(
@@ -249,15 +249,15 @@ await withVerifierCleanup(async () => {
             diagnosticsVerified = true;
           }
           if (discovery?.status !== "ready")
-            return call("search_tool", { query: "rea", limit: 255 });
+            return call("search_tool", { query: "nre", limit: 255 });
           const inventory = discovery.results
-            .filter((result) => result.server === "rea")
+            .filter((result) => result.server === "nre")
             .flatMap((result) => result.tools);
           catalogSize = inventory.length;
           assert.deepEqual(
             inventory.map((tool) => tool.tool_name).sort(),
             expectedNames,
-            "Native search_tool must discover the complete REA catalog",
+            "Native search_tool must discover the complete NRE catalog",
           );
           for (const tool of inventory) {
             assert(
@@ -274,7 +274,7 @@ await withVerifierCleanup(async () => {
           catalogChecked = true;
           analysisRequested = true;
           return call("use_tool", {
-            tool_name: "rea__analyze_javascript_application",
+            tool_name: "nre__analyze_javascript_application",
             tool_input: { input_path: target, format: "directory" },
           });
         }
@@ -286,7 +286,7 @@ await withVerifierCleanup(async () => {
             finalSeen = true;
             return {
               role: "assistant",
-              content: "REA_CLIENT_COMPATIBILITY_OK",
+              content: "NRE_CLIENT_COMPATIBILITY_OK",
             };
           }
           // The native hint explicitly calls for a query rather than read_file on
@@ -311,17 +311,17 @@ await withVerifierCleanup(async () => {
               .map(shellQuote)
               .join(" "),
             description:
-              "Query full saved REA Evidence while preserving artifact identity",
+              "Query full saved NRE Evidence while preserving artifact identity",
           });
         }
         const line = last
           .split("\n")
-          .find((item) => item.startsWith('{"rea_recovered":'));
+          .find((item) => item.startsWith('{"nre_recovered":'));
         assert(
           line,
           "The next model request must contain native artifact query output",
         );
-        const projection = JSON.parse(line).rea_recovered;
+        const projection = JSON.parse(line).nre_recovered;
         assert.deepEqual(
           projection,
           expectedProjection,
@@ -329,12 +329,12 @@ await withVerifierCleanup(async () => {
         );
         projectionSeen = true;
         finalSeen = true;
-        return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+        return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
       },
     });
     const q = JSON.stringify;
     const original = `# Keep unrelated settings and server state.
-disabled_mcp_servers = ["rea", "other"]
+disabled_mcp_servers = ["nre", "other"]
 [cli]
 auto_update = false
 [features]
@@ -342,8 +342,8 @@ telemetry = "off"
 [skills]
 paths = [${q(join(account, ".agents", "skills"))}]
 ignore = [${q(join(homedir(), ".agents", "skills"))}]
-[model.rea-client-fixture]
-model = "rea-client-fixture"
+[model.nre-client-fixture]
+model = "nre-client-fixture"
 base_url = ${q(fixture.baseUrl)}
 api_key = "local-fixture-key"
 api_backend = "chat_completions"
@@ -354,10 +354,10 @@ command = "unrelated-server"
 enabled = false
 `;
     await writeFile(configPath, original);
-    const rea = async (args) =>
+    const nre = async (args) =>
       commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
     clientVersion = (
@@ -372,7 +372,7 @@ enabled = false
       ["setup", "--client", "grok_build", "--yes"],
       ["doctor", "--client", "grok_build", "--skill"],
     ]) {
-      const result = await rea(args);
+      const result = await nre(args);
       await writeFile(
         join(
           lab,
@@ -410,18 +410,18 @@ enabled = false
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert(
       configured.includes("unrelated-server") &&
         configured.includes("# Keep unrelated settings"),
     );
     const repeated = JSON.parse(
-      (await rea(["setup", "--client", "grok_build", "--yes"])).stdout,
+      (await nre(["setup", "--client", "grok_build", "--yes"])).stdout,
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const skill = await readFile(join(skillDirectory, "SKILL.md"), "utf8");
     expectedSkill = skill
       .trimEnd()
@@ -438,9 +438,9 @@ enabled = false
             "-p",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use the REA skill to analyze ${target}.`,
+              : `Use the NRE skill to analyze ${target}.`,
             "-m",
-            "rea-client-fixture",
+            "nre-client-fixture",
             "--output-format",
             "streaming-messages-json",
             "--always-approve",
@@ -467,10 +467,10 @@ enabled = false
     const init = events.find(
       (event) => event.type === "system" && event.subtype === "init",
     );
-    assert(init?.mcp_servers?.some((server) => server.name === "rea"));
+    assert(init?.mcp_servers?.some((server) => server.name === "nre"));
     assert(
       init.mcp_servers.every((server) =>
-        ["rea", "other"].includes(server.name),
+        ["nre", "other"].includes(server.name),
       ),
       "Do not inherit foreign MCP configuration",
     );
@@ -480,7 +480,7 @@ enabled = false
           event.type === "result" &&
           event.subtype === "success" &&
           event.is_error === false &&
-          event.result === "REA_CLIENT_COMPATIBILITY_OK",
+          event.result === "NRE_CLIENT_COMPATIBILITY_OK",
       ),
     );
     assert(finalSeen);
@@ -520,7 +520,7 @@ enabled = false
       discovery:
         "native GROK_HOME, isolated additional skill directory, disabled foreign compatibility sources; default OS-home skill discovery and Windows unverified",
       interface:
-        "default native search_tool/use_tool with a complete explicit inventory query; asynchronous partial discovery may trigger native REA diagnosis; large MCP outputs are queried via native terminal",
+        "default native search_tool/use_tool with a complete explicit inventory query; asynchronous partial discovery may trigger native NRE diagnosis; large MCP outputs are queried via native terminal",
       catalogChecked,
       catalogSize,
       schemasChecked,

@@ -43,7 +43,7 @@ const expectIdentity = async ({
   });
 };
 
-describe("rea mcp --http", () => {
+describe("nre mcp --http", () => {
   processTest(
     "serves initialize, tools/list, a tool call and DELETE, then keeps serving later clients",
     async ({ processes }) => {

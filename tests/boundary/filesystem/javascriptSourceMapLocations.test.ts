@@ -14,7 +14,7 @@ import {
 it.each(["\n", "\r\n", "\r", "\u2028", "\u2029"])(
   "preserves source-map graph evidence coordinates after %j",
   async (separator) => {
-    const root = await createTestTempDirectory("rea-source-map-locations-");
+    const root = await createTestTempDirectory("nre-source-map-locations-");
     const directive = "//# sourceMappingURL=app.js.map";
     const source = `const marker = "😀";${separator}  ${directive}`;
     await writeFile(join(root, "app.js"), source);
@@ -62,7 +62,7 @@ it.each(["\n", "\r\n", "\r", "\u2028", "\u2029"])(
 );
 
 it("owns an inline source-map URL once and recovers it from the target after JSON roundtrip", async () => {
-  const root = await createTestTempDirectory("rea-inline-source-map-url-");
+  const root = await createTestTempDirectory("nre-inline-source-map-url-");
   const sourceContent = "source;".repeat(16_384);
   const sourceMap = JSON.stringify({
     version: 3,
@@ -108,7 +108,7 @@ it("owns an inline source-map URL once and recovers it from the target after JSO
 });
 
 it("associates each source-map URL with its edge when aliases share one physical map", async () => {
-  const root = await createTestTempDirectory("rea-source-map-aliases-");
+  const root = await createTestTempDirectory("nre-source-map-aliases-");
   await mkdir(join(root, "dist"));
   await writeFile(
     join(root, "dist", "app.js.map"),
@@ -169,7 +169,7 @@ it("associates each source-map URL with its edge when aliases share one physical
 });
 
 it("resolves a bare source-map file name and module worker URL next to the script", async () => {
-  const root = await createTestTempDirectory("rea-source-map-relative-");
+  const root = await createTestTempDirectory("nre-source-map-relative-");
   await mkdir(join(root, "dist"));
   await writeFile(
     join(root, "dist", "app.js"),

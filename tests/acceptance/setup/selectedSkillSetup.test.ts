@@ -18,13 +18,10 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["root", "references"] as const)(
   "rejects a linked skill %s during planning before configuring a client",
   async (kind, { cli }) => {
-    const directory = await createTestTempDirectory("rea-skill-preflight-");
-    const selected = join(
-      directory,
-      ".claude/skills/reverse-engineer-anything",
-    );
+    const directory = await createTestTempDirectory("nre-skill-preflight-");
+    const selected = join(directory, ".claude/skills/nano-reverse-engineer");
     const managed = join(directory, "user-managed");
-    const source = resolve("skills/reverse-engineer-anything");
+    const source = resolve("skills/nano-reverse-engineer");
     await mkdir(kind === "root" ? dirname(selected) : selected, {
       recursive: true,
     });
@@ -81,15 +78,12 @@ cliTest.for(["root", "references"] as const)(
 cliTest(
   "setup refuses a linked skill while allowing registration-only setup",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-linked-skill-cli-");
+    const directory = await createTestTempDirectory("nre-linked-skill-cli-");
     const managed = join(directory, "managed");
-    const selected = join(
-      directory,
-      ".claude/skills/reverse-engineer-anything",
-    );
+    const selected = join(directory, ".claude/skills/nano-reverse-engineer");
     await mkdir(managed);
     await mkdir(join(directory, ".claude/skills"), { recursive: true });
-    await cp(resolve("skills/reverse-engineer-anything"), managed, {
+    await cp(resolve("skills/nano-reverse-engineer"), managed, {
       recursive: true,
     });
     const original = await readFile(join(managed, "SKILL.md"), "utf8");
@@ -142,13 +136,10 @@ cliTest(
 cliTest(
   "uninstall reports retained references and preserves their ownership manifest",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-skill-retained-cli-");
-    const selected = join(
-      directory,
-      ".claude/skills/reverse-engineer-anything",
-    );
+    const directory = await createTestTempDirectory("nre-skill-retained-cli-");
+    const selected = join(directory, ".claude/skills/nano-reverse-engineer");
     const managed = join(directory, "user-managed-references");
-    const source = resolve("skills/reverse-engineer-anything");
+    const source = resolve("skills/nano-reverse-engineer");
     await mkdir(selected, { recursive: true });
     await cp(join(source, "SKILL.md"), join(selected, "SKILL.md"));
     await cp(join(source, "references"), managed, { recursive: true });
@@ -194,12 +185,9 @@ cliTest(
 cliTest(
   "skill-only setup verifies its selected client copy on install, rerun and repair",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-selected-skill-");
-    const selected = join(
-      directory,
-      ".claude/skills/reverse-engineer-anything",
-    );
-    const shared = join(directory, ".agents/skills/reverse-engineer-anything");
+    const directory = await createTestTempDirectory("nre-selected-skill-");
+    const selected = join(directory, ".claude/skills/nano-reverse-engineer");
+    const shared = join(directory, ".agents/skills/nano-reverse-engineer");
     const run = (args: readonly string[]) =>
       cli.run({
         arguments: [...args, "--json"],
@@ -245,7 +233,7 @@ cliTest(
         identity: { skill: { state: "aligned" } },
       },
     });
-    const bundle = resolve("skills/reverse-engineer-anything");
+    const bundle = resolve("skills/nano-reverse-engineer");
     const assertAligned = async () => {
       for (const entry of await readdir(bundle, {
         recursive: true,
@@ -303,7 +291,7 @@ cliTest(
 cliTest(
   "setup keeps registration and skill readiness selections independent",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-independent-skill-");
+    const directory = await createTestTempDirectory("nre-independent-skill-");
     const result = await cli.run({
       arguments: [
         "setup",
@@ -332,13 +320,13 @@ cliTest(
     });
     await access(join(directory, ".codex/config.toml"));
     await access(
-      join(directory, ".claude/skills/reverse-engineer-anything/SKILL.md"),
+      join(directory, ".claude/skills/nano-reverse-engineer/SKILL.md"),
     );
     await expect(access(join(directory, ".claude.json"))).rejects.toMatchObject(
       { code: "ENOENT" },
     );
     await expect(
-      access(join(directory, ".agents/skills/reverse-engineer-anything")),
+      access(join(directory, ".agents/skills/nano-reverse-engineer")),
     ).rejects.toMatchObject({ code: "ENOENT" });
   },
 );

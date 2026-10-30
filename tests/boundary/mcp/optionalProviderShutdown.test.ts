@@ -18,7 +18,7 @@ const environment = {
   HOME: `${root}/home`,
   XDG_CONFIG_HOME: `${root}/config`,
   XDG_CACHE_HOME: `${root}/cache`,
-  REA_LOG_LEVEL: "silent",
+  NRE_LOG_LEVEL: "silent",
 };
 for (const path of [
   environment.HOME,

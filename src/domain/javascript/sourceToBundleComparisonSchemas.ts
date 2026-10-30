@@ -86,7 +86,7 @@ export const sourceToBundleComparisonResultSchema = z.strictObject({
     root_artifact_sha256: digestSchema,
   }),
   scoring: z.strictObject({
-    algorithm: z.literal("rea-source-to-bundle-signals"),
+    algorithm: z.literal("nre-source-to-bundle-signals"),
     minimum_candidate_score: z.literal(20),
     weights: z.array(
       z.strictObject({

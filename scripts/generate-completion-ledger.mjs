@@ -18,8 +18,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outputRoot = join(root, "docs/verification");
 const check = arguments_.has("--check");
 const verifierEnvironment = { ...process.env };
-delete verifierEnvironment.REA_MANAGED_APP_MANIFEST_PATH;
-delete verifierEnvironment.REA_ILSPY_CMD_PATH;
+delete verifierEnvironment.NRE_MANAGED_APP_MANIFEST_PATH;
+delete verifierEnvironment.NRE_ILSPY_CMD_PATH;
 
 const { stdout } = await exec(
   process.execPath,
@@ -48,10 +48,10 @@ const { createCompletionLedgerArtifacts } = await importVerifierSource(
   import.meta.url,
 );
 const skillDigest = await directoryDigest(
-  join(root, "skills/reverse-engineer-anything"),
+  join(root, "skills/nano-reverse-engineer"),
 );
 const generated = createCompletionLedgerArtifacts(portableCompletionReport, [
-  { skill_id: "reverse-engineer-anything", sha256: skillDigest },
+  { skill_id: "nano-reverse-engineer", sha256: skillDigest },
 ]);
 
 if (!check) await mkdir(outputRoot, { recursive: true });

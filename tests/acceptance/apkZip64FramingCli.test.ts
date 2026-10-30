@@ -81,7 +81,7 @@ const expectRefusal = async (
 cliTest(
   "classifies damaged Zip64 framing as input errors through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-zip64-framing-");
+    const root = await createTestTempDirectory("nre-apk-zip64-framing-");
     const path = join(root, "selected.apk");
     const fixture = await zip64Tail();
     const { recordOffset, locatorOffset, eocdOffset } = fixture;
@@ -148,7 +148,7 @@ cliTest(
 cliTest(
   "keeps Zip64 representation limits and non-ZIP targets distinct from damaged input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-zip64-unsupported-");
+    const root = await createTestTempDirectory("nre-apk-zip64-unsupported-");
     const path = join(root, "selected.apk");
     const fixture = await zip64Tail();
     for (const at of [

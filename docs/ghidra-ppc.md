@@ -2,7 +2,7 @@
 
 This lane extends native ELF analysis to 32-bit big-endian PowerPC; it does
 not execute PowerPC code. It is the first milestone of
-[#1741](https://github.com/morluto/rea/issues/1741). GameCube/Wii DOL
+[#1741](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/1741). GameCube/Wii DOL
 executables are covered by [GameCube DOL analysis](ghidra-dol.md). PPC64 and other
 PowerPC variants remain separate follow-ups.
 
@@ -30,7 +30,7 @@ The lane therefore imports with `PowerPC:BE:32:default` and compiler spec
 `default`, commits that choice in the analysis profile as
 `language_selection: "provider-pinned-v1"`, and checks the language Ghidra
 reports after import. A different language set through
-`REA_GHIDRA_LANGUAGE_ID` (and optionally `REA_GHIDRA_COMPILER_SPEC_ID`)
+`NRE_GHIDRA_LANGUAGE_ID` (and optionally `NRE_GHIDRA_COMPILER_SPEC_ID`)
 replaces the lane default and is admitted against the installed language
 catalog as usual; for example `PowerPC:BE:32:e500` for genuine e500 code.
 
@@ -45,8 +45,8 @@ implicitly gain PowerPC support. Windows Ghidra P0 remains PE x86/x86-64 only.
 With a caller-installed Ghidra and compatible JDK on a supported Linux/macOS host:
 
 ```bash
-rea analyze /absolute/path/to/ppc.elf --provider ghidra --json
-rea function /absolute/path/to/ppc.elf function_name --provider ghidra --json
+nre analyze /absolute/path/to/ppc.elf --provider ghidra --json
+nre function /absolute/path/to/ppc.elf function_name --provider ghidra --json
 ```
 
 MCP uses the existing tools, including `open_binary` with an absolute path and
@@ -58,10 +58,10 @@ introduced.
 The source-owned freestanding fixture is `tests/conformance/c/ppc.c`. The
 optional cross-target lane requires a caller-supplied Clang with the PowerPC
 target, LLD, GNU `readelf`, Ghidra and its compatible JDK; ordinary host-native
-checks do not acquire these tools. `REA_PPC_CLANG` selects Clang and
-`REA_PPC_READELF` selects GNU readelf (for example
+checks do not acquire these tools. `NRE_PPC_CLANG` selects Clang and
+`NRE_PPC_READELF` selects GNU readelf (for example
 `/opt/homebrew/opt/binutils/bin/readelf` on macOS). These are test-time
-prerequisites, not REA runtime providers.
+prerequisites, not NRE runtime providers.
 
 ```bash
 GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra npm run verify:ghidra:ppc
@@ -69,7 +69,7 @@ GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra npm run verify:ghidra:ppc
 
 The lane compiles the fixture for a 750-family core (`-mcpu=750`) and never
 executes it. GNU readelf independently supplies header facts and symbol
-addresses, compared with the production REA target resolver before provider
+addresses, compared with the production NRE target resolver before provider
 startup. Its version, bounded command output and selected tool path are
 retained in the verification report. The parser deliberately recognizes only
 this fixture's GNU output, rejecting missing, ambiguous or unexpected fields

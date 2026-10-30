@@ -41,7 +41,7 @@ import {
 import { RequestTrackingMcpServer } from "../RequestTrackingMcpServer.js";
 import { AnalysisResourceConstraintError } from "../../domain/analysisErrorCore.js";
 
-/** MCP endpoint path shared by `rea mcp --http` and agent environment servers. */
+/** MCP endpoint path shared by `nre mcp --http` and agent environment servers. */
 export const MCP_HTTP_PATH = "/mcp";
 
 /** One plain HTTP route served beside the MCP endpoint as web Request to Response. */
@@ -219,7 +219,7 @@ const classifyInitializePost = async (
     const read = await readRequestBody(probe);
     if (read.tooLarge) return undefined;
     const body: unknown = JSON.parse(read.text);
-    // SDK 2.3.1 accepts a one-message array. REA's session handover contract
+    // SDK 2.3.1 accepts a one-message array. NRE's session handover contract
     // requires an object, regardless of whether a session is already open.
     if (Array.isArray(body))
       return body.some(isInitializeRequest) ? "batch" : undefined;
@@ -527,7 +527,10 @@ export class MultiSessionManager implements McpSessionSlotPort {
         onsessioninitialized: () =>
           this.logger?.info({ sessionId }, "MCP HTTP session opened"),
         onsessionclosed: () =>
-          this.logger?.info({ sessionId }, "MCP HTTP session closed by the client"),
+          this.logger?.info(
+            { sessionId },
+            "MCP HTTP session closed by the client",
+          ),
       });
 
       const session = new LiveSession(transport, instance);
@@ -635,7 +638,7 @@ export const serveStreamableHttp = async (
       if (providedToken === undefined) {
         const xToken =
           request.headers.get("x-nre-auth-token") ??
-          request.headers.get("x-rea-auth-token");
+          request.headers.get("x-nre-auth-token");
         if (xToken !== null && xToken.trim().length > 0) {
           providedToken = xToken.trim();
         }
@@ -747,7 +750,7 @@ export const serveStreamableHttp = async (
         options.authToken === undefined &&
         options.allowUnauthenticated !== true &&
         process.env.NRE_ALLOW_UNAUTHENTICATED !== "true" &&
-        process.env.REA_ALLOW_UNAUTHENTICATED !== "true" &&
+        process.env.NRE_ALLOW_UNAUTHENTICATED !== "true" &&
         process.env.NODE_ENV !== "test"
       ) {
         throw new Error(

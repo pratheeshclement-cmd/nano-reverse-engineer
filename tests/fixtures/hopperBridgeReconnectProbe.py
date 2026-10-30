@@ -11,8 +11,8 @@ from hopperBridgeFacadeProbe import load_bridge
 
 def probe(path, socket_path, mode):
     bridge = load_bridge(path)
-    bridge.update(REA_SOCKET=socket_path, REA_TOKEN="owned-token", REA_RUN_ID="owned-run",
-                  REA_RECONNECT_TIMEOUT_SECONDS=0.2)
+    bridge.update(NRE_SOCKET=socket_path, NRE_TOKEN="owned-token", NRE_RUN_ID="owned-run",
+                  NRE_RECONNECT_TIMEOUT_SECONDS=0.2)
     requests = []
     entered = threading.Event()
     release = threading.Event()

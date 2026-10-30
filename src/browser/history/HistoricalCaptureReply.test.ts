@@ -8,7 +8,7 @@ import { decodeHarCapture } from "./HarCapture.js";
 import { readHistoricalCaptureReply } from "./HistoricalCaptureReply.js";
 
 const replyFile = async (bytes: Uint8Array) => {
-  const root = await createTestTempDirectory("rea-capture-reply-utf8-");
+  const root = await createTestTempDirectory("nre-capture-reply-utf8-");
   const path = join(root, "reply.json");
   await writeFile(path, bytes);
   const resources = new ArtifactResourceScope();

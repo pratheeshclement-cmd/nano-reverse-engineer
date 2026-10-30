@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 export async function buildRecoveryFixtures(root, prefix) {
   if (!prefix)
     throw new Error(
-      "verify:javascript:recovery requires REA_JAVASCRIPT_FIXTURE_TOOLS pointing to the isolated esbuild/webpack installation",
+      "verify:javascript:recovery requires NRE_JAVASCRIPT_FIXTURE_TOOLS pointing to the isolated esbuild/webpack installation",
     );
   const require = createRequire(join(prefix, "package.json"));
   const esbuild = require("esbuild");

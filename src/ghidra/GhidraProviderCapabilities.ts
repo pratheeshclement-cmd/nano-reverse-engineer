@@ -58,7 +58,7 @@ export const ghidraHealthLimitations = (
     ? [
         "This session opens a caller-selected existing Ghidra project through a private copy, without import, auto-analysis or repair scripts. Original analysis completeness and settings are unknown.",
         "The original project is never opened by Ghidra or modified. The private copy is read-only to bridge operations and deleted on close; original executable bytes are never written.",
-        "The analysis profile records the selected project content fingerprint and program name. The imported program SHA-256 must match the admitted target; the project may contain caller annotations or earlier edits, which are not fresh REA discoveries.",
+        "The analysis profile records the selected project content fingerprint and program name. The imported program SHA-256 must match the admitted target; the project may contain caller annotations or earlier edits, which are not fresh NRE discoveries.",
       ]
     : healthLimitations;
 
@@ -196,7 +196,7 @@ export const limitationsFor = (
         "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
         "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
         "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
-        "The Java bridge serializes one function request per Program. Decompilation runs until completion or caller cancellation unless REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS sets a per-function limit. That limit stops the requested decompile without requesting session closure; caller cancellation requests session closure.",
+        "The Java bridge serializes one function request per Program. Decompilation runs until completion or caller cancellation unless NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS sets a per-function limit. That limit stops the requested decompile without requesting session closure; caller cancellation requests session closure.",
       ];
     default:
       return common;

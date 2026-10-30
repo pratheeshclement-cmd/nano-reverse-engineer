@@ -27,7 +27,7 @@ describe("reverse engineering command services", () => {
   });
 
   it("uses compatible local DWARF link flags and disables debuginfod through the environment", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-reverse-tools-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-reverse-tools-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
     const calls: {
@@ -37,7 +37,7 @@ describe("reverse engineering command services", () => {
     }[] = [];
     const service = new ReverseEngineeringService({
       environment: {
-        REA_OBJDUMP_COMMAND: "/tools/objdump",
+        NRE_OBJDUMP_COMMAND: "/tools/objdump",
         DEBUGINFOD_URLS: "https://debug.example.invalid",
       },
       run: async (command, args, options) => {
@@ -77,7 +77,7 @@ describe("reverse engineering command services", () => {
 
   it("rejects non-regular artifacts without launching the provider", async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-reverse-special-file-"),
+      join(tmpdir(), "nre-reverse-special-file-"),
     );
     let invoked = false;
     const service = new ReverseEngineeringService({
@@ -106,7 +106,7 @@ describe("reverse engineering command services", () => {
 
   it("classifies captured spawn failures instead of reporting provider evidence", async () => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-objdump-spawn-failure-"),
+      join(tmpdir(), "nre-objdump-spawn-failure-"),
     );
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");
@@ -140,7 +140,7 @@ describe("reverse engineering command services", () => {
   });
 
   it("marks max-buffer termination as unknown completion while retaining output", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-objdump-max-buffer-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-objdump-max-buffer-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");
     const service = new ReverseEngineeringService({
@@ -193,12 +193,12 @@ it.each([
 ] as const)(
   "scopes the debug-link limitation to %s when following links is %s",
   async (operation, followDebugLinks, symbol, flags, warns) => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-objdump-limitations-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-objdump-limitations-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, "inert artifact");
     const calls: (readonly string[])[] = [];
     const service = new ReverseEngineeringService({
-      environment: { REA_OBJDUMP_COMMAND: "/tools/objdump" },
+      environment: { NRE_OBJDUMP_COMMAND: "/tools/objdump" },
       run: async (_command, args) => {
         calls.push(args);
         return { stdout: "captured stdout", stderr: "captured stderr" };
@@ -241,11 +241,11 @@ it.each([
 );
 
 it("uses one selected environment snapshot for provider selection and execution", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-environment-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-provider-environment-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, Buffer.from([0x7f, 0x45, 0x4c, 0x46]));
   const selectedEnvironment = {
-    REA_RIZIN_COMMAND: "/selected/rizin",
+    NRE_RIZIN_COMMAND: "/selected/rizin",
     PATH: "/selected/bin",
     SELECTED_VALUE: "captured",
   };
@@ -256,7 +256,7 @@ it("uses one selected environment snapshot for provider selection and execution"
       return { stdout: "headers", stderr: "" };
     },
   });
-  selectedEnvironment.REA_RIZIN_COMMAND = "/changed/rizin";
+  selectedEnvironment.NRE_RIZIN_COMMAND = "/changed/rizin";
   selectedEnvironment.SELECTED_VALUE = "changed after construction";
 
   try {
@@ -269,7 +269,7 @@ it("uses one selected environment snapshot for provider selection and execution"
       {
         command: resolve("/selected/rizin"),
         env: {
-          REA_RIZIN_COMMAND: "/selected/rizin",
+          NRE_RIZIN_COMMAND: "/selected/rizin",
           PATH: "/selected/bin",
           SELECTED_VALUE: "captured",
         },
@@ -281,7 +281,7 @@ it("uses one selected environment snapshot for provider selection and execution"
 });
 
 it("marks signal-terminated provider commands as unknown completion", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-signal-exit-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-provider-signal-exit-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   let invocation = 0;
@@ -348,13 +348,13 @@ it("marks signal-terminated provider commands as unknown completion", async () =
 
 describe("Rizin command service", () => {
   it("defaults Rizin to plain presentation and preserves caller-selected colour on nonzero exits", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-"));
     const path = join(directory, "fixture with spaces.bin");
     const callerPath = relative(process.cwd(), path);
     await writeFile(path, "fixture");
     const calls: { command: string; args: readonly string[] }[] = [];
     const service = new ReverseEngineeringService({
-      environment: { REA_RIZIN_COMMAND: "/tools/rizin" },
+      environment: { NRE_RIZIN_COMMAND: "/tools/rizin" },
       run: async (command, args) => {
         calls.push({ command, args });
         const failure = new Error("command exited with status 2") as Error & {
@@ -423,7 +423,7 @@ describe("Rizin command service", () => {
   });
 
   it("rejects multiline Rizin command input before launching the provider", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-input-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-input-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");
     let invoked = false;
@@ -447,7 +447,7 @@ describe("Rizin command service", () => {
   });
 
   it("preserves pre and post artifact digests when an unrestricted Rizin command changes the file", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-mutation-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-mutation-"));
     const path = join(directory, "fixture.bin");
     await writeFile(path, "before");
     const service = new ReverseEngineeringService({
@@ -483,7 +483,7 @@ describe("Rizin command service", () => {
 });
 
 it("retains partial Evidence when a provider command times out", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-rizin-timeout-partial-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-rizin-timeout-partial-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "before");
   const service = new ReverseEngineeringService({
@@ -570,7 +570,7 @@ it("shares one preflight deadline across stat and digest", async () => {
   };
   const started = performance.now();
   await expect(
-    digestFile("/tmp/rea-preflight-deadline", undefined, stat, 200, open),
+    digestFile("/tmp/nre-preflight-deadline", undefined, stat, 200, open),
   ).rejects.toMatchObject({ code: "ETIMEDOUT" });
   expect(performance.now() - started).toBeLessThan(280);
 });
@@ -579,7 +579,7 @@ it("retains an explicit null reason when digest admission is already cancelled",
   const controller = new AbortController();
   controller.abort(null);
   await expect(
-    digestFile("/tmp/rea-cancelled-digest", controller.signal),
+    digestFile("/tmp/nre-cancelled-digest", controller.signal),
   ).rejects.toMatchObject({
     _tag: "AnalysisCancelledError",
     cause: null,
@@ -598,7 +598,7 @@ it("retains an object reason when cancellation interrupts an active digest strea
     >;
   };
   const failure: unknown = await digestFile(
-    "/tmp/rea-cancelled-stream",
+    "/tmp/nre-cancelled-stream",
     controller.signal,
     stat,
     1_000,
@@ -611,7 +611,7 @@ it("retains an object reason when cancellation interrupts an active digest strea
 });
 
 it("forwards selected and omitted deadlines through the production command runner", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-owned-timeout-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-owned-timeout-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "before");
   const timeouts: (number | null)[] = [];
@@ -641,7 +641,7 @@ it("forwards selected and omitted deadlines through the production command runne
 
 it("applies a caller-selected one-shot deadline on the next call", async () => {
   const directory = await mkdtemp(
-    join(tmpdir(), "rea-rizin-timeout-selected-"),
+    join(tmpdir(), "nre-rizin-timeout-selected-"),
   );
   const path = join(directory, "fixture.bin");
   await writeFile(path, "before");
@@ -690,7 +690,7 @@ it("applies a caller-selected one-shot deadline on the next call", async () => {
 
 it("preserves raw byte counts when cancellation rejects invalid UTF-8 output", async () => {
   const directory = await mkdtemp(
-    join(tmpdir(), "rea-rizin-abort-invalid-utf8-"),
+    join(tmpdir(), "nre-rizin-abort-invalid-utf8-"),
   );
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
@@ -732,7 +732,7 @@ it("preserves raw byte counts when cancellation rejects invalid UTF-8 output", a
 });
 
 it("preserves provider facts when cancellation interrupts the post-run digest", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-rizin-digest-cancel-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-rizin-digest-cancel-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const controller = new AbortController();
@@ -784,7 +784,7 @@ it("preserves provider facts when cancellation interrupts the post-run digest", 
 });
 
 it("marks signal-terminated provider output incomplete", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-rizin-signal-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-rizin-signal-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const service = new ReverseEngineeringService({

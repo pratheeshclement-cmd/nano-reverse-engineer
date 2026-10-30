@@ -4,7 +4,7 @@ import { projectAnalysisError } from "../domain/analysisErrorProjection.js";
 import { captureJadxFailure } from "./JadxFailure.js";
 import { jadxOperationTimeoutGuidance } from "./JadxOperationTimeout.js";
 
-it("names REA_JADX_OPERATION_TIMEOUT_MS when the operation deadline elapses", () => {
+it("names NRE_JADX_OPERATION_TIMEOUT_MS when the operation deadline elapses", () => {
   const timeout = AbortSignal.abort(new Error("deadline"));
   const present = captureJadxFailure({
     cause: timeout.reason,
@@ -30,8 +30,8 @@ it("names REA_JADX_OPERATION_TIMEOUT_MS when the operation deadline elapses", ()
       maximum: 2_147_483_647,
       applies_at: "next_operation",
       agent_editable: true,
-      scope: "rea-runtime",
-      rea_restart_required: false,
+      scope: "nre-runtime",
+      nre_restart_required: false,
     },
   });
   expect(projected).toMatchObject({

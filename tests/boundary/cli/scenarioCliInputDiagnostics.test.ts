@@ -9,7 +9,7 @@ describe("scenario CLI schema diagnostics", () => {
   cliTest("reports browser scenario schema paths", async ({ cli }) => {
     const result = await cli.run({
       arguments: ["capture-browser-scenario", "{}", "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
 
     expect(result.exitCode).not.toBe(0);
@@ -56,7 +56,7 @@ describe("scenario CLI schema diagnostics", () => {
           "summary",
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
 
       expect(result.exitCode).not.toBe(0);
@@ -73,7 +73,7 @@ describe("scenario CLI schema diagnostics", () => {
   cliTest("reports Electron scenario schema paths", async ({ cli }) => {
     const result = await cli.run({
       arguments: ["capture-electron-scenario", "{}", "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
 
     expect(result.exitCode).not.toBe(0);
@@ -104,7 +104,7 @@ for (const field of [
   "application_root",
 ] as const) {
   cliTest(`names the unresolved Electron ${field}`, async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-path-");
+    const root = await createTestTempDirectory("nre-electron-path-");
     const missing = join(root, "missing");
     const result = await cli.run({
       arguments: [
@@ -118,7 +118,7 @@ for (const field of [
         }),
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode).toBe(1);
     expect(result.json).toMatchObject({
@@ -140,7 +140,7 @@ for (const field of [
 cliTest.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports a search-denied Electron application_path as access denied",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-denied-");
+    const root = await createTestTempDirectory("nre-electron-denied-");
     const denied = join(root, "denied");
     await mkdir(denied);
     const application = join(denied, "main.js");
@@ -158,7 +158,7 @@ cliTest.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
           }),
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
     } finally {
       await chmod(denied, 0o700);

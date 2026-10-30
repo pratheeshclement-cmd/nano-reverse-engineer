@@ -59,7 +59,7 @@ export const compactAdvertisedOutputSchema = (
       schema: withoutContentBoundIdentity(inline),
       presentation: "inline",
     };
-  // Every REA output contract is an object at the root. A non-object root still
+  // Every NRE output contract is an object at the root. A non-object root still
   // advertises an accepting shape rather than a projection that could reject
   // valid canonical output.
   const reduced =

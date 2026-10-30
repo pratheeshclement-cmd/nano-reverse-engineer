@@ -47,7 +47,7 @@ let seed: { directory: string; base: string } | undefined;
 let seedWorkspaceRoot: string | undefined;
 
 beforeAll(async () => {
-  const workspace = await createTestWorkspace("rea-ci-scope-seed-");
+  const workspace = await createTestWorkspace("nre-ci-scope-seed-");
   seedWorkspaceRoot = workspace.root;
   const directory = await workspace.mkdir("repository");
   await git(directory, ["init", "--initial-branch=main"]);
@@ -68,7 +68,7 @@ async function fixture() {
   const initial = seed;
   if (initial === undefined)
     throw new Error("CI scope seed was not initialized");
-  const directory = await createTestTempDirectory("rea-ci-scope-");
+  const directory = await createTestTempDirectory("nre-ci-scope-");
   // Copy the pristine object database, refs and index; each case owns its mutations.
   await cp(initial.directory, directory, { recursive: true });
   return { directory, base: initial.base };
@@ -813,7 +813,7 @@ it.each([
   ],
   ["install.sh", { code: true, runtime: true, package: true, evm: false }],
   [
-    ".agents/skills/reverse-engineer-anything/SKILL.md",
+    ".agents/skills/nano-reverse-engineer/SKILL.md",
     { code: true, runtime: true, docs: true, package: false, evm: false },
   ],
   [

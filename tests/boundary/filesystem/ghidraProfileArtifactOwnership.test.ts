@@ -66,13 +66,13 @@ const configured = (
   path: string,
   extra: Readonly<Record<string, string>> = {},
 ) => {
-  const result = parseConfig({ REA_GHIDRA_NATIVEAOT_JAR: path, ...extra });
+  const result = parseConfig({ NRE_GHIDRA_NATIVEAOT_JAR: path, ...extra });
   if (!result.ok) throw result.error;
   return result.value;
 };
 
 it("reports a seed extent over its resource budget without reading the payload", async () => {
-  const root = await createTestTempDirectory("rea-profile-capacity-");
+  const root = await createTestTempDirectory("nre-profile-capacity-");
   const path = join(root, "seeds.tsv");
   await writeFile(path, "0x1000\tcode\n");
   await truncate(path, MAX_GHIDRA_SEED_BYTES + 1);
@@ -111,7 +111,7 @@ it.each(
 )(
   "retains $kind read failure and exact close owner through retry (late abort: $lateAbort)",
   async ({ kind, lateAbort }) => {
-    const root = await createTestTempDirectory("rea-profile-file-");
+    const root = await createTestTempDirectory("nre-profile-file-");
     const path = join(root, kind === "seed" ? "seeds.tsv" : "extension.jar");
     await writeFile(
       path,
@@ -194,7 +194,7 @@ it.each(
 it.each(["grow", "replace"])(
   "refuses seeds that %s during the admitted read",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-seed-growth-");
+    const root = await createTestTempDirectory("nre-seed-growth-");
     const path = join(root, "seeds.tsv");
     await writeFile(path, "0x1000\tcode\n");
     const resources = new ArtifactResourceScope();
@@ -229,7 +229,7 @@ it.each(["grow", "replace"])(
 it.each(["seed", "extension"] as const)(
   "retains %s cleanup and exact cancellation during final close",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-profile-cancel-close-");
+    const root = await createTestTempDirectory("nre-profile-cancel-close-");
     const path = join(root, kind === "seed" ? "seeds.tsv" : "extension.jar");
     await writeFile(
       path,
@@ -284,7 +284,7 @@ it.each(["seed", "extension"] as const)(
 it.each(["seed", "extension"] as const)(
   "retains %s snapshot output owner after cancellation during close",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-profile-output-close-");
+    const root = await createTestTempDirectory("nre-profile-output-close-");
     const path = join(root, kind === "seed" ? "seeds.tsv" : "extension.jar");
     const bytes =
       kind === "seed"
@@ -364,7 +364,7 @@ it.each(["seed", "extension"] as const)(
 );
 
 it("joins whole provider resolution before shutdown and gates the next admission", async () => {
-  const root = await createTestTempDirectory("rea-profile-completion-");
+  const root = await createTestTempDirectory("nre-profile-completion-");
   const jar = join(root, "extension.jar");
   const seed = join(root, "seeds.tsv");
   await writeFile(jar, Buffer.from([0x50, 0x4b, 3, 4, 0]));
@@ -372,7 +372,7 @@ it("joins whole provider resolution before shutdown and gates the next admission
   const provider = new GhidraProvider(
     configured(jar, {
       GHIDRA_INSTALL_DIR: "/ghidra",
-      REA_GHIDRA_SEED_FILE: seed,
+      NRE_GHIDRA_SEED_FILE: seed,
     }),
     silentLogger,
     {},
@@ -429,7 +429,7 @@ it("joins whole provider resolution before shutdown and gates the next admission
 it.each(["seed", "extension"] as const)(
   "preserves %s snapshot write failure through client cancellation and cleanup retry",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-profile-client-write-");
+    const root = await createTestTempDirectory("nre-profile-client-write-");
     const source = join(root, kind === "seed" ? "input.tsv" : "input.jar");
     await writeFile(
       source,
@@ -458,7 +458,7 @@ it.each(["seed", "extension"] as const)(
       environment: {},
       analyzeHeadlessPath: join(root, "support/analyzeHeadless"),
       configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
-      bridgeScriptPath: "/packaged/ReaGhidraBridge.java",
+      bridgeScriptPath: "/packaged/NreGhidraBridge.java",
       ...(seeds.value === undefined ? {} : { analysisSeeds: seeds.value }),
       analysisExtensions: extensions.value,
       spawnProcess: spawn,
@@ -519,7 +519,7 @@ it.each(["seed", "extension"] as const)(
 );
 
 it("preserves the exact cancellation reason between extension completion and provider continuation", async () => {
-  const root = await createTestTempDirectory("rea-profile-handoff-");
+  const root = await createTestTempDirectory("nre-profile-handoff-");
   const jar = join(root, "extension.jar");
   await writeFile(jar, Buffer.from([0x50, 0x4b, 3, 4, 0]));
   const controller = new AbortController();
@@ -556,7 +556,7 @@ it("preserves the exact cancellation reason between extension completion and pro
 it.each(["seed", "extension"] as const)(
   "preserves malformed %s facts before final close failure and late cancellation",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-profile-format-close-");
+    const root = await createTestTempDirectory("nre-profile-format-close-");
     const path = join(root, kind === "seed" ? "seeds.tsv" : "extension.jar");
     await writeFile(
       path,
@@ -597,7 +597,7 @@ it.each(["seed", "extension"] as const)(
           details: {
             settings: [
               {
-                setting: "REA_GHIDRA_SEED_FILE",
+                setting: "NRE_GHIDRA_SEED_FILE",
                 constraint: expect.stringContaining("kind must be"),
               },
             ],

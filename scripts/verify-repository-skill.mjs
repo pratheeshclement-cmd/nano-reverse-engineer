@@ -65,7 +65,7 @@ export async function verifyRepositorySkill({ root, workspace, commands }) {
       "add",
       snapshot,
       "--skill",
-      "reverse-engineer-anything",
+      "nano-reverse-engineer",
       "--agent",
       "codex",
       "--yes",
@@ -85,16 +85,13 @@ export async function verifyRepositorySkill({ root, workspace, commands }) {
       timeout: 120_000,
     },
   );
-  const authoredRoot = join(
-    snapshot,
-    ".agents/skills/reverse-engineer-anything",
-  );
+  const authoredRoot = join(snapshot, ".agents/skills/nano-reverse-engineer");
   const installedSkills = join(consumer, ".agents/skills");
-  const installedRoot = join(installedSkills, "reverse-engineer-anything");
+  const installedRoot = join(installedSkills, "nano-reverse-engineer");
   const files = await filePaths(authoredRoot);
   if (
     JSON.stringify(await readdir(installedSkills)) !==
-      JSON.stringify(["reverse-engineer-anything"]) ||
+      JSON.stringify(["nano-reverse-engineer"]) ||
     JSON.stringify(await filePaths(installedRoot)) !== JSON.stringify(files)
   )
     throw new Error(

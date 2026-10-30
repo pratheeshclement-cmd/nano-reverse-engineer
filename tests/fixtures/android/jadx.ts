@@ -30,7 +30,7 @@ export const createJadxProtocolFixture = async (
   inventory?: { readonly classCount?: number },
   settings: Readonly<Record<string, string>> = {},
 ) => {
-  const root = await createTestTempDirectory("rea-android-boundary-");
+  const root = await createTestTempDirectory("nre-android-boundary-");
   const apk = join(root, "fixture.apk");
   const jar = join(root, "fixture.jar");
   const javaHome = join(root, "jdk");
@@ -58,11 +58,11 @@ export const createJadxProtocolFixture = async (
   const environment: NodeJS.ProcessEnv = {
     ...Object.fromEntries(
       Object.entries(process.env).filter(
-        ([name]) => !name.startsWith("REA_JADX_"),
+        ([name]) => !name.startsWith("NRE_JADX_"),
       ),
     ),
     JAVA_HOME: javaHome,
-    REA_JADX_MCP_JAR: jar,
+    NRE_JADX_MCP_JAR: jar,
     ...settings,
   };
   const provider = createAndroidAnalysisProvider(
@@ -75,11 +75,11 @@ export const createJadxProtocolFixture = async (
         expectedCommand: process.execPath,
         env: {
           ...options.env,
-          REA_FAKE_JADX_MODE: mode,
+          NRE_FAKE_JADX_MODE: mode,
           ...(inventory?.classCount === undefined
             ? {}
             : {
-                REA_FAKE_JADX_CLASS_COUNT: String(inventory.classCount),
+                NRE_FAKE_JADX_CLASS_COUNT: String(inventory.classCount),
               }),
         },
       });

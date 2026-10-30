@@ -20,15 +20,15 @@ assert(
   "Native OMP verifier requires POSIX; Windows is unverified",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_OMP_COMMAND ?? "omp";
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_OMP_COMMAND ?? "omp";
 const mode = process.argv[2] ?? "call";
 assert(
   ["chat", "call"].includes(mode),
   "Usage: verify-omp-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-omp-client-"));
+const lab = await mkdtemp(join(tmpdir(), "nre-omp-client-"));
 const account = join(lab, "account");
 const agent = join(lab, "selected agent");
 const workspace = join(lab, "workspace");
@@ -37,7 +37,7 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
 );
 const expectedDevices = TOOL_CONTRACTS.map(
   (tool) => "mcp__rea_" + tool.name,
@@ -81,7 +81,7 @@ await withVerifierCleanup(async () => {
       XDG_DATA_HOME: join(lab, "data"),
       XDG_STATE_HOME: join(lab, "state"),
       XDG_CACHE_HOME: join(lab, "cache"),
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     const target = join(lab, "fixture α测试");
     await mkdir(target);
@@ -122,15 +122,15 @@ await withVerifierCleanup(async () => {
           );
         if (mode === "chat") {
           finalSeen = true;
-          return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+          return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
         }
         const replies = body.messages.filter(
           (message) => message.role === "tool",
         );
         if (requestIndex === 1)
           return call(requestIndex, "read", {
-            i: "Load REA skill",
-            path: "skill://reverse-engineer-anything:raw",
+            i: "Load NRE skill",
+            path: "skill://nano-reverse-engineer:raw",
           });
         assert(
           expectedSkillBody !== undefined &&
@@ -140,7 +140,7 @@ await withVerifierCleanup(async () => {
         skillLoaded = true;
         if (requestIndex === 2)
           return call(requestIndex, "read", {
-            i: "Inspect REA native tool contract",
+            i: "Inspect NRE native tool contract",
             path: analysisDevice,
           });
         assert(
@@ -177,13 +177,13 @@ await withVerifierCleanup(async () => {
         await writeFile(join(lab, "omp-evidence.json"), bytes);
         evidenceSeen = true;
         finalSeen = true;
-        return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+        return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
       },
     });
     const original = JSON.stringify(
       {
         mcpServers: { other: { command: "unrelated-server", enabled: false } },
-        disabledServers: ["rea", "other"],
+        disabledServers: ["nre", "other"],
       },
       null,
       2,
@@ -200,14 +200,14 @@ await withVerifierCleanup(async () => {
       join(agent, "models.yml"),
       JSON.stringify({
         providers: {
-          "rea-fixture": {
+          "nre-fixture": {
             baseUrl: fixture.baseUrl,
             apiKey: "local-fixture-key",
             api: "openai-completions",
             models: [
               {
-                id: "rea-client-fixture",
-                name: "REA local fixture",
+                id: "nre-client-fixture",
+                name: "NRE local fixture",
                 reasoning: false,
                 input: ["text"],
                 cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
@@ -219,10 +219,10 @@ await withVerifierCleanup(async () => {
         },
       }),
     );
-    const rea = async (args, env = environment) =>
+    const nre = async (args, env = environment) =>
       commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         { env, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
     clientVersion = (
@@ -257,7 +257,7 @@ await withVerifierCleanup(async () => {
       join(lab, "invalid-profile-native.stderr"),
       nativeRejected.snapshot.stderr.text,
     );
-    const setupRejected = await rea(
+    const setupRejected = await nre(
       ["setup", "--client", "omp", "--dry-run"],
       invalidEnvironment,
     ).then(
@@ -284,7 +284,7 @@ await withVerifierCleanup(async () => {
       ["setup", "--client", "omp", "--yes"],
       ["doctor", "--client", "omp", "--skill"],
     ]) {
-      const result = await rea(args);
+      const result = await nre(args);
       await writeFile(
         join(
           lab,
@@ -322,17 +322,17 @@ await withVerifierCleanup(async () => {
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     const registration = JSON.parse(configured);
     assert.equal(registration.mcpServers.other.command, "unrelated-server");
     assert.deepEqual(registration.disabledServers, ["other"]);
     const repeated = JSON.parse(
-      (await rea(["setup", "--client", "omp", "--yes"])).stdout,
+      (await nre(["setup", "--client", "omp", "--yes"])).stdout,
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     expectedSkillBody = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",
@@ -352,10 +352,10 @@ await withVerifierCleanup(async () => {
             "--approval-mode",
             "yolo",
             "--model",
-            "rea-fixture/rea-client-fixture",
+            "nre-fixture/nre-client-fixture",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use the REA skill to analyze ${target}.`,
+              : `Use the NRE skill to analyze ${target}.`,
           ],
           {
             env: environment,
@@ -389,7 +389,7 @@ await withVerifierCleanup(async () => {
     assert.deepEqual(
       mounted.sort(),
       expectedDevices,
-      "Native OMP must mount the complete REA catalog",
+      "Native OMP must mount the complete NRE catalog",
     );
     catalogMounted = true;
     assert(
@@ -403,7 +403,7 @@ await withVerifierCleanup(async () => {
           event.type === "message_end" &&
           event.message?.role === "assistant" &&
           event.message.stopReason === "stop" &&
-          containsText(event.message.content, "REA_CLIENT_COMPATIBILITY_OK"),
+          containsText(event.message.content, "NRE_CLIENT_COMPATIBILITY_OK"),
       ),
       "OMP must finish with the expected native assistant message",
     );

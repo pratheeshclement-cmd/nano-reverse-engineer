@@ -72,7 +72,7 @@ afterEach(() => {
 });
 
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-stage-retirement-");
+  const workspace = await createTestWorkspace("nre-stage-retirement-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("selected.core");
   const value = recordedCrashFixture(path);
@@ -86,10 +86,10 @@ const fixture = async () => {
   await mkdir(venv);
   await writeFile(plugin, "");
   const environment = {
-    REA_PWNTOOLS_PYTHON: process.execPath,
-    REA_PWNDBG_GDB: process.execPath,
-    REA_PWNDBG_GDBINIT: plugin,
-    REA_PWNDBG_VENV_PATH: venv,
+    NRE_PWNTOOLS_PYTHON: process.execPath,
+    NRE_PWNDBG_GDB: process.execPath,
+    NRE_PWNDBG_GDBINIT: plugin,
+    NRE_PWNDBG_VENV_PATH: venv,
   };
   const {
     artifact: _artifact,
@@ -651,12 +651,12 @@ it.runIf(supportedHost)(
     const { path, root, environment: selected, reply } = await fixture();
     const environment: NodeJS.ProcessEnv = {
       ...selected,
-      REA_ENV_MARKER: "first",
+      NRE_ENV_MARKER: "first",
     };
     const originalPython = join(root.path, "..", "python-selected");
     const { symlink } = await import("node:fs/promises");
     await symlink(process.execPath, originalPython);
-    environment.REA_PWNTOOLS_PYTHON = originalPython;
+    environment.NRE_PWNTOOLS_PYTHON = originalPython;
     const commands: string[] = [];
     const provider = new PwntoolsRecordedCrashProvider(
       environment,
@@ -668,7 +668,7 @@ it.runIf(supportedHost)(
           );
         const debuggerStage = request.gdb !== undefined;
         commands.push(spawn.command);
-        if (debuggerStage) expect(request.gdb).toBe(selected.REA_PWNDBG_GDB);
+        if (debuggerStage) expect(request.gdb).toBe(selected.NRE_PWNDBG_GDB);
         await writeFile(
           request.reply_path,
           debuggerStage
@@ -678,19 +678,19 @@ it.runIf(supportedHost)(
               })
             : reply,
         );
-        environment.REA_ENV_MARKER = "changed-during-launch";
-        environment.REA_PWNTOOLS_PYTHON = "/missing-python";
-        environment.REA_PWNDBG_GDB = "/missing-gdb";
+        environment.NRE_ENV_MARKER = "changed-during-launch";
+        environment.NRE_PWNTOOLS_PYTHON = "/missing-python";
+        environment.NRE_PWNDBG_GDB = "/missing-gdb";
         const child = await spawnOwnedProviderProcess({
           ...spawn,
           command: process.execPath,
-          arguments: ["-e", "process.stdout.write(process.env.REA_ENV_MARKER)"],
+          arguments: ["-e", "process.stdout.write(process.env.NRE_ENV_MARKER)"],
         });
         return child;
       },
       async () => {
-        environment.REA_ENV_MARKER = "changed-during-runtime";
-        environment.REA_PWNTOOLS_PYTHON = "/missing-python";
+        environment.NRE_ENV_MARKER = "changed-during-runtime";
+        environment.NRE_PWNTOOLS_PYTHON = "/missing-python";
         return PrivateRuntimeRoot.create({
           parent: root.path,
           prefix: "operation-",
@@ -703,7 +703,7 @@ it.runIf(supportedHost)(
     });
     for (const marker of ["first", "second"]) {
       if (marker === "second")
-        Object.assign(environment, selected, { REA_ENV_MARKER: marker });
+        Object.assign(environment, selected, { NRE_ENV_MARKER: marker });
       const result = await provider.inspect({
         path,
         include_debugger_context: true,

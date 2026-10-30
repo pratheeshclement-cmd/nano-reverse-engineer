@@ -236,7 +236,7 @@ cliTest.for(cases)(
     { objects, links, complete, registryDiagnostic, decodeRejected },
     { cli },
   ) => {
-    const root = await createTestTempDirectory("rea-nib-relationships-");
+    const root = await createTestTempDirectory("nre-nib-relationships-");
     const app = join(root, "Fixture.app");
     const contents = join(app, "Contents");
     const resources = join(contents, "Resources");
@@ -267,7 +267,7 @@ cliTest.for(cases)(
     );
     const output = await cli.run({
       arguments: ["decode-interface-builder", app, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stdout + output.stderr).toBe(0);
     if (output.json === null)

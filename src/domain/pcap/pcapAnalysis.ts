@@ -10,7 +10,7 @@ export const PCAP_CAPTURE_UNSUPPORTED_HOST_REASON =
 
 /**
  * Caller intent for packet-capture analysis through caller-supplied tshark
- * and capinfos. REA never installs Wireshark or its tools.
+ * and capinfos. NRE never installs Wireshark or its tools.
  */
 export const pcapInputSchemas = {
   inspect_pcap_client: z.strictObject({}),
@@ -142,7 +142,7 @@ export const pcapResultSchemas = {
   }),
 } as const;
 
-/** Read compatibility for retained capture Evidence from earlier REA versions. */
+/** Read compatibility for retained capture Evidence from earlier NRE versions. */
 export const pcapEvidenceSchemas = {
   inspect_pcap_capture: pcapResultSchemas.inspect_pcap_capture.extend({
     client: legacyClientIdentity,

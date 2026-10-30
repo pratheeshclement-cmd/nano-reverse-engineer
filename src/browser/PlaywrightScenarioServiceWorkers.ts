@@ -67,9 +67,9 @@ type PolicyTarget = {
 export class PlaywrightScenarioServiceWorkers {
   readonly #transportOwner = new CdpTargetSessionOwner();
   private readonly marker = JSON.stringify(
-    `rea-service-workers-${randomUUID()}`,
+    `nre-service-workers-${randomUUID()}`,
   );
-  private readonly restoreKey = JSON.stringify(`rea-restore-${randomUUID()}`);
+  private readonly restoreKey = JSON.stringify(`nre-restore-${randomUUID()}`);
   private readonly secret = JSON.stringify(randomUUID());
   #initialization: Promise<void> | undefined;
   #restoration: Promise<void> | undefined;

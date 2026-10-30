@@ -244,10 +244,10 @@ describe("the state size limit", () => {
 
   it("refuses a document that data/get would write past what data/add loads", () => {
     const books = servedFrom();
-    const { rea_state: state } = books.store.snapshot();
+    const { nre_state: state } = books.store.snapshot();
     // Without the members data/get adds back, the document fits only until they return.
     const document = {
-      rea_state: {
+      nre_state: {
         version: state.version,
         entities: state.entities.map(({ type, collection, id, fields }) => ({
           type,
@@ -258,7 +258,7 @@ describe("the state size limit", () => {
         documents: state.documents,
       },
     };
-    const first = document.rea_state.entities[0]!.fields;
+    const first = document.nre_state.entities[0]!.fields;
     first["name"] = `${String(first["name"])}${"a".repeat(
       STATE_INTAKE_LIMIT_BYTES -
         Buffer.byteLength(JSON.stringify(document), "utf8"),

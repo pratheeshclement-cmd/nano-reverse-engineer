@@ -21,10 +21,10 @@ application runtime behavior, authority recovery, cancellation cleanup,
 behavioral equivalence, or reconstruction closure for the analyzed fixtures.
 The command prints one compact JSON summary.
 
-Set `REA_READINESS_REPORT_PATH` to retain the complete machine-readable report:
+Set `NRE_READINESS_REPORT_PATH` to retain the complete machine-readable report:
 
 ```sh
-REA_READINESS_REPORT_PATH=readiness-report.json npm run verify:readiness
+NRE_READINESS_REPORT_PATH=readiness-report.json npm run verify:readiness
 ```
 
 CI runs this command on Linux, publishes the compact summary, and retains the

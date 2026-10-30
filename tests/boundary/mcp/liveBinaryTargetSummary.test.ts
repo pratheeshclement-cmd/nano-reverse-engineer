@@ -182,13 +182,13 @@ const sessionFacts = {
   },
   server_identity: {
     package: {
-      name: "rea",
+      name: "nre",
       version: "fixture",
       root_path: "/fixture",
       build_commit: null,
     },
     server: {
-      name: "rea",
+      name: "nre",
       version: "fixture",
       started_at: "2026-01-01T00:00:00Z",
       command_path: null,
@@ -196,7 +196,7 @@ const sessionFacts = {
     sdk: { server: "fixture", client_test: "fixture", core: "fixture" },
     negotiated_protocol_version: null,
     client: null,
-    skill: { name: "rea", expected_version: "fixture" },
+    skill: { name: "nre", expected_version: "fixture" },
     catalog: {
       counts: { cli_commands: 0, mcp_tools: 0, mcp_prompts: 0 },
       digests: {

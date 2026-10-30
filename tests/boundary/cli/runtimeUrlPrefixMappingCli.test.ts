@@ -108,8 +108,8 @@ const reconcileThroughCli = async (
     }),
     inspection,
     {
-      id: "rea-cdp-browser",
-      name: "REA Chrome DevTools Protocol observation provider",
+      id: "nre-cdp-browser",
+      name: "NRE Chrome DevTools Protocol observation provider",
       version: "2",
     },
   );
@@ -135,7 +135,7 @@ const reconcileThroughCli = async (
   );
   const { stdout, stderr } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "reconcile-javascript-runtime", inputPath, "--json"],
+    ["scripts/nre.mjs", "reconcile-javascript-runtime", inputPath, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1_024 * 1_024 },
   );
   expect(stderr).toBe("");
@@ -199,7 +199,7 @@ const mappedLocation = (path: string) => ({
 it(
   "matches a source-free webpack script to its containing asset",
   async () => {
-    const root = await createTestTempDirectory("rea-url-bundler-asset-");
+    const root = await createTestTempDirectory("nre-url-bundler-asset-");
     temporary.push(root);
     await mkdir(join(root, "chunks"));
     await writeFile(
@@ -224,7 +224,7 @@ it(
 it(
   "keeps an encoded slash inside one URL segment rather than naming a nested artifact",
   async () => {
-    const root = await createTestTempDirectory("rea-url-prefix-segments-");
+    const root = await createTestTempDirectory("nre-url-prefix-segments-");
     temporary.push(root);
     await mkdir(join(root, "child"));
     await Promise.all([
@@ -263,7 +263,7 @@ it(
 it(
   "keeps static load state unknown beneath a prefix whose runtime script had no artifact path",
   async () => {
-    const root = await createTestTempDirectory("rea-url-prefix-load-state-");
+    const root = await createTestTempDirectory("nre-url-prefix-load-state-");
     temporary.push(root);
     await mkdir(join(root, "child"));
     await Promise.all([

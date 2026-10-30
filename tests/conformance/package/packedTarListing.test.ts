@@ -9,13 +9,13 @@ import { parseTarListing } from "../../../scripts/lib/verify-package-listing.mjs
  */
 const packedBridges = [
   "package/bridge/hopper_bridge.py",
-  "package/bridge/cutter/rea_bridge.py",
-  "package/bridge/ghidra/ReaGhidraBridge.java",
-  "package/bridge/ghidra/ReaGhidraBundleActivator.java",
+  "package/bridge/cutter/nre_bridge.py",
+  "package/bridge/ghidra/NreGhidraBridge.java",
+  "package/bridge/ghidra/NreGhidraBundleActivator.java",
 ];
 
 const listing = (lineEnding: string) =>
-  ["package/package.json", ...packedBridges, "package/skills/rea/SKILL.md"]
+  ["package/package.json", ...packedBridges, "package/skills/nre/SKILL.md"]
     .map((member) => `${member}${lineEnding}`)
     .join("");
 

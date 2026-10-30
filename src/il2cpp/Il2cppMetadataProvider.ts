@@ -58,7 +58,7 @@ import {
 /** Bundled format reader identity; the metadata version is a separate observed fact. */
 export const IL2CPP_METADATA_PROVIDER_IDENTITY = {
   id: "il2cpp-metadata",
-  name: "REA IL2CPP global-metadata reader",
+  name: "NRE IL2CPP global-metadata reader",
   version: "1",
 } as const;
 const OPERATION = "inspect_il2cpp_metadata";
@@ -310,7 +310,7 @@ const metadataSourceEvidence = (
     IL2CPP_METADATA_PROVIDER_IDENTITY,
     {
       operation: "observe_il2cpp_metadata_source",
-      predicateType: "rea.il2cpp-metadata-source",
+      predicateType: "nre.il2cpp-metadata-source",
       parameters: {
         path: artifact.path,
         ...(binary === undefined

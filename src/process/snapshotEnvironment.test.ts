@@ -9,23 +9,23 @@ it.each(["win32", "linux", "darwin"] as const)(
   "merges explicit environment layers using %s key identity before sorting",
   (platform) => {
     const existing = {
-      rea_analysis_provider: "hopper",
+      nre_analysis_provider: "hopper",
       CallerSetting: "retain",
     };
-    const overrides = { REA_ANALYSIS_PROVIDER: "ghidra", Path: "chosen" };
+    const overrides = { NRE_ANALYSIS_PROVIDER: "ghidra", Path: "chosen" };
     const merged = mergeEnvironmentOverrides(existing, overrides, platform);
     expect(merged).toEqual(
       platform === "win32"
         ? {
-            REA_ANALYSIS_PROVIDER: "ghidra",
+            NRE_ANALYSIS_PROVIDER: "ghidra",
             CallerSetting: "retain",
             Path: "chosen",
           }
         : { ...existing, ...overrides },
     );
     expect(Object.isFrozen(merged)).toBe(true);
-    expect(existing.rea_analysis_provider).toBe("hopper");
-    expect(overrides.REA_ANALYSIS_PROVIDER).toBe("ghidra");
+    expect(existing.nre_analysis_provider).toBe("hopper");
+    expect(overrides.NRE_ANALYSIS_PROVIDER).toBe("ghidra");
   },
 );
 
@@ -74,17 +74,14 @@ it("keeps the last caller value for Windows aliases, including undefined", () =>
   expect(Object.isFrozen(snapshot)).toBe(true);
 });
 
-it("aliases NRE_* variables to REA_* with NRE precedence", () => {
+it("preserves NRE_* variables in snapshots", () => {
   const snapshot = snapshotEnvironment(
     {
       NRE_ANALYSIS_PROVIDER: "ghidra",
-      REA_ANALYSIS_PROVIDER: "hopper",
       NRE_CUSTOM_SETTING: "value1",
-      REA_LEGACY_ONLY: "value2",
     },
     "linux",
   );
-  expect(snapshot.REA_ANALYSIS_PROVIDER).toBe("ghidra");
-  expect(snapshot.REA_CUSTOM_SETTING).toBe("value1");
-  expect(snapshot.REA_LEGACY_ONLY).toBe("value2");
+  expect(snapshot.NRE_ANALYSIS_PROVIDER).toBe("ghidra");
+  expect(snapshot.NRE_CUSTOM_SETTING).toBe("value1");
 });

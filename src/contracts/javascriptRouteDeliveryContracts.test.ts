@@ -35,7 +35,7 @@ describe.each(cases)("%s delivery contract", (name, base) => {
       expect(projected).not.toHaveProperty("anyOf");
       expect(projected).not.toHaveProperty("oneOf");
       expect(projected).not.toHaveProperty("allOf");
-      expect(projected).not.toHaveProperty("x-rea-root-discriminator");
+      expect(projected).not.toHaveProperty("x-nre-root-discriminator");
       const inputs = [
         [{}, true],
         [{ detail: "complete" }, true],

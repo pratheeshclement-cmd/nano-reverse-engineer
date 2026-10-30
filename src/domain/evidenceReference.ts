@@ -12,7 +12,7 @@ export const retainedEvidenceReferenceSchema = z.strictObject({
 export const evidenceFileReferenceSchema = z.strictObject({
   kind: z.literal("evidence-file"),
   path: absoluteLocalPathStringSchema.describe(
-    "Absolute local path of one completed Evidence JSON file, or of an Evidence bundle written by --evidence_output or export_evidence_bundle. REA reads and authenticates it, then uses it like retained Evidence, so large records are not charged as inline input.",
+    "Absolute local path of one completed Evidence JSON file, or of an Evidence bundle written by --evidence_output or export_evidence_bundle. NRE reads and authenticates it, then uses it like retained Evidence, so large records are not charged as inline input.",
   ),
   evidence_id: prefixedDigestSchema("ev")
     .exactOptional()

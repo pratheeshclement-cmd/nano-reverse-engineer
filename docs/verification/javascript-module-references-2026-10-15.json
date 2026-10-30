@@ -11,7 +11,7 @@
   "verification": {
     "scope": "Completed module-fact reads from identical retained Evidence; no hosted-model performance claim",
     "artifact": {
-      "path": "/tmp/rea-codemode-experiment-20261015/artifacts/obsidian-1.14.4.asar",
+      "path": "/tmp/nre-codemode-experiment-20261015/artifacts/obsidian-1.14.4.asar",
       "sha256": "146ef8470d8cbb4a6db209bdc19bf2bad13350444186c0fd93c31087b142b92f"
     },
     "parent_evidence_id": "ev_73ef06e3b9b944f54c5257f7960279127d8518d2a73cd8618bd045dbe44e6b5a",
@@ -666,7 +666,7 @@
       "pid": 2871108,
       "group": 2871108,
       "parent": 2871107,
-      "run_id": "rea-module-token-f139b74a-dd83-498b-b663-e765104159ec",
+      "run_id": "nre-module-token-f139b74a-dd83-498b-b663-e765104159ec",
       "detached": true,
       "ignores_sigterm": true
     },

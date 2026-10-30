@@ -38,7 +38,7 @@ const capabilitySchema = z.enum(GHIDRA_SESSION_CAPABILITIES);
 
 const sessionInfoSchema = z
   .object({
-    name: z.literal("REA Ghidra bridge"),
+    name: z.literal("NRE Ghidra bridge"),
     run_id: z.string().uuid(),
     profile_digest: z.string().regex(/^[a-f0-9]{64}$/u),
     provider: z
@@ -144,7 +144,7 @@ export const ghidraPdbLimitations = (
   const state = pdb.loaded === false ? "not loaded" : "load state unknown";
   return [
     ...limitations,
-    `${reference}Ghidra reports ${state}. Original names and types may be missing; an empty name search does not prove a procedure is absent. Use list_procedures and address-based analysis to inspect recovered functions. REA does not admit a caller-selected PDB companion.`,
+    `${reference}Ghidra reports ${state}. Original names and types may be missing; an empty name search does not prove a procedure is absent. Use list_procedures and address-based analysis to inspect recovered functions. NRE does not admit a caller-selected PDB companion.`,
   ];
 };
 

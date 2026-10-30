@@ -11,10 +11,10 @@ const timingRecord = (stderr: string) => {
   expect(lines).toHaveLength(1);
   const record: unknown = JSON.parse(lines[0]!);
   expect(record).toMatchObject({
-    rea_timings: { version: 1, command_ms: expect.any(Number) },
+    nre_timings: { version: 1, command_ms: expect.any(Number) },
   });
-  const duration = (record as { rea_timings: { command_ms: number } })
-    .rea_timings.command_ms;
+  const duration = (record as { nre_timings: { command_ms: number } })
+    .nre_timings.command_ms;
   expect(Number.isFinite(duration)).toBe(true);
   expect(duration).toBeGreaterThanOrEqual(0);
 };
@@ -22,7 +22,7 @@ const timingRecord = (stderr: string) => {
 cliTest(
   "writes opt-in command timing to stderr after success and failure without changing JSON stdout",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-cli-timings-");
+    const root = await createTestTempDirectory("nre-cli-timings-");
     const valid = join(root, "program");
     const invalid = join(root, "truncated");
     await writeFile(valid, elfNoteFixture({ ownership: "program" }));
@@ -32,7 +32,7 @@ cliTest(
       arguments: ["inspect-elf-notes", valid, "--json"],
     });
     expect(defaultRun.exitCode, defaultRun.stderr).toBe(0);
-    expect(defaultRun.stderr).not.toContain("rea_timings");
+    expect(defaultRun.stderr).not.toContain("nre_timings");
 
     const successful = await cli.run({
       arguments: ["--timings", "inspect-elf-notes", valid, "--json"],

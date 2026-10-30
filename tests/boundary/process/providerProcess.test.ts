@@ -56,7 +56,7 @@ describe("provider process runtime and wait primitives", () => {
   it("allocates a private runtime root and removes it idempotently", async () => {
     const runtime = await PrivateRuntimeRoot.create({
       parent: tmpdir(),
-      prefix: "rea-provider-test-",
+      prefix: "nre-provider-test-",
     });
     expect((await stat(runtime.path)).mode & 0o077).toBe(0);
     await writeFile(join(runtime.path, "owned-scratch"), "fixture");
@@ -474,11 +474,11 @@ describe("provider process host injection", () => {
   it("uses injected host platform and environment when spawning", async () => {
     const spawned = await spawnOwnedProviderProcess({
       command: process.execPath,
-      arguments: ["-e", "process.stdout.write(process.env.REA_HOST_TEST)"],
+      arguments: ["-e", "process.stdout.write(process.env.NRE_HOST_TEST)"],
       runId: "injected-host-run",
       platform: "win32",
-      hostEnvironment: { PATH: process.env.PATH, REA_HOST_TEST: "host-value" },
-      env: { REA_HOST_TEST: "spawn-override" },
+      hostEnvironment: { PATH: process.env.PATH, NRE_HOST_TEST: "host-value" },
+      env: { NRE_HOST_TEST: "spawn-override" },
     });
     try {
       const supervisor = new ProviderProcessSupervisor({
@@ -500,7 +500,7 @@ describe("provider process memory limits", () => {
   it("refuses a memory limit that the selected launcher cannot enforce", async () => {
     await expect(
       spawnOwnedProviderProcess({
-        command: `${tmpdir()}/rea-provider-must-not-spawn-without-limit`,
+        command: `${tmpdir()}/nre-provider-must-not-spawn-without-limit`,
         arguments: [],
         runId: "provider-process-unenforceable-limit-run",
         platform: "linux",
@@ -521,7 +521,7 @@ describe("provider startup cancellation", () => {
 
     await expect(
       spawnOwnedProviderProcess({
-        command: `${tmpdir()}/rea-provider-must-not-spawn-after-cancel`,
+        command: `${tmpdir()}/nre-provider-must-not-spawn-after-cancel`,
         arguments: [],
         runId: "provider-process-pre-aborted-run",
         signal: controller.signal,
@@ -544,7 +544,7 @@ describe("provider startup cancellation", () => {
 
       try {
         const starting = spawnOwnedProviderProcess({
-          command: `${tmpdir()}/rea-provider-must-not-spawn-after-cancel`,
+          command: `${tmpdir()}/nre-provider-must-not-spawn-after-cancel`,
           arguments: [],
           runId: "provider-process-cancelled-preparation-run",
           signal: controller.signal,
@@ -695,7 +695,7 @@ describe("provider process spawning primitives", () => {
   it("rejects deterministic spawn failures without producing a process", async () => {
     await expect(
       spawnOwnedProviderProcess({
-        command: `${tmpdir()}/rea-provider-command-that-does-not-exist`,
+        command: `${tmpdir()}/nre-provider-command-that-does-not-exist`,
         arguments: [],
         runId: "missing-provider",
       }),

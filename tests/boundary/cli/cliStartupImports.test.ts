@@ -10,7 +10,7 @@ import { describe, expect, it } from "vitest";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const execute = promisify(execFile);
-const MARKER = "REA_TEST_RESOLVED ";
+const MARKER = "NRE_TEST_RESOLVED ";
 // Dependencies and composition modules used by one command family; startup
 // must not resolve them just to register the complete command catalog.
 const DEFERRED_IMPORTS = [
@@ -192,7 +192,7 @@ describe("CLI startup imports", () => {
       ),
     ).resolves.toContain("environment-export");
     const missingBrowser = join(
-      await createTestTempDirectory("rea-startup-browser-"),
+      await createTestTempDirectory("nre-startup-browser-"),
       "missing-browser",
     );
     const scenario = {
@@ -206,7 +206,7 @@ describe("CLI startup imports", () => {
         ),
       ),
     ).resolves.toContain("playwright-core");
-    const source = await createTestTempDirectory("rea-startup-imports-");
+    const source = await createTestTempDirectory("nre-startup-imports-");
     await mkdir(join(source, ".git"));
     await expect(
       resolvedPackages(
@@ -219,7 +219,7 @@ describe("CLI startup imports", () => {
 
   it("does not load command-specific code to register the command catalog", async () => {
     await expect(
-      resolvedPackages(["scripts/rea.mjs", "--help"]),
+      resolvedPackages(["scripts/nre.mjs", "--help"]),
     ).resolves.toEqual(new Set());
     await expect(
       resolvedPackages(evaluate('await import("./dist/cli.js");')),
@@ -229,7 +229,7 @@ describe("CLI startup imports", () => {
   it("renders guidance without loading the tool catalog or provider composition", async () => {
     await expect(
       resolvedPackages([
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "guided-workflows",
         "--action",
         "render",
@@ -243,7 +243,7 @@ describe("CLI startup imports", () => {
   });
 
   it("does not load native provider composition for JavaScript application analysis", async () => {
-    const source = await createTestTempDirectory("rea-cli-js-startup-");
+    const source = await createTestTempDirectory("nre-cli-js-startup-");
     await mkdir(join(source, "src"));
     await writeFile(
       join(source, "package.json"),
@@ -260,7 +260,7 @@ describe("CLI startup imports", () => {
 
     await expect(
       resolvedPackages([
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "analyze-javascript-application",
         source,
         "--json",
@@ -287,7 +287,7 @@ describe("MCP startup imports", () => {
   it("initializes and lists tools over stdio with HTTP-only environment settings present", async () => {
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [`--import=${RESOLUTION_HOOK}`, "scripts/rea.mjs", "mcp"],
+      args: [`--import=${RESOLUTION_HOOK}`, "scripts/nre.mjs", "mcp"],
       cwd: process.cwd(),
       env: {
         PATH: process.env.PATH ?? "",
@@ -300,7 +300,7 @@ describe("MCP startup imports", () => {
     transport.stderr?.on("data", (chunk: Buffer) => {
       stderr += chunk.toString("utf8");
     });
-    const client = new Client({ name: "rea-startup-imports", version: "1" });
+    const client = new Client({ name: "nre-startup-imports", version: "1" });
     try {
       await client.connect(transport);
       const { tools } = await client.listTools();

@@ -53,15 +53,18 @@ const pluginMarketplaces = [
   ".claude-plugin/marketplace.json",
   ".agents/plugins/marketplace.json",
 ] as const;
-const pluginMarketplace = (version: string, packageName = "rea-agents") => ({
+const pluginMarketplace = (
+  version: string,
+  packageName = "nano-reverse-engineer",
+) => ({
   plugins: [
-    { name: "rea", source: { source: "npm", package: packageName, version } },
+    { name: "nre", source: { source: "npm", package: packageName, version } },
   ],
 });
 
 const pluginServer = (version: string, command = "node") => ({
   mcpServers: {
-    rea: {
+    nre: {
       command,
       args: ["./scripts/plugin-mcp-launcher.mjs", version],
       startup_timeout_sec: 30,
@@ -76,7 +79,7 @@ const pluginManifest = (
   version,
   skills,
   mcpServers: {
-    rea: {
+    nre: {
       command,
       args: ["${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs", version],
     },
@@ -97,7 +100,7 @@ const pluginManifestFor = (
     : pluginManifest(version, options);
 
 beforeAll(async () => {
-  const workspace = await createTestWorkspace("rea-release-notes-seed-");
+  const workspace = await createTestWorkspace("nre-release-notes-seed-");
   seedWorkspaceRoot = workspace.root;
   const directory = workspace.path("repository");
   await mkdir(directory, { recursive: true });
@@ -132,7 +135,7 @@ beforeAll(async () => {
   await git(directory, ["add", "."]);
   await git(directory, ["commit", "-m", "chore: baseline"]);
   const base = await git(directory, ["rev-parse", "HEAD"]);
-  await git(directory, ["tag", "rea-agents-6.3.0"]);
+  await git(directory, ["tag", "nano-reverse-engineer-6.3.0"]);
   await git(directory, ["switch", "-c", "feature"]);
   await writeFile(join(directory, "feature.txt"), "capability");
   await git(directory, ["add", "."]);
@@ -155,9 +158,9 @@ beforeAll(async () => {
   await mkdir(bin);
   const issue = (number: number, login: string) => ({
     number,
-    url: `https://github.com/fixture/rea/issues/${number}`,
+    url: `https://github.com/fixture/nre/issues/${number}`,
     author: actor(login),
-    repository: { nameWithOwner: "fixture/rea" },
+    repository: { nameWithOwner: "fixture/nre" },
   });
   const metadata = {
     commits: {
@@ -179,7 +182,7 @@ beforeAll(async () => {
           author("cursoragent"),
           author("codex"),
           author("Copilot"),
-          author("morluto"),
+          author("pratheeshclement-cmd"),
         ]),
         associatedPullRequests: page([]),
       },
@@ -195,7 +198,7 @@ beforeAll(async () => {
       101: {
         number: 101,
         title: "feat: useful capability",
-        url: "https://github.com/fixture/rea/pull/101",
+        url: "https://github.com/fixture/nre/pull/101",
         author: actor("alice"),
         mergeCommit: { oid: target },
         closingIssuesReferences: page([issue(51, "reporter")], "issues-2"),
@@ -250,7 +253,7 @@ async function fixture() {
   const initial = seed;
   if (initial === undefined)
     throw new Error("Release notes seed was not initialized");
-  const directory = await createTestTempDirectory("rea-release-notes-");
+  const directory = await createTestTempDirectory("nre-release-notes-");
   await cp(initial.directory, directory, {
     recursive: true,
     dereference: true,
@@ -269,7 +272,7 @@ async function fixture() {
   await invoke([
     "inventory",
     "--repository",
-    "fixture/rea",
+    "fixture/nre",
     "--base",
     base,
     "--target",
@@ -316,7 +319,7 @@ it("inventories side branches and paginated credits, then checks and renders syn
   );
   expect(f.record).toContain("Thanks @dana.");
   expect(f.record).not.toMatch(
-    /@(?:merger|automation|platformbot|claude|cursoragent|codex|Copilot|morluto)/u,
+    /@(?:merger|automation|platformbot|claude|cursoragent|codex|Copilot|pratheeshclement-cmd)/u,
   );
   const body = join(f.directory, "body.md");
   await writeFile(
@@ -349,7 +352,7 @@ it("inventories side branches and paginated credits, then checks and renders syn
   ]);
   expect(summary).toContain("3 commits and 1 merged PR]");
   expect(summary).toContain(
-    "/blob/rea-agents-6.4.0/docs/releases/6.4.0.contributions.json",
+    "/blob/nano-reverse-engineer-6.4.0/docs/releases/6.4.0.contributions.json",
   );
   expect(summary).not.toContain("Thanks");
   const conciseNotes = f.notes
@@ -376,7 +379,7 @@ it("inventories side branches and paginated credits, then checks and renders syn
     f.invoke([
       "inventory",
       "--repository",
-      "fixture/rea",
+      "fixture/nre",
       "--base",
       f.base,
       "--target",
@@ -392,7 +395,7 @@ it("inventories side branches and paginated credits, then checks and renders syn
 it("rejects lost grouped credits, fabricated references, bots, and stale PR bodies", async () => {
   const f = await fixture();
   const directLink =
-    /\[[a-f0-9]{7}\]\(https:\/\/github\.com\/fixture\/rea\/commit\/[a-f0-9]+\)/u.exec(
+    /\[[a-f0-9]{7}\]\(https:\/\/github\.com\/fixture\/nre\/commit\/[a-f0-9]+\)/u.exec(
       f.record,
     )?.[0];
   if (!directLink)
@@ -593,10 +596,10 @@ it("checks the live merged PR and exact Git snapshot before either publication r
     merged_at: "2026-10-11T00:00:00Z",
     merge_commit_sha: source,
     head: {
-      ref: "release-please--branches--main--components--rea-agents",
-      repo: { full_name: "fixture/rea" },
+      ref: "release-please--branches--main--components--nano-reverse-engineer",
+      repo: { full_name: "fixture/nre" },
     },
-    labels: [{ name: "rea:release-notes-finalized" }],
+    labels: [{ name: "nre:release-notes-finalized" }],
   };
   const prFile = join(f.directory, ".git/release-pr.json");
   await writeFile(prFile, JSON.stringify(pr));
@@ -604,7 +607,7 @@ it("checks the live merged PR and exact Git snapshot before either publication r
     const result = await f.invoke([
       "publication",
       "--repository",
-      "fixture/rea",
+      "fixture/nre",
       "--source",
       source,
       ...selector,
@@ -620,7 +623,7 @@ it("checks the live merged PR and exact Git snapshot before either publication r
   await f.invoke([
     "publication",
     "--repository",
-    "fixture/rea",
+    "fixture/nre",
     "--source",
     source,
   ]);
@@ -635,7 +638,7 @@ it("checks the live merged PR and exact Git snapshot before either publication r
     f.invoke([
       "publication",
       "--repository",
-      "fixture/rea",
+      "fixture/nre",
       "--source",
       source,
     ]),
@@ -651,7 +654,7 @@ it("checks the live merged PR and exact Git snapshot before either publication r
     f.invoke([
       "publication",
       "--repository",
-      "fixture/rea",
+      "fixture/nre",
       "--source",
       missing,
     ]),
@@ -665,7 +668,7 @@ it("checks the live merged PR and exact Git snapshot before either publication r
   const legacy = await f.invoke([
     "publication",
     "--repository",
-    "fixture/rea",
+    "fixture/nre",
     "--source",
     missing,
   ]);
@@ -687,7 +690,7 @@ it("fails closed on partial GitHub errors and non-advancing pagination without s
   const args = [
     "inventory",
     "--repository",
-    "fixture/rea",
+    "fixture/nre",
     "--base",
     f.base,
     "--target",

@@ -50,7 +50,7 @@ homepage's direct headline, the site's white/charcoal/slate/blue palette, and a
 short agent → Nre → evidence flow. CairoSVG renders the ignored PNG during asset
 preparation. Check the rendered image for Nredable text and spacing before
 publishing. The build uses DejaVu Sans for consistent typography; only the SVG
-source is committed. Metadata and build instructions are in the website NreDME.
+source is committed. Metadata and build instructions are in the website README.
 
 The card and `public/assets/favicon.svg` each carry a dark
 `prefers-color-scheme` block for people who open the SVG directly or use a dark
@@ -65,11 +65,11 @@ AgentEnv. Labels distinguish environment building from task grading and training
 The homepage links to the same guide and the announcement video. Source and
 verification scope are in [evidence/rl-environments.md](evidence/rl-environments.md).
 
-## NreDME showcases
+## README showcases
 
 `docs/assets/Nre-showcases.svg` and `docs/assets/Nre-showcases-dark.svg` redraw
 the three showcase illustrations as flat SVG, one file per colour scheme. Every
-NreDME edition picks one with a `<picture>` element and a
+README edition picks one with a `<picture>` element and a
 `prefers-color-scheme: dark` source, as the star-history chart does. Keep the
 two files the same shape when you change one.
 
@@ -134,7 +134,7 @@ between the figure's ideal loop and the infrastructure lessons in the prose.
 The shared stylesheet positions the labels and gives narrow screens separate
 connector geometry. Keep the arrows clear of the text and retain the same
 meaning at every width. This is an explanatory model, with no measured speed
-or productivity multiplier. Project dates and the attributed NreDME excerpt
+or productivity multiplier. Project dates and the attributed README excerpt
 support the narrative; detailed milestone references are available in a native
 disclosure. Their provenance is documented in
 [evidence/touhou-reconstruction-method.md](evidence/touhou-reconstruction-method.md).
@@ -161,7 +161,7 @@ Stage 2:
 A large blue label "Nre"
 "CLI / MCP"
 Stage 3:
-"3. Nred the evidence"
+"3. Read the evidence"
 "Code / references / unknowns"
 Stage 4:
 "4. Use what you learn"
@@ -174,7 +174,7 @@ Below stage 2 only, put a supporting box and a thin vertical connector to Nre. B
 It is a set of available adapters, not a requirement that all engines be used. Do not put this box under other stages.
 Add exactly one subtle feedback arrow above the main row: from stage 4 back to stage 2, pointing into Nre. Its label is "Follow-up question". Do not cross text.
 Semantics: Nre provides inspection and analysis evidence via CLI/MCP. The user's agent uses that evidence to explain, implement, or test. Never imply Nre automatically clones a program.
-Text: Render every supplied English label verbatim with correct spelling. Keep type large and dark enough to Nred when image is displayed at 1080px wide. Do not add additional captions, claims, legends, text, code, logos, icons, or numbers.
+Text: Render every supplied English label verbatim with correct spelling. Keep type large and dark enough to Read when image is displayed at 1080px wide. Do not add additional captions, claims, legends, text, code, logos, icons, or numbers.
 Avoid: screenshots, assembly or source code, watermarks, shadows, gradients, 3D, cute icons, bold marketing banners, ornate borders, dense text, tiny labels, decorative arrows.
 
 ## Prompt 2

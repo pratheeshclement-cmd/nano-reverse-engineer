@@ -1,14 +1,14 @@
 # Intel HEX and S-record images
 
-REA inventories Intel HEX (I8HEX, I16HEX, I32HEX) and Motorola S-record (S19,
+NRE inventories Intel HEX (I8HEX, I16HEX, I32HEX) and Motorola S-record (S19,
 S28, S37) programming files through `inspect-artifact` / `inspect_artifact`, and
 materializes their decoded bytes through `extract-artifact` /
 `extract_artifact`. Decoding is static and needs no external tool.
 
 ```sh
-rea inspect-artifact ./firmware.hex --json
-rea inspect-artifact ./firmware.s37 --detail summary --evidence_output evidence.json --json
-rea extract-artifact ./firmware.hex --json
+nre inspect-artifact ./firmware.hex --json
+nre inspect-artifact ./firmware.s37 --detail summary --evidence_output evidence.json --json
+nre extract-artifact ./firmware.hex --json
 ```
 
 For MCP, open the file with `open_binary`, then call `inspect_artifact`. Summary
@@ -88,7 +88,7 @@ address-discontiguous record runs before merging them into regions. A run is a
 sequence of consecutive records whose addresses continue each other. Both are
 fixed resource bounds, not format limits, and fail as limits (`file-size` and
 `capacity`) with no runtime override. Configurable ceilings are tracked in
-[#6176](https://github.com/morluto/rea/issues/6176). The line-length limits are
+[#6176](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/6176). The line-length limits are
 the one-byte record count: Intel HEX allows 255 data bytes, while S-record
 counts include address and checksum bytes.
 
@@ -107,9 +107,9 @@ architecture you choose, and `entry_point` set to the region start address;
 raw-binary maps file offset 0 at `entry_point`. Each region is opened
 separately, so references between regions are not resolved. A caller-selected
 Ghidra language and base address for raw-binary imports is tracked in
-[#4246](https://github.com/morluto/rea/issues/4246); Thumb-only Cortex-M images
+[#4246](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4246); Thumb-only Cortex-M images
 may be refused or decoded in ARM state until
-[#5744](https://github.com/morluto/rea/issues/5744) is resolved.
+[#5744](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/5744) is resolved.
 
 ## Verification
 

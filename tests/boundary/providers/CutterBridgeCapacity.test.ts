@@ -31,12 +31,12 @@ const descriptor = async (directory: string, port: number): Promise<string> => {
 };
 
 it("reports descriptor capacity without opening candidates or claiming no live sessions", async () => {
-  const directory = await createTestTempDirectory("rea-cutter-capacity-");
+  const directory = await createTestTempDirectory("nre-cutter-capacity-");
   await chmod(directory, 0o700);
   const selectedSession = await descriptor(directory, 1);
   for (let index = 1; index < 257; index += 1) await descriptor(directory, 1);
   const client = new CutterBridgeClient(
-    { REA_CUTTER_BRIDGE_DIR: directory },
+    { NRE_CUTTER_BRIDGE_DIR: directory },
     { platform: "linux" },
   );
   const result = await client.listSessions();
@@ -63,7 +63,7 @@ it("reports descriptor capacity without opening candidates or claiming no live s
 });
 
 it("bounds simultaneous socket probes while examining every admitted descriptor", async () => {
-  const directory = await createTestTempDirectory("rea-cutter-probes-");
+  const directory = await createTestTempDirectory("nre-cutter-probes-");
   await chmod(directory, 0o700);
   const sockets = new Set<Socket>();
   let peak = 0;
@@ -83,7 +83,7 @@ it("bounds simultaneous socket probes while examining every admitted descriptor"
     for (let index = 0; index < 24; index += 1)
       await descriptor(directory, address.port);
     const client = new CutterBridgeClient(
-      { REA_CUTTER_BRIDGE_DIR: directory },
+      { NRE_CUTTER_BRIDGE_DIR: directory },
       { platform: "linux" },
     );
     expect((await client.listSessions()).discovery_status).toBe(
@@ -99,12 +99,12 @@ it("bounds simultaneous socket probes while examining every admitted descriptor"
 });
 
 it("rejects expanded authenticated frames before dispatch and retains no cleanup owner", async () => {
-  const directory = await createTestTempDirectory("rea-cutter-frame-");
+  const directory = await createTestTempDirectory("nre-cutter-frame-");
   await chmod(directory, 0o700);
   const sessionId = await descriptor(directory, 1);
   const service = new CutterBridgeService(
     new CutterBridgeClient(
-      { REA_CUTTER_BRIDGE_DIR: directory },
+      { NRE_CUTTER_BRIDGE_DIR: directory },
       { platform: "linux" },
     ),
   );

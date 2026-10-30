@@ -18,7 +18,7 @@ export async function verifyGhidraLargeResults({
   env,
 }) {
   const exec = promisify(execFile);
-  const compiler = process.env.REA_CC ?? "cc";
+  const compiler = process.env.NRE_CC ?? "cc";
   try {
     await exec(compiler, ["--version"], { env, timeout: 30000 });
   } catch (cause) {
@@ -30,7 +30,7 @@ export async function verifyGhidraLargeResults({
   // Hex encoding, Evidence projection and the two MCP representations multiply
   // the source size. Derive the fixture from the pinned SDK's receive budget.
   const length = Math.ceil(STDIO_DEFAULT_MAX_BUFFER_SIZE / 4);
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-large-results-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-ghidra-large-results-"));
   const path = join(workspace, "large-results");
   const source = fileURLToPath(
     new URL("../../tests/conformance/ghidra/large-results.c", import.meta.url),
@@ -47,10 +47,10 @@ export async function verifyGhidraLargeResults({
     await call("open_binary", { path, provider_id: "ghidra" });
     const names = await call("list_names");
     const payload = names.find(({ value }) =>
-      /(?:^|_)rea_large_payload$/u.test(value),
+      /(?:^|_)nre_large_payload$/u.test(value),
     );
     const entry = names.find(({ value }) =>
-      /(?:^|_)rea_large_entry$/u.test(value),
+      /(?:^|_)nre_large_entry$/u.test(value),
     );
     assert.ok(payload);
     assert.ok(entry);
@@ -70,7 +70,7 @@ export async function verifyGhidraLargeResults({
     // escaped again as text, so this request fits the SDK receive limit while
     // the error response cannot.
     const missingSelector =
-      "REA_MISSING_" +
+      "NRE_MISSING_" +
       '"'.repeat(Math.ceil(STDIO_DEFAULT_MAX_BUFFER_SIZE / 4) + 64 * 1024);
     const lookupError = await reject("procedure_address", {
       procedure: missingSelector,
@@ -94,11 +94,11 @@ export async function verifyGhidraLargeResults({
     // exceed the receive budget even without obsolete Evidence envelopes.
     // The request contains only the two strings and remains below that budget.
     const comment =
-      "REA_BIG_COMMENT:" +
+      "NRE_BIG_COMMENT:" +
       "x".repeat(Math.ceil(STDIO_DEFAULT_MAX_BUFFER_SIZE / 4));
     const annotationError = await reject("annotate_native_function", {
       procedure: entry.address,
-      name: "rea_frame_probe",
+      name: "nre_frame_probe",
       comment,
       inline_comment: comment,
     });
@@ -107,14 +107,14 @@ export async function verifyGhidraLargeResults({
       "annotate_native_function",
     );
     assert.equal(
-      await call("procedure_address", { procedure: "rea_frame_probe" }),
+      await call("procedure_address", { procedure: "nre_frame_probe" }),
       entry.address,
       "A delivery constraint must preserve the successfully committed edit",
     );
     // The default summary fits the receive budget; only the complete dossier
     // exercises the oversized-delivery path with a retained reference.
     const dossierError = await reject("analyze_function", {
-      procedure: "rea_frame_probe",
+      procedure: "nre_frame_probe",
       detail: "complete",
     });
     const dossierId = retainedReference(dossierError, "analyze_function");
@@ -150,7 +150,7 @@ export async function verifyGhidraLargeResults({
     );
     assert.ok(originalError);
     assert.equal(originalError.operation, "mcp_tool_error");
-    assert.equal(originalError.provider.id, "rea-mcp");
+    assert.equal(originalError.provider.id, "nre-mcp");
     assert.equal(originalError.subject, null);
     assert.equal(originalError.parameters.tool_name, "procedure_address");
     assert.equal(originalError.normalized_result.error.code, "invalid_request");
@@ -176,13 +176,13 @@ export async function verifyGhidraLargeResults({
     assert.equal(readRecord.raw_result, null);
     const annotationRecord = retained(annotationId);
     const annotation = annotationRecord.normalized_result;
-    assert.equal(annotation.annotations.name, "rea_frame_probe");
+    assert.equal(annotation.annotations.name, "nre_frame_probe");
     assert.equal(annotation.annotations.comment, comment);
     assert.equal(annotation.annotations.inline_comment, comment);
     assert.equal(annotationRecord.raw_result, null);
     const dossierRecord = retained(dossierId);
     const dossier = dossierRecord.normalized_result;
-    assert.equal(dossier.procedure.name, "rea_frame_probe");
+    assert.equal(dossier.procedure.name, "nre_frame_probe");
     assert.ok(dossier.comments.some(({ text }) => text === comment));
     assert.equal(dossierRecord.raw_result, null);
     const { stdout } = await exec(

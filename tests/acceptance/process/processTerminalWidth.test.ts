@@ -13,7 +13,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "rejects one-column capture and resize before starting the target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-process-width-");
+    const root = await createTestTempDirectory("nre-process-width-");
     const marker = join(root, "launched");
     const base = {
       executable: process.execPath,
@@ -56,7 +56,7 @@ cliTest(
 cliTest.skipIf(CAPTURE_SKIP_REASON)(
   "retains the requested initial two-column screen",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-process-width-control-");
+    const root = await createTestTempDirectory("nre-process-width-control-");
     const path = join(root, "scenario.json");
     await writeFile(
       path,
@@ -84,7 +84,7 @@ cliTest.skipIf(CAPTURE_SKIP_REASON)(
 cliTest.skipIf(CAPTURE_SKIP_REASON)(
   "resizes a wider screen to two columns",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-process-width-resize-");
+    const root = await createTestTempDirectory("nre-process-width-resize-");
     const path = join(root, "scenario.json");
     await writeFile(
       path,

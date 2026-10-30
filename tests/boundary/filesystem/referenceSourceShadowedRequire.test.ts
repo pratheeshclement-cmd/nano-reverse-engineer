@@ -9,7 +9,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("resolves require calls by lexical binding and source mode", async () => {
-  const root = await createTestTempDirectory("rea-reference-require-scope-");
+  const root = await createTestTempDirectory("nre-reference-require-scope-");
   const sources: Record<string, string> = {
     "global-wrapper.cjs":
       "globalThis; console.log(require.resolve('./loaded.cjs'));",
@@ -214,7 +214,7 @@ const dynamicLoaderSources: Record<string, string> = {
 };
 
 it("keeps require edges according to the loader at each source site", async () => {
-  const root = await createTestTempDirectory("rea-reference-require-dynamic-");
+  const root = await createTestTempDirectory("nre-reference-require-dynamic-");
 
   await Promise.all(
     Object.entries(dynamicLoaderSources).map(([path, source]) =>
@@ -280,7 +280,7 @@ it("keeps require edges according to the loader at each source site", async () =
 });
 
 it("does not attribute overwritten require members to Node's resolver", async () => {
-  const root = await createTestTempDirectory("rea-reference-require-member-");
+  const root = await createTestTempDirectory("nre-reference-require-member-");
   const sources: Record<string, string> = {
     "assigned.cjs":
       "require.resolve = () => 'custom';\nconsole.log(require.resolve('./loaded.cjs'));",

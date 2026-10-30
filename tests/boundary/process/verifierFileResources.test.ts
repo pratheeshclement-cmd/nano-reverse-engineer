@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { writeJadxJarInventory } from "../../fixtures/android/jadxJar.js";
 
 it("retains an undefined verifier failure alongside real descriptor cleanup and retries its exact owner", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-undefined-");
+  const directory = await createTestTempDirectory("nre-verifier-undefined-");
   const path = join(directory, "retained.bin");
   const peerPath = join(directory, "released.bin");
   await writeFile(path, "retained verifier input");
@@ -98,7 +98,7 @@ it("retains an undefined verifier failure alongside real descriptor cleanup and 
 });
 
 it("retains and retries the exact descriptor after a verifier hash close failure", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-file-");
+  const directory = await createTestTempDirectory("nre-verifier-file-");
   const path = join(directory, "input.bin");
   const bytes = Buffer.from("owned verifier fixture");
   await writeFile(path, bytes);
@@ -147,7 +147,7 @@ it("retains and retries the exact descriptor after a verifier hash close failure
 });
 
 it("hashes and closes a clean verifier input", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-file-");
+  const directory = await createTestTempDirectory("nre-verifier-file-");
   const path = join(directory, "input.bin");
   const bytes = Buffer.from("clean verifier fixture");
   await writeFile(path, bytes);
@@ -265,7 +265,7 @@ it
   .each(["clean", "retry-close", "retained-close"])(
   "owns Android verifier prerequisite finalization: %s",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-verifier-jadx-owner-");
+    const root = await createTestTempDirectory("nre-verifier-jadx-owner-");
     const jar = join(root, "engine.jar");
     await writeJadxJarInventory(jar);
     const java = join(root, "java");
@@ -349,7 +349,7 @@ it("firmware verifier loads its current hash API before reporting unavailable pr
   expect(result.status).toBe(1);
   expect(result.stderr).toContain(
     process.platform === "linux"
-      ? "requires REA_BINWALK_COMMAND"
+      ? "requires NRE_BINWALK_COMMAND"
       : "requires Linux",
   );
   expect(result.stderr).not.toContain("does not provide an export");
@@ -358,7 +358,7 @@ it("firmware verifier loads its current hash API before reporting unavailable pr
 it.each(["late-close", "retry-close", "retained-close", "opaque-cancellation"])(
   "owns Ghidra verifier prerequisite finalization: %s",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-verifier-ghidra-owner-");
+    const root = await createTestTempDirectory("nre-verifier-ghidra-owner-");
     const options = {
       environment: {},
       installDir: root,
@@ -458,7 +458,7 @@ it.each(["late-close", "retry-close", "retained-close", "opaque-cancellation"])(
 
 it("Ghidra verifier awaits native prerequisite rejection before creating target fixtures", async () => {
   const root = await createTestTempDirectory(
-    "rea-verifier-ghidra-prerequisite-",
+    "nre-verifier-ghidra-prerequisite-",
   );
   const result = spawnSync(
     process.execPath,

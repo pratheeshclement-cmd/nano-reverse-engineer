@@ -101,7 +101,7 @@ export const configureClientConfiguration = async (
       status: "failed",
       reason: "registration_ownership",
       detail:
-        "The running REA entrypoint could not be identified; run setup from an installed REA command.",
+        "The running NRE entrypoint could not be identified; run setup from an installed NRE command.",
     };
   if (client.configPathError !== undefined)
     return { status: "failed", reason: "path" };
@@ -295,7 +295,7 @@ const persistClientConfiguration = async ({
       };
     if (target.value) return { status: "failed", reason: "target_changed" };
   }
-  // A native OpenCode V2 entry replaces REA's legacy V1 entry, which would
+  // A native OpenCode V2 entry replaces NRE's legacy V1 entry, which would
   // otherwise conflict with it.
   const legacyPath = legacyClientServerPath(
     parsed,
@@ -365,7 +365,7 @@ const persistClientConfiguration = async ({
   let recoveryBackupPath: string | undefined;
   if (original !== undefined) {
     const preserved = await preserveCurrentRecoveryBackup(
-      `${client.configPath}.rea.backup`,
+      `${client.configPath}.nre.backup`,
       transactionPath,
       original,
     );
@@ -670,7 +670,7 @@ const inspectClientDocument = async (
     };
   }
   const backupSelection = await selectCurrentRecoveryBackup(
-    `${client.configPath}.rea.backup`,
+    `${client.configPath}.nre.backup`,
     original,
   );
   if (!backupSelection.ok)
@@ -872,7 +872,7 @@ const conflictFailure = (
 const errorDetail = (cause: unknown): string =>
   cause instanceof Error ? cause.message : String(cause);
 
-/** Whether REA's entry matches, no legacy entry remains, and no client disable list suppresses it. */
+/** Whether NRE's entry matches, no legacy entry remains, and no client disable list suppresses it. */
 const registrationCurrent = (
   parsed: ClientConfigurationDocument,
   desired: unknown,
@@ -937,11 +937,11 @@ const clientConfigurationDesired = async (
   if (!environment.ok) throw environment.error;
   const registrationEnvironment =
     client.name === "kimi" &&
-    snapshotEnvironment(environment.value).REA_MCP_INPUT_SCHEMA_PROFILE ===
+    snapshotEnvironment(environment.value).NRE_MCP_INPUT_SCHEMA_PROFILE ===
       undefined
       ? {
           ...environment.value,
-          REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
+          NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
         }
       : environment.value;
   const registration = refreshClientRegistration(

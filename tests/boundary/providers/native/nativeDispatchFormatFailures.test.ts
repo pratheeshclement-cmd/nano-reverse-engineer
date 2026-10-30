@@ -40,7 +40,7 @@ const sectionCases = [
 ];
 
 const inspect = async (bytes: Buffer) => {
-  const root = await createTestTempDirectory("rea-dispatch-format-");
+  const root = await createTestTempDirectory("nre-dispatch-format-");
   const path = join(root, "fixture.macho");
   await writeFile(path, bytes);
   const client = new NativeMacOSProvider(

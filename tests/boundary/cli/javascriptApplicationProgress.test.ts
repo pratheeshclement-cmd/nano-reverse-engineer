@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const progressLine = z.object({
-  rea_progress: z.object({
+  nre_progress: z.object({
     phase: z.string(),
     completed: z.number(),
     total: z.number().nullable(),
@@ -25,7 +25,7 @@ for (const command of ["analyze-javascript-application", "analyze"]) {
   cliTest(
     `${command} reports real analysis phases on stderr and preserves stdout Evidence`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-js-cli-progress-");
+      const root = await createTestTempDirectory("nre-js-cli-progress-");
       await writeFile(join(root, "main.js"), "fetch('');\n");
       const direct = await analyzeJavaScriptApplication({ input_path: root });
       if (!direct.ok) throw direct.error;
@@ -38,7 +38,7 @@ for (const command of ["analyze-javascript-application", "analyze"]) {
       const updates = output.stderr
         .trim()
         .split("\n")
-        .map((line) => progressLine.parse(JSON.parse(line)).rea_progress);
+        .map((line) => progressLine.parse(JSON.parse(line)).nre_progress);
       expect(updates[0]?.completed).toBe(0);
       expect(
         updates.some(({ phase }) => phase === "parse_javascript_sources"),
@@ -65,7 +65,7 @@ for (const command of ["analyze-javascript-application", "analyze"]) {
 cliTest(
   "keeps a failed analysis distinct from a completed result",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-cli-progress-failure-");
+    const root = await createTestTempDirectory("nre-js-cli-progress-failure-");
     const output = await cli.run({
       arguments: [
         "analyze-javascript-application",
@@ -77,7 +77,7 @@ cliTest(
     const updates = output.stderr
       .trim()
       .split("\n")
-      .map((line) => progressLine.parse(JSON.parse(line)).rea_progress);
+      .map((line) => progressLine.parse(JSON.parse(line)).nre_progress);
     expect(updates[0]?.completed).toBe(0);
     expect(updates.every(({ terminal }) => terminal !== true)).toBe(true);
   },
@@ -88,7 +88,7 @@ for (const extension of ["mts", "cts"]) {
     cliTest(
       `${command} returns facts for a selected ${extension} source`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-nodenext-cli-");
+        const root = await createTestTempDirectory("nre-nodenext-cli-");
         const path = `selected.${extension}`;
         await writeFile(
           join(root, path),
@@ -121,7 +121,7 @@ for (const command of ["analyze-javascript-application", "analyze"]) {
   cliTest(
     `${command} retains HTML source ranges after a bare carriage return`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-html-coordinate-cli-");
+      const root = await createTestTempDirectory("nre-html-coordinate-cli-");
       const opening = '<script src="actual.js">';
       await Promise.all([
         writeFile(

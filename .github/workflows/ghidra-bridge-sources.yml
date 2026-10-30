@@ -30,7 +30,7 @@ jobs:
       - name: Acquire checksum-verified Ghidra SDK in isolated runner storage
         shell: bash
         run: |
-          ghidra_root="${RUNNER_TEMP}/rea-ghidra"
+          ghidra_root="${RUNNER_TEMP}/nre-ghidra"
           mkdir -p "${ghidra_root}"
           curl -fsSL --retry 3 --write-out 'ghidra_download_bytes=%{size_download} ghidra_download_seconds=%{time_total}\n' -o "${ghidra_root}/ghidra.zip" "${GHIDRA_RELEASE_URL}"
           echo "${GHIDRA_RELEASE_SHA256}  ${ghidra_root}/ghidra.zip" | sha256sum -c -
@@ -51,14 +51,14 @@ jobs:
         run: |
           java_home_variable="JAVA_HOME_${GHIDRA_JAVA_MAJOR}_X64"
           export JAVA_HOME="${!java_home_variable}"
-          probe_root="${RUNNER_TEMP}/rea-arm-context"
+          probe_root="${RUNNER_TEMP}/nre-arm-context"
           mkdir -p "${probe_root}/project"
           printf '\036\377\057\341\160\107\000\000' > "${probe_root}/arm-thumb.bin"
           timeout 180s "${GHIDRA_INSTALL_DIR}/support/analyzeHeadless" "${probe_root}/project" ArmContext \
             -import "${probe_root}/arm-thumb.bin" -loader BinaryLoader -processor ARM:LE:32:v7 \
             -noanalysis -readOnly -deleteProject \
             -scriptPath "${GITHUB_WORKSPACE}/tests/conformance/ghidra;${GITHUB_WORKSPACE}/bridge/ghidra" \
-            -postScript ReaArmContextProbe.java "${GITHUB_WORKSPACE}/bridge/ghidra" \
+            -postScript NreArmContextProbe.java "${GITHUB_WORKSPACE}/bridge/ghidra" \
             > "${probe_root}/output.log" 2>&1 || { cat "${probe_root}/output.log"; exit 1; }
           cat "${probe_root}/output.log"
-          grep -F 'REA_ARM_CONTEXT_OK arm=0 thumb=1 unavailable=null (injected provider value)' "${probe_root}/output.log"
+          grep -F 'NRE_ARM_CONTEXT_OK arm=0 thumb=1 unavailable=null (injected provider value)' "${probe_root}/output.log"

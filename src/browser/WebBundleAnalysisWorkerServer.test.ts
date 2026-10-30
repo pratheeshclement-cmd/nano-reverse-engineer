@@ -139,7 +139,7 @@ const closeServer = async (
 };
 
 const framingServer = async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-web-worker-framing-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-web-worker-framing-"));
   let worker: ChildProcessWithoutNullStreams | undefined;
   onTestFinished(async () => {
     if (worker !== undefined) await closeServer(worker);
@@ -253,7 +253,7 @@ it("rejects an oversized unterminated frame at EOF without starting analysis", a
 });
 
 it("bounds and binds per-script worker jobs, then reuses one worker for the next script", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-web-worker-server-test-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-web-worker-server-test-"));
   let worker: ChildProcessWithoutNullStreams | undefined;
   try {
     const server = await startServer(root);

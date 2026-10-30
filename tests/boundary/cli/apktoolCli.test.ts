@@ -9,22 +9,22 @@ it.each([
   [
     ["inspect-apktool-client", "--json"],
     "/nonexistent/apktool",
-    "The selected apktool launcher was not found: /nonexistent/apktool. Set REA_APKTOOL_COMMAND",
+    "The selected apktool launcher was not found: /nonexistent/apktool. Set NRE_APKTOOL_COMMAND",
   ],
   [
     ["decode-android-resources", "/targets/app.apk", "--json"],
     "/nonexistent/apktool",
-    "The selected apktool launcher was not found: /nonexistent/apktool. Set REA_APKTOOL_COMMAND",
+    "The selected apktool launcher was not found: /nonexistent/apktool. Set NRE_APKTOOL_COMMAND",
   ],
   [
     ["decode-android-resources", "/targets/app.apk", "--json"],
     "relative/apktool",
-    "REA_APKTOOL_COMMAND must be an absolute path to the apktool launcher.",
+    "NRE_APKTOOL_COMMAND must be an absolute path to the apktool launcher.",
   ],
 ])(
-  "%j with REA_APKTOOL_COMMAND=%s names the host requirement",
+  "%j with NRE_APKTOOL_COMMAND=%s names the host requirement",
   async (argv, command, reason) => {
-    const result = await serve(argv, { REA_APKTOOL_COMMAND: command });
+    const result = await serve(argv, { NRE_APKTOOL_COMMAND: command });
     expectConfigurationRefusal(result, reason);
   },
 );

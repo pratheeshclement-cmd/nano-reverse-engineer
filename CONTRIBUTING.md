@@ -1,6 +1,6 @@
-# Contributing to REA
+# Contributing to NRE
 
-REA welcomes focused bug fixes, documentation improvements, tests, and reverse-engineering workflows. For large contract or architecture changes, explain the intended scope and link the relevant issue or design discussion.
+NRE welcomes focused bug fixes, documentation improvements, tests, and reverse-engineering workflows. For large contract or architecture changes, explain the intended scope and link the relevant issue or design discussion.
 
 ## Choosing a contribution
 
@@ -41,7 +41,7 @@ For analysis workflows and agent interfaces, follow the
 [performance priorities](AGENTS.md#performance). Explain the selected output
 scope, reuse/cache decisions, and relevant before/after measurements when these
 costs change.
-Use the [analysis optimization skill](.agents/skills/rea-analysis-optimization/SKILL.md)
+Use the [analysis optimization skill](.agents/skills/nre-analysis-optimization/SKILL.md)
 to locate provider and shared-workflow bottlenecks, preserve Evidence, and
 compare equivalent real tasks before claiming an improvement.
 
@@ -83,7 +83,7 @@ These requirements also apply to maintainer-authored PRs.
 Before requesting maintainer review, the human owner must:
 
 - Review the final diff and relevant existing code. Be able to explain the
-  problem, the chosen approach, how it fits REA, and meaningful edge cases.
+  problem, the chosen approach, how it fits NRE, and meaningful edge cases.
 - Provide evidence that the change works. Summarize what was checked, the
   observed results, and meaningful gaps in the PR body. Use focused tests,
   representative CLI/MCP output, CI artifacts, screenshots, or other checks
@@ -133,11 +133,11 @@ Contributors are responsible for completing this work before requesting review.
 
 ## Contribution scope
 
-REA focuses on software structure, runtime behavior, and evidence through
+NRE focuses on software structure, runtime behavior, and evidence through
 general-purpose reverse-engineering workflows. Evaluate a proposal by its actual
 capabilities, side effects, defaults, and complete workflow. A tool name or a
 reference to vulnerability research, malware analysis, or CTFs does not determine
-whether it belongs in REA.
+whether it belongs in NRE.
 
 Supported contributions include format inspection, ordinary archive and standard
 compression extraction, disassembly, decompilation, cross-references, general
@@ -154,7 +154,7 @@ every workflow built on it. General-purpose interfaces are not classified as
 dedicated bypass workflows solely because caller-provided code could be misused;
 their execution and mutation authority must still be reviewed.
 
-REA does not integrate or officially distribute:
+NRE does not integrate or officially distribute:
 
 - Purpose-built workflows to defeat commercial packing or code-virtualization
   protections and automatically recover protected code.
@@ -209,7 +209,7 @@ Maintainers and implementers work together to resolve the following before
 integration:
 
 - The concrete analyst question, requested inputs and outputs, and why existing
-  REA operations are insufficient.
+  NRE operations are insufficient.
 - Why the workflow fits this scope, its non-goals, and any protection recovery,
   bypass, or attack automation it would expose.
 - The selected targets and every execution, injection, mutation, network, or
@@ -256,7 +256,7 @@ protocols in adapters and shared CLI/MCP workflows in the application layer.
 The published npm package includes the Windows x64 native addon and its
 manifest. A source checkout does not: `native/windows/build/` is ignored by
 Git, and neither `npm ci` nor `npm run build:cached` (or `npm run build`)
-produces `rea-windows-x64.node` or `manifest.json` in that directory.
+produces `nre-windows-x64.node` or `manifest.json` in that directory.
 Windows workflows and tests that require native controls need these artifacts;
 this includes `run-exclusive` commands, which use the native Job Object to keep
 the artifact lock until every command descendant has exited. Without the
@@ -289,7 +289,7 @@ then rerun the command.
 
 The VitePress site uses the Markdown files in `docs/`. Run `npm run docs:dev`
 for live editing, `npm run docs:build` to check the production build and
-links, and `npm run docs:preview` to preview that build at `/rea/`.
+links, and `npm run docs:preview` to preview that build at `/nre/`.
 
 Site navigation lives in `docs/.vitepress/config.ts`. Keep links to guides
 relative so they work on GitHub and the website; link to repository files
@@ -298,7 +298,7 @@ use `npm run docs:generate`; `docs:build` generates them before building the web
 
 Pull requests run `npm run docs:check`. `.github/workflows/pages.yml` is a
 manual VitePress build and does not publish. The public site at
-<https://rea.tools/> serves `website/public/` through Cloudflare Workers. See
+<https://github.com/pratheeshclement-cmd/nano-reverse-engineer/> serves `website/public/` through Cloudflare Workers. See
 the [website README](website/README.md#cloudflare-workers) for previews and
 manual deployments.
 
@@ -352,7 +352,7 @@ CI diagnosis. Packaging/setup/distribution changes additionally require
 matching real-provider lane. State which host/provider workflows ran.
 
 For CI/test correctness, drift, or performance investigations, use the
-[`rea-ci-tests-audit` contributor skill](.agents/skills/rea-ci-tests-audit/SKILL.md).
+[`nre-ci-tests-audit` contributor skill](.agents/skills/nre-ci-tests-audit/SKILL.md).
 It guides reproduction and comparable measurements before changing checks.
 
 `check:pr` reuses build and static-check outputs while executing the test suite
@@ -367,7 +367,7 @@ Pre-commit formats and lints staged files; pre-push runs `check:fast`.
 `evidence:generate` prepares only the managed commitment and its runtime/skill
 dependencies. The ignored outputs are `docs/public/product-catalog.json`,
 `docs/verification/managed-conformance-*.json`, and `skills/`. Edit authored
-skill instructions in `.agents/skills/reverse-engineer-anything/`, where Skills
+skill instructions in `.agents/skills/nano-reverse-engineer/`, where Skills
 can discover the public bundle directly from a clean checkout. `verify:package`
 installs that bundle with Skills 1.7.2 using default repository-root discovery
 and checks every installed file, alongside the packaged setup checks.
@@ -383,7 +383,7 @@ should not alter that commitment. Doctor and `binary_session` expose runtime
 schema identity.
 
 Build/generation commands hold a SQLite transaction around the entire Turbo
-graph, including cache restoration. `.cache/rea-command-locks/` databases identify
+graph, including cache restoration. `.cache/nre-command-locks/` databases identify
 locks, not stale files; never remove them while commands run. POSIX cancellation
 retains process-group ownership until settlement; Windows waits for completion.
 Real-provider execution is uncached.
@@ -400,10 +400,10 @@ directory deletion, using the case's `finally` or `afterEach`; Vitest runs
 `afterEach` before `onTestFinished` and awaits finish hooks in reverse
 registration order.
 `npm run verify:test-temp-hygiene` runs the suite under a fresh `TMPDIR` and
-rejects remaining REA-owned paths. It cannot detect duplicate deletion owners or
-prove resource-close ordering. Never glob-clean shared `/tmp/rea-*` content.
+rejects remaining NRE-owned paths. It cannot detect duplicate deletion owners or
+prove resource-close ordering. Never glob-clean shared `/tmp/nre-*` content.
 
-`REA_LOG_LEVEL` selects `trace`, `debug`, `info`, `warn`, `error`, `fatal`, or
+`NRE_LOG_LEVEL` selects `trace`, `debug`, `info`, `warn`, `error`, `fatal`, or
 `silent`. Logs go to stderr: MCP defaults to `info`, and one-shot CLI logging
 is opt-in, so stdout carries only protocol messages and command results.
 Request arguments, bridge tokens, and environment data are redacted from
@@ -420,7 +420,7 @@ for prerequisites and scope, and [Hopper setup](docs/installation.md#hopper)
 for supported hosts and unattended startup.
 
 Use the default `build/conformance/manifest.json` unless explicitly verifying
-another source-built manifest with `REA_HOPPER_CONFORMANCE_MANIFEST_PATH`.
+another source-built manifest with `NRE_HOPPER_CONFORMANCE_MANIFEST_PATH`.
 Generated fixtures and manifests remain ignored.
 
 ## Maintainer release checklist
@@ -434,7 +434,7 @@ exact SHA. Ordinary main pushes cannot publish packages. An optional manual
 `release/VERSION` checkpoint retains explicit preparation and publication.
 
 For grouped release notes with verified contributor thanks, use the repository's
-`rea-changelog-update` skill in `.agents/skills/rea-changelog-update/`. Its inventory,
+`nre-changelog-update` skill in `.agents/skills/nre-changelog-update/`. Its inventory,
 credit checks, and finalization process are described in the release guide.
 
 Keep new implementation commits on main for the next release. The workflow

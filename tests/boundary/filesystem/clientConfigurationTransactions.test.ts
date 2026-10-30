@@ -33,7 +33,7 @@ it
   "keeps the selected file after a parent alias retarget: %s",
   async (variant) => {
     const parentTraversal = variant !== "direct";
-    const root = await createTestTempDirectory("rea-config-retarget-");
+    const root = await createTestTempDirectory("nre-config-retarget-");
     const first = join(root, "first");
     const second = variant === "lexical-parent" ? root : join(root, "second");
     for (const directory of [first, second]) {
@@ -66,7 +66,7 @@ it
 it.skipIf(process.platform === "win32")(
   "preserves an existing client configuration mode while keeping new files private",
   async () => {
-    const root = await createTestTempDirectory("rea-config-mode-");
+    const root = await createTestTempDirectory("nre-config-mode-");
     const existing = join(root, "existing.json");
     const fresh = join(root, "fresh.json");
     const original = '{"keep":"caller data"}\n';
@@ -79,19 +79,19 @@ it.skipIf(process.platform === "win32")(
       configPath: existing,
     } as const;
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(existing)).mode & 0o777).toBe(0o640);
-    expect((await lstat(`${existing}.rea.backup`)).mode & 0o777).toBe(0o640);
-    expect(await readFile(`${existing}.rea.backup`, "utf8")).toBe(original);
+    expect((await lstat(`${existing}.nre.backup`)).mode & 0o777).toBe(0o640);
+    expect(await readFile(`${existing}.nre.backup`, "utf8")).toBe(original);
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toMatchObject({ status: "unchanged" });
     expect((await lstat(existing)).mode & 0o777).toBe(0o640);
 
     expect(
       await configureClientConfiguration({ ...client, configPath: fresh }, {}, [
-        "rea",
+        "nre",
         "mcp",
       ]),
     ).toMatchObject({ status: "configured" });
@@ -135,7 +135,7 @@ describe("uninstall backups after edits made since setup", () => {
     const beforeSetup = '{"keep":"before setup"}\n';
     await writeFile(configPath, beforeSetup);
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toMatchObject({ status: "configured" });
     const configured = JSON.parse(await readFile(configPath, "utf8")) as Record<
       string,
@@ -143,7 +143,7 @@ describe("uninstall backups after edits made since setup", () => {
     >;
     const beforeUninstall = `${JSON.stringify({ ...configured, keep: "edited after setup" }, null, 2)}\n`;
     await writeFile(configPath, beforeUninstall);
-    const recoveryPath = `${configPath}.rea.backup.${createHash("sha256")
+    const recoveryPath = `${configPath}.nre.backup.${createHash("sha256")
       .update(beforeUninstall, "utf8")
       .digest("hex")}.recovery`;
     return {
@@ -164,11 +164,11 @@ describe("uninstall backups after edits made since setup", () => {
       beforeSetup,
       beforeUninstall,
       recoveryPath,
-    } = await editedSinceSetup("rea-uninstall-current-backup-");
+    } = await editedSinceSetup("nre-uninstall-current-backup-");
     expect((await systemUninstallHost(root).removeClient(client)).status).toBe(
       "removed",
     );
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(
       beforeSetup,
     );
     expect(await readFile(recoveryPath, "utf8")).toBe(beforeUninstall);
@@ -195,7 +195,7 @@ describe("uninstall backups after edits made since setup", () => {
         beforeSetup,
         beforeUninstall,
         recoveryPath,
-      } = await editedSinceSetup("rea-uninstall-current-backup-failure-");
+      } = await editedSinceSetup("nre-uninstall-current-backup-failure-");
       expect(
         await systemUninstallHost(
           root,
@@ -213,7 +213,7 @@ describe("uninstall backups after edits made since setup", () => {
           keep: "edited after setup",
           mcpServers: {},
         });
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(
         beforeSetup,
       );
       expect(await readFile(recoveryPath, "utf8")).toBe(beforeUninstall);
@@ -222,7 +222,7 @@ describe("uninstall backups after edits made since setup", () => {
 
   it("blocks removal when the content-addressed backup holds other data", async () => {
     const { root, configPath, client, beforeUninstall, recoveryPath } =
-      await editedSinceSetup("rea-uninstall-current-backup-occupied-");
+      await editedSinceSetup("nre-uninstall-current-backup-occupied-");
     await writeFile(recoveryPath, "occupied by other data");
     const result = await systemUninstallHost(root).removeClient(client);
     expect(result.status).toBe("failed");
@@ -244,7 +244,7 @@ describe("uninstall backups after edits made since setup", () => {
     "blocks removal when the reported copy leaves %s backup bytes",
     async (_label, copy) => {
       const { root, configPath, client, beforeUninstall } =
-        await editedSinceSetup("rea-uninstall-current-backup-unverified-");
+        await editedSinceSetup("nre-uninstall-current-backup-unverified-");
       let writes = 0;
       const result = await systemUninstallHost(root, {
         ...failedVerificationFileSystem("verification"),
@@ -265,7 +265,7 @@ describe("uninstall backups after edits made since setup", () => {
 });
 
 it("accepts a literal UTF-8 replacement character without changing its value", async () => {
-  const root = await createTestTempDirectory("rea-client-config-utf8-");
+  const root = await createTestTempDirectory("nre-client-config-utf8-");
   const configPath = join(root, "config.json");
   const original = Buffer.concat([
     Buffer.from('{"label":"'),
@@ -276,65 +276,65 @@ it("accepts a literal UTF-8 replacement character without changing its value", a
   const result = await configureClientConfiguration(
     { name: "cursor", format: "json", configPath },
     {},
-    ["rea", "mcp"],
+    ["nre", "mcp"],
   );
   expect(result.status).toBe("configured");
   expect(
-    Buffer.compare(await readFile(`${configPath}.rea.backup`), original),
+    Buffer.compare(await readFile(`${configPath}.nre.backup`), original),
   ).toBe(0);
   expect(JSON.parse(await readFile(configPath, "utf8")).label).toBe("\uFFFD");
 });
 
 it("previews and creates a current recovery backup while preserving the first backup", async () => {
-  const root = await createTestTempDirectory("rea-client-current-recovery-");
+  const root = await createTestTempDirectory("nre-client-current-recovery-");
   const configPath = join(root, "config.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   const client = { name: "cursor", format: "json", configPath } as const;
   await writeFile(configPath, currentOriginal);
-  await writeFile(`${configPath}.rea.backup`, firstOriginal);
+  await writeFile(`${configPath}.nre.backup`, firstOriginal);
 
-  const recoveryPath = `${configPath}.rea.backup.${createHash("sha256")
+  const recoveryPath = `${configPath}.nre.backup.${createHash("sha256")
     .update(currentOriginal, "utf8")
     .digest("hex")}.recovery`;
-  expect(await inspectClientConfiguration(client, {}, ["rea", "mcp"])).toEqual({
+  expect(await inspectClientConfiguration(client, {}, ["nre", "mcp"])).toEqual({
     status: "update",
     backupPath: recoveryPath,
   });
 
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toEqual({ status: "configured", backupPath: recoveryPath });
-  expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(
     firstOriginal,
   );
   expect(await readFile(recoveryPath, "utf8")).toBe(currentOriginal);
 });
 
 it("blocks configuration when the planned content-addressed backup is occupied", async () => {
-  const root = await createTestTempDirectory("rea-client-recovery-conflict-");
+  const root = await createTestTempDirectory("nre-client-recovery-conflict-");
   const configPath = join(root, "config.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   const client = { name: "cursor", format: "json", configPath } as const;
   await writeFile(configPath, currentOriginal);
-  await writeFile(`${configPath}.rea.backup`, firstOriginal);
-  const recoveryPath = `${configPath}.rea.backup.${createHash("sha256")
+  await writeFile(`${configPath}.nre.backup`, firstOriginal);
+  const recoveryPath = `${configPath}.nre.backup.${createHash("sha256")
     .update(currentOriginal, "utf8")
     .digest("hex")}.recovery`;
   await writeFile(recoveryPath, "occupied by other data");
 
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+    await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({
     status: "invalid",
     remediation: expect.stringContaining(recoveryPath),
   });
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toEqual({ status: "failed", reason: "backup" });
   expect(await readFile(configPath, "utf8")).toBe(currentOriginal);
-  expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(
     firstOriginal,
   );
   expect(await readFile(recoveryPath, "utf8")).toBe("occupied by other data");
@@ -347,7 +347,7 @@ describe("client configuration write failures", () => {
   ] as const)(
     "classifies a denied %s write as a write failure",
     async (format, configure) => {
-      const root = await createTestTempDirectory("rea-client-unwritable-");
+      const root = await createTestTempDirectory("nre-client-unwritable-");
       await chmod(root, 0o500);
       try {
         expect(
@@ -375,23 +375,23 @@ describe("client configuration write failures", () => {
 describe("TOML client configuration comparison", () => {
   it("replaces a registration containing a non-finite TOML float and preserves unrelated settings", async () => {
     const value = "-inf";
-    const root = await createTestTempDirectory("rea-client-toml-");
+    const root = await createTestTempDirectory("nre-client-toml-");
     const configPath = join(root, "config.toml");
-    const original = `unrelated = ${value}\n[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@6.1.0", "mcp"]\nstartup_timeout_sec = ${value}\n`;
+    const original = `unrelated = ${value}\n[mcp_servers.nre]\ncommand = "npx"\nargs = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]\nstartup_timeout_sec = ${value}\n`;
     await writeFile(configPath, original);
     const client = { name: "codex", format: "toml", configPath } as const;
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toEqual({
       status: "configured",
-      backupPath: `${configPath}.rea.backup`,
+      backupPath: `${configPath}.nre.backup`,
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(await readFile(configPath, "utf8")).toContain(
       `unrelated = ${value}`,
     );
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toEqual({
       status: "unchanged",
     });
@@ -402,13 +402,13 @@ const unrelatedToml = [
   "# Keep this explanation.",
   'notify = ["a", "b"]',
   "literal = 'C:\\demo\\path'",
-  'disabled_mcp_servers = ["rea", "other"] # Not a Codex registration.',
+  'disabled_mcp_servers = ["nre", "other"] # Not a Codex registration.',
   "",
 ].join("\n");
 
 const unrelatedServer = [
   "# Keep the other server.",
-  '[mcp_servers."rea.env"]',
+  '[mcp_servers."nre.env"]',
   "command = 'other'",
   "",
 ].join("\n");
@@ -417,7 +417,7 @@ const unrelatedValues = (text: string) => {
   const document = parseToml(text);
   const servers = document.mcp_servers;
   if (typeof servers === "object" && servers !== null) {
-    Reflect.deleteProperty(servers, "rea");
+    Reflect.deleteProperty(servers, "nre");
     if (Object.keys(servers).length === 0) delete document.mcp_servers;
   }
   return document;
@@ -432,17 +432,17 @@ describe("Codex configuration text preservation", () => {
     },
     {
       name: "quoted tables and nested environment",
-      original: `${unrelatedToml}[mcp_servers."rea"]\ncommand = "npx"\nargs = ["-y", "rea-agents@6.1.0", "mcp"]\n[mcp_servers.rea.env]\nOLD = "value"\n${unrelatedServer}`,
+      original: `${unrelatedToml}[mcp_servers."nre"]\ncommand = "npx"\nargs = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]\n[mcp_servers.nre.env]\nOLD = "value"\n${unrelatedServer}`,
       preserved: [unrelatedToml, unrelatedServer],
     },
     {
       name: "dotted registration keys",
-      original: `${unrelatedToml}mcp_servers.rea.command = "npx"\nmcp_servers.rea.args = ["-y", "rea-agents@6.1.0", "mcp"]\n${unrelatedServer}`,
+      original: `${unrelatedToml}mcp_servers.nre.command = "npx"\nmcp_servers.nre.args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]\n${unrelatedServer}`,
       preserved: [unrelatedToml, unrelatedServer],
     },
     {
       name: "inline server table",
-      original: `${unrelatedToml}mcp_servers = { rea = { command = "npx", args = ["-y", "rea-agents@6.1.0", "mcp"] }, other = { command = 'other' } } # Shared table.\n`,
+      original: `${unrelatedToml}mcp_servers = { nre = { command = "npx", args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"] }, other = { command = 'other' } } # Shared table.\n`,
       preserved: [
         unrelatedToml,
         "other = { command = 'other' }",
@@ -452,13 +452,13 @@ describe("Codex configuration text preservation", () => {
     {
       name: "BOM, CRLF, and multiline text resembling a registration",
       original:
-        `\uFEFF${unrelatedToml}banner = '''\n[mcp_servers.rea]\n# This is string content.\n'''\n`.replaceAll(
+        `\uFEFF${unrelatedToml}banner = '''\n[mcp_servers.nre]\n# This is string content.\n'''\n`.replaceAll(
           "\n",
           "\r\n",
         ),
       preserved: [
         unrelatedToml.replaceAll("\n", "\r\n"),
-        "banner = '''\r\n[mcp_servers.rea]\r\n# This is string content.\r\n'''",
+        "banner = '''\r\n[mcp_servers.nre]\r\n# This is string content.\r\n'''",
       ],
     },
     {
@@ -469,13 +469,13 @@ describe("Codex configuration text preservation", () => {
   ])(
     "preserves unrelated text through $name setup and uninstall",
     async ({ original, preserved }) => {
-      const root = await createTestTempDirectory("rea-codex-preserve-");
+      const root = await createTestTempDirectory("nre-codex-preserve-");
       const configPath = join(root, "config.toml");
       const client = { name: "codex", format: "toml", configPath } as const;
       await writeFile(configPath, original);
 
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toMatchObject({ status: "configured" });
       const configured = await readFile(configPath, "utf8");
       for (const text of preserved) expect(configured).toContain(text);
@@ -484,7 +484,7 @@ describe("Codex configuration text preservation", () => {
         original.startsWith("\uFEFF"),
       );
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toEqual({ status: "unchanged" });
       expect(await readFile(configPath, "utf8")).toBe(configured);
 
@@ -494,43 +494,43 @@ describe("Codex configuration text preservation", () => {
       const removed = await readFile(configPath, "utf8");
       for (const text of preserved) expect(removed).toContain(text);
       expect(unrelatedValues(removed)).toEqual(unrelatedValues(original));
-      expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+      expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
       expect(removed.startsWith("\uFEFF")).toBe(original.startsWith("\uFEFF"));
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     },
   );
 
   it("retains the first backup after uninstall and a later setup", async () => {
-    const root = await createTestTempDirectory("rea-codex-backup-");
+    const root = await createTestTempDirectory("nre-codex-backup-");
     const configPath = join(root, "config.toml");
     const client = { name: "codex", format: "toml", configPath } as const;
     const original = 'notify = ["a", "b"]\n';
     await writeFile(configPath, original);
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]);
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]);
     expect((await systemUninstallHost(root).removeClient(client)).status).toBe(
       "removed",
     );
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
   });
 
   it("refuses malformed Codex TOML unchanged without creating a backup", async () => {
-    const root = await createTestTempDirectory("rea-codex-malformed-");
+    const root = await createTestTempDirectory("nre-codex-malformed-");
     const configPath = join(root, "config.toml");
     const client = { name: "codex", format: "toml", configPath } as const;
     const original =
-      "# Keep this explanation.\n[mcp_servers.rea]\ncommand = [broken\n";
+      "# Keep this explanation.\n[mcp_servers.nre]\ncommand = [broken\n";
     await writeFile(configPath, original);
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
     expect((await systemUninstallHost(root).removeClient(client)).status).toBe(
       "failed",
     );
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 });
@@ -540,11 +540,11 @@ it
   .each([0o400, 0o640])(
   "uninstall preserves configuration mode %s while retaining recovery authority",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-uninstall-file-mode-");
+    const root = await createTestTempDirectory("nre-uninstall-file-mode-");
     const configPath = join(root, "config.json");
     await writeFile(
       configPath,
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n',
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":true}\n',
     );
     await chmod(configPath, mode);
     const host = systemUninstallHost(root);

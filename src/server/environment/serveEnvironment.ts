@@ -107,7 +107,7 @@ export const createEnvironmentMcpServer = (
   answer: EnvironmentToolAnswer,
 ): RequestTrackingMcpServer => {
   // Tool names, descriptions and replies all come from the captured application, so the
-  // server carries REA's untrusted-content instructions plus a warning about its own catalog.
+  // server carries NRE's untrusted-content instructions plus a warning about its own catalog.
   const server = new EnvironmentMcpServer(
     { name, version: PRODUCT_IDENTITY.packageVersion },
     {
@@ -216,8 +216,8 @@ const cachedStateReplyResultBytes = (
   if (!Array.isArray(parts) || parts.length !== 1 || !isRecord(parts[0]))
     return undefined;
   const data = parts[0].data;
-  if (!isRecord(data) || !isRecord(data.rea_state)) return undefined;
-  const { types, entities, documents } = data.rea_state;
+  if (!isRecord(data) || !isRecord(data.nre_state)) return undefined;
+  const { types, entities, documents } = data.nre_state;
   if (!Array.isArray(entities) || !Array.isArray(documents)) return undefined;
   const cached = stateReplySizes.get(entities);
   return cached !== undefined &&
@@ -237,8 +237,8 @@ const rememberStateReplyResultBytes = (
   if (!Array.isArray(parts) || parts.length !== 1 || !isRecord(parts[0]))
     return;
   const data = parts[0].data;
-  if (!isRecord(data) || !isRecord(data.rea_state)) return;
-  const { types, entities, documents } = data.rea_state;
+  if (!isRecord(data) || !isRecord(data.nre_state)) return;
+  const { types, entities, documents } = data.nre_state;
   if (!Array.isArray(entities) || !Array.isArray(documents)) return;
   // A one-character string marks the result slot. Removing its compact JSON
   // envelope yields the exact result size, independent of the RPC id.
@@ -574,7 +574,7 @@ export const serveEnvironment = async (
                 resources: owner.cleanupResources,
               },
               remediationAction:
-                "Keep this REA process available for cleanup. Confirm the reported resources are released before starting a replacement environment server.",
+                "Keep this NRE process available for cleanup. Confirm the reported resources are released before starting a replacement environment server.",
             },
           ).bindCleanupResourceOwner(owner);
           shutdownFailures.add(failure);

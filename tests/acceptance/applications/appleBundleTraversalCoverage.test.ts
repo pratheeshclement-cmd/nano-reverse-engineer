@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest, type TestCli } from "../../support/cli/cliFixture.js";
 
 const bundle = async () => {
-  const root = await createTestTempDirectory("rea-apple-traversal-");
+  const root = await createTestTempDirectory("nre-apple-traversal-");
   const app = join(root, "Fixture.app");
   const resources = join(app, "Contents", "Resources");
   const executables = join(app, "Contents", "MacOS");

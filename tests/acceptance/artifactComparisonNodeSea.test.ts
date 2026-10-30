@@ -68,7 +68,7 @@ const withoutEntryMetadata = (source: Evidence): Evidence => {
 };
 
 it("compares raw SEA asset keys without interpreting serialization order as metadata", async () => {
-  const root = await createTestTempDirectory("rea-sea-key-comparison-");
+  const root = await createTestTempDirectory("nre-sea-key-comparison-");
   const nfc = "caf\u00e9.txt";
   const nfd = "cafe\u0301.txt";
   const body = "identical asset bytes";

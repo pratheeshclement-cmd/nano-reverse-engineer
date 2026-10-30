@@ -104,7 +104,7 @@ export const withSignatureTarget = async (
   ) => Promise<Result<InspectSignature, AnalysisError>>,
   signal?: AbortSignal,
   createRoot: () => Promise<Pick<PrivateRuntimeRoot, "path" | "close">> = () =>
-    PrivateRuntimeRoot.create({ prefix: "rea-signature-" }),
+    PrivateRuntimeRoot.create({ prefix: "nre-signature-" }),
 ): Promise<Result<InspectSignature, AnalysisError>> => {
   try {
     return await resources.run(async () => {

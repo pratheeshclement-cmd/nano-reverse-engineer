@@ -15,7 +15,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "forwards --max-input-bytes to the byte reader and records its admission",
       async ({ cli }) => {
-        const directory = await createTestTempDirectory("rea-objc-input-");
+        const directory = await createTestTempDirectory("nre-objc-input-");
         const path = join(directory, "fixture.macho");
         await writeFile(path, objcRecordBudgetMacho("class"));
         const size = (await stat(path)).size;
@@ -27,7 +27,7 @@ describe.skipIf(process.platform !== "darwin")(
               ...flags,
               "--json",
             ],
-            environment: { REA_LOG_LEVEL: "silent" },
+            environment: { NRE_LOG_LEVEL: "silent" },
           });
         const admission = (output: Awaited<ReturnType<typeof run>>) => {
           expect(output.exitCode, `${output.stdout}\n${output.stderr}`).toBe(0);

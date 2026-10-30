@@ -27,7 +27,7 @@ it("preserves pre-aborted cancellation reasons without starting the provider", a
 });
 
 it("retains completed APK Evidence and the abort reason on late cancellation", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-apk-service-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-apk-service-"));
   const provider = new ApkSignatureProvider();
   try {
     const path = join(root, "unsigned.apk");
@@ -78,7 +78,7 @@ it("refuses summary acquisition before reading when complete Evidence cannot be 
 });
 
 it("rejects a live provider subject path that differs from the selected APK", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-apk-subject-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-apk-subject-"));
   const provider = new ApkSignatureProvider();
   try {
     const path = join(root, "selected.apk");

@@ -14,7 +14,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("native export stable filesystem boundary", () => {
   it("retains source identity and usable exports when a forwarder leaves its declared directory", async () => {
-    const root = await createTestTempDirectory("rea-native-export-forwarder-");
+    const root = await createTestTempDirectory("nre-native-export-forwarder-");
     const path = join(root, "truncated-forwarder.dll");
     const bytes = peExportImage({
       functions: [{ rva: 0x11fc }, { rva: 0x2000 }],
@@ -52,7 +52,7 @@ describe("native export stable filesystem boundary", () => {
   });
 
   it("bounds retained PE aliases before interpreting their target", async () => {
-    const root = await createTestTempDirectory("rea-native-export-aliases-");
+    const root = await createTestTempDirectory("nre-native-export-aliases-");
     const service = createNativeExportsService();
     try {
       // A malformed forwarder suppresses all rows, but its names still occupy
@@ -83,7 +83,7 @@ describe("native export stable filesystem boundary", () => {
   });
 
   it("binds PE and ELF export inventories to the selected file", async () => {
-    const root = await createTestTempDirectory("rea-native-exports-");
+    const root = await createTestTempDirectory("nre-native-exports-");
     const service = createNativeExportsService();
     for (const [name, bytes, format] of [
       [
@@ -109,7 +109,7 @@ describe("native export stable filesystem boundary", () => {
 
       expect(evidence).toMatchObject({
         operation: "inspect_native_exports",
-        provider: { id: "rea-native-exports" },
+        provider: { id: "nre-native-exports" },
         confidence: "observed",
         subject: { local_path: path, format, digest: { sha256 } },
       });
@@ -129,7 +129,7 @@ describe("native export text capacity", () => {
   it.each(["symbol", "version"] as const)(
     "bounds UTF-8 bytes of retained ELF %s text and its exact-byte spelling",
     async (kind) => {
-      const root = await createTestTempDirectory("rea-native-export-text-");
+      const root = await createTestTempDirectory("nre-native-export-text-");
       const service = createNativeExportsService();
       const text = "€".repeat(20_000);
       const rawName = Buffer.from(text, "utf8").toString("latin1");
@@ -178,7 +178,7 @@ describe("native export text capacity", () => {
   );
 
   it("bounds intermediate ELF version names even when no symbols use them", async () => {
-    const root = await createTestTempDirectory("rea-native-export-versions-");
+    const root = await createTestTempDirectory("nre-native-export-versions-");
     const service = createNativeExportsService();
     try {
       for (const count of [279, 280]) {
@@ -225,7 +225,7 @@ describe("native export text capacity", () => {
 
 describe("native export encoding and failures", () => {
   it("keeps ELF symbol bytes while exposing valid UTF-8 text", async () => {
-    const root = await createTestTempDirectory("rea-native-export-unicode-");
+    const root = await createTestTempDirectory("nre-native-export-unicode-");
     const path = join(root, "libfixture.so");
     const bytes = elfExportImage({
       symbols: [{ name: "cafÃ©", version: 2 }, { name: "\u00ff" }],
@@ -289,7 +289,7 @@ describe("native export encoding and failures", () => {
   });
 
   it("returns typed input, unsupported, budget and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-native-export-failures-");
+    const root = await createTestTempDirectory("nre-native-export-failures-");
     const path = join(root, "fixture.dll");
     const alias = join(root, "alias.dll");
     const macho = join(root, "fixture.dylib");

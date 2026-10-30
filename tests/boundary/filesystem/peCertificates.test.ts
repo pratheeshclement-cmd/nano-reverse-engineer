@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("PE certificate stable filesystem boundary", () => {
   it("reports non-file and malformed PE selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-pe-cert-files-");
+    const root = await createTestTempDirectory("nre-pe-cert-files-");
     const path = join(root, "signed.exe");
     const alias = join(root, "alias.exe");
     const malformed = join(root, "malformed.exe");
@@ -39,7 +39,7 @@ describe("PE certificate stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-pe-cert-budget-");
+    const root = await createTestTempDirectory("nre-pe-cert-budget-");
     const path = join(root, "signed.exe");
     const bytes = peCertificateFixture();
     await writeFile(path, bytes);

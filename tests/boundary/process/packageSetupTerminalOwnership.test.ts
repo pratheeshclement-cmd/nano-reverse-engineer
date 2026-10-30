@@ -115,7 +115,7 @@ processTest.skipIf(process.platform === "win32")(
   "joins a redirected-stdout setup descendant before removing its verifier workspace",
   { timeout: 35_000 },
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-package-setup-terminal-");
+    const root = await createTestTempDirectory("nre-package-setup-terminal-");
     const scratch = join(root, "scratch");
     const entry = join(root, "setup stand-in.mjs");
     const descendant = join(root, "descendant.mjs");
@@ -217,7 +217,7 @@ process.stdin.on("data", (data) => {
   process.stdout.write("\\u001b[?25hNo changes were made.\\n", () => process.exit(0));
 });
 process.stdin.resume();
-process.stdout.write("Which agents should use REA?");
+process.stdout.write("Which agents should use NRE?");
 `;
 
 const redirectedStandinSource = `
@@ -264,7 +264,7 @@ processTest
   "preserves selected configuration and closes the real PTY for %s setup",
   { timeout: 30_000 },
   async (mode) => {
-    const root = await createTestTempDirectory("rea-package-setup-success-");
+    const root = await createTestTempDirectory("nre-package-setup-success-");
     const scratch = join(root, "scratch");
     await mkdir(scratch);
     const config = join(scratch, "selected-config.json");

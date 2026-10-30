@@ -51,7 +51,7 @@ export interface GhidraClientOptions {
   readonly readStartupTimeoutMs?: () => number;
   readonly onDiagnostic?: (event: GhidraDiagnostic) => void;
   readonly logger?: Logger;
-  /** Observes REA's memory cgroup around a run; defaults to the Linux cgroup v2 reader. */
+  /** Observes NRE's memory cgroup around a run; defaults to the Linux cgroup v2 reader. */
   readonly readMemoryCgroup?: () => Promise<LinuxCgroupMemoryState | undefined>;
   /** Effective request ceiling; defaults to the configured bridge ceiling. */
   readonly bridgeMaxRequestBytes?: BridgeMaxRequestBytes;

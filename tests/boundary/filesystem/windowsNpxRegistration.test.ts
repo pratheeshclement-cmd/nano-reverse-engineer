@@ -14,7 +14,7 @@ import { systemUninstallHost } from "../../../src/application/Uninstall.js";
 import { PRODUCT_IDENTITY } from "../../../src/identity.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
-// These writer tests model setup running from REA's actual entrypoint, not Vitest's worker.
+// These writer tests model setup running from NRE's actual entrypoint, not Vitest's worker.
 vi.mock(
   "../../../src/process/CurrentEntrypointPath.js",
   async (importOriginal) => {
@@ -26,7 +26,7 @@ vi.mock(
     return {
       ...actual,
       CURRENT_ENTRYPOINT_PATH: fileURLToPath(
-        new URL("../../../scripts/rea.mjs", import.meta.url),
+        new URL("../../../scripts/nre.mjs", import.meta.url),
       ),
     };
   },
@@ -34,7 +34,7 @@ vi.mock(
 
 const configurationSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+    nre: z.object({ command: z.string(), args: z.array(z.string()) }),
   }),
 });
 
@@ -47,17 +47,26 @@ it.each([
       "mcp",
     ],
   },
-  { previousCommand: ["cmd", "/c", "npx", "-y", "rea-agents@5.0.0", "mcp"] },
+  {
+    previousCommand: [
+      "cmd",
+      "/c",
+      "npx",
+      "-y",
+      "nano-reverse-engineer@5.0.0",
+      "mcp",
+    ],
+  },
 ])(
-  "migrates Windows npx registration $previousCommand idempotently and uninstalls only REA",
+  "migrates Windows npx registration $previousCommand idempotently and uninstalls only NRE",
   async ({ previousCommand }) => {
-    const home = await createTestTempDirectory("rea-windows-registration-");
+    const home = await createTestTempDirectory("nre-windows-registration-");
     const configPath = join(home, ".claude.json");
     const original = JSON.stringify({
       theme: "dark",
       mcpServers: {
         other: { command: "another-server" },
-        rea: {
+        nre: {
           command: previousCommand[0],
           args: previousCommand.slice(1),
         },
@@ -92,7 +101,7 @@ it.each([
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "removed",
     });
@@ -107,11 +116,11 @@ it.each([
 it.each(["npx", "bunx"] as const)(
   "keeps the Windows %s launcher aligned through Codex TOML setup and removal",
   async (runner) => {
-    const home = await createTestTempDirectory("rea-windows-codex-");
+    const home = await createTestTempDirectory("nre-windows-codex-");
     await mkdir(join(home, ".codex"));
     const configPath = join(home, ".codex", "config.toml");
     const original =
-      '\uFEFF# Keep this explanation.\nnotify = ["a", "b"]\nliteral = \'C:\\demo\\path\'\ndisabled_mcp_servers = ["rea"]\n\n[mcp_servers.other]\ncommand = "another-server"\n';
+      '\uFEFF# Keep this explanation.\nnotify = ["a", "b"]\nliteral = \'C:\\demo\\path\'\ndisabled_mcp_servers = ["nre"]\n\n[mcp_servers.other]\ncommand = "another-server"\n';
     await writeFile(configPath, original);
     const client = { name: "codex", configPath, format: "toml" } as const;
     const command = currentClientRegistrationCommand({ platform: "win32" });
@@ -129,7 +138,7 @@ it.each(["npx", "bunx"] as const)(
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "removed",
     });
@@ -137,8 +146,8 @@ it.each(["npx", "bunx"] as const)(
   },
 );
 
-it("retains rea-named custom shell registrations without writing a backup", async () => {
-  const home = await createTestTempDirectory("rea-custom-shell-registration-");
+it("retains nre-named custom shell registrations without writing a backup", async () => {
+  const home = await createTestTempDirectory("nre-custom-shell-registration-");
   const configPath = join(home, ".claude.json");
   const client = {
     name: "claude_code",
@@ -147,24 +156,48 @@ it("retains rea-named custom shell registrations without writing a backup", asyn
   } as const;
   for (const command of [
     ["cmd.exe", "/d", "/c", "node", "custom.js", "mcp"],
-    ["cmd.exe", "/k", "npx", "-y", "rea-agents@5.0.0", "mcp"],
-    ["cmd.exe", "/c", "npx -y rea-agents@5.0.0 mcp"],
+    ["cmd.exe", "/k", "npx", "-y", "nano-reverse-engineer@5.0.0", "mcp"],
+    ["cmd.exe", "/c", "npx -y nano-reverse-engineer@5.0.0 mcp"],
     ["cmd.exe", "/c", "npx", "-y", "another-package", "mcp"],
-    ["cmd.exe", "/c", "npx", "-y", "rea-agents@5.0.0", "mcp", "&", "other"],
-    ["cmd.exe", "/c", "npx", "-y", "rea-agents@5.0.0 & other", "mcp"],
+    [
+      "cmd.exe",
+      "/c",
+      "npx",
+      "-y",
+      "nano-reverse-engineer@5.0.0",
+      "mcp",
+      "&",
+      "other",
+    ],
+    [
+      "cmd.exe",
+      "/c",
+      "npx",
+      "-y",
+      "nano-reverse-engineer@5.0.0 & other",
+      "mcp",
+    ],
     ["cmd.exe", "/c", "bunx", "another-package", "mcp"],
-    ["cmd.exe", "/c", "bunx", "-y", "rea-agents@5.0.0", "mcp"],
-    ["cmd.exe", "/c", "bunx", "rea-agents@5.0.0", "mcp", "&", "other"],
+    ["cmd.exe", "/c", "bunx", "-y", "nano-reverse-engineer@5.0.0", "mcp"],
+    [
+      "cmd.exe",
+      "/c",
+      "bunx",
+      "nano-reverse-engineer@5.0.0",
+      "mcp",
+      "&",
+      "other",
+    ],
   ]) {
     const original = JSON.stringify({
-      mcpServers: { rea: { command: command[0], args: command.slice(1) } },
+      mcpServers: { nre: { command: command[0], args: command.slice(1) } },
     });
     await writeFile(configPath, original);
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "retained",
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${configPath}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   }
@@ -173,7 +206,7 @@ it("retains rea-named custom shell registrations without writing a backup", asyn
 it.skipIf(process.platform !== "win32")(
   "starts the written Windows registration without current-directory package runners",
   async () => {
-    const root = await createTestTempDirectory("rea-windows-mcp-");
+    const root = await createTestTempDirectory("nre-windows-mcp-");
     const home = join(root, "home with spaces");
     await mkdir(home);
     const configPath = join(home, ".claude.json");
@@ -188,7 +221,7 @@ it.skipIf(process.platform !== "win32")(
     });
     const registration = configurationSchema.parse(
       JSON.parse(await readFile(configPath, "utf8")),
-    ).mcpServers.rea;
+    ).mcpServers.nre;
     expect([registration.command, ...registration.args]).toEqual(command);
     expect(isAbsolute(registration.command)).toBe(true);
     const marker = join(home, "runner-called.txt");

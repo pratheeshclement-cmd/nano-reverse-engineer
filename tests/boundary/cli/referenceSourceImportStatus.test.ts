@@ -29,7 +29,7 @@ describe("compiled Windows reference-source import", () => {
     cliTest.runIf(process.platform === "win32")(
       `readable root, ${scenario.fullOutput ? "full-output" : "JSON"}, logging ${String(scenario.logging)}`,
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-reference-host-");
+        const root = await createTestTempDirectory("nre-reference-host-");
         const source = join(root, "source.js");
         const bytes = "export const answer = 42;\n";
         await writeFile(source, bytes);
@@ -45,7 +45,7 @@ describe("compiled Windows reference-source import", () => {
             USERPROFILE: root,
             XDG_CONFIG_HOME: root,
             XDG_CACHE_HOME: root,
-            ...(scenario.logging ? { REA_LOG_LEVEL: "info" } : {}),
+            ...(scenario.logging ? { NRE_LOG_LEVEL: "info" } : {}),
           },
         });
         expect(result.json).toEqual(
@@ -89,7 +89,7 @@ describe("compiled reference-source import preflight failures", () => {
       `${scenario.rootKind} root, ${scenario.fullOutput ? "full-output" : "JSON"}, logging ${String(scenario.logging)}`,
       async ({ cli }) => {
         const directory = await createTestTempDirectory(
-          "rea-reference-cli-status-",
+          "nre-reference-cli-status-",
         );
         // Exercise JSON escaping on POSIX too; Windows paths already need it.
         const root = join(
@@ -111,7 +111,7 @@ describe("compiled reference-source import preflight failures", () => {
             USERPROFILE: directory,
             XDG_CONFIG_HOME: directory,
             XDG_CACHE_HOME: directory,
-            ...(scenario.logging ? { REA_LOG_LEVEL: "info" } : {}),
+            ...(scenario.logging ? { NRE_LOG_LEVEL: "info" } : {}),
           },
         });
         const rootReason =
@@ -178,7 +178,7 @@ describe("compiled reference-source import preflight failures", () => {
     "classifies a blocked parent directory as an execution failure",
     async ({ cli }) => {
       const directory = await createTestTempDirectory(
-        "rea-reference-cli-blocked-root-",
+        "nre-reference-cli-blocked-root-",
       );
       const parent = join(directory, "blocked-parent");
       const root = join(parent, "input");

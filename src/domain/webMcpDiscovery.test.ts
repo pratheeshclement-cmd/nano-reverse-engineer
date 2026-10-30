@@ -102,7 +102,7 @@ describe("WebMCP discovery consequential annotation", () => {
       autosubmit: null,
     });
     const evidence = createEvidence(undefined, PROVIDER, {
-      predicateType: "rea.webmcp-discovery",
+      predicateType: "nre.webmcp-discovery",
       operation: "discover_webmcp_tools",
       parameters: {},
       result,

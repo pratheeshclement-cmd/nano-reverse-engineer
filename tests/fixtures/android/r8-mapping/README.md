@@ -32,8 +32,8 @@ Set these paths explicitly; `MAPPING_R8_JAR` is an already acquired and verified
 compiler. `MAPPING_RUN` must be a fresh caller-selected output directory.
 
 ```bash
-MAPPING_JDK=/home/yann/.cache/rea/ghidra-optimization-20261017/installed/jdk-21.0.12.1+1
-ANDROID_PLATFORM_JAR=/home/yann/.cache/rea-4537-android-sdk/platforms/android-36/android.jar
+MAPPING_JDK=/home/yann/.cache/nre/ghidra-optimization-20261017/installed/jdk-21.0.12.1+1
+ANDROID_PLATFORM_JAR=/home/yann/.cache/nre-4537-android-sdk/platforms/android-36/android.jar
 MAPPING_FIXTURE=/absolute/worktree/tests/fixtures/android/r8-mapping
 MAPPING_R8_JAR=/absolute/cache/r8-8.0.40.jar
 MAPPING_RUN=/absolute/fresh-output-directory
@@ -60,20 +60,20 @@ Check that minification really occurred and all expected original symbols are
 present; compiler warnings or an empty output are not success. Record compiler,
 source/config, input JAR, output DEX/archive and mapping SHA-256 values together.
 The DEX ZIP is a static analysis artifact, not an installable or runnable APK.
-If the REA APK-path adapter needs an `.apk` suffix, copy this generated ZIP to
+If the NRE APK-path adapter needs an `.apk` suffix, copy this generated ZIP to
 an explicitly labelled DEX-only `fixture.apk`; do not imply manifest coverage.
 
-## Independent raw DEX oracle and REA checks
+## Independent raw DEX oracle and NRE checks
 
-`PrintDexInventory.java` reads one extracted DEX through dexlib2 without the REA
+`PrintDexInventory.java` reads one extracted DEX through dexlib2 without the NRE
 mapping parser, bridge, provider or JADX aliases. The dependency classes are
 located in the existing checksum-pinned JADX MCP 0.7.1 JAR; its compilation and
 execution passed against the generated fixture. Its 16 MiB bound is for this small fixture only.
-It is independent of REA's name-resolution logic, not an independent dependency
+It is independent of NRE's name-resolution logic, not an independent dependency
 distribution or proof that a mapping belongs to a build.
 
 ```bash
-MAPPING_JADX_JAR=/home/yann/yann/rea/_reference/apk-integration/jadx-headless-mcp-0.7.1-all.jar
+MAPPING_JADX_JAR=/home/yann/yann/nre/_reference/apk-integration/jadx-headless-mcp-0.7.1-all.jar
 unzip -p "$MAPPING_RUN/dex.zip" classes.dex > "$MAPPING_RUN/classes.dex"
 "$MAPPING_JDK/bin/javac" -J-Xmx256m -encoding UTF-8 \
   -classpath "$MAPPING_JADX_JAR" -d "$MAPPING_RUN/oracle" \

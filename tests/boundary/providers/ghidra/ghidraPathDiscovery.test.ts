@@ -10,7 +10,7 @@ const execute = promisify(execFile);
 it.skipIf(process.platform === "win32")(
   "doctor preserves POSIX PATH cwd entries and discovery order without executing launchers",
   async () => {
-    const root = await createTestTempDirectory("rea-ghidra-cwd-discovery-");
+    const root = await createTestTempDirectory("nre-ghidra-cwd-discovery-");
     const marker = join(root, "launched");
     const installation = async (name: string) => {
       const directory = join(root, name);
@@ -23,7 +23,7 @@ it.skipIf(process.platform === "win32")(
       const launcher = join(directory, "ghidraRun");
       await writeFile(
         launcher,
-        '#!/bin/sh\nprintf "launched\\n" >> "$REA_PATH_TEST_MARKER"\n',
+        '#!/bin/sh\nprintf "launched\\n" >> "$NRE_PATH_TEST_MARKER"\n',
         { mode: 0o700 },
       );
       await writeFile(join(directory, "support/analyzeHeadless"), "", {
@@ -46,7 +46,7 @@ it.skipIf(process.platform === "win32")(
       ...process.env,
       JAVA_HOME: join(root, "missing-jdk"),
       GHIDRA_INSTALL_DIR: undefined,
-      REA_PATH_TEST_MARKER: marker,
+      NRE_PATH_TEST_MARKER: marker,
     };
     // A real exec search establishes what the empty components select.
     for (const path of paths.slice(0, 4))

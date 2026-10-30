@@ -40,7 +40,7 @@ const readerUnderStarvedHeap = async () => {
 describe("evidence bundle import headroom", () => {
   it("refuses to authenticate a bundle the live heap cannot hold", async () => {
     const path = join(
-      await createTestTempDirectory("rea-evidence-bundle-headroom-"),
+      await createTestTempDirectory("nre-evidence-bundle-headroom-"),
       "bundle.json",
     );
     const record = createEvidence(

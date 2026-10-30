@@ -44,7 +44,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "returns readable facts with partial dyld coverage and preserves controls",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-macho-no-uuid-");
+        const directory = await createTestTempDirectory("nre-macho-no-uuid-");
         const source = join(directory, "probe.c");
         const probe = join(directory, "probe");
         const control = join(directory, "control");
@@ -67,7 +67,7 @@ describe.skipIf(process.platform !== "darwin")(
         const inspect = async (path: string) => {
           const result = await cli.run({
             arguments: ["inspect-macho", path, "--json"],
-            environment: { REA_LOG_LEVEL: "silent" },
+            environment: { NRE_LOG_LEVEL: "silent" },
           });
           expect(result.exitCode, result.stdout + result.stderr).toBe(0);
           return inspectMachoSchema.parse(
@@ -159,7 +159,7 @@ describe.skipIf(process.platform !== "darwin")(
           };
           const refused = await cli.run({
             arguments: ["inspect-macho", path, "--json"],
-            environment: { REA_LOG_LEVEL: "silent" },
+            environment: { NRE_LOG_LEVEL: "silent" },
           });
           expect(refused.exitCode, refused.stdout + refused.stderr).toBe(1);
           expect(refused.json, JSON.stringify(refused.json)).toMatchObject(

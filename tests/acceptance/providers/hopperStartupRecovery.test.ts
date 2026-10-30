@@ -37,10 +37,10 @@ test.for(["target", "loader"] as const)(
     const environment = {
       ...workspace.environment,
       PATH: process.env.PATH ?? "",
-      REA_ANALYSIS_PROVIDER: "hopper",
+      NRE_ANALYSIS_PROVIDER: "hopper",
       HOPPER_LAUNCHER_PATH: process.execPath,
       HOPPER_LOADER_ARGS_JSON: JSON.stringify(loaderArgs),
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
     };
     const transport = new StdioClientTransport({
       command: process.execPath,
@@ -123,14 +123,14 @@ test("recovers a denied Hopper launch through the same stdio MCP session and CLI
   const environment = {
     ...workspace.environment,
     PATH: process.env.PATH ?? "",
-    REA_ANALYSIS_PROVIDER: "hopper",
+    NRE_ANALYSIS_PROVIDER: "hopper",
     HOPPER_LAUNCHER_PATH: process.execPath,
     HOPPER_LOADER_ARGS_JSON: JSON.stringify([
       resolve("tests/fixtures/hopperLaunchAdmission.mjs"),
       mode,
       receipt,
     ]),
-    REA_LOG_LEVEL: "silent",
+    NRE_LOG_LEVEL: "silent",
   };
   const transport = new StdioClientTransport({
     command: process.execPath,
@@ -215,15 +215,15 @@ test.for(["handoff", "not-found"] as const)(
       env: {
         ...workspace.environment,
         PATH: process.env.PATH ?? "",
-        REA_ANALYSIS_PROVIDER: "hopper",
+        NRE_ANALYSIS_PROVIDER: "hopper",
         HOPPER_LAUNCHER_PATH: process.execPath,
         HOPPER_LOADER_ARGS_JSON: JSON.stringify([
           resolve("tests/fixtures/hopperLaunchAdmission.mjs"),
           mode,
           receipt,
         ]),
-        REA_HOPPER_STARTUP_TIMEOUT_MS: String(startupTimeoutMs),
-        REA_LOG_LEVEL: "silent",
+        NRE_HOPPER_STARTUP_TIMEOUT_MS: String(startupTimeoutMs),
+        NRE_LOG_LEVEL: "silent",
       },
     });
     const mcp = new Client({ name: "hopper-late-readiness", version: "1" });
@@ -306,9 +306,9 @@ test.for(["handoff", "not-found"] as const)(
         throw new Error(`Missing bootstrap setting ${name}`);
       return z.string().parse(JSON.parse(line.slice(name.length + 3)));
     };
-    const socket = setting("REA_SOCKET");
-    const token = setting("REA_TOKEN");
-    const runId = setting("REA_RUN_ID");
+    const socket = setting("NRE_SOCKET");
+    const token = setting("NRE_TOKEN");
+    const runId = setting("NRE_RUN_ID");
     runtime = dirname(socket);
     const lateBridge = (identity: string, credential = token) => {
       const child = spawn(

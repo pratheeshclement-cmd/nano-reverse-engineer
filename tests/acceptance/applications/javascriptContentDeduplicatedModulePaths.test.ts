@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "selects each retained path of a content-deduplicated module",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-module-alias-view-");
+    const root = await createTestTempDirectory("nre-js-module-alias-view-");
     const source = "export const answer = 42;\n";
     await Promise.all(
       ["a.js", "b.js"].map((path) => writeFile(join(root, path), source)),

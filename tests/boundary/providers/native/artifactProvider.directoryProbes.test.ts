@@ -49,7 +49,7 @@ const probeOperations = async (path: string): Promise<string[]> => {
 
 describe("directory inspection probes", () => {
   it("proposes native and plist probes for an application bundle without JavaScript", async () => {
-    const root = await createTestTempDirectory("rea-artifact-bundle-");
+    const root = await createTestTempDirectory("nre-artifact-bundle-");
     const bundle = join(root, "Fixture.app");
     await writeTree(bundle, {
       "Contents/MacOS/Fixture": MACH_O_64,
@@ -63,7 +63,7 @@ describe("directory inspection probes", () => {
   });
 
   it("keeps JavaScript analysis first for an Electron-style bundle", async () => {
-    const root = await createTestTempDirectory("rea-artifact-electron-");
+    const root = await createTestTempDirectory("nre-artifact-electron-");
     const source = join(root, "source");
     const bundle = join(root, "Fixture.app");
     await writeTree(source, { "main.js": "console.log('ok');\n" });
@@ -87,7 +87,7 @@ describe("directory inspection probes", () => {
   it.each(["cjs", "cts", "mjs", "mts", "js", "jsx", "ts", "tsx"])(
     "proposes JavaScript analysis for .%s sources the analyzer reads",
     async (extension) => {
-      const root = await createTestTempDirectory("rea-artifact-typescript-");
+      const root = await createTestTempDirectory("nre-artifact-typescript-");
       const bundle = join(root, "Fixture.app");
       await writeTree(bundle, {
         "Contents/MacOS/Fixture": MACH_O_64,
@@ -105,7 +105,7 @@ describe("directory inspection probes", () => {
   );
 
   it("preserves plist inspection for a readable Info.plist symlink", async () => {
-    const root = await createTestTempDirectory("rea-artifact-plist-link-");
+    const root = await createTestTempDirectory("nre-artifact-plist-link-");
     const bundle = join(root, "Fixture.app");
     await writeTree(bundle, { "Contents/MacOS/Fixture": MACH_O_64 });
     await writeFile(join(root, "bundle-metadata"), INFO_PLIST);
@@ -120,7 +120,7 @@ describe("directory inspection probes", () => {
   });
 
   it("does not propose JavaScript analysis for a symlink the analyzers never follow", async () => {
-    const root = await createTestTempDirectory("rea-artifact-symlink-");
+    const root = await createTestTempDirectory("nre-artifact-symlink-");
     const bundle = join(root, "Fixture.app");
     await writeTree(bundle, {
       "Contents/MacOS/Fixture": MACH_O_64,

@@ -15,9 +15,9 @@ const PAGE_SIZE = 100;
 const RETAINED_CACHE_GENERATIONS = 2;
 
 const PREFIX_PATTERNS = [
-  /^rea-static-v1-[A-Za-z0-9]+-[A-Za-z0-9]+-$/u,
-  /^rea-static-deep-v1-[A-Za-z0-9]+-[A-Za-z0-9]+-$/u,
-  /^rea-portable-build-v2-[A-Za-z0-9]+-[A-Za-z0-9]+-$/u,
+  /^nre-static-v1-[A-Za-z0-9]+-[A-Za-z0-9]+-$/u,
+  /^nre-static-deep-v1-[A-Za-z0-9]+-[A-Za-z0-9]+-$/u,
+  /^nre-portable-build-v2-[A-Za-z0-9]+-[A-Za-z0-9]+-$/u,
   /^knip-meta-v1-[A-Za-z0-9]+-$/u,
 ];
 

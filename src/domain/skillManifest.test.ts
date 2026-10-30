@@ -5,7 +5,7 @@ import {
 } from "./skillManifest.js";
 
 const manifest = (metadata: string, body = "\n# Instructions\n") =>
-  `---\nname: reverse-engineer-anything\nmetadata:\n${metadata}---\n${body}`;
+  `---\nname: nano-reverse-engineer\nmetadata:\n${metadata}---\n${body}`;
 
 it.each(["'49'", '"49"'])(
   "reads semantic metadata with version %s",
@@ -28,7 +28,7 @@ it.each(["'49'", '"49"'])(
 
 it("does not read counterfeit metadata from the Markdown body", () => {
   const content =
-    '---\nname: reverse-engineer-anything\n---\n\n```yaml\nmetadata:\n  version: "counterfeit"\n  tool_count: 42\n```\n';
+    '---\nname: nano-reverse-engineer\n---\n\n```yaml\nmetadata:\n  version: "counterfeit"\n  tool_count: 42\n```\n';
   expect(parseSkillManifestMetadata(content)).toEqual({
     ok: true,
     value: {

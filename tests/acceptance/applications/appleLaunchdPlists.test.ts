@@ -14,7 +14,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "Apple launchd domains follow their owning directory through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-launchd-cli-");
+    const root = await createTestTempDirectory("nre-apple-launchd-cli-");
     const environment = { HOME: root, USERPROFILE: root };
     const expected = [
       [

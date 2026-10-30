@@ -57,7 +57,7 @@ const captureSpawnFailure = async (
 processTest(
   "spawns a file path when the payload exceeds the single-argument budget",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-spawn-argument-");
+    const root = await createTestTempDirectory("nre-spawn-argument-");
     const payload = "x".repeat(LINUX_4K_SINGLE_ARGUMENT_BYTES + 1);
     const file = join(root, "payload.txt");
     await writeFile(file, payload);

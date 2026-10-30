@@ -32,14 +32,14 @@ it("reports an unconfigured Kuna as a missing optional engine", async () => {
 });
 
 it("publishes the caller's explicit settings once the installation validates", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-");
+  const root = await createTestTempDirectory("nre-kuna-doctor-");
   const kuna = await writeFakeKuna(root);
   const cache = join(root, "cache");
 
   const inspection = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: cache,
-    REA_KUNA_JOBS: "4",
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: cache,
+    NRE_KUNA_JOBS: "4",
     UNRELATED: "not published",
   });
 
@@ -48,16 +48,16 @@ it("publishes the caller's explicit settings once the installation validates", a
     available: true,
     providerVersion: "1.833",
     registrationEnvironment: {
-      REA_KUNA_COMMAND: kuna,
-      REA_KUNA_CACHE_DIR: cache,
-      REA_KUNA_JOBS: "4",
+      NRE_KUNA_COMMAND: kuna,
+      NRE_KUNA_CACHE_DIR: cache,
+      NRE_KUNA_JOBS: "4",
     },
     checks: [
       { name: "installation", ok: true, details: { version: "1.833" } },
       {
         name: "cache",
         ok: true,
-        detail: `REA creates the Kuna project cache at ${cache} on first use.`,
+        detail: `NRE creates the Kuna project cache at ${cache} on first use.`,
       },
     ],
   });
@@ -65,12 +65,12 @@ it("publishes the caller's explicit settings once the installation validates", a
 });
 
 it("flags an unverified release without failing the installation", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-version-");
+  const root = await createTestTempDirectory("nre-kuna-doctor-version-");
   const kuna = await writeFakeKuna(root, {
     version: { stdout: "kuna 1.950\n" },
   });
 
-  const inspection = await inspectKunaProvider({ REA_KUNA_COMMAND: kuna });
+  const inspection = await inspectKunaProvider({ NRE_KUNA_COMMAND: kuna });
 
   expect(inspection.checks[0]).toMatchObject({
     ok: true,
@@ -80,8 +80,8 @@ it("flags an unverified release without failing the installation", async () => {
   });
 });
 
-it("reports a cache root REA cannot use without creating anything", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-cache-");
+it("reports a cache root NRE cannot use without creating anything", async () => {
+  const root = await createTestTempDirectory("nre-kuna-doctor-cache-");
   const kuna = await writeFakeKuna(root);
   const occupied = join(root, "occupied");
   await writeFile(occupied, "not a directory");
@@ -89,12 +89,12 @@ it("reports a cache root REA cannot use without creating anything", async () => 
   await mkdir(existing);
 
   const blocked = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: occupied,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: occupied,
   });
   const ready = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: existing,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: existing,
   });
 
   expect(blocked.available).toBe(false);
@@ -105,8 +105,8 @@ it("reports a cache root REA cannot use without creating anything", async () => 
     code: "open_options_invalid",
   });
   expect(blocked.registrationEnvironment).toMatchObject({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: occupied,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: occupied,
   });
   expect(ready.checks[1]).toMatchObject({
     name: "cache",
@@ -115,8 +115,8 @@ it("reports a cache root REA cannot use without creating anything", async () => 
   });
 });
 
-it("reports a cache root REA cannot create under its nearest existing parent", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-create-");
+it("reports a cache root NRE cannot create under its nearest existing parent", async () => {
+  const root = await createTestTempDirectory("nre-kuna-doctor-create-");
   const kuna = await writeFakeKuna(root);
   const readOnly = join(root, "read-only");
   await mkdir(readOnly, { mode: 0o500 });
@@ -124,12 +124,12 @@ it("reports a cache root REA cannot create under its nearest existing parent", a
   await writeFile(occupied, "not a directory");
 
   const underReadOnly = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(readOnly, "nested", "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(readOnly, "nested", "cache"),
   });
   const underFile = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(occupied, "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(occupied, "cache"),
   });
 
   expect(underReadOnly.checks[1]).toMatchObject({
@@ -146,7 +146,7 @@ it("reports a cache root REA cannot create under its nearest existing parent", a
 });
 
 it("reports a dangling cache link as unusable and accepts a resolving link", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-link-");
+  const root = await createTestTempDirectory("nre-kuna-doctor-link-");
   const kuna = await writeFakeKuna(root);
   const dangling = join(root, "dangling");
   const missing = join(root, "missing-target");
@@ -157,24 +157,24 @@ it("reports a dangling cache link as unusable and accepts a resolving link", asy
   await symlink(target, resolving);
 
   const direct = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: dangling,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: dangling,
   });
   const trailing = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: `${dangling}${separator}`,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: `${dangling}${separator}`,
   });
   const beneath = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(dangling, "nested", "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(dangling, "nested", "cache"),
   });
   const ready = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: resolving,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: resolving,
   });
   const readyTrailing = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: `${resolving}${separator}`,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: `${resolving}${separator}`,
   });
 
   for (const blocked of [direct, trailing, beneath]) {
@@ -208,7 +208,7 @@ it("reports a dangling cache link as unusable and accepts a resolving link", asy
 });
 
 it("keeps a trailing backslash as part of a POSIX cache path", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-backslash-");
+  const root = await createTestTempDirectory("nre-kuna-doctor-backslash-");
   const kuna = await writeFakeKuna(root);
   const directory = join(root, "cache");
   await mkdir(directory);
@@ -216,8 +216,8 @@ it("keeps a trailing backslash as part of a POSIX cache path", async () => {
   await writeFile(named, "not-a-directory");
 
   const inspection = await inspectKunaProvider({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: named,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: named,
   });
 
   expect(inspection.available).toBe(false);
@@ -237,8 +237,8 @@ const doctorEnvironment = (root: string, kuna: string): NodeJS.ProcessEnv => ({
   PATH: "",
   JAVA_HOME: join(root, "missing-jdk"),
   GHIDRA_INSTALL_DIR: join(root, "missing-ghidra"),
-  REA_KUNA_COMMAND: kuna,
-  REA_KUNA_CACHE_DIR: join(root, "cache"),
+  NRE_KUNA_COMMAND: kuna,
+  NRE_KUNA_CACHE_DIR: join(root, "cache"),
 });
 
 // Exercise the production composition, not just Kuna's installation helper:
@@ -246,7 +246,7 @@ const doctorEnvironment = (root: string, kuna: string): NodeJS.ProcessEnv => ({
 it.each(["caller", "host"] as const)(
   "cancels and joins the composed Kuna doctor probe on %s cancellation",
   async (source) => {
-    const root = await createTestTempDirectory("rea-kuna-doctor-cancel-");
+    const root = await createTestTempDirectory("nre-kuna-doctor-cancel-");
     const gate = join(root, "release-version");
     const kuna = await writeFakeKuna(root, {
       version: { stdout: "kuna 1.833\n", gate },
@@ -308,7 +308,7 @@ it.each(["caller", "host"] as const)(
 );
 
 it("does not launch the composed Kuna probe for an already cancelled caller", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-preabort-");
+  const root = await createTestTempDirectory("nre-kuna-doctor-preabort-");
   const kuna = await writeFakeKuna(root);
   const controller = new AbortController();
   controller.abort({ request: "cancel before inspection" });
@@ -325,7 +325,7 @@ it("does not launch the composed Kuna probe for an already cancelled caller", as
 });
 
 it("keeps a healthy composed Kuna inspection when the caller stays active", async () => {
-  const root = await createTestTempDirectory("rea-kuna-doctor-active-");
+  const root = await createTestTempDirectory("nre-kuna-doctor-active-");
   const kuna = await writeFakeKuna(root);
   const host = createSystemDoctorHost(
     doctorEnvironment(root, kuna),
@@ -348,7 +348,7 @@ it("keeps a healthy composed Kuna inspection when the caller stays active", asyn
 });
 
 it("projects the fake Kuna through the completed doctor workflow", async () => {
-  const root = await createTestTempDirectory("rea-kuna-public-doctor-");
+  const root = await createTestTempDirectory("nre-kuna-public-doctor-");
   const kuna = await writeFakeKuna(root);
   const host = createSystemDoctorHost(
     doctorEnvironment(root, kuna),
@@ -379,18 +379,18 @@ it("projects the fake Kuna through the completed doctor workflow", async () => {
 });
 
 it.each([
-  ["REA_KUNA_CACHE_DIR", "relative"],
-  ["REA_KUNA_CACHE_MAX_BYTES", "0"],
-  ["REA_KUNA_PROJECT_TIMEOUT_MS", "0"],
-  ["REA_KUNA_TIMEOUT_MS", "0"],
-  ["REA_KUNA_JOBS", "33"],
+  ["NRE_KUNA_CACHE_DIR", "relative"],
+  ["NRE_KUNA_CACHE_MAX_BYTES", "0"],
+  ["NRE_KUNA_PROJECT_TIMEOUT_MS", "0"],
+  ["NRE_KUNA_TIMEOUT_MS", "0"],
+  ["NRE_KUNA_JOBS", "33"],
 ] as const)(
   "recommends repairing %s without replacing a valid executable",
   async (setting, value) => {
-    const root = await createTestTempDirectory("rea-kuna-setting-remediation-");
+    const root = await createTestTempDirectory("nre-kuna-setting-remediation-");
     const command = join(root, "caller-kuna");
     const inspection = await inspectKunaProvider({
-      REA_KUNA_COMMAND: command,
+      NRE_KUNA_COMMAND: command,
       [setting]: value,
     });
     expect(inspection.available).toBe(false);
@@ -400,7 +400,7 @@ it.each([
       details: { setting },
       remediation: expect.stringContaining(`Correct ${setting}`),
     });
-    expect(inspection.checks[0]?.remediation).not.toContain("REA_KUNA_COMMAND");
+    expect(inspection.checks[0]?.remediation).not.toContain("NRE_KUNA_COMMAND");
     await expect(lstat(command)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );

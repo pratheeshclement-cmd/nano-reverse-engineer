@@ -15,7 +15,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest.for([["protocol"], ["class"]] as const)(
       "marks an omitted $0 method list partial in public CLI output",
       async ([owner], { cli }) => {
-        const directory = await createTestTempDirectory("rea-objc-budget-");
+        const directory = await createTestTempDirectory("nre-objc-budget-");
         const path = join(directory, "fixture.macho");
         await writeFile(path, objcRecordBudgetMacho(owner));
         const output = await cli.run({
@@ -26,7 +26,7 @@ describe.skipIf(process.platform !== "darwin")(
             "1",
             "--json",
           ],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(output.exitCode, `${output.stdout}\n${output.stderr}`).toBe(0);
         const result = nativeDispatchMetadataResultSchema.parse(

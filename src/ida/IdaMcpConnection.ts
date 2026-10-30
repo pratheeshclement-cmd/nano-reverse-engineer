@@ -357,7 +357,7 @@ export const createIdaMcpConnection = (
   dependencies: IdaMcpConnectionDependencies = {},
 ): IdaMcpConnection => {
   const client = new StructuredContentMcpClient({
-    name: "rea-ida-provider",
+    name: "nre-ida-provider",
     version: "1",
   });
   const redactor = (
@@ -389,7 +389,7 @@ export const createIdaMcpConnection = (
     const controller = new AbortController();
     const cancellation = new SdkError(
       SdkErrorCode.RequestTimeout,
-      "REA caller cancelled this IDA MCP request",
+      "NRE caller cancelled this IDA MCP request",
     );
     const abort = () => controller.abort(cancellation);
     if (signal.aborted) abort();

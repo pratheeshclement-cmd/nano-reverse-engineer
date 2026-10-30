@@ -14,7 +14,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "Android runtime hints follow classified bytecode through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-android-runtime-hints-");
+    const root = await createTestTempDirectory("nre-android-runtime-hints-");
     const environment = { HOME: root, USERPROFILE: root };
     const { call } = await connectLocalToolsMcp(environment);
     for (const prefix of ["", "named"]) {
@@ -67,7 +67,7 @@ cliTest(
   "projects nested APK v1 filename candidates as inventory metadata through CLI and MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-android-signing-candidates-",
+      "nre-android-signing-candidates-",
     );
     const environment = { HOME: root, USERPROFILE: root };
     const { call } = await connectLocalToolsMcp(environment);

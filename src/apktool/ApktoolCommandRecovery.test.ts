@@ -27,7 +27,7 @@ afterEach(() => {
 });
 const provider = () =>
   new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: "/authored/apktool" },
+    environment: { NRE_APKTOOL_COMMAND: "/authored/apktool" },
   });
 const version = {
   stdout: { text: "2.9.3\n" },
@@ -390,7 +390,7 @@ it.each([
 ] as const)(
   "keeps target identity separate from a %s command outcome",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-apktool-attribution-");
+    const root = await createTestTempDirectory("nre-apktool-attribution-");
     const path = join(root, "caller-selected.apk");
     await writeFile(path, "authored input");
     const client = provider();

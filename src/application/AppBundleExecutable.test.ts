@@ -41,7 +41,7 @@ it.each([
 ] as const)(
   "resolves the %s bundle layout when Info.plist contains processing instructions",
   async (_kind, plistDirectory, programDirectory) => {
-    const root = await createTestTempDirectory("rea-app-plist-pi-");
+    const root = await createTestTempDirectory("nre-app-plist-pi-");
     const bundle = join(root, "Fixture.app");
     const plistPath = join(bundle, ...plistDirectory, "Info.plist");
     const executable = join(bundle, ...programDirectory, "Fixture");
@@ -49,7 +49,7 @@ it.each([
     await mkdir(join(bundle, ...programDirectory), { recursive: true });
     await writeFile(
       plistPath,
-      '<plist version="1.0"><?rea ignored?><dict><?rea ignored?><key>CFBundleExecutable</key><?rea ignored?><string>Fixture</string><?rea ignored?></dict><?rea ignored?></plist>',
+      '<plist version="1.0"><?nre ignored?><dict><?nre ignored?><key>CFBundleExecutable</key><?nre ignored?><string>Fixture</string><?nre ignored?></dict><?nre ignored?></plist>',
     );
     await writeFile(executable, "inert fixture; never executed");
 
@@ -63,7 +63,7 @@ it.each([
 
 describe("app bundle Info.plist magic", () => {
   it("decodes an executable when an unrelated UID uses a three-byte width", async () => {
-    const root = await createTestTempDirectory("rea-app-three-byte-uid-");
+    const root = await createTestTempDirectory("nre-app-three-byte-uid-");
     const bundle = join(root, "Fixture.app");
     const plistPath = join(bundle, "Contents", "Info.plist");
     const executable = join(bundle, "Contents", "MacOS", "Fixture");
@@ -78,7 +78,7 @@ describe("app bundle Info.plist magic", () => {
   });
 
   it("does not decode a high-bit fold of bplist as a binary Info.plist", async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-bplist-fold-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-bplist-fold-"));
     try {
       const bundle = join(root, "Fixture.app");
       const plistPath = join(bundle, "Contents", "Info.plist");
@@ -105,7 +105,7 @@ describe("app bundle Info.plist magic", () => {
 
 describe("app bundle program directory containment", () => {
   it("rejects an escaping programs directory before resolving its child", async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-app-programs-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-app-programs-"));
     try {
       const bundle = join(root, "Fixture.app");
       const programs = join(bundle, "Contents", "MacOS");

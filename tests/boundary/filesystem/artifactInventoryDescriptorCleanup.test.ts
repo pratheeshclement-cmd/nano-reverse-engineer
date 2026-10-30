@@ -42,7 +42,7 @@ it.each(
   "retains completed root identity at open $selectedOpen through $outcome",
   async ({ selectedOpen, outcome }) => {
     const root = await realpath(
-      await createTestTempDirectory("rea-root-completed-cleanup-"),
+      await createTestTempDirectory("nre-root-completed-cleanup-"),
     );
     const path = join(root, "payload.bin");
     const bytes = Buffer.from("completed selected root bytes");
@@ -124,7 +124,7 @@ it.each(
 it.each([false, true])(
   "preserves root admission failure and close authority (invalidated=%s)",
   async (invalidated) => {
-    const root = await createTestTempDirectory("rea-root-admission-cleanup-");
+    const root = await createTestTempDirectory("nre-root-admission-cleanup-");
     const path = join(root, "payload.bin");
     await writeFile(path, "selected bytes");
     const client = new ArtifactProvider({}).createClient({
@@ -191,7 +191,7 @@ it.each([false, true])(
 );
 
 it("classifies root ASAR, UDIF and raw DMG signatures across controlled short reads at both boundaries and closes the descriptor", async () => {
-  const root = await createTestTempDirectory("rea-root-short-read-signature-");
+  const root = await createTestTempDirectory("nre-root-short-read-signature-");
   const compactPath = join(root, "compact.asar");
   const asarPath = join(root, "whitespace.asar");
   const dmgPath = join(root, "trailer.dmg");

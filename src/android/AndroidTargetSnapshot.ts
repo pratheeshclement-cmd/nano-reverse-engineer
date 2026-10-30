@@ -127,7 +127,7 @@ export const snapshotAndroidEngine = async (
         new AnalysisCapabilityUnavailableError(
           "jadx",
           operation,
-          `REA_JADX_MCP_JAR bytes changed during admission at ${source}; retry with a stable engine file.`,
+          `NRE_JADX_MCP_JAR bytes changed during admission at ${source}; retry with a stable engine file.`,
           { cause: changed },
         ),
     );

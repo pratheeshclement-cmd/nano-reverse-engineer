@@ -35,7 +35,7 @@ it
   .each(["inspect-binary-layout", "inspect-recorded-crash"] as const)(
   "reports actionable configuration failures through %s",
   async (command) => {
-    const workspace = await createTestWorkspace("rea-pwntools-remediation-");
+    const workspace = await createTestWorkspace("nre-pwntools-remediation-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const nonExecutable = workspace.path("python-no-execute");
     await writeFile(nonExecutable, "not executable", { mode: 0o600 });
@@ -43,31 +43,31 @@ it
     const configurations = [
       {
         environment: {},
-        message: "Set REA_PWNTOOLS_PYTHON",
-        key: "REA_PWNTOOLS_PYTHON",
+        message: "Set NRE_PWNTOOLS_PYTHON",
+        key: "NRE_PWNTOOLS_PYTHON",
       },
       {
-        environment: { REA_PWNTOOLS_PYTHON: workspace.root },
+        environment: { NRE_PWNTOOLS_PYTHON: workspace.root },
         message: "not a directory",
-        key: "REA_PWNTOOLS_PYTHON",
+        key: "NRE_PWNTOOLS_PYTHON",
       },
       {
-        environment: { REA_PWNTOOLS_PYTHON: missing },
+        environment: { NRE_PWNTOOLS_PYTHON: missing },
         message: "ENOENT",
-        key: "REA_PWNTOOLS_PYTHON",
+        key: "NRE_PWNTOOLS_PYTHON",
       },
       {
-        environment: { REA_PWNTOOLS_PYTHON: nonExecutable },
+        environment: { NRE_PWNTOOLS_PYTHON: nonExecutable },
         message: "EACCES",
-        key: "REA_PWNTOOLS_PYTHON",
+        key: "NRE_PWNTOOLS_PYTHON",
       },
       {
         environment: {
-          REA_PWNTOOLS_PYTHON: process.execPath,
-          REA_PWNTOOLS_MAX_INPUT_BYTES: "0",
+          NRE_PWNTOOLS_PYTHON: process.execPath,
+          NRE_PWNTOOLS_MAX_INPUT_BYTES: "0",
         },
-        message: "REA_PWNTOOLS_MAX_INPUT_BYTES",
-        key: "REA_PWNTOOLS_MAX_INPUT_BYTES",
+        message: "NRE_PWNTOOLS_MAX_INPUT_BYTES",
+        key: "NRE_PWNTOOLS_MAX_INPUT_BYTES",
       },
     ];
     for (const { environment, message, key } of configurations) {
@@ -108,7 +108,7 @@ it
           ],
         },
       });
-      expect(stdout).not.toContain("rea doctor");
+      expect(stdout).not.toContain("nre doctor");
       expect(process.exitCode).toBe(1);
     }
   },

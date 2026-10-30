@@ -17,7 +17,7 @@ processTest
       [
         "--import",
         resolve("tests/fixtures/browserScenarioCancellation.mjs"),
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/nre.mjs"),
         "capture-browser-scenario",
         JSON.stringify({
           browser: { mode: "launch", executable_path: "/controlled/chromium" },
@@ -43,7 +43,7 @@ processTest
     child.stdout.on("data", (chunk: Buffer) => (stdout += chunk.toString()));
     child.stderr.on("data", (chunk: Buffer) => {
       stderr += chunk.toString();
-      if (!requested && stderr.includes("REA_CONTROLLED_BROWSER_READY"))
+      if (!requested && stderr.includes("NRE_CONTROLLED_BROWSER_READY"))
         requested = child.kill(signal);
     });
     const deadline = setTimeout(() => child.kill("SIGKILL"), 20_000);
@@ -63,8 +63,8 @@ processTest
         signal: null,
       });
       expect(stderr).toContain("signal_present=1");
-      expect(stderr).toContain("REA_CONTROLLED_CLOSE_CALLBACK");
-      expect(stderr).toContain("REA_CONTROLLED_PROFILE_CALLBACK");
+      expect(stderr).toContain("NRE_CONTROLLED_CLOSE_CALLBACK");
+      expect(stderr).toContain("NRE_CONTROLLED_PROFILE_CALLBACK");
       const document: unknown = JSON.parse(stdout);
       const cancellation = z
         .object({

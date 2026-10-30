@@ -7,12 +7,12 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { analyzeJavaScriptApplication } from "../../support/javascriptApplicationScope.js";
 
 it("compares a fully analyzed package manifest as unchanged", async () => {
-  const root = await createTestTempDirectory("rea-package-version-comparison-");
+  const root = await createTestTempDirectory("nre-package-version-comparison-");
   await writeFile(
     join(root, "package.json"),
     JSON.stringify({ name: "fixture", version: "1.0.0" }),
   );
-  const otherRoot = await createTestTempDirectory("rea-package-version-other-");
+  const otherRoot = await createTestTempDirectory("nre-package-version-other-");
   await writeFile(
     join(otherRoot, "package.json"),
     JSON.stringify({ name: "fixture", version: "1.0.0" }),

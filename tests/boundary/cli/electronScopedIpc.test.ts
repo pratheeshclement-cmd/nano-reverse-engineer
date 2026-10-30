@@ -8,7 +8,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves scoped IPC allocations without global dispatch pairing through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-scoped-ipc-");
+    const root = await createTestTempDirectory("nre-scoped-ipc-");
     const copy = `const {BrowserWindow}=require("electron"); const window=new BrowserWindow(); window.webContents.ipc.handle("copied",()=>{});`;
     await writeFixtureFiles(root, {
       "copy-one.cjs": copy,
@@ -80,7 +80,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "does not uniquely pair a renderer with exactly one scoped literal handler through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-single-scoped-ipc-");
+    const root = await createTestTempDirectory("nre-single-scoped-ipc-");
     await writeFixtureFiles(root, {
       "main.cjs": `const { BrowserWindow } = require("electron");
         const window = new BrowserWindow();
@@ -116,7 +116,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "pairs literal IPC within proven application owners through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-application-ipc-");
+    const root = await createTestTempDirectory("nre-application-ipc-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ name: "a", main: "main.cjs" }),
       "a/main.cjs": `const { ipcMain, clipboard } = require("electron");
@@ -194,7 +194,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
   async (surface, { cli }) => {
     for (const sharedSource of [false, true]) {
       const root = await createTestTempDirectory(
-        "rea-unknown-application-ipc-",
+        "nre-unknown-application-ipc-",
       );
       await writeFixtureFiles(root, {
         "a/package.json": JSON.stringify({ name: "a", main: "main.cjs" }),
@@ -238,7 +238,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
       ["dynamic", `require(unknownName);`, "ambiguous"],
       ["native", `require("./addon.node");`, "ambiguous"],
     ] as const) {
-      const root = await createTestTempDirectory("rea-external-ipc-owner-");
+      const root = await createTestTempDirectory("nre-external-ipc-owner-");
       await writeFixtureFiles(root, {
         "package.json": JSON.stringify({ name: "app", main: "main.cjs" }),
         "main.cjs": `const {ipcMain}=require("electron"); ${extra} ipcMain.handle("known",()=>1);`,

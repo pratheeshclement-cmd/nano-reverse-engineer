@@ -82,7 +82,7 @@ const registerChangedBehavior = (
           return server.delivery.toCallToolResult(closure, contract);
         const links = closure.value;
         const evidence = createEvidence(undefined, CHANGED_BEHAVIOR_PROVIDER, {
-          predicateType: "rea.changed-behavior",
+          predicateType: "nre.changed-behavior",
           operation: contract.name,
           parameters: {
             comparison_evidence_ids: [...comparisonEvidenceIds],
@@ -154,7 +154,7 @@ const registerCallPath = (
             return server.delivery.toCallToolResult(computed, contract);
           const result = computed.value;
           const evidence = createEvidence(undefined, CALL_PATH_PROVIDER, {
-            predicateType: "rea.call-path",
+            predicateType: "nre.call-path",
             operation: contract.name,
             parameters: {
               start: input.start.address,
@@ -230,7 +230,7 @@ const registerStaticRuntime = (
             return server.delivery.toCallToolResult(computed, contract);
           const result = computed.value;
           const evidence = createEvidence(undefined, STATIC_RUNTIME_PROVIDER, {
-            predicateType: "rea.static-runtime-correlation",
+            predicateType: "nre.static-runtime-correlation",
             operation: contract.name,
             parameters: {
               mapping_count: input.mappings.length,
@@ -302,7 +302,7 @@ const registerReconstruction = (
             return server.delivery.toCallToolResult(closure, contract);
           const links = closure.value;
           const evidence = createEvidence(undefined, RECONSTRUCTION_PROVIDER, {
-            predicateType: "rea.reconstruction-verification",
+            predicateType: "nre.reconstruction-verification",
             operation: contract.name,
             parameters: {
               specification_sha256: result.specification_sha256,

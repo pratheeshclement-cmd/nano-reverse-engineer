@@ -38,7 +38,7 @@ const sourceEvidence = (label: string) =>
 
 describe("bundle comparison MCP semantic status", () => {
   it("keeps display-only metadata out of deltas and preserves semantic changes", async () => {
-    const root = await createTestTempDirectory("rea-bundle-metadata-mcp-");
+    const root = await createTestTempDirectory("nre-bundle-metadata-mcp-");
     const leftPath = join(root, "left.json");
     const displayPath = join(root, "display.json");
     const changedPath = join(root, "changed.json");
@@ -137,7 +137,7 @@ describe("bundle comparison MCP semantic status", () => {
 });
 
 it("requires absolute bundle paths without changing server-cwd semantics", async () => {
-  const root = await createTestTempDirectory("rea-bundle-relative-mcp-");
+  const root = await createTestTempDirectory("nre-bundle-relative-mcp-");
   const encoded = serializeEvidenceBundle(createEvidenceBundle([]));
   await Promise.all([
     writeFile(join(root, "left.json"), encoded),
@@ -226,7 +226,7 @@ it("requires absolute bundle paths without changing server-cwd semantics", async
 
 describe("bundle comparison MCP integration", () => {
   it("reads caller-selected bundle files and returns complete Evidence", async () => {
-    const root = await createTestTempDirectory("rea-bundle-mcp-");
+    const root = await createTestTempDirectory("nre-bundle-mcp-");
     const leftPath = join(root, "left.json");
     const rightPath = join(root, "right.json");
     const leftRecord = sourceEvidence("left");
@@ -267,8 +267,8 @@ describe("bundle comparison MCP integration", () => {
   });
 
   it("reads a bundle path outside any configured roots", async () => {
-    const root = await createTestTempDirectory("rea-bundle-root-");
-    const outside = await createTestTempDirectory("rea-bundle-outside-");
+    const root = await createTestTempDirectory("nre-bundle-root-");
+    const outside = await createTestTempDirectory("nre-bundle-outside-");
     const leftPath = join(root, "left.json");
     const rightPath = join(outside, "right.json");
     const encoded = serializeEvidenceBundle(createEvidenceBundle([]));
@@ -295,7 +295,7 @@ describe("bundle comparison MCP integration", () => {
   });
 
   it("explains that a single Evidence record is not a bundle", async () => {
-    const root = await createTestTempDirectory("rea-bundle-record-");
+    const root = await createTestTempDirectory("nre-bundle-record-");
     const record = sourceEvidence("single");
     const recordPath = join(root, "record.json");
     const bundlePath = join(root, "bundle.json");
@@ -401,7 +401,7 @@ describe("bundle comparison record selections", () => {
     "reports the precise path for $label without publishing Evidence",
     async ({ pairs, path, message }) => {
       const root = await createTestTempDirectory(
-        "rea-bundle-pairs-invalid-mcp-",
+        "nre-bundle-pairs-invalid-mcp-",
       );
       const left = [sourceEvidence("left-1"), sourceEvidence("left-2")];
       const right = [sourceEvidence("right-1"), sourceEvidence("right-2")];

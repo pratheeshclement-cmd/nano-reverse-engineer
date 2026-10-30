@@ -18,7 +18,7 @@ for (const blocked of [false, true]) {
     `Hopper admission completes handoff publication before denial exit (blocked=${blocked})`,
     async ({ processes }) => {
       const root = await createTestTempDirectory(
-        "rea-hopper-fixture-publication-",
+        "nre-hopper-fixture-publication-",
       );
       const mode = join(root, "mode");
       const receipt = join(root, "receipt");
@@ -48,7 +48,7 @@ processTest(
   "Ghidra endpoint publication reports exclusive-file refusal without declaring readiness",
   async ({ processes }) => {
     const root = await createTestTempDirectory(
-      "rea-ghidra-fixture-publication-",
+      "nre-ghidra-fixture-publication-",
     );
     const endpointPath = join(root, "endpoint.json");
     const pending = `${endpointPath}.pending`;
@@ -57,7 +57,7 @@ processTest(
       timeoutMs: 5_000,
       env: {
         ...process.env,
-        REA_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
+        NRE_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
           endpointPath,
           transport: "authenticated-loopback-tcp",
           token: "fixture-token",

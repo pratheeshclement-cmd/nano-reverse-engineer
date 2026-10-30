@@ -28,7 +28,7 @@ const encryptedImage = (): Uint8Array => {
 };
 
 const writeTarget = async () => {
-  const root = await createTestTempDirectory("rea-native-macho-encryption-");
+  const root = await createTestTempDirectory("nre-native-macho-encryption-");
   const path = join(root, "fixture.macho");
   await writeFile(path, encryptedImage());
   return path;

@@ -11,7 +11,7 @@ import { fakeKunaCalls, writeFakeKuna } from "./fakeKuna.js";
 const it = test.skipIf(process.platform === "win32");
 
 it("accepts empty caller inventories but requires source-owned fixture literals", async () => {
-  const root = await createTestTempDirectory("rea-kuna-verifier-empty-");
+  const root = await createTestTempDirectory("nre-kuna-verifier-empty-");
   const result = spawnSync(
     process.execPath,
     [
@@ -58,7 +58,7 @@ it.each([
 ])(
   "rejects an unverified caller matrix: $names, populated=$populated",
   async ({ populated, names, reason }) => {
-    const root = await createTestTempDirectory("rea-kuna-verifier-selection-");
+    const root = await createTestTempDirectory("nre-kuna-verifier-selection-");
     const kuna = await writeFakeKuna(root);
     const targets = join(root, "targets");
     await mkdir(targets);
@@ -93,9 +93,9 @@ it.each([
         env: {
           PATH: process.env.PATH,
           HOME: root,
-          REA_KUNA_COMMAND: kuna,
-          REA_NM: nm,
-          REA_CC: join(root, "compiler-must-not-run"),
+          NRE_KUNA_COMMAND: kuna,
+          NRE_NM: nm,
+          NRE_CC: join(root, "compiler-must-not-run"),
           GHIDRA_INSTALL_DIR: join(root, "ghidra-must-not-run"),
         },
       },
@@ -144,21 +144,21 @@ it.each([
 ])(
   "reports failure-path lineage (cleanup: $rejectClose, read: $rejectRead, wrong xrefs: $wrongXrefs, wrong strings: $wrongStrings)",
   async ({ rejectClose, rejectRead, wrongXrefs, wrongStrings }) => {
-    const root = await createTestTempDirectory("rea-kuna-verifier-cleanup-");
+    const root = await createTestTempDirectory("nre-kuna-verifier-cleanup-");
     const kuna = await writeFakeKuna(root, {
       stringRows: [
-        { address: 12288, text: "REA fixture prompt" },
+        { address: 12288, text: "NRE fixture prompt" },
         {
           address: 12320,
-          text: "＿φ( °-°)/ REA unicode marker",
+          text: "＿φ( °-°)/ NRE unicode marker",
           encoding: "utf8",
         },
-        { address: 12400, text: "REA wide marker", encoding: "utf16" },
+        { address: 12400, text: "NRE wide marker", encoding: "utf16" },
       ],
       functions: [
         { name: "main", addr: "0x1000" },
-        { name: "rea_checksum", addr: "0x1040" },
-        { name: "rea_classify", addr: "0x1080" },
+        { name: "nre_checksum", addr: "0x1040" },
+        { name: "nre_classify", addr: "0x1080" },
       ],
     });
     const nm = join(root, "nm");
@@ -166,7 +166,7 @@ it.each([
     // discovery are simulated to isolate the verifier's cleanup contract.
     await writeFile(
       nm,
-      `#!${process.execPath}\nprocess.stdout.write("00001000 T main\\n00001040 T rea_checksum\\n00001080 T rea_classify\\n");\n`,
+      `#!${process.execPath}\nprocess.stdout.write("00001000 T main\\n00001040 T nre_checksum\\n00001080 T nre_classify\\n");\n`,
       { mode: 0o755 },
     );
     const proxy = join(root, "proxy.mjs");
@@ -178,7 +178,7 @@ import { spawn } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { createInterface } from "node:readline";
-const backend = spawn(process.execPath, [${JSON.stringify(resolve("scripts/rea.mjs"))}, "--mcp"], { stdio: ["pipe", "pipe", "ignore"] });
+const backend = spawn(process.execPath, [${JSON.stringify(resolve("scripts/nre.mjs"))}, "--mcp"], { stdio: ["pipe", "pipe", "ignore"] });
 const exited = new Promise((resolve, reject) => { backend.once("error", reject); backend.once("exit", resolve); });
 const methods = new Map();
 const output = createInterface({ input: backend.stdout });
@@ -203,10 +203,10 @@ for await (const line of input) {
   const name = message.params?.name;
   if (name !== undefined) methods.set(message.id, name);
   if (name === "close_binary" && ${rejectClose}) {
-    const marker = join(process.env.REA_KUNA_CACHE_DIR, "staging", "retained-marker");
+    const marker = join(process.env.NRE_KUNA_CACHE_DIR, "staging", "retained-marker");
     await mkdir(marker, { recursive: true });
     await writeFile(join(marker, "evidence"), "retained cleanup owner");
-    await writeFile(${JSON.stringify(cacheRecord)}, process.env.REA_KUNA_CACHE_DIR);
+    await writeFile(${JSON.stringify(cacheRecord)}, process.env.NRE_KUNA_CACHE_DIR);
     process.stdout.write(JSON.stringify({ jsonrpc: "2.0", id: message.id, result: { isError: true, content: [{ type: "text", text: "injected cleanup rejection" }] } }) + "\\n");
   } else if (name === "list_procedures" && ${rejectRead}) {
     // A verification failure with successful provider cleanup must still
@@ -234,8 +234,8 @@ await exited;
         env: {
           PATH: process.env.PATH,
           HOME: root,
-          REA_KUNA_COMMAND: kuna,
-          REA_NM: nm,
+          NRE_KUNA_COMMAND: kuna,
+          NRE_NM: nm,
         },
       },
     );

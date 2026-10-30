@@ -15,7 +15,7 @@ is a valid alternative, and is used as the completed baseline here.
 
 ## Contract and ownership
 
-`inspect_analysis_view` / `rea inspect-analysis-view` accept
+`inspect_analysis_view` / `nre inspect-analysis-view` accept
 `view.kind: "javascript-facts"`. `where.paths` matches only original Evidence
 artifact-path or source-range source strings; no filesystem lookup, normalization
 or property/display-path fallback. Omission includes unknown locations; `[]`
@@ -90,7 +90,7 @@ not import the production projector. Later export samples reuse the same
 immutable export. View samples precede diagnostic export and CLI verification.
 
 All costly commands run serially with the preserved
-[resource observer](https://github.com/morluto/rea/blob/b3bdabab694af1f9801eff7caf75001b92314a58/experiments/analysis-efficiency/resource-run.py)
+[resource observer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/b3bdabab694af1f9801eff7caf75001b92314a58/experiments/analysis-efficiency/resource-run.py)
 using `--memory-gib 8 --observe-payload-exit`: one CPU, 8 GiB hard limit,
 6 GiB early stop, no swap, 192 tasks; Node heap 2 GiB, `UV_THREADPOOL_SIZE=1`,
 `GOMAXPROCS=1`, `GOMEMLIMIT=3GiB`. Observer hashes and cleanup receipts are in JSON.
@@ -118,7 +118,7 @@ schemas, exec schema and host rendering are unmeasured. Final same-backend
 controls and optional-discovery measurements are recorded separately in JSON.
 
 Actual Codex CLI trials use the runnable
-[agent harness](https://github.com/morluto/rea/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/javascript-facts-agent.mjs),
+[agent harness](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/javascript-facts-agent.mjs),
 installed CLI 0.161.0, requested alias `gpt-5.6-terra` / high, unchanged questions
 per pair, and fresh processes/MCP. Restricted baseline tools are analysis and
 export; candidate adds the existing `inspect_analysis_view`. Both can reach the
@@ -128,7 +128,7 @@ repository investigation and other agents are forbidden in both.
 
 ```sh
 node experiments/analysis-efficiency/javascript-facts-agent.mjs \
-  --repository /absolute/rea --artifact "$input_root/cases/available/app.asar" \
+  --repository /absolute/nre --artifact "$input_root/cases/available/app.asar" \
   --arm view --task direct --output /absolute/new-result-directory
 ```
 
@@ -137,7 +137,7 @@ serially under the same resource observer. The negative task tests the claim
 that a static byte digest establishes native execution. Existing normal auth is
 used with `--ignore-user-config`; no credential copying or HOME/CODEX_HOME
 mutation. The installed CLI requires `code_mode_host: true` for all dispatch;
-that frontend setting is identical in both arms and is not a new REA executor.
+that frontend setting is identical in both arms and is not a new NRE executor.
 Experimental `code_mode` / `code_mode_only` remain disabled. MCP tool allowlists
 and per-tool settings use the [official Codex configuration](https://developers.openai.com/codex/mcp).
 Historical harness patches preserve the invalid disabled-host attempt and the
@@ -201,7 +201,7 @@ execution as unknown; the candidate still exported once. The one invalid
 disabled-host attempt (37.679 s / 5.070758 CPU s / 880,414,720 B) is preserved
 as a harness failure, with unavailable operation counts.
 
-Use the [specific artifact oracle](https://github.com/morluto/rea/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/javascript-facts-grade.py) on the compact JSON:
+Use the [specific artifact oracle](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/42e1a17d6e6c0487f17be0bae248553c4caba7f7/experiments/analysis-efficiency/javascript-facts-grade.py) on the compact JSON:
 
 ```sh
 python3 experiments/analysis-efficiency/javascript-facts-grade.py \
@@ -421,8 +421,8 @@ Reproduce the profile against either pinned checkout after its locked install
 and runtime build, within the resource wrapper above:
 
 ```sh
-node --cpu-prof --cpu-prof-dir=/tmp/rea-contract-profile \
-  tests/fixtures/contractPresentation.mjs reversed > /tmp/rea-contract-result.json
+node --cpu-prof --cpu-prof-dir=/tmp/nre-contract-profile \
+  tests/fixtures/contractPresentation.mjs reversed > /tmp/nre-contract-result.json
 ```
 
 To identify individual compilations on the pinned SDK, preload this diagnostic
@@ -448,10 +448,10 @@ Client.prototype._compileOutputValidator = function (tool) {
 
 ```sh
 node --import ./.cache/contract-compile-probe.mjs \
-  tests/fixtures/contractPresentation.mjs reversed > /tmp/rea-contract-result.json
+  tests/fixtures/contractPresentation.mjs reversed > /tmp/nre-contract-result.json
 ```
 
-This private SDK hook is diagnostic-only and version-specific. It is not a REA
+This private SDK hook is diagnostic-only and version-specific. It is not a NRE
 execution surface or a proposed SDK fork. A client can separately evaluate the
 public per-call `toolDefinition` option without reducing catalog completeness
 or changing backend authority; no such client change was made here.

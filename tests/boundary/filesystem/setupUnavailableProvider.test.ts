@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("setup with configured but unavailable providers", () => {
   it("preserves Hopper settings and makes the second setup perform no writes", async () => {
-    const root = await createTestTempDirectory("rea-setup-unavailable-");
+    const root = await createTestTempDirectory("nre-setup-unavailable-");
     const client = supportedClients(root, "darwin", {}).find(
       (candidate) => candidate.name === "cursor",
     );
@@ -69,10 +69,10 @@ describe("setup with configured but unavailable providers", () => {
     const configured = await readFile(client.configPath, "utf8");
     expect(JSON.parse(configured)).toMatchObject({
       theme: "dark",
-      mcpServers: { rea: { env: environment } },
+      mcpServers: { nre: { env: environment } },
     });
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.nre.backup`, "utf8"),
     ).resolves.toBe(original);
 
     const second = await runSetup(selected, createHost());
@@ -81,7 +81,7 @@ describe("setup with configured but unavailable providers", () => {
     expect(second.appliedActions).toEqual([]);
     await expect(readFile(client.configPath, "utf8")).resolves.toBe(configured);
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.nre.backup`, "utf8"),
     ).resolves.toBe(original);
   });
 });

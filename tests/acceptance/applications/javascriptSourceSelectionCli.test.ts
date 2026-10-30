@@ -22,12 +22,12 @@ cliTest.for([
   "analyzes selected $format sources through $command with complete artifact identity",
   { timeout: 60_000 },
   async ({ format, command }, { cli }) => {
-    const directory = await createTestTempDirectory("rea-js-source-selection-");
+    const directory = await createTestTempDirectory("nre-js-source-selection-");
     const files = await writeJavaScriptSourceSelectionFixture(directory);
     let input = directory;
     if (format === "asar") {
       input = join(
-        await createTestTempDirectory("rea-js-selected-asar-"),
+        await createTestTempDirectory("nre-js-selected-asar-"),
         "app.asar",
       );
       await createPackageWithOptions(directory, input, {});
@@ -168,7 +168,7 @@ cliTest(
   "rejects source selection when an explicit provider chooses the native lane",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-js-source-native-refusal-",
+      "nre-js-source-native-refusal-",
     );
     await writeJavaScriptSourceSelectionFixture(directory);
     const response = await cli.run({
@@ -205,13 +205,13 @@ cliTest.for([
   { timeout: 60_000 },
   async ({ command, source, format }, { cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-js-source-paths-json-",
+      "nre-js-source-paths-json-",
     );
     await writeJavaScriptSourceSelectionFixture(directory);
     let target = directory;
     if (format === "asar") {
       target = join(
-        await createTestTempDirectory("rea-js-json-selected-asar-"),
+        await createTestTempDirectory("nre-js-json-selected-asar-"),
         "app.asar",
       );
       await createPackageWithOptions(directory, target, {});
@@ -220,7 +220,7 @@ cliTest.for([
     let sourcePathsJson = JSON.stringify(listed);
     if (source === "file") {
       sourcePathsJson = join(
-        await createTestTempDirectory("rea-js-source-paths-list-"),
+        await createTestTempDirectory("nre-js-source-paths-list-"),
         "paths.json",
       );
       await writeFile(sourcePathsJson, JSON.stringify(listed));
@@ -270,7 +270,7 @@ cliTest.for([
   "rejects --source-paths-json holding $label",
   async ({ value, path }, { cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-js-source-paths-json-invalid-",
+      "nre-js-source-paths-json-invalid-",
     );
     await writeJavaScriptSourceSelectionFixture(directory);
     const response = await cli.run({
@@ -297,7 +297,7 @@ cliTest(
   "rejects --source-paths-json when an explicit provider chooses the native lane",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-js-source-paths-json-native-refusal-",
+      "nre-js-source-paths-json-native-refusal-",
     );
     await writeJavaScriptSourceSelectionFixture(directory);
     const response = await cli.run({
@@ -326,10 +326,10 @@ cliTest(
   "accepts legal ASAR JSON whitespace while preserving selected-source identity",
   { timeout: 60_000 },
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-asar-whitespace-");
+    const root = await createTestTempDirectory("nre-js-asar-whitespace-");
     await writeJavaScriptSourceSelectionFixture(root);
     const archive = join(
-      await createTestTempDirectory("rea-js-asar-whitespace-output-"),
+      await createTestTempDirectory("nre-js-asar-whitespace-output-"),
       "app.asar",
     );
     await createPackageWithOptions(root, archive, {});
@@ -372,7 +372,7 @@ cliTest(
   "does not parse ASAR-looking JSON beyond the declared JSON extent",
   async ({ cli }) => {
     const archive = join(
-      await createTestTempDirectory("rea-js-asar-padding-output-"),
+      await createTestTempDirectory("nre-js-asar-padding-output-"),
       "opaque.asar",
     );
     await writeFile(

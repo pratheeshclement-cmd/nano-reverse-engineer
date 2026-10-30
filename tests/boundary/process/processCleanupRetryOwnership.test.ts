@@ -34,7 +34,7 @@ const cleanupOptions = (
 };
 
 const createRoot = (): Promise<string> =>
-  mkdtemp(join(tmpdir(), "rea-process-cleanup-retry-"));
+  mkdtemp(join(tmpdir(), "nre-process-cleanup-retry-"));
 
 const expectCaptureError = (operation: () => unknown): ProcessCaptureError => {
   try {

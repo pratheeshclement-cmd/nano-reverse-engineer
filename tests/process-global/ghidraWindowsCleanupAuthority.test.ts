@@ -44,7 +44,7 @@ it.each([false, true])(
       configurationDirectoryName: "ghidra_test_PUBLIC",
       environment: {},
       analyzeHeadlessPath: "C:\\Ghidra\\support\\analyzeHeadless.bat",
-      bridgeScriptPath: "C:\\REA\\ReaGhidraBridge.java",
+      bridgeScriptPath: "C:\\NRE\\NreGhidraBridge.java",
       comSpec: "C:\\Windows\\System32\\cmd.exe",
       javaLaunch: async () => ({
         command: "unused",
@@ -58,12 +58,12 @@ it.each([false, true])(
     });
     const result = await launcher.launch(
       {
-        runtimeRoot: "C:\\REA\\runtime",
+        runtimeRoot: "C:\\NRE\\runtime",
         transport: "authenticated-loopback-tcp",
-        endpointPath: "C:\\REA\\runtime\\endpoint.json",
+        endpointPath: "C:\\NRE\\runtime\\endpoint.json",
         token: "fixture-token",
         runId: "fixture-run",
-        targetPath: "C:\\REA\\target.exe",
+        targetPath: "C:\\NRE\\target.exe",
         targetSha256: "a".repeat(64),
         providerVersion: "test",
         profileDigest: "b".repeat(64),

@@ -6,7 +6,7 @@ import {
 
 /**
  * Client startup guidance, operation headroom, and doctor output retention.
- * REA startup phase deadlines belong to config/mcpStartupBudgets; consumers
+ * NRE startup phase deadlines belong to config/mcpStartupBudgets; consumers
  * resolve them from the selected environment with resolveMcpStartupBudgets.
  */
 export const MCP_STARTUP_POLICY = {
@@ -16,9 +16,9 @@ export const MCP_STARTUP_POLICY = {
   doctorStderrBytes: 64 * 1024,
 } as const;
 
-/** Doctor startup recovery. The Codex figure is client guidance REA does not enforce. */
+/** Doctor startup recovery. The Codex figure is client guidance NRE does not enforce. */
 export const mcpDoctorDeadlineRecovery = (budget: McpPhaseBudget): string =>
-  `${mcpPhaseBudgetRecovery(budget)} Codex startup_timeout_sec of ${String(MCP_STARTUP_POLICY.codexStartupTimeoutSeconds)} seconds is client guidance; REA does not enforce that figure as this deadline.`;
+  `${mcpPhaseBudgetRecovery(budget)} Codex startup_timeout_sec of ${String(MCP_STARTUP_POLICY.codexStartupTimeoutSeconds)} seconds is client guidance; NRE does not enforce that figure as this deadline.`;
 
 /** Parsed startup and upstream request budgets affecting a client's tool deadline. */
 export interface McpToolTimeoutInputs {

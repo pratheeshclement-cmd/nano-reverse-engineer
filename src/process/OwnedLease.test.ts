@@ -95,7 +95,7 @@ describe.skipIf(process.platform === "win32")(
     it.each([false, true])(
       "closes a held peer and preserves retry after failure=%s",
       async (failClose) => {
-        const directory = await createTestTempDirectory("rea-peer-");
+        const directory = await createTestTempDirectory("nre-peer-");
         const input = {
           identity: { test: "held-peer" },
           directory,
@@ -155,7 +155,7 @@ describe.skipIf(process.platform === "win32")(
   "lease socket recovery finalization",
   () => {
     it("preserves the failed recovery operation when its directory cleanup also fails", async () => {
-      const directory = await createTestTempDirectory("rea-recovery-primary-");
+      const directory = await createTestTempDirectory("nre-recovery-primary-");
       const key = createHash("sha256")
         .update(JSON.stringify({ application: "linux-hopper-demo" }))
         .digest("hex")
@@ -192,7 +192,7 @@ describe.skipIf(process.platform === "win32")(
       "retains a bound socket when permission hardening and final close fail during recovery=%s",
       async (recovering) => {
         const directory = await createTestTempDirectory(
-          "rea-socket-permissions-",
+          "nre-socket-permissions-",
         );
         if (recovering) {
           const key = createHash("sha256")
@@ -258,7 +258,7 @@ describe.skipIf(process.platform === "win32")(
     it.each(["socket", "directory"] as const)(
       "retains both failed recovery owners while %s needs another retry",
       async (remaining) => {
-        const directory = await createTestTempDirectory("rea-recovery-close-");
+        const directory = await createTestTempDirectory("nre-recovery-close-");
         const key = createHash("sha256")
           .update(JSON.stringify({ application: "linux-hopper-demo" }))
           .digest("hex")
@@ -324,7 +324,7 @@ describe.skipIf(process.platform === "win32")(
     it.each(["accepted", "not_private", "access_denied"] as const)(
       "retains failed directory close after admission failure=%s",
       async (admission) => {
-        const root = await createTestTempDirectory("rea-lease-close-");
+        const root = await createTestTempDirectory("nre-lease-close-");
         injection.directory = join(root, "leases");
         injection.admission = admission;
         const resources = new ArtifactResourceScope();
@@ -363,7 +363,7 @@ describe.skipIf(process.platform === "win32")(
     );
 
     it("retries the directory owner through the actual Hopper launcher cleanup", async () => {
-      const root = await createTestTempDirectory("rea-launch-lease-");
+      const root = await createTestTempDirectory("nre-launch-lease-");
       injection.directory = join(root, "leases");
       injection.admission = "not_private";
       const launcher = new HopperApplicationLauncher(
@@ -406,7 +406,7 @@ describe.skipIf(process.platform === "win32")(
     });
 
     it("retains uncertainty when Node invalidates the directory handle before rejecting close", async () => {
-      const root = await createTestTempDirectory("rea-lease-invalidated-");
+      const root = await createTestTempDirectory("nre-lease-invalidated-");
       injection.directory = join(root, "leases");
       injection.invalidateOnClose = true;
       const resources = new ArtifactResourceScope();
@@ -431,7 +431,7 @@ describe.skipIf(process.platform === "win32")(
     it.each(["bootstrap", "cancelled", "nested"] as const)(
       "retains a lease whose release fails after %s startup failure",
       async (stage) => {
-        const root = await createTestTempDirectory("rea-launch-release-");
+        const root = await createTestTempDirectory("nre-launch-release-");
         const release = vi
           .fn()
           .mockRejectedValueOnce(new Error("injected lease release failure"))

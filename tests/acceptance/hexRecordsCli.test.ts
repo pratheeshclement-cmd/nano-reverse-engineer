@@ -44,7 +44,7 @@ const cases = [
 cliTest.for(cases)(
   "inventories and extracts $encoding regions through the compiled CLI",
   async ({ encoding, name, text, root, regions }, { cli }) => {
-    const directory = await createTestTempDirectory("rea-hex-cli-");
+    const directory = await createTestTempDirectory("nre-hex-cli-");
     const source = join(directory, name);
     await writeFile(source, text);
     const inspected = await cli.run({
@@ -91,7 +91,7 @@ cliTest.for(cases)(
 );
 
 cliTest("rejects a malformed record through the CLI", async ({ cli }) => {
-  const directory = await createTestTempDirectory("rea-hex-invalid-cli-");
+  const directory = await createTestTempDirectory("nre-hex-invalid-cli-");
   const source = join(directory, "firmware.hex");
   await writeFile(source, INTEL_HEX_I32_GAP.replace("BEEFC3", "BEEFC4"));
   const result = await cli.run({
@@ -106,7 +106,7 @@ cliTest("rejects a malformed record through the CLI", async ({ cli }) => {
 cliTest.for([3, 5])(
   "rejects reserved offsets in Intel HEX start record %i through the CLI",
   async (type, { cli }) => {
-    const directory = await createTestTempDirectory("rea-hex-start-cli-");
+    const directory = await createTestTempDirectory("nre-hex-start-cli-");
     const source = join(directory, "firmware.hex");
     await writeFile(
       source,

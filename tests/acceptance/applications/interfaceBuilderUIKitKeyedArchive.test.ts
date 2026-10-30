@@ -36,7 +36,7 @@ cliTest(
   "decodes a rooted UIKit keyed-archive outlet through CLI",
   async ({ cli }) => {
     const app = await writeUIKitApp(
-      "rea-cli-uikit-outlet-",
+      "nre-cli-uikit-outlet-",
       await readFile(
         join(process.cwd(), "tests/fixtures/interface-builder/UIKitOutlet.xml"),
       ),
@@ -44,7 +44,7 @@ cliTest(
 
     const output = await cli.run({
       arguments: ["decode-interface-builder", app, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = interfaceBuilderAnalysisSchema.parse(
@@ -160,11 +160,11 @@ cliTest.for(["xml", "binary"] as const)(
   "preserves UID identity despite colliding authored IDs in %s through CLI and MCP",
   async (format, { cli }) => {
     const bytes = keyedNibIdentityFixture(format);
-    const app = await writeUIKitApp("rea-keyed-nib-hierarchy-", bytes);
+    const app = await writeUIKitApp("nre-keyed-nib-hierarchy-", bytes);
     const path = join(app, "Contents/Resources/Main.nib");
     const output = await cli.run({
       arguments: ["decode-interface-builder", app, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const evidence = parseEvidence(output.json);
@@ -303,11 +303,11 @@ cliTest(
       ],
       $top: { root: uid(rootUid) },
     });
-    const app = await writeUIKitApp("rea-cli-uikit-kinds-", nib);
+    const app = await writeUIKitApp("nre-cli-uikit-kinds-", nib);
 
     const output = await cli.run({
       arguments: ["decode-interface-builder", app, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = interfaceBuilderAnalysisSchema.parse(

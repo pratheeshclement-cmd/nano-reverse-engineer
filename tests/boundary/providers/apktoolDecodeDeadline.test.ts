@@ -19,12 +19,12 @@ const DECODE_TIMEOUT_MS = 2_500;
 it.skipIf(process.platform === "win32")(
   "stops a hanging launcher and its pipe-holding child when the decode deadline elapses",
   async () => {
-    const root = await createTestTempDirectory("rea-apktool-decode-deadline-");
+    const root = await createTestTempDirectory("nre-apktool-decode-deadline-");
     const fixture = await createApktoolProcessFixture(root, "decode");
     const apk = join(root, "probe.apk");
     await writeFile(apk, "apk-bytes");
     const provider = new ApktoolProvider({
-      environment: { REA_APKTOOL_COMMAND: fixture.command },
+      environment: { NRE_APKTOOL_COMMAND: fixture.command },
     });
     const started = performance.now();
     const pending = provider.execute({

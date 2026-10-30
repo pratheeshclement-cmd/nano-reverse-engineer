@@ -12,7 +12,7 @@ import { DirectoryArtifactReader } from "./DirectoryArtifactReader.js";
 it.skipIf(process.platform === "win32")(
   "admits a caller-selected directory symlink without changing its target identity",
   async () => {
-    const root = await createTestTempDirectory("rea-directory-selection-");
+    const root = await createTestTempDirectory("nre-directory-selection-");
     const directory = join(root, "directory");
     const selected = join(root, "selected");
     await mkdir(directory);
@@ -32,7 +32,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "rejects a directory selection that traverses through a regular file",
   async () => {
-    const root = await createTestTempDirectory("rea-directory-resolution-");
+    const root = await createTestTempDirectory("nre-directory-resolution-");
     await writeFile(join(root, "file"), "carrier");
     const reader = new DirectoryArtifactReader(`${root}/file/..`);
     try {
@@ -49,7 +49,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "reports a replaced ancestor symlink loop as a changed admitted source",
   async () => {
-    const root = await createTestTempDirectory("rea-source-resolution-");
+    const root = await createTestTempDirectory("nre-source-resolution-");
     const parent = join(root, "selected");
     await mkdir(parent);
     const path = join(parent, "carrier.bin");
@@ -86,7 +86,7 @@ it.skipIf(process.platform !== "linux" && process.platform !== "darwin")(
 it.each(["ENOENT", "ENOTDIR", "ELOOP", "ENAMETOOLONG", "EACCES", "EIO"])(
   "preserves %s meaning when a stable snapshot cannot open its admitted name",
   async (code) => {
-    const root = await createTestTempDirectory("rea-stable-resolution-");
+    const root = await createTestTempDirectory("nre-stable-resolution-");
     const path = join(root, "carrier.bin");
     await writeFile(path, "carrier");
     const failure = Object.assign(new Error("injected open failure"), { code });

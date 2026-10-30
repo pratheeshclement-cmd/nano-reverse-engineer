@@ -20,7 +20,7 @@ import { err, ok, type Result } from "../../domain/result.js";
 import { createElectronActiveEvidence } from "./ElectronActiveEvidence.js";
 
 const OPERATION = "capture_electron_scenario" as const;
-const PROVIDER_ID = "rea-playwright-electron-active";
+const PROVIDER_ID = "nre-playwright-electron-active";
 
 type ElectronPathField =
   | "executable_path"
@@ -29,7 +29,7 @@ type ElectronPathField =
 
 /**
  * Why a selected path was not admitted. Host permission denial is not
- * malformed caller input: the path may be correct, but REA cannot read it.
+ * malformed caller input: the path may be correct, but NRE cannot read it.
  */
 type PathAdmissionFailure =
   | {

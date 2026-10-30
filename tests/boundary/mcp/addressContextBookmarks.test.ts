@@ -32,7 +32,7 @@ it.each([
       version: "1",
     };
     const bookmark = { address: bookmarkAddress, name: "review" };
-    const directory = await createTestTempDirectory("rea-address-bookmark-");
+    const directory = await createTestTempDirectory("nre-address-bookmark-");
     const target = join(directory, "fixture.com");
     await writeFile(target, Buffer.from([0xb8, 0x00, 0x4c, 0xcd, 0x21]));
     const session = createTestBinarySession(() => ({

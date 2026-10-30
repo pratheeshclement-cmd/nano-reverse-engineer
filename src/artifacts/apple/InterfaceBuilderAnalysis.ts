@@ -305,7 +305,7 @@ const decodeInterfaceBuilderBundle = async (
     ...(input.resourceRoot === undefined
       ? {}
       : { resourceRoot: input.resourceRoot }),
-    toolVersion: "rea-interface-builder/1",
+    toolVersion: "nre-interface-builder/1",
     documents,
     limits,
   });

@@ -43,7 +43,7 @@ describe("browser comparison JSON file inputs", () => {
   cliTest(
     "compares screenshot artifacts too large for a command-line argument",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-screenshot-files-");
+      const root = await createTestTempDirectory("nre-screenshot-files-");
       const artifact = JSON.stringify(
         createWebScreenshotArtifact(noisePng(640, 640)),
       );
@@ -72,7 +72,7 @@ describe("browser comparison JSON file inputs", () => {
   cliTest(
     "reports which screenshot artifact failed validation",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-screenshot-invalid-");
+      const root = await createTestTempDirectory("nre-screenshot-invalid-");
       const valid = createWebScreenshotArtifact(noisePng(2, 2));
       const before = join(root, "before.json");
       await writeFile(before, JSON.stringify({ ...valid, bytes: 1 }));
@@ -116,7 +116,7 @@ describe("browser comparison JSON file inputs", () => {
   cliTest(
     "identifies a missing capture file instead of reporting malformed JSON",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-capture-missing-");
+      const root = await createTestTempDirectory("nre-capture-missing-");
       const missing = join(root, "before.json");
 
       const missingCapture = await cli.run({

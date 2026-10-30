@@ -46,7 +46,7 @@ export const parseFunctionEvidence = (
     );
   if (
     evidence.operation !== "analyze_function" ||
-    evidence.predicate_type !== "rea.analysis"
+    evidence.predicate_type !== "nre.analysis"
   ) {
     const location = selection.path.map(String).join(".");
     const subject =
@@ -56,8 +56,8 @@ export const parseFunctionEvidence = (
           ? `${location} Evidence`
           : `Evidence at ${location}`;
     return invalidSelection(
-      `Function analysis requires analyze_function Evidence with the rea.analysis predicate; the ${subject} has operation ${evidence.operation} and predicate ${evidence.predicate_type}.`,
-      { operation: "analyze_function", predicate_type: "rea.analysis" },
+      `Function analysis requires analyze_function Evidence with the nre.analysis predicate; the ${subject} has operation ${evidence.operation} and predicate ${evidence.predicate_type}.`,
+      { operation: "analyze_function", predicate_type: "nre.analysis" },
     );
   }
   if (evidence.subject === null)

@@ -25,7 +25,7 @@ const requestSchema = z.strictObject({
   encoding: z.enum(["raw", "hex"]),
 });
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-evm-interface-boundary-");
+  const workspace = await createTestWorkspace("nre-evm-interface-boundary-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = join(workspace.root, "selected.hex");
   await writeFile(path, "0x60006000f3\n");
@@ -256,7 +256,7 @@ it.runIf(!unsupportedHost).each(["completed", "malformed-reply"] as const)(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-mixed-cleanup-",
+          prefix: "nre-evm-mixed-cleanup-",
         });
         ownedRoot = root.path;
         const close = root.close.bind(root);
@@ -658,7 +658,7 @@ it.runIf(!unsupportedHost)(
     const { path } = await fixture();
     expect(
       await new EvmoleInterfaceProvider({
-        REA_EVM_PRLIMIT_COMMAND: path + ".absent",
+        NRE_EVM_PRLIMIT_COMMAND: path + ".absent",
       }).inspect({ path, encoding: "hex" }),
     ).toMatchObject({
       ok: false,
@@ -743,7 +743,7 @@ it.runIf(!unsupportedHost)(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-cancel-",
+          prefix: "nre-evm-cancel-",
         });
         ownedRoot = root.path;
         controller.abort();
@@ -873,7 +873,7 @@ it
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-late-",
+          prefix: "nre-evm-late-",
         });
         ownedRoot = root.path;
         return {
@@ -960,16 +960,16 @@ it.runIf(!unsupportedHost).each(["directory", "missing-interpreter"])(
     const limiter =
       scenario === "directory" ? root : join(root, "broken-limiter");
     if (scenario === "missing-interpreter")
-      await writeFile(limiter, "#!/rea-missing-limiter-interpreter\n", {
+      await writeFile(limiter, "#!/nre-missing-limiter-interpreter\n", {
         mode: 0o700,
       });
     let ownedRoot: string | undefined;
     const provider = new EvmoleInterfaceProvider(
-      { REA_EVM_PRLIMIT_COMMAND: limiter },
+      { NRE_EVM_PRLIMIT_COMMAND: limiter },
       undefined,
       async () => {
         const runtime = await PrivateRuntimeRoot.create({
-          prefix: "rea-evm-limiter-",
+          prefix: "nre-evm-limiter-",
         });
         ownedRoot = runtime.path;
         return runtime;

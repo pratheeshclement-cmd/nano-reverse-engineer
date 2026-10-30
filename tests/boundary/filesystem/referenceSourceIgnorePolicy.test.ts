@@ -16,7 +16,7 @@ const importTree = async (root: string) => {
 };
 
 it("retains caller negations across project scopes while secrets remain excluded", async () => {
-  const root = await createTestTempDirectory("rea-reference-caller-policy-");
+  const root = await createTestTempDirectory("nre-reference-caller-policy-");
   await mkdir(join(root, "nested"));
   await writeFile(join(root, ".gitignore"), "*.log\n");
   await writeFile(join(root, "nested", ".gitignore"), "*.log\n");
@@ -49,7 +49,7 @@ it("retains caller negations across project scopes while secrets remain excluded
 
 it("keeps unreadable scoped policy fatal after opening a readable directory", async () => {
   const root = await createTestTempDirectory(
-    "rea-reference-scoped-policy-refusal-",
+    "nre-reference-scoped-policy-refusal-",
   );
   const child = join(root, "child");
   await mkdir(join(child, ".gitignore"), { recursive: true });
@@ -68,7 +68,7 @@ it("keeps unreadable scoped policy fatal after opening a readable directory", as
 });
 
 it("scopes nested ignore rules and negations like Git while preserving mandatory exclusions", async () => {
-  const root = await createTestTempDirectory("rea-reference-scoped-policy-");
+  const root = await createTestTempDirectory("nre-reference-scoped-policy-");
   await execFileOutput("git", ["init", "--initial-branch=main", root]);
   await execFileOutput("git", [
     "-C",
@@ -144,7 +144,7 @@ it("scopes nested ignore rules and negations like Git while preserving mandatory
 it.each([false, true])(
   "honors local core.ignorecase=%s against Git's check-ignore oracle",
   async (ignoreCase) => {
-    const root = await createTestTempDirectory("rea-reference-ignore-case-");
+    const root = await createTestTempDirectory("nre-reference-ignore-case-");
     await execFileOutput("git", ["init", "--initial-branch=main", root]);
     await execFileOutput("git", [
       "-C",
@@ -180,7 +180,7 @@ it.each([false, true])(
 it.skipIf(process.platform === "win32")(
   "binds Git pointer/configuration reads to physical symlink-parent selection",
   async () => {
-    const root = await createTestTempDirectory("rea-reference-git-parent-");
+    const root = await createTestTempDirectory("nre-reference-git-parent-");
     const source = join(root, "source");
     const physical = join(root, "physical");
     await mkdir(source);
@@ -209,7 +209,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("keeps a present but unresolved Git common-directory pointer from selecting private decoy configuration", async () => {
-  const root = await createTestTempDirectory("rea-reference-common-missing-");
+  const root = await createTestTempDirectory("nre-reference-common-missing-");
   await mkdir(join(root, ".git"));
   await writeFile(join(root, ".git", "HEAD"), `${"1".repeat(40)}\n`);
   await writeFile(join(root, ".git", "config"), "[core]\nignorecase = true\n");

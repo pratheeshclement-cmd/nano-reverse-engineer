@@ -14,7 +14,7 @@ const osRelease = (
     architecture,
   );
 
-/** A Debian-family host REA supports that the Hopper package never tests. */
+/** A Debian-family host NRE supports that the Hopper package never tests. */
 const KALI = osRelease({ ID: "kali", VERSION_ID: "2026.3", ID_LIKE: "debian" });
 const UBUNTU_24 = osRelease({ ID: "ubuntu", VERSION_ID: "24.04" });
 /** A tested distribution on an architecture the pinned Hopper packages lack. */
@@ -29,7 +29,7 @@ const checks = ({ node = true, host = true } = {}) => [
 ];
 
 describe("packaged setup support derivation", () => {
-  it("keeps an installer-untested REA-supported distribution out of the automated Hopper path", () => {
+  it("keeps an installer-untested NRE-supported distribution out of the automated Hopper path", () => {
     // The doctor host check passes on Kali, so reading installer applicability
     // from it promised an automated install the packaged setup never offers,
     // and Hopper readiness that setup never provides there.
@@ -46,7 +46,7 @@ describe("packaged setup support derivation", () => {
   });
 
   it("keeps an arm64 host off the x86_64-only automated Hopper path", () => {
-    // ubuntu-24.04-arm runs REA, but every pinned Linux Hopper package is
+    // ubuntu-24.04-arm runs NRE, but every pinned Linux Hopper package is
     // x86_64, so packaged setup must not expect an automated install or
     // Hopper readiness there.
     expect(

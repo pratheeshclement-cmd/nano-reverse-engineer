@@ -16,10 +16,10 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "resolves source symlink targets through native traversal across retargeting and missing files",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-native-links-");
-    const config = await createTestTempDirectory("rea-reference-link-config-");
+    const root = await createTestTempDirectory("nre-reference-native-links-");
+    const config = await createTestTempDirectory("nre-reference-link-config-");
     const outside = await createTestTempDirectory(
-      "rea-reference-link-outside-",
+      "nre-reference-link-outside-",
     );
     for (const directory of [
       join(root, "first"),

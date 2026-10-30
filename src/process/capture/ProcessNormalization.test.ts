@@ -582,7 +582,7 @@ it("does not give a selected executable identity to a sibling filename", () => {
     normalizeProcessText(
       "/tmp/process-paths/original/tool-helper /tmp/process-paths/original/tool, /tmp/process-paths/original/tool",
       declared,
-      "/tmp/rea-private",
+      "/tmp/nre-private",
       rootPid,
     ),
   ).toBe(

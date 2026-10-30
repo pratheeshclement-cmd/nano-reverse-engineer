@@ -175,7 +175,7 @@ it("keeps a named timeout control through explicit-value redaction", () => {
       userMessage:
         "JavaScript source analysis reached its 300000ms per-source server/provider deadline (analysis_timeout_ms) for explicit-secret, not the MCP client deadline.",
       remediationAction:
-        "Increase analysis_timeout_ms through MCP for explicit-secret, or use rea analyze-javascript-application <input_path> --analysis-timeout-ms <milliseconds> on the CLI.",
+        "Increase analysis_timeout_ms through MCP for explicit-secret, or use nre analyze-javascript-application <input_path> --analysis-timeout-ms <milliseconds> on the CLI.",
     },
   );
   const redacted = redactExplicitFailure(error, ["explicit-secret"]);

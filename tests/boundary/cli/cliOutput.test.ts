@@ -6,7 +6,10 @@ import { describe, expect, it } from "vitest";
 
 import { workspaceCliTest } from "../../support/cli/workspaceCliFixture.js";
 
-import { normalizeCliArguments } from "../../../src/cliBuiltinArguments.js";
+import {
+  normalizeCliArguments,
+  adaptCliOutputArgumentsForIncur,
+} from "../../../src/cliBuiltinArguments.js";
 import {
   renderCliOutputArgumentError,
   renderCliDocument,
@@ -14,7 +17,6 @@ import {
   renderVersionReport,
   parseCliOutputArguments,
 } from "../../../src/cliOutput.js";
-import { adaptCliOutputArgumentsForIncur } from "../../../src/cliBuiltinArguments.js";
 
 const CLI_INTEGRATION_TIMEOUT_MS = 60_000;
 
@@ -77,7 +79,7 @@ describe("CLI output argument boundary", () => {
     ).toMatchObject({ ok: false, code: "UNSUPPORTED_OUTPUT_COMBINATION" });
   });
 
-  it("adapts REA-owned delimited options only at the Incur boundary", () => {
+  it("adapts NRE-owned delimited options only at the Incur boundary", () => {
     expect(
       adaptCliOutputArgumentsForIncur([
         "inspect-analysis-view",
@@ -132,7 +134,7 @@ describe("CLI output argument boundary", () => {
         expect(rendered).not.toContain("[truncated:");
         if (format === "jsonl")
           expect(JSON.parse(rendered)).toMatchObject({
-            $rea: "jsonl/v1",
+            $nre: "jsonl/v1",
             type: "error",
             result: {
               ok: false,
@@ -600,7 +602,7 @@ describe("compiled CLI output boundary", () => {
       expect(result).toMatchObject({
         exitCode: 0,
         stdout: "{}\n",
-        stderr: expect.stringContaining('"rea_progress":'),
+        stderr: expect.stringContaining('"nre_progress":'),
         json: {},
       });
       const nested = await cli.run({
@@ -615,7 +617,7 @@ describe("compiled CLI output boundary", () => {
       });
       expect(nested).toMatchObject({
         exitCode: 0,
-        stderr: expect.stringContaining('"rea_progress":'),
+        stderr: expect.stringContaining('"nre_progress":'),
         json: { normalized_result: {} },
       });
       const selected = await cli.run({
@@ -630,7 +632,7 @@ describe("compiled CLI output boundary", () => {
       });
       expect(selected).toMatchObject({
         exitCode: 0,
-        stderr: expect.stringContaining('"rea_progress":'),
+        stderr: expect.stringContaining('"nre_progress":'),
         json: {
           normalized_result: {
             summary: expect.objectContaining({ browser_windows: 0 }),
@@ -650,7 +652,7 @@ describe("compiled CLI output boundary", () => {
         json: {
           code: "VALIDATION_ERROR",
           message:
-            "REA could not read the command arguments. Check the named argument and its expected type, then try again.",
+            "NRE could not read the command arguments. Check the named argument and its expected type, then try again.",
           fieldErrors: [
             {
               path: "path",
@@ -845,7 +847,7 @@ describe("version report requests", () => {
 
 describe("version report rendering", () => {
   const host = {
-    packageName: "rea-agents",
+    packageName: "nano-reverse-engineer",
     packageVersion: "6.7.0",
     versions: { node: "24.22.1" },
     platform: "linux",

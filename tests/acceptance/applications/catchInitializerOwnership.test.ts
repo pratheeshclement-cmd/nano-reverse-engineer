@@ -10,7 +10,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves catch-shadowed initializer mutations in exported Evidence through %s",
   async (surface, { cli }) => {
     const root = await createTestTempDirectory(
-      "rea-catch-initializer-ownership-",
+      "nre-catch-initializer-ownership-",
     );
     await writeFile(
       join(root, "app.cjs"),

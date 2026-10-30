@@ -54,7 +54,7 @@ const waitForBoundary = (
   ]);
 
 const terminalFixture = async () => {
-  const parent = await createTestTempDirectory("rea-verifier-terminal-");
+  const parent = await createTestTempDirectory("nre-verifier-terminal-");
   const path = join(parent, "workspace");
   await mkdir(path);
   const pids = new Set<number>();
@@ -88,7 +88,7 @@ const terminalFixture = async () => {
     cwd: path,
     environment: {
       TERM: "xterm-256color",
-      REA_TERMINAL_SELECTED: "caller-selected",
+      NRE_TERMINAL_SELECTED: "caller-selected",
     },
     timeoutMs: 2_000,
   };
@@ -138,14 +138,14 @@ posix(
   "merges real PTY streams and preserves selected argv, environment and the write capability",
   async () => {
     const fixture = await terminalFixture();
-    const ambient = "REA_TERMINAL_AMBIENT_SENTINEL";
+    const ambient = "NRE_TERMINAL_AMBIENT_SENTINEL";
     const previous = process.env[ambient];
     process.env[ambient] = "ambient-only";
     const args = ["value with spaces", "--literal=$HOME", "quote'and\"double"];
     const source = `
 process.stdin.setEncoding("utf8");
 process.stdin.once("data", input => process.stdout.write("__REPLY__" + JSON.stringify(input.trim()) + "\\n", () => process.exit(0)));
-process.stdout.write("__FACTS__" + JSON.stringify({ args: process.argv.slice(1), selected: process.env.REA_TERMINAL_SELECTED, ambient: process.env.${ambient} ?? null }) + "\\n");
+process.stdout.write("__FACTS__" + JSON.stringify({ args: process.argv.slice(1), selected: process.env.NRE_TERMINAL_SELECTED, ambient: process.env.${ambient} ?? null }) + "\\n");
 process.stderr.write("__STDERR__\\n");
 process.stdout.write("__PROMPT__\\n");
 setTimeout(() => process.exit(91), 5000);

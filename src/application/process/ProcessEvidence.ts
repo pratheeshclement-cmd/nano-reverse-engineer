@@ -21,7 +21,7 @@ import { err, ok, type Result } from "../../domain/result.js";
 
 const PROCESS_CAPTURE_EVIDENCE = {
   operation: "capture_process_scenario",
-  predicate: "rea.process-capture",
+  predicate: "nre.process-capture",
 } as const;
 
 /** Semantic rejection facts; CLI and MCP retain their own error projections. */

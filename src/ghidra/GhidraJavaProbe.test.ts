@@ -191,7 +191,7 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "preserves JDK home and doctor registration with property framing %j",
   async ({ suffix, newline }) => {
-    const directory = await createTestTempDirectory("rea-java-home-");
+    const directory = await createTestTempDirectory("nre-java-home-");
     const home = join(directory, `jdk${suffix}`);
     await mkdir(join(home, "bin"), { recursive: true });
     const command = join(home, "bin", "java");

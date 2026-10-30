@@ -41,7 +41,7 @@ it("routes universal Mach-O extraction through slice inventory", async () => {
     "unavailable",
     "fixture reached universal slice inventory",
   );
-  const root = await createTestTempDirectory("rea-extract-universal-");
+  const root = await createTestTempDirectory("nre-extract-universal-");
   const image = join(root, "Universal");
   await writeFile(
     image,

@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "packs through the selected npm entrypoint even when PATH contains another npm",
   async () => {
-    const root = await createTestTempDirectory("rea-agentenv-npm-selection-");
+    const root = await createTestTempDirectory("nre-agentenv-npm-selection-");
     const bin = join(root, "bin");
     await mkdir(bin);
     const selected = join(root, "selected-npm.mjs");
@@ -50,8 +50,8 @@ it.skipIf(process.platform === "win32")(
           ...process.env,
           PATH: `${bin}:${process.env.PATH ?? ""}`,
           npm_execpath: selected,
-          REA_AGENT_ENV_COMMAND: runner,
-          REA_DOCKER_COMMAND: docker,
+          NRE_AGENT_ENV_COMMAND: runner,
+          NRE_DOCKER_COMMAND: docker,
         },
         encoding: "utf8",
         timeout: 30_000,
@@ -75,7 +75,7 @@ it.skipIf(process.platform === "win32").each([
 ] as const)(
   "admits the observed executable identity %s before Docker: %s",
   async (version, accepted) => {
-    const root = await createTestTempDirectory("rea-agentenv-identity-");
+    const root = await createTestTempDirectory("nre-agentenv-identity-");
     const runner = join(root, "agent-env.mjs");
     const docker = join(root, "docker.mjs");
     const marker = join(root, "docker-called");
@@ -102,8 +102,8 @@ it.skipIf(process.platform === "win32").each([
       {
         env: {
           ...process.env,
-          REA_AGENT_ENV_COMMAND: runner,
-          REA_DOCKER_COMMAND: docker,
+          NRE_AGENT_ENV_COMMAND: runner,
+          NRE_DOCKER_COMMAND: docker,
         },
         encoding: "utf8",
         timeout: 30_000,

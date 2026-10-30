@@ -37,7 +37,7 @@ module.exports = { pushContext, popContext, tokenBase };
 cliTest(
   "analyzes a parser context stack that pops through its own slot",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-self-store-");
+    const root = await createTestTempDirectory("nre-js-self-store-");
     await writeFile(join(root, "mode.js"), contextStack);
     const output = await cli.run({
       arguments: [

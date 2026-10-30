@@ -179,7 +179,7 @@ it.each(["success", "io", "caller cancellation", "reader close"] as const)(
 it.each([false, true])(
   "settles independent private and carrier closes and retries only failed owners (carrier failure: %s)",
   async (failCarrier) => {
-    const path = join(await createTestTempDirectory("rea-pyi-cleanup-"), "app");
+    const path = join(await createTestTempDirectory("nre-pyi-cleanup-"), "app");
     await writeFile(
       path,
       cArchiveExecutable({
@@ -281,7 +281,11 @@ it("binds materialization to the inventoried digest and checks cached carrier fr
   });
 });
 
-it.each(["ENOENT", "ENOTDIR"] as const)(
+it.each(
+  process.platform === "win32"
+    ? (["ENOENT"] as const)
+    : (["ENOENT", "ENOTDIR"] as const),
+)(
   "retains changed-source evidence when an admitted carrier becomes unaddressable (%s)",
   async (code) => {
     const body = Buffer.from("observed before the source moved");

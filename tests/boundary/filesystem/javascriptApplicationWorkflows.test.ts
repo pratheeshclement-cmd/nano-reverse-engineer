@@ -205,7 +205,7 @@ describe("JavaScript application comparison workflows", () => {
         undefined,
         { id: "fixture", name: "Fixture", version: "1" },
         {
-          predicateType: "rea.javascript-application-analysis",
+          predicateType: "nre.javascript-application-analysis",
           operation: "analyze_javascript_application",
           parameters: { side },
           result: {},
@@ -225,7 +225,7 @@ describe("JavaScript application comparison workflows", () => {
 describe("historical native comparison projections", () => {
   it("keeps historical native member omission distinct through authenticated comparison", async () => {
     const root = await createTestTempDirectory(
-      "rea-historical-native-members-",
+      "nre-historical-native-members-",
     );
     temporary.push(root);
     await writeFile(
@@ -316,7 +316,7 @@ describe("historical native comparison projections", () => {
 
 describe("complete comparison projections", () => {
   it("matches rechunked modules by exact source and minified modules by structural fingerprint", async () => {
-    const root = await createTestTempDirectory("rea-application-versions-");
+    const root = await createTestTempDirectory("nre-application-versions-");
     temporary.push(root);
     const fixtures = await writeVersionedJavaScriptApplicationFixtures(root);
     const [left, right] = await Promise.all([
@@ -379,7 +379,7 @@ describe("complete comparison projections", () => {
   });
 
   it("pairs source-map originals without promoting the match to exact", async () => {
-    const root = await createTestTempDirectory("rea-source-map-versions-");
+    const root = await createTestTempDirectory("nre-source-map-versions-");
     temporary.push(root);
     const fixtures = await writeVersionedJavaScriptApplicationFixtures(root);
     const [left, right] = await Promise.all([
@@ -516,7 +516,7 @@ describe("Application graph Evidence envelopes", () => {
 describe("JavaScript application workflow error diagnostics", () => {
   it("identifies the inconsistent Evidence subject in graph workflows", async () => {
     const root = await createTestTempDirectory(
-      "rea-application-workflow-diagnostics-",
+      "nre-application-workflow-diagnostics-",
     );
     temporary.push(root);
     const evidence = await analyzeFixture(root);
@@ -548,7 +548,7 @@ describe("JavaScript application workflow error diagnostics", () => {
 
   it("preserves schema-authored Evidence validation messages", async () => {
     const root = await createTestTempDirectory(
-      "rea-application-workflow-schema-diagnostics-",
+      "nre-application-workflow-schema-diagnostics-",
     );
     temporary.push(root);
     const evidence = await analyzeFixture(root);
@@ -614,7 +614,7 @@ describe("JavaScript application workflow error diagnostics", () => {
 
   it("returns supported-operation constraints from runtime reconciliation", async () => {
     const root = await createTestTempDirectory(
-      "rea-runtime-workflow-diagnostics-",
+      "nre-runtime-workflow-diagnostics-",
     );
     temporary.push(root);
     const evidence = await analyzeFixture(root);

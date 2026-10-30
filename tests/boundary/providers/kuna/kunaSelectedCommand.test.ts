@@ -49,14 +49,14 @@ const runInstallation = (
     workspace,
     operation: "kuna:selection-fixture",
     timeoutMs: 5_000,
-    deadline: { setting: "REA_KUNA_TIMEOUT_MS", ms: 5_000 },
+    deadline: { setting: "NRE_KUNA_TIMEOUT_MS", ms: 5_000 },
     outputBytes: 4096,
     signal: new AbortController().signal,
     retainFailedFileClose: (owner, path) => resources.retain(owner, path),
   });
 
 it("uses the selected Kuna launcher and its sibling producer for readiness and commands", async () => {
-  const root = await createTestTempDirectory("rea-kuna-command-selection-");
+  const root = await createTestTempDirectory("nre-kuna-command-selection-");
   const implementation = join(root, "implementation");
   await writeFile(implementation, wrapperSource, { mode: 0o755 });
   const selected = await selectWrapper(root, "selected", implementation);
@@ -66,8 +66,8 @@ it("uses the selected Kuna launcher and its sibling producer for readiness and c
 else console.log(JSON.stringify({producer: __filename, arguments: process.argv.slice(2)}));\n`,
   );
   const installed = await inspectKunaInstallation({
-    REA_KUNA_COMMAND: selected.command,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: selected.command,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
   });
   if (!installed.ok) throw new Error(installed.error.reason);
   expect(installed.value).toMatchObject({
@@ -88,7 +88,7 @@ else console.log(JSON.stringify({producer: __filename, arguments: process.argv.s
 it.each(["different bytes", "identical bytes"] as const)(
   "refuses a selected launcher retargeted after discovery to %s before executing it",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-kuna-command-retarget-");
+    const root = await createTestTempDirectory("nre-kuna-command-retarget-");
     const implementation = join(root, "implementation");
     await writeFile(implementation, wrapperSource, { mode: 0o755 });
     const selected = await selectWrapper(root, "selected", implementation);
@@ -99,8 +99,8 @@ it.each(["different bytes", "identical bytes"] as const)(
 else require('node:fs').writeFileSync(${JSON.stringify(marker)}, 'ran');\n`,
     );
     const installed = await inspectKunaInstallation({
-      REA_KUNA_COMMAND: selected.command,
-      REA_KUNA_CACHE_DIR: join(root, "cache"),
+      NRE_KUNA_COMMAND: selected.command,
+      NRE_KUNA_CACHE_DIR: join(root, "cache"),
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     const replacement = join(root, "replacement");
@@ -125,7 +125,7 @@ else require('node:fs').writeFileSync(${JSON.stringify(marker)}, 'ran');\n`,
 );
 
 it("refuses an identical-byte launcher retargeted between profile creation and session acquisition", async () => {
-  const root = await createTestTempDirectory("rea-kuna-profile-retarget-");
+  const root = await createTestTempDirectory("nre-kuna-profile-retarget-");
   const implementation = join(root, "implementation");
   await writeFile(implementation, wrapperSource, { mode: 0o755 });
   const selected = await selectWrapper(root, "selected", implementation);
@@ -134,8 +134,8 @@ it("refuses an identical-byte launcher retargeted between profile creation and s
     "console.log('kuna 1.833');\n",
   );
   const provider = new KunaProvider({
-    REA_KUNA_COMMAND: selected.command,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: selected.command,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
   });
   const target = {
     path: join(root, "target"),
@@ -173,7 +173,7 @@ it("refuses an identical-byte launcher retargeted between profile creation and s
 });
 
 it("keeps shared-cache exports separate for equal wrapper bytes selected beside different producers", async () => {
-  const root = await createTestTempDirectory("rea-kuna-command-cache-");
+  const root = await createTestTempDirectory("nre-kuna-command-cache-");
   const implementation = join(root, "implementation");
   await writeFile(implementation, wrapperSource, { mode: 0o755 });
   const cacheRoot = join(root, "cache");
@@ -192,8 +192,8 @@ it("keeps shared-cache exports separate for equal wrapper bytes selected beside 
     });
     await symlink(producer, join(selected.directory, "producer.cjs"));
     const installed = await inspectKunaInstallation({
-      REA_KUNA_COMMAND: selected.command,
-      REA_KUNA_CACHE_DIR: cacheRoot,
+      NRE_KUNA_COMMAND: selected.command,
+      NRE_KUNA_CACHE_DIR: cacheRoot,
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     installations.push(installed.value);

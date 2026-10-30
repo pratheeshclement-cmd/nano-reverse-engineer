@@ -3,32 +3,32 @@
 [English](../../README.md) · [简体中文](README_zh.md) · [繁體中文](README_zh-TW.md) · [日本語](README_ja.md) · [한국어](README_ko.md) · [Türkçe](README_tr.md) · [Русский](README_ru.md) · [Tiếng Việt](README_vi.md) · [ไทย](README_th.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md) · [Українська](README_uk.md) · [Polski](README_pl.md) · [Português (Brasil)](README_pt-BR.md) · [العربية](README_ar.md) · [فارسی](README_fa.md) · [Bahasa Indonesia](README_id.md) · [Italiano](README_it.md)
 · [Ελληνικά](README_el.md) · [മലയാളം](README_ml.md) · [Roman Urdu](README_ur-Latn.md) · **Română**
 
-# REA: Nano Reverse Engineer
+# NRE: Nano Reverse Engineer
 
 ### Un singur server MCP pentru inginerie inversă: fișiere binare, aplicații și comportament în timpul execuției.
 
 **Ai găsit o funcționalitate care îți place? Înțelege cum funcționează, până la nivel de cod binar.**
 
-[![Versiunea npm](https://img.shields.io/npm/v/rea-agents?style=flat-square&color=cb3837)](https://www.npmjs.com/package/rea-agents)
+[![Versiunea npm](https://img.shields.io/npm/v/nano-reverse-engineer?style=flat-square&color=cb3837)](https://www.npmjs.com/package/nano-reverse-engineer)
 [![Catalogul uneltelor MCP](https://img.shields.io/badge/MCP-tool_catalog-5c4ee5?style=flat-square)](../mcp-contracts.md#generated-catalog)
 [![Cerințe Node.js](https://img.shields.io/badge/Node.js-requirements-339933?style=flat-square&logo=nodedotjs&logoColor=white)](#ce-poți-analiza)
-[![skills.sh](https://skills.sh/b/morluto/rea?style=flat-square)](https://skills.sh/morluto/rea/reverse-engineer-anything)
+[![skills.sh](https://skills.sh/b/pratheeshclement-cmd/nano-reverse-engineer?style=flat-square)](https://skills.sh/pratheeshclement-cmd/nano-reverse-engineer/nano-reverse-engineer)
 [![Licența MIT](https://img.shields.io/badge/license-MIT-f4c430?style=flat-square)](../../LICENSE)
 [![Discord](https://img.shields.io/discord/1556595354999332884?logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/GkcryMnJDM)
 
-<a href="https://trendshift.io/repositories/82054?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-82054" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/82054" alt="morluto%2Frea | Trendshift" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/82054?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-82054" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/82054" alt="pratheeshclement-cmd%2Fnano-reverse-engineer | Trendshift" width="250" height="55"/></a>
 
-**[Site web](https://rea.tools/) · [Ghiduri](https://rea.tools/guides/) · [Studii de caz](https://rea.tools/showcase/)**
+**[Site web](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/) · [Ghiduri](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/) · [Studii de caz](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/showcase/)**
 
-[Pornire rapidă](#pornire-rapidă) · [Cum funcționează REA](#cum-funcționează-rea) · [Ce poți analiza](#ce-poți-analiza) · [Studii de caz](#studii-de-caz) · [Construiește medii RL](#build-rl-environments) · [Întrebări frecvente](#întrebări-frecvente) · [Documentație](#documentație)
+[Pornire rapidă](#pornire-rapidă) · [Cum funcționează NRE](#cum-funcționează-nre) · [Ce poți analiza](#ce-poți-analiza) · [Studii de caz](#studii-de-caz) · [Construiește medii RL](#build-rl-environments) · [Întrebări frecvente](#întrebări-frecvente) · [Documentație](#documentație)
 
-<code>npx rea-agents setup</code>
+<code>npx nano-reverse-engineer setup</code>
 
 </div>
 
 > [!IMPORTANT]
-> Descarcă REA din [morluto/rea](https://github.com/morluto/rea),
-> de pe [rea.tools](https://rea.tools/) sau prin [pachetul npm rea-agents](https://www.npmjs.com/package/rea-agents).
+> Descarcă NRE din [pratheeshclement-cmd/nano-reverse-engineer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer),
+> de pe [nano-reverse-engineer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/) sau prin [pachetul npm nano-reverse-engineer](https://www.npmjs.com/package/nano-reverse-engineer).
 > Urmează linkurile de instalare și către versiunile publicate oferite de aceste surse oficiale.
 > Un nume de repository asemănător sau un README copiat nu dovedește că descărcarea provine dintr-o sursă oficială.
 
@@ -36,11 +36,11 @@
 
 <br />
 
-<img src="../assets/rea-hopper-analysis.png" alt="REA pornește componenta de legătură pentru analiză în Hopper în timp ce inspectează un fișier binar nativ" width="1200" />
+<img src="../assets/nre-hopper-analysis.png" alt="NRE pornește componenta de legătură pentru analiză în Hopper în timp ce inspectează un fișier binar nativ" width="1200" />
 
 <br /><br />
 
-<table aria-label="Comunitatea REA">
+<table aria-label="Comunitatea NRE">
 <tr>
 <td align="center" width="360">
   <a href="https://discord.gg/GkcryMnJDM">
@@ -58,18 +58,18 @@
 
 ---
 
-Ai văzut într-o aplicație o funcționalitate pe care ai vrea să o incluzi în propriul produs? Cere-i agentului tău să o investigheze cu REA. Poate inspecta aplicația fără codul ei sursă, poate explica modul în care funcționează acea funcționalitate, poate prezenta dovezile și poate construi o variantă pentru proiectul tău.
+Ai văzut într-o aplicație o funcționalitate pe care ai vrea să o incluzi în propriul produs? Cere-i agentului tău să o investigheze cu NRE. Poate inspecta aplicația fără codul ei sursă, poate explica modul în care funcționează acea funcționalitate, poate prezenta dovezile și poate construi o variantă pentru proiectul tău.
 
-REA conectează agentul tău la unelte pentru inspectarea fișierelor binare native, a aplicațiilor JavaScript și Electron, a ansamblurilor .NET și a site-urilor web. Poți folosi aceleași unelte și din terminal. Analiza rulează local, iar rezultatele includ dovezile și limitările care stau la baza fiecărei concluzii.
+NRE conectează agentul tău la unelte pentru inspectarea fișierelor binare native, a aplicațiilor JavaScript și Electron, a ansamblurilor .NET și a site-urilor web. Poți folosi aceleași unelte și din terminal. Analiza rulează local, iar rezultatele includ dovezile și limitările care stau la baza fiecărei concluzii.
 
-Programul de configurare înregistrează REA în agentul tău și instalează instrucțiunile corespunzătoare pentru fluxul de lucru. Analiza nativă poate folosi o instalare existentă de Hopper, Ghidra, IDA sau Kuna; programul de configurare poate instala opțional Hopper, cu aprobarea ta. Analiza statică JavaScript nu necesită un motor de analiză nativă.
+Programul de configurare înregistrează NRE în agentul tău și instalează instrucțiunile corespunzătoare pentru fluxul de lucru. Analiza nativă poate folosi o instalare existentă de Hopper, Ghidra, IDA sau Kuna; programul de configurare poate instala opțional Hopper, cu aprobarea ta. Analiza statică JavaScript nu necesită un motor de analiză nativă.
 
-> **[Vizitează site-ul REA](https://rea.tools/)** pentru instrucțiuni de configurare, ghiduri ilustrate și studii de caz reale.
+> **[Vizitează site-ul NRE](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/)** pentru instrucțiuni de configurare, ghiduri ilustrate și studii de caz reale.
 
 ## Pornire rapidă
 
 Pe Linux, pornirea Ghidra, JADX și a uneltelor pentru firmware, precum și analiza
-statică JavaScript/Electron necesită un `ps` compatibil cu procps în `PATH`-ul REA,
+statică JavaScript/Electron necesită un `ps` compatibil cu procps în `PATH`-ul NRE,
 pentru a verifica dacă procesele îi aparțin. Pașii de remediere sunt în
 `docs/installation.md`, la secțiunea „Linux owned-process prerequisite”.
 
@@ -78,11 +78,11 @@ pentru a verifica dacă procesele îi aparțin. Pașii de remediere sunt în
 Cu Node.js și npm instalate, rulează:
 
 ```bash
-npx rea-agents setup
+npx nano-reverse-engineer setup
 ```
 
 Alege agenții, verifică modificările propuse și aprobă-le. Configurarea adaugă
-serverul MCP REA și instrucțiunile corespunzătoare pentru fluxul de lucru,
+serverul MCP NRE și instrucțiunile corespunzătoare pentru fluxul de lucru,
 creând copii de siguranță ale configurației existente. Repornește apoi agentul.
 
 Programul de configurare acceptă Claude Code, Codex, Cursor, Gemini CLI, Grok Build și
@@ -91,7 +91,7 @@ Programul de configurare acceptă Claude Code, Codex, Cursor, Gemini CLI, Grok B
 de analiză și înregistrarea manuală a serverului MCP.
 
 MCP folosește implicit scheme de intrare compacte, pentru a reduce spațiul ocupat
-în context. Setează `REA_MCP_INPUT_SCHEMA_PROFILE=full` în înregistrarea MCP când
+în context. Setează `NRE_MCP_INPUT_SCHEMA_PROFILE=full` în înregistrarea MCP când
 ai nevoie de îndrumările complete pentru câmpurile expuse și de detaliile
 validării structurilor imbricate. Ambele profiluri păstrează toate uneltele și
 validarea canonică a serverului. Consultă secțiunea „Compact input schema profile”
@@ -111,37 +111,37 @@ construiește o funcționalitate similară pentru proiectul meu.
 Inspectează directorul extras al unei aplicații JavaScript/Electron sau o arhivă ASAR:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y nano-reverse-engineer@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 Rezultatul include modulele, importurile, delimitările dintre componentele Electron
 și dovezile aferente. Înlocuiește calea cu cea a aplicației vizate, de exemplu
 `"D:/apps/example"` pe Windows.
 
-Pentru a instala comanda `rea` și a o folosi în mod curent:
+Pentru a instala comanda `nre` și a o folosi în mod curent:
 
 ```bash
-npm install --global rea-agents
-rea --help
+npm install --global nano-reverse-engineer
+nre --help
 ```
 
 Pentru analiza nativă, configurează mai întâi un motor de analiză. Consultă
 [ghidul CLI și Evidence](../cli.md) pentru comenzile de analiză nativă,
 selectarea motorului, instantanee și utilizarea în scripturi.
 
-### Actualizează REA
+### Actualizează NRE
 
-REA evoluează rapid, iar versiunile noi includ frecvent corecții de erori.
+NRE evoluează rapid, iar versiunile noi includ frecvent corecții de erori.
 Menține instalarea la zi.
 
 Pentru o interfață CLI instalată cu `npm install --global` sau `bun add --global`:
 
 ```bash
-rea update
+nre update
 ```
 
-`rea --update` este un alias pentru acest flux de actualizare verificat și acceptă
-aceleași opțiuni globale de ieșire. Folosește `rea update` când îl combini cu alte
+`nre --update` este un alias pentru acest flux de actualizare verificat și acceptă
+aceleași opțiuni globale de ieșire. Folosește `nre update` când îl combini cu alte
 opțiuni de control al comenzii.
 
 Comenzile de actualizare păstrează cel mult 4 MiB în total din stdout și stderr.
@@ -151,7 +151,7 @@ Afișarea progresului în terminal ține cont de ritmul în care acesta poate pr
 date și așteaptă finalizarea operațiilor de scriere deja trimise.
 
 Actualizările instalărilor globale cu Bun necesită Bun 1.2.17 sau o versiune mai nouă.
-Dacă ai o versiune mai veche, actualizează Bun manual înainte de a rula `rea update`.
+Dacă ai o versiune mai veche, actualizează Bun manual înainte de a rula `nre update`.
 
 Pentru a actualiza înregistrările agenților și skill-ul, rulează comanda de
 configurare afișată de programul de actualizare.
@@ -159,32 +159,32 @@ configurare afișată de programul de actualizare.
 Dacă folosești `npx`, actualizează configurarea agentului cu:
 
 ```bash
-npx rea-agents@latest setup
+npx nano-reverse-engineer@latest setup
 ```
 
 Verifică modificările de configurare și repornește agentul. Pentru comenzi CLI
-ocazionale, folosește `npx rea-agents@latest` urmat de comandă. Cu Bun, folosește
-`bunx rea-agents@latest` în loc de `npx rea-agents@latest`.
+ocazionale, folosește `npx nano-reverse-engineer@latest` urmat de comandă. Cu Bun, folosește
+`bunx nano-reverse-engineer@latest` în loc de `npx nano-reverse-engineer@latest`.
 
-## Cum funcționează REA
+## Cum funcționează NRE
 
-Agentul tău apelează REA prin MCP pentru a inspecta ținta și a urmări codul relevant.
-REA returnează constatările împreună cu dovezile aferente. Agentul le folosește
+Agentul tău apelează NRE prin MCP pentru a inspecta ținta și a urmări codul relevant.
+NRE returnează constatările împreună cu dovezile aferente. Agentul le folosește
 pentru a pune întrebări suplimentare, a explica comportamentul sau a scrie și
 testa o implementare. Comenzile CLI folosesc aceleași fluxuri de lucru.
 
-![Fluxul unei investigații REA: agentul întreabă despre o țintă locală, REA o inspectează și îi urmărește comportamentul cu ajutorul uneltelor de analiză, iar agentul folosește codul, referințele și necunoscutele returnate pentru a explica, implementa și testa.](../../website/public/assets/figures/rea-investigation-flow.svg)
+![Fluxul unei investigații NRE: agentul întreabă despre o țintă locală, NRE o inspectează și îi urmărește comportamentul cu ajutorul uneltelor de analiză, iar agentul folosește codul, referințele și necunoscutele returnate pentru a explica, implementa și testa.](../../website/public/assets/figures/nre-investigation-flow.svg)
 
-[Deschide figura la dimensiunea originală](../../website/public/assets/figures/rea-investigation-flow.svg).
+[Deschide figura la dimensiunea originală](../../website/public/assets/figures/nre-investigation-flow.svg).
 
 <a id="current-status"></a>
 
 ## Ce poți analiza
 
-REA necesită Node.js 22.x (>=22.23.4), 24.x (>=24.22.1) sau 26.12.1+, plus npm.
+NRE necesită Node.js 22.x (>=22.23.4), 24.x (>=24.22.1) sau 26.12.1+, plus npm.
 Uneltele suplimentare și platformele acceptate depind de ținta analizată:
 
-| Țintă                               | Ce returnează REA                                                                                                             | Cerințe și ghid                                                                                                                        |
+| Țintă                               | Ce returnează NRE                                                                                                             | Cerințe și ghid                                                                                                                        |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | Aplicații desktop instalate         | Componente de execuție candidate, fișiere auxiliare, indicii despre componente și următoarele verificări                      | Inspectare integrată a directoarelor și antetelor, cu limite de resurse; [aplicații desktop](../desktop-applications.md)               |
 | Fișiere binare native               | Pseudocod, cod de asamblare, șiruri de caractere, simboluri, apeluri și referințe                                             | Hopper, Ghidra, IDA sau Kuna; [analiză nativă](../native-investigation.md)                                                             |
@@ -212,7 +212,7 @@ Uneltele suplimentare și platformele acceptate depind de ținta analizată:
 | APK-uri Android                     | Declarații din manifest, clase, metode decompilate și referințe                                                               | JADX fără interfață grafică și un JDK complet, pe Linux/macOS/Windows x64; [ghidul Android](../android-analysis.md)                    |
 | Semnături APK                       | Semnatari v1/v2/v3/v3.1, amprente ale certificatelor, rotația cheilor și consistența internă a hash-urilor                    | Fără cerințe suplimentare (doar analiză statică); `inspect_apk_signature`                                                              |
 | Dispozitive Android                 | Dispozitive, pachete, procese, jurnale, dumpuri, capturi de ecran și transferuri de APK-uri și fișiere                        | adb furnizat de utilizator (emulator sau dispozitiv fizic); [ghidul ADB](../adb-device-analysis.md)                                    |
-| Proiecte JEB                        | Unități de proiect analizate prin motor, hash-uri ale artefactelor și pseudocod pentru tipuri și metode                       | Un client JEB pornit de utilizator, care oferă un server MCP și este selectat prin REA_JEB_MCP_URL; [ghidul JEB](../jeb-analysis.md)   |
+| Proiecte JEB                        | Unități de proiect analizate prin motor, hash-uri ale artefactelor și pseudocod pentru tipuri și metode                       | Un client JEB pornit de utilizator, care oferă un server MCP și este selectat prin NRE_JEB_MCP_URL; [ghidul JEB](../jeb-analysis.md)   |
 | Resurse Android                     | Manifest decodat, tabele de șiruri de caractere, localizări și informații despre versiune                                     | Program de lansare Apktool furnizat de utilizator; [ghidul resurselor](../apktool-resource-analysis.md)                                |
 | Aplicații Flutter                   | Hash-ul instantaneului Dart, hash-uri ale bibliotecilor pentru fiecare ABI și proveniența compilării motorului                | Fără cerințe suplimentare (parsare statică a APK-ului); [ghidul Flutter](../flutter-analysis.md)                                       |
 | Firmware                            | Regiuni, rezultate ale extragerii și transferul către analiza nativă                                                          | Binwalk / Unblob pe Linux; [ghidul firmware](../firmware-analysis.md)                                                                  |
@@ -228,9 +228,9 @@ aplicația. Capturarea în timpul execuției rulează ținta selectată sau inte
 cu aceasta folosind permisiunile contului tău; fiecare ghid de capturare descrie
 efectele acestor operații.
 
-Pentru inspectarea offline a binarelor native, REA acceptă și GNU objdump și Rizin,
+Pentru inspectarea offline a binarelor native, NRE acceptă și GNU objdump și Rizin,
 furnizate de utilizator. Consultă [ghidul uneltelor de inginerie inversă](../reverse-engineering-tools.md)
-pentru configurare, comenzi CLI și limitările obiectelor Evidence. REA nu
+pentru configurare, comenzi CLI și limitările obiectelor Evidence. NRE nu
 instalează și nu actualizează niciunul dintre aceste două instrumente.
 
 <a id="choosing-a-deep-analysis-provider"></a>
@@ -242,17 +242,17 @@ Consultă [configurarea Hopper și Ghidra](../installation.md#hopper),
 [suportul experimental Ghidra pe Windows](../windows-ghidra-p0.md).
 Ghidra acceptă și [analiza DOS pe 16 biți](../ghidra-dos.md).
 Pentru binare mari, mărește timpul maxim de pornire al motorului cu
-`REA_GHIDRA_STARTUP_TIMEOUT_MS` sau `REA_HOPPER_STARTUP_TIMEOUT_MS`.
+`NRE_GHIDRA_STARTUP_TIMEOUT_MS` sau `NRE_HOPPER_STARTUP_TIMEOUT_MS`.
 Pentru selectarea motorului, consultă [ghidul CLI](../cli.md#choose-a-provider).
 Verifică [disponibilitatea în versiunile publicate](../installation.md#released-package-and-main)
 pentru funcționalitățile adăugate după cea mai recentă versiune npm.
 
 ## Studii de caz
 
-<a href="https://rea.tools/showcase/">
+<a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/showcase/">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="../assets/rea-showcases-dark.svg" />
-    <img alt="Ilustrații pentru studiile de caz despre panoramarea sunetului în DX-Ball, legătura cu clipboardul în Notion și inelele de proiectile din TH04" src="../assets/rea-showcases.svg" />
+    <source media="(prefers-color-scheme: dark)" srcset="../assets/nre-showcases-dark.svg" />
+    <img alt="Ilustrații pentru studiile de caz despre panoramarea sunetului în DX-Ball, legătura cu clipboardul în Notion și inelele de proiectile din TH04" src="../assets/nre-showcases.svg" />
   </picture>
 </a>
 
@@ -263,7 +263,7 @@ panoramare stereo, inspectează instrucțiunile și transformă pseudocodul inco
 în C. Reconstrucția trece 3.205 cazuri de test comparate cu originalul x86 și
 reproduce toți cei 63 de octeți ai funcției compilate.
 
-[Citește studiul de caz](https://rea.tools/showcase/dx-ball/) ·
+[Citește studiul de caz](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/showcase/dx-ball/) ·
 [Repository-ul reconstrucției](https://github.com/N0zoM1z0/dx-ball)
 
 ### Notion: urmărește legătura Electron cu clipboardul
@@ -271,7 +271,7 @@ reproduce toți cei 63 de octeți ai funcției compilate.
 Găsește API-ul pentru clipboard din procesul de randare, urmărește-l prin preload
 și IPC până în procesul principal și inspectează formatul datelor cu formatare din clipboard.
 
-[Citește studiul de caz](https://rea.tools/showcase/notion/)
+[Citește studiul de caz](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/showcase/notion/)
 
 ### TH04: recuperează calculul unui inel de proiectile DOS
 
@@ -279,20 +279,20 @@ Inspectează instrucțiunile pe 16 biți ale jocului original pentru PC-98,
 recuperează calculele unghiurilor fixe și ale celor orientate spre țintă și
 compară codul C++ reconstruit cu rezultatul compilatorului folosit la acea vreme.
 
-[Citește studiul de caz](https://rea.tools/showcase/th04/) ·
+[Citește studiul de caz](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/showcase/th04/) ·
 [Repository-ul reconstrucției](https://github.com/N0zoM1z0/th04)
 
-### Construiește medii RL cu REA
+### Construiește medii RL cu NRE
 
 Înregistrează o sesiune de aplicație web, transformă API-ul în instrumente și exportă un mediu pe care un agent AI îl poate folosi. Rulează cu AgentEnv, apoi adaugă sarcini și verificări de recompensă pentru antrenare RL sau evaluare.
 
-[Ghid pentru construirea unui mediu](https://rea.tools/guides/rl-environments/) ·
+[Ghid pentru construirea unui mediu](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/rl-environments/) ·
 [Vezi demonstrația pe X](https://x.com/reatools/status/2112574822584918075?s=20)
 
-Dacă ai folosit REA pentru ceva interesant, ne-ar plăcea să vedem rezultatul.
-Prezintă cazul într-un [issue](https://github.com/morluto/rea/issues) sau într-un
-[pull request](https://github.com/morluto/rea/pulls), menționând ținta analizată,
-întrebarea ta, cum te-a ajutat REA și ce ai descoperit.
+Dacă ai folosit NRE pentru ceva interesant, ne-ar plăcea să vedem rezultatul.
+Prezintă cazul într-un [issue](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues) sau într-un
+[pull request](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls), menționând ținta analizată,
+întrebarea ta, cum te-a ajutat NRE și ce ai descoperit.
 
 <a id="build-rl-environments"></a>
 
@@ -300,12 +300,12 @@ Prezintă cazul într-un [issue](https://github.com/morluto/rea/issues) sau înt
 
 Creează un mediu local în care un agent AI să exerseze sarcini precum găsirea unui issue sau crearea unui dosar, fără a rula aplicația originală. Folosește-l pentru învățare prin recompensă (RL) sau pentru a testa cât de bine îndeplinește agentul sarcinile.
 
-REA transformă cererile și răspunsurile API înregistrate în instrumente pe care agentul le poate apela. Mediul folosește datele înregistrate și permite modificări doar când înregistrarea le confirmă efectele.
+NRE transformă cererile și răspunsurile API înregistrate în instrumente pe care agentul le poate apela. Mediul folosește datele înregistrate și permite modificări doar când înregistrarea le confirmă efectele.
 
-După ce configurezi REA în agent, înlocuiește URL-ul și sarcinile pentru dosare din exemplu cu ale tale:
+După ce configurezi NRE în agent, înlocuiește URL-ul și sarcinile pentru dosare din exemplu cu ale tale:
 
 ```text
-Folosește REA pentru a crea un mediu RL din aplicația mea web de test de la
+Folosește NRE pentru a crea un mediu RL din aplicația mea web de test de la
 http://127.0.0.1:3000.
 Include listarea, crearea, redenumirea și ștergerea dosarelor. Poți crea și elimina
 dosare de test, dar nu modifica datele existente.
@@ -318,22 +318,22 @@ Salvează într-un dosar numit my-env, verifică operațiile disponibile și spu
 Folosește aceste comenzi dacă ai deja un fișier cu cererile și răspunsurile aplicației înregistrate în browser. Pentru a rula rezultatul ai nevoie și de AgentEnv și Docker.
 
 ```sh
-rea environment-build ./session.har ./my-env --name my-env --json
+nre environment-build ./session.har ./my-env --name my-env --json
 agent-env run ./my-env
 ```
 
 </details>
 
-REA exportă un mediu executabil cu un test de bază care verifică pornirea și răspunsurile. Conectează-l la frameworkul RL pentru a defini obiectivele, a adăuga verificări de recompensă și a rula antrenarea.
+NRE exportă un mediu executabil cu un test de bază care verifică pornirea și răspunsurile. Conectează-l la frameworkul RL pentru a defini obiectivele, a adăuga verificări de recompensă și a rula antrenarea.
 
-[Ghid pentru construirea unui mediu](https://rea.tools/guides/rl-environments/) ·
+[Ghid pentru construirea unui mediu](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/rl-environments/) ·
 [Referință pentru medii](../agent-environments.md) ·
 [Vezi demonstrația pe X](https://x.com/reatools/status/2112574822584918075?s=20)
 
 ## Întrebări frecvente
 
 <details>
-<summary><strong>Ce agenți pot folosi REA?</strong></summary>
+<summary><strong>Ce agenți pot folosi NRE?</strong></summary>
 
 Orice agent care acceptă servere MCP locale. Programul de configurare pregătește
 [agenții acceptați](../installation.md#supported-agents); pentru ceilalți clienți
@@ -354,7 +354,7 @@ folosește instalările existente. Consultă [configurarea motoarelor de analiz�
 <details>
 <summary><strong>Trebuie să pornesc mai întâi Hopper?</strong></summary>
 
-REA pornește Hopper când o operație are nevoie de el. Pe macOS, un dialog afișat
+NRE pornește Hopper când o operație are nevoie de el. Pe macOS, un dialog afișat
 la prima pornire îți poate cere să alegi modul demonstrativ sau să activezi licența.
 Finalizează acel pas în aceeași sesiune de utilizator înainte de prima operație
 CLI/MCP sau de prima sarcină nesupravegheată. Deschide Hopper manual dacă este nevoie.
@@ -365,14 +365,14 @@ Consultă [pornirea Hopper și depanarea](../installation.md#launcher-paths-and-
 <details>
 <summary><strong>Ce face instalarea skill-ului de pe skills.sh?</strong></summary>
 
-Skill-ul oferă agentului instrucțiuni de investigare. Folosește `npx rea-agents setup`
-pentru a înregistra serverul MCP REA și a instala instrucțiunile corespunzătoare,
+Skill-ul oferă agentului instrucțiuni de investigare. Folosește `npx nano-reverse-engineer setup`
+pentru a înregistra serverul MCP NRE și a instala instrucțiunile corespunzătoare,
 apoi repornește agentul. Consultă [instalarea doar a skill-ului](../installation.md#skill-only-installation).
 
 </details>
 
 <details>
-<summary><strong>Ce cod returnează REA?</strong></summary>
+<summary><strong>Ce cod returnează NRE?</strong></summary>
 
 Analiza nativă returnează pseudocod și cod de asamblare. Analiza JavaScript/Electron
 recuperează modulele și relațiile dintre ele. Agentul tău folosește aceste
@@ -382,9 +382,9 @@ constatări pentru a scrie și testa o implementare;
 </details>
 
 <details>
-<summary><strong>REA îmi încarcă aplicația pe un server?</strong></summary>
+<summary><strong>NRE îmi încarcă aplicația pe un server?</strong></summary>
 
-REA analizează țintele local. Agentul tău primește rezultatele uneltelor, iar
+NRE analizează țintele local. Agentul tău primește rezultatele uneltelor, iar
 furnizorul modelului său are propria politică privind datele.
 
 </details>
@@ -397,25 +397,25 @@ Actualizează mai întâi; o versiune recentă ar putea să o fi remediat deja.
 Pentru o interfață CLI instalată cu `npm install --global` sau `bun add --global`:
 
 ```bash
-rea update
+nre update
 ```
 
 Pentru configurarea agentului prin `npx`:
 
 ```bash
-npx rea-agents@latest setup
+npx nano-reverse-engineer@latest setup
 ```
 
-Dacă folosești un agent, finalizează [actualizarea configurării](#actualizează-rea)
+Dacă folosești un agent, finalizează [actualizarea configurării](#actualizează-nre)
 și repornește-l. Reîncearcă aceeași sarcină. Dacă problema persistă,
-[deschide un issue](https://github.com/morluto/rea/issues) și include versiunea REA,
+[deschide un issue](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues) și include versiunea NRE,
 tipul țintei analizate, pașii de reproducere și mesajele de eroare.
 
 </details>
 
 ## Documentație
 
-Începe cu [ghidurile practice](https://rea.tools/guides/) de pe site.
+Începe cu [ghidurile practice](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/) de pe site.
 Pentru opțiunile exacte, cerințele preliminare și contractele rezultatelor:
 
 - [Instalare și configurare](../installation.md): înregistrarea agenților, configurarea motoarelor de analiză, actualizări și dezinstalare.
@@ -431,14 +431,14 @@ Raportează vulnerabilitățile conform [SECURITY.md](../../SECURITY.md).
 
 🎉 **400.000 de stele pe GitHub — vă mulțumim!**
 
-Mulțumim tuturor celor care folosesc REA, raportează erori, propun funcționalități,
+Mulțumim tuturor celor care folosesc NRE, raportează erori, propun funcționalități,
 testează versiuni și contribuie cu remedieri.
 
-<a href="https://www.star-history.com/?repos=morluto%2Frea&amp;type=date">
+<a href="https://www.star-history.com/?repos=pratheeshclement-cmd%2Fnano-reverse-engineer&amp;type=date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date&amp;theme=dark&amp;legend=top-left" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date" />
-    <img alt="Istoricul stelelor REA pe GitHub" src="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=pratheeshclement-cmd/nano-reverse-engineer&amp;type=date&amp;theme=dark&amp;legend=top-left" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=pratheeshclement-cmd/nano-reverse-engineer&amp;type=date" />
+    <img alt="Istoricul stelelor NRE pe GitHub" src="https://api.star-history.com/chart?repos=pratheeshclement-cmd/nano-reverse-engineer&amp;type=date" />
   </picture>
 </a>
 
@@ -447,18 +447,18 @@ testează versiuni și contribuie cu remedieri.
 Consultă [DISCLAIMER.md](../../DISCLAIMER.md) pentru îndrumări privind utilizarea responsabilă.
 
 Poziția proiectului față de utilizarea ilegală sau neautorizată se aplică tuturor
-versiunilor REA, canalelor de distribuție și platformelor; fiecare copie își
+versiunilor NRE, canalelor de distribuție și platformelor; fiecare copie își
 păstrează licențele aplicabile.
 
-REA este destinat cercetării legale, educației, interoperabilității, conservării
+NRE este destinat cercetării legale, educației, interoperabilității, conservării
 software-ului și analizei programelor pe care le deții sau pe care ai autorizarea
 să le examinezi.
 
 ## Contribuții
 
-Ne-ar bucura să contribui la REA! [Deschide un issue](https://github.com/morluto/rea/issues)
+Ne-ar bucura să contribui la NRE! [Deschide un issue](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues)
 pentru a raporta o eroare sau a propune o funcționalitate ori
-[trimite un pull request](https://github.com/morluto/rea/pulls) pentru a îmbunătăți
+[trimite un pull request](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls) pentru a îmbunătăți
 codul sau documentația.
 
 Consultă [CONTRIBUTING.md](../../CONTRIBUTING.md) pentru pregătirea mediului de dezvoltare
@@ -470,14 +470,14 @@ relații de dependență.
 
 [MIT](../../LICENSE)
 
-Codul scris în cadrul REA este licențiat sub MIT. Materialele terților își păstrează
+Codul scris în cadrul NRE este licențiat sub MIT. Materialele terților își păstrează
 propriile licențe și mențiuni privind drepturile de autor; consultă
 [mențiunile privind terții](../../THIRD_PARTY_NOTICES.md) pentru inventarul
 dependențelor, textele licențelor păstrate și condițiile aplicabile uneltelor externe.
 
 **Trebuie să obții legal uneltele comerciale și să ai dreptul să le folosești**,
 inclusiv decompilatoarele IDA Pro / Hex-Rays, Hopper și JEB, în condițiile
-licențelor aplicabile. REA nu îți acordă nicio licență, cheie sau drept de activare
+licențelor aplicabile. NRE nu îți acordă nicio licență, cheie sau drept de activare
 pentru aceste unelte. Versiunile de evaluare și demonstrative rămân supuse
 condițiilor furnizorilor, inclusiv restricțiilor privind utilizatorii,
 funcționalitățile, automatizarea și partajarea rezultatelor. Nu sunt autorizate

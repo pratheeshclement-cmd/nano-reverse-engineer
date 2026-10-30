@@ -20,25 +20,25 @@ assert(
   process.platform !== "win32",
   "This verifier requires a disposable POSIX account; Windows is unverified",
 );
-const account = process.env.REA_VERIFY_COMMANDCODE_ACCOUNT_HOME;
+const account = process.env.NRE_VERIFY_COMMANDCODE_ACCOUNT_HOME;
 assert(
   account && isAbsolute(account) && account === homedir(),
-  "Run as a disposable account whose actual OS home matches REA_VERIFY_COMMANDCODE_ACCOUNT_HOME; do not override HOME",
+  "Run as a disposable account whose actual OS home matches NRE_VERIFY_COMMANDCODE_ACCOUNT_HOME; do not override HOME",
 );
 assert.equal(
-  await readFile(join(account, ".rea-client-verification"), "utf8"),
-  "Disposable REA client verification account\n",
+  await readFile(join(account, ".nre-client-verification"), "utf8"),
+  "Disposable NRE client verification account\n",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_COMMANDCODE_COMMAND ?? "cmd";
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_COMMANDCODE_COMMAND ?? "cmd";
 const mode = process.argv[2] ?? "call";
 assert(
   ["chat", "call"].includes(mode),
   "Usage: verify-commandcode-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(account, "rea-commandcode-client-"));
+const lab = await mkdtemp(join(account, "nre-commandcode-client-"));
 const workspace = join(lab, "workspace");
 const target = join(workspace, "fixture α测试");
 const profile = join(account, ".commandcode");
@@ -47,7 +47,7 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
 );
 const expectedNames = TOOL_CONTRACTS.map(
   (tool) => "mcp__rea__" + tool.name,
@@ -93,7 +93,7 @@ await withVerifierCleanup(async () => {
       COMMANDCODE_SKIP_UPDATES: "1",
       COMMANDCODE_DISABLE_CRON: "1",
       OTEL_SDK_DISABLED: "true",
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     const schemaValidator = new Ajv2020({
       strict: false,
@@ -125,7 +125,7 @@ await withVerifierCleanup(async () => {
       assert.deepEqual(
         entries.map((entry) => entry[1]).sort(),
         expectedNames,
-        "Native exact-name search must return every REA input schema",
+        "Native exact-name search must return every NRE input schema",
       );
       for (const entry of entries) {
         const schema = JSON.parse(entry[2]);
@@ -156,7 +156,7 @@ await withVerifierCleanup(async () => {
           assert.deepEqual(
             names,
             expectedNames,
-            "Default native deferred-tool prompt must advertise the complete REA inventory",
+            "Default native deferred-tool prompt must advertise the complete NRE inventory",
           );
           assert.equal(
             tools.filter((tool) => tool.name.startsWith("mcp__rea__")).length,
@@ -167,7 +167,7 @@ await withVerifierCleanup(async () => {
             tools
               .find((tool) => tool.name === "activate_skill")
               ?.parameters.properties.name.enum.includes(
-                "reverse-engineer-anything",
+                "nano-reverse-engineer",
               ),
           );
           inventoryChecked = true;
@@ -178,10 +178,10 @@ await withVerifierCleanup(async () => {
             0,
           );
           finalSeen = true;
-          return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+          return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
         }
         if (stage === 0)
-          return call("activate_skill", { name: "reverse-engineer-anything" });
+          return call("activate_skill", { name: "nano-reverse-engineer" });
         assert(
           strings.some((text) => text.includes(expectedSkill)),
           "The model must receive the complete activated skill body",
@@ -216,7 +216,7 @@ await withVerifierCleanup(async () => {
               sha256: catalogDigest,
             };
             const query =
-              "const fs=require('node:fs'),crypto=require('node:crypto');const text=fs.readFileSync(process.argv[1],'utf8');const schemas=[...text.matchAll(/^### (mcp__rea__[A-Za-z0-9_]+)\\n/gm)].length;console.log(JSON.stringify({rea_catalog:{schemas,sha256:crypto.createHash('sha256').update(text).digest('hex')}}));";
+              "const fs=require('node:fs'),crypto=require('node:crypto');const text=fs.readFileSync(process.argv[1],'utf8');const schemas=[...text.matchAll(/^### (mcp__rea__[A-Za-z0-9_]+)\\n/gm)].length;console.log(JSON.stringify({nre_catalog:{schemas,sha256:crypto.createHash('sha256').update(text).digest('hex')}}));";
             return call("shell_command", {
               command: process.execPath,
               args: ["-e", query, catalogArtifact],
@@ -231,12 +231,12 @@ await withVerifierCleanup(async () => {
         if (catalogArtifact && !artifactProjectionSeen) {
           const line = last
             .split("\n")
-            .find((item) => item.startsWith('{"rea_catalog":'));
+            .find((item) => item.startsWith('{"nre_catalog":'));
           assert(
             line,
             "Native shell must return the selected saved-catalog facts",
           );
-          assert.deepEqual(JSON.parse(line).rea_catalog, catalogProjection);
+          assert.deepEqual(JSON.parse(line).nre_catalog, catalogProjection);
           artifactProjectionSeen = true;
           return call("mcp__rea__analyze_javascript_application", {
             input_path: target,
@@ -248,18 +248,18 @@ await withVerifierCleanup(async () => {
         await writeFile(join(lab, "native-evidence.json"), last);
         evidenceSeen = true;
         finalSeen = true;
-        return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+        return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
       },
     });
     await writeFile(
       join(profile, "providers.json"),
       JSON.stringify({
         provider: {
-          "rea-local": {
+          "nre-local": {
             baseURL: fixture.baseUrl,
             apiKey: false,
             models: {
-              "rea-client-fixture": {
+              "nre-client-fixture": {
                 contextWindow: 1_000_000,
                 maxOutput: 4096,
               },
@@ -280,10 +280,10 @@ await withVerifierCleanup(async () => {
         2,
       ) + "\n";
     await writeFile(configPath, original);
-    const rea = (args) =>
+    const nre = (args) =>
       commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
     clientVersion = (
@@ -299,7 +299,7 @@ await withVerifierCleanup(async () => {
       ["setup", "--client", "commandcode", "--yes"],
       ["doctor", "--client", "commandcode", "--skill"],
     ]) {
-      const response = await rea(args);
+      const response = await nre(args);
       await writeFile(
         join(
           lab,
@@ -329,7 +329,7 @@ await withVerifierCleanup(async () => {
         );
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert.equal(JSON.parse(configured).preserved, "keep unrelated settings");
     assert.equal(
@@ -337,11 +337,11 @@ await withVerifierCleanup(async () => {
       "unrelated-server",
     );
     const repeated = JSON.parse(
-      (await rea(["setup", "--client", "commandcode", "--yes"])).stdout,
+      (await nre(["setup", "--client", "commandcode", "--yes"])).stdout,
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     expectedSkill = (await readFile(join(skillDirectory, "SKILL.md"), "utf8"))
       .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "")
       .trim();
@@ -353,9 +353,9 @@ await withVerifierCleanup(async () => {
             "-p",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use the REA skill to analyze ${target}.`,
+              : `Use the NRE skill to analyze ${target}.`,
             "-m",
-            "rea-local/rea-client-fixture",
+            "nre-local/nre-client-fixture",
             "--local-only",
             "--skip-onboarding",
             "--trust",
@@ -388,7 +388,7 @@ await withVerifierCleanup(async () => {
         (event) =>
           event.type === "result" &&
           event.subtype === "success" &&
-          event.finalText === "REA_CLIENT_COMPATIBILITY_OK",
+          event.finalText === "NRE_CLIENT_COMPATIBILITY_OK",
       ),
     );
     assert(inventoryChecked && finalSeen);

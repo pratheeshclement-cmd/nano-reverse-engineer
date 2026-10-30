@@ -10,7 +10,7 @@ import { cliTest, runFileCli } from "../support/cli/cliFixture.js";
 cliTest(
   "rejects partial IL2CPP table extents through CLI and MCP without a binary",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-extent-");
+    const root = await createTestTempDirectory("nre-il2cpp-extent-");
     const { call } = await connectLocalToolsMcp();
     for (const [version, name] of [
       [31, "genericContainers"],

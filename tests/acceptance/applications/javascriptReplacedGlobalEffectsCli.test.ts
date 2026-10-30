@@ -30,7 +30,7 @@ String = () => '';
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "does not resolve built-in effects after visible global replacements through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-replaced-globals-");
+    const root = await createTestTempDirectory("nre-replaced-globals-");
     await writeFixtureFiles(root, {
       "replaced/main.mjs": REPLACEMENTS + SOURCE,
       "control/main.mjs": SOURCE,

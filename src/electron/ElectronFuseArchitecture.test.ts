@@ -63,7 +63,7 @@ it("keeps an invalid ELF fixed header unknown without dropping fuse observations
 it("keeps a truncated COFF header unknown without refusing a recognized PE container", async () => {
   const image = peHeaderFuseImage(0x8664, OBSIDIAN_FUSE_BYTES);
   const bytes = image.bytes.subarray(0, 0x80 + 6);
-  const root = await createTestTempDirectory("rea-fuse-coff-truncated-");
+  const root = await createTestTempDirectory("nre-fuse-coff-truncated-");
   const path = join(root, "selected");
   await writeFile(path, bytes);
   const result = await new ElectronFuseService(
@@ -90,7 +90,7 @@ const assertArchitecture = async (
   image: { readonly bytes: Buffer; readonly sentinelOffset: number },
   architecture: string | null,
 ): Promise<void> => {
-  const root = await createTestTempDirectory("rea-fuse-architecture-");
+  const root = await createTestTempDirectory("nre-fuse-architecture-");
   const path = join(root, "selected");
   await writeFile(path, image.bytes);
   const result = await new ElectronFuseService(

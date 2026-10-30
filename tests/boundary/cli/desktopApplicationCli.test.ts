@@ -10,7 +10,7 @@ import { parseEvidence } from "../../../src/domain/evidence.js";
 cliTest(
   "rejects an empty desktop selection while explicit . selects the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-desktop-empty-");
+    const root = await createTestTempDirectory("nre-desktop-empty-");
     await writeFile(join(root, "marker.txt"), "selected cwd control");
     const empty = await cli.run({
       arguments: ["inspect-desktop-application", "", "--json"],
@@ -37,7 +37,7 @@ cliTest(
 cliTest(
   "shares directory facts and exact retained-field semantics with the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-desktop-cli-");
+    const root = await createTestTempDirectory("nre-desktop-cli-");
     const installation = join(root, "installation");
     await mkdir(join(installation, "resources"), { recursive: true });
     await writeFile(
@@ -140,7 +140,7 @@ cliTest(
 cliTest(
   "refuses a non-directory or missing root as a target selection",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-desktop-cli-root-");
+    const root = await createTestTempDirectory("nre-desktop-cli-root-");
     const file = join(root, "regular-file");
     await writeFile(file, "fixture\n");
     const notDirectory = await cli.run({
@@ -168,7 +168,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports a read-denied root as host access denial with read-access recovery",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-desktop-cli-denied-");
+    const root = await createTestTempDirectory("nre-desktop-cli-denied-");
     const locked = join(root, "locked-directory");
     await mkdir(locked);
     await chmod(locked, 0o000);

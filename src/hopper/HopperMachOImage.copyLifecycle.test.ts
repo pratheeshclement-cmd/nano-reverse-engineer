@@ -80,7 +80,7 @@ const prepareWithChunkWriteFailure = (
   );
 
 it("keeps an observer failure primary and closes real source handles", async () => {
-  const fixture = await createThinCopyFixture("rea-hopper-copy-primary-");
+  const fixture = await createThinCopyFixture("nre-hopper-copy-primary-");
   const writeFailure = new Error("controlled copy observer failure");
   const prepared = await prepareWithChunkWriteFailure(fixture, writeFailure, {
     resourceScope: new ArtifactResourceScope(),
@@ -93,7 +93,7 @@ it("keeps an observer failure primary and closes real source handles", async () 
 });
 
 it("keeps a copy failure primary while retaining and retrying a real source handle", async () => {
-  const fixture = await createThinCopyFixture("rea-hopper-copy-cleanup-");
+  const fixture = await createThinCopyFixture("nre-hopper-copy-cleanup-");
 
   const firstCloseFailure = new Error("source close is not confirmed");
   let allowSourceClose = false;
@@ -135,7 +135,7 @@ it("keeps a copy failure primary while retaining and retrying a real source hand
 });
 
 it("keeps an output-close failure primary when cancellation first arrives during source close", async () => {
-  const fixture = await createThinCopyFixture("rea-hopper-late-close-abort-");
+  const fixture = await createThinCopyFixture("nre-hopper-late-close-abort-");
   const controller = new AbortController();
   const reason = { request: "abort-during-source-close" };
   const outputCloseFailure = new Error("destination close failed first");
@@ -174,7 +174,7 @@ it("keeps an output-close failure primary when cancellation first arrives during
 });
 
 it("keeps cancellation observed before close primary and retains an output-close failure", async () => {
-  const fixture = await createThinCopyFixture("rea-hopper-cancel-close-error-");
+  const fixture = await createThinCopyFixture("nre-hopper-cancel-close-error-");
   const controller = new AbortController();
   const reason = { request: "abort-before-close" };
   const outputCloseFailure = new Error("destination close failed");
@@ -224,7 +224,7 @@ it("keeps cancellation observed before close primary and retains an output-close
 
 it("preserves a physical preflight read failure and retains the handle after close fails", async () => {
   const fixture = await createThinCopyFixture(
-    "rea-hopper-preflight-read-close-",
+    "nre-hopper-preflight-read-close-",
   );
   const readFailure = new Error("controlled preflight read failure");
   const closeFailure = new Error("controlled preflight close failure");
@@ -268,7 +268,7 @@ it("preserves a physical preflight read failure and retains the handle after clo
 
 it("retains exact cancellation during preflight close without replacing its close failure", async () => {
   const fixture = await createThinCopyFixture(
-    "rea-hopper-preflight-close-cancel-",
+    "nre-hopper-preflight-close-cancel-",
   );
   const controller = new AbortController();
   const reason = { request: "abort-during-preflight-close" };

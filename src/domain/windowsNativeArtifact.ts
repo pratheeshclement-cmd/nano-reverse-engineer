@@ -10,7 +10,7 @@ export const WINDOWS_NATIVE_ARTIFACT = {
   architecture: "x64",
   abiVersion: 1,
   nodeApiVersion: 8,
-  artifact: "rea-windows-x64.node",
+  artifact: "nre-windows-x64.node",
 } as const;
 
 export type WindowsNativeManifest = typeof WINDOWS_NATIVE_ARTIFACT & {
@@ -73,7 +73,7 @@ export const parseWindowsNativeManifest = (
   if (manifest.packageVersion !== packageVersion)
     return err(
       new WindowsNativeArtifactError(
-        "Windows native artifact belongs to another REA version",
+        "Windows native artifact belongs to another NRE version",
       ),
     );
   return ok({

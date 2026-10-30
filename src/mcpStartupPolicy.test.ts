@@ -37,17 +37,17 @@ describe("MCP tool deadline allowance for a Ghidra decompile limit", () => {
     expect(recommendedMcpToolTimeoutSeconds(allowance)).toBe(450);
   });
 
-  it("derives the registration allowance from REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS", () => {
+  it("derives the registration allowance from NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS", () => {
     const details = clientRegistrationEnvironmentDetails(
       parseClientConfiguration(
         JSON.stringify({
           mcpServers: {
-            rea: {
-              command: "rea",
+            nre: {
+              command: "nre",
               args: ["mcp"],
               env: {
-                REA_ANALYSIS_PROVIDER: "ghidra",
-                REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "600",
+                NRE_ANALYSIS_PROVIDER: "ghidra",
+                NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "600",
               },
             },
           },
@@ -70,16 +70,16 @@ describe("MCP tool deadline allowance for a Ghidra decompile limit", () => {
   it("forwards selected launch and response limits without copying transport credentials or unrelated settings", () => {
     expect(
       explicitSetupRegistrationEnvironment({
-        REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "600",
-        REA_ASAR_MAX_HEADER_BYTES: "33554432",
-        REA_MCP_MAX_RESPONSE_BYTES: "20971520",
-        REA_TOKEN: "transport-only",
+        NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "600",
+        NRE_ASAR_MAX_HEADER_BYTES: "33554432",
+        NRE_MCP_MAX_RESPONSE_BYTES: "20971520",
+        NRE_TOKEN: "transport-only",
         UNRELATED: "dropped",
       }),
     ).toEqual({
-      REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "600",
-      REA_ASAR_MAX_HEADER_BYTES: "33554432",
-      REA_MCP_MAX_RESPONSE_BYTES: "20971520",
+      NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "600",
+      NRE_ASAR_MAX_HEADER_BYTES: "33554432",
+      NRE_MCP_MAX_RESPONSE_BYTES: "20971520",
     });
   });
 });

@@ -251,7 +251,7 @@ export interface KunaIncomingReferenceError {
   readonly field?: string;
 }
 
-/** Native --to unifies forwarding aliases; REA xrefs asks for the exact address. */
+/** Native --to unifies forwarding aliases; NRE xrefs asks for the exact address. */
 export const parseKunaIncomingReferences = (
   text: string,
   input: string,

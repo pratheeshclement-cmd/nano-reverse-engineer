@@ -1,4 +1,4 @@
-package rea.extensions.nativeaot;
+package nre.extensions.nativeaot;
 
 import ghidra.app.util.importer.MessageLog;
 import ghidra.program.model.address.Address;

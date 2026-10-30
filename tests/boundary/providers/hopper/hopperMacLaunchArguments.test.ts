@@ -41,7 +41,7 @@ const fixture = async (
   overrides: Partial<NativeOptions> = {},
   runtimeName = "runtime",
 ) => {
-  const root = await createTestTempDirectory("rea-hopper-mac-arguments-");
+  const root = await createTestTempDirectory("nre-hopper-mac-arguments-");
   const directory = join(root, runtimeName);
   await mkdir(directory);
   let releases = 0;
@@ -53,7 +53,7 @@ const fixture = async (
       targetPath: "/selected/target.hop",
       targetKind: "database",
       loaderArgs: [],
-      bridgeScriptPath: "/rea/hopper_bridge.py",
+      bridgeScriptPath: "/nre/hopper_bridge.py",
       launchMode: "native",
       ...overrides,
     },
@@ -170,7 +170,7 @@ macTest(
 macTest(
   "admits a quoted original executable name when its prepared launch path is literal",
   async () => {
-    const root = await createTestTempDirectory("rea-hopper-quoted-source-");
+    const root = await createTestTempDirectory("nre-hopper-quoted-source-");
     const targetPath = join(root, 'original"name');
     const bytes = Buffer.from("inert prepared-image copy fixture");
     await writeFile(targetPath, bytes);

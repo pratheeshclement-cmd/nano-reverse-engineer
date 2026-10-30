@@ -20,7 +20,7 @@ it("rejects an inconsistent imported process comparison while retaining its Evid
   const dimension = "terminal" as const;
   const source = (side: string) =>
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: { side },
       result: EMPTY_PROCESS_CAPTURE_EXAMPLE,
@@ -42,7 +42,7 @@ it("rejects an inconsistent imported process comparison while retaining its Evid
   expect(nativeResult.status).toBe("unchanged");
   const comparison = (status: "unchanged" | "contradiction") =>
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-comparison",
+      predicateType: "nre.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_id: left.evidence_id,
@@ -59,7 +59,7 @@ it("rejects an inconsistent imported process comparison while retaining its Evid
     });
   const inconsistent = comparison("unchanged");
   const consistent = comparison("contradiction");
-  const root = await createTestTempDirectory("rea-process-verification-");
+  const root = await createTestTempDirectory("nre-process-verification-");
   const path = join(root, "bundle.json");
   await writeFile(
     path,
@@ -171,7 +171,7 @@ it("keeps omitted rendered observations unknown through trace comparison and imp
   });
   const source = (side: string) =>
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: { side },
       result: capture,
@@ -221,7 +221,7 @@ it("keeps omitted rendered observations unknown through trace comparison and imp
     trace: { verdict: "equivalent" },
     first_divergence: { status: "unknown" },
   });
-  const root = await createTestTempDirectory("rea-process-trace-unknown-");
+  const root = await createTestTempDirectory("nre-process-trace-unknown-");
   const path = join(root, "bundle.json");
   await writeFile(
     path,

@@ -19,7 +19,7 @@ const functionBreakpoint = {
   name: nativeString
     .min(1)
     .describe(
-      "Exact LLDB runtime symbol name, such as `open`, a C++ or mangled Swift symbol, or `-[NSString length]`. On Darwin, pass an inspect_macho export or import `runtime_name` (`main`), not its symbol-table `name` (`_main`); REA preserves the selected name without translating it.",
+      "Exact LLDB runtime symbol name, such as `open`, a C++ or mangled Swift symbol, or `-[NSString length]`. On Darwin, pass an inspect_macho export or import `runtime_name` (`main`), not its symbol-table `name` (`_main`); NRE preserves the selected name without translating it.",
     ),
 };
 
@@ -80,7 +80,7 @@ export const nativeCallObservationInputSchema = z.strictObject({
   arguments: z.array(nativeString).default([]),
   environment: nativeCallEnvironmentSchema
     .default({})
-    .describe("Overrides on top of the environment REA runs with."),
+    .describe("Overrides on top of the environment NRE runs with."),
   working_directory: localPathStringSchema.optional(),
   duration_ms: z
     .int()
@@ -184,7 +184,7 @@ export const nativeCallObservationResultSchema = z.strictObject({
     outcome: nativeCallProcessOutcomeSchema,
     exit_status: z.int().nullable(),
     exit_description: z.string().nullable(),
-    /** REA confirmed the process is gone when observation ended. */
+    /** NRE confirmed the process is gone when observation ended. */
     terminated: z.boolean(),
     elapsed_ms: z.number().nonnegative(),
     stdout: nativeCapturedOutputSchema,

@@ -35,7 +35,7 @@ class FakeUpdateHost implements UpdateHost {
   installationResult: UpdateInstallation | undefined = {
     manager: "npm",
     prefix: "/fixture",
-    packageRoot: "/fixture/lib/node_modules/rea-agents",
+    packageRoot: "/fixture/lib/node_modules/nano-reverse-engineer",
   };
   installResult: Result<void, string> = ok(undefined);
   verified: Result<string, string> = ok("3.3.0");
@@ -79,7 +79,7 @@ class FakeUpdateHost implements UpdateHost {
     Promise.resolve(this.cleanupFailure);
 }
 
-describe("REA update", () => {
+describe("NRE update", () => {
   it("identifies an already-current installation without mutation", async () => {
     const host = new FakeUpdateHost();
     expect(await runUpdate("3.3.0", host)).toEqual({
@@ -131,7 +131,7 @@ describe("REA update", () => {
         "--ignore-scripts",
         "--prefix",
         "/fixture",
-        "rea-agents@3.3.0",
+        "nano-reverse-engineer@3.3.0",
       ],
     });
     expect(host.installedVersions).toEqual(["3.3.0"]);
@@ -144,7 +144,8 @@ describe("REA update", () => {
     host.installationResult = {
       manager: "bun",
       globalDirectory: "/home/user/.bun/install/global",
-      packageRoot: "/home/user/.bun/install/global/node_modules/rea-agents",
+      packageRoot:
+        "/home/user/.bun/install/global/node_modules/nano-reverse-engineer",
     };
     expect(await runUpdate("3.2.1", host, "structured")).toMatchObject({
       status: "updated",
@@ -155,7 +156,7 @@ describe("REA update", () => {
         "add",
         "--global",
         "--ignore-scripts",
-        "rea-agents@3.3.0",
+        "nano-reverse-engineer@3.3.0",
       ],
     });
     expect(host.verifiedInstallation).toEqual(host.installationResult);
@@ -179,12 +180,12 @@ describe("REA update", () => {
 
   it("preserves executable verification diagnostics after npm succeeded", async () => {
     const host = new FakeUpdateHost();
-    host.verified = err("ENOENT /fixture/scripts/rea.mjs");
+    host.verified = err("ENOENT /fixture/scripts/nre.mjs");
     const result = await runUpdate("3.2.1", host);
     expect(result).toMatchObject({ status: "failed", reason: "verification" });
     expect(result).toHaveProperty(
       "remediation",
-      expect.stringContaining("ENOENT /fixture/scripts/rea.mjs"),
+      expect.stringContaining("ENOENT /fixture/scripts/nre.mjs"),
     );
     expect(host.maintenanceInspected).toBe(false);
   });
@@ -194,14 +195,14 @@ describe("REA update", () => {
     host.maintenance = {
       status: "planned",
       scope: { clients: ["codex"], skill: false },
-      command: ["rea", "setup", "--client", "codex", "--skill=false"],
+      command: ["nre", "setup", "--client", "codex", "--skill=false"],
       plannedActions: [
         {
           id: "configure_client:codex",
           kind: "configure_client",
           label: "Codex",
           target: "/home/.codex/config.toml",
-          detail: "Refresh REA",
+          detail: "Refresh NRE",
           external: false,
           operation: "update",
         },
@@ -360,12 +361,16 @@ describe("update failures and version boundaries", () => {
 
   it("reports actual npm failures and skips verification", async () => {
     const host = new FakeUpdateHost();
-    host.installResult = err("EACCES /fixture/lib/node_modules/rea-agents");
+    host.installResult = err(
+      "EACCES /fixture/lib/node_modules/nano-reverse-engineer",
+    );
     const result = await runUpdate("3.2.1", host);
     expect(result).toMatchObject({ status: "failed", reason: "install" });
     expect(result).toHaveProperty(
       "remediation",
-      expect.stringContaining("EACCES /fixture/lib/node_modules/rea-agents"),
+      expect.stringContaining(
+        "EACCES /fixture/lib/node_modules/nano-reverse-engineer",
+      ),
     );
     expect(host.verifiedInstallation).toBeUndefined();
   });
@@ -379,14 +384,15 @@ describe("npm installation ownership", () => {
   });
 
   it("identifies the global prefix and package root", async () => {
-    const packageRoot = "/usr/local/lib/node_modules/rea-agents";
+    const packageRoot = "/usr/local/lib/node_modules/nano-reverse-engineer";
     await expect(
       detectNpmInstallation(packageRoot, host("/usr/local/lib/node_modules")),
     ).resolves.toEqual({ manager: "npm", prefix: "/usr/local", packageRoot });
   });
 
   it("retains the curl installer's custom Unix prefix", async () => {
-    const packageRoot = "/home/user/.local/lib/node_modules/rea-agents";
+    const packageRoot =
+      "/home/user/.local/lib/node_modules/nano-reverse-engineer";
     await expect(
       detectNpmInstallation(packageRoot, host("/usr/local/lib/node_modules")),
     ).resolves.toEqual({
@@ -397,9 +403,9 @@ describe("npm installation ownership", () => {
   });
 
   it.each([
-    "/work/rea",
-    "/work/node_modules/rea-agents",
-    "/cache/_npx/abc/node_modules/rea-agents",
+    "/work/nre",
+    "/work/node_modules/nano-reverse-engineer",
+    "/cache/_npx/abc/node_modules/nano-reverse-engineer",
   ])("rejects unrelated invocation %s", async (packageRoot) => {
     await expect(
       detectNpmInstallation(packageRoot, host("/usr/local/lib/node_modules")),
@@ -413,7 +419,7 @@ describe("npm installation ownership", () => {
     };
     await expect(
       detectNpmInstallation(
-        "/home/.local/lib/node_modules/rea-agents",
+        "/home/.local/lib/node_modules/nano-reverse-engineer",
         failing,
       ),
     ).resolves.toBeUndefined();
@@ -422,7 +428,7 @@ describe("npm installation ownership", () => {
 
 describe("Bun installation ownership", () => {
   const globalDirectory = "/home/user/.bun/install/global";
-  const packageRoot = `${globalDirectory}/node_modules/rea-agents`;
+  const packageRoot = `${globalDirectory}/node_modules/nano-reverse-engineer`;
   // Fixture paths are POSIX; join() may produce Windows separators on Windows hosts.
   const host = (
     manifests: readonly string[] = [`${globalDirectory}/package.json`],
@@ -435,7 +441,7 @@ describe("Bun installation ownership", () => {
   it.skipIf(process.platform === "win32")(
     "preserves native symlink traversal through detection and pins the canonical global project",
     async () => {
-      const directory = await mkdtemp(join(tmpdir(), "rea-bun-global-"));
+      const directory = await mkdtemp(join(tmpdir(), "nre-bun-global-"));
       try {
         await mkdir(join(directory, "outer", "inner"), { recursive: true });
         await symlink(
@@ -454,14 +460,17 @@ describe("Bun installation ownership", () => {
           "outer",
           "global",
           "node_modules",
-          "rea-agents",
+          "nano-reverse-engineer",
         );
         await mkdir(selectedPackage, { recursive: true });
         await writeFile(`${selected}/package.json`, "{}");
         // The lexical alternative is also a valid project; it must not win.
-        await mkdir(join(directory, "global", "node_modules", "rea-agents"), {
-          recursive: true,
-        });
+        await mkdir(
+          join(directory, "global", "node_modules", "nano-reverse-engineer"),
+          {
+            recursive: true,
+          },
+        );
         await writeFile(join(directory, "global", "package.json"), "{}");
         const installation = await detectBunInstallation(
           selectedPackage,
@@ -498,9 +507,9 @@ describe("Bun installation ownership", () => {
   });
 
   it.each([
-    "/home/user/project/node_modules/rea-agents",
-    "/usr/local/lib/node_modules/rea-agents",
-    "/home/user/.bun/install/cache/rea-agents@6.4.0@@@1",
+    "/home/user/project/node_modules/nano-reverse-engineer",
+    "/usr/local/lib/node_modules/nano-reverse-engineer",
+    "/home/user/.bun/install/cache/nano-reverse-engineer@6.4.0@@@1",
   ])("rejects package root %s outside the global project", async (root) => {
     await expect(
       detectBunInstallation(root, globalDirectory, host()),

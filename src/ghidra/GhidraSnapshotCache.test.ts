@@ -60,7 +60,7 @@ const fixture = (version = "12.1.4", coverage?: RelationshipCoverage) => {
     (options) => ({
       start: async () =>
         ok({
-          name: "REA Ghidra bridge",
+          name: "NRE Ghidra bridge",
           run_id: "11111111-1111-4111-8111-111111111111",
           profile_digest: options.profileDigest,
           provider: { id: "ghidra", version },
@@ -294,7 +294,7 @@ describe("Ghidra relationship coverage replay", () => {
       );
       expect(execution.value.limitations).toEqual(
         expect.arrayContaining([
-          expect.stringContaining("local REA analysis snapshot"),
+          expect.stringContaining("local NRE analysis snapshot"),
         ]),
       );
       expect(replay.calls).toEqual(
@@ -404,7 +404,7 @@ describe("Ghidra snapshot cache", () => {
         ok: true,
         value: {
           limitations: expect.arrayContaining([
-            expect.stringContaining("local REA analysis snapshot"),
+            expect.stringContaining("local NRE analysis snapshot"),
           ]),
         },
       });
@@ -434,7 +434,7 @@ describe("Ghidra snapshot cache", () => {
         ok: true,
         value: {
           limitations: expect.arrayContaining([
-            expect.stringContaining("local REA analysis snapshot"),
+            expect.stringContaining("local NRE analysis snapshot"),
           ]),
         },
       });

@@ -128,11 +128,11 @@ const verifySharedContext = async (executable, origin) => {
 
 const verifyTransports = async (executable, origin) => {
   const scenario = scenarioFor(executable, origin, ["network"]);
-  const entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url));
+  const entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url));
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
-    REA_LOG_LEVEL: "silent",
-    HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+    NRE_LOG_LEVEL: "silent",
+    HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
   };
   const { stdout } = await promisify(execFile)(
     process.execPath,

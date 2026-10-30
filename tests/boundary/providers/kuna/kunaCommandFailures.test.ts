@@ -8,11 +8,11 @@ import { session } from "./kunaSessionFixture.js";
 
 const it = test.skipIf(process.platform === "win32");
 
-it("reports output beyond REA's fixed buffer as a deterministic memory bound", async () => {
-  const { kuna, target, cacheRoot } = await session("rea-kuna-output-limit-");
+it("reports output beyond NRE's fixed buffer as a deterministic memory bound", async () => {
+  const { kuna, target, cacheRoot } = await session("nre-kuna-output-limit-");
   const installed = await inspectKunaInstallation({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: cacheRoot,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: cacheRoot,
   });
   if (!installed.ok) throw new Error(installed.error.reason);
   const controller = new AbortController();
@@ -25,7 +25,7 @@ it("reports output beyond REA's fixed buffer as a deterministic memory bound", a
       installation: installed.value,
       operation: "list_procedures",
       arguments: (input) => ["functions", input, "--json"],
-      deadline: { setting: "REA_KUNA_TIMEOUT_MS", ms: 10_000 },
+      deadline: { setting: "NRE_KUNA_TIMEOUT_MS", ms: 10_000 },
       outputBytes: 100,
       signal: controller.signal,
     });
@@ -44,7 +44,7 @@ it("reports output beyond REA's fixed buffer as a deterministic memory bound", a
       retryable: false,
       remediation: {
         action:
-          "REA buffers at most 100 bytes of kuna functions output, so repeating this request for this target fails the same way. Use another provider for it.",
+          "NRE buffers at most 100 bytes of kuna functions output, so repeating this request for this target fails the same way. Use another provider for it.",
       },
     });
   } finally {
@@ -55,7 +55,7 @@ it("reports output beyond REA's fixed buffer as a deterministic memory bound", a
 
 it("parses a graph larger than any fixed output buffer as it streams", async () => {
   const padding = 40 * 1024 * 1024;
-  const { open } = await session("rea-kuna-graph-large-", {
+  const { open } = await session("nre-kuna-graph-large-", {
     graphPadding: padding,
   });
   const client = open();
@@ -82,8 +82,8 @@ it("parses a graph larger than any fixed output buffer as it streams", async () 
   }
 });
 
-it("reports graph diagnostics beyond REA's buffer once per session instead of rebuilding it", async () => {
-  const { kuna, open } = await session("rea-kuna-graph-overflow-", {
+it("reports graph diagnostics beyond NRE's buffer once per session instead of rebuilding it", async () => {
+  const { kuna, open } = await session("nre-kuna-graph-overflow-", {
     graph: "noisy",
   });
   const client = open();
@@ -111,7 +111,7 @@ it("reports graph diagnostics beyond REA's buffer once per session instead of re
 });
 
 it("says why Kuna cannot answer instead of a generic unavailable message", async () => {
-  const { open } = await session("rea-kuna-unavailable-reasons-");
+  const { open } = await session("nre-kuna-unavailable-reasons-");
   const client = open();
   try {
     const cases = [

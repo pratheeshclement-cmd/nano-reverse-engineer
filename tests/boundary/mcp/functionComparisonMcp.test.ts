@@ -265,7 +265,7 @@ const wrongKindFunctionEvidence = (mismatch: "operation" | "predicate") =>
       operation:
         mismatch === "operation" ? "inventory_artifact" : "analyze_function",
       predicateType:
-        mismatch === "predicate" ? "rea.artifact-inventory" : "rea.analysis",
+        mismatch === "predicate" ? "nre.artifact-inventory" : "nre.analysis",
       parameters: {},
       result: {},
     },
@@ -405,10 +405,10 @@ describe("function comparison input-kind diagnostics", () => {
             {
               path: [side],
               reason: "invalid_value",
-              message: `Function analysis requires analyze_function Evidence with the rea.analysis predicate; the ${side} Evidence has operation ${wrong.operation} and predicate ${wrong.predicate_type}.`,
+              message: `Function analysis requires analyze_function Evidence with the nre.analysis predicate; the ${side} Evidence has operation ${wrong.operation} and predicate ${wrong.predicate_type}.`,
               expected: {
                 operation: "analyze_function",
-                predicate_type: "rea.analysis",
+                predicate_type: "nre.analysis",
               },
             },
           ],
@@ -514,13 +514,13 @@ it.each([
     );
     expect(result.status).toBe(status);
     const provider = {
-      id: "rea-function-comparison",
-      name: "REA function comparison",
+      id: "nre-function-comparison",
+      name: "NRE function comparison",
       version: "1",
     };
     const observation = {
       operation: "compare_functions",
-      predicateType: "rea.function-comparison",
+      predicateType: "nre.function-comparison",
       parameters: {
         left_evidence_id: left.evidence_id,
         right_evidence_id: right.evidence_id,
@@ -540,7 +540,7 @@ it.each([
             ...observation,
             result: { ...result, status: "unchanged" },
           });
-    const directory = await createTestTempDirectory("rea-function-status-");
+    const directory = await createTestTempDirectory("nre-function-status-");
     const path = join(directory, "bundle.json");
     await writeFile(
       path,

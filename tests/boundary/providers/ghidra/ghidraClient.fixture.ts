@@ -69,7 +69,7 @@ export class GhidraFixtureLauncher implements GhidraLauncher {
       stdio: ["ignore", "pipe", "pipe", "ipc"],
       env: {
         ...process.env,
-        REA_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
+        NRE_GHIDRA_FIXTURE_CONFIG: JSON.stringify({
           endpointPath: session.endpointPath,
           token: session.token,
           runId: session.runId,

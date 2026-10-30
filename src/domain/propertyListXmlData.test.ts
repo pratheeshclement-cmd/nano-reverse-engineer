@@ -39,7 +39,7 @@ it.each(["é", "😀", "\u00a0", "\u0085", "\u2028", "\u2029"])(
 it.each([
   "A<!-- omitted -->QID",
   "<![CDATA[AQID]]>",
-  "A<?rea ignored?>QID",
+  "A<?nre ignored?>QID",
   "<string>AQID</string>",
 ])(
   "rejects data markup instead of silently decoding a different source: %j",

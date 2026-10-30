@@ -529,7 +529,7 @@ describe("MCP compact input schema canonical enforcement", () => {
       const valid = { executable: "node", environment: { APP_MODE: "test" } };
       const reserved = {
         executable: "node",
-        environment: { REA_PROCESS_RUN_ID: "caller-value" },
+        environment: { NRE_PROCESS_RUN_ID: "caller-value" },
       };
       expect(validate(valid)).toBe(true);
       expect(processScenarioSchema.safeParse(valid).success).toBe(true);
@@ -558,7 +558,7 @@ describe("MCP compact input schema canonical enforcement", () => {
     const inputSchema = {
       "~standard": {
         ...registration.inputSchema["~standard"],
-        vendor: "rea-application",
+        vendor: "nre-application",
         validate: (value: unknown) => ({ value }),
       },
     };
@@ -608,7 +608,7 @@ it.each(["full", "compact"] as const)(
     const inputSchema = {
       "~standard": {
         ...registration.inputSchema["~standard"],
-        vendor: "rea-resource-fixture",
+        vendor: "nre-resource-fixture",
         jsonSchema: {
           ...registration.inputSchema["~standard"].jsonSchema,
           input: () => source,

@@ -32,7 +32,7 @@ beforeAll(() => prepareProcessOwnershipInspection());
 
 /** Java-shaped Node command that records whether it was launched; not a JVM. */
 const writeJava = async () => {
-  const home = await createTestTempDirectory("rea-java-preparation-");
+  const home = await createTestTempDirectory("nre-java-preparation-");
   const launched = join(home, "launched");
   const command = join(home, "bin", "java");
   await mkdir(join(home, "bin"));

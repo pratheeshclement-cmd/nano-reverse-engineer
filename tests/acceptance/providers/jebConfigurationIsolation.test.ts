@@ -24,8 +24,8 @@ const isolatedEnvironment = (workspace: TestWorkspace) => ({
     ? { SystemRoot: process.env.SystemRoot ?? "" }
     : {}),
   HOPPER_LAUNCHER_PATH: workspace.path("missing-hopper"),
-  REA_LOG_LEVEL: "silent",
-  REA_JEB_MCP_TIMEOUT_MS: "1.5",
+  NRE_LOG_LEVEL: "silent",
+  NRE_JEB_MCP_TIMEOUT_MS: "1.5",
 });
 
 test("retains the selected endpoint when a direct JEB connection fails", async ({
@@ -47,8 +47,8 @@ test("retains the selected endpoint when a direct JEB connection fails", async (
       arguments: ["inspect-jeb-client", "--json"],
       environment: {
         ...isolatedEnvironment(workspace),
-        REA_JEB_MCP_TIMEOUT_MS: "3000",
-        REA_JEB_MCP_URL: endpoint,
+        NRE_JEB_MCP_TIMEOUT_MS: "3000",
+        NRE_JEB_MCP_URL: endpoint,
       },
     });
     expect(result.exitCode, result.stderr).toBe(1);
@@ -61,12 +61,12 @@ test("retains the selected endpoint when a direct JEB connection fails", async (
     });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: workspace.root,
       env: {
         ...isolatedEnvironment(workspace),
-        REA_JEB_MCP_TIMEOUT_MS: "3000",
-        REA_JEB_MCP_URL: endpoint,
+        NRE_JEB_MCP_TIMEOUT_MS: "3000",
+        NRE_JEB_MCP_URL: endpoint,
       },
       stderr: "pipe",
     });
@@ -116,7 +116,7 @@ test("keeps compiled CLI discovery usable while JEB rejects its malformed timeou
     expect(result.json).toMatchObject({
       capabilities: expect.arrayContaining([
         expect.objectContaining({
-          provider: expect.objectContaining({ id: "rea-artifact-graph" }),
+          provider: expect.objectContaining({ id: "nre-artifact-graph" }),
         }),
       ]),
     });
@@ -128,7 +128,7 @@ test("keeps compiled CLI discovery usable while JEB rejects its malformed timeou
   expect(refusal.exitCode, refusal.stderr).toBe(1);
   expect(refusal.json).toMatchObject({
     code: "configuration_invalid",
-    details: { settings: [{ setting: "REA_JEB_MCP_TIMEOUT_MS" }] },
+    details: { settings: [{ setting: "NRE_JEB_MCP_TIMEOUT_MS" }] },
   });
 });
 
@@ -137,7 +137,7 @@ test("starts production stdio MCP and retains peer requests around a JEB configu
 }) => {
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: workspace.root,
     env: isolatedEnvironment(workspace),
     stderr: "pipe",
@@ -163,7 +163,7 @@ test("starts production stdio MCP and retains peer requests around a JEB configu
     );
     expect(refusal.error).toMatchObject({
       code: "configuration_invalid",
-      details: { settings: [{ setting: "REA_JEB_MCP_TIMEOUT_MS" }] },
+      details: { settings: [{ setting: "NRE_JEB_MCP_TIMEOUT_MS" }] },
     });
     await client.ping();
   } finally {

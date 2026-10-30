@@ -115,7 +115,7 @@ const exampleEvidence = (property: "count" | "total") => {
       value: { kind: "source-range", source: modulePath, ...link.location },
     },
     extractor: {
-      name: "rea-javascript-artifact-reconstruction",
+      name: "nre-javascript-artifact-reconstruction",
       version: "1",
       operation: "recover-module-export",
       executable_sha256: null,
@@ -251,12 +251,12 @@ const exampleEvidence = (property: "count" | "total") => {
       format: "directory",
     },
     {
-      id: "rea-javascript-application",
-      name: "REA JavaScript application analyzer",
+      id: "nre-javascript-application",
+      name: "NRE JavaScript application analyzer",
       version: "1",
     },
     {
-      predicateType: "rea.javascript-application-analysis",
+      predicateType: "nre.javascript-application-analysis",
       operation: "analyze_javascript_application",
       parameters: {},
       result,

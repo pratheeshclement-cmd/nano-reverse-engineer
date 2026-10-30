@@ -10,7 +10,7 @@ import {
   encodeCliSessionFrame,
 } from "./cliCommandSessionFrames.mjs";
 
-// One-shot command sequence matches scripts/rea.mjs. Output is captured per
+// One-shot command sequence matches scripts/nre.mjs. Output is captured per
 // command so this process can serve the next invocation without restarting.
 const packageRoot = resolve(
   dirname(fileURLToPath(import.meta.url)),
@@ -35,7 +35,7 @@ prepareCliProcessEnvironment(
 );
 if (!(await compiledRuntimeExists(runtimeFiles))) {
   process.stderr.write(
-    `REA's compiled runtime is missing. Run \`npm ci && npm run build:cached\` in ${packageRoot} to install dependencies and build REA, then restart it. If this is an installed package, reinstall rea-agents.\n`,
+    `NRE's compiled runtime is missing. Run \`npm ci && npm run build:cached\` in ${packageRoot} to install dependencies and build NRE, then restart it. If this is an installed package, reinstall nano-reverse-engineer.\n`,
   );
   process.exit(1);
 }

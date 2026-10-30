@@ -86,7 +86,7 @@ const expectIsolatedEnvironment = (
         : "",
     _JAVA_OPTIONS: "",
     JAVA_HOME: javaHome,
-    REA_PROCESS_RUN_ID: "d6fcbb66-e829-4ff6-a535-0035aec63139",
+    NRE_PROCESS_RUN_ID: "d6fcbb66-e829-4ff6-a535-0035aec63139",
   });
   expect(environment.PATH).toBe(
     `${join(javaHome, "bin")}${process.platform === "win32" ? ";" : ":"}${process.env.PATH ?? ""}`,
@@ -106,7 +106,7 @@ describe("Ghidra COM loader", () => {
     const arguments_ = ghidraHeadlessArguments({
       projectRoot: "/tmp/project",
       targetPath: "/tmp/target.com",
-      bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+      bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
       descriptorPath: "/tmp/session.json",
       ghidraLogPath: "/tmp/ghidra.log",
       scriptLogPath: "/tmp/script.log",
@@ -120,7 +120,7 @@ describe("Ghidra COM loader", () => {
     ]);
     const prepare = arguments_.indexOf("-preScript");
     expect(arguments_[prepare + 1]).toBe(
-      join("/package/bridge", "ReaGhidraPrepareCom.java"),
+      join("/package/bridge", "NreGhidraPrepareCom.java"),
     );
     expect(prepare).toBeLessThan(arguments_.indexOf("-postScript"));
     expect(arguments_).toContain("-readOnly");
@@ -133,7 +133,7 @@ describe("Ghidra raw-binary loader", () => {
     const arguments_ = ghidraHeadlessArguments({
       projectRoot: "/tmp/project",
       targetPath: "/tmp/ecu.bin",
-      bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+      bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
       descriptorPath: "/tmp/session.json",
       ghidraLogPath: "/tmp/ghidra.log",
       scriptLogPath: "/tmp/script.log",
@@ -151,7 +151,7 @@ describe("Ghidra raw-binary loader", () => {
     ]);
     const prepare = arguments_.indexOf("-preScript");
     expect(arguments_[prepare + 1]).toBe(
-      join("/package/bridge", "ReaGhidraPrepareRaw.java"),
+      join("/package/bridge", "NreGhidraPrepareRaw.java"),
     );
     expect(arguments_[prepare + 2]).toBe("ARM:LE:32:v7");
     expect(arguments_[prepare + 3]).toBe("0x8000000");
@@ -166,7 +166,7 @@ describe("Ghidra GameCube DOL loader", () => {
     platform: "darwin" as const,
     projectRoot: "/tmp/project",
     targetPath: "/tmp/main.dol",
-    bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+    bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
     descriptorPath: "/tmp/session.json",
     ghidraLogPath: "/tmp/ghidra.log",
     scriptLogPath: "/tmp/script.log",
@@ -215,17 +215,17 @@ describe("Ghidra GameCube DOL loader", () => {
       },
     });
     const prepare = arguments_.indexOf(
-      "/package/bridge/ReaGhidraPrepareDol.java",
+      "/package/bridge/NreGhidraPrepareDol.java",
     );
     expect(prepare).toBeGreaterThanOrEqual(0);
     expect(arguments_[prepare - 1]).toBe("-preScript");
     expect(arguments_[prepare + 1]).toBe("/tmp/gamecube-dol-sections.txt");
     expect(prepare).toBeLessThan(arguments_.indexOf("-postScript"));
     expect(arguments_).not.toContain(
-      "/package/bridge/ReaGhidraPrepareRaw.java",
+      "/package/bridge/NreGhidraPrepareRaw.java",
     );
     expect(arguments_).not.toContain(
-      "/package/bridge/ReaGhidraPrepareCom.java",
+      "/package/bridge/NreGhidraPrepareCom.java",
     );
     expect(arguments_).toContain("-readOnly");
     expect(arguments_).toContain("-deleteProject");
@@ -274,7 +274,7 @@ describe("Ghidra headless launcher", () => {
     const arguments_ = ghidraHeadlessArguments({
       projectRoot: "/tmp/project",
       targetPath: "/tmp/target",
-      bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+      bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
       descriptorPath: "/tmp/session.json",
       ghidraLogPath: "/tmp/ghidra.log",
       scriptLogPath: "/tmp/script.log",
@@ -293,22 +293,22 @@ describe("Ghidra headless launcher", () => {
       platform: "darwin",
       projectRoot: "/tmp/project",
       targetPath: "/tmp/target",
-      bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+      bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
       descriptorPath: "/tmp/session.json",
       ghidraLogPath: "/tmp/ghidra.log",
       scriptLogPath: "/tmp/script.log",
     });
-    expect(arguments_.slice(0, 2)).toEqual(["/tmp/project", "rea-project"]);
+    expect(arguments_.slice(0, 2)).toEqual(["/tmp/project", "nre-project"]);
     expectOptions(arguments_, [
       ["-import", "/tmp/target"],
       ["-log", "/tmp/ghidra.log"],
       ["-scriptlog", "/tmp/script.log"],
       ["-scriptPath", "/package/bridge"],
-      ["-postScript", "/package/bridge/ReaGhidraNoReturnFix.java"],
+      ["-postScript", "/package/bridge/NreGhidraNoReturnFix.java"],
     ]);
     // The no-return repair must finish before the bridge starts serving.
-    const fix = arguments_.indexOf("/package/bridge/ReaGhidraNoReturnFix.java");
-    const bridge = arguments_.indexOf("/package/bridge/ReaGhidraBridge.java");
+    const fix = arguments_.indexOf("/package/bridge/NreGhidraNoReturnFix.java");
+    const bridge = arguments_.indexOf("/package/bridge/NreGhidraBridge.java");
     expect(fix).toBeLessThan(bridge);
     expect(arguments_[bridge + 1]).toBe("/tmp/session.json");
     expect(arguments_).toContain("-readOnly");
@@ -319,12 +319,12 @@ describe("Ghidra headless launcher", () => {
       platform: "linux" as const,
       projectRoot: "/tmp/project",
       targetPath: "/tmp/target",
-      bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+      bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
       descriptorPath: "/tmp/session.json",
       ghidraLogPath: "/tmp/ghidra.log",
       scriptLogPath: "/tmp/script.log",
     };
-    const soft = "/package/bridge/ReaGhidraMipsSoftFloat.java";
+    const soft = "/package/bridge/NreGhidraMipsSoftFloat.java";
     expect(ghidraHeadlessArguments(base)).not.toContain(soft);
     const arguments_ = ghidraHeadlessArguments({
       ...base,
@@ -332,10 +332,10 @@ describe("Ghidra headless launcher", () => {
     });
     expect(arguments_[arguments_.indexOf(soft) - 1]).toBe("-postScript");
     expect(
-      arguments_.indexOf("/package/bridge/ReaGhidraNoReturnFix.java"),
+      arguments_.indexOf("/package/bridge/NreGhidraNoReturnFix.java"),
     ).toBeLessThan(arguments_.indexOf(soft));
     expect(arguments_.indexOf(soft)).toBeLessThan(
-      arguments_.indexOf("/package/bridge/ReaGhidraBridge.java"),
+      arguments_.indexOf("/package/bridge/NreGhidraBridge.java"),
     );
     for (const conflict of [
       { psp: true as const },
@@ -365,7 +365,7 @@ describe("Ghidra configured import language and seeds", () => {
     platform: "darwin" as const,
     projectRoot: "/tmp/project",
     targetPath: "/tmp/target",
-    bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+    bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
     descriptorPath: "/tmp/session.json",
     ghidraLogPath: "/tmp/ghidra.log",
     scriptLogPath: "/tmp/script.log",
@@ -441,15 +441,15 @@ describe("Ghidra configured import language and seeds", () => {
       const arguments_ = ghidraHeadlessArguments({
         ...base,
         platform,
-        bridgeScriptPath: path.join(bridgeDirectory, "ReaGhidraBridge.java"),
+        bridgeScriptPath: path.join(bridgeDirectory, "NreGhidraBridge.java"),
         dosCom: true,
         seedPath,
       });
       const prepare = arguments_.indexOf(
-        path.join(bridgeDirectory, "ReaGhidraPrepareCom.java"),
+        path.join(bridgeDirectory, "NreGhidraPrepareCom.java"),
       );
       const seeds = arguments_.indexOf(
-        path.join(bridgeDirectory, "ReaGhidraApplySeeds.java"),
+        path.join(bridgeDirectory, "NreGhidraApplySeeds.java"),
       );
       expect(prepare).toBeGreaterThanOrEqual(0);
       expect(arguments_[seeds - 1]).toBe("-preScript");
@@ -461,7 +461,7 @@ describe("Ghidra configured import language and seeds", () => {
 
   it("adds no seed script without a seed snapshot", () => {
     expect(ghidraHeadlessArguments(base)).not.toContain(
-      posix.join("/package/bridge", "ReaGhidraApplySeeds.java"),
+      posix.join("/package/bridge", "NreGhidraApplySeeds.java"),
     );
   });
 });
@@ -471,7 +471,7 @@ describe("Ghidra disabled analyzers", () => {
     platform: "darwin" as const,
     projectRoot: "/tmp/project",
     targetPath: "/tmp/target",
-    bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+    bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
     descriptorPath: "/tmp/session.json",
     ghidraLogPath: "/tmp/ghidra.log",
     scriptLogPath: "/tmp/script.log",
@@ -488,17 +488,17 @@ describe("Ghidra disabled analyzers", () => {
       ],
     });
     const options = arguments_.indexOf(
-      posix.join("/package/bridge", "ReaGhidraAnalysisOptions.java"),
+      posix.join("/package/bridge", "NreGhidraAnalysisOptions.java"),
     );
     expect(arguments_[options - 1]).toBe("-preScript");
     expect(arguments_[options + 1]).toBe(
       "Objective-C Message Analyzer,Decompiler Switch Analysis",
     );
     const prepare = arguments_.indexOf(
-      posix.join("/package/bridge", "ReaGhidraPrepareCom.java"),
+      posix.join("/package/bridge", "NreGhidraPrepareCom.java"),
     );
     const seeds = arguments_.indexOf(
-      posix.join("/package/bridge", "ReaGhidraApplySeeds.java"),
+      posix.join("/package/bridge", "NreGhidraApplySeeds.java"),
     );
     expect(prepare).toBeLessThan(seeds);
     expect(seeds).toBeLessThan(options);
@@ -515,12 +515,12 @@ describe("Ghidra disabled analyzers", () => {
         bridgeScriptPath: path.join(
           "/package",
           "bridge",
-          "ReaGhidraBridge.java",
+          "NreGhidraBridge.java",
         ),
         disabledAnalyzers: ["Objective-C Message Analyzer"],
       });
       const options = arguments_.indexOf(
-        path.join("/package", "bridge", "ReaGhidraAnalysisOptions.java"),
+        path.join("/package", "bridge", "NreGhidraAnalysisOptions.java"),
       );
       expect(arguments_[options - 1]).toBe("-preScript");
       expect(arguments_[options + 1]).toBe("Objective-C Message Analyzer");
@@ -531,7 +531,7 @@ describe("Ghidra disabled analyzers", () => {
   it("keeps the invocation byte-identical without an override", () => {
     expect(ghidraHeadlessArguments(base)).toEqual([
       "/tmp/project",
-      "rea-project",
+      "nre-project",
       "-import",
       "/tmp/target",
       "-readOnly",
@@ -543,9 +543,9 @@ describe("Ghidra disabled analyzers", () => {
       "-scriptPath",
       "/package/bridge",
       "-postScript",
-      "/package/bridge/ReaGhidraNoReturnFix.java",
+      "/package/bridge/NreGhidraNoReturnFix.java",
       "-postScript",
-      "/package/bridge/ReaGhidraBridge.java",
+      "/package/bridge/NreGhidraBridge.java",
       "/tmp/session.json",
     ]);
   });
@@ -554,7 +554,7 @@ describe("Ghidra disabled analyzers", () => {
     expect(
       ghidraHeadlessArguments({ ...base, disabledAnalyzers: [] }),
     ).not.toContain(
-      posix.join("/package/bridge", "ReaGhidraAnalysisOptions.java"),
+      posix.join("/package/bridge", "NreGhidraAnalysisOptions.java"),
     );
   });
 });
@@ -564,7 +564,7 @@ describe("Ghidra existing project", () => {
     platform: "darwin" as const,
     projectRoot: "/tmp/project",
     targetPath: "/tmp/target",
-    bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+    bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
     descriptorPath: "/tmp/session.json",
     ghidraLogPath: "/tmp/ghidra.log",
     scriptLogPath: "/tmp/script.log",
@@ -576,12 +576,12 @@ describe("Ghidra existing project", () => {
       existingProject: { programName: "game.exe" },
     });
     // The project location and name stay explicit; nothing is imported.
-    expect(arguments_.slice(0, 2)).toEqual(["/tmp/project", "rea-project"]);
+    expect(arguments_.slice(0, 2)).toEqual(["/tmp/project", "nre-project"]);
     expect(arguments_).not.toContain("-import");
     expect(arguments_).not.toContain("-deleteProject");
     expect(arguments_).toEqual([
       "/tmp/project",
-      "rea-project",
+      "nre-project",
       "-process",
       "game.exe",
       "-noanalysis",
@@ -593,7 +593,7 @@ describe("Ghidra existing project", () => {
       "-scriptPath",
       "/package/bridge",
       "-postScript",
-      "/package/bridge/ReaGhidraBridge.java",
+      "/package/bridge/NreGhidraBridge.java",
       "/tmp/session.json",
     ]);
   });
@@ -645,7 +645,7 @@ describe("Ghidra existing project", () => {
         bridgeScriptPath: win32.join(
           "/package",
           "bridge",
-          "ReaGhidraBridge.java",
+          "NreGhidraBridge.java",
         ),
         existingProject: { programName: "game.exe" },
       }),
@@ -711,7 +711,7 @@ const launchExistingProject = async (
     platform: "linux",
     configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
     javaHome,
-    bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+    bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
     existingProject: { projectPath, programName: "game.exe" },
     spawnProcess: async (options) => {
       spawned.push(options);
@@ -735,17 +735,17 @@ describe("Ghidra existing project launcher", () => {
   it.skipIf(process.platform === "win32")(
     "copies the caller's project into the owned runtime before launching",
     async () => {
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("nre-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       const sourceProject = join(parent, "user-project");
-      await mkdir(join(sourceProject, "rea-project.rep"), {
+      await mkdir(join(sourceProject, "nre-project.rep"), {
         recursive: true,
       });
-      const projectMarker = join(sourceProject, "rea-project.gpr");
+      const projectMarker = join(sourceProject, "nre-project.gpr");
       await writeFile(projectMarker, "pre-imported");
       await writeFile(
-        join(sourceProject, "rea-project.rep", "marker"),
+        join(sourceProject, "nre-project.rep", "marker"),
         "recursive",
       );
       const spawned: OwnedProviderProcessSpawnOptions[] = [];
@@ -765,13 +765,13 @@ describe("Ghidra existing project launcher", () => {
         expect(spawned[0]?.arguments).toContain("-readOnly");
         // Copy-first: the owned runtime holds the copy before Ghidra starts.
         expect(
-          await readFile(join(runtime.path, "project", "rea-project.gpr"), {
+          await readFile(join(runtime.path, "project", "nre-project.gpr"), {
             encoding: "utf8",
           }),
         ).toBe("pre-imported");
         expect(
           await readFile(
-            join(runtime.path, "project", "rea-project.rep", "marker"),
+            join(runtime.path, "project", "nre-project.rep", "marker"),
             { encoding: "utf8" },
           ),
         ).toBe("recursive");
@@ -789,7 +789,7 @@ describe("Ghidra existing project launcher", () => {
   it.skipIf(process.platform === "win32")(
     "rejects a missing project directory before starting Ghidra",
     async () => {
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("nre-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       const spawned: OwnedProviderProcessSpawnOptions[] = [];
@@ -808,9 +808,9 @@ describe("Ghidra existing project launcher", () => {
   );
 
   it.skipIf(process.platform === "win32")(
-    "rejects a project without the fixed rea-project name before copying",
+    "rejects a project without the fixed nre-project name before copying",
     async () => {
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("nre-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       // The headless open selects the project by the fixed name; a caller
@@ -828,7 +828,7 @@ describe("Ghidra existing project launcher", () => {
       );
       expect(launched.ok).toBe(false);
       if (launched.ok) throw new Error("launch unexpectedly succeeded");
-      expect(String(launched.error.cause)).toMatch(/rea-project\.gpr/u);
+      expect(String(launched.error.cause)).toMatch(/nre-project\.gpr/u);
       expect(spawned).toHaveLength(0);
       // Nothing from the rejected project was copied into the owned runtime.
       await expect(
@@ -841,7 +841,7 @@ describe("Ghidra existing project launcher", () => {
   it.skipIf(process.platform === "win32")(
     "rejects a project path that overlaps the runtime before copying",
     async () => {
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("nre-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       // Copying the runtime into itself would recurse without bound, so the
@@ -856,7 +856,7 @@ describe("Ghidra existing project launcher", () => {
       expect(launched.ok).toBe(false);
       if (launched.ok) throw new Error("launch unexpectedly succeeded");
       expect(String(launched.error.cause)).toMatch(
-        /overlaps the REA runtime directory/u,
+        /overlaps the NRE runtime directory/u,
       );
       expect(spawned).toHaveLength(0);
       expect(await readdir(join(runtime.path, "project"))).toEqual([]);
@@ -866,7 +866,7 @@ describe("Ghidra existing project launcher", () => {
   it.skipIf(process.platform === "win32")(
     "rejects a project path inside the runtime before copying",
     async () => {
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("nre-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       // A caller-supplied path inside the owned runtime (here the project
@@ -881,7 +881,7 @@ describe("Ghidra existing project launcher", () => {
       expect(launched.ok).toBe(false);
       if (launched.ok) throw new Error("launch unexpectedly succeeded");
       expect(String(launched.error.cause)).toMatch(
-        /overlaps the REA runtime directory/u,
+        /overlaps the NRE runtime directory/u,
       );
       expect(spawned).toHaveLength(0);
       expect(await readdir(join(runtime.path, "project"))).toEqual([]);
@@ -893,7 +893,7 @@ describe("Ghidra existing project symlink overlap", () => {
   it.skipIf(process.platform === "win32")(
     "rejects a project path whose symbolic link hides a runtime overlap before copying",
     async () => {
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("nre-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       // A valid project directory inside the owned runtime, reached only
@@ -901,10 +901,10 @@ describe("Ghidra existing project symlink overlap", () => {
       // the runtime, so only a realpath-based comparison can refuse the copy.
       const hidden = join(runtime.path, "link-target");
       await mkdir(hidden, { recursive: true });
-      await writeFile(join(hidden, "rea-project.gpr"), "", {
+      await writeFile(join(hidden, "nre-project.gpr"), "", {
         encoding: "utf8",
       });
-      await mkdir(join(hidden, "rea-project.rep"), { recursive: true });
+      await mkdir(join(hidden, "nre-project.rep"), { recursive: true });
       const alias = join(parent, "alias");
       await symlink(hidden, alias);
       const spawned: OwnedProviderProcessSpawnOptions[] = [];
@@ -917,7 +917,7 @@ describe("Ghidra existing project symlink overlap", () => {
       expect(launched.ok).toBe(false);
       if (launched.ok) throw new Error("launch unexpectedly succeeded");
       expect(String(launched.error.cause)).toMatch(
-        /overlaps the REA runtime directory/u,
+        /overlaps the NRE runtime directory/u,
       );
       expect(spawned).toHaveLength(0);
       expect(await readdir(join(runtime.path, "project"))).toEqual([]);
@@ -931,15 +931,15 @@ describe("Ghidra expanded project admission", () => {
     { label: "marker without data", marker: true, data: false },
     { label: "data without marker", marker: false, data: true },
   ])("rejects $label before starting Ghidra", async ({ marker, data }) => {
-    const parent = await createTestTempDirectory("rea-launcher-test-");
+    const parent = await createTestTempDirectory("nre-launcher-test-");
     const runtime = await createGhidraTestRuntime(parent);
     runtimes.push(runtime);
     const sourceProject = join(parent, "user-project");
     await mkdir(sourceProject);
-    await writeFile(join(sourceProject, "rea-project.grez"), "saved archive");
+    await writeFile(join(sourceProject, "nre-project.grez"), "saved archive");
     if (marker)
-      await writeFile(join(sourceProject, "rea-project.gpr"), "marker");
-    if (data) await mkdir(join(sourceProject, "rea-project.rep"));
+      await writeFile(join(sourceProject, "nre-project.gpr"), "marker");
+    if (data) await mkdir(join(sourceProject, "nre-project.rep"));
     const spawned: OwnedProviderProcessSpawnOptions[] = [];
     const launched = await launchExistingProject(
       runtime.path,
@@ -963,13 +963,13 @@ describe("Ghidra Windows launcher", () => {
       platform: "win32",
       projectRoot: "/tmp/project",
       targetPath: "/tmp/target",
-      bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+      bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
       descriptorPath: "/tmp/session.json",
       ghidraLogPath: "/tmp/ghidra.log",
       scriptLogPath: "/tmp/script.log",
     });
-    expect(args).not.toContain("/package/bridge/ReaGhidraNoReturnFix.java");
-    expect(args).toContain("/package/bridge/ReaGhidraBridge.java");
+    expect(args).not.toContain("/package/bridge/NreGhidraNoReturnFix.java");
+    expect(args).toContain("/package/bridge/NreGhidraBridge.java");
   });
 });
 
@@ -981,10 +981,10 @@ describe("Ghidra Windows batch command construction", () => {
       analyzeHeadlessPath:
         "C:\\Program Files\\Ghidra 12.1.4\\support\\analyzeHeadless.bat",
       arguments: [
-        "C:\\REA Runtime\\project",
-        "rea-project",
+        "C:\\NRE Runtime\\project",
+        "nre-project",
         "-import",
-        "C:\\REA Runtime\\target.exe",
+        "C:\\NRE Runtime\\target.exe",
       ],
       comSpec: "C:\\Windows\\System32\\cmd.exe",
     });
@@ -997,7 +997,7 @@ describe("Ghidra Windows batch command construction", () => {
         "/v:off",
         "/s",
         "/c",
-        '""C:\\Program Files\\Ghidra 12.1.4\\support\\analyzeHeadless.bat" "C:\\REA Runtime\\project" "rea-project" "-import" "C:\\REA Runtime\\target.exe""',
+        '""C:\\Program Files\\Ghidra 12.1.4\\support\\analyzeHeadless.bat" "C:\\NRE Runtime\\project" "nre-project" "-import" "C:\\NRE Runtime\\target.exe""',
       ],
     });
   });
@@ -1025,7 +1025,7 @@ describe("Ghidra Windows release configuration", () => {
     .each(["ghidra_12.1.4_PUBLIC", "renamed-install"])(
     "prepares the %s release directory through the Windows runtime",
     async (release) => {
-      const parent = await createTestTempDirectory("rea-launch-config-");
+      const parent = await createTestTempDirectory("nre-launch-config-");
       const installRoot = join(parent, "renamed-install");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
@@ -1042,7 +1042,7 @@ describe("Ghidra Windows release configuration", () => {
           "analyzeHeadless.bat",
         ),
         javaHome: "C:\\Java\\jdk-21",
-        bridgeScriptPath: join(parent, "ReaGhidraBridge.java"),
+        bridgeScriptPath: join(parent, "NreGhidraBridge.java"),
         // The preflight validates the inspected JVM's LaunchSupport output;
         // these fixtures assert batch-spawn behavior without a working JDK.
         javaLaunch: async () => ({
@@ -1082,7 +1082,7 @@ describe("Ghidra Windows launcher process ownership", () => {
       vi.stubEnv("JAVA_TOOL_OPTIONS", "-Duser.home=/unapproved/home");
       vi.stubEnv("JDK_JAVA_OPTIONS", "-XX:MaxRAMPercentage=99");
       vi.stubEnv("_JAVA_OPTIONS", "-Xmx99G");
-      const parent = await createTestTempDirectory("rea-launcher-test-");
+      const parent = await createTestTempDirectory("nre-launcher-test-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       const runtimeRoot = runtime.path;
@@ -1097,7 +1097,7 @@ describe("Ghidra Windows launcher process ownership", () => {
         // batch script because its launcher contract differs.
         platform: "win32",
         javaHome,
-        bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+        bridgeScriptPath: "/package/bridge/NreGhidraBridge.java",
         // The preflight validates the inspected JVM's LaunchSupport output;
         // this fixture captures the batch launcher without a working JDK.
         javaLaunch: async () => ({
@@ -1158,7 +1158,7 @@ describe("Ghidra GameCube DOL section file", () => {
   it.skipIf(process.platform === "win32")(
     "writes the canonical section table next to session.json before spawn",
     async () => {
-      const parent = await createTestTempDirectory("rea-dol-section-");
+      const parent = await createTestTempDirectory("nre-dol-section-");
       const runtime = await createGhidraTestRuntime(parent);
       runtimes.push(runtime);
       const sectionFile =
@@ -1173,7 +1173,7 @@ describe("Ghidra GameCube DOL section file", () => {
         configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
         analyzeHeadlessPath: fixturePath,
         javaHome,
-        bridgeScriptPath: join(parent, "ReaGhidraBridge.java"),
+        bridgeScriptPath: join(parent, "NreGhidraBridge.java"),
         javaLaunch: async () => ({
           command: join(javaHome, "bin", "java"),
           arguments: [],

@@ -18,7 +18,7 @@ import {
 } from "../../support/process/processFixture.js";
 
 const chromeExecutable = [
-  process.env.REA_BROWSER_EXECUTABLE,
+  process.env.NRE_BROWSER_EXECUTABLE,
   "/usr/bin/google-chrome-stable",
   "/usr/bin/google-chrome",
   "/usr/bin/chromium",
@@ -68,7 +68,7 @@ const inspectChromePage = async ({
   let stderr = "";
   const child = processes.spawn(executable, [
     "--headless=new",
-    ...(process.env.REA_BROWSER_NO_SANDBOX === "true" ? ["--no-sandbox"] : []),
+    ...(process.env.NRE_BROWSER_NO_SANDBOX === "true" ? ["--no-sandbox"] : []),
     "--remote-debugging-address=127.0.0.1",
     "--remote-debugging-port=0",
     `--user-data-dir=${profile}`,
@@ -169,7 +169,7 @@ it.skipIf(chromeExecutable === undefined)(
     const { origin, inspection } = await inspectChromePage({
       processes,
       executable,
-      profilePrefix: "rea-svg-xlink-",
+      profilePrefix: "nre-svg-xlink-",
       page: pageHtml,
       contentType: "text/html",
       pathname: "/x.html",
@@ -307,7 +307,7 @@ for (const { format, page, contentType, nodeNames, link, destinations } of [
       const { origin, pageUrl, inspection } = await inspectChromePage({
         processes,
         executable,
-        profilePrefix: "rea-svg-xhtml-",
+        profilePrefix: "nre-svg-xhtml-",
         page,
         contentType,
         pathname: "/page.xhtml",

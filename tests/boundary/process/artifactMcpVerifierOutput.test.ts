@@ -25,12 +25,12 @@ const observationSchema = z.strictObject({
 });
 
 async function probe(mode: string, name = "Fixture.app") {
-  const root = await createTestTempDirectory("rea-artifact-mcp-schema-");
+  const root = await createTestTempDirectory("nre-artifact-mcp-schema-");
   const target = join(root, name);
   await mkdir(join(target, "Contents", "Resources"), { recursive: true });
   await writeFile(
     join(target, "Contents", "Info.plist"),
-    '<?xml version="1.0"?><plist version="1.0"><dict><key>CFBundleIdentifier</key><string>dev.rea.schema-probe</string></dict></plist>',
+    '<?xml version="1.0"?><plist version="1.0"><dict><key>CFBundleIdentifier</key><string>dev.nre.schema-probe</string></dict></plist>',
   );
   const { stdout } = await exec(
     process.execPath,

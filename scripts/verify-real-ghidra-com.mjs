@@ -44,23 +44,23 @@ if (installation.status !== "available")
   throw new Error(
     `verify:ghidra:com prerequisite unavailable: ${JSON.stringify(installation)}`,
   );
-const captureDirectory = process.env.REA_COM_PROOF_CAPTURE_DIR;
+const captureDirectory = process.env.NRE_COM_PROOF_CAPTURE_DIR;
 if (captureDirectory !== undefined) {
   assert.ok(
     isAbsolute(captureDirectory),
-    "REA_COM_PROOF_CAPTURE_DIR must be absolute",
+    "NRE_COM_PROOF_CAPTURE_DIR must be absolute",
   );
   await mkdir(captureDirectory, { recursive: true, mode: 0o700 });
 }
-const packageRoot = process.env.REA_COM_PROOF_PACKAGE_ROOT;
+const packageRoot = process.env.NRE_COM_PROOF_PACKAGE_ROOT;
 if (packageRoot !== undefined && !isAbsolute(packageRoot))
-  throw new Error("REA_COM_PROOF_PACKAGE_ROOT must be absolute");
+  throw new Error("NRE_COM_PROOF_PACKAGE_ROOT must be absolute");
 const entrypoint =
   packageRoot === undefined
-    ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
-    : join(packageRoot, "scripts", "rea.mjs");
+    ? fileURLToPath(new URL("./nre.mjs", import.meta.url))
+    : join(packageRoot, "scripts", "nre.mjs");
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-com-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-com-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const fixture = buildDosComFixture();
@@ -70,10 +70,10 @@ const sha256 = digest(fixture.bytes);
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
   GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR,
   ...(process.env.JAVA_HOME === undefined
     ? {}
@@ -86,7 +86,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-com-proof", version: "1" });
+const client = new Client({ name: "nre-real-com-proof", version: "1" });
 let opened = false;
 let stderr = "";
 let report;
@@ -234,7 +234,7 @@ try {
   );
   const changes = {
     procedure: fixture.entry,
-    name: "rea_entry",
+    name: "nre_entry",
     comment: "Regular\nUnicode 註記",
     inline_comment: "Inline finding",
   };

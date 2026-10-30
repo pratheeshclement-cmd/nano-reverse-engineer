@@ -70,7 +70,7 @@ it.each([
   "binds frame authorization to the tree read across file checks: %s",
   async (stage) => {
     const isAncestor = stage.endsWith("ancestor");
-    const root = await mkdtemp(join(tmpdir(), "rea-frame-generation-race-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-frame-generation-race-"));
     temporary.push(root);
     const main = join(root, "main.html"),
       child = join(root, "child.html"),
@@ -288,7 +288,7 @@ it.each([
   "preserves document identity through final file validation: %s",
   async (kind) => {
     const root = await mkdtemp(
-      join(tmpdir(), "rea-electron-document-identity-"),
+      join(tmpdir(), "nre-electron-document-identity-"),
     );
     temporary.push(root);
     const main = join(root, "main.html"),
@@ -413,7 +413,7 @@ it.each([
 it.each([7, null, "", "claimed-parent"])(
   "does not promote children when the enclosing root has a parent: %s",
   async (parentId) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-electron-root-role-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-electron-root-role-"));
     temporary.push(root);
     const main = join(root, "index.html");
     await writeFile(main, "main");
@@ -450,7 +450,7 @@ describe("Electron frame capture", () => {
   it.each([7, undefined])(
     "classifies a malformed child frame ID as unavailable: %s",
     async (childId) => {
-      const root = await mkdtemp(join(tmpdir(), "rea-electron-frame-"));
+      const root = await mkdtemp(join(tmpdir(), "nre-electron-frame-"));
       temporary.push(root);
       const main = join(root, "index.html");
       const child = join(root, "child.html");
@@ -492,7 +492,7 @@ describe("Electron frame capture", () => {
   );
 
   it("preserves script records across context teardown and ID reuse", async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-electron-script-frame-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-electron-script-frame-"));
     temporary.push(root);
     const scriptPath = join(root, "app.js");
     await writeFile(scriptPath, "export const app = true;");
@@ -590,7 +590,7 @@ describe("Electron frame capture", () => {
 });
 
 it("admits a prefix and fitting suffix around an oversized Electron source", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-electron-source-budget-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-electron-source-budget-"));
   temporary.push(root);
   const paths = await Promise.all(
     ["prefix.js", "oversized.js", "suffix.js"].map(async (name) => {
@@ -715,7 +715,7 @@ it.each([
 ])(
   "detects tree-first document replacement $scope/read$stage/late=$lateEvent/changed=$changed/url=$urlChange/full=$fullReplay",
   async ({ scope, stage, lateEvent, changed, urlChange, fullReplay }) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-tree-first-document-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-tree-first-document-"));
     temporary.push(root);
     const main = join(root, "main.html"),
       child = join(root, "child.html"),

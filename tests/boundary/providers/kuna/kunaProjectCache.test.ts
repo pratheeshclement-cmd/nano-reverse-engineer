@@ -57,8 +57,8 @@ const fixture = async (
   const root = await createTestTempDirectory(prefix);
   const kuna = await writeFakeKuna(root, behavior);
   const installed = await inspectKunaInstallation({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
     ...options.environment,
   });
   if (!installed.ok) throw new Error(installed.error.reason);
@@ -123,7 +123,7 @@ it.each([1, 2])(
   "regenerates layout %i once and retires it without touching unrelated cache resources",
   async (layout) => {
     const { kuna, installation, cacheRoot, cache, target } = await fixture(
-      "rea-kuna-cache-format-transition-",
+      "nre-kuna-cache-format-transition-",
     );
     const input = await target("program");
     const initial = await cache.build({ installation, ...input });
@@ -232,7 +232,7 @@ const causesOf = (cause: unknown): unknown[] => {
 
 it("publishes a verified export and serves later requests from the cache", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-cache-",
+    "nre-kuna-cache-",
     {
       functions: [
         { name: "main", addr: "0x1000" },
@@ -244,7 +244,7 @@ it("publishes a verified export and serves later requests from the cache", async
         },
       ],
     },
-    { environment: { REA_KUNA_JOBS: "1" } },
+    { environment: { NRE_KUNA_JOBS: "1" } },
   );
   const input = await target("program");
 
@@ -297,7 +297,7 @@ it("publishes a verified export and serves later requests from the cache", async
     "// Function: broken @ 0x1080  (error: Exceeded the instruction budget)\n\n",
   );
 
-  // Kuna listed and decompiled a staged copy from REA's own HOME, in reference mode.
+  // Kuna listed and decompiled a staged copy from NRE's own HOME, in reference mode.
   const [listing] = await callsOf(kuna, "functions");
   const [exported] = await callsOf(kuna, "decompile-project");
   expect(listing?.argv).toEqual(["functions", exported?.argv[1], "--json"]);
@@ -322,7 +322,7 @@ it("publishes a verified export and serves later requests from the cache", async
 
 it("retains a failed warm-cache hash descriptor and retries it at cache close", async () => {
   const { installation, cache, target } = await fixture(
-    "rea-kuna-cache-hash-owner-",
+    "nre-kuna-cache-hash-owner-",
   );
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
@@ -356,7 +356,7 @@ it.each(["success", "failure"] as const)(
   "keeps hash cleanup bound to its exact owner when a concurrent lookup retry %s",
   async (retryOutcome) => {
     const { installation, cache, target } = await fixture(
-      `rea-kuna-cache-hash-race-${retryOutcome}-`,
+      `nre-kuna-cache-hash-race-${retryOutcome}-`,
     );
     const input = await target("program");
     const built = await cache.build({ installation, ...input });
@@ -450,7 +450,7 @@ it.each(["success", "failure"] as const)(
 
 it("resolves a hash failure delivered after its retained owner was released", async () => {
   const { installation, cache, target } = await fixture(
-    "rea-kuna-cache-late-hash-",
+    "nre-kuna-cache-late-hash-",
   );
   const built = await cache.build({
     installation,
@@ -508,7 +508,7 @@ it("resolves a hash failure delivered after its retained owner was released", as
 
 it("blocks repeated cache reads while a retained hash descriptor cannot close", async () => {
   const { installation, cache, target } = await fixture(
-    "rea-kuna-cache-hash-admission-",
+    "nre-kuna-cache-hash-admission-",
   );
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
@@ -606,7 +606,7 @@ it("blocks repeated cache reads while a retained hash descriptor cannot close", 
 
 it("keeps hash cleanup aggregates pending through retained staging removal", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-cache-hash-staging-owner-",
+    "nre-kuna-cache-hash-staging-owner-",
   );
   const persistentCloseCause = new Error(
     "persistent staging hash close failure",
@@ -671,7 +671,7 @@ it("keeps hash cleanup aggregates pending through retained staging removal", asy
 
 it("shares one Kuna run between concurrent requests for one export", async () => {
   const { kuna, installation, cache, target } = await fixture(
-    "rea-kuna-singleflight-",
+    "nre-kuna-singleflight-",
     { delayMs: 300 },
   );
   const input = await target("program");
@@ -689,7 +689,7 @@ it("shares one Kuna run between concurrent requests for one export", async () =>
 
 it("stops the run only when every waiting request is cancelled", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-cancel-",
+    "nre-kuna-cancel-",
     { project: "hang" },
   );
   const input = await target("program");
@@ -730,9 +730,9 @@ it("stops the run only when every waiting request is cancelled", async () => {
 
 it("applies one deadline to the inventory and the export together", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-timeout-",
+    "nre-kuna-timeout-",
     { project: "hang" },
-    { environment: { REA_KUNA_PROJECT_TIMEOUT_MS: "800" } },
+    { environment: { NRE_KUNA_PROJECT_TIMEOUT_MS: "800" } },
   );
 
   const result = await cache.build({
@@ -756,7 +756,7 @@ it("applies one deadline to the inventory and the export together", async () => 
 
 it("reports a failed export with Kuna's diagnostics and retains nothing", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-failure-",
+    "nre-kuna-failure-",
     { project: "exit-failure" },
   );
 
@@ -796,7 +796,7 @@ it.each([
   ],
 ] as const)("refuses %s", async (_case, behavior, reason) => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-refused-",
+    "nre-kuna-refused-",
     behavior,
   );
 
@@ -815,7 +815,7 @@ it.each([
 
 it("refuses to decompile a target that no longer matches its digest", async () => {
   const { kuna, installation, cache, target } =
-    await fixture("rea-kuna-changed-");
+    await fixture("nre-kuna-changed-");
   const input = await target("program");
   await appendFile(input.targetPath, "patched");
 
@@ -828,7 +828,7 @@ it("refuses to decompile a target that no longer matches its digest", async () =
 
 it("removes its staging when the target disappears before the copy", async () => {
   const { installation, cacheRoot, cache, target } =
-    await fixture("rea-kuna-vanished-");
+    await fixture("nre-kuna-vanished-");
   const input = await target("program");
 
   const result = await cache.build({
@@ -849,7 +849,7 @@ it("removes its staging when the target disappears before the copy", async () =>
 
 it("discards an entry whose files no longer match their manifest", async () => {
   const { installation, cacheRoot, cache, target } =
-    await fixture("rea-kuna-tamper-");
+    await fixture("nre-kuna-tamper-");
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
   if (!built.ok) throw built.error;
@@ -860,7 +860,7 @@ it("discards an entry whose files no longer match their manifest", async () => {
 });
 
 it("evicts least recently used entries above the cap, never a pinned one", async () => {
-  const { installation, cacheRoot, target } = await fixture("rea-kuna-evict-", {
+  const { installation, cacheRoot, target } = await fixture("nre-kuna-evict-", {
     asmPadding: 400 * 1024,
   });
   const cache = newCache(installation, 1024 * 1024);
@@ -890,7 +890,7 @@ it("evicts least recently used entries above the cap, never a pinned one", async
 
 it("refuses an export larger than the whole cache may hold", async () => {
   const { installation, cacheRoot, target } = await fixture(
-    "rea-kuna-capacity-",
+    "nre-kuna-capacity-",
     { asmPadding: 8 * 1024 },
   );
 
@@ -912,12 +912,12 @@ it("refuses an export larger than the whole cache may hold", async () => {
 
 it("keeps the first publication when another process exports the same key", async () => {
   const { kuna, installation, cacheRoot, target } = await fixture(
-    "rea-kuna-race-",
+    "nre-kuna-race-",
     { delayMs: 300 },
   );
   const input = await target("program");
 
-  // Two cache instances stand in for two REA processes sharing one root.
+  // Two cache instances stand in for two NRE processes sharing one root.
   const [first, second] = await Promise.all([
     newCache(installation).build({ installation, ...input }),
     newCache(installation).build({ installation, ...input }),
@@ -934,7 +934,7 @@ it("keeps the first publication when another process exports the same key", asyn
 });
 
 it("reports each build phase to every waiting request", async () => {
-  const { installation, cache, target } = await fixture("rea-kuna-phases-");
+  const { installation, cache, target } = await fixture("nre-kuna-phases-");
   const statuses: KunaExportStatus[] = [];
 
   const result = await cache.build({
@@ -960,7 +960,7 @@ it("reports each build phase to every waiting request", async () => {
 
 it("sweeps retired entries but preserves staging with unresolved process ownership", async () => {
   const { installation, cacheRoot, cache, target } =
-    await fixture("rea-kuna-sweep-");
+    await fixture("nre-kuna-sweep-");
   const abandoned = join(cacheRoot, "staging", "build-abandoned");
   const recent = join(cacheRoot, "staging", "build-recent");
   const evicted = join(cacheRoot, "trash", "evicted");
@@ -984,7 +984,7 @@ it.each(["sweep", "close"] as const)(
   "keeps failed file cleanup owned until recovery through %s",
   async (recovery) => {
     const { installation, cacheRoot, cache, target } = await fixture(
-      "rea-kuna-trash-cleanup-",
+      "nre-kuna-trash-cleanup-",
     );
     const retired = join(cacheRoot, "trash", "retired");
     await mkdir(retired, { recursive: true });
@@ -1021,7 +1021,7 @@ it.each(["sweep", "close"] as const)(
 
 it("keeps staging owned when a cancelled Kuna process cannot be proven stopped", async () => {
   const { kuna, installation, cacheRoot, target } = await fixture(
-    "rea-kuna-retained-",
+    "nre-kuna-retained-",
     { project: "hang" },
   );
   // Stop the process for real, but report that ownership could not be revalidated.
@@ -1101,7 +1101,7 @@ it("keeps staging owned when a cancelled Kuna process cannot be proven stopped",
 
 it("rebuilds an entry another cache instance evicted after this one verified it", async () => {
   const { kuna, installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-evicted-elsewhere-",
+    "nre-kuna-evicted-elsewhere-",
   );
   const input = await target("program");
   const built = await cache.build({ installation, ...input });
@@ -1123,7 +1123,7 @@ it("rebuilds an entry another cache instance evicted after this one verified it"
 
 it("reports an abandoned build's unproven cleanup even after a retry replaced it", async () => {
   const { kuna, installation, cacheRoot, target } = await fixture(
-    "rea-kuna-replaced-",
+    "nre-kuna-replaced-",
     { project: "hang" },
   );
   let exports = 0;
@@ -1174,7 +1174,7 @@ it("reports an abandoned build's unproven cleanup even after a retry replaced it
 
 it("removes its staging when publication itself fails", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-publish-failure-",
+    "nre-kuna-publish-failure-",
     { project: "block-manifest" },
   );
 
@@ -1194,16 +1194,16 @@ it("removes its staging when publication itself fails", async () => {
 it.each(["missing", "corrupt"])(
   "keeps a %s cache beneath the natively resolved selected root through publication, reads and cleanup",
   async (state) => {
-    const root = await createTestTempDirectory("rea-kuna-native-cache-");
+    const root = await createTestTempDirectory("nre-kuna-native-cache-");
     const intended = join(root, "intended");
     await mkdir(join(intended, "nested"), { recursive: true });
     await symlink(join(intended, "nested"), join(root, "alias"));
     const selected = `${root}/alias/../cache`;
     const { kuna, installation, cache, target } = await fixture(
-      "rea-kuna-cache-input-",
+      "nre-kuna-cache-input-",
       {},
       {
-        environment: { REA_KUNA_CACHE_DIR: selected },
+        environment: { NRE_KUNA_CACHE_DIR: selected },
       },
     );
     const input = await target("program");
@@ -1251,7 +1251,7 @@ it.each(["missing", "corrupt"])(
 
 it("invalidates a warm export when same-length content changes", async () => {
   const { cache, installation, target } = await fixture(
-    "rea-kuna-warm-integrity-",
+    "nre-kuna-warm-integrity-",
   );
   try {
     const built = await cache.build({
@@ -1271,7 +1271,7 @@ it("invalidates a warm export when same-length content changes", async () => {
 
 it("refuses escaped manifest paths before reading export files and preserves the outside project", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-escaped-manifest-",
+    "nre-kuna-escaped-manifest-",
   );
   const built = await cache.build({
     installation,
@@ -1310,7 +1310,7 @@ it.each(["h", "readme", "inventory"] as const)(
   "refuses a manifest's mismatched %s role before hashing files",
   async (role) => {
     const { installation, cache, target } = await fixture(
-      "rea-kuna-role-manifest-",
+      "nre-kuna-role-manifest-",
     );
     const built = await cache.build({
       installation,
@@ -1342,7 +1342,7 @@ it.each(["entry", "project", "manifest"] as const)(
   async (kind) => {
     for (const verified of [false, true]) {
       const { installation, cacheRoot, cache, target } = await fixture(
-        "rea-kuna-linked-entry-",
+        "nre-kuna-linked-entry-",
       );
       const built = await cache.build({
         installation,
@@ -1386,7 +1386,7 @@ it.each(["entry", "project", "manifest"] as const)(
 
 it("keeps an empty symlinked projects parent outside its removal authority", async () => {
   const { installation, cacheRoot, cache, target } = await fixture(
-    "rea-kuna-linked-projects-",
+    "nre-kuna-linked-projects-",
   );
   const built = await cache.build({
     installation,
@@ -1415,7 +1415,7 @@ it("keeps an empty symlinked projects parent outside its removal authority", asy
 
 it("preserves a legitimate POSIX backslash in the common export basename", async () => {
   const { installation, cache, target } = await fixture(
-    "rea-kuna-native-basename-",
+    "nre-kuna-native-basename-",
   );
   const built = await cache.build({
     installation,
@@ -1443,7 +1443,7 @@ it.each(["invalid JSON", "changed producing inputs", "valid rewrite"] as const)(
   "revalidates a warm cache after manifest %s",
   async (change) => {
     const { installation, cache, target } = await fixture(
-      "rea-kuna-warm-manifest-",
+      "nre-kuna-warm-manifest-",
     );
     const built = await cache.build({
       installation,
@@ -1479,7 +1479,7 @@ it.each(["invalid JSON", "changed producing inputs", "valid rewrite"] as const)(
 
 it("separates equal target bytes whose native basenames change the export", async () => {
   const { kuna, installation, cache, target } = await fixture(
-    "rea-kuna-basename-key-",
+    "nre-kuna-basename-key-",
   );
   const first = await cache.build({
     installation,

@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "built CLI preserves dates with years beyond four digits",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-archive-date-");
+    const root = await createTestTempDirectory("nre-keyed-archive-date-");
     const path = join(root, "archive.plist");
     // XML property-list dates use an extended ISO year in the public schema.
     const xml = build({
@@ -27,7 +27,7 @@ cliTest(
     await writeFile(path, xml);
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode).toBe(0);
     const result = keyedArchiveResultSchema.parse(

@@ -24,7 +24,7 @@ for (const role of ["manifest", "evidence"] as const) {
   cliTest(
     `refuses a real ${role} file changed during its read`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-export-input-race-cli-");
+      const root = await createTestTempDirectory("nre-export-input-race-cli-");
       const files = await writeEnvironmentServeFiles(root);
       const input =
         role === "manifest" ? files.manifestPath : files.capturePath;
@@ -42,9 +42,9 @@ for (const role of ["manifest", "evidence"] as const) {
         ],
         environment: {
           NODE_OPTIONS: `--import=${probe} --max-old-space-size=256`,
-          REA_TEST_EXPORT_INPUT: input,
-          REA_TEST_EXPORT_READ_MARKER: marker,
-          REA_TEST_EXPORT_READ_ACTION: "append",
+          NRE_TEST_EXPORT_INPUT: input,
+          NRE_TEST_EXPORT_READ_MARKER: marker,
+          NRE_TEST_EXPORT_READ_ACTION: "append",
         },
         timeoutMs: 30_000,
       });
@@ -85,7 +85,7 @@ const heapRefusalSchema = z.object({
 cliTest(
   "admits neither the whole read nor an unbudgeted snapshot under a real heap limit",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-export-input-heap-cli-");
+    const root = await createTestTempDirectory("nre-export-input-heap-cli-");
     const files = await writeEnvironmentServeFiles(root);
     const originalBytes = (await stat(files.manifestPath)).size;
     const marker = join(root, "read-marker");
@@ -118,9 +118,9 @@ cliTest(
         ],
         environment: {
           NODE_OPTIONS: `--import=${probe} --max-old-space-size=256`,
-          REA_TEST_EXPORT_INPUT: files.manifestPath,
-          REA_TEST_EXPORT_READ_MARKER: marker,
-          REA_TEST_EXPORT_READ_ACTION: "record",
+          NRE_TEST_EXPORT_INPUT: files.manifestPath,
+          NRE_TEST_EXPORT_READ_MARKER: marker,
+          NRE_TEST_EXPORT_READ_ACTION: "record",
         },
         timeoutMs: 30_000,
       });
@@ -155,7 +155,7 @@ cliTest(
 cliTest(
   "attributes a pathless descriptor failure during the real tarball copy",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-export-copy-read-cli-");
+    const root = await createTestTempDirectory("nre-export-copy-read-cli-");
     const files = await writeEnvironmentServeFiles(root);
     const tarball = join(root, "package.tgz");
     await writeFile(tarball, "admitted package");
@@ -174,9 +174,9 @@ cliTest(
       ],
       environment: {
         NODE_OPTIONS: `--import=${probe} --max-old-space-size=256`,
-        REA_TEST_EXPORT_INPUT: tarball,
-        REA_TEST_EXPORT_READ_MARKER: marker,
-        REA_TEST_EXPORT_READ_ACTION: "fail-copy",
+        NRE_TEST_EXPORT_INPUT: tarball,
+        NRE_TEST_EXPORT_READ_MARKER: marker,
+        NRE_TEST_EXPORT_READ_ACTION: "fail-copy",
       },
       timeoutMs: 30_000,
     });

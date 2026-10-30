@@ -74,14 +74,14 @@ describe("setup skill backup cleanup ownership", () => {
     "retains a failed %s backup read until setup host disposal",
     async (stage) => {
       const home = await createTestTempDirectory(
-        "rea-setup-skill-backup-close-",
+        "nre-setup-skill-backup-close-",
       );
       const [destination] = skillDestinations(home, [], {}, "linux");
       if (destination === undefined)
         throw new Error("Shared skill root missing");
       const manifest = join(destination.path, "SKILL.md");
       const original = "stale managed skill\n";
-      const firstBackup = `${manifest}.rea.backup`;
+      const firstBackup = `${manifest}.nre.backup`;
       const backup =
         stage === "recovery"
           ? `${firstBackup}.${createHash("sha256").update(original).digest("hex")}.recovery`
@@ -178,7 +178,7 @@ describe("setup skill backup cleanup ownership", () => {
 
 describe("skill regular-file cleanup ownership", () => {
   it("retains a failed setup skill read until setup host disposal", async () => {
-    const home = await createTestTempDirectory("rea-setup-skill-close-");
+    const home = await createTestTempDirectory("nre-setup-skill-close-");
     const [destination] = skillDestinations(home, [], {}, "linux");
     if (destination === undefined) throw new Error("Shared skill root missing");
     const manifest = join(destination.path, "SKILL.md");
@@ -218,7 +218,7 @@ describe("skill regular-file cleanup ownership", () => {
   });
 
   it("waits for an admitted skill read before its resource scope closes", async () => {
-    const home = await createTestTempDirectory("rea-setup-skill-inflight-");
+    const home = await createTestTempDirectory("nre-setup-skill-inflight-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Shared skill root missing");
     const manifest = join(destination.path, "SKILL.md");
@@ -269,7 +269,7 @@ describe("skill regular-file cleanup ownership", () => {
 
 describe("skill cleanup diagnostics", () => {
   it("preserves read and host cleanup failures when doctor identity cannot complete", async () => {
-    const home = await createTestTempDirectory("rea-doctor-skill-close-");
+    const home = await createTestTempDirectory("nre-doctor-skill-close-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Shared skill root missing");
     const manifest = join(destination.path, "SKILL.md");
@@ -327,7 +327,7 @@ describe("skill cleanup diagnostics", () => {
   });
 
   it("returns uninstall changes with a failed cleanup item for a retained handle", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-skill-close-");
+    const home = await createTestTempDirectory("nre-uninstall-skill-close-");
     const [destination] = skillDestinations(home, []);
     if (destination === undefined) throw new Error("Shared skill root missing");
     const manifest = join(destination.path, "SKILL.md");

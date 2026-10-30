@@ -418,7 +418,7 @@ const availabilityFor = (context: AvailabilityContext): Availability => {
   if (failure !== undefined)
     return {
       reason: "provider_unavailable",
-      remediation: `Adapter ${failure.providerId} could not load: ${failure.reason}. Repair the adapter installation and restart REA; other capabilities remain available.`,
+      remediation: `Adapter ${failure.providerId} could not load: ${failure.reason}. Repair the adapter installation and restart NRE; other capabilities remain available.`,
     };
   if (workflowAvailability !== null) return workflowAvailability;
   const hostDecision = hostAvailability(context);
@@ -515,7 +515,7 @@ const workflowAvailabilityFor = ({
               available: false,
               missing_operations: ["native-module-resolver"],
               remediation:
-                "Provide an absolute REA_BROWSER_EXECUTABLE supporting import.meta.resolve; no binary target is required.",
+                "Provide an absolute NRE_BROWSER_EXECUTABLE supporting import.meta.resolve; no binary target is required.",
             },
       ],
     };
@@ -524,28 +524,28 @@ const workflowAvailabilityFor = ({
       policy,
       "javascriptRecovery",
       policy.javascriptRecoveryEnabled,
-      "On Linux x64, provide an absolute REA_WAKARU_COMMAND for Wakaru ^1.13.0 (verified with 1.14.0) and util-linux prlimit; see docs/javascript-recovery.md#install-wakaru. No binary target is required.",
+      "On Linux x64, provide an absolute NRE_WAKARU_COMMAND for Wakaru ^1.13.0 (verified with 1.14.0) and util-linux prlimit; see docs/javascript-recovery.md#install-wakaru. No binary target is required.",
     );
   if (name === "inspect_binary_layout")
     return hostRestrictedAvailability(
       policy,
       "binaryLayout",
       policy.binaryLayoutEnabled,
-      "On Linux x64, set absolute REA_PWNTOOLS_PYTHON to caller-supplied Python with pwntools 4.15.0. No active binary target is required.",
+      "On Linux x64, set absolute NRE_PWNTOOLS_PYTHON to caller-supplied Python with pwntools 4.15.0. No active binary target is required.",
     );
   if (name === "inspect_packet_capture" || name === "inspect_packet_fields")
     return hostRestrictedAvailability(
       policy,
       "packetCapture",
       policy.packetCaptureEnabled,
-      "On Linux, supply TShark 4.x on PATH or through absolute REA_TSHARK_COMMAND, and util-linux prlimit (REA_TSHARK_PRLIMIT_COMMAND, default /usr/bin/prlimit). No active binary target or hardware is required; the tool is checked at execution.",
+      "On Linux, supply TShark 4.x on PATH or through absolute NRE_TSHARK_COMMAND, and util-linux prlimit (NRE_TSHARK_PRLIMIT_COMMAND, default /usr/bin/prlimit). No active binary target or hardware is required; the tool is checked at execution.",
     );
   if (name === "decode_signal_recording" || name === "inspect_signal_decoders")
     return hostRestrictedAvailability(
       policy,
       "signalRecording",
       policy.signalRecordingEnabled,
-      "On Linux, supply sigrok-cli 0.7.2 via absolute REA_SIGROK_COMMAND and util-linux prlimit (REA_SIGROK_PRLIMIT_COMMAND, default /usr/bin/prlimit). No active binary target or hardware is required; the tool is checked at execution.",
+      "On Linux, supply sigrok-cli 0.7.2 via absolute NRE_SIGROK_COMMAND and util-linux prlimit (NRE_SIGROK_PRLIMIT_COMMAND, default /usr/bin/prlimit). No active binary target or hardware is required; the tool is checked at execution.",
     );
   if (name === "inspect_wasm_artifact")
     return policy.wasmArtifactEnabled === true
@@ -553,7 +553,7 @@ const workflowAvailabilityFor = ({
       : {
           reason: "provider_missing",
           remediation:
-            "Supply WABT 1.0.42 via absolute REA_WABT_BIN_DIRECTORY. No active binary target is required; tools are checked at execution.",
+            "Supply WABT 1.0.42 via absolute NRE_WABT_BIN_DIRECTORY. No active binary target is required; tools are checked at execution.",
         };
   if (name === "inspect_pe_resources" || name === "inspect_native_exports")
     return { reason: "available", remediation: null };
@@ -584,7 +584,7 @@ const workflowAvailabilityFor = ({
       policy,
       "recordedCrash",
       policy.recordedCrashEnabled,
-      "On Linux x64, set absolute REA_PWNTOOLS_PYTHON to caller-supplied Python with pwntools 4.15.0. No active binary target is required.",
+      "On Linux x64, set absolute NRE_PWNTOOLS_PYTHON to caller-supplied Python with pwntools 4.15.0. No active binary target is required.",
     );
   if (kind === "firmware-provider") {
     const { binwalk, unblob } = FIRMWARE_TOOL_REQUIREMENTS;
@@ -611,17 +611,17 @@ const workflowAvailabilityFor = ({
                 : "provider_missing",
           remediation:
             policy.androidAnalysisAvailability?.reason ??
-            "Set REA_JADX_MCP_JAR to a caller-supplied jadx-headless-mcp 0.7.1 JAR and provide a full JDK on Linux, macOS, or Windows x64 with its matching bundled native controls.",
+            "Set NRE_JADX_MCP_JAR to a caller-supplied jadx-headless-mcp 0.7.1 JAR and provide a full JDK on Linux, macOS, or Windows x64 with its matching bundled native controls.",
         };
   if (kind === "adb-provider")
     return ownerProbeAvailability(
       policy.adbAnalysisAvailability,
-      "Set REA_ADB_PATH to a caller-supplied adb executable or make adb available on PATH. This checks the client version only; device and serial availability depend on the request.",
+      "Set NRE_ADB_PATH to a caller-supplied adb executable or make adb available on PATH. This checks the client version only; device and serial availability depend on the request.",
     );
   if (kind === "apktool-provider")
     return ownerProbeAvailability(
       policy.apktoolAnalysisAvailability,
-      "Set REA_APKTOOL_COMMAND to a caller-supplied Apktool executable or make Apktool 2.7.0 or newer available on PATH.",
+      "Set NRE_APKTOOL_COMMAND to a caller-supplied Apktool executable or make Apktool 2.7.0 or newer available on PATH.",
     );
   if (kind === "jeb-provider") {
     const availability = policy.jebAnalysisAvailability;
@@ -636,7 +636,7 @@ const workflowAvailabilityFor = ({
           };
     return ownerProbeAvailability(
       availability,
-      "Start a JEB client serving MCP (GUI client, or headless via its programmatic launcher) and point REA_JEB_MCP_URL at it (default http://127.0.0.1:8425/mcp). REA does not install or launch JEB.",
+      "Start a JEB client serving MCP (GUI client, or headless via its programmatic launcher) and point NRE_JEB_MCP_URL at it (default http://127.0.0.1:8425/mcp). NRE does not install or launch JEB.",
     );
   }
   const browser = browserProviderAvailability(name, kind, policy);
@@ -664,7 +664,7 @@ const workflowAvailabilityFor = ({
       : {
           reason: "provider_missing",
           remediation:
-            "Start REA with its JavaScript runtime provider available.",
+            "Start NRE with its JavaScript runtime provider available.",
         };
   if (kind === "session") return { reason: "available", remediation: null };
   return null;
@@ -718,14 +718,14 @@ const electronProviderAvailability = (
       : {
           reason: "provider_missing",
           remediation:
-            "Start REA with the Electron scenario provider available.",
+            "Start NRE with the Electron scenario provider available.",
         };
   return policy.electronObservationEnabled === true
     ? { reason: "available", remediation: null }
     : {
         reason: "provider_missing",
         remediation:
-          "Start REA with its Electron observation provider available.",
+          "Start NRE with its Electron observation provider available.",
       };
 };
 
@@ -740,7 +740,7 @@ const browserProviderAvailability = (
       : {
           reason: "provider_missing",
           remediation:
-            "Start REA with its browser scenario provider available.",
+            "Start NRE with its browser scenario provider available.",
         };
   if (kind !== "browser-provider") return null;
   return policy.browserObservationEnabled === true
@@ -748,7 +748,7 @@ const browserProviderAvailability = (
     : {
         reason: "provider_missing",
         remediation:
-          "Start REA with its browser observation provider available.",
+          "Start NRE with its browser observation provider available.",
       };
 };
 

@@ -29,7 +29,7 @@ import type { Il2cppMetadata } from "../domain/il2cpp/il2cppMetadata.js";
 
 /** A linked metadata report reduced to Ghidra function seeds. */
 export interface Il2cppGhidraSeeds {
-  /** `address<TAB>function<TAB>name` lines in the REA_GHIDRA_SEED_FILE format. */
+  /** `address<TAB>function<TAB>name` lines in the NRE_GHIDRA_SEED_FILE format. */
   readonly text: string;
   readonly functions: number;
   /** Methods whose code address another method already seeded (identical code folding). */

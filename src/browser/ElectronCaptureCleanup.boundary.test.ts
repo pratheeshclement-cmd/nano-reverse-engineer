@@ -51,7 +51,7 @@ it.skipIf(process.platform === "win32")(
       });
       expect(await supervisor.waitForExit(1000)).toBe(true);
       const error = new ProviderCleanupError(
-        "rea-playwright-electron-active",
+        "nre-playwright-electron-active",
         owner.pendingResources,
         {},
       );

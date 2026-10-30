@@ -3,9 +3,9 @@
  */
 .text
 .p2align 2
-.globl rea_ppc_probe
-.type rea_ppc_probe, @function
-rea_ppc_probe:
+.globl nre_ppc_probe
+.type nre_ppc_probe, @function
+nre_ppc_probe:
     addi 3, 4, 0x1234
     cmpwi 0, 4, 0
     beq 0, .Lzero
@@ -13,5 +13,5 @@ rea_ppc_probe:
 .Lzero:
     li 3, 7
     blr
-.size rea_ppc_probe, .-rea_ppc_probe
+.size nre_ppc_probe, .-nre_ppc_probe
 .section .note.GNU-stack,"",@progbits

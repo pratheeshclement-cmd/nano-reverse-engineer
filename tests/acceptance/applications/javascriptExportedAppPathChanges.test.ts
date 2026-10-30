@@ -20,7 +20,7 @@ cliTest.for(
 )(
   "retains $format exported app setter uncertainty (replaced=$replaced) through $surface",
   async ({ surface, format, replaced }, { cli }) => {
-    const root = await createTestTempDirectory("rea-exported-app-path-");
+    const root = await createTestTempDirectory("nre-exported-app-path-");
     const connected =
       format !== "local exports Object.assign" &&
       format !== "detached exports Object.assign";

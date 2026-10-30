@@ -51,7 +51,7 @@ it.each([
 ])(
   "reports the effective fixed $name allowance",
   async ({ name, maximum, unit, kind }) => {
-    const root = await createTestTempDirectory("rea-dotnet-fixed-allowance-");
+    const root = await createTestTempDirectory("nre-dotnet-fixed-allowance-");
     const path = join(root, "host.exe");
     const fixture = dotnetBundleFixture([
       {
@@ -85,7 +85,7 @@ it.each([
 it.each(["pyinstaller", "dotnet-bundle"] as const)(
   "keeps the %s outer container when a stored member is another executable container",
   async (format) => {
-    const root = await createTestTempDirectory("rea-dotnet-nested-container-");
+    const root = await createTestTempDirectory("nre-dotnet-nested-container-");
     const path = join(root, "renamed.bin");
     const pack = (payload: Buffer) =>
       cArchiveExecutable({
@@ -135,7 +135,7 @@ it.each(["pyinstaller", "dotnet-bundle"] as const)(
 it.each([1, 2, 6])(
   "inventories and extracts version %s with source and member identity",
   async (version) => {
-    const root = await createTestTempDirectory("rea-dotnet-bundle-");
+    const root = await createTestTempDirectory("nre-dotnet-bundle-");
     const path = join(root, "renamed.bin");
     const plain = Buffer.from("assembly sample");
     const compressed = Buffer.from("resource content ".repeat(1000));
@@ -211,7 +211,7 @@ it.each([
     })),
   ],
 ] as const)("rejects %s before building path trees", async (_name, files) => {
-  const root = await createTestTempDirectory("rea-dotnet-path-budget-");
+  const root = await createTestTempDirectory("nre-dotnet-path-budget-");
   const path = join(root, "host.exe");
   const fixture = dotnetBundleFixture(files);
   await writeFile(path, fixture.bytes);
@@ -226,7 +226,7 @@ it.each([
 });
 
 it("admits many members beneath a shared deep path prefix", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-shared-prefix-");
+  const root = await createTestTempDirectory("nre-dotnet-shared-prefix-");
   const path = join(root, "host.exe");
   const files = Array.from({ length: 1_000 }, (_, index) => ({
     path: `${"a/".repeat(250)}${index}`,
@@ -361,7 +361,7 @@ it.each([
 ] as const)(
   "rejects %s without publishing output",
   async (_name, make, reason) => {
-    const root = await createTestTempDirectory("rea-dotnet-invalid-");
+    const root = await createTestTempDirectory("nre-dotnet-invalid-");
     const path = join(root, "host.exe");
     await writeFile(path, make());
     const outputRoot = join(root, "output");
@@ -380,7 +380,7 @@ it.each([
 );
 
 it("rejects replacement, forged entry metadata and cancellation without losing cleanup", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-stable-");
+  const root = await createTestTempDirectory("nre-dotnet-stable-");
   const path = join(root, "host.exe");
   await writeFile(path, dotnetBundleFixture().bytes);
   const reader = new DotnetBundleArtifactReader(path);
@@ -411,7 +411,7 @@ it("rejects replacement, forged entry metadata and cancellation without losing c
 });
 
 it("rejects a replaced host even when its inventoried members are unchanged", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-host-identity-");
+  const root = await createTestTempDirectory("nre-dotnet-host-identity-");
   const path = join(root, "host.exe");
   const original = dotnetBundleFixture().bytes;
   await writeFile(path, original);
@@ -439,7 +439,7 @@ it("rejects a replaced host even when its inventoried members are unchanged", as
 });
 
 it("detects a renamed host, cancels an active compressed stream, and closes its descriptor", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-stream-");
+  const root = await createTestTempDirectory("nre-dotnet-stream-");
   const path = join(root, "host.exe");
   await writeFile(
     path,
@@ -483,7 +483,7 @@ it("detects a renamed host, cancels an active compressed stream, and closes its 
 });
 
 it("finds a split marker and uses the first apphost marker, including offset zero", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-marker-");
+  const root = await createTestTempDirectory("nre-dotnet-marker-");
   const path = join(root, "host");
   const fixture = dotnetBundleFixture();
   const padded = Buffer.alloc(65536 + fixture.bytes.length);
@@ -553,7 +553,7 @@ const sha = (bytes: Buffer): string =>
   createHash("sha256").update(bytes).digest("hex");
 
 it("preserves source I/O failures while reading a manifest string across the cache boundary", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-metadata-io-");
+  const root = await createTestTempDirectory("nre-dotnet-metadata-io-");
   const path = join(root, "host.exe");
   const name = "a".repeat(64 * 1024);
   const fixture = dotnetBundleFixture([
@@ -588,7 +588,7 @@ it("preserves source I/O failures while reading a manifest string across the cac
 it.each([3, 4])(
   "validates the version 2+ configuration extent for file type %s",
   async (fileType) => {
-    const root = await createTestTempDirectory("rea-dotnet-config-");
+    const root = await createTestTempDirectory("nre-dotnet-config-");
     const path = join(root, "host.exe");
     const fixture = dotnetBundleFixture([
       { path: "config.json", bytes: Buffer.from("{}"), fileType },
@@ -628,7 +628,7 @@ it.each([3, 4])(
 );
 
 it("retains compressed-source I/O failures and leaves a borrowed descriptor to its owner", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-io-");
+  const root = await createTestTempDirectory("nre-dotnet-io-");
   const path = join(root, "host.exe");
   await writeFile(
     path,
@@ -672,7 +672,7 @@ it("retains compressed-source I/O failures and leaves a borrowed descriptor to i
 it.each(["elf", "mach-o"] as const)(
   "routes %s bundle bytes without a filename hint",
   async (format) => {
-    const root = await createTestTempDirectory("rea-dotnet-native-");
+    const root = await createTestTempDirectory("nre-dotnet-native-");
     const path = join(root, "renamed.data");
     const fixture = dotnetBundleFixture();
     Buffer.from(format === "elf" ? "7f454c46" : "cffaedfe", "hex").copy(
@@ -707,7 +707,7 @@ it.each(["elf", "mach-o"] as const)(
 it.each(["pe", "elf"] as const)(
   "keeps an unbundled %s host native and refuses empty extraction",
   async (format) => {
-    const root = await createTestTempDirectory("rea-dotnet-unbundled-");
+    const root = await createTestTempDirectory("nre-dotnet-unbundled-");
     const path = join(root, "template.bin");
     const fixture = dotnetBundleFixture();
     fixture.bytes.writeBigUInt64LE(0n, 536);

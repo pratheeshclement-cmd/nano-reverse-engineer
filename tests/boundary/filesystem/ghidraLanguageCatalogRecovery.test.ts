@@ -59,7 +59,7 @@ afterEach(() => {
 });
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-ghidra-catalog-close-");
+  const root = await createTestTempDirectory("nre-ghidra-catalog-close-");
   const languages = join(root, "Ghidra/Processors/x86/data/languages");
   const path = join(root, "fixture.exe");
   await mkdir(languages, { recursive: true });
@@ -70,7 +70,7 @@ const fixture = async () => {
   await writeFile(path, nativeAotPeFixture());
   const config = parseConfig({
     GHIDRA_INSTALL_DIR: root,
-    REA_GHIDRA_LANGUAGE_ID: "x86:LE:64:default",
+    NRE_GHIDRA_LANGUAGE_ID: "x86:LE:64:default",
   });
   if (!config.ok) throw config.error;
   const provider = new GhidraProvider(

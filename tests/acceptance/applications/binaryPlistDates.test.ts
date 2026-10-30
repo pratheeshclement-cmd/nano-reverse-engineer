@@ -83,7 +83,7 @@ const makeApp = async (root: string, bytes: Buffer): Promise<string> => {
 cliTest(
   "preserves binary plist date precision through keyed archive and Interface Builder CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-binary-plist-dates-");
+    const root = await createTestTempDirectory("nre-binary-plist-dates-");
     const sourceBytes = makeArchiveBytes();
     const parsedFixture = parseBinary(sourceBytes) as {
       $top: { root: { UID: number } };
@@ -104,7 +104,7 @@ cliTest(
 
     const archiveOutput = await cli.run({
       arguments: ["inspect-keyed-archive", archivePath, "--json"],
-      environment: { HOME: root, USERPROFILE: root, REA_LOG_LEVEL: "silent" },
+      environment: { HOME: root, USERPROFILE: root, NRE_LOG_LEVEL: "silent" },
     });
     expect(archiveOutput.exitCode, archiveOutput.stderr).toBe(0);
     const archiveResult = keyedArchiveResultSchema.parse(
@@ -122,7 +122,7 @@ cliTest(
 
     const malformedOutput = await cli.run({
       arguments: ["inspect-keyed-archive", malformedArchivePath, "--json"],
-      environment: { HOME: root, USERPROFILE: root, REA_LOG_LEVEL: "silent" },
+      environment: { HOME: root, USERPROFILE: root, NRE_LOG_LEVEL: "silent" },
     });
     expect(malformedOutput.exitCode).not.toBe(0);
 
@@ -131,7 +131,7 @@ cliTest(
     await writeFile(malformedNib, malformedBytes);
     const ibOutput = await cli.run({
       arguments: ["decode-interface-builder", malformedApp, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(ibOutput.exitCode, ibOutput.stderr).toBe(0);
     const ibResult = interfaceBuilderAnalysisSchema.parse(
@@ -169,8 +169,8 @@ cliTest(
     const { call } = await connectLocalToolsMcp({
       HOME: root,
       USERPROFILE: root,
-      REA_LOG_LEVEL: "silent",
-      REA_ANALYSIS_PROVIDER: "auto",
+      NRE_LOG_LEVEL: "silent",
+      NRE_ANALYSIS_PROVIDER: "auto",
     });
     expect((await call("open_binary", { path: archivePath })).isError).not.toBe(
       true,
@@ -228,7 +228,7 @@ cliTest(
   "preserves aliased wide-integer and unknown-date values through keyed archive CLI and MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-binary-plist-scalar-alias-",
+      "nre-binary-plist-scalar-alias-",
     );
     const { bytes, integerDecimal } =
       embedSubmillisecondDateInWideIntegerPayload(makeArchiveBytes(), 0.2);
@@ -237,8 +237,8 @@ cliTest(
     const environment = {
       HOME: root,
       USERPROFILE: root,
-      REA_LOG_LEVEL: "silent",
-      REA_ANALYSIS_PROVIDER: "auto",
+      NRE_LOG_LEVEL: "silent",
+      NRE_ANALYSIS_PROVIDER: "auto",
     };
 
     const cliOutput = await cli.run({

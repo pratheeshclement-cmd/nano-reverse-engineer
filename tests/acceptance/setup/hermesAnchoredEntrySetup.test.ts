@@ -18,13 +18,13 @@ for (const version of ["1.1", "1.2"] as const) {
       `Hermes ${version} preserves ${style} anchor consumers through setup and uninstall`,
       async ({ cli }) => {
         const home = await createTestTempDirectory(
-          "rea-hermes-anchored-entry-",
+          "nre-hermes-anchored-entry-",
         );
         const profile = join(home, "hermes");
         const config = join(profile, "config.yaml");
         const server = {
           command: process.execPath,
-          args: [resolve("scripts/rea.mjs"), "mcp"],
+          args: [resolve("scripts/nre.mjs"), "mcp"],
           env: { KEEP: "off" },
           enabled: false,
         };
@@ -41,7 +41,7 @@ for (const version of ["1.1", "1.2"] as const) {
           directive +
           "# Keep this user setting\nmodel: custom\n" +
           (hasDefaults ? "defaults: &settings {KEEP: 'off'}\n" : "") +
-          `mcp_servers:\n  ${style === "key" ? "&server_name " : ""}rea:${style === "child" || style === "key" ? "" : " &server"}${style === "entry" ? " # Keep anchor definition comment" : ""}\n` +
+          `mcp_servers:\n  ${style === "key" ? "&server_name " : ""}nre:${style === "child" || style === "key" ? "" : " &server"}${style === "entry" ? " # Keep anchor definition comment" : ""}\n` +
           entry +
           (style === "child"
             ? "  other:\n    command: other-server\n    env: *settings # Shared environment\n"
@@ -85,11 +85,11 @@ for (const version of ["1.1", "1.2"] as const) {
         const configuredValues = parse(configured, { version });
         expect(configuredValues).toMatchObject({
           model: "custom",
-          mcp_servers: { rea: { enabled: true, env: { KEEP: "off" } }, other },
+          mcp_servers: { nre: { enabled: true, env: { KEEP: "off" } }, other },
           ...(style === "shadowed"
             ? { observer: server, later: { KEEP: "later" } }
             : {}),
-          ...(style === "key" ? { observer: "rea" } : {}),
+          ...(style === "key" ? { observer: "nre" } : {}),
         });
         if (hasDefaults)
           expect(configuredValues.mcp_servers.other.env).toBe(
@@ -107,7 +107,7 @@ for (const version of ["1.1", "1.2"] as const) {
         );
         if (hasDefaults)
           expect(configured).toContain("# Keep nested reference comment");
-        expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+        expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
         const doctor = await run(["doctor", "--client", "hermes", "--json"]);
         expect(doctor.exitCode, JSON.stringify(doctor)).toBe(0);
         expect(doctor.json).toMatchObject({
@@ -136,13 +136,13 @@ for (const version of ["1.1", "1.2"] as const) {
                 observer: server,
               }
             : {}),
-          ...(style === "key" ? { observer: "rea" } : {}),
+          ...(style === "key" ? { observer: "nre" } : {}),
         });
         if (hasDefaults)
           expect(removedValues.mcp_servers.other.env).toBe(
             removedValues.defaults,
           );
-        expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+        expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
         const remaining = await readFile(config, "utf8");
         if (style === "entry")
           expect(remaining).toContain("# Keep anchor definition comment");

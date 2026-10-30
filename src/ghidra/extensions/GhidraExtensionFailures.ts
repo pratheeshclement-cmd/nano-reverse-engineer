@@ -24,7 +24,7 @@ export const ghidraExtensionFailure = (
     ? new AnalysisCapabilityUnavailableError(
         "ghidra",
         operation,
-        `${failed.id}: ${failed.reason}. Omit REA_GHIDRA_NATIVEAOT_JAR to continue ordinary native analysis.`,
+        `${failed.id}: ${failed.reason}. Omit NRE_GHIDRA_NATIVEAOT_JAR to continue ordinary native analysis.`,
       )
     : new ProviderAdapterError("ghidra", operation, {
         diagnostics: {

@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "root update flag uses the verified workflow and preserves executable output policies",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-update-alias-");
+    const home = await createTestTempDirectory("nre-update-alias-");
     const bin = join(home, "bin");
     const script = join(home, "npm-fixture.mjs");
     const log = join(home, "commands.jsonl");
@@ -21,12 +21,12 @@ cliTest(
     import {appendFileSync} from 'node:fs';
     import {join} from 'node:path';
     const args=process.argv.slice(2);
-    appendFileSync(process.env.REA_TEST_NPM_LOG, JSON.stringify(args)+'\\n');
+    appendFileSync(process.env.NRE_TEST_NPM_LOG, JSON.stringify(args)+'\\n');
     if(args[0]==='root') console.log(join(process.env.USERPROFILE,'unowned','node_modules'));
     else if(args[0]==='prefix') console.log(join(process.env.USERPROFILE,'unowned'));
     else if(args[0]==='view') {
-      if(process.env.REA_TEST_NPM_FAILURE==='1') {process.stderr.write('owned fake registry denied');process.exitCode=2;}
-      else if(process.env.REA_TEST_NPM_OVERSIZED==='1') process.stdout.write(JSON.stringify(${JSON.stringify(PRODUCT_IDENTITY.packageVersion)})+' '.repeat(4 * 1024 * 1024));
+      if(process.env.NRE_TEST_NPM_FAILURE==='1') {process.stderr.write('owned fake registry denied');process.exitCode=2;}
+      else if(process.env.NRE_TEST_NPM_OVERSIZED==='1') process.stdout.write(JSON.stringify(${JSON.stringify(PRODUCT_IDENTITY.packageVersion)})+' '.repeat(4 * 1024 * 1024));
       else console.log(JSON.stringify(${JSON.stringify(PRODUCT_IDENTITY.packageVersion)}));
     } else {process.stderr.write('No installation or unexpected package-manager commands are allowed');process.exitCode=97;}
   `,
@@ -34,8 +34,8 @@ cliTest(
     await writeFile(
       join(bin, process.platform === "win32" ? "npm.cmd" : "npm"),
       process.platform === "win32"
-        ? '@echo off\r\n"%REA_TEST_NODE%" "%REA_TEST_NPM_SCRIPT%" %*\r\n'
-        : '#!/bin/sh\nexec "$REA_TEST_NODE" "$REA_TEST_NPM_SCRIPT" "$@"\n',
+        ? '@echo off\r\n"%NRE_TEST_NODE%" "%NRE_TEST_NPM_SCRIPT%" %*\r\n'
+        : '#!/bin/sh\nexec "$NRE_TEST_NODE" "$NRE_TEST_NPM_SCRIPT" "$@"\n',
       { mode: 0o700 },
     );
     const run = (
@@ -58,11 +58,11 @@ cliTest(
           npm_config_prefix: join(home, "prefix"),
           npm_config_cache: join(home, "cache"),
           npm_config_user_agent: "npm/test",
-          REA_TEST_NODE: process.execPath,
-          REA_TEST_NPM_SCRIPT: script,
-          REA_TEST_NPM_LOG: log,
-          REA_TEST_NPM_FAILURE: failure ? "1" : "0",
-          REA_TEST_NPM_OVERSIZED: oversized ? "1" : "0",
+          NRE_TEST_NODE: process.execPath,
+          NRE_TEST_NPM_SCRIPT: script,
+          NRE_TEST_NPM_LOG: log,
+          NRE_TEST_NPM_FAILURE: failure ? "1" : "0",
+          NRE_TEST_NPM_OVERSIZED: oversized ? "1" : "0",
           CI: "1",
           NO_UPDATE_NOTIFIER: "1",
         },
@@ -108,7 +108,7 @@ cliTest(
     expect(ambiguous.exitCode).toBe(1);
     expect(ambiguous.json).toMatchObject({
       code: "UPDATE_FAILED",
-      message: expect.stringContaining("rea update"),
+      message: expect.stringContaining("nre update"),
     });
     expect(await readFile(log, "utf8")).toBe(before);
     const help = await run(["--update", "--help"]);

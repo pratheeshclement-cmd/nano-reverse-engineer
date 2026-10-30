@@ -35,7 +35,8 @@ export const decodeGpuPayloadStream = async (
   if (
     !Number.isSafeInteger(consumed) ||
     consumed <= 0 ||
-    consumed > bytes.length
+    consumed > bytes.length ||
+    decoded.length < maximumDecodedSize
   )
     rejectGpu("GPU decoder returned an invalid complete codec extent");
   return { buffer: decoded, consumedBytes: consumed };

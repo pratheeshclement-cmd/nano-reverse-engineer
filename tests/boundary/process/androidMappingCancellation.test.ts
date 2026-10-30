@@ -20,7 +20,7 @@ it.each(
       "normal",
       undefined,
       undefined,
-      { REA_JADX_OPERATION_TIMEOUT_MS: "2000" },
+      { NRE_JADX_OPERATION_TIMEOUT_MS: "2000" },
     );
     const mapping = join(dirname(apk), "mapping.txt");
     await writeFile(mapping, "example.Original -> fixture.Target:\n");

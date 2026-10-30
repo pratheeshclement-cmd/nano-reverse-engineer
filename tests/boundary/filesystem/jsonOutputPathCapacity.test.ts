@@ -52,7 +52,7 @@ import { projectAnalysisError } from "../../../src/domain/analysisErrorProjectio
 it.each(["directory", "content"] as const)(
   "falls back to a shorter same-filesystem staging parent after %s pathname exhaustion and removes every stage",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-staging-path-capacity-");
+    const root = await createTestTempDirectory("nre-staging-path-capacity-");
     const parent = join(root, "nested");
     await mkdir(parent);
     const resources = new ArtifactResourceScope();
@@ -82,7 +82,7 @@ it.each(["directory", "content"] as const)(
 );
 
 it("reports an actual selected-parent pathname refusal as a filesystem resource constraint", async () => {
-  const root = await createTestTempDirectory("rea-selected-path-capacity-");
+  const root = await createTestTempDirectory("nre-selected-path-capacity-");
   const resources = new ArtifactResourceScope();
   onTestFinished(() => resources.close());
   failure.parent = root;
@@ -113,7 +113,7 @@ it.skipIf(process.platform !== "darwin")(
   "publishes under a real macOS parent near the pathname limit when direct destination creation is supported",
   async () => {
     const root = await realpath(
-      await createTestTempDirectory("rea-long-parent-"),
+      await createTestTempDirectory("nre-long-parent-"),
     );
     let parent = root;
     while (Buffer.byteLength(parent) + 201 < 1002) {
@@ -134,11 +134,11 @@ it.skipIf(process.platform !== "darwin")(
     expect(result.ok).toBe(true);
     expect(await readFile(destination, "utf8")).toBe(bytes);
     expect(
-      (await readdir(parent)).filter((name) => name.startsWith(".rea-write-")),
+      (await readdir(parent)).filter((name) => name.startsWith(".nre-write-")),
     ).toEqual([]);
     expect(
       (await readdir(dirname(parent))).filter((name) =>
-        name.startsWith(".rea-write-"),
+        name.startsWith(".nre-write-"),
       ),
     ).toEqual([]);
   },

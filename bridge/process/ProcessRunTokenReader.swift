@@ -207,7 +207,7 @@ func processRunTokenObservation(
     if let runId = parsed.runId {
       return RunTokenObservation(pid: pid, state: "readable", run_id: runId, reason: nil)
     }
-    // A non-empty environment without REA's token proves this candidate is
+    // A non-empty environment without NRE's token proves this candidate is
     // unrelated. CS_RESTRICT cannot turn that readable fact into uncertainty.
     if parsed.environmentEntryCount > 0 {
       return RunTokenObservation(pid: pid, state: "readable", run_id: nil, reason: nil)
@@ -361,16 +361,16 @@ func parseProcessEnvironment(
     throw RunTokenReadError.appleVectorUnavailable
   }
   if trailingEntries[appleVectorStart...].contains(where: {
-    $0.starts(with: Array("REA_PROCESS_RUN_ID=".utf8))
+    $0.starts(with: Array("NRE_PROCESS_RUN_ID=".utf8))
   }) {
     throw RunTokenReadError.ambiguousEnvironmentBoundary
   }
   let environmentEntries = trailingEntries[..<appleVectorStart]
   var found: String?
   for entry in environmentEntries {
-    if entry.starts(with: Array("REA_PROCESS_RUN_ID=".utf8)) {
+    if entry.starts(with: Array("NRE_PROCESS_RUN_ID=".utf8)) {
       guard found == nil else { throw RunTokenReadError.duplicateToken }
-      let value = entry.dropFirst("REA_PROCESS_RUN_ID=".utf8.count)
+      let value = entry.dropFirst("NRE_PROCESS_RUN_ID=".utf8.count)
       guard let decoded = String(bytes: value, encoding: .utf8) else {
         throw RunTokenReadError.invalidTokenEncoding
       }

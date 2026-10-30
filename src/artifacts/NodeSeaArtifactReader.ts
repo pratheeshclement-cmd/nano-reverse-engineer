@@ -171,6 +171,7 @@ export class NodeSeaArtifactReader implements ArtifactReader {
     await this.#source.close();
     this.#entries.clear();
     this.#admission = undefined;
+    this.#header = undefined;
   }
 
   provenance(): readonly [] {

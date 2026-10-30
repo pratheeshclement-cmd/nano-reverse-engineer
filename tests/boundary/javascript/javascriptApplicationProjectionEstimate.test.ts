@@ -40,7 +40,7 @@ it.each([
   async ({ directory, keySuffix }) => {
     const text = chunk(400, keySuffix);
     const sourcePath = `${directory}chunk.js`;
-    const root = await createTestTempDirectory("rea-projection-estimate-");
+    const root = await createTestTempDirectory("nre-projection-estimate-");
     await writeFixtureFiles(root, { [`assets/${sourcePath}`]: text });
     const result = await reconstructJavaScriptFixture(join(root, "assets"));
     const facts = analyzeJavaScriptStaticSource(text);

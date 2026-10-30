@@ -59,7 +59,7 @@ export type GhidraProjectCommitment = z.infer<
 
 const selectionFailure = (
   message: string,
-  setting = "REA_GHIDRA_PROJECT_PATH",
+  setting = "NRE_GHIDRA_PROJECT_PATH",
   diagnostics?: Readonly<Record<string, JsonValue>>,
 ): ConfigurationError =>
   new ConfigurationError(message, {
@@ -183,7 +183,7 @@ export const resolveGhidraProject = async (
       if (marker === undefined)
         throw selectionFailure(
           `Existing Ghidra project marker does not exist: ${selection.path}`,
-          "REA_GHIDRA_PROJECT_PATH",
+          "NRE_GHIDRA_PROJECT_PATH",
           { system_code: "ENOENT", syscall: "lstat" },
         );
       if (!marker.isFile())
@@ -198,7 +198,7 @@ export const resolveGhidraProject = async (
       if (!program.success)
         throw selectionFailure(
           program.error.message,
-          "REA_GHIDRA_PROGRAM_NAME",
+          "NRE_GHIDRA_PROGRAM_NAME",
         );
       const programName = program.data;
       return {
@@ -244,7 +244,7 @@ export const copyExistingGhidraProject = async (
   return projectFileOperation(sourcePath, "open_binary", async () => {
     const {
       signal,
-      projectName = "rea-project",
+      projectName = "nre-project",
       expectedSha256,
       resources,
     } = options;
@@ -260,7 +260,7 @@ export const copyExistingGhidraProject = async (
       )
     )
       throw selectionFailure(
-        `Existing Ghidra project directory overlaps the REA runtime directory; select a project outside the runtime: ${sourcePath}`,
+        `Existing Ghidra project directory overlaps the NRE runtime directory; select a project outside the runtime: ${sourcePath}`,
       );
     if (source === undefined)
       throw selectionFailure(

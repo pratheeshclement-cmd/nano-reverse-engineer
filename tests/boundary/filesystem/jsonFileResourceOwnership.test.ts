@@ -12,7 +12,7 @@ import { projectAnalysisError } from "../../../src/domain/analysisErrorProjectio
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("keeps a cleanup-shaped caller cancellation opaque before JSON admission", async () => {
-  const root = await createTestTempDirectory("rea-json-opaque-cancel-");
+  const root = await createTestTempDirectory("nre-json-opaque-cancel-");
   const path = join(root, "input.json");
   await writeFile(path, "{}");
   const owner = new OwnedFileHandle(await open(path, "r"));
@@ -42,7 +42,7 @@ it("keeps a cleanup-shaped caller cancellation opaque before JSON admission", as
 });
 
 it("retains and retries a JSON file owner after a persistent close failure", async () => {
-  const root = await createTestTempDirectory("rea-json-file-owner-");
+  const root = await createTestTempDirectory("nre-json-file-owner-");
   const path = join(root, "input.json");
   await writeFile(path, '{"value":"retained"}');
   const resources = new ArtifactResourceScope();
@@ -88,7 +88,7 @@ it("retains and retries a JSON file owner after a persistent close failure", asy
 });
 
 it("retains malformed JSON over cancellation during failed final close", async () => {
-  const root = await createTestTempDirectory("rea-json-invalid-close-");
+  const root = await createTestTempDirectory("nre-json-invalid-close-");
   const path = join(root, "input.json");
   await writeFile(path, '{"unterminated":');
   const resources = new ArtifactResourceScope();
@@ -127,7 +127,7 @@ it("retains malformed JSON over cancellation during failed final close", async (
 });
 
 it("returns parsed JSON when a failed file close is recovered by the resource scope", async () => {
-  const root = await createTestTempDirectory("rea-json-file-close-retry-");
+  const root = await createTestTempDirectory("nre-json-file-close-retry-");
   const path = join(root, "input.json");
   await writeFile(path, '{"value":"retained"}');
   const resources = new ArtifactResourceScope();

@@ -19,7 +19,7 @@ import { JavaScriptAnalysisWorker } from "../../../src/javascript/analysis/JavaS
 it.each(["worker-phase", "final-cleanup", "no-cancellation"] as const)(
   "preserves the primary through failed worker cleanup and exact-owner retry: %s",
   async (timing) => {
-    const root = await createTestTempDirectory("rea-js-primary-cleanup-");
+    const root = await createTestTempDirectory("nre-js-primary-cleanup-");
     await writeFile(join(root, "main.js"), "export const observed = 7;");
     const controller = new AbortController();
     const reason = { request: "cancelled while worker resources remain owned" };
@@ -29,7 +29,7 @@ it.each(["worker-phase", "final-cleanup", "no-cancellation"] as const)(
     const close = vi
       .spyOn(PrivateRuntimeRoot.prototype, "close")
       .mockImplementation(async function (this: PrivateRuntimeRoot) {
-        if (basename(this.path).startsWith("rea-javascript-analysis-")) {
+        if (basename(this.path).startsWith("nre-javascript-analysis-")) {
           runtimePath = this.path;
           if (timing === "final-cleanup") controller.abort(reason);
           if (denyRemoval)
@@ -98,7 +98,7 @@ it.each(["worker-phase", "final-cleanup", "no-cancellation"] as const)(
 it.each(["during cleanup", "on the next control turn"] as const)(
   "retains the final source when cancellation arrives %s after analysis",
   async (timing) => {
-    const parent = await createTestTempDirectory("rea-js-cancel-handoff-");
+    const parent = await createTestTempDirectory("nre-js-cancel-handoff-");
     const root = join(parent, "physical");
     const selected = join(parent, "selected");
     await mkdir(root);
@@ -170,7 +170,7 @@ it.each(["during cleanup", "on the next control turn"] as const)(
 );
 
 it("preserves imported manifest status when cancelled before visiting manifests", async () => {
-  const root = await createTestTempDirectory("rea-js-cancel-package-");
+  const root = await createTestTempDirectory("nre-js-cancel-package-");
   const manifests = [
     ["valid", '{"version":"1.0.0"}', "included"],
     ["malformed", "{", "invalid"],
@@ -239,7 +239,7 @@ it("preserves imported manifest status when cancelled before visiting manifests"
 });
 
 it("keeps cancellation before native metadata out of AST scopes and semantic modules", async () => {
-  const root = await createTestTempDirectory("rea-js-cancel-file-kinds-");
+  const root = await createTestTempDirectory("nre-js-cancel-file-kinds-");
   await Promise.all(
     (
       [
@@ -339,7 +339,7 @@ it("keeps cancellation before native metadata out of AST scopes and semantic mod
 });
 
 it("interrupts semantic graph commitment before result validation", async () => {
-  const root = await createTestTempDirectory("rea-js-cancel-semantic-");
+  const root = await createTestTempDirectory("nre-js-cancel-semantic-");
   await writeFile(
     join(root, "main.js"),
     Array.from(
@@ -377,7 +377,7 @@ it("interrupts semantic graph commitment before result validation", async () => 
 });
 
 it("honors control turns and cancellation while preparing one large source for owned analysis (#1462)", async () => {
-  const root = await createTestTempDirectory("rea-js-cancel-in-file-");
+  const root = await createTestTempDirectory("nre-js-cancel-in-file-");
   await writeFile(
     join(root, "index.js"),
     Array.from(
@@ -429,7 +429,7 @@ it.each([
   "validate_javascript_application_evidence",
   "hash_javascript_application_evidence",
 ])("rejects cancellation scheduled during %s", async (phase) => {
-  const root = await createTestTempDirectory("rea-js-cancel-phase-");
+  const root = await createTestTempDirectory("nre-js-cancel-phase-");
   await writeFile(
     join(root, "main.js"),
     "export function inspect(value) { return JSON.stringify(value); }\n",
@@ -479,7 +479,7 @@ it.each([
 });
 
 it("honors cancellation observed during the terminal publication race", async () => {
-  const root = await createTestTempDirectory("rea-js-cancel-terminal-");
+  const root = await createTestTempDirectory("nre-js-cancel-terminal-");
   await writeFile(join(root, "main.js"), "export const value = 1;\n");
   const controller = new AbortController();
   const reason = { request: "caller cancelled JavaScript analysis" };
@@ -512,7 +512,7 @@ it("honors cancellation observed during the terminal publication race", async ()
 });
 
 it("keeps the exact retained descriptor owner through application failure translation and retry", async () => {
-  const root = await createTestTempDirectory("rea-js-retained-cleanup-");
+  const root = await createTestTempDirectory("nre-js-retained-cleanup-");
   const paths = [join(root, "first.js"), join(root, "second.js")];
   await Promise.all(
     paths.map((path) => writeFile(path, "export const value = 1;")),
@@ -559,7 +559,7 @@ it("keeps the exact retained descriptor owner through application failure transl
 it.each(["native-error", "analysis-error", "abort-reason"] as const)(
   "classifies the producer progress failure under late cancellation (%s)",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-js-progress-primary-");
+    const root = await createTestTempDirectory("nre-js-progress-primary-");
     await writeFile(join(root, "main.js"), "export const observed = 1;");
     const controller = new AbortController();
     const reason = { request: "unrelated cancellation" };

@@ -72,7 +72,7 @@ for (const fixture of restArrayPropertyCases)
   cliTest(
     `preserves rest-array property identity for ${fixture.name} through the public CLI`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-electron-rest-key-");
+      const root = await createTestTempDirectory("nre-electron-rest-key-");
       await writeFixtureFiles(root, {
         "main.cjs": `const e = require("electron");
           function make(...items) {
@@ -129,7 +129,7 @@ for (const fixture of restArrayPropertyCases)
   );
 
 const analyze = async (cli: TestCli, extra = "") => {
-  const root = await createTestTempDirectory("rea-electron-wrapped-paths-");
+  const root = await createTestTempDirectory("nre-electron-wrapped-paths-");
   await writeFixtureFiles(root, {
     "preload.js": `const e=require("electron");
       const sender=channel=>(...args)=>e.ipcRenderer.send(channel,...args);
@@ -344,7 +344,7 @@ cliTest(
       const artifacts = new Set<string>();
       for (const fixture of fallthroughCases) {
         const root = await createTestTempDirectory(
-          "rea-electron-early-return-",
+          "nre-electron-early-return-",
         );
         await writeFixtureFiles(root, {
           "index.js": `const e=require("electron");function f(x){${fixture.body}}f(globalThis.blocked);`,
@@ -412,7 +412,7 @@ cliTest(
 cliTest(
   "traces a nested contextBridge member through a unique IPC channel",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-nested-bridge-");
+    const root = await createTestTempDirectory("nre-electron-nested-bridge-");
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
         contextBridge.exposeInMainWorld("api", {
@@ -478,7 +478,7 @@ cliTest(
 cliTest(
   "preserves exact bridge member segments through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-bridge-segments-");
+    const root = await createTestTempDirectory("nre-electron-bridge-segments-");
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
         const write = () => ipcRenderer.send("write");
@@ -539,7 +539,7 @@ cliTest(
 cliTest(
   "retains a nested bridge path when its IPC handler has no external terminal",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-nested-return-");
+    const root = await createTestTempDirectory("nre-electron-nested-return-");
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
         contextBridge.exposeInMainWorld("api", {
@@ -601,7 +601,7 @@ for (const surface of ["CLI", "stdio MCP"] as const) {
         surface === "stdio MCP" ? await connectLocalToolsMcp() : undefined;
       const analyzeBridge = async (api: string) => {
         const root = await createTestTempDirectory(
-          "rea-electron-spread-bridge-members-",
+          "nre-electron-spread-bridge-members-",
         );
         await writeFixtureFiles(root, {
           "preload.js": `const { contextBridge } = require("electron");
@@ -651,7 +651,7 @@ for (const surface of ["CLI", "stdio MCP"] as const) {
     `binds each contextBridge helper invocation's own key and members through ${surface}`,
     async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-electron-bridge-helper-calls-",
+        "nre-electron-bridge-helper-calls-",
       );
       await writeFixtureFiles(root, {
         "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
@@ -734,7 +734,7 @@ for (const surface of ["CLI", "stdio MCP"] as const) {
   cliTest(
     `preserves handler ambiguity and short-circuit factory paths through ${surface}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-electron-branch-paths-");
+      const root = await createTestTempDirectory("nre-electron-branch-paths-");
       await writeFixtureFiles(root, {
         "preload.js": `const e=require("electron");
         e.contextBridge.exposeInMainWorld("empty", {});
@@ -837,7 +837,7 @@ cliTest(
 cliTest(
   "keeps shallow bridge members when a sibling exceeds the nesting limit",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-deep-bridge-");
+    const root = await createTestTempDirectory("nre-electron-deep-bridge-");
     let deepMember = '() => e.ipcRenderer.send("deep:run")';
     for (let index = 0; index < 129; index += 1)
       deepMember = `{ level${index}: ${deepMember} }`;
@@ -891,7 +891,7 @@ cliTest(
 cliTest(
   "keeps a wrapper match provisional when a limited path can hide a competing handler",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-limited-handler-");
+    const root = await createTestTempDirectory("nre-electron-limited-handler-");
     let deepMember =
       '() => { const register = (ipc) => ipc.on("shared:run", () => {}); register(e.ipcMain); }';
     for (let index = 0; index < 129; index += 1)
@@ -961,7 +961,7 @@ cliTest(
   "preserves empty bridge member segments in nested paths",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-electron-empty-bridge-key-",
+      "nre-electron-empty-bridge-key-",
     );
     await writeFixtureFiles(root, {
       "preload.js": `const { contextBridge, ipcRenderer } = require("electron");
@@ -1002,7 +1002,7 @@ cliTest(
 cliTest(
   "retains bridge and handler conditions on Electron IPC join edges",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-electron-join-conditions-");
+    const root = await createTestTempDirectory("nre-electron-join-conditions-");
     await writeFixtureFiles(root, {
       "preload.js": `const e=require("electron");
         e.contextBridge.exposeInMainWorld("desktop", {
@@ -1186,7 +1186,7 @@ const analyzeDescriptorFacts = async ({
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "uses effective defineProperty descriptor values for bundled IPC paths through %s",
   async (surface, { cli }) => {
-    const workspace = await createTestTempDirectory("rea-descriptor-values-");
+    const workspace = await createTestTempDirectory("nre-descriptor-values-");
     const root = join(workspace, "路径-'values");
     const files = Object.fromEntries(
       descriptorCases.map(([name, descriptor, sends, throws]) => {

@@ -13,11 +13,11 @@ const expectedFailure =
   "package did not retain its MCP Registry ownership marker";
 
 it("keeps npm pack output in the owned workspace when package validation fails", async () => {
-  const testRoot = await createTestTempDirectory("rea-pack-isolation-");
+  const testRoot = await createTestTempDirectory("nre-pack-isolation-");
   const packageRoot = join(testRoot, "source");
   const workspace = join(testRoot, "workspace");
   const npmCache = join(testRoot, "npm-cache");
-  const archiveName = "rea-agents-6.0.0.tgz";
+  const archiveName = "nano-reverse-engineer-6.0.0.tgz";
   const archivePath = join(packageRoot, archiveName);
   const sentinel = Buffer.from("caller-owned archive\n");
   await Promise.all([mkdir(packageRoot), mkdir(workspace), mkdir(npmCache)]);
@@ -25,21 +25,28 @@ it("keeps npm pack output in the owned workspace when package validation fails",
     writeFile(
       join(packageRoot, "package.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "nano-reverse-engineer",
         version: "6.0.0",
         mcpName: "invalid-owner",
-        bin: { rea: "scripts/rea.mjs", "rea-agents": "scripts/rea.mjs" },
+        bin: {
+          nre: "scripts/nre.mjs",
+          "nano-reverse-engineer": "scripts/nre.mjs",
+        },
         dependencies: {},
       }),
     ),
     writeFile(
       join(packageRoot, "package-lock.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "nano-reverse-engineer",
         version: "6.0.0",
         lockfileVersion: 3,
         packages: {
-          "": { name: "rea-agents", version: "6.0.0", dependencies: {} },
+          "": {
+            name: "nano-reverse-engineer",
+            version: "6.0.0",
+            dependencies: {},
+          },
         },
       }),
     ),

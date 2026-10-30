@@ -36,7 +36,7 @@ const zipWithMember = async (bytes: Buffer): Promise<Buffer> => {
 for (const sliceOffset of [4_096, 16_384]) {
   for (const container of ["zip", "pck"] as const) {
     it(`retains a FAT slice header at offset ${sliceOffset} in ${container} member nodes`, async () => {
-      const root = await createTestTempDirectory("rea-fat-member-node-");
+      const root = await createTestTempDirectory("nre-fat-member-node-");
       const bytes = fatMachO(sliceOffset);
       const directPath = join(root, "direct.fat");
       await writeFile(directPath, bytes);

@@ -10,7 +10,7 @@ import { ggufFixture } from "../../fixtures/model/model.js";
 it.skipIf(process.platform === "win32")(
   "keeps descriptor exhaustion separate from valid GPU and model targets and recovers unchanged inputs",
   async () => {
-    const directory = await createTestTempDirectory("rea-descriptor-pressure-");
+    const directory = await createTestTempDirectory("nre-descriptor-pressure-");
     const gpu = join(directory, "selected.ptx");
     const model = join(directory, "selected.gguf");
     await writeFile(

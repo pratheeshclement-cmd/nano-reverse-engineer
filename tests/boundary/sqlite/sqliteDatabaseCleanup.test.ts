@@ -33,7 +33,7 @@ const createUnavailableProvider = (
   );
 
 const cleanupFixture = async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-cleanup-");
+  const workspace = await createTestWorkspace("nre-sqlite-cleanup-");
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const roots: PrivateRuntimeRoot[] = [];
@@ -97,7 +97,7 @@ it("retains failed snapshot owners and blocks new acquisition until retry succee
 
 it("shrinks inspect and close errors as each retained root is released", async () => {
   const workspace = await createTestWorkspace(
-    "rea-sqlite-multiple-root-cleanup-",
+    "nre-sqlite-multiple-root-cleanup-",
   );
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
@@ -204,7 +204,7 @@ it("shrinks inspect and close errors as each retained root is released", async (
 });
 
 it("preserves the caller reason when cancellation arrives during awaited cleanup retry", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-retry-cancel-");
+  const workspace = await createTestWorkspace("nre-sqlite-retry-cancel-");
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const retryStarted = createDeferred<void>();
@@ -285,7 +285,7 @@ it("awaits shared shutdown cleanup and retains failures for a later close", asyn
 });
 
 it("waits for concurrent acquisitions and releases only owners whose cleanup succeeds", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-concurrent-cleanup-");
+  const workspace = await createTestWorkspace("nre-sqlite-concurrent-cleanup-");
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const acquired = createDeferred<void>();
@@ -358,7 +358,7 @@ it("waits for concurrent acquisitions and releases only owners whose cleanup suc
 });
 
 it("retains the snapshot until a failed worker cleanup owner can be stopped", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-worker-cleanup-");
+  const workspace = await createTestWorkspace("nre-sqlite-worker-cleanup-");
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   const child = spawnProviderProcessFixture("graceful");
@@ -470,7 +470,7 @@ it("retains the snapshot until a failed worker cleanup owner can be stopped", as
 });
 
 it("keeps a retained worker owner when the worker fails and its cleanup is unresolved", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-retained-worker-");
+  const workspace = await createTestWorkspace("nre-sqlite-retained-worker-");
   const database = createSqliteDatabaseFixture(workspace.root);
   database.close();
   let mayClean = false;

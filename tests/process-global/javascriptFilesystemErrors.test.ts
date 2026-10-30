@@ -41,7 +41,7 @@ it.each([
 ])(
   "retains selected input and host facts through MCP after $method/$code refusal and accepts a readable retry",
   async ({ method, code }) => {
-    const root = await createTestTempDirectory("rea-mcp-js-filesystem-");
+    const root = await createTestTempDirectory("nre-mcp-js-filesystem-");
     const session = createTestBinarySession(() => {
       throw new Error(
         "Static JavaScript analysis must not start a binary provider",

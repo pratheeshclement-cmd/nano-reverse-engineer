@@ -11,7 +11,7 @@ export const withPyInstallerReader = async (
     path: string,
   ) => Promise<void>,
 ) => {
-  const root = await createTestTempDirectory("rea-pyi-boundary-");
+  const root = await createTestTempDirectory("nre-pyi-boundary-");
   const path = join(root, "app");
   await writeFile(path, bytes);
   const handle = await open(path, "r");

@@ -30,24 +30,24 @@ import { WABT_OPERATION_TIMEOUT_MS } from "./lib/wabt-verifier-timeouts.mjs";
 
 import { verifyWabtCleanup } from "./lib/verify-wabt-cleanup.mjs";
 
-const directory = process.env.REA_WABT_BIN_DIRECTORY;
+const directory = process.env.NRE_WABT_BIN_DIRECTORY;
 if (!isAbsolute(directory ?? "")) {
   if (process.argv.includes("--require-tools"))
     throw new Error(
-      "Supply absolute REA_WABT_BIN_DIRECTORY containing WABT 1.0.42 tools.",
+      "Supply absolute NRE_WABT_BIN_DIRECTORY containing WABT 1.0.42 tools.",
     );
   console.log(
     JSON.stringify({
       status: "skipped",
       reason:
-        "WABT real-tool lane requires caller-supplied REA_WABT_BIN_DIRECTORY; no tools installed.",
+        "WABT real-tool lane requires caller-supplied NRE_WABT_BIN_DIRECTORY; no tools installed.",
     }),
   );
   process.exit(0);
 }
 const entrypoint =
   process.argv.slice(2).find((arg) => !arg.startsWith("--")) ??
-  fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const execute = promisify(execFile);
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
@@ -69,12 +69,12 @@ const assertEvidenceParity = (cli, mcp, path) => {
   assert.deepEqual(cliShared, mcp);
 };
 const run = createVerifierRun();
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-wabt-verifier-" });
+const root = await PrivateRuntimeRoot.create({ prefix: "nre-wabt-verifier-" });
 // Keep provider scratch outside the leased private input root. On Windows the
 // root's retained DELETE handle blocks child temp creation beneath that root.
 let childTempRoot;
 try {
-  childTempRoot = await mkdtemp(join(tmpdir(), "rea-wabt-child-temp-"));
+  childTempRoot = await mkdtemp(join(tmpdir(), "nre-wabt-child-temp-"));
 } catch (cause) {
   try {
     await root.close();
@@ -636,7 +636,7 @@ try {
 try {
   assert.ok(
     !(await readdir(childTempRoot)).some((name) =>
-      name.startsWith("rea-wabt-"),
+      name.startsWith("nre-wabt-"),
     ),
     "Provider workspace leaked",
   );

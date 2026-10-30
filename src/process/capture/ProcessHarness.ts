@@ -919,7 +919,7 @@ export const captureProcessScenario = async (
   if (ownershipReason !== undefined)
     return err(
       new AnalysisCapabilityUnavailableError(
-        "rea-process",
+        "nre-process",
         "capture_process_scenario",
         ownershipReason,
         { userMessage: ownershipReason },

@@ -1,5 +1,5 @@
 {
-  "name": "rea-verify-skills-cli",
+  "name": "nre-verify-skills-cli",
   "private": true,
   "description": "Lockfile-pinned Skills CLI for the repository skill check in verify:package.",
   "dependencies": {

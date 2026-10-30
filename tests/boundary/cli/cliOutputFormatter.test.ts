@@ -77,7 +77,7 @@ it.each([
       .slice(metadataEnd + lineEnding.length)
       .replace(/\r?\n$/u, "");
     expect(
-      JSON.parse(metadataLine!.slice("# rea-delimited-v1 ".length)),
+      JSON.parse(metadataLine!.slice("# nre-delimited-v1 ".length)),
     ).toEqual({
       version: 1,
       coverage: { status: "page", examined: 3, total: 8, next_offset: 3 },

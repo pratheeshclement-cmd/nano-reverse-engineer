@@ -57,7 +57,7 @@ it.each([
 ] as const)(
   "owns directory cleanup before policy %s (close fails=%s)",
   async (outcome, closeFails) => {
-    const root = await createTestTempDirectory("rea-reference-policy-owner-");
+    const root = await createTestTempDirectory("nre-reference-policy-owner-");
     await writeFile(join(root, "unexamined.ts"), "export const value = 1;\n");
     const resources = new ArtifactResourceScope();
     onTestFinished(() => resources.close().catch(() => undefined));
@@ -130,7 +130,7 @@ it.each([
 );
 
 it("preserves admission EIO and retains an invalidated failed-close owner", async () => {
-  const root = await createTestTempDirectory("rea-reference-admission-owner-");
+  const root = await createTestTempDirectory("nre-reference-admission-owner-");
   const file = join(root, "source.ts");
   await writeFile(file, "export const answer = 42;\n");
   const resources = new ArtifactResourceScope();
@@ -189,7 +189,7 @@ it("preserves admission EIO and retains an invalidated failed-close owner", asyn
 });
 
 const assertSourceCleanupRetry = async (enclosingGit: boolean) => {
-  const workspace = await createTestTempDirectory("rea-reference-file-owner-");
+  const workspace = await createTestTempDirectory("nre-reference-file-owner-");
   const root = join(workspace, "source");
   await mkdir(root);
   if (enclosingGit) {
@@ -287,7 +287,7 @@ it.each([false, true])(
 
 it("preserves a directory read failure when closing that directory also fails", async () => {
   const root = await createTestTempDirectory(
-    "rea-reference-directory-read-owner-",
+    "nre-reference-directory-read-owner-",
   );
   const file = join(root, "source.ts");
   const bytes = "observed before directory EIO\n";
@@ -358,7 +358,7 @@ it("preserves a directory read failure when closing that directory also fails", 
 });
 
 it("keeps cancelled traversal typed when native directory close rejects after invalidation", async () => {
-  const root = await createTestTempDirectory("rea-reference-directory-owner-");
+  const root = await createTestTempDirectory("nre-reference-directory-owner-");
   await mkdir(join(root, "child"));
   const resources = new ArtifactResourceScope();
   onTestFinished(() => resources.close().catch(() => undefined));

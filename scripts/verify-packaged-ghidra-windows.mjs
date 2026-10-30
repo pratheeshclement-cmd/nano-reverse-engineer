@@ -48,7 +48,7 @@ const [packageRootArgument, targetArgument, reportArgument] =
 // Windows locks the loaded package-owned addon until the verifier exits.
 // Keep installation cleanup in a parent that never loads that addon.
 if (!internalWorkspace) {
-  const ownedWorkspace = await mkdtemp(join(tmpdir(), "rea-packaged-ghidra-"));
+  const ownedWorkspace = await mkdtemp(join(tmpdir(), "nre-packaged-ghidra-"));
   const workspaceOwner = {
     path: ownedWorkspace,
     close: () => rm(ownedWorkspace, { recursive: true, force: true }),
@@ -135,7 +135,7 @@ try {
         ],
         { timeout: 120_000, maxBuffer: 8 * 1024 * 1024 },
       );
-      packageRoot = join(prefix, "node_modules", "rea-agents");
+      packageRoot = join(prefix, "node_modules", "nano-reverse-engineer");
     } catch (cause) {
       throw new Error("Packaged Windows verifier installation failed.", {
         cause,
@@ -195,13 +195,13 @@ try {
   const callerDirectory = join(workspace, "caller cwd with spaces");
   // Keep sorted for comparison with the final caller-directory listing.
   const scriptCollisions = [
-    "ReaGhidraAnalysisOptions.java",
-    "ReaGhidraApplySeeds.java",
-    "ReaGhidraBridge.java",
-    "ReaGhidraNoReturnFix.java",
-    "ReaGhidraPrepareCom.java",
-    "ReaGhidraPrepareDol.java",
-    "ReaGhidraPrepareRaw.java",
+    "NreGhidraAnalysisOptions.java",
+    "NreGhidraApplySeeds.java",
+    "NreGhidraBridge.java",
+    "NreGhidraNoReturnFix.java",
+    "NreGhidraPrepareCom.java",
+    "NreGhidraPrepareDol.java",
+    "NreGhidraPrepareRaw.java",
   ];
   await mkdir(callerDirectory);
   for (const name of scriptCollisions) await mkdir(join(callerDirectory, name));
@@ -215,7 +215,7 @@ try {
       process.env.ComSpec ??
       join(process.env.SystemRoot ?? "C:\\Windows", "System32", "cmd.exe")
     ).replaceAll("\\", "/"),
-    REA_LOG_LEVEL: "error",
+    NRE_LOG_LEVEL: "error",
     GHIDRA_HEADLESS_MAXMEM: "512m",
     NODE_OPTIONS: "--max-old-space-size=512",
     TEMP: runtimeParent.replaceAll("\\", "/"),
@@ -225,7 +225,7 @@ try {
     APPDATA: join(workspace, "appdata"),
     LOCALAPPDATA: join(workspace, "localappdata"),
   };
-  const entry = join(packageRoot, "scripts/rea.mjs");
+  const entry = join(packageRoot, "scripts/nre.mjs");
   const report = {
     ok: false,
     platform: "win32",
@@ -243,8 +243,8 @@ try {
     const entries = await readdir(runtimeParent);
     report.runtimeResidualCount = entries.length;
     report.runtimeResidualKinds = entries.map((name) =>
-      name.startsWith("rea-")
-        ? "rea-runtime"
+      name.startsWith("nre-")
+        ? "nre-runtime"
         : name.startsWith("hsperfdata_")
           ? "jvm-performance-data"
           : "other",
@@ -298,7 +298,7 @@ try {
       stderr: "pipe",
     });
     const client = new Client({
-      name: "rea-packaged-windows-ghidra",
+      name: "nre-packaged-windows-ghidra",
       version: "1.0.0",
     });
     const closeClient = async () => {
@@ -343,7 +343,7 @@ try {
       await call("binary_overview", {});
       const activators = (
         await readdir(runtimeParent, { recursive: true })
-      ).filter((path) => basename(path) === "ReaGhidraBundleActivator.class");
+      ).filter((path) => basename(path) === "NreGhidraBundleActivator.class");
       assert.equal(activators.length, 1);
       const [activator] = activators;
       assert.ok(activator !== undefined);
@@ -354,13 +354,13 @@ try {
       );
       assert.match(
         manifest,
-        /^Bundle-Activator: ReaGhidraBundleActivator\r?$/mu,
+        /^Bundle-Activator: NreGhidraBundleActivator\r?$/mu,
       );
       await assert.rejects(
         readFile(join(bundleDirectory, "GeneratedActivator.class")),
         { code: "ENOENT" },
       );
-      report.bundleActivator = "ReaGhidraBundleActivator";
+      report.bundleActivator = "NreGhidraBundleActivator";
       assert.equal((await call("list_documents", {})).length, 1);
       await call("list_names", {});
       const procedures = await call("list_procedures", {});
@@ -422,7 +422,7 @@ try {
         address: procedure.address,
       });
       await call("search_procedures", { pattern: procedure.value });
-      await call("search_strings", { pattern: "rea" });
+      await call("search_strings", { pattern: "nre" });
       report.byteSearch = await verifyWindowsGhidraByteSearch({
         invoke: call,
         sourceBytes,
@@ -469,8 +469,8 @@ try {
       await call("resolve_native_call_targets", { address: procedure.address });
       // Explicit caller-selected targets need not contain our fixture instructions.
       const controlledTargets = [
-        "rea-ghidra-windows.exe",
-        "rea-ghidra-windows-x86.exe",
+        "nre-ghidra-windows.exe",
+        "nre-ghidra-windows-x86.exe",
       ].map((name) => resolve("build", "fixtures", name));
       if (controlledTargets.includes(target))
         report.compactReferences = await verifyGhidraCompactReferences(

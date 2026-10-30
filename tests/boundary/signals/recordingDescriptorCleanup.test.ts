@@ -37,7 +37,7 @@ it
   ])(
   "retains failed %s descriptors and retries them before further acquisition and shutdown",
   async (member) => {
-    const directory = await createTestTempDirectory("rea-signal-descriptor-");
+    const directory = await createTestTempDirectory("nre-signal-descriptor-");
     const path = join(directory, "recording.vcd");
     const command = join(directory, "sigrok.mjs");
     const limiter = join(directory, "limiter");
@@ -53,8 +53,8 @@ it
     const provider = new SigrokRecordingProvider(
       {
         ...process.env,
-        REA_SIGROK_COMMAND: command,
-        REA_SIGROK_PRLIMIT_COMMAND: limiter,
+        NRE_SIGROK_COMMAND: command,
+        NRE_SIGROK_PRLIMIT_COMMAND: limiter,
       },
       (input) => {
         launches += 1;

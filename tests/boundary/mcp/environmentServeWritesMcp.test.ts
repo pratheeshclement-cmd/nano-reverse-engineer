@@ -72,7 +72,7 @@ processTest(
         expect.objectContaining({ id: "1", fields: { ...first } }),
       ]),
     });
-    const root = await createTestTempDirectory("rea-own-keys-state-mcp-");
+    const root = await createTestTempDirectory("nre-own-keys-state-mcp-");
     const files = await writeEnvironmentServeFiles(root, fixture);
     const started = await startListeningProcess(processes, [
       "environment-serve",
@@ -83,7 +83,7 @@ processTest(
       "0",
     ]);
     type StateDocument = {
-      rea_state: {
+      nre_state: {
         entities: Array<{ id: string; fields: Record<string, JsonValue> }>;
         [key: string]: unknown;
       };
@@ -102,7 +102,7 @@ processTest(
     const document = (await rpc("data/get")).result?.parts?.[0]?.data;
     if (document === undefined)
       throw new Error("Missing served state document");
-    const held = document.rea_state.entities.find(({ id }) => id === "1");
+    const held = document.nre_state.entities.find(({ id }) => id === "1");
     if (held === undefined) throw new Error("Missing initial book");
     expect(Object.hasOwn(held.fields, "__proto__")).toBe(true);
     expect(held.fields.nested).toEqual(nested);
@@ -113,8 +113,8 @@ processTest(
     const reloaded = (await rpc("data/get")).result?.parts?.[0]?.data;
     expect(reloaded).toEqual(document);
     const invalid = {
-      rea_state: {
-        ...document.rea_state,
+      nre_state: {
+        ...document.nre_state,
         ["__proto__"]: "unexpected structural field",
       },
     };
@@ -167,7 +167,7 @@ processTest(
   "keeps create response clocks separate from enriched item reads through the SDK",
   async ({ processes }) => {
     const rows = READ_BACK_TAG_ROWS;
-    const root = await createTestTempDirectory("rea-write-views-sdk-");
+    const root = await createTestTempDirectory("nre-write-views-sdk-");
     const files = await writeEnvironmentServeFiles(
       root,
       environmentStateServeFixture(timedCaptureEvidence(rows)),
@@ -253,7 +253,7 @@ processTest(
       ],
       ["GET", "/api/books/3", third],
     ];
-    const root = await createTestTempDirectory("rea-write-schema-defaults-");
+    const root = await createTestTempDirectory("nre-write-schema-defaults-");
     const files = await writeEnvironmentServeFiles(
       root,
       environmentStateServeFixture(timedCaptureEvidence(rows)),
@@ -360,11 +360,11 @@ processTest(
   HTTP_BOUNDARY_TIMEOUT_MS,
 );
 
-describe("rea environment-serve write tools", () => {
+describe("nre environment-serve write tools", () => {
   processTest(
     "applies a served create to the state the next read answers from, until data/reset",
     async ({ processes }) => {
-      const root = await createTestTempDirectory("rea-environment-writes-mcp-");
+      const root = await createTestTempDirectory("nre-environment-writes-mcp-");
       const files = await writeEnvironmentServeFiles(
         root,
         environmentStateServeFixture(timedCaptureEvidence(BOOK_ROWS)),
@@ -452,7 +452,7 @@ describe("rea environment-serve write tools", () => {
         ["POST", "/api/books", recorded, 201, { name: "Third Book" }],
         ["GET", "/api/books/3", recorded],
       ];
-      const root = await createTestTempDirectory("rea-raw-utf16-writes-mcp-");
+      const root = await createTestTempDirectory("nre-raw-utf16-writes-mcp-");
       const files = await writeEnvironmentServeFiles(
         root,
         environmentStateServeFixture(timedCaptureEvidence(rows)),
@@ -518,7 +518,7 @@ processTest(
       ["GET", "/api/books/2", BOOK_NOT_FOUND, 404],
       ["GET", "/api/books", []],
     ];
-    const root = await createTestTempDirectory("rea-write-bulk-sdk-");
+    const root = await createTestTempDirectory("nre-write-bulk-sdk-");
     const files = await writeEnvironmentServeFiles(
       root,
       environmentStateServeFixture(timedCaptureEvidence(rows)),
@@ -621,7 +621,7 @@ processTest.for([
   "withholds $label from public tools",
   { timeout: HTTP_BOUNDARY_TIMEOUT_MS },
   async ({ rows, read, write }, { processes }) => {
-    const root = await createTestTempDirectory("rea-create-reference-mcp-");
+    const root = await createTestTempDirectory("nre-create-reference-mcp-");
     const files = await writeEnvironmentServeFiles(
       root,
       environmentStateServeFixture(timedCaptureEvidence(rows)),

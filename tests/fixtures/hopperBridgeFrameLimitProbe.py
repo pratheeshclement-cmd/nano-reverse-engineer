@@ -72,7 +72,7 @@ def serve(bridge, line, read_after, half_close_write=False):
 def request_line(bridge, params):
     request = {
         "id": 1,
-        "token": bridge["REA_TOKEN"],
+        "token": bridge["NRE_TOKEN"],
         "method": "health",
         "params": params,
     }
@@ -81,15 +81,15 @@ def request_line(bridge, params):
 
 def _load(mode):
     """Resolve one ceiling. The default invocation ignores an ambient setting."""
-    os.environ.pop("REA_BRIDGE_MAX_REQUEST_BYTES", None)
+    os.environ.pop("NRE_BRIDGE_MAX_REQUEST_BYTES", None)
     injected = None
     if mode == "bytes":
-        os.environ["REA_BRIDGE_MAX_REQUEST_BYTES"] = sys.argv[3]
+        os.environ["NRE_BRIDGE_MAX_REQUEST_BYTES"] = sys.argv[3]
     elif mode == "inject":
-        os.environ["REA_BRIDGE_MAX_REQUEST_BYTES"] = "9000"
+        os.environ["NRE_BRIDGE_MAX_REQUEST_BYTES"] = "9000"
         injected = int(sys.argv[3])
     elif mode == "invalid":
-        os.environ["REA_BRIDGE_MAX_REQUEST_BYTES"] = sys.argv[3]
+        os.environ["NRE_BRIDGE_MAX_REQUEST_BYTES"] = sys.argv[3]
         try:
             load_bridge(sys.argv[1])
         except RuntimeError as error:
@@ -99,7 +99,7 @@ def _load(mode):
         return {"error": "unknown probe mode"}
     return load_bridge(
         sys.argv[1],
-        None if injected is None else {"REA_BRIDGE_MAX_REQUEST_BYTES": injected},
+        None if injected is None else {"NRE_BRIDGE_MAX_REQUEST_BYTES": injected},
     )
 
 
@@ -109,12 +109,12 @@ def main():
     if "error" in bridge and "MAX_REQUEST_BYTES" not in bridge:
         json.dump(bridge, sys.stdout)
         return
-    bridge.update(REA_TOKEN="owned-token", REA_RUN_ID="owned-run")
+    bridge.update(NRE_TOKEN="owned-token", NRE_RUN_ID="owned-run")
     bridge["_probe_dispatches"] = []
 
     def dispatch(method, params):
         bridge["_probe_dispatches"].append((method, params))
-        return {"run_id": bridge["REA_RUN_ID"], "ready": True}
+        return {"run_id": bridge["NRE_RUN_ID"], "ready": True}
 
     bridge["_dispatch"] = dispatch
     limit = bridge.get("MAX_REQUEST_BYTES")

@@ -23,7 +23,7 @@ import { ArtifactEmbeddedFormatProbes } from "./ArtifactEmbeddedFormatProbes.js"
 import { GodotPckArtifactReader } from "./GodotPckArtifactReader.js";
 
 const writePck = async (bytes: Buffer): Promise<string> => {
-  const path = join(await createTestTempDirectory("rea-godot-pck-"), "game");
+  const path = join(await createTestTempDirectory("nre-godot-pck-"), "game");
   await writeFile(path, bytes);
   return path;
 };
@@ -384,7 +384,7 @@ describe("GodotPckArtifactReader member streams", () => {
   it.each([false, true])(
     "reads located pack facts from the admitted descriptor after an attempted path replacement (embedded: %s)",
     async (embedded) => {
-      const root = await createTestTempDirectory("rea-godot-borrowed-source-");
+      const root = await createTestTempDirectory("nre-godot-borrowed-source-");
       const selected = join(root, "selected");
       await mkdir(selected);
       const path = join(selected, "game");

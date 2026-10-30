@@ -71,7 +71,7 @@ it.each(["archive", "directory", "missing"] as const)(
   "extracts from the inventoried ZIP descriptor when its pathname becomes %s",
   async (replacement) => {
     const directory = await createTestTempDirectory(
-      "rea-zip-extraction-identity-",
+      "nre-zip-extraction-identity-",
     );
     const path = join(directory, "source.zip");
     const original = await zipBytes("unchanged");
@@ -132,7 +132,7 @@ it.each(["archive", "directory", "missing"] as const)(
 );
 
 it("preserves cancellation raised during final ZIP descriptor close", async () => {
-  const directory = await createTestTempDirectory("rea-zip-extraction-cancel-");
+  const directory = await createTestTempDirectory("nre-zip-extraction-cancel-");
   const path = join(directory, "empty.zip");
   const bytes = await zipBytes();
   await writeFile(path, bytes);
@@ -188,7 +188,7 @@ it("preserves cancellation raised during final ZIP descriptor close", async () =
 
 it("retains completed ZIP inventory when cancellation arrives during inventory reader close", async () => {
   const directory = await createTestTempDirectory(
-    "rea-zip-inventory-close-cancel-",
+    "nre-zip-inventory-close-cancel-",
   );
   const path = join(directory, "empty.zip");
   const bytes = await zipBytes();
@@ -236,7 +236,7 @@ it("retains completed ZIP inventory when cancellation arrives during inventory r
 });
 
 it("retains and retries a failed final ZIP descriptor close", async () => {
-  const directory = await createTestTempDirectory("rea-zip-extraction-close-");
+  const directory = await createTestTempDirectory("nre-zip-extraction-close-");
   const path = join(directory, "empty.zip");
   await writeFile(path, await zipBytes());
   const output = join(directory, "out");
@@ -266,7 +266,7 @@ it("retains and retries a failed final ZIP descriptor close", async () => {
 });
 
 it("retains both failed ZIP inventory owners and retries only those owners", async () => {
-  const directory = await createTestTempDirectory("rea-zip-inventory-close-");
+  const directory = await createTestTempDirectory("nre-zip-inventory-close-");
   const path = join(directory, "empty.zip");
   await writeFile(path, await zipBytes());
   const resourceScope = new ArtifactResourceScope();
@@ -315,7 +315,7 @@ it.each([false, true] as const)(
   "retains failed extraction reader cleanup when ZIP root close also fails: %s",
   async (failRootClose) => {
     const directory = await createTestTempDirectory(
-      "rea-zip-extraction-mixed-close-",
+      "nre-zip-extraction-mixed-close-",
     );
     const path = join(directory, "empty.zip");
     await writeFile(path, await zipBytes());
@@ -387,7 +387,7 @@ vi.mock("../../filesystem/RegularFile.js", async (importOriginal) => {
 });
 
 it("keeps the detection error primary and reports a failed detection close", async () => {
-  const directory = await createTestTempDirectory("rea-extraction-detect-");
+  const directory = await createTestTempDirectory("nre-extraction-detect-");
   const path = join(directory, "target.elf");
   await writeFile(path, Buffer.from("not an archive"));
   const resourceScope = new ArtifactResourceScope();
@@ -425,7 +425,7 @@ it("keeps the detection error primary and reports a failed detection close", asy
 });
 
 it("materializes the classified ASAR instead of repeating the adapter format hint", async () => {
-  const directory = await createTestTempDirectory("rea-extraction-format-");
+  const directory = await createTestTempDirectory("nre-extraction-format-");
   const path = join(directory, "source.asar");
   const content = Buffer.from("observed member");
   await writeFile(
@@ -457,7 +457,7 @@ it("materializes the classified ASAR instead of repeating the adapter format hin
 
 it("refuses a classified non-container before publishing extraction output", async () => {
   const directory = await createTestTempDirectory(
-    "rea-extraction-unsupported-",
+    "nre-extraction-unsupported-",
   );
   const path = join(directory, "source.zip");
   await writeFile(path, "ordinary file bytes");

@@ -23,7 +23,7 @@ describe("artifact extraction", () => {
   it.skipIf(process.platform === "win32").each(["file/..", "missing"])(
     "refuses an invalid parent (%s) before acquiring output and permits a corrected request",
     async (parent) => {
-      const root = await createTestTempDirectory("rea-extract-invalid-parent-");
+      const root = await createTestTempDirectory("nre-extract-invalid-parent-");
       const source = join(root, "source.app");
       await mkdir(source);
       await writeFile(join(source, "payload.txt"), "selected payload\n");
@@ -56,7 +56,7 @@ describe("artifact extraction", () => {
   );
 
   it("keeps committed files after the owning client closes", async () => {
-    const root = await createTestTempDirectory("rea-extract-client-close-");
+    const root = await createTestTempDirectory("nre-extract-client-close-");
     const source = join(root, "source.app");
     await mkdir(source);
     await writeFile(join(source, "payload.txt"), "committed\n");
@@ -76,7 +76,7 @@ describe("artifact extraction", () => {
   });
 
   it("extracts all regular occurrences through an exclusively owned output tree", async () => {
-    const root = await createTestTempDirectory("rea-extract-");
+    const root = await createTestTempDirectory("nre-extract-");
     const source = join(root, "source.app");
     await mkdir(join(source, "assets"), { recursive: true });
     await writeFile(join(source, "assets", "selected.js"), "selected();\n");

@@ -69,7 +69,7 @@ import { readReferenceSource } from "../../src/reference/ReferenceSourceReader.j
 it.skipIf(process.platform === "win32").each(["reader", "import"] as const)(
   "keeps sibling observations through %s when a symlink becomes a regular file before readlink",
   async (operation) => {
-    const root = await createTestTempDirectory("rea-reference-symlink-race-");
+    const root = await createTestTempDirectory("nre-reference-symlink-race-");
     await mkdir(join(root, "nested"));
     const linkPath = join(root, "nested", "link");
     const siblingPath = join(root, "sibling.txt");
@@ -159,7 +159,7 @@ it.skipIf(process.platform === "win32").each(["reader", "import"] as const)(
 it.skipIf(process.platform === "win32").each(["contents", "root"] as const)(
   "retains observed entries when %s changes after its directory handle closes",
   async (changed) => {
-    const parent = await createTestTempDirectory("rea-reference-root-race-");
+    const parent = await createTestTempDirectory("nre-reference-root-race-");
     const root = join(parent, "observed");
     await mkdir(root);
     const source = join(root, "source.txt");

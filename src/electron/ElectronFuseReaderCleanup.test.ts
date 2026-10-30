@@ -5,8 +5,10 @@ import type { FileHandle } from "node:fs/promises";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { AnalysisAccessDeniedError } from "../domain/analysisErrorCore.js";
-import { AnalysisCancelledError } from "../domain/analysisErrorCore.js";
+import {
+  AnalysisAccessDeniedError,
+  AnalysisCancelledError,
+} from "../domain/analysisErrorCore.js";
 import { RegularFileCleanupFailure } from "../filesystem/OwnedRegularFile.js";
 import { createTestTempDirectory } from "../../tests/fixtures/temporaryDirectory.js";
 import { elfFuseImage } from "../../tests/fixtures/electron/fuseImage.js";
@@ -114,7 +116,7 @@ const findRegularFileCleanupFailure = (
 
 describe("electron fuse final-close failures", () => {
   it("keeps the primary read error when the final close rejects", async () => {
-    const root = await createTestTempDirectory("rea-fuse-close-fault-");
+    const root = await createTestTempDirectory("nre-fuse-close-fault-");
     const path = await writeElfImage(root, "app.elf");
     const readFailure = Object.assign(new Error("physical read failure"), {
       code: "EIO",
@@ -148,7 +150,7 @@ describe("electron fuse final-close failures", () => {
   });
 
   it("reports incomplete cleanup instead of a read permission failure when only the close fails", async () => {
-    const root = await createTestTempDirectory("rea-fuse-cleanup-report-");
+    const root = await createTestTempDirectory("nre-fuse-cleanup-report-");
     const path = await writeElfImage(root, "app.elf");
     const closeFailure = Object.assign(
       new Error("close rejected; descriptor still live"),
@@ -167,7 +169,7 @@ describe("electron fuse final-close failures", () => {
   });
 
   it("reads normally when the final close succeeds", async () => {
-    const root = await createTestTempDirectory("rea-fuse-close-ok-");
+    const root = await createTestTempDirectory("nre-fuse-close-ok-");
     const path = await writeElfImage(root, "app.elf");
 
     const image = await readElectronFuseImage(path);
@@ -177,7 +179,7 @@ describe("electron fuse final-close failures", () => {
   });
 
   it("reports the primary read diagnostic with incomplete cleanup when read and close both fail", async () => {
-    const root = await createTestTempDirectory("rea-fuse-combined-fault-");
+    const root = await createTestTempDirectory("nre-fuse-combined-fault-");
     const path = await writeElfImage(root, "app.elf");
     const readFailure = Object.assign(new Error("physical read failure"), {
       code: "EIO",
@@ -205,7 +207,7 @@ describe("electron fuse final-close failures", () => {
   });
 
   it("keeps incomplete cleanup and the descriptor owner when cancellation races the faulted close", async () => {
-    const root = await createTestTempDirectory("rea-fuse-cancel-close-");
+    const root = await createTestTempDirectory("nre-fuse-cancel-close-");
     const path = await writeElfImage(root, "app.elf");
     const controller = new AbortController();
     const abortReason = new Error("test abort during final close");
@@ -243,7 +245,7 @@ describe("electron fuse final-close failures", () => {
   });
 
   it("retains the completed fuse evidence as a partial observation when only the close fails", async () => {
-    const root = await createTestTempDirectory("rea-fuse-partial-evidence-");
+    const root = await createTestTempDirectory("nre-fuse-partial-evidence-");
     const path = await writeElfImage(root, "app.elf");
     const closeFailure = Object.assign(
       new Error("close rejected; descriptor still live"),
@@ -273,7 +275,7 @@ describe("electron fuse final-close failures", () => {
 
 describe("electron fuse read failure precedence", () => {
   it("preserves an earlier read failure when cancellation arrives during failed close", async () => {
-    const root = await createTestTempDirectory("rea-fuse-read-cancel-close-");
+    const root = await createTestTempDirectory("nre-fuse-read-cancel-close-");
     const path = await writeElfImage(root, "app.elf");
     const controller = new AbortController();
     const readFailure = Object.assign(

@@ -117,7 +117,7 @@ it.each(["compare_bundles", "match_native_functions"])(
 );
 
 const savedParent = async () => {
-  const root = await createTestTempDirectory("rea-managed-bundle-guard-");
+  const root = await createTestTempDirectory("nre-managed-bundle-guard-");
   const path = join(root, "parent.json");
   const parent = SOURCE_TO_BUNDLE_COMPARISON_EXAMPLE.application;
   await writeFile(
@@ -128,7 +128,7 @@ const savedParent = async () => {
 };
 
 it("keeps the owning operation when native matching reloads a needed earlier bundle", async () => {
-  const root = await createTestTempDirectory("rea-native-bundle-reload-");
+  const root = await createTestTempDirectory("nre-native-bundle-reload-");
   const path = join(root, "parent.json"),
     empty = join(root, "empty.json");
   const parent = createEvidence(
@@ -243,7 +243,7 @@ it("preserves the view operation and caller reason when bundle I/O is cancelled"
 });
 
 it("retains completed parent facts when bundle publication cannot admit authentication", async () => {
-  const root = await createTestTempDirectory("rea-managed-delivery-guard-");
+  const root = await createTestTempDirectory("nre-managed-delivery-guard-");
   const evidence = SOURCE_TO_BUNDLE_COMPARISON_EXAMPLE.application;
   const actual = await vi.importActual<
     typeof import("../../src/application/JsonAuthenticationHeadroom.js")
@@ -273,7 +273,7 @@ it("retains completed parent facts when bundle publication cannot admit authenti
 
 it("projects a rejected managed parent by reference without cloning under low headroom", async () => {
   const root = await createTestTempDirectory(
-    "rea-managed-low-heap-projection-",
+    "nre-managed-low-heap-projection-",
   );
   const [target] = await createBinarySessionTargets();
   const source = {
@@ -401,7 +401,7 @@ it.each(["JSON assembly", "bundle authentication"])(
 );
 
 it("authenticates escaped payloads without serializing either complete bundle", async () => {
-  const root = await createTestTempDirectory("rea-escaped-bundle-");
+  const root = await createTestTempDirectory("nre-escaped-bundle-");
   const path = join(root, "parent.json");
   const escaped = '\u0000\u0001\\"😀\ud800'.repeat(20000);
   const example = SOURCE_TO_BUNDLE_COMPARISON_EXAMPLE.application;

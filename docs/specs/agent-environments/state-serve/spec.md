@@ -1,10 +1,10 @@
 # Serve the environment from its state by default
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
-`rea environment-serve <manifest> --evidence <capture>` serves the environment
+`nre environment-serve <manifest> --evidence <capture>` serves the environment
 from the initial state the capture observed, with nothing else to supply: at
 startup it derives the `environment-state` view of the capture in-process with
 the manifest's `template_rules`. Read tools whose views are state-backed answer
@@ -75,7 +75,7 @@ this increment: write tools are not served from the state.
   (`bytes`, a `file://` regular file or an `https://` download with a 30 s
   timeout covering the body, no redirects and a streamed 32 MiB cap;
   `mimeType` when given is `application/json`) and `data/get` (`{parts:
-  [{kind: "data", data: rea_state}]}`). A `file://` uri whose host is neither
+  [{kind: "data", data: nre_state}]}`). A `file://` uri whose host is neither
   empty nor `localhost`, or whose path is a UNC path, is `-32602` before
   anything is opened. A document that `data/get` would write back past 32 MiB,
   once it adds the members a document may omit, is `-32602`, so a reported
@@ -103,7 +103,7 @@ this increment: write tools are not served from the state.
   `data: {max_response_bytes, reply_bytes}`, unless that error is no smaller
   than the reply, so the body is never built past the budget and small write
   replies are kept.
-- Validate `rea-state/v1` documents against the served types and views: known
+- Validate `nre-state/v1` documents against the served types and views: known
   types, collections that instantiate their template, ids equal to the identity
   field, unique keys, `view_fields` naming item or list views of the type
   without setting the type's identity field to a value whose scalar text
@@ -137,7 +137,7 @@ this increment: write tools are not served from the state.
   serves replay without one; the served catalog (`servedCatalog`) and the
   answer function (`environmentToolAnswer`) are shared with export.
 - `environment-export` keeps the bundle command
-  `rea environment-serve /env/manifest.json --evidence /env/evidence.json` and,
+  `nre environment-serve /env/manifest.json --evidence /env/evidence.json` and,
   after its name checks, prepares the state under the bundle name as that
   server will, to predict what it serves, so a refused `--name` derives
   nothing; its report is served or unavailable, never replay-only. The

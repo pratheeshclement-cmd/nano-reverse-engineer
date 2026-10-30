@@ -13,7 +13,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "preserves malformed XML scalars as explicit unknowns through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-xml-scalars-");
+    const root = await createTestTempDirectory("nre-keyed-xml-scalars-");
     const invalid = [
       ["integer", " 42 "],
       ["integer", "42abc"],
@@ -51,7 +51,7 @@ cliTest(
           HOME: root,
           USERPROFILE: root,
           TZ,
-          REA_LOG_LEVEL: "silent",
+          NRE_LOG_LEVEL: "silent",
         },
       });
       expect(output.exitCode, output.stderr).toBe(0);

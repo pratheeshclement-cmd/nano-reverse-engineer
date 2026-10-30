@@ -20,10 +20,10 @@ import fs from "node:fs";
 import { resolve } from "node:path";
 import { syncBuiltinESMExports } from "node:module";
 
-const cliEntry = process.env.REA_TEST_CLI_ENTRY;
+const cliEntry = process.env.NRE_TEST_CLI_ENTRY;
 if (cliEntry !== undefined && resolve(process.argv[1] ?? "") === cliEntry) {
-  const targetPath = process.env.REA_TEST_SNAPSHOT_FILE;
-  const markerPath = process.env.REA_TEST_SNAPSHOT_CLOSE_MARKER;
+  const targetPath = process.env.NRE_TEST_SNAPSHOT_FILE;
+  const markerPath = process.env.NRE_TEST_SNAPSHOT_CLOSE_MARKER;
   const originalOpen = fs.promises.open;
   let closeAttempts = 0;
   let released = false;
@@ -81,7 +81,7 @@ itWithCaptureCapability(
   "retains the completed final snapshot and retries its exact file descriptor in the compiled CLI",
   async () => {
     const fixtureRoot = await createTestTempDirectory(
-      "rea-process-snapshot-close-cli-",
+      "nre-process-snapshot-close-cli-",
     );
     const workingRoot = join(fixtureRoot, "working");
     const scenarioPath = join(fixtureRoot, "scenario.json");
@@ -105,7 +105,7 @@ itWithCaptureCapability(
     await writeFile(preloadPath, snapshotClosePreload);
 
     try {
-      const cliEntry = resolve("scripts/rea.mjs");
+      const cliEntry = resolve("scripts/nre.mjs");
       const result = await execFileAsync(
         process.execPath,
         [cliEntry, "capture-process", scenarioPath, "--json"],
@@ -114,9 +114,9 @@ itWithCaptureCapability(
           env: {
             ...process.env,
             NODE_OPTIONS: `--import=${pathToFileURL(preloadPath).href}`,
-            REA_TEST_CLI_ENTRY: cliEntry,
-            REA_TEST_SNAPSHOT_FILE: observedPath,
-            REA_TEST_SNAPSHOT_CLOSE_MARKER: markerPath,
+            NRE_TEST_CLI_ENTRY: cliEntry,
+            NRE_TEST_SNAPSHOT_FILE: observedPath,
+            NRE_TEST_SNAPSHOT_CLOSE_MARKER: markerPath,
           },
           timeout: CLI_TIMEOUT_MS,
         },

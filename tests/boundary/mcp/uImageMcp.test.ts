@@ -12,7 +12,7 @@ import { buildUImage, buildMultiPayload } from "../../fixtures/uimage.js";
 it.each(["full", "compact"] as const)(
   "retains uImage physical facts and unknown text through compiled MCP (%s)",
   async (profile) => {
-    const root = await createTestTempDirectory("rea-uimage-mcp-");
+    const root = await createTestTempDirectory("nre-uimage-mcp-");
     const path = join(root, "firmware");
     const parts = [Buffer.from("abc"), Buffer.from("second part")];
     const bytes = buildUImage({
@@ -24,9 +24,9 @@ it.each(["full", "compact"] as const)(
     });
     await writeFile(path, bytes);
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_TOOL_FAMILIES: "session,artifact",
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_TOOL_FAMILIES: "session,artifact",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: profile,
     });
     let outputRoot: string | undefined;
     try {

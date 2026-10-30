@@ -57,17 +57,17 @@ describe("input issue projection", () => {
   it("projects reserved process environment key constraints at the key path", () => {
     const input = {
       executable: "/usr/bin/true",
-      environment: { REA_PROCESS_RUN_ID: "caller-value" },
+      environment: { NRE_PROCESS_RUN_ID: "caller-value" },
     };
     const parsed = processScenarioSchema.safeParse(input);
     if (parsed.success) throw new Error("expected invalid input");
 
     expect(projectInputIssues(parsed.error.issues, input)).toEqual([
       {
-        path: ["environment", "REA_PROCESS_RUN_ID"],
+        path: ["environment", "NRE_PROCESS_RUN_ID"],
         reason: "invalid_format",
         expected: "regex",
-        message: "REA_PROCESS_RUN_ID is reserved by the process adapter",
+        message: "NRE_PROCESS_RUN_ID is reserved by the process adapter",
       },
     ]);
   });

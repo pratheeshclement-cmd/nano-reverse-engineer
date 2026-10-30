@@ -28,7 +28,7 @@ const deferred = () => {
 };
 
 it("rejects unsupported stdin before acquiring a launcher", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-stdin-");
+  const directory = await createTestTempDirectory("nre-verifier-stdin-");
   const forbidden = join(directory, "forbidden launch");
   let acquisitions = 0;
   const commands = await createVerifierCommands({
@@ -67,7 +67,7 @@ it("rejects unsupported stdin before acquiring a launcher", async () => {
 it.skipIf(process.platform === "win32")(
   "delivers EOF through a physical stdin pipe while preserving caller inputs and artifact bytes",
   async () => {
-    const directory = await createTestTempDirectory("rea-verifier-command-");
+    const directory = await createTestTempDirectory("nre-verifier-command-");
     const artifact = join(directory, "retained evidence.bin");
     const bytes = Buffer.from([0, 255, 10, 13, 65]);
     const arguments_ = [
@@ -76,7 +76,7 @@ it.skipIf(process.platform === "win32")(
       "--literal=$HOME",
       "quote'and\"double",
     ];
-    const sentinel = "REA_VERIFIER_AMBIENT_SENTINEL";
+    const sentinel = "NRE_VERIFIER_AMBIENT_SENTINEL";
     const previous = process.env[sentinel];
     const source = `
 const fs = require("node:fs");
@@ -89,8 +89,8 @@ process.stdin.on("end", () => {
   process.stdout.write(JSON.stringify({
     args: process.argv.slice(1), cwd: process.cwd(), received, eof: true,
     pipe: input.isFIFO() || input.isSocket(), character: input.isCharacterDevice(),
-    regular: input.isFile(), selected: process.env.REA_VERIFIER_SELECTED,
-    ambient: process.env.${sentinel} ?? null, omitted: process.env.REA_VERIFIER_OMITTED ?? null
+    regular: input.isFile(), selected: process.env.NRE_VERIFIER_SELECTED,
+    ambient: process.env.${sentinel} ?? null, omitted: process.env.NRE_VERIFIER_OMITTED ?? null
   }));
 });
 process.stdin.resume();
@@ -105,8 +105,8 @@ process.stdin.resume();
         {
           cwd: directory,
           env: {
-            REA_VERIFIER_SELECTED: "caller-selected",
-            REA_VERIFIER_OMITTED: undefined,
+            NRE_VERIFIER_SELECTED: "caller-selected",
+            NRE_VERIFIER_OMITTED: undefined,
           },
           stdin: "closed-pipe",
           timeout: 2_000,
@@ -138,7 +138,7 @@ process.stdin.resume();
 );
 
 it("reports a numeric nonzero exit with its complete output snapshot after cleanup", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-exit-");
+  const directory = await createTestTempDirectory("nre-verifier-exit-");
   const artifact = join(directory, "existing evidence.bin");
   const bytes = Buffer.from([255, 0, 128, 10]);
   await writeFile(artifact, bytes);
@@ -187,7 +187,7 @@ it("reports a numeric nonzero exit with its complete output snapshot after clean
 });
 
 it("retries only the failed exact file capability after a peer releases, retaining both evidence files", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-retained-");
+  const directory = await createTestTempDirectory("nre-verifier-retained-");
   const artifact = join(directory, "retained evidence.bin");
   const peerArtifact = join(directory, "released peer evidence.bin");
   const bytes = Buffer.from([0, 255, 65]);
@@ -264,7 +264,7 @@ it("retries only the failed exact file capability after a peer releases, retaini
 });
 
 it("refuses new owners and commands after successful close while leaving new resources with their caller", async () => {
-  const directory = await createTestTempDirectory("rea-verifier-admission-");
+  const directory = await createTestTempDirectory("nre-verifier-admission-");
   const artifact = join(directory, "caller evidence.bin");
   const forbidden = join(directory, "forbidden launch");
   await writeFile(artifact, "caller-owned evidence");
@@ -325,7 +325,7 @@ it("refuses new owners and commands after successful close while leaving new res
 it.skipIf(process.platform === "win32")(
   "keeps a selected physical stdin pipe open until the command deadline",
   async () => {
-    const directory = await createTestTempDirectory("rea-verifier-open-stdin-");
+    const directory = await createTestTempDirectory("nre-verifier-open-stdin-");
     const source = `
 import { fstatSync } from "node:fs";
 const input = fstatSync(0);
@@ -378,7 +378,7 @@ it.skipIf(process.platform === "win32")(
   "retains a late acquired child's exact cleanup after cancelled close fails and retries it",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-verifier-late-owned-launch-",
+      "nre-verifier-late-owned-launch-",
     );
     const artifact = join(directory, "retained evidence.bin");
     const bytes = Buffer.from([0, 255, 65]);
@@ -530,7 +530,7 @@ it.skipIf(process.platform === "win32")(
   "joins a delayed real launcher on close without spawning or removing caller evidence",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-verifier-late-launch-",
+      "nre-verifier-late-launch-",
     );
     const artifact = join(directory, "retained evidence");
     const forbidden = join(directory, "forbidden launch");

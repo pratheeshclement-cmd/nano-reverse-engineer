@@ -18,11 +18,11 @@ import fs from "node:fs";
 import { resolve } from "node:path";
 import { syncBuiltinESMExports } from "node:module";
 
-const cliEntry = process.env.REA_TEST_CLI_ENTRY;
+const cliEntry = process.env.NRE_TEST_CLI_ENTRY;
 if (cliEntry !== undefined && resolve(process.argv[1] ?? "") === cliEntry) {
-  const target = resolve(process.env.REA_TEST_SYMLINK ?? "");
-  const countPath = process.env.REA_TEST_READLINK_COUNT;
-  const removeOnSecondRead = process.env.REA_TEST_REMOVE_ON_SECOND_READ === "1";
+  const target = resolve(process.env.NRE_TEST_SYMLINK ?? "");
+  const countPath = process.env.NRE_TEST_READLINK_COUNT;
+  const removeOnSecondRead = process.env.NRE_TEST_REMOVE_ON_SECOND_READ === "1";
   let matchingReads = 0;
   const originalReadlink = fs.promises.readlink;
   fs.promises.readlink = async function (path, ...options) {
@@ -40,7 +40,7 @@ if (cliEntry !== undefined && resolve(process.argv[1] ?? "") === cliEntry) {
 `;
 
 const createScenario = async (removeOnSecondRead: boolean) => {
-  const root = await createTestTempDirectory("rea-snapshot-race-cli-");
+  const root = await createTestTempDirectory("nre-snapshot-race-cli-");
   const observed = join(root, "observed");
   const link = join(observed, "vanishing-link");
   const scenario = join(root, "scenario.json");
@@ -71,10 +71,10 @@ captureCliTest(
       cwd: fixture.root,
       environment: {
         NODE_OPTIONS: `--import=${pathToFileURL(fixture.preload).href}`,
-        REA_TEST_CLI_ENTRY: resolve("scripts/rea.mjs"),
-        REA_TEST_SYMLINK: fixture.link,
-        REA_TEST_READLINK_COUNT: fixture.readlinkCount,
-        REA_TEST_REMOVE_ON_SECOND_READ: fixture.removeOnSecondRead ? "1" : "0",
+        NRE_TEST_CLI_ENTRY: resolve("scripts/nre.mjs"),
+        NRE_TEST_SYMLINK: fixture.link,
+        NRE_TEST_READLINK_COUNT: fixture.readlinkCount,
+        NRE_TEST_REMOVE_ON_SECOND_READ: fixture.removeOnSecondRead ? "1" : "0",
       },
     });
 
@@ -125,10 +125,10 @@ captureCliTest(
       cwd: fixture.root,
       environment: {
         NODE_OPTIONS: `--import=${pathToFileURL(fixture.preload).href}`,
-        REA_TEST_CLI_ENTRY: resolve("scripts/rea.mjs"),
-        REA_TEST_SYMLINK: fixture.link,
-        REA_TEST_READLINK_COUNT: fixture.readlinkCount,
-        REA_TEST_REMOVE_ON_SECOND_READ: "1",
+        NRE_TEST_CLI_ENTRY: resolve("scripts/nre.mjs"),
+        NRE_TEST_SYMLINK: fixture.link,
+        NRE_TEST_READLINK_COUNT: fixture.readlinkCount,
+        NRE_TEST_REMOVE_ON_SECOND_READ: "1",
       },
     });
 

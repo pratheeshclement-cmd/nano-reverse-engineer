@@ -140,12 +140,12 @@ const selectEvmLimiter = async (
   if (!evmHostSupported(platform, arch)) return undefined;
 
   const path =
-    environment.REA_EVM_PRLIMIT_COMMAND ?? EVM_PRLIMIT_COMMAND_DEFAULT;
+    environment.NRE_EVM_PRLIMIT_COMMAND ?? EVM_PRLIMIT_COMMAND_DEFAULT;
   const diagnostics = { limiter_path: path, platform, arch };
   try {
     if (!isAbsolute(path))
       throw new EvmAdmissionError("prlimit_not_absolute", {
-        setting: "REA_EVM_PRLIMIT_COMMAND",
+        setting: "NRE_EVM_PRLIMIT_COMMAND",
       });
     const fs = probes?.fs ?? { access, stat };
     await fs.access(path, constants.X_OK);
@@ -394,7 +394,7 @@ export class EvmoleInterfaceProvider implements EvmInterfacePort {
     readonly launcher?: Launcher,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-evm-interface-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "nre-evm-interface-" }),
   ) {}
 
   /** Bind recovered interface candidates to both original carrier and decoded byte identity. */
@@ -416,7 +416,7 @@ export class EvmoleInterfaceProvider implements EvmInterfacePort {
           "artifact-read",
           input.path,
           undefined,
-          environment.REA_EVM_PRLIMIT_COMMAND ?? EVM_PRLIMIT_COMMAND_DEFAULT,
+          environment.NRE_EVM_PRLIMIT_COMMAND ?? EVM_PRLIMIT_COMMAND_DEFAULT,
           undefined,
           input.timeout_ms ?? DEFAULT_EVM_TIMEOUT_MS,
         );
@@ -491,7 +491,7 @@ export class EvmoleInterfaceProvider implements EvmInterfacePort {
     let phase: "configuration" | "artifact-read" | "worker" = "configuration";
     let workerLimits: EvmWorkerLimits | undefined;
     let limiter =
-      environment.REA_EVM_PRLIMIT_COMMAND ?? EVM_PRLIMIT_COMMAND_DEFAULT;
+      environment.NRE_EVM_PRLIMIT_COMMAND ?? EVM_PRLIMIT_COMMAND_DEFAULT;
     let result: Result<EvmInterfaceExecution, AnalysisError>;
     try {
       if (options?.signal?.aborted)
@@ -603,7 +603,7 @@ export class EvmoleInterfaceProvider implements EvmInterfacePort {
           ],
           cwd: root.path,
           expectedCommand: null,
-          runId: `rea-evm-interface-${randomUUID()}`,
+          runId: `nre-evm-interface-${randomUUID()}`,
           hostEnvironment: workerEnvironment,
         },
         {

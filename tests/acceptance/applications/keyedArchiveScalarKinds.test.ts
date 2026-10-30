@@ -14,7 +14,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["xml", "binary"] as const)(
   "distinguishes serialized scalar objects from lookalike dictionaries in a %s keyed archive",
   async (format, { cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-scalar-kinds-");
+    const root = await createTestTempDirectory("nre-keyed-scalar-kinds-");
     const uid = (value: number) =>
       format === "binary" ? { UID: value } : { CF$UID: value };
     const archive = {
@@ -50,8 +50,8 @@ cliTest.for(["xml", "binary"] as const)(
         environment: {
           HOME: root,
           USERPROFILE: root,
-          REA_LOG_LEVEL: "silent",
-          REA_ANALYSIS_PROVIDER: "auto",
+          NRE_LOG_LEVEL: "silent",
+          NRE_ANALYSIS_PROVIDER: "auto",
         },
       });
       expect(output.exitCode, output.stderr).toBe(0);
@@ -161,7 +161,7 @@ cliTest.for(["xml", "binary"] as const)(
 cliTest.for(["xml", "binary"] as const)(
   "keeps a negative-zero real distinct from positive zero in a %s keyed archive",
   async (format, { cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-signed-zero-");
+    const root = await createTestTempDirectory("nre-keyed-signed-zero-");
     const uid = (value: number) =>
       format === "binary" ? { UID: value } : { CF$UID: value };
     const archive = {
@@ -207,8 +207,8 @@ cliTest.for(["xml", "binary"] as const)(
       environment: {
         HOME: root,
         USERPROFILE: root,
-        REA_LOG_LEVEL: "silent",
-        REA_ANALYSIS_PROVIDER: "auto",
+        NRE_LOG_LEVEL: "silent",
+        NRE_ANALYSIS_PROVIDER: "auto",
       },
     });
     expect(output.exitCode, output.stderr).toBe(0);
@@ -250,7 +250,7 @@ cliTest.for(["xml", "binary"] as const)(
 cliTest(
   "rejects scalar top dictionaries through the public CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-scalar-top-");
+    const root = await createTestTempDirectory("nre-keyed-scalar-top-");
     const { call } = await connectLocalToolsMcp({
       HOME: root,
       USERPROFILE: root,
@@ -291,7 +291,7 @@ cliTest(
 );
 
 cliTest("preserves binary IEEE non-finite scalar identity", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-binary-nonfinite-");
+  const root = await createTestTempDirectory("nre-binary-nonfinite-");
   const path = join(root, "archive.plist");
   const bytes = Buffer.from(
     buildBinary({
@@ -315,7 +315,7 @@ cliTest("preserves binary IEEE non-finite scalar identity", async ({ cli }) => {
   await writeFile(path, bytes);
   const output = await cli.run({
     arguments: ["inspect-keyed-archive", path, "--json"],
-    environment: { HOME: root, USERPROFILE: root, REA_LOG_LEVEL: "silent" },
+    environment: { HOME: root, USERPROFILE: root, NRE_LOG_LEVEL: "silent" },
   });
   expect(output.exitCode, output.stderr).toBe(0);
   const result = keyedArchiveResultSchema.parse(
@@ -352,7 +352,7 @@ cliTest("preserves binary IEEE non-finite scalar identity", async ({ cli }) => {
 cliTest(
   "keeps CFPropertyList's non-finite real spellings in an XML keyed archive",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-non-finite-");
+    const root = await createTestTempDirectory("nre-keyed-non-finite-");
     const archive = {
       $archiver: "NSKeyedArchiver",
       $version: 100000,
@@ -386,8 +386,8 @@ cliTest(
       environment: {
         HOME: root,
         USERPROFILE: root,
-        REA_LOG_LEVEL: "silent",
-        REA_ANALYSIS_PROVIDER: "auto",
+        NRE_LOG_LEVEL: "silent",
+        NRE_ANALYSIS_PROVIDER: "auto",
       },
     });
     expect(output.exitCode, output.stderr).toBe(0);

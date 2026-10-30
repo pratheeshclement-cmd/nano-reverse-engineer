@@ -19,7 +19,7 @@ const armSlices = async (
   } = {},
   cpuType = 12,
 ) => {
-  const root = await createTestTempDirectory("rea-arm-slice-identity-");
+  const root = await createTestTempDirectory("nre-arm-slice-identity-");
   const path = join(root, "fat");
   const cpu = { type: cpuType, subtype };
   const bytes = machoImage({ cpu, wide: cpuType !== 12 });

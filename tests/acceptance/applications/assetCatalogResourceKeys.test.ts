@@ -48,7 +48,7 @@ const keyedArchive = (nested: boolean) =>
 cliTest.skipIf(process.platform !== "darwin")(
   "retains resource keys and complete empty inventory through CLI and MCP at a positive offset",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-asset-resource-keys-");
+    const root = await createTestTempDirectory("nre-asset-resource-keys-");
     const { call } = await connectLocalToolsMcp();
     for (const [name, field, archive, recognized] of [
       ["reported", "NSImageName", reportedArchive, true],

@@ -1,14 +1,14 @@
 # U-Boot FIT images
 
-REA inventories U-Boot Flattened Image Tree (FIT, `.itb`) files through
+NRE inventories U-Boot Flattened Image Tree (FIT, `.itb`) files through
 `inspect-artifact` / `inspect_artifact`, and materializes the stored bytes of
 each image through `extract-artifact` / `extract_artifact`. Decoding is static
 and needs no external tool.
 
 ```sh
-rea inspect-artifact ./boot.itb --json
-rea inspect-artifact ./boot.itb --detail summary --evidence_output evidence.json --json
-rea extract-artifact ./boot.itb --json
+nre inspect-artifact ./boot.itb --json
+nre inspect-artifact ./boot.itb --detail summary --evidence_output evidence.json --json
+nre extract-artifact ./boot.itb --json
 ```
 
 For MCP, open the file with `open_binary`, then call `inspect_artifact`. Summary
@@ -130,7 +130,7 @@ configurations, and an image at most 8 hash nodes; the devicetree parser's
 node, property and depth bounds also apply. The sum of declared image sizes
 is bounded by the shared archive expansion budget. These are fixed resource
 bounds with no runtime override. Configurable ceilings are tracked in
-[#6176](https://github.com/morluto/rea/issues/6176).
+[#6176](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/6176).
 
 ## Analyzing an image
 

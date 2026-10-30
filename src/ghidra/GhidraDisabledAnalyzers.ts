@@ -9,7 +9,7 @@ import { ProviderAdapterError } from "../domain/providerAdapterError.js";
 
 /** Analyzer-options report format admitted by this adapter. */
 const GHIDRA_DISABLED_ANALYZER_REPORT_FORMAT =
-  "rea-ghidra-disabled-analyzers-v1";
+  "nre-ghidra-disabled-analyzers-v1";
 
 /**
  * What the pre-analysis options script did with each configured name, in
@@ -46,14 +46,14 @@ export const ghidraDisabledAnalyzerFailure = (
   if (committed === undefined && report === undefined) return undefined;
   const reason =
     committed === undefined
-      ? "The Ghidra session reported REA_GHIDRA_DISABLED_ANALYZERS outcomes that the profile did not commit."
+      ? "The Ghidra session reported NRE_GHIDRA_DISABLED_ANALYZERS outcomes that the profile did not commit."
       : report === undefined
-        ? "The Ghidra session did not report the outcome of the committed REA_GHIDRA_DISABLED_ANALYZERS."
+        ? "The Ghidra session did not report the outcome of the committed NRE_GHIDRA_DISABLED_ANALYZERS."
         : report.analyzers.length !== committed.length ||
             report.analyzers.some(
               ({ name }, index) => name !== committed[index],
             )
-          ? "The Ghidra session reported REA_GHIDRA_DISABLED_ANALYZERS outcomes for analyzers that differ from the committed profile."
+          ? "The Ghidra session reported NRE_GHIDRA_DISABLED_ANALYZERS outcomes for analyzers that differ from the committed profile."
           : undefined;
   return reason === undefined
     ? undefined
@@ -72,6 +72,6 @@ export const ghidraDisabledAnalyzerLimitations = (
           report.analyzers.map(({ name, status }) =>
             status === "not_applicable" ? `${name}(n/a)` : name,
           ),
-        )}. Ghidra did not register the (n/a) analyzers for this program, so REA_GHIDRA_DISABLED_ANALYZERS had nothing to disable for them; the analysis profile still commits every configured name.`,
+        )}. Ghidra did not register the (n/a) analyzers for this program, so NRE_GHIDRA_DISABLED_ANALYZERS had nothing to disable for them; the analysis profile still commits every configured name.`,
       ]
     : [];

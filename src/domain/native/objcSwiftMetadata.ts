@@ -462,7 +462,7 @@ export const DEFAULT_DISPATCH_METADATA_INPUT_BYTES = 64 * 1024 * 1024;
 
 /**
  * Largest caller-selected budget. The reader holds the whole selected file in
- * REA's own heap; larger images belong to a deep provider that loads them in
+ * NRE's own heap; larger images belong to a deep provider that loads them in
  * its own process.
  */
 export const MAXIMUM_DISPATCH_METADATA_INPUT_BYTES = 1024 * 1024 * 1024;
@@ -499,7 +499,7 @@ export const nativeDispatchMetadataInputSchema = z.strictObject({
     .max(MAXIMUM_DISPATCH_METADATA_INPUT_BYTES)
     .optional()
     .describe(
-      "Largest target file REA reads into memory for binary metadata, in bytes. Omitted: 67108864 (64 MiB). The whole file counts, including every slice of a universal Mach-O. At most 1073741824 (1 GiB).",
+      "Largest target file NRE reads into memory for binary metadata, in bytes. Omitted: 67108864 (64 MiB). The whole file counts, including every slice of a universal Mach-O. At most 1073741824 (1 GiB).",
     ),
 });
 
@@ -530,7 +530,7 @@ export const nativeDispatchMetadataResultSchema = z.strictObject({
     version: z.string().nullable(),
   }),
   analysis_profile_digest: z.string().min(1).nullable(),
-  /** Present when REA read the target bytes itself; symbol-only inventories have none. */
+  /** Present when NRE read the target bytes itself; symbol-only inventories have none. */
   input_admission: dispatchMetadataInputAdmissionSchema.exactOptional(),
   result: objcSwiftMetadataSchema,
 });

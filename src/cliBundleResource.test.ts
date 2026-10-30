@@ -19,7 +19,7 @@ afterEach(async () => {
 });
 
 it("inspects a keyless app bundle through the public CLI and preserves resource provenance", async () => {
-  const parent = await mkdtemp(join(tmpdir(), "rea-bundle-resource-cli-"));
+  const parent = await mkdtemp(join(tmpdir(), "nre-bundle-resource-cli-"));
   temporaryDirectories.push(parent);
   const bundle = join(parent, "Fixture.app");
   const resources = join(bundle, "Resources");
@@ -35,7 +35,7 @@ it("inspects a keyless app bundle through the public CLI and preserves resource 
     }),
   );
 
-  const cli = createCli({ REA_LOG_LEVEL: "silent" });
+  const cli = createCli({ NRE_LOG_LEVEL: "silent" });
   let stdout = "";
   let exitCode = 0;
   await cli.serve(

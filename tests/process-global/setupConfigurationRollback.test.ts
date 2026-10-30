@@ -83,7 +83,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
     rmdir: async (...values: Parameters<typeof original.rmdir>) => {
       if (
         state.rejectStageRemoval &&
-        String(values[0]).includes(".rea-config-")
+        String(values[0]).includes(".nre-config-")
       )
         throw new Error("injected staging directory removal failure");
       return original.rmdir(...values);
@@ -168,7 +168,7 @@ it("reports a failed config rollback and retains its backup path", async () => {
   state.rejectRestore = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-rollback-");
+  const root = await createTestTempDirectory("nre-config-rollback-");
   const path = join(root, "client.json");
   const original = '{"keep":true}\n';
   await import("node:fs/promises").then(({ writeFile }) =>
@@ -179,22 +179,22 @@ it("reports a failed config rollback and retains its backup path", async () => {
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["nre", "mcp"],
   );
 
   expect(result).toEqual({
     status: "failed",
     reason: "rollback",
-    backupPath: `${path}.rea.backup`,
+    backupPath: `${path}.nre.backup`,
     failure: {
       kind: "restore",
       path,
       detail: "injected restore write failure",
     },
   });
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(original);
   expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
-    mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+    mcpServers: { nre: { command: "nre", args: ["mcp"] } },
   });
 });
 
@@ -203,24 +203,24 @@ it("preserves the first backup and reports a verified backup of the current orig
   state.rejectRestore = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-stale-backup-");
+  const root = await createTestTempDirectory("nre-config-stale-backup-");
   const path = join(root, "client.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   await import("node:fs/promises").then(async ({ writeFile }) => {
     await writeFile(path, currentOriginal);
-    await writeFile(`${path}.rea.backup`, firstOriginal);
+    await writeFile(`${path}.nre.backup`, firstOriginal);
   });
   state.rejectRestore = true;
 
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["nre", "mcp"],
   );
   state.rejectRestore = false;
 
-  const recoveryPath = `${path}.rea.backup.${createHash("sha256")
+  const recoveryPath = `${path}.nre.backup.${createHash("sha256")
     .update(currentOriginal, "utf8")
     .digest("hex")}.recovery`;
   expect(result).toMatchObject({
@@ -233,7 +233,7 @@ it("preserves the first backup and reports a verified backup of the current orig
       detail: "injected restore write failure",
     },
   });
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(firstOriginal);
+  expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(firstOriginal);
   expect(await readFile(recoveryPath, "utf8")).toBe(currentOriginal);
 });
 
@@ -243,33 +243,33 @@ it("does not write config when a recovery copy disappears before verification", 
   state.removeCopiedRecovery = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-vanished-recovery-");
+  const root = await createTestTempDirectory("nre-config-vanished-recovery-");
   const path = join(root, "client.json");
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   await import("node:fs/promises").then(async ({ writeFile }) => {
     await writeFile(path, currentOriginal);
-    await writeFile(`${path}.rea.backup`, firstOriginal);
+    await writeFile(`${path}.nre.backup`, firstOriginal);
   });
   state.removeCopiedRecovery = true;
 
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["nre", "mcp"],
   );
   state.removeCopiedRecovery = false;
 
   expect(result).toEqual({ status: "failed", reason: "backup" });
   expect(await readFile(path, "utf8")).toBe(currentOriginal);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(firstOriginal);
+  expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(firstOriginal);
 });
 
 it("does not roll back or remove config when its initial read cleanup fails", async () => {
   state.readbackFailed = false;
   state.rejectRestore = false;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-initial-cleanup-");
+  const root = await createTestTempDirectory("nre-config-initial-cleanup-");
   const path = join(root, "client.json");
   const original = '{"keep":true}\n';
   await import("node:fs/promises").then(({ writeFile }) =>
@@ -287,7 +287,7 @@ it("does not roll back or remove config when its initial read cleanup fails", as
     configureClientConfiguration(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ),
   ).rejects.toBe(failure);
   expect(await readFile(path, "utf8")).toBe(original);
@@ -298,13 +298,13 @@ it("retains first-run configuration for manual recovery without deleting by path
   state.rejectRestore = false;
   state.initialCleanupFailure = undefined;
   state.readbackCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-first-run-rollback-");
+  const root = await createTestTempDirectory("nre-config-first-run-rollback-");
   const path = join(root, "client.json");
 
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["nre", "mcp"],
   );
 
   expect(result).toMatchObject({
@@ -319,7 +319,7 @@ it("retains first-run configuration for manual recovery without deleting by path
   });
   expect(result).not.toHaveProperty("backupPath");
   expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
-    mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+    mcpServers: { nre: { command: "nre", args: ["mcp"] } },
   });
 });
 
@@ -327,7 +327,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
   state.readbackFailed = false;
   state.rejectRestore = false;
   state.initialCleanupFailure = undefined;
-  const root = await createTestTempDirectory("rea-config-readback-cleanup-");
+  const root = await createTestTempDirectory("nre-config-readback-cleanup-");
   const path = join(root, "client.json");
   const original = '{"keep":true}\n';
   await import("node:fs/promises").then(({ writeFile }) =>
@@ -352,7 +352,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
     await host.configureClient(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     );
   } catch (cause: unknown) {
     caught = cause;
@@ -362,7 +362,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
 
   if (!(caught instanceof ConfigurationError)) throw caught;
   expect(caught.message).toContain("injected restore write failure");
-  expect(caught.message).toContain(`${path}.rea.backup`);
+  expect(caught.message).toContain(`${path}.nre.backup`);
   const cleanupOwnerError = caught.cause;
   if (!(cleanupOwnerError instanceof RegularFileCleanupFailure))
     throw new Error("Configuration failure lost its read owner");
@@ -372,13 +372,13 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
     cleanupCause: expect.any(AggregateError),
   });
   expect(cleanupOwnerError.owner).toBe(owner);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(original);
 });
 
 it.each(["existing", "first-run"] as const)(
   "retains a replacement symlink and its target when %s readback fails",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-config-replaced-rollback-");
+    const root = await createTestTempDirectory("nre-config-replaced-rollback-");
     const path = join(root, "client.json");
     const replacement = join(root, "replacement.json");
     const original = '{"keep":"original"}\n';
@@ -397,19 +397,19 @@ it.each(["existing", "first-run"] as const)(
     const result = await configureClientConfiguration(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     );
 
     expect(await fs.readFile(replacement, "utf8")).toBe(foreign);
     expect((await fs.lstat(path)).isSymbolicLink()).toBe(true);
     expect(result).toMatchObject({ status: "failed", reason: "conflict" });
     if (kind === "existing")
-      expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
 it("retains a replacement regular file when readback fails", async () => {
-  const root = await createTestTempDirectory("rea-config-replaced-file-");
+  const root = await createTestTempDirectory("nre-config-replaced-file-");
   const path = join(root, "client.json");
   const replacement = join(root, "replacement.json");
   const original = '{"keep":"original"}\n';
@@ -426,16 +426,16 @@ it("retains a replacement regular file when readback fails", async () => {
   const result = await configureClientConfiguration(
     { name: "cursor", configPath: path, format: "json" },
     {},
-    ["rea", "mcp"],
+    ["nre", "mcp"],
   );
 
   expect(await fs.readFile(path, "utf8")).toBe(foreign);
   expect(result).toMatchObject({ status: "failed", reason: "conflict" });
-  expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
 });
 
 it("retains and retries both readback and publication descriptors after mixed close failures", async () => {
-  const root = await createTestTempDirectory("rea-config-two-close-owners-");
+  const root = await createTestTempDirectory("nre-config-two-close-owners-");
   const path = join(root, "client.json");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
@@ -465,7 +465,7 @@ it("retains and retries both readback and publication descriptors after mixed cl
       host.configureClient(
         { name: "cursor", configPath: path, format: "json" },
         {},
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).rejects.toBeInstanceOf(ConfigurationError);
     expect(state.publicationHandles).toHaveLength(1);
@@ -487,7 +487,7 @@ it("retains and retries both readback and publication descriptors after mixed cl
 });
 
 it("rejects a replaced publication even when the replacement passes registration readback", async () => {
-  const root = await createTestTempDirectory("rea-config-valid-replacement-");
+  const root = await createTestTempDirectory("nre-config-valid-replacement-");
   const path = join(root, "client.json");
   const replacement = join(root, "replacement.json");
   const fs =
@@ -507,15 +507,15 @@ it("rejects a replaced publication even when the replacement passes registration
     await configureClientConfiguration(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ),
   ).toMatchObject({ status: "failed", reason: "conflict" });
   expect(await fs.readFile(path, "utf8")).toBe(foreign);
-  expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
 });
 
 it("retains concurrent edits to the published inode rather than overwriting them", async () => {
-  const root = await createTestTempDirectory("rea-config-inode-edit-");
+  const root = await createTestTempDirectory("nre-config-inode-edit-");
   const path = join(root, "client.json");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
@@ -530,16 +530,16 @@ it("retains concurrent edits to the published inode rather than overwriting them
     await configureClientConfiguration(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ),
   ).toMatchObject({ status: "failed", reason: "conflict" });
   expect(await fs.readFile(path, "utf8")).toBe(edited);
-  expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
 });
 
 it("does not adopt a descriptor named by an opaque publication close rejection", async () => {
   const root = await createTestTempDirectory(
-    "rea-config-close-cause-ownership-",
+    "nre-config-close-cause-ownership-",
   );
   const path = join(root, "client.json");
   const unrelated = join(root, "unrelated.json");
@@ -567,7 +567,7 @@ it("does not adopt a descriptor named by an opaque publication close rejection",
       host.configureClient(
         { name: "cursor", configPath: path, format: "json" },
         {},
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).rejects.toBeInstanceOf(ConfigurationError);
     state.rejectPublicationClose = false;
@@ -587,7 +587,7 @@ it.each(["symlink", "regular", "valid-readback"] as const)(
   "uninstall retains a %s replacement instead of restoring through its name",
   async (kind) => {
     const root = await createTestTempDirectory(
-      "rea-uninstall-replaced-rollback-",
+      "nre-uninstall-replaced-rollback-",
     );
     const path = join(root, "client.json");
     const replacement = join(root, "replacement.json");
@@ -596,7 +596,7 @@ it.each(["symlink", "regular", "valid-readback"] as const)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":"original"}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":"original"}\n';
     const foreign = '{"keep":"replacement"}\n';
     await fs.writeFile(path, original);
     await fs.writeFile(replacement, foreign);
@@ -622,7 +622,7 @@ it.each(["symlink", "regular", "valid-readback"] as const)(
       }
       expect(result.status).toBe("failed");
       expect(result.detail).not.toContain("The original was restored");
-      expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
     } finally {
       await host.close?.();
     }
@@ -630,14 +630,14 @@ it.each(["symlink", "regular", "valid-readback"] as const)(
 );
 
 it("uninstall retains concurrent edits to the published inode and reports failure", async () => {
-  const root = await createTestTempDirectory("rea-uninstall-inode-edit-");
+  const root = await createTestTempDirectory("nre-uninstall-inode-edit-");
   const path = join(root, "client.json");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
       "node:fs/promises",
     );
   const original =
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":"original"}\n';
+    '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":"original"}\n';
   const edited = '{"keep":"concurrent edit"}\n';
   await fs.writeFile(path, original);
   state.failReadback = false;
@@ -657,14 +657,14 @@ it("uninstall retains concurrent edits to the published inode and reports failur
     expect(result.status).toBe("failed");
     expect(result.detail).not.toContain("The original was restored");
     expect(await fs.readFile(path, "utf8")).toBe(edited);
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
   } finally {
     await host.close?.();
   }
 });
 
 it("uninstall retains both readback and publication owners until cleanup retry", async () => {
-  const root = await createTestTempDirectory("rea-uninstall-two-close-owners-");
+  const root = await createTestTempDirectory("nre-uninstall-two-close-owners-");
   const path = join(root, "client.json");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
@@ -672,7 +672,7 @@ it("uninstall retains both readback and publication owners until cleanup retry",
     );
   await fs.writeFile(
     path,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n',
+    '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n',
   );
   const readOwner = await ownReadHandle(path);
   const closeRead = readOwner.handle.close.bind(readOwner.handle);
@@ -716,14 +716,14 @@ it("uninstall retains both readback and publication owners until cleanup retry",
 
 it("uninstall retains the exact owner of a failed initial config read", async () => {
   const root = await createTestTempDirectory(
-    "rea-uninstall-initial-read-owner-",
+    "nre-uninstall-initial-read-owner-",
   );
   const path = join(root, "client.json");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
       "node:fs/promises",
     );
-  const original = '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+  const original = '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n';
   await fs.writeFile(path, original);
   const owner = await ownReadHandle(path);
   const close = owner.handle.close.bind(owner.handle);
@@ -753,7 +753,7 @@ it("uninstall retains the exact owner of a failed initial config read", async ()
     expect(await host.close?.()).toBeUndefined();
     expect(owner.handle.fd).toBe(-1);
     expect(await fs.readFile(path, "utf8")).toBe(original);
-    await expect(fs.readFile(`${path}.rea.backup`)).rejects.toMatchObject({
+    await expect(fs.readFile(`${path}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   } finally {
@@ -765,7 +765,7 @@ it("uninstall retains the exact owner of a failed initial config read", async ()
 
 it("uninstall close joins a publication already admitted by its host", async () => {
   const root = await createTestTempDirectory(
-    "rea-uninstall-close-publication-",
+    "nre-uninstall-close-publication-",
   );
   const path = join(root, "client.json");
   const fs =
@@ -774,7 +774,7 @@ it("uninstall close joins a publication already admitted by its host", async () 
     );
   await fs.writeFile(
     path,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n',
+    '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n',
   );
   const arrived = createDeferred<void>();
   const release = createDeferred<void>();
@@ -810,7 +810,7 @@ it("uninstall close joins a publication already admitted by its host", async () 
 });
 
 it("preserves physical read origin through failed readback cleanup and rollback", async () => {
-  const root = await createTestTempDirectory("rea-config-physical-rollback-");
+  const root = await createTestTempDirectory("nre-config-physical-rollback-");
   const path = join(root, "client.json");
   const other = join(root, "foreign.json");
   const fs =
@@ -847,7 +847,7 @@ it("preserves physical read origin through failed readback cleanup and rollback"
     const failure: unknown = await configureClientConfiguration(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["rea", "mcp"],
+      ["nre", "mcp"],
     ).catch((cause: unknown) => cause);
     expect(failure).toBeInstanceOf(ClientConfigurationCleanupRollbackFailure);
     if (!(failure instanceof ClientConfigurationCleanupRollbackFailure))
@@ -879,7 +879,7 @@ it("preserves physical read origin through failed readback cleanup and rollback"
 
 it("cleanup retry never adopts an opaque cancellation reason as another owner", async () => {
   const root = await createTestTempDirectory(
-    "rea-cleanup-cancellation-authority-",
+    "nre-cleanup-cancellation-authority-",
   );
   const path = join(root, "owned.json");
   const other = join(root, "other.json");
@@ -924,7 +924,7 @@ it("cleanup retry never adopts an opaque cancellation reason as another owner", 
 });
 
 it("uninstall progresses when a peer leaves a denied-close descriptor pending", async () => {
-  const root = await createTestTempDirectory("rea-uninstall-peer-cleanup-");
+  const root = await createTestTempDirectory("nre-uninstall-peer-cleanup-");
   const path = join(root, "client.json");
   const other = join(root, "other.json");
   const fs =
@@ -933,7 +933,7 @@ it("uninstall progresses when a peer leaves a denied-close descriptor pending", 
     );
   await fs.writeFile(
     path,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n',
+    '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n',
   );
   await fs.writeFile(other, "{}");
   const owner = await ownReadHandle(other);
@@ -1007,7 +1007,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "exclusive staging refuses a preexisting entry without changing its permissions",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-uninstall-staging-exclusive-",
+      "nre-uninstall-staging-exclusive-",
     );
     const path = join(root, "client.json");
     const foreign = join(root, "foreign.json");
@@ -1016,7 +1016,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n';
     await fs.writeFile(path, original);
     await fs.chmod(path, 0o400);
     await fs.writeFile(foreign, "foreign");
@@ -1055,7 +1055,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "uninstall retains the private stage after mode preparation and descriptor cleanup fail",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-uninstall-staging-mode-retry-",
+      "nre-uninstall-staging-mode-retry-",
     );
     const path = join(root, "client.json");
     const fs =
@@ -1063,7 +1063,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n';
     await fs.writeFile(path, original);
     await fs.chmod(path, 0o400);
     state.rejectPublicationMode = true;
@@ -1102,7 +1102,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "uninstall restores a read-only configuration through its retained writable descriptor",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-uninstall-readonly-restore-",
+      "nre-uninstall-readonly-restore-",
     );
     const path = join(root, "client.json");
     const fs =
@@ -1110,7 +1110,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":true}\n';
     await fs.writeFile(path, original);
     await fs.chmod(path, 0o400);
     const host = systemUninstallHost(root);
@@ -1124,7 +1124,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
       expect(result.detail).toContain("The original was restored");
       expect(await fs.readFile(path, "utf8")).toBe(original);
       expect((await fs.lstat(path)).mode & 0o777).toBe(0o400);
-      expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
       expect(state.publicationHandles[0]!.fd).toBe(-1);
     } finally {
       await host.close?.();
@@ -1136,7 +1136,7 @@ it.each(["setup", "uninstall"] as const)(
   "%s refuses a configuration symlink inserted after backup without overwriting its target",
   async (operation) => {
     const root = await createTestTempDirectory(
-      "rea-config-prepublication-symlink-",
+      "nre-config-prepublication-symlink-",
     );
     const path = join(root, "client.json");
     const foreign = join(root, "foreign.json");
@@ -1147,7 +1147,7 @@ it.each(["setup", "uninstall"] as const)(
     const original =
       operation === "setup"
         ? '{"keep":"original"}\n'
-        : '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":"original"}\n';
+        : '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":"original"}\n';
     const unrelated = '{"keep":"foreign"}\n';
     await fs.writeFile(path, original);
     await fs.writeFile(foreign, unrelated);
@@ -1163,7 +1163,7 @@ it.each(["setup", "uninstall"] as const)(
           await configureClientConfiguration(
             { name: "cursor", configPath: path, format: "json" },
             {},
-            ["rea", "mcp"],
+            ["nre", "mcp"],
           )
         ).status,
       ).toBe("failed");
@@ -1185,7 +1185,7 @@ it.each(["setup", "uninstall"] as const)(
     }
     expect(await fs.readFile(foreign, "utf8")).toBe(unrelated);
     expect((await fs.lstat(path)).isSymbolicLink()).toBe(true);
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -1198,7 +1198,7 @@ const runConfigurationChange = async (
     return configureClientConfiguration(
       { name: "cursor", configPath: path, format: "json" },
       {},
-      ["new-rea", "mcp"],
+      ["new-nre", "mcp"],
     );
   const host = systemUninstallHost(root);
   try {
@@ -1220,14 +1220,14 @@ it.each([
 ] as const)(
   "%s preserves a configuration %s after backup",
   async (operation, change) => {
-    const root = await createTestTempDirectory("rea-config-backup-change-");
+    const root = await createTestTempDirectory("nre-config-backup-change-");
     const path = join(root, "client.json");
     const fs =
       await vi.importActual<typeof import("node:fs/promises")>(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":true}\n';
     const edited = '{"changed":"by client"}\n';
     await fs.writeFile(path, original);
     state.failReadback = false;
@@ -1241,10 +1241,10 @@ it.each([
     );
     if (change === "edit") expect(await fs.readFile(path, "utf8")).toBe(edited);
     else await expect(fs.lstat(path)).rejects.toMatchObject({ code: "ENOENT" });
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
     expect(
       (await fs.readdir(root)).filter((name) =>
-        name.startsWith(".rea-config-"),
+        name.startsWith(".nre-config-"),
       ),
     ).toEqual([]);
   },
@@ -1253,14 +1253,14 @@ it.each([
 it.each(["setup", "uninstall"] as const)(
   "%s refuses an input changed during staging",
   async (operation) => {
-    const root = await createTestTempDirectory("rea-config-staging-change-");
+    const root = await createTestTempDirectory("nre-config-staging-change-");
     const path = join(root, "client.json");
     const fs =
       await vi.importActual<typeof import("node:fs/promises")>(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":true}\n';
     const edited = '{"changed":"during staging"}\n';
     await fs.writeFile(path, original);
     state.failReadback = false;
@@ -1272,17 +1272,17 @@ it.each(["setup", "uninstall"] as const)(
       "failed",
     );
     expect(await fs.readFile(path, "utf8")).toBe(edited);
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.nre.backup`, "utf8")).toBe(original);
     expect(
       (await fs.readdir(root)).filter((name) =>
-        name.startsWith(".rea-config-"),
+        name.startsWith(".nre-config-"),
       ),
     ).toEqual([]);
   },
 );
 
 it("first-run setup preserves a destination created during staging", async () => {
-  const root = await createTestTempDirectory("rea-config-first-conflict-");
+  const root = await createTestTempDirectory("nre-config-first-conflict-");
   const path = join(root, "client.json");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
@@ -1299,7 +1299,7 @@ it("first-run setup preserves a destination created during staging", async () =>
   );
   expect(await fs.readFile(path, "utf8")).toBe(edited);
   expect(
-    (await fs.readdir(root)).filter((name) => name.startsWith(".rea-config-")),
+    (await fs.readdir(root)).filter((name) => name.startsWith(".nre-config-")),
   ).toEqual([]);
 });
 
@@ -1307,7 +1307,7 @@ it.each(["setup", "uninstall"] as const)(
   "%s retains staging directory cleanup for host retry",
   async (operation) => {
     const root = await createTestTempDirectory(
-      "rea-config-staging-directory-retry-",
+      "nre-config-staging-directory-retry-",
     );
     const path = join(root, "client.json");
     const fs =
@@ -1316,7 +1316,7 @@ it.each(["setup", "uninstall"] as const)(
       );
     await fs.writeFile(
       path,
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n',
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":true}\n',
     );
     state.failReadback = false;
     state.rejectStageRemoval = true;
@@ -1338,7 +1338,7 @@ it.each(["setup", "uninstall"] as const)(
           (host as ReturnType<typeof systemSetupHost>).configureClient(
             client,
             {},
-            ["new-rea", "mcp"],
+            ["new-nre", "mcp"],
           ),
         ).rejects.toThrow();
       } else {
@@ -1354,7 +1354,7 @@ it.each(["setup", "uninstall"] as const)(
       if (operation === "setup") {
         expect(cleanupFailure).toBeInstanceOf(AnalysisError);
         const retainedRoots = (await fs.readdir(root))
-          .filter((name) => name.startsWith(".rea-config-"))
+          .filter((name) => name.startsWith(".nre-config-"))
           .map((name) => join(root, name));
         expect((cleanupFailure as AnalysisError).cleanupResources).toEqual(
           retainedRoots,
@@ -1362,7 +1362,7 @@ it.each(["setup", "uninstall"] as const)(
       } else expect(cleanupFailure).toContain("cleanup");
       expect(
         (await fs.readdir(root)).filter((name) =>
-          name.startsWith(".rea-config-"),
+          name.startsWith(".nre-config-"),
         ),
       ).toHaveLength(1);
       state.rejectStageRemoval = false;
@@ -1371,7 +1371,7 @@ it.each(["setup", "uninstall"] as const)(
         expect(cleanupFailure.cleanupIncomplete).toBe(false);
       expect(
         (await fs.readdir(root)).filter((name) =>
-          name.startsWith(".rea-config-"),
+          name.startsWith(".nre-config-"),
         ),
       ).toEqual([]);
       expect(state.publicationHandles[0]!.fd).toBe(-1);
@@ -1383,7 +1383,7 @@ it.each(["setup", "uninstall"] as const)(
 );
 
 it("first-run publication exclusively refuses a destination created after its final check", async () => {
-  const root = await createTestTempDirectory("rea-config-exclusive-link-");
+  const root = await createTestTempDirectory("nre-config-exclusive-link-");
   const path = join(root, "client.json");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
@@ -1398,12 +1398,12 @@ it("first-run publication exclusively refuses a destination created after its fi
   ).rejects.toMatchObject({ code: "EEXIST" });
   expect(await fs.readFile(path, "utf8")).toBe(edited);
   expect(
-    (await fs.readdir(root)).filter((name) => name.startsWith(".rea-config-")),
+    (await fs.readdir(root)).filter((name) => name.startsWith(".nre-config-")),
   ).toEqual([]);
 });
 
 it("publication keeps its selected canonical parent when a directory symlink is retargeted", async () => {
-  const root = await createTestTempDirectory("rea-config-parent-selection-");
+  const root = await createTestTempDirectory("nre-config-parent-selection-");
   const fs =
     await vi.importActual<typeof import("node:fs/promises")>(
       "node:fs/promises",
@@ -1437,7 +1437,7 @@ it("publication keeps its selected canonical parent when a directory symlink is 
   );
   expect(
     (await fs.readdir(selected)).filter((name) =>
-      name.startsWith(".rea-config-"),
+      name.startsWith(".nre-config-"),
     ),
   ).toEqual([]);
 });
@@ -1446,7 +1446,7 @@ it.each(["setup", "uninstall"] as const)(
   "%s reads back the selected canonical parent after its alias is retargeted",
   async (operation) => {
     const root = await createTestTempDirectory(
-      "rea-config-adapter-parent-selection-",
+      "nre-config-adapter-parent-selection-",
     );
     const fs =
       await vi.importActual<typeof import("node:fs/promises")>(
@@ -1459,7 +1459,7 @@ it.each(["setup", "uninstall"] as const)(
     await fs.mkdir(foreign);
     await fs.symlink(selected, alias, "dir");
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}},"keep":true}\n';
     const unrelated = '{"foreign":true}\n';
     await fs.writeFile(join(selected, "client.json"), original);
     await fs.writeFile(join(foreign, "client.json"), unrelated);
@@ -1485,7 +1485,7 @@ it.each(["setup", "uninstall"] as const)(
       unrelated,
     );
     expect(
-      await fs.readFile(join(selected, "client.json.rea.backup"), "utf8"),
+      await fs.readFile(join(selected, "client.json.nre.backup"), "utf8"),
     ).toBe(original);
   },
 );

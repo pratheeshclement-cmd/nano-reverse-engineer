@@ -39,7 +39,7 @@ it.runIf(!unsupportedHost).each([
       file_size_bytes: 1024,
     };
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         ownedPath = spawn.cwd ?? "";
         if (failure === "EFBIG")
@@ -106,7 +106,7 @@ it.runIf(!unsupportedHost)(
     let ownedPath = "";
     let cleanupAllowed = false;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         ownedPath = spawn.cwd ?? "";
         const launched = await spawnOwnedProviderProcess({
@@ -183,7 +183,7 @@ it
     const { path } = await fixture();
     let ownedPath = "";
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         ownedPath = spawn.cwd ?? "";
         if (
@@ -232,7 +232,7 @@ it.runIf(!unsupportedHost).each([1048576, 1048577])(
     const { path } = await fixture();
     let ownedPath = "";
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         ownedPath = spawn.cwd ?? "";
         const requestPath = spawn.arguments.at(-1);
@@ -293,7 +293,7 @@ it.runIf(!unsupportedHost).each([
     const { path } = await fixture();
     let ownedPath = "";
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         ownedPath = spawn.cwd ?? "";
         const requestPath = spawn.arguments.at(-1);
@@ -350,7 +350,7 @@ it.runIf(!unsupportedHost).each(["cancelled", "output-limit", "process"])(
     let ownedPath = "";
     let pid: number | undefined;
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         ownedPath = spawn.cwd ?? "";
         const launched = await spawnOwnedProviderProcess({
@@ -409,7 +409,7 @@ it.runIf(!unsupportedHost)(
   async () => {
     const { path } = await fixture();
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       undefined,
       () =>
         Promise.reject(
@@ -431,7 +431,7 @@ it.runIf(!unsupportedHost)(
   async () => {
     const { path, root } = await fixture();
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         const requestPath = spawn.arguments.at(-1);
         if (requestPath === undefined) throw new Error("Request path missing");
@@ -474,7 +474,7 @@ it.runIf(!unsupportedHost)(
   },
 );
 const fixture = async () => {
-  const workspace = await createTestWorkspace("rea-layout-boundary-");
+  const workspace = await createTestWorkspace("nre-layout-boundary-");
   const root = workspace.root;
   onTestFinished(() => removeTestWorkspace(root));
   const path = join(root, "selected.elf");
@@ -489,13 +489,13 @@ it.runIf(!unsupportedHost)(
     const controller = new AbortController();
     let ownedPath = "";
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       () => {
         throw new Error("Decoder must not launch");
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-layout-cancel-",
+          prefix: "nre-layout-cancel-",
         });
         ownedPath = root.path;
         controller.abort();
@@ -528,7 +528,7 @@ it
     const { root, path } = await fixture();
     let ownedPath = "";
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         const requestPath = spawn.arguments.at(-1);
         if (requestPath === undefined) throw new Error("request path missing");
@@ -649,7 +649,7 @@ it.runIf(!unsupportedHost)(
       error: { _tag: "ProviderSelectionError", reason: "provider_unavailable" },
     });
     const provider = new PwntoolsLayoutProvider({
-      REA_PWNTOOLS_PYTHON: process.execPath,
+      NRE_PWNTOOLS_PYTHON: process.execPath,
     });
     expect(await provider.inspect({ path: path + ".absent" })).toMatchObject({
       ok: false,
@@ -687,7 +687,7 @@ it.runIf(!unsupportedHost)(
     const controller = new AbortController();
     let ownedPath = "";
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         const requestPath = spawn.arguments.at(-1);
         if (requestPath === undefined) throw new Error("Request path missing");
@@ -715,7 +715,7 @@ it.runIf(!unsupportedHost)(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-layout-late-cancel-",
+          prefix: "nre-layout-late-cancel-",
         });
         ownedPath = root.path;
         return {
@@ -752,11 +752,11 @@ it.runIf(!unsupportedHost).each(["directory", "missing-interpreter"])(
     if (scenario === "missing-interpreter")
       await writeFile(
         executable,
-        "#!/rea-missing-interpreter-for-boundary-test\n",
+        "#!/nre-missing-interpreter-for-boundary-test\n",
         { mode: 0o700 },
       );
     const result = await new PwntoolsLayoutProvider({
-      REA_PWNTOOLS_PYTHON: executable,
+      NRE_PWNTOOLS_PYTHON: executable,
     }).inspect({ path });
     if (result.ok) throw new Error("Expected unavailable executable");
     expect(projectAnalysisError(result.error)).toMatchObject({

@@ -109,8 +109,8 @@ const plural = {
   right_evidence_ids: [right.evidence_id],
 };
 const provider = {
-  id: "rea-function-comparison",
-  name: "REA function comparison",
+  id: "nre-function-comparison",
+  name: "NRE function comparison",
   version: "1",
 };
 const baselineResult = compareFunctions(
@@ -134,7 +134,7 @@ const comparison = (
     evidence_links: links,
   }));
   return createEvidence(identity.target, identity.provider ?? provider, {
-    predicateType: "rea.function-comparison",
+    predicateType: "nre.function-comparison",
     operation: "compare_functions",
     parameters,
     result: jsonValueSchema.parse({
@@ -698,7 +698,7 @@ describe("function reconstruction admission controls", () => {
 
   it.each([
     { operation: "inventory_artifact" },
-    { predicateType: "rea.process-capture" },
+    { predicateType: "nre.process-capture" },
   ])("rejects source observation type %j", (observation) => {
     const wrong = source("1", observation);
     const evidence = comparison(
@@ -789,7 +789,7 @@ describe("function reconstruction admission controls", () => {
 describe("function reconstruction evidence integrity", () => {
   it.each([
     { operation: "compare_artifacts" },
-    { predicateType: "rea.artifact-comparison" },
+    { predicateType: "nre.artifact-comparison" },
     { confidence: "observed" as const },
     { authority: "shipped-artifact" as const },
   ])("rejects changed comparison identity or authority %j", (observation) => {
@@ -824,7 +824,7 @@ describe("function reconstruction evidence integrity", () => {
   it("retains active source unknowns as a gating result", () => {
     const evidence = comparison(singular);
     const mutation = createEvidence(undefined, provider, {
-      predicateType: "rea.residual-unknown-mutation",
+      predicateType: "nre.residual-unknown-mutation",
       operation: "record_unknown",
       parameters: {},
       result: { action: "record" },

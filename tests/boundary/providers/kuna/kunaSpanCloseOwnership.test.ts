@@ -104,7 +104,7 @@ it.each([
   "preserves the span outcome and retries the exact handle when close fails ($short, $maximum)",
   async ({ short, maximum }) => {
     const { cacheRoot, open: createClient } = await session(
-      "rea-kuna-span-close-",
+      "nre-kuna-span-close-",
     );
     const client = createClient();
     try {
@@ -213,7 +213,7 @@ it.each(
   "preserves a physical $shape rejection when local close fails: $closeFails",
   async ({ shape, closeFails }) => {
     const { cacheRoot, open: createClient } = await session(
-      "rea-kuna-span-physical-",
+      "nre-kuna-span-physical-",
     );
     const client = createClient();
     const foreignPath = join(dirname(cacheRoot), "foreign.txt");
@@ -300,7 +300,7 @@ it.each([false, true])(
   "cancels continued positive short span reads and releases the exact owner (closeFails=%s)",
   async (closeFails) => {
     const { cacheRoot, open: createClient } = await session(
-      "rea-kuna-span-short-cancel-",
+      "nre-kuna-span-short-cancel-",
     );
     const client = createClient();
     try {
@@ -355,7 +355,7 @@ it.each([false, true])(
 
 it("does not open a second span while a peer still holds a failed close", async () => {
   const { cacheRoot, open: createClient } = await session(
-    "rea-kuna-span-close-gate-",
+    "nre-kuna-span-close-gate-",
   );
   const client = createClient();
   try {
@@ -420,7 +420,7 @@ it("does not open a second span while a peer still holds a failed close", async 
 
 it("does not open a queued span after its caller aborts", async () => {
   const { cacheRoot, open: createClient } = await session(
-    "rea-kuna-span-close-cancel-",
+    "nre-kuna-span-close-cancel-",
   );
   const client = createClient();
   try {
@@ -478,7 +478,7 @@ it.each(["before close", "during verification", "during close"] as const)(
   async (when) => {
     const reason = { requested: "span-close" };
     const { cacheRoot, open: createClient } = await session(
-      `rea-kuna-span-close-reason-${when.replace(" ", "-")}-`,
+      `nre-kuna-span-close-reason-${when.replace(" ", "-")}-`,
     );
     const client = createClient();
     try {
@@ -536,7 +536,7 @@ it.each(["before close", "during verification", "during close"] as const)(
 it("keeps cancellation when a completed span close fails after abort", async () => {
   const reason = { requested: "span-close" };
   const { cacheRoot, open: createClient } = await session(
-    "rea-kuna-span-close-cancel-read-",
+    "nre-kuna-span-close-cancel-read-",
   );
   const client = createClient();
   try {
@@ -593,7 +593,7 @@ it("keeps cancellation when a completed span close fails after abort", async () 
 it("removes a span lease from the resource scope after close succeeds", async () => {
   const release = vi.spyOn(ArtifactResourceScope.prototype, "release");
   const { cacheRoot, open: createClient } = await session(
-    "rea-kuna-span-scope-release-",
+    "nre-kuna-span-scope-release-",
   );
   const client = createClient();
   try {

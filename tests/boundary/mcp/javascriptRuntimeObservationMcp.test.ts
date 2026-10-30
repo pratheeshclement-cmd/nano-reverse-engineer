@@ -172,7 +172,7 @@ function registerRuntimeMetadataContract(): void {
           target_id: "target",
           protocol_type: "node",
           attached: false,
-          location: { kind: "file", file_path: "/tmp/rea-runtime/main.js" },
+          location: { kind: "file", file_path: "/tmp/nre-runtime/main.js" },
           runtime_kind: "node",
           runtime_kind_authority: "caller-declared-unverified",
         },
@@ -208,7 +208,7 @@ function registerRetainedRuntimeEvidence(
   temporary: string[],
 ): void {
   test("lists and observes one target as retained Evidence", async () => {
-    const root = await createTestTempDirectory("rea-v8-mcp-");
+    const root = await createTestTempDirectory("nre-v8-mcp-");
     temporary.push(root);
     const { entry, inspector, client } = await createObservationClient(
       root,

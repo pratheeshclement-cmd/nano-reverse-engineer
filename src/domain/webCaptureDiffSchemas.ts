@@ -10,9 +10,9 @@ export const captureSnapshotSchema = z.object({
     .describe(
       "Complete normalized_result from inspect_web_page, including capture identity, observations, completeness, and limitations.",
     )
-    .meta({ "x-rea-complete-observation": true }),
+    .meta({ "x-nre-complete-observation": true }),
   webmcp: webMcpDiscoverySchema
-    .meta({ "x-rea-complete-observation": true })
+    .meta({ "x-nre-complete-observation": true })
     .nullable()
     .default(null)
     .describe(

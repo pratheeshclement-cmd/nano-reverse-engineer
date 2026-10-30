@@ -201,7 +201,7 @@ it.skipIf(process.platform === "win32").each(
 )(
   "resolves $operation installation cleanup ownership after a $stage close failure is retried",
   async ({ stage, operation }) => {
-    const fixture = await session("rea-kuna-installation-owner-resolution-");
+    const fixture = await session("nre-kuna-installation-owner-resolution-");
     const client = fixture.open();
     injected.closeCalls = 0;
     injected.fingerprintReads = 0;
@@ -257,10 +257,10 @@ it.skipIf(process.platform === "win32").each(
 it.skipIf(process.platform === "win32")(
   "keeps the physical hash read failure primary when cancellation and close failure follow",
   async () => {
-    const fixture = await session("rea-kuna-cancelled-read-close-");
+    const fixture = await session("nre-kuna-cancelled-read-close-");
     const installed = await inspectKunaInstallationOwned({
-      REA_KUNA_COMMAND: fixture.kuna,
-      REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+      NRE_KUNA_COMMAND: fixture.kuna,
+      NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     const controller = new AbortController();
@@ -278,7 +278,7 @@ it.skipIf(process.platform === "win32")(
         installation: installed.value,
         operation: "list_procedures",
         arguments: (input) => ["functions", input, "--json"],
-        deadline: { setting: "REA_KUNA_TIMEOUT_MS", ms: 10_000 },
+        deadline: { setting: "NRE_KUNA_TIMEOUT_MS", ms: 10_000 },
         outputBytes: 1024 * 1024,
         signal: controller.signal,
       });
@@ -308,10 +308,10 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "resolves an export's typed read failure after the cache retries its exact descriptor",
   async () => {
-    const fixture = await session("rea-kuna-export-read-close-");
+    const fixture = await session("nre-kuna-export-read-close-");
     const installed = await inspectKunaInstallationOwned({
-      REA_KUNA_COMMAND: fixture.kuna,
-      REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+      NRE_KUNA_COMMAND: fixture.kuna,
+      NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     const cache = new KunaProjectCache(fixture.cacheRoot, {
@@ -345,10 +345,10 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "preserves a hash read failure when closing its descriptor also fails",
   async () => {
-    const fixture = await session("rea-kuna-read-and-close-failure-");
+    const fixture = await session("nre-kuna-read-and-close-failure-");
     const installed = await inspectKunaInstallationOwned({
-      REA_KUNA_COMMAND: fixture.kuna,
-      REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+      NRE_KUNA_COMMAND: fixture.kuna,
+      NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     const controller = new AbortController();
@@ -362,7 +362,7 @@ it.skipIf(process.platform === "win32")(
         installation: installed.value,
         operation: "list_procedures",
         arguments: (input) => ["functions", input, "--json"],
-        deadline: { setting: "REA_KUNA_TIMEOUT_MS", ms: 10_000 },
+        deadline: { setting: "NRE_KUNA_TIMEOUT_MS", ms: 10_000 },
         outputBytes: 1024 * 1024,
         signal: controller.signal,
       });
@@ -392,10 +392,10 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "retains and retries the exact Kuna executable hash owner without running Kuna",
   async () => {
-    const fixture = await session("rea-kuna-hash-owner-");
+    const fixture = await session("nre-kuna-hash-owner-");
     const installed = await inspectKunaInstallationOwned({
-      REA_KUNA_COMMAND: fixture.kuna,
-      REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+      NRE_KUNA_COMMAND: fixture.kuna,
+      NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     const controller = new AbortController();
@@ -409,7 +409,7 @@ it.skipIf(process.platform === "win32")(
         installation: installed.value,
         operation: "list_procedures",
         arguments: (input) => ["functions", input, "--json"],
-        deadline: { setting: "REA_KUNA_TIMEOUT_MS", ms: 10_000 },
+        deadline: { setting: "NRE_KUNA_TIMEOUT_MS", ms: 10_000 },
         outputBytes: 1024 * 1024,
         signal: controller.signal,
       });
@@ -439,10 +439,10 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "blocks command and prepare admission while one retained executable hash owner keeps failing",
   async () => {
-    const fixture = await session("rea-kuna-hash-owner-admission-");
+    const fixture = await session("nre-kuna-hash-owner-admission-");
     const installed = await inspectKunaInstallationOwned({
-      REA_KUNA_COMMAND: fixture.kuna,
-      REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+      NRE_KUNA_COMMAND: fixture.kuna,
+      NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     const controller = new AbortController();
@@ -460,7 +460,7 @@ it.skipIf(process.platform === "win32")(
           installation: installed.value,
           operation: "list_procedures",
           arguments: (input) => ["functions", input, "--json"],
-          deadline: { setting: "REA_KUNA_TIMEOUT_MS", ms: 10_000 },
+          deadline: { setting: "NRE_KUNA_TIMEOUT_MS", ms: 10_000 },
           outputBytes: 1024 * 1024,
           signal: controller.signal,
           releaseRun: () => {
@@ -499,10 +499,10 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "resolves the originating hash cleanup error when its exact owner closes on retry",
   async () => {
-    const fixture = await session("rea-kuna-hash-owner-resolution-");
+    const fixture = await session("nre-kuna-hash-owner-resolution-");
     const installed = await inspectKunaInstallationOwned({
-      REA_KUNA_COMMAND: fixture.kuna,
-      REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+      NRE_KUNA_COMMAND: fixture.kuna,
+      NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
     });
     if (!installed.ok) throw new Error(installed.error.reason);
     const controller = new AbortController();
@@ -518,7 +518,7 @@ it.skipIf(process.platform === "win32")(
           installation: installed.value,
           operation: "list_procedures",
           arguments: (input) => ["functions", input, "--json"],
-          deadline: { setting: "REA_KUNA_TIMEOUT_MS", ms: 10_000 },
+          deadline: { setting: "NRE_KUNA_TIMEOUT_MS", ms: 10_000 },
           outputBytes: 1024 * 1024,
           signal: controller.signal,
         });
@@ -563,7 +563,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32").each([{ stage: "identity" }] as const)(
   "resolves the Kuna profile cleanup error after its $stage descriptor closes",
   async ({ stage }) => {
-    const fixture = await session("rea-kuna-profile-owner-resolution-");
+    const fixture = await session("nre-kuna-profile-owner-resolution-");
     const binary = composeBinarySession(
       new AnalysisProviderRegistry([fixture.provider]),
     );
@@ -598,7 +598,7 @@ it.skipIf(process.platform === "win32").each([{ stage: "identity" }] as const)(
 it.skipIf(process.platform === "win32")(
   "drains a Kuna candidate's retained hash owner when the binary session closes without an active client",
   async () => {
-    const fixture = await session("rea-kuna-candidate-hash-owner-");
+    const fixture = await session("nre-kuna-candidate-hash-owner-");
     const binary = composeBinarySession(
       new AnalysisProviderRegistry([fixture.provider]),
     );
@@ -638,7 +638,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "retains a failed Kuna doctor hash in the supplied lifecycle owner",
   async () => {
-    const fixture = await session("rea-kuna-doctor-hash-owner-");
+    const fixture = await session("nre-kuna-doctor-hash-owner-");
     injected.closeCalls = 0;
     injected.failNextClose = true;
     const resources = new ArtifactResourceScope();
@@ -654,8 +654,8 @@ it.skipIf(process.platform === "win32")(
     try {
       const inspection = await inspectKunaProvider(
         {
-          REA_KUNA_COMMAND: fixture.kuna,
-          REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+          NRE_KUNA_COMMAND: fixture.kuna,
+          NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
         },
         process.platform,
         { resourceScope },
@@ -679,7 +679,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "preserves the completed pre-probe fingerprint when cancellation arrives during its close",
   async () => {
-    const fixture = await session("rea-kuna-pre-probe-fingerprint-cancel-");
+    const fixture = await session("nre-kuna-pre-probe-fingerprint-cancel-");
     const bytes = await readFile(fixture.kuna);
     const fingerprint = {
       sha256: createHash("sha256").update(bytes).digest("hex"),
@@ -698,8 +698,8 @@ it.skipIf(process.platform === "win32")(
     try {
       const cause: unknown = await inspectKunaInstallationOwned(
         {
-          REA_KUNA_COMMAND: fixture.kuna,
-          REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+          NRE_KUNA_COMMAND: fixture.kuna,
+          NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
         },
         { signal: controller.signal },
       ).then(
@@ -731,7 +731,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "keeps a physical post-probe read failure primary with the version and prior fingerprint",
   async () => {
-    const fixture = await session("rea-kuna-post-probe-read-failure-");
+    const fixture = await session("nre-kuna-post-probe-read-failure-");
     const bytes = await readFile(fixture.kuna);
     const beforeProbeFingerprint = {
       sha256: createHash("sha256").update(bytes).digest("hex"),
@@ -747,8 +747,8 @@ it.skipIf(process.platform === "win32")(
     try {
       const result = await inspectKunaInstallationOwned(
         {
-          REA_KUNA_COMMAND: fixture.kuna,
-          REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+          NRE_KUNA_COMMAND: fixture.kuna,
+          NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
         },
         { signal: controller.signal },
       );
@@ -783,7 +783,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "drains shared cache cleanup outside a retired client's target key",
   async () => {
-    const fixture = await session("rea-kuna-session-cache-cleanup-");
+    const fixture = await session("nre-kuna-session-cache-cleanup-");
     const binary = composeBinarySession(
       new AnalysisProviderRegistry([fixture.provider]),
     );
@@ -834,7 +834,7 @@ it.skipIf(process.platform === "win32").each(
 )(
   "preserves completed installation facts for $consumer during $stage close, refusal=$closeRefusal",
   async ({ consumer, stage, closeRefusal }) => {
-    const fixture = await session("rea-kuna-completed-installation-cancel-");
+    const fixture = await session("nre-kuna-completed-installation-cancel-");
     const bytes = await readFile(fixture.kuna);
     const executable = await realpath(fixture.kuna);
     const command =
@@ -869,8 +869,8 @@ it.skipIf(process.platform === "win32").each(
       if (consumer === "doctor") {
         await inspectKunaProvider(
           {
-            REA_KUNA_COMMAND: command,
-            REA_KUNA_CACHE_DIR: fixture.cacheRoot,
+            NRE_KUNA_COMMAND: command,
+            NRE_KUNA_CACHE_DIR: fixture.cacheRoot,
           },
           process.platform,
           { resourceScope, signal: controller.signal },

@@ -19,7 +19,7 @@ export const prepareWindowsNativeInspectionWorkspace = async ({
   // The injected addon must remain separate from the production installation.
   const native = join(workspace, "native", "windows", "build");
   await mkdir(native, { recursive: true });
-  for (const name of ["manifest.json", "rea-windows-x64.node"])
+  for (const name of ["manifest.json", "nre-windows-x64.node"])
     await copyFile(join(artifact, name), join(native, name));
   return pathToFileURL(
     join(workspace, "dist", "windows", "WindowsNativeLoader.js"),

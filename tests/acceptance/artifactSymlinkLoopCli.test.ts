@@ -11,12 +11,12 @@ cliTest.skipIf(process.platform === "win32").for([
 ])(
   "$command reports a stable symbolic link loop as a path resolution failure",
   async ({ command, link, selected }, { cli }) => {
-    const root = await createTestTempDirectory("rea-artifact-symlink-loop-");
+    const root = await createTestTempDirectory("nre-artifact-symlink-loop-");
     await symlink(link, join(root, link));
     const path = join(root, selected);
     const result = await cli.run({
       arguments: [command, path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode).toBe(1);
     const reason = expect.stringMatching(

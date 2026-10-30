@@ -18,14 +18,14 @@ import {
 } from "./WindowsPrivateRuntime.js";
 
 const observation = {
-  requestedPath: "C:\\rea-private",
-  finalPath: "C:\\rea-private",
+  requestedPath: "C:\\nre-private",
+  finalPath: "C:\\nre-private",
   filesystem: "NTFS",
   volumeSerial: "0123456789abcdef",
   fileId: "0123456789abcdef0123456789abcdef",
   size: 0,
   directory: true,
-  path: "C:\\rea-private",
+  path: "C:\\nre-private",
   handle: {},
   privateDacl: true,
 };
@@ -45,7 +45,7 @@ describe("Windows private runtime cleanup retry", () => {
       if (operation === "runtime_close" && closes++ === 0) throw conflict;
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "nre-");
 
     await runtime.close();
 
@@ -100,7 +100,7 @@ describe("Windows private runtime cleanup retry", () => {
         if (operation === "runtime_close" && closes++ === 0) throw denied;
         return null;
       });
-      const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+      const runtime = WindowsPrivateRuntime.create("C:\\", "nre-");
 
       await expect(runtime.close()).rejects.toBe(denied);
       expect(closes).toBe(1);
@@ -118,7 +118,7 @@ describe("Windows private runtime cleanup retry", () => {
         throw nativeFailure(33);
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "nre-");
     const first = runtime.close();
     const second = runtime.close();
 
@@ -138,7 +138,7 @@ describe("Windows private runtime cleanup retry", () => {
       }
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "nre-");
 
     await expect(runtime.close()).rejects.toBe(conflict);
 
@@ -152,8 +152,8 @@ describe("Windows private runtime cleanup retry", () => {
 });
 
 const admittedFile = {
-  requestedPath: "C:\\rea-private\\endpoint",
-  finalPath: "C:\\rea-private\\endpoint",
+  requestedPath: "C:\\nre-private\\endpoint",
+  finalPath: "C:\\nre-private\\endpoint",
   filesystem: "NTFS" as const,
   volumeSerial: "0123456789abcdef",
   fileId: "fedcba9876543210fedcba9876543210",
@@ -175,7 +175,7 @@ describe("Windows private runtime admitted file close", () => {
       if (operation === "close" && fileCloses++ === 0) throw failure;
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "nre-");
     const readFailure: unknown = (() => {
       try {
         runtime.readFile("endpoint");
@@ -209,7 +209,7 @@ describe("Windows private runtime admitted file close", () => {
       if (operation === "close") throw denied;
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "nre-");
     const readFailure: unknown = (() => {
       try {
         runtime.readFile("endpoint");
@@ -255,7 +255,7 @@ it.each([995, 5])(
       if (operation === "runtime_snapshot") return Promise.reject(failure);
       return null;
     });
-    const runtime = WindowsPrivateRuntime.create("C:\\", "rea-");
+    const runtime = WindowsPrivateRuntime.create("C:\\", "nre-");
     const pending = runtime.snapshot(
       "C:\\target.bin",
       "target.bin",

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { writeFileSync } from "node:fs";
 
-const input = JSON.parse(process.env.REA_TEST_EVIDENCE_COMPLETION ?? "null");
+const input = JSON.parse(process.env.NRE_TEST_EVIDENCE_COMPLETION ?? "null");
 assert.ok(input && typeof input.marker === "string");
 assert.ok(
   ["inspect_managed_members", "inspect_analysis_view"].includes(

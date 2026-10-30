@@ -22,7 +22,7 @@ export async function verifyGhidraTargetAdmission({
   runtimeRoot,
 }) {
   const workspace = await mkdtemp(
-    join(tmpdir(), "rea-ghidra-source-admission-"),
+    join(tmpdir(), "nre-ghidra-source-admission-"),
   );
   const source = join(workspace, "caller-selected.%PATH%");
   try {
@@ -39,7 +39,7 @@ export async function verifyGhidraTargetAdmission({
     const before = await call("binary_session");
     const changed = Buffer.concat([
       original,
-      Buffer.from("REA_SOURCE_CHANGED_AFTER_OPEN"),
+      Buffer.from("NRE_SOURCE_CHANGED_AFTER_OPEN"),
     ]);
     const changedSha256 = createHash("sha256").update(changed).digest("hex");
     await writeFile(source, changed);
@@ -64,7 +64,7 @@ export async function verifyGhidraTargetAdmission({
     );
     assert.deepEqual(
       (await readdir(runtimeRoot)).filter((name) =>
-        name.startsWith("rea-ghidra-"),
+        name.startsWith("nre-ghidra-"),
       ),
       [],
       "Failed admission must remove the private snapshot without launching Ghidra",
@@ -183,7 +183,7 @@ async function verifySourceReadFailures({
       );
       assert.deepEqual(
         (await readdir(runtimeRoot)).filter((name) =>
-          name.startsWith("rea-ghidra-"),
+          name.startsWith("nre-ghidra-"),
         ),
         [],
       );

@@ -10,7 +10,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "uses the selected BEAM atom chunk's own count and length encoding",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-atom-layouts-");
+    const root = await createTestTempDirectory("nre-beam-atom-layouts-");
     const { call } = await connectLocalToolsMcp();
     const compact = Buffer.from([0xff, 0xff, 0xff, 0xff, 0x20, 0x61, 0x62]);
     const oldLayout = Buffer.from([0, 0, 0, 1, 2, 0x61, 0x62]);

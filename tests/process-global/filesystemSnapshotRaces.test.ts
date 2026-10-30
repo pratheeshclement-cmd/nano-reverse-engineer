@@ -174,7 +174,7 @@ const entryUnavailable = async (
     | "readlink_regular_replacement",
   systemCode: string,
 ) => {
-  await withTemporaryRoot("rea-snapshot-entry-race-", async (root) => {
+  await withTemporaryRoot("nre-snapshot-entry-race-", async (root) => {
     const sibling = join(root, "a-sibling");
     const link = join(root, "z-link");
     await writeFile(sibling, "retain this sibling");
@@ -236,7 +236,7 @@ it.skipIf(process.platform === "win32").each([
 it.skipIf(process.platform === "win32")(
   "records known symlink identity replacement separately from unavailable entries",
   async () =>
-    withTemporaryRoot("rea-snapshot-link-identity-", async (root) => {
+    withTemporaryRoot("nre-snapshot-link-identity-", async (root) => {
       const sibling = join(root, "a-sibling");
       const link = join(root, "z-link");
       await writeFile(sibling, "retain this sibling");
@@ -270,7 +270,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("retains siblings and marks child absence unknown when directory revalidation sees ENOENT", async () =>
-  withTemporaryRoot("rea-snapshot-directory-race-", async (root) => {
+  withTemporaryRoot("nre-snapshot-directory-race-", async (root) => {
     const sibling = join(root, "a-sibling");
     const directory = join(root, "z-directory");
     await writeFile(sibling, "retain this sibling");
@@ -307,7 +307,7 @@ it("retains siblings and marks child absence unknown when directory revalidation
 it.skipIf(process.platform === "win32")(
   "propagates cancellation exactly during symlink read",
   async () =>
-    withTemporaryRoot("rea-snapshot-cancel-race-", async (root) => {
+    withTemporaryRoot("nre-snapshot-cancel-race-", async (root) => {
       const link = join(root, "link");
       await symlink("missing-target", link);
       const scenario = processScenarioSchema.parse({
@@ -328,7 +328,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "prefers the exact cancellation reason over ENOENT from the pending readlink",
   async () =>
-    withTemporaryRoot("rea-snapshot-cancel-missing-", async (root) => {
+    withTemporaryRoot("nre-snapshot-cancel-missing-", async (root) => {
       const link = join(root, "link");
       await symlink("missing-target", link);
       const scenario = processScenarioSchema.parse({
@@ -347,7 +347,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("observes cancellation after the selected directory handle closes", async () =>
-  withTemporaryRoot("rea-snapshot-directory-close-cancel-", async (root) => {
+  withTemporaryRoot("nre-snapshot-directory-close-cancel-", async (root) => {
     const directory = join(root, "selected");
     await mkdir(directory);
     await writeFile(join(directory, "child"), "observed child");
@@ -367,7 +367,7 @@ it("observes cancellation after the selected directory handle closes", async () 
   }));
 
 it("releases buffered names after a failed directory revalidation before visiting the next root", async () =>
-  withTemporaryRoot("rea-snapshot-pending-names-", async (parent) => {
+  withTemporaryRoot("nre-snapshot-pending-names-", async (parent) => {
     const firstRoot = join(parent, "first");
     const secondRoot = join(parent, "second");
     await mkdir(firstRoot);
@@ -396,7 +396,7 @@ it("releases buffered names after a failed directory revalidation before visitin
 it.skipIf(process.platform === "win32")(
   "propagates unexpected EIO instead of classifying it as an unavailable entry",
   async () =>
-    withTemporaryRoot("rea-snapshot-eio-control-", async (root) => {
+    withTemporaryRoot("nre-snapshot-eio-control-", async (root) => {
       const link = join(root, "link");
       await symlink("missing-target", link);
       const scenario = processScenarioSchema.parse({

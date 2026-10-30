@@ -17,7 +17,7 @@ export const projectAndroidApplicationEvidence = (
     rawInput,
     project: projectAndroidInventory,
     operation: OPERATION,
-    predicateType: "rea.android-application-graph",
+    predicateType: "nre.android-application-graph",
     provider: ANDROID_APPLICATION_PROVIDER,
     subjectFormat: () => "apk",
   });

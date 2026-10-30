@@ -26,7 +26,7 @@ const requireEdges = (
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps self-defaulted receivers out of the module loader graph through %s",
   async (surface, { cli }) => {
-    const members = await createTestTempDirectory("rea-self-default-members-");
+    const members = await createTestTempDirectory("nre-self-default-members-");
     await writeFixtureFiles(members, {
       "main.cjs": `function message(session, text) {
   session.messages = session.messages || [];
@@ -66,7 +66,7 @@ console.log(JSON.stringify([session.messages, local.items, trimmed(), load("./de
     // A binding read in its own initializer is not a loader, while a native
     // delegate that survives its self-default remains a possible load.
     const bindings = await createTestTempDirectory(
-      "rea-self-default-bindings-",
+      "nre-self-default-bindings-",
     );
     await writeFixtureFiles(bindings, {
       "queue.cjs": `var queue = queue || [];

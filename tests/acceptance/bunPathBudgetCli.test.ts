@@ -27,7 +27,7 @@ for (const shared of [false, true])
     );
     const result = await cli.run({
       arguments: ["inspect-artifact", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     if (!shared) {
       expect(result.exitCode).toBe(1);

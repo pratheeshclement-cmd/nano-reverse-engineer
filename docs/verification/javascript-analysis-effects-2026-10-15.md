@@ -4,7 +4,7 @@ Tracks #3867 under #4027. The canonical effect record omitted existing internal
 worker launches and source staging. `CapabilityInventory` and SDK registration
 already consume that owner directly; no adapter override is required. The
 [worker](../../src/javascript/analysis/JavaScriptAnalysisWorker.ts) creates a
-private runtime root, stages `.source` files and launches an owned REA worker.
+private runtime root, stages `.source` files and launches an owned NRE worker.
 These are source-derived facts; the analyzed application code is not executed.
 
 ## Executed results
@@ -70,7 +70,7 @@ const client = new Client({
 });
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: ["scripts/rea.mjs", "mcp"],
+  args: ["scripts/nre.mjs", "mcp"],
   stderr: "pipe",
 });
 await withVerifierCleanup(async () => {

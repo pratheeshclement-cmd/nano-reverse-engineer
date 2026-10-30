@@ -64,7 +64,7 @@ const guidanceCleanupFailure = (
     resources.cleanupResources,
   );
   const error = new ProviderCleanupError(
-    "rea",
+    "nre",
     resources.cleanupResources,
     { phase: "managed_guidance_read", reason: observation.reason },
     {
@@ -72,7 +72,7 @@ const guidanceCleanupFailure = (
       cause,
       cleanup: observation,
       remediationAction:
-        "Close REA so it can retry releasing the retained guidance file handle. Do not repeat the request until cleanup completes.",
+        "Close NRE so it can retry releasing the retained guidance file handle. Do not repeat the request until cleanup completes.",
     },
   );
   bindRegularFileCleanup(cause, error);
@@ -94,7 +94,7 @@ const readBundle = async (
         return {
           kind: "unavailable",
           message:
-            "Installed REA guidance exceeds the 4 MiB bundle allowance; no partial bundle was indexed.",
+            "Installed NRE guidance exceeds the 4 MiB bundle allowance; no partial bundle was indexed.",
         };
       files.set(relativePath, content.replaceAll("\r\n", "\n"));
     }
@@ -108,7 +108,7 @@ const readBundle = async (
       : {
           kind: "unavailable",
           message:
-            "Installed REA guidance is missing or unreadable; no complete bundle could be indexed.",
+            "Installed NRE guidance is missing or unreadable; no complete bundle could be indexed.",
         };
   }
   const digest = sha256(
@@ -121,7 +121,7 @@ const readBundle = async (
     return {
       kind: "unavailable",
       message:
-        "Installed REA guidance exceeds the 4,096-section or 25,165,824 expanded UTF-16-code-unit index allowance; no partial index was used.",
+        "Installed NRE guidance exceeds the 4,096-section or 25,165,824 expanded UTF-16-code-unit index allowance; no partial index was used.",
     };
   return { kind: "available", bundle: { digest, sections } };
 };
@@ -193,7 +193,7 @@ const sectionLocator = (
     ordinal: section.ordinal,
     section: sha256(section.content),
   });
-  return `rea-guide-v1.${Buffer.from(identity).toString("base64url")}`;
+  return `nre-guide-v1.${Buffer.from(identity).toString("base64url")}`;
 };
 
 type GuidanceReader = (
@@ -522,10 +522,10 @@ interface GuidanceCursor {
 }
 
 const encodeGuidanceCursor = (cursor: GuidanceCursor): string =>
-  `rea-guidance-page-v1.${Buffer.from(JSON.stringify(cursor)).toString("base64url")}`;
+  `nre-guidance-page-v1.${Buffer.from(JSON.stringify(cursor)).toString("base64url")}`;
 
 const decodeGuidanceCursor = (cursor: string): GuidanceCursor | undefined => {
-  const prefix = "rea-guidance-page-v1.";
+  const prefix = "nre-guidance-page-v1.";
   if (!cursor.startsWith(prefix)) return undefined;
   try {
     const value: unknown = JSON.parse(
@@ -551,10 +551,10 @@ const decodeGuidanceCursor = (cursor: string): GuidanceCursor | undefined => {
 };
 
 const decodeLocator = (locator: string): LocatorIdentity | undefined => {
-  if (!locator.startsWith("rea-guide-v1.")) return undefined;
+  if (!locator.startsWith("nre-guide-v1.")) return undefined;
   try {
     const value: unknown = JSON.parse(
-      Buffer.from(locator.slice("rea-guide-v1.".length), "base64url").toString(
+      Buffer.from(locator.slice("nre-guide-v1.".length), "base64url").toString(
         "utf8",
       ),
     );

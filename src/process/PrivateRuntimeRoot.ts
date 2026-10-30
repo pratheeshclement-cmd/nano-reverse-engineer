@@ -63,7 +63,7 @@ export class PrivateRuntimeRoot {
     if (platform === "win32") {
       const runtime = WindowsPrivateRuntime.create(
         options.parent ?? tmpdir(),
-        options.prefix ?? "rea-provider-",
+        options.prefix ?? "nre-provider-",
       );
       return new PrivateRuntimeRoot(runtime.observation.path, runtime);
     }
@@ -74,7 +74,7 @@ export class PrivateRuntimeRoot {
     // Canonicalize only after native admission so consumers share one physical
     // spelling without collapsing an invalid file/.. traversal on Darwin.
     const parent = await realpath(selectedParent);
-    const path = await mkdtemp(join(parent, options.prefix ?? "rea-provider-"));
+    const path = await mkdtemp(join(parent, options.prefix ?? "nre-provider-"));
     // POSIX mkdtemp establishes owner-only access atomically. Return its owner
     // without a fallible permission rewrite and rollback after allocation.
     return new PrivateRuntimeRoot(path);

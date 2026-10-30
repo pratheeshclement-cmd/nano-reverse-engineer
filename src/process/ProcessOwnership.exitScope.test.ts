@@ -73,7 +73,7 @@ it.each([
       platform: "linux",
       listProcesses: async () => [parent, child],
       environment: async (pid) =>
-        pid === parent.pid ? { REA_PROCESS_RUN_ID: "run" } : {},
+        pid === parent.pid ? { NRE_PROCESS_RUN_ID: "run" } : {},
       runTokens: async (selected) =>
         new Map<number, ProcessRunTokenObservation>(
           selected.map((process) => [
@@ -166,7 +166,7 @@ it("shares native exit waiting before signaling healthy groups in one cleanup at
     .mockImplementation(() => clock);
   const host: ProcessOwnershipHost = {
     listProcesses: async () => rows,
-    environment: async () => ({ REA_PROCESS_RUN_ID: "run" }),
+    environment: async () => ({ NRE_PROCESS_RUN_ID: "run" }),
     processIdentities: async (selected) => {
       clock += 25;
       return new Map<number, ProcessIdentityObservation>(

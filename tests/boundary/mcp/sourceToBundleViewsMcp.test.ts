@@ -147,7 +147,7 @@ it.each(["full", "compact"] as const)(
 );
 
 const comparisonFixture = async (profile: "full" | "compact") => {
-  const root = await createTestTempDirectory("rea-source-view-");
+  const root = await createTestTempDirectory("nre-source-view-");
   const previous = join(root, "previous"),
     current = join(root, "current");
   await mkdir(join(previous, "src"), { recursive: true });
@@ -215,7 +215,7 @@ const comparisonFixture = async (profile: "full" | "compact") => {
   const server = createServer(
     { kind: "session", session },
     {
-      environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: profile },
+      environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: profile },
     },
   );
   const client = new Client({ name: "source-view", version: "1" });

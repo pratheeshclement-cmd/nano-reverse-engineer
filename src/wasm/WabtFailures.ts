@@ -42,7 +42,7 @@ const OUTPUT_LIMIT_REASON = `WABT output exceeded the ${String(WABT_LIMITS.outpu
 
 /** Facts owned before dispatch, even when a version command does not return successfully. */
 export type WabtVersionProbe = {
-  readonly configuration_key: "REA_WABT_BIN_DIRECTORY";
+  readonly configuration_key: "NRE_WABT_BIN_DIRECTORY";
   readonly executable_path: string;
   readonly tool: string;
   readonly expected_version: typeof WABT_VERSION;
@@ -61,13 +61,13 @@ export const wabtConfigurationRecoveryAction = (cause?: unknown): string => {
     cause instanceof Error && "code" in cause ? cause.code : undefined;
   const action =
     code === "EACCES" || code === "EPERM"
-      ? "Check this REA process has read and execute access to the reported caller-supplied tools, or select an accessible trusted copy. "
+      ? "Check this NRE process has read and execute access to the reported caller-supplied tools, or select an accessible trusted copy. "
       : code === "ENOTDIR"
         ? "Select the tools' containing directory, not an individual executable. "
         : code === "ENOENT"
           ? "The reported configured tool is missing. "
           : "";
-  return `${action}Set absolute REA_WABT_BIN_DIRECTORY to a directory that contains wasm-validate, wasm-objdump and wasm2wat from WABT ${WABT_VERSION}; each --version must report ${WABT_VERSION} on stdout with empty stderr. Correct the reported tool path, access or release before retrying, not the WASM input. Set this in the shell for the next CLI call, or in the MCP server launch environment and restart that server; a shell export does not update a running MCP server. Do not repeat the unchanged call or install tools implicitly.`;
+  return `${action}Set absolute NRE_WABT_BIN_DIRECTORY to a directory that contains wasm-validate, wasm-objdump and wasm2wat from WABT ${WABT_VERSION}; each --version must report ${WABT_VERSION} on stdout with empty stderr. Correct the reported tool path, access or release before retrying, not the WASM input. Set this in the shell for the next CLI call, or in the MCP server launch environment and restart that server; a shell export does not update a running MCP server. Do not repeat the unchanged call or install tools implicitly.`;
 };
 /** Past the output budget, retained text is a prefix of an oversized stream; keep a bounded excerpt of each. */
 const outputLimitExcerpt = (snapshot: ProviderProcessSnapshot) => ({
@@ -156,7 +156,7 @@ const classifyWabtFailure = (
             userMessage: `A WABT command reached its ${String(timeoutMs)} ms server/provider deadline (command_timeout_ms), not the whole-inspection or MCP client deadline.`,
             remediationAction: `${
               timeoutMs < MAX_WASM_COMMAND_TIMEOUT_MS
-                ? `Increase command_timeout_ms above ${String(timeoutMs)} (integer milliseconds, maximum ${String(MAX_WASM_COMMAND_TIMEOUT_MS)}), or use rea inspect-wasm-artifact <path> --command-timeout-ms <milliseconds> on the CLI.`
+                ? `Increase command_timeout_ms above ${String(timeoutMs)} (integer milliseconds, maximum ${String(MAX_WASM_COMMAND_TIMEOUT_MS)}), or use nre inspect-wasm-artifact <path> --command-timeout-ms <milliseconds> on the CLI.`
                 : `command_timeout_ms is already at the maximum supported ${String(MAX_WASM_COMMAND_TIMEOUT_MS)} ms; no higher command deadline is supported. Report this blocker or select another suitable complete artifact with caller approval.`
             } This is a per-call setting; no server restart is needed. Allow the MCP client deadline to cover all version/analysis commands, file checks, cleanup and delivery; increasing only that client deadline does not change this budget. Input/output safety limits stay fixed, and detail: summary reduces delivery size, not analysis work. Resolve any incomplete cleanup before retrying; do not repeat the unchanged failed call.`,
           })
@@ -235,7 +235,7 @@ const classifyWabtFailure = (
         cause,
         ...artifactOptions,
         userMessage: `Configured WABT tools exceed the ${String(WABT_LIMITS.toolBytes)}-byte tool allowance. This release has no runtime override.`,
-        remediationAction: `The WABT tool allowance is ${String(WABT_LIMITS.toolBytes)} bytes. This release has no runtime override. command_timeout_ms and REA_WABT_BIN_DIRECTORY do not raise it. Select tools within the allowance. Do not repeat the unchanged call.`,
+        remediationAction: `The WABT tool allowance is ${String(WABT_LIMITS.toolBytes)} bytes. This release has no runtime override. command_timeout_ms and NRE_WABT_BIN_DIRECTORY do not raise it. Select tools within the allowance. Do not repeat the unchanged call.`,
       },
     );
   if (phase === "configuration") {

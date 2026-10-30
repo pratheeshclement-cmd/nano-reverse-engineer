@@ -156,7 +156,7 @@ class Proxy:
         command = [self.args.mitmdump, "--mode", "reverse:https://lab.test:19443@127.0.0.1:18443",
                    "--set", f"confdir={self.root / 'proxy-config'}", "--set", "connection_strategy=lazy",
                    "--set", "keep_host_header=true", "--set", "store_streamed_bodies=false",
-                   "--set", f"rea_lab_log={self.root / (self.name + '.producer.jsonl')}",
+                   "--set", f"nre_lab_log={self.root / (self.name + '.producer.jsonl')}",
                    "-w", str(self.root / (self.name + '.mitm')),
                    "-s", str(Path(__file__).with_name("observe-mitmproxy-http3.py"))]
         command.extend(["--set", f"ssl_verify_upstream_trusted_ca={self.root / 'origin-ca.pem'}"])
@@ -164,7 +164,7 @@ class Proxy:
             command.extend(["--set", "http3=false"])
         self.process = subprocess.Popen(command, stdout=self.log, stderr=subprocess.STDOUT,
                                         start_new_session=True)
-        lease = {"runId": os.environ["REA_PROCESS_RUN_ID"], "leaderPid": self.process.pid,
+        lease = {"runId": os.environ["NRE_PROCESS_RUN_ID"], "leaderPid": self.process.pid,
                  "processGroupId": self.process.pid}
         with (self.root / "process-groups.jsonl").open("a") as handle:
             handle.write(json.dumps(lease) + "\n")

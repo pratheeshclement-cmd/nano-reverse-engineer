@@ -16,7 +16,7 @@ import { createTestBinarySession } from "../../fixtures/binarySession.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const fixture = async (storedName = "content-addressed-archive") => {
-  const root = await createTestTempDirectory("rea-artifact-selected-name-");
+  const root = await createTestTempDirectory("nre-artifact-selected-name-");
   const canonical = join(root, storedName);
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add(
@@ -118,7 +118,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "does not reinterpret real executable bytes from an artifact alias suffix",
   async () => {
-    const root = await createTestTempDirectory("rea-artifact-executable-name-");
+    const root = await createTestTempDirectory("nre-artifact-executable-name-");
     const canonical = join(root, "program");
     const selected = join(root, "selected.asar");
     await writeFile(canonical, elf(2, 1, 62));

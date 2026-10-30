@@ -148,10 +148,10 @@ export const admitGhidraLanguageOverride = (
 ): ConfigurationError | null => {
   const language = catalog.find((value) => value.id === override.languageId);
   if (language === undefined)
-    return new ConfigurationError("Invalid REA environment configuration", {
+    return new ConfigurationError("Invalid NRE environment configuration", {
       settings: [
         {
-          setting: "REA_GHIDRA_LANGUAGE_ID",
+          setting: "NRE_GHIDRA_LANGUAGE_ID",
           constraint: `is not a language defined by Ghidra ${providerVersion}`,
         },
       ],
@@ -160,10 +160,10 @@ export const admitGhidraLanguageOverride = (
     override.compilerSpecId !== undefined &&
     !language.compilerSpecIds.includes(override.compilerSpecId)
   )
-    return new ConfigurationError("Invalid REA environment configuration", {
+    return new ConfigurationError("Invalid NRE environment configuration", {
       settings: [
         {
-          setting: "REA_GHIDRA_COMPILER_SPEC_ID",
+          setting: "NRE_GHIDRA_COMPILER_SPEC_ID",
           constraint: `must be one of the selected language's compiler specs: ${language.compilerSpecIds.join(", ")}`,
         },
       ],

@@ -61,7 +61,7 @@
           ],
           "answer_elapsed_ms": 70282.919486,
           "resources_at_first_answer": {
-            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
+            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
             "cpu_seconds_since_scope_start": 69.258181,
             "peak_cgroup_bytes": 1578196992
           },
@@ -133,7 +133,7 @@
                     }
                   },
                   "extractor": {
-                    "name": "rea-javascript-artifact-reconstruction",
+                    "name": "nre-javascript-artifact-reconstruction",
                     "version": "1",
                     "operation": "observe-browser-window-construction",
                     "executable_sha256": null
@@ -180,7 +180,7 @@
         },
         "harness_sha256": "519ee1c976dbbb8177563155d1cbbd0be14c539bc95aa6cc090a8209acdd6521",
         "external_resource_observer": {
-          "resource_scope": "rea-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
+          "resource_scope": "nre-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
           "peak_cgroup_bytes_sampled": 2767458304,
           "elapsed_seconds": 88.753,
           "abort": null,
@@ -217,7 +217,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
+            "ownership_token": "nre-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
             "payload_exit_code": 0,
             "observer_pid": 3294157,
             "remaining_processes": [3294157],
@@ -233,7 +233,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 2767618048,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-ad1a19260bdd484dade3ed44cc85fdf0.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -299,7 +299,7 @@
           ],
           "answer_elapsed_ms": 42700.635273,
           "resources_at_first_answer": {
-            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
+            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
             "cpu_seconds_since_scope_start": 42.437155,
             "peak_cgroup_bytes": 1523793920
           },
@@ -425,7 +425,7 @@
                     }
                   },
                   "extractor": {
-                    "name": "rea-javascript-artifact-reconstruction",
+                    "name": "nre-javascript-artifact-reconstruction",
                     "version": "1",
                     "operation": "resolve-browser-window-constant-options",
                     "executable_sha256": null
@@ -472,7 +472,7 @@
         },
         "harness_sha256": "519ee1c976dbbb8177563155d1cbbd0be14c539bc95aa6cc090a8209acdd6521",
         "external_resource_observer": {
-          "resource_scope": "rea-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
+          "resource_scope": "nre-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
           "peak_cgroup_bytes_sampled": 2713325568,
           "elapsed_seconds": 60.776,
           "abort": null,
@@ -509,7 +509,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
+            "ownership_token": "nre-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
             "payload_exit_code": 0,
             "observer_pid": 3299551,
             "remaining_processes": [3299551],
@@ -525,7 +525,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 2713587712,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-3711c29b6c3242b9b26dd4df4e46d74a.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -594,7 +594,7 @@
           ],
           "answer_elapsed_ms": 42958.15948,
           "resources_at_first_answer": {
-            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
+            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
             "cpu_seconds_since_scope_start": 42.945842,
             "peak_cgroup_bytes": 1533308928
           },
@@ -666,7 +666,7 @@
                     }
                   },
                   "extractor": {
-                    "name": "rea-javascript-artifact-reconstruction",
+                    "name": "nre-javascript-artifact-reconstruction",
                     "version": "1",
                     "operation": "observe-browser-window-construction",
                     "executable_sha256": null
@@ -739,7 +739,7 @@
         },
         "harness_sha256": "9aac28cff06a1edd84b0173abc41e3cafa9761cd50b6d8e4023e98c406720c44",
         "external_resource_observer": {
-          "resource_scope": "rea-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
+          "resource_scope": "nre-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
           "peak_cgroup_bytes_sampled": 2715709440,
           "elapsed_seconds": 61.416,
           "abort": null,
@@ -776,7 +776,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
+            "ownership_token": "nre-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
             "payload_exit_code": 0,
             "observer_pid": 3303362,
             "remaining_processes": [3303362],
@@ -792,7 +792,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 2718605312,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e79775fdbdde4fad9538f4c98dccad8d.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -858,7 +858,7 @@
           ],
           "answer_elapsed_ms": 44792.531295999994,
           "resources_at_first_answer": {
-            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
+            "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
             "cpu_seconds_since_scope_start": 44.76574,
             "peak_cgroup_bytes": 1527357440
           },
@@ -984,7 +984,7 @@
                     }
                   },
                   "extractor": {
-                    "name": "rea-javascript-artifact-reconstruction",
+                    "name": "nre-javascript-artifact-reconstruction",
                     "version": "1",
                     "operation": "resolve-browser-window-constant-options",
                     "executable_sha256": null
@@ -1057,7 +1057,7 @@
         },
         "harness_sha256": "9aac28cff06a1edd84b0173abc41e3cafa9761cd50b6d8e4023e98c406720c44",
         "external_resource_observer": {
-          "resource_scope": "rea-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
+          "resource_scope": "nre-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
           "peak_cgroup_bytes_sampled": 3102695424,
           "elapsed_seconds": 65.742,
           "abort": null,
@@ -1094,7 +1094,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
+            "ownership_token": "nre-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
             "payload_exit_code": 0,
             "observer_pid": 3302318,
             "remaining_processes": [3302318],
@@ -1110,7 +1110,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 3102834688,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-662d8e592280474095b39e7a6b349fa7.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1143,7 +1143,7 @@
       "failed": 1,
       "failure": "Unmodified upstream generator CLI/MCP case exceeded its original30s deadline in grouped execution; original failure preserved.",
       "resource": {
-        "resource_scope": "rea-efficiency-777ad60b169d4782a215c20506b5902c.scope",
+        "resource_scope": "nre-efficiency-777ad60b169d4782a215c20506b5902c.scope",
         "peak_cgroup_bytes_sampled": 3231186944,
         "elapsed_seconds": 155.597,
         "abort": null,
@@ -1180,7 +1180,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-777ad60b169d4782a215c20506b5902c.scope",
+          "ownership_token": "nre-efficiency-777ad60b169d4782a215c20506b5902c.scope",
           "payload_exit_code": 1,
           "observer_pid": 3286427,
           "remaining_processes": [3286427],
@@ -1196,7 +1196,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 3239911424,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-777ad60b169d4782a215c20506b5902c.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-777ad60b169d4782a215c20506b5902c.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -1223,7 +1223,7 @@
       "baseline": {
         "unchanged_deadline_ms": 30000,
         "resource": {
-          "resource_scope": "rea-efficiency-f97af9e770674b33a3486aaf6a6d7596.scope",
+          "resource_scope": "nre-efficiency-f97af9e770674b33a3486aaf6a6d7596.scope",
           "peak_cgroup_bytes_sampled": 1511919616,
           "elapsed_seconds": 24.576,
           "abort": null,
@@ -1260,7 +1260,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-f97af9e770674b33a3486aaf6a6d7596.scope",
+            "ownership_token": "nre-efficiency-f97af9e770674b33a3486aaf6a6d7596.scope",
             "payload_exit_code": 0,
             "observer_pid": 3300003,
             "remaining_processes": [3300003],
@@ -1276,7 +1276,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1512431616,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-f97af9e770674b33a3486aaf6a6d7596.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-f97af9e770674b33a3486aaf6a6d7596.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1302,7 +1302,7 @@
       "candidate": {
         "unchanged_deadline_ms": 30000,
         "resource": {
-          "resource_scope": "rea-efficiency-128386354dae42b1ac10cc31f8a9ae8f.scope",
+          "resource_scope": "nre-efficiency-128386354dae42b1ac10cc31f8a9ae8f.scope",
           "peak_cgroup_bytes_sampled": 1493004288,
           "elapsed_seconds": 23.391,
           "abort": null,
@@ -1339,7 +1339,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-128386354dae42b1ac10cc31f8a9ae8f.scope",
+            "ownership_token": "nre-efficiency-128386354dae42b1ac10cc31f8a9ae8f.scope",
             "payload_exit_code": 0,
             "observer_pid": 3301239,
             "remaining_processes": [3301239],
@@ -1355,7 +1355,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1493864448,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-128386354dae42b1ac10cc31f8a9ae8f.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-128386354dae42b1ac10cc31f8a9ae8f.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1393,7 +1393,7 @@
       "System-cold repetitions"
     ],
     "semantic_content_comparison_observer": {
-      "resource_scope": "rea-efficiency-e559a14ab39947a282aec6170c1bdee2.scope",
+      "resource_scope": "nre-efficiency-e559a14ab39947a282aec6170c1bdee2.scope",
       "peak_cgroup_bytes_sampled": 1072209920,
       "elapsed_seconds": 7.699,
       "abort": null,
@@ -1430,7 +1430,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-e559a14ab39947a282aec6170c1bdee2.scope",
+        "ownership_token": "nre-efficiency-e559a14ab39947a282aec6170c1bdee2.scope",
         "payload_exit_code": 0,
         "observer_pid": 3309377,
         "remaining_processes": [3309377],
@@ -1446,7 +1446,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 1099935744,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e559a14ab39947a282aec6170c1bdee2.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e559a14ab39947a282aec6170c1bdee2.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -1470,7 +1470,7 @@
     },
     "complete_cli_observers": {
       "baseline": {
-        "resource_scope": "rea-efficiency-10de47d3d27c4a2fa9e074a7a518e3a7.scope",
+        "resource_scope": "nre-efficiency-10de47d3d27c4a2fa9e074a7a518e3a7.scope",
         "peak_cgroup_bytes_sampled": 1085177856,
         "elapsed_seconds": 34.78,
         "abort": null,
@@ -1507,7 +1507,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-10de47d3d27c4a2fa9e074a7a518e3a7.scope",
+          "ownership_token": "nre-efficiency-10de47d3d27c4a2fa9e074a7a518e3a7.scope",
           "payload_exit_code": 0,
           "observer_pid": 3306756,
           "remaining_processes": [3306756],
@@ -1523,7 +1523,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1085440000,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-10de47d3d27c4a2fa9e074a7a518e3a7.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-10de47d3d27c4a2fa9e074a7a518e3a7.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -1546,7 +1546,7 @@
         }
       },
       "candidate": {
-        "resource_scope": "rea-efficiency-3aecd191934444b1a20ca63e91a5182d.scope",
+        "resource_scope": "nre-efficiency-3aecd191934444b1a20ca63e91a5182d.scope",
         "peak_cgroup_bytes_sampled": 1075343360,
         "elapsed_seconds": 64.455,
         "abort": null,
@@ -1583,7 +1583,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-3aecd191934444b1a20ca63e91a5182d.scope",
+          "ownership_token": "nre-efficiency-3aecd191934444b1a20ca63e91a5182d.scope",
           "payload_exit_code": 0,
           "observer_pid": 3307887,
           "remaining_processes": [3307887],
@@ -1599,7 +1599,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1075605504,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-3aecd191934444b1a20ca63e91a5182d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-3aecd191934444b1a20ca63e91a5182d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -1626,7 +1626,7 @@
       "npm run check": {
         "result": "passed",
         "observer": {
-          "resource_scope": "rea-efficiency-c672bbf7663347b799349ba8f7c58b4b.scope",
+          "resource_scope": "nre-efficiency-c672bbf7663347b799349ba8f7c58b4b.scope",
           "peak_cgroup_bytes_sampled": 4418887680,
           "elapsed_seconds": 108.064,
           "abort": null,
@@ -1663,7 +1663,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-c672bbf7663347b799349ba8f7c58b4b.scope",
+            "ownership_token": "nre-efficiency-c672bbf7663347b799349ba8f7c58b4b.scope",
             "payload_exit_code": 0,
             "observer_pid": 3312223,
             "remaining_processes": [3312223],
@@ -1679,7 +1679,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 4419149824,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-c672bbf7663347b799349ba8f7c58b4b.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-c672bbf7663347b799349ba8f7c58b4b.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1711,7 +1711,7 @@
         ],
         "readme_consistency_cases": 5,
         "observer": {
-          "resource_scope": "rea-efficiency-d3555eb42b85450bba726d0041dab895.scope",
+          "resource_scope": "nre-efficiency-d3555eb42b85450bba726d0041dab895.scope",
           "peak_cgroup_bytes_sampled": 1104224256,
           "elapsed_seconds": 17.653,
           "abort": null,
@@ -1748,7 +1748,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-d3555eb42b85450bba726d0041dab895.scope",
+            "ownership_token": "nre-efficiency-d3555eb42b85450bba726d0041dab895.scope",
             "payload_exit_code": 0,
             "observer_pid": 3315541,
             "remaining_processes": [3315541],
@@ -1764,7 +1764,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1132130304,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-d3555eb42b85450bba726d0041dab895.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-d3555eb42b85450bba726d0041dab895.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1791,7 +1791,7 @@
         "result": "failed then corrected",
         "reason": "Record JSON rewritten after formatting; only JSON format gate failed. Reformatted the record before the successful complete rerun.",
         "observer": {
-          "resource_scope": "rea-efficiency-da6b29ea1fcb46948d7e0356749b8314.scope",
+          "resource_scope": "nre-efficiency-da6b29ea1fcb46948d7e0356749b8314.scope",
           "peak_cgroup_bytes_sampled": 2581917696,
           "elapsed_seconds": 20.091,
           "abort": null,
@@ -1828,7 +1828,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-da6b29ea1fcb46948d7e0356749b8314.scope",
+            "ownership_token": "nre-efficiency-da6b29ea1fcb46948d7e0356749b8314.scope",
             "payload_exit_code": 1,
             "observer_pid": 3310409,
             "remaining_processes": [3310409],
@@ -1844,7 +1844,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 2582474752,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-da6b29ea1fcb46948d7e0356749b8314.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-da6b29ea1fcb46948d7e0356749b8314.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -1927,7 +1927,7 @@
       "focused_files": 5,
       "focused_cases_passed": 49,
       "focused_observer": {
-        "resource_scope": "rea-efficiency-e1b3a18ab72b48ce80472de2fdf9b889.scope",
+        "resource_scope": "nre-efficiency-e1b3a18ab72b48ce80472de2fdf9b889.scope",
         "peak_cgroup_bytes_sampled": 1271529472,
         "elapsed_seconds": 17.769,
         "abort": null,
@@ -1964,7 +1964,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-e1b3a18ab72b48ce80472de2fdf9b889.scope",
+          "ownership_token": "nre-efficiency-e1b3a18ab72b48ce80472de2fdf9b889.scope",
           "payload_exit_code": 0,
           "observer_pid": 3325302,
           "remaining_processes": [3325302],
@@ -1980,7 +1980,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1274527744,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e1b3a18ab72b48ce80472de2fdf9b889.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e1b3a18ab72b48ce80472de2fdf9b889.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -2003,7 +2003,7 @@
         }
       },
       "red_observer": {
-        "resource_scope": "rea-efficiency-502ccd919f0142d795f68a67155b5c08.scope",
+        "resource_scope": "nre-efficiency-502ccd919f0142d795f68a67155b5c08.scope",
         "peak_cgroup_bytes_sampled": 260825088,
         "elapsed_seconds": 2.173,
         "abort": null,
@@ -2040,7 +2040,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-502ccd919f0142d795f68a67155b5c08.scope",
+          "ownership_token": "nre-efficiency-502ccd919f0142d795f68a67155b5c08.scope",
           "payload_exit_code": 1,
           "observer_pid": 3323357,
           "remaining_processes": [3323357],
@@ -2056,7 +2056,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 264232960,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-502ccd919f0142d795f68a67155b5c08.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-502ccd919f0142d795f68a67155b5c08.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -2079,7 +2079,7 @@
         }
       },
       "initial_post_fix_observer": {
-        "resource_scope": "rea-efficiency-d56b2979f55346399934327d7757c52d.scope",
+        "resource_scope": "nre-efficiency-d56b2979f55346399934327d7757c52d.scope",
         "peak_cgroup_bytes_sampled": 3324022784,
         "elapsed_seconds": 54.396,
         "abort": null,
@@ -2116,7 +2116,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-d56b2979f55346399934327d7757c52d.scope",
+          "ownership_token": "nre-efficiency-d56b2979f55346399934327d7757c52d.scope",
           "payload_exit_code": 1,
           "observer_pid": 3323481,
           "remaining_processes": [3323481],
@@ -2132,7 +2132,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 3324547072,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-d56b2979f55346399934327d7757c52d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-d56b2979f55346399934327d7757c52d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -2197,7 +2197,7 @@
       ],
       "answer_elapsed_ms": 44027.744397,
       "resources_at_first_answer": {
-        "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
+        "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
         "cpu_seconds_since_scope_start": 43.959938,
         "peak_cgroup_bytes": 1524555776
       },
@@ -2323,7 +2323,7 @@
                 }
               },
               "extractor": {
-                "name": "rea-javascript-artifact-reconstruction",
+                "name": "nre-javascript-artifact-reconstruction",
                 "version": "1",
                 "operation": "resolve-browser-window-constant-options",
                 "executable_sha256": null
@@ -2390,7 +2390,7 @@
       "conditions": "Fresh MCP and input hashing (file cache warmed); build/OS caches uncontrolled. First export sample includes export plus caller projection code, later samples reuse that immutable export. View samples precede diagnostic export. Task token projections include preparation, first answer, selected/full name/description/inputSchema catalog and the exact baseline program; exec tool schema, host rendering, output schemas, reasoning and billing unmeasured. At-answer cgroup counters include observer/startup overhead, before repeats/export diagnostics/parity/tokenization; final external observer measures all validation work. No application or native provider executes."
     },
     "external_resource_observer": {
-      "resource_scope": "rea-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
+      "resource_scope": "nre-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
       "peak_cgroup_bytes_sampled": 2709639168,
       "elapsed_seconds": 63.527,
       "abort": null,
@@ -2427,7 +2427,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
+        "ownership_token": "nre-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
         "payload_exit_code": 0,
         "observer_pid": 3326354,
         "remaining_processes": [3326354],
@@ -2443,7 +2443,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 2711998464,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-4f30177ce8d645a99d9ee9fb7f703801.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -2488,7 +2488,7 @@
       "tests/acceptance/applications/javascriptWindowOptionsCli.test.ts": "d5b3c548f219c5daf5ac612ca96b99ad946e5d0595a30ad7cd215cec35e9ad91"
     },
     "check_fast_observer": {
-      "resource_scope": "rea-efficiency-b972a9c5ac7040669243cd33890a982b.scope",
+      "resource_scope": "nre-efficiency-b972a9c5ac7040669243cd33890a982b.scope",
       "peak_cgroup_bytes_sampled": 4264390656,
       "elapsed_seconds": 107.049,
       "abort": null,
@@ -2525,7 +2525,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-b972a9c5ac7040669243cd33890a982b.scope",
+        "ownership_token": "nre-efficiency-b972a9c5ac7040669243cd33890a982b.scope",
         "payload_exit_code": 0,
         "observer_pid": 3327171,
         "remaining_processes": [3327171],
@@ -2541,7 +2541,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 4279070720,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b972a9c5ac7040669243cd33890a982b.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b972a9c5ac7040669243cd33890a982b.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -2564,7 +2564,7 @@
       }
     },
     "docs_and_oracle_observer": {
-      "resource_scope": "rea-efficiency-2fed0001526a4ef3bec70e6c53625e1f.scope",
+      "resource_scope": "nre-efficiency-2fed0001526a4ef3bec70e6c53625e1f.scope",
       "peak_cgroup_bytes_sampled": 461262848,
       "elapsed_seconds": 26.599,
       "abort": null,
@@ -2601,7 +2601,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-2fed0001526a4ef3bec70e6c53625e1f.scope",
+        "ownership_token": "nre-efficiency-2fed0001526a4ef3bec70e6c53625e1f.scope",
         "payload_exit_code": 0,
         "observer_pid": 3328280,
         "remaining_processes": [3328280],
@@ -2617,7 +2617,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 468353024,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-2fed0001526a4ef3bec70e6c53625e1f.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-2fed0001526a4ef3bec70e6c53625e1f.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -2687,7 +2687,7 @@
       ],
       "answer_elapsed_ms": 44606.713017,
       "resources_at_first_answer": {
-        "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
+        "control_group": "/user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
         "cpu_seconds_since_scope_start": 43.883417,
         "peak_cgroup_bytes": 1666560000
       },
@@ -2813,7 +2813,7 @@
                 }
               },
               "extractor": {
-                "name": "rea-javascript-artifact-reconstruction",
+                "name": "nre-javascript-artifact-reconstruction",
                 "version": "1",
                 "operation": "resolve-browser-window-constant-options",
                 "executable_sha256": null
@@ -2880,7 +2880,7 @@
       "conditions": "Fresh MCP and input hashing (file cache warmed); build/OS caches uncontrolled. First export sample includes export plus caller projection code, later samples reuse that immutable export. View samples precede diagnostic export. Task token projections include preparation, first answer, selected/full name/description/inputSchema catalog and the exact baseline program; exec tool schema, host rendering, output schemas, reasoning and billing unmeasured. At-answer cgroup counters include observer/startup overhead, before repeats/export diagnostics/parity/tokenization; final external observer measures all validation work. No application or native provider executes."
     },
     "external_resource_observer": {
-      "resource_scope": "rea-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
+      "resource_scope": "nre-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
       "peak_cgroup_bytes_sampled": 2857586688,
       "elapsed_seconds": 64.662,
       "abort": null,
@@ -2917,7 +2917,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
+        "ownership_token": "nre-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
         "payload_exit_code": 0,
         "observer_pid": 3359018,
         "remaining_processes": [3359018],
@@ -2933,7 +2933,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 2857730048,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-365463e3ce6e459aa869ec5d95c6193f.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -2966,7 +2966,7 @@
       "files": 10,
       "cases_passed": 107,
       "observer": {
-        "resource_scope": "rea-efficiency-031a7b71af544fa68d8ae8d7876df09a.scope",
+        "resource_scope": "nre-efficiency-031a7b71af544fa68d8ae8d7876df09a.scope",
         "peak_cgroup_bytes_sampled": 3211972608,
         "elapsed_seconds": 64.644,
         "abort": null,
@@ -3003,7 +3003,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-031a7b71af544fa68d8ae8d7876df09a.scope",
+          "ownership_token": "nre-efficiency-031a7b71af544fa68d8ae8d7876df09a.scope",
           "payload_exit_code": 0,
           "observer_pid": 3347835,
           "remaining_processes": [3347835],
@@ -3019,7 +3019,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 3221716992,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-031a7b71af544fa68d8ae8d7876df09a.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-031a7b71af544fa68d8ae8d7876df09a.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -3120,7 +3120,7 @@
           "conditions": "Synthetic capacity/scaling control, not a real-app or agent task. Three sequential source analyses per size in one process; V8 and module caches may warm, no retained analysis cache. Timing assertions are not test gates. Run under the documented resource observer; real Joplin tasks are measured separately."
         },
         "observer": {
-          "resource_scope": "rea-efficiency-de79f73779444d42acabe63cc0dc4033.scope",
+          "resource_scope": "nre-efficiency-de79f73779444d42acabe63cc0dc4033.scope",
           "peak_cgroup_bytes_sampled": 121651200,
           "elapsed_seconds": 17.81,
           "abort": null,
@@ -3157,7 +3157,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-de79f73779444d42acabe63cc0dc4033.scope",
+            "ownership_token": "nre-efficiency-de79f73779444d42acabe63cc0dc4033.scope",
             "payload_exit_code": 0,
             "observer_pid": 3336450,
             "remaining_processes": [3336450],
@@ -3173,7 +3173,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 122757120,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-de79f73779444d42acabe63cc0dc4033.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-de79f73779444d42acabe63cc0dc4033.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -3273,7 +3273,7 @@
           "conditions": "Synthetic capacity/scaling control, not a real-app or agent task. Three sequential source analyses per size in one process; V8 and module caches may warm, no retained analysis cache. Timing assertions are not test gates. Run under the documented resource observer; real Joplin tasks are measured separately."
         },
         "observer": {
-          "resource_scope": "rea-efficiency-4c3b0ebfa3a54e54983c39f265853fd3.scope",
+          "resource_scope": "nre-efficiency-4c3b0ebfa3a54e54983c39f265853fd3.scope",
           "peak_cgroup_bytes_sampled": 91320320,
           "elapsed_seconds": 2.267,
           "abort": null,
@@ -3310,7 +3310,7 @@
           },
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-4c3b0ebfa3a54e54983c39f265853fd3.scope",
+            "ownership_token": "nre-efficiency-4c3b0ebfa3a54e54983c39f265853fd3.scope",
             "payload_exit_code": 0,
             "observer_pid": 3353710,
             "remaining_processes": [3353710],
@@ -3326,7 +3326,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 96301056,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-4c3b0ebfa3a54e54983c39f265853fd3.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-4c3b0ebfa3a54e54983c39f265853fd3.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -3361,7 +3361,7 @@
         "web_preferences_status": "dynamic"
       },
       "negative_case_observer": {
-        "resource_scope": "rea-efficiency-91b7a2c64be54dce80437f3cc11abcdf.scope",
+        "resource_scope": "nre-efficiency-91b7a2c64be54dce80437f3cc11abcdf.scope",
         "peak_cgroup_bytes_sampled": 258031616,
         "elapsed_seconds": 2.08,
         "abort": null,
@@ -3398,7 +3398,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-91b7a2c64be54dce80437f3cc11abcdf.scope",
+          "ownership_token": "nre-efficiency-91b7a2c64be54dce80437f3cc11abcdf.scope",
           "payload_exit_code": 0,
           "observer_pid": 3335341,
           "remaining_processes": [3335341],
@@ -3414,7 +3414,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 259080192,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-91b7a2c64be54dce80437f3cc11abcdf.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-91b7a2c64be54dce80437f3cc11abcdf.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -3437,7 +3437,7 @@
         }
       },
       "public_cli_observer": {
-        "resource_scope": "rea-efficiency-74cbde996e1a4ffdada7d8dd2bc6b55c.scope",
+        "resource_scope": "nre-efficiency-74cbde996e1a4ffdada7d8dd2bc6b55c.scope",
         "peak_cgroup_bytes_sampled": 364564480,
         "elapsed_seconds": 5.665,
         "abort": null,
@@ -3474,7 +3474,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-74cbde996e1a4ffdada7d8dd2bc6b55c.scope",
+          "ownership_token": "nre-efficiency-74cbde996e1a4ffdada7d8dd2bc6b55c.scope",
           "payload_exit_code": 0,
           "observer_pid": 3339030,
           "remaining_processes": [3339030],
@@ -3490,7 +3490,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 365195264,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-74cbde996e1a4ffdada7d8dd2bc6b55c.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-74cbde996e1a4ffdada7d8dd2bc6b55c.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -3515,7 +3515,7 @@
       "source_owner": "javascriptSemanticIterationSources.ts:81-103 emits reference-store for member targets; the shared collector records options[] escape before capture."
     },
     "full_check_observer": {
-      "resource_scope": "rea-efficiency-84741cb42c4a4559acd2675262817635.scope",
+      "resource_scope": "nre-efficiency-84741cb42c4a4559acd2675262817635.scope",
       "peak_cgroup_bytes_sampled": 4445396992,
       "elapsed_seconds": 111.922,
       "abort": null,
@@ -3552,7 +3552,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-84741cb42c4a4559acd2675262817635.scope",
+        "ownership_token": "nre-efficiency-84741cb42c4a4559acd2675262817635.scope",
         "payload_exit_code": 0,
         "observer_pid": 3362958,
         "remaining_processes": [3362958],
@@ -3568,7 +3568,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 4445659136,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-84741cb42c4a4559acd2675262817635.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-84741cb42c4a4559acd2675262817635.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -3610,7 +3610,7 @@
       "tests/acceptance/applications/javascriptWindowOptionsCli.test.ts": "d5b3c548f219c5daf5ac612ca96b99ad946e5d0595a30ad7cd215cec35e9ad91"
     },
     "docs_and_oracle_observer": {
-      "resource_scope": "rea-efficiency-8fa3b144f5284260b9d75a9d18de763d.scope",
+      "resource_scope": "nre-efficiency-8fa3b144f5284260b9d75a9d18de763d.scope",
       "peak_cgroup_bytes_sampled": 471846912,
       "elapsed_seconds": 13.76,
       "abort": null,
@@ -3647,7 +3647,7 @@
       },
       "payload_resource_observation": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-8fa3b144f5284260b9d75a9d18de763d.scope",
+        "ownership_token": "nre-efficiency-8fa3b144f5284260b9d75a9d18de763d.scope",
         "payload_exit_code": 0,
         "observer_pid": 3373175,
         "remaining_processes": [3373175],
@@ -3663,7 +3663,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 475119616,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-8fa3b144f5284260b9d75a9d18de763d.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-8fa3b144f5284260b9d75a9d18de763d.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,

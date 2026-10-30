@@ -98,7 +98,7 @@ describe("native dispatch metadata input boundary", () => {
 it.each(["inspect_macho", "list_architectures"] as const)(
   "retains unreadable lipo output as an output failure for %s",
   async (operation) => {
-    const root = await createTestTempDirectory("rea-macho-lipo-output-");
+    const root = await createTestTempDirectory("nre-macho-lipo-output-");
     const path = join(root, "fixture.macho");
     await writeFile(path, inspectionImage());
     const client = new NativeMacOSProvider(

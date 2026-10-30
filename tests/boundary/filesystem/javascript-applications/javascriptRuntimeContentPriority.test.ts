@@ -37,9 +37,9 @@ const collisionInput = async (
   const root = await applicationFixture();
   if (alternatives > 0) await writeFile(join(root, "other.js"), CAPTURED);
   const live = explicitMapping
-    ? await createTestTempDirectory("rea-runtime-content-live-")
+    ? await createTestTempDirectory("nre-runtime-content-live-")
     : root;
-  const extra = await createTestTempDirectory("rea-runtime-content-extra-");
+  const extra = await createTestTempDirectory("nre-runtime-content-extra-");
   await writeFile(join(extra, "app.js"), CAPTURED);
   return readInput(
     reconcileJavaScriptRuntimeInputSchema.parse({
@@ -111,7 +111,7 @@ it("restricts content-and-location ambiguity to mapped candidates", async () => 
   const application = await applicationFixture();
   const cache = await applicationFixture();
   const other = await applicationFixture();
-  const live = await createTestTempDirectory("rea-runtime-content-mapped-");
+  const live = await createTestTempDirectory("nre-runtime-content-mapped-");
   const analysis = await analyzeFixture(application);
   const mapping = [{ kind: "file-root", root: live, artifact_prefix: "" }];
   const parsed = readInput(
@@ -153,7 +153,7 @@ it.each([false, true])(
     const root = await applicationFixture();
     await writeFile(join(root, "other.js"), CAPTURED);
     const live = await createTestTempDirectory(
-      "rea-runtime-content-unlocated-",
+      "nre-runtime-content-unlocated-",
     );
     const result = reconcileJavaScriptRuntime(
       readInput(
@@ -282,7 +282,7 @@ const reconcileCapturedScript = async (input: {
 
 it("keeps an unmapped captured script without a content match unknown", async () => {
   const root = await applicationFixture();
-  const live = await createTestTempDirectory("rea-runtime-unmapped-");
+  const live = await createTestTempDirectory("nre-runtime-unmapped-");
   const { result, script, worker } = await reconcileCapturedScript({
     layers: [{ root, mapping: "none" }],
     live,
@@ -313,7 +313,7 @@ it.each(["explicit", "implicit-root"] as const)(
     const root = await applicationFixture();
     const live =
       mapping === "explicit"
-        ? await createTestTempDirectory("rea-runtime-mapped-absent-")
+        ? await createTestTempDirectory("nre-runtime-mapped-absent-")
         : root;
     const { result, script } = await reconcileCapturedScript({
       layers: [{ root, mapping: mapping === "explicit" ? "explicit" : "none" }],
@@ -338,7 +338,7 @@ it.each([
 ] as const)(
   "classifies an unmatched captured script when %s of two layers maps it",
   async (_label, mappings, status) => {
-    const live = await createTestTempDirectory("rea-runtime-layer-mapping-");
+    const live = await createTestTempDirectory("nre-runtime-layer-mapping-");
     const { script } = await reconcileCapturedScript({
       layers: await Promise.all(
         mappings.map(async (mapping) => ({
@@ -365,7 +365,7 @@ it.each([
 ] as const)(
   "keeps unmapped content-only correspondence with %i digest candidates",
   async (copies, status, reason) => {
-    const live = await createTestTempDirectory("rea-runtime-unmapped-content-");
+    const live = await createTestTempDirectory("nre-runtime-unmapped-content-");
     const { result, script } = await reconcileCapturedScript({
       layers: await Promise.all(
         Array.from({ length: copies }, async () => {

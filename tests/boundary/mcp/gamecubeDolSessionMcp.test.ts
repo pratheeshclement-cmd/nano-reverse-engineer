@@ -41,7 +41,7 @@ const validateAdvertised = (
 };
 
 it("opens a GameCube DOL and validates binary_session status against its output schema", async () => {
-  const root = await createTestTempDirectory("rea-dol-session-mcp-");
+  const root = await createTestTempDirectory("nre-dol-session-mcp-");
   const path = join(root, "game.dol");
   await writeFile(path, buildGamecubeDol());
   const { client } = await createApplicationMcpHarness({

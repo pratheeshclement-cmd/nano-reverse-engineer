@@ -18,7 +18,7 @@ import { parseEvidence } from "../../../../src/domain/evidence.js";
 const { runProviderAnalysis } = createDirectAnalysis({});
 
 it("runs static .app decoding without registering native analysis engines", async () => {
-  const root = await createTestTempDirectory("rea-artifact-only-direct-");
+  const root = await createTestTempDirectory("nre-artifact-only-direct-");
   const app = join(root, "Fixture.app");
   const contents = join(app, "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -33,7 +33,7 @@ it("runs static .app decoding without registering native analysis engines", asyn
   );
 
   const staticSession = await createArtifactBinarySession({
-    REA_ANALYSIS_PROVIDER: "auto",
+    NRE_ANALYSIS_PROVIDER: "auto",
   });
   expect(await staticSession.status()).toMatchObject({
     analysis_provider_candidates: [],
@@ -42,13 +42,13 @@ it("runs static .app decoding without registering native analysis engines", asyn
 
   const evidence = parseEvidence(
     await createDirectAnalysis({
-      REA_ANALYSIS_PROVIDER: "auto",
+      NRE_ANALYSIS_PROVIDER: "auto",
     })
       .runProviderAnalysis(app, "decode_interface_builder", {})
       .then(projectCliAnalysisResult),
   );
   expect(evidence.operation).toBe("decode_interface_builder");
-  expect(evidence.provider.id).toBe("rea-artifact-graph");
+  expect(evidence.provider.id).toBe("nre-artifact-graph");
   const result = interfaceBuilderAnalysisSchema.parse(
     evidence.normalized_result,
   );
@@ -58,8 +58,8 @@ it("runs static .app decoding without registering native analysis engines", asyn
   );
 });
 
-it("inspects an artifact through the direct CLI workflow without an REA grant", async () => {
-  const root = await createTestTempDirectory("rea-artifact-direct-");
+it("inspects an artifact through the direct CLI workflow without an NRE grant", async () => {
+  const root = await createTestTempDirectory("nre-artifact-direct-");
   const source = join(root, "source");
   const archive = join(root, "fixture.asar");
   await mkdir(source);
@@ -72,7 +72,7 @@ it("inspects an artifact through the direct CLI workflow without an REA grant", 
     ),
   );
   expect(evidence.operation).toBe("inspect_artifact");
-  expect(evidence.provider.id).toBe("rea-artifact-graph");
+  expect(evidence.provider.id).toBe("nre-artifact-graph");
   const inspection = artifactInspectionResultSchema.parse(
     evidence.normalized_result,
   );

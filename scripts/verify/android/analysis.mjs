@@ -20,11 +20,11 @@ import { validateVerifierJadxConfiguration } from "../../lib/jadx-configuration-
 import { verifyWindowsAndroidLifecycle } from "./windows-lifecycle.mjs";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
-const apk = process.env.REA_ANDROID_TEST_APK;
-const jar = process.env.REA_JADX_MCP_JAR;
+const apk = process.env.NRE_ANDROID_TEST_APK;
+const jar = process.env.NRE_JADX_MCP_JAR;
 if (apk === undefined || jar === undefined)
   throw new Error(
-    "verify:android requires REA_ANDROID_TEST_APK and REA_JADX_MCP_JAR. Run npm run fixtures:android and select the downloaded files; see docs/android-analysis.md.",
+    "verify:android requires NRE_ANDROID_TEST_APK and NRE_JADX_MCP_JAR. Run npm run fixtures:android and select the downloaded files; see docs/android-analysis.md.",
   );
 await access(apk);
 await access(jar);
@@ -51,8 +51,8 @@ const { java, jvmArguments } = configuration;
 const execute = promisify(execFile);
 await execute(java, ["-version"], { timeout: 10_000 });
 const entrypoint =
-  process.env.REA_ANDROID_ENTRYPOINT ?? resolve(repository, "scripts/rea.mjs");
-const environment = { ...process.env, REA_JADX_MCP_JAR: resolve(jar) };
+  process.env.NRE_ANDROID_ENTRYPOINT ?? resolve(repository, "scripts/nre.mjs");
+const environment = { ...process.env, NRE_JADX_MCP_JAR: resolve(jar) };
 const path = resolve(apk);
 await verifyAndroidMetadata({
   java,
@@ -63,7 +63,7 @@ await verifyAndroidMetadata({
   jvmArguments,
   entrypoint,
   environment,
-  bridge: resolve(dirname(entrypoint), "../bridge/android/ReaJadxBridge.java"),
+  bridge: resolve(dirname(entrypoint), "../bridge/android/NreJadxBridge.java"),
 });
 const tasks = [
   {
@@ -140,7 +140,7 @@ let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr += chunk.toString();
 });
-const client = new Client({ name: "rea-real-android-verifier", version: "1" });
+const client = new Client({ name: "nre-real-android-verifier", version: "1" });
 try {
   await client.connect(transport, { timeout: 30_000 });
   for (const task of tasks) {
@@ -318,9 +318,9 @@ const report = {
   metadata_without_code_generation: true,
   stable_overload_selection: true,
 };
-if (process.env.REA_ANDROID_REPORT !== undefined)
+if (process.env.NRE_ANDROID_REPORT !== undefined)
   await writeFile(
-    process.env.REA_ANDROID_REPORT,
+    process.env.NRE_ANDROID_REPORT,
     JSON.stringify(report, null, 2) + "\n",
   );
 console.log(JSON.stringify(report, null, 2));

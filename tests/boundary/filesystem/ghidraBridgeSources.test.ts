@@ -30,7 +30,7 @@ const installation = async (
   properties = "application.version=12.1.4\n",
   compilerStatus = 0,
 ) => {
-  const root = await createTestTempDirectory("rea-ghidra-bridge-test-");
+  const root = await createTestTempDirectory("nre-ghidra-bridge-test-");
   const install = join(root, "Ghidra SDK");
   await mkdir(join(install, "Ghidra/Framework/lib"), { recursive: true });
   await writeFile(
@@ -50,7 +50,7 @@ const installation = async (
       ...(compilerStatus === 0
         ? ["exit 0"]
         : [
-            'echo "bridge/ghidra/ReaGhidraBridge.java:1: error: cannot find symbol" >&2',
+            'echo "bridge/ghidra/NreGhidraBridge.java:1: error: cannot find symbol" >&2',
             "exit 1",
           ]),
     ].join("\n"),
@@ -82,7 +82,7 @@ const admissionCases: readonly AdmissionCase[] = [
     name: "compiler fails",
     properties: "application.version=12.1.4\n",
     compilerStatus: 1,
-    error: "bridge/ghidra/ReaGhidraBridge.java:1: error: cannot find symbol",
+    error: "bridge/ghidra/NreGhidraBridge.java:1: error: cannot find symbol",
   },
   { name: "colon separator", properties: "application.version : 12.1.4\n" },
   {
@@ -144,7 +144,7 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "rejects a $action launcher source before compilation: $source",
   async ({ source, action }) => {
-    const repository = await createTestTempDirectory("rea-ghidra-source-set-");
+    const repository = await createTestTempDirectory("nre-ghidra-source-set-");
     await mkdir(join(repository, "scripts"));
     await mkdir(join(repository, "src/ghidra"), { recursive: true });
     await writeFile(join(repository, "package.json"), '{"type":"module"}\n');
@@ -200,7 +200,7 @@ it("rejects an omitted auxiliary source at the actual package verification bound
   const source = GHIDRA_BRIDGE_SOURCES.prepareCom;
   const packedFiles = [
     "package/bridge/hopper_bridge.py",
-    "package/bridge/cutter/rea_bridge.py",
+    "package/bridge/cutter/nre_bridge.py",
     ...Object.values(GHIDRA_BRIDGE_SOURCES)
       .filter((name) => name !== source)
       .map((name) => `package/bridge/ghidra/${name}`),
@@ -213,7 +213,7 @@ it("rejects an omitted auxiliary source at the actual package verification bound
        import { createPackageVerifierCommands } from "./scripts/lib/verify-package-commands.mjs";
        import { withVerifierCleanup } from "./scripts/lib/verifier-cleanup.mjs";
        import { PrivateRuntimeRoot } from "./dist/process/PrivateRuntimeRoot.js";
-       const root = await PrivateRuntimeRoot.create({ prefix: "rea-bridge-admission-" });
+       const root = await PrivateRuntimeRoot.create({ prefix: "nre-bridge-admission-" });
        let commands;
        await withVerifierCleanup(async () => {
          commands = await createPackageVerifierCommands({ workspace: root });

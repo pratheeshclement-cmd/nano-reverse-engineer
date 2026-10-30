@@ -18,7 +18,7 @@ const session = (
   language = expected.expectedLanguageId,
   compiler = "default",
 ) => ({
-  name: "REA Ghidra bridge",
+  name: "NRE Ghidra bridge",
   run_id: expected.runId,
   profile_digest: expected.profileDigest,
   provider: { id: "ghidra", version: expected.providerVersion },
@@ -144,7 +144,7 @@ describe("Ghidra MIPS soft-float storage report", () => {
 
 describe("Ghidra disabled analyzer report", () => {
   const valid = {
-    format: "rea-ghidra-disabled-analyzers-v1",
+    format: "nre-ghidra-disabled-analyzers-v1",
     analyzers: [
       { name: "Decompiler Switch Analysis", status: "disabled" },
       { name: "Objective-C Message Analyzer", status: "not_applicable" },
@@ -163,11 +163,11 @@ describe("Ghidra disabled analyzer report", () => {
       "an unknown analyzer reported as accepted",
       {
         ...valid,
-        analyzers: [{ name: "REA Unknown Analyzer", status: "unknown" }],
+        analyzers: [{ name: "NRE Unknown Analyzer", status: "unknown" }],
       },
     ],
     ["an empty outcome list", { ...valid, analyzers: [] }],
-    ["another report format", { ...valid, format: "rea-ghidra-seeds-v1" }],
+    ["another report format", { ...valid, format: "nre-ghidra-seeds-v1" }],
     ["an undeclared field", { ...valid, skipped: [] }],
   ])("rejects %s", (_label, report) => {
     expect(

@@ -17,7 +17,7 @@ it
   .each(["owned", "wrong-token", "wrong-parent"] as const)(
   "cancels an exec wrapper only with current ownership: %s",
   async (identity) => {
-    const { root } = await createTestWorkspace("rea-pwntools-wrapper-");
+    const { root } = await createTestWorkspace("nre-pwntools-wrapper-");
     onTestFinished(() => removeTestWorkspace(root));
     const path = join(root, "input");
     await writeFile(path, "source-owned-seam-bytes");
@@ -43,7 +43,7 @@ it
       child.emit("close", null, "SIGTERM");
     });
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         const ownership = {
           runId: spawn.runId,
@@ -77,7 +77,7 @@ it
                     ]
                   : [],
               environment: async () => ({
-                REA_PROCESS_RUN_ID:
+                NRE_PROCESS_RUN_ID:
                   identity === "wrong-token" ? "another-run" : spawn.runId,
               }),
               signalGroup,

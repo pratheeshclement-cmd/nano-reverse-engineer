@@ -5,7 +5,7 @@ capture-built environments (each app's latest capture). The served smoke rebuild
 test and applies every served write tool. The serving check answers every recorded read made before the capture's
 first write through state serving and compares it with the recording; it reads no calls from the five
 browser-scenario captures. The session replay answers every recorded call in order, writes included, through state
-serving, reading records with REA's own capture parser, and compares the reads; it covers all 50 captures.
+serving, reading records with NRE's own capture parser, and compares the reads; it covers all 50 captures.
 
 ## Gates
 
@@ -101,7 +101,7 @@ Node 24.22.1, baseline `3ce311757`, reviewed implementation `352c0278d`:
   after refused writes. Live Gemini API execution was not performed.
 - Four public datasets were downloaded at immutable Hugging Face revisions:
   NocoDB `d0f7e040`, Ghost `6d5b2d1c`, Metabase `fa2aa0fd`, and Mailpit
-  `416b29be`, under `earakely-scale/*Env-REA`. Capture hashes, full calls,
+  `416b29be`, under `earakely-scale/*Env-NRE`. Capture hashes, full calls,
   independent recorded JSON comparisons, runtime identities and resource
   receipts were retained locally. These were recorded real applications;
   the original applications were not re-recorded in this verification.

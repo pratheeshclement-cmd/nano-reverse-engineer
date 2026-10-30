@@ -587,14 +587,14 @@ describe("unresolved Claude Desktop package identity", () => {
   });
 });
 
-describe("package-private REA launchers", () => {
+describe("package-private NRE launchers", () => {
   const launcher = join(
     env.APPDATA,
     "npm",
     "node_modules",
-    "rea-agents",
+    "nano-reverse-engineer",
     "scripts",
-    "rea.mjs",
+    "nre.mjs",
   );
   const stored = join(
     packages,
@@ -603,9 +603,9 @@ describe("package-private REA launchers", () => {
     "Roaming",
     "npm",
     "node_modules",
-    "rea-agents",
+    "nano-reverse-engineer",
     "scripts",
-    "rea.mjs",
+    "nre.mjs",
   );
 
   it("names the package that privately stores a path", () => {
@@ -629,7 +629,7 @@ describe("package-private REA launchers", () => {
     );
     expect(blocker).toContain(stored);
     expect(blocker).toContain(CLAUDE_DESKTOP_PACKAGE_FAMILY);
-    expect(blocker).toContain("npm install -g rea-agents");
+    expect(blocker).toContain("npm install -g nano-reverse-engineer");
   });
 
   it("compares the launcher with the canonical package storage path", () => {
@@ -656,7 +656,15 @@ describe("package-private REA launchers", () => {
   it("allows ordinary and unresolvable launchers", () => {
     expect(
       packagePrivateLauncherBlocker(
-        ["cmd.exe", "/d", "/c", "npx", "-y", "rea-agents@6.4.0", "mcp"],
+        [
+          "cmd.exe",
+          "/d",
+          "/c",
+          "npx",
+          "-y",
+          "nano-reverse-engineer@6.4.0",
+          "mcp",
+        ],
         packages,
         () => {
           throw new Error("package runners are not resolved");
@@ -697,7 +705,7 @@ describe("writes from a redirected AppData view", () => {
 
   it("compares aliases through the existing parent of a new destination", () => {
     const alias = join(home, "skill-alias");
-    const target = join(alias, "skills", "reverse-engineer-anything");
+    const target = join(alias, "skills", "nano-reverse-engineer");
     const blocker = redirectedWriteBlocker(
       view,
       [target],

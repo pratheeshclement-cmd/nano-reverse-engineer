@@ -220,7 +220,7 @@ export type VerifiedProcessSettlement =
  */
 export interface UnverifiedProcessCapture {
   readonly manifest: {
-    readonly rea_version: string;
+    readonly nre_version: string;
     readonly provider_version: string;
     readonly platform: string;
     readonly architecture: string;
@@ -493,7 +493,7 @@ const processCaptureFinalizationSchema = z
 
 const processCaptureShapeSchema = z.strictObject({
   manifest: z.strictObject({
-    rea_version: z.string().min(1),
+    nre_version: z.string().min(1),
     provider_version: z.string().min(1),
     platform: z.string().min(1),
     architecture: z.string().min(1),
@@ -851,5 +851,5 @@ export const processCaptureSchema = processCaptureShapeSchema
       });
   })
   .describe(
-    "The capture must preserve its canonical scenario, comparison, and normalization SHA-256 commitments; ordered capture timestamps and contiguous sequence numbers; before and final filesystem snapshots with truncation propagated; and exit-code consistency with deadline termination. The event journal is required; empty journals are valid. A non-empty journal must reference every captured observation exactly once with unique in-range references. These cross-field invariants are checked by REA after capture.",
+    "The capture must preserve its canonical scenario, comparison, and normalization SHA-256 commitments; ordered capture timestamps and contiguous sequence numbers; before and final filesystem snapshots with truncation propagated; and exit-code consistency with deadline termination. The event journal is required; empty journals are valid. A non-empty journal must reference every captured observation exactly once with unique in-range references. These cross-field invariants are checked by NRE after capture.",
   );

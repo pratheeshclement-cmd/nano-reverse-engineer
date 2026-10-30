@@ -10,7 +10,7 @@ import { webModuleArtifactsFixture } from "../fixtures/webModuleTrace.js";
 import { cliTest } from "../support/cli/cliFixture.js";
 
 const capturedSource = async (bytes: Buffer, reportedUrl: string) => {
-  const root = await createTestTempDirectory("rea-web-error-provenance-");
+  const root = await createTestTempDirectory("nre-web-error-provenance-");
   const { manifest } = webModuleArtifactsFixture("import(name)");
   const script = manifest.scripts[0];
   if (script?.content.state !== "exported") throw new Error("Expected source");

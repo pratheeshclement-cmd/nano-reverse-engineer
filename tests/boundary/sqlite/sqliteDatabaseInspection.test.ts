@@ -17,7 +17,7 @@ import {
 const it = nativeTest.runIf(SQLITE_NATIVE_LIMITS_AVAILABLE);
 
 const createDatabase = async (sql: string): Promise<string> => {
-  const workspace = await createTestWorkspace("rea-sqlite-expansion-");
+  const workspace = await createTestWorkspace("nre-sqlite-expansion-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("private.db");
   const producer = new DatabaseSync(path);
@@ -243,7 +243,7 @@ it("counts schema names once when enforcing the complete reply budget", async ()
 it.each(["UTF-16le", "UTF-16be"] as const)(
   "budgets %s catalog names by returned JSON rather than internal hex identity",
   async (encoding) => {
-    const workspace = await createTestWorkspace("rea-sqlite-catalog-names-");
+    const workspace = await createTestWorkspace("nre-sqlite-catalog-names-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const { path, names } = createSqliteLongNameFixture(
       workspace.root,
@@ -492,7 +492,7 @@ it("rejects the combined representation of individually small generated cells", 
 });
 
 it("attributes compile and row evaluation errors to each failing generated column", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-evaluation-");
+  const workspace = await createTestWorkspace("nre-sqlite-evaluation-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("private.db");
   // Writable schema plants an expression that fails only for the second
@@ -529,7 +529,7 @@ it("attributes compile and row evaluation errors to each failing generated colum
     }
     throw new Error("Expected a generated-column evaluation failure");
   };
-  const prefix = `SQLite cannot evaluate selected column(s) of table "t" on REA's read-only connection: `;
+  const prefix = `SQLite cannot evaluate selected column(s) of table "t" on NRE's read-only connection: `;
   expect(failure({})).toMatchObject({
     reason: "column-evaluation",
     message: `${prefix}"digest": unknown function: application_digest(); "field": malformed JSON`,
@@ -568,12 +568,12 @@ const createApplicationDatabase = async (
   sql: string,
   edit?: (bytes: Buffer) => void,
 ): Promise<string> => {
-  const workspace = await createTestWorkspace("rea-sqlite-evaluation-");
+  const workspace = await createTestWorkspace("nre-sqlite-evaluation-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("private.db");
   const producer = new DatabaseSync(path);
   try {
-    // The producing application supplies a function REA's connection lacks.
+    // The producing application supplies a function NRE's connection lacks.
     producer.function("application_digest", { deterministic: true }, (value) =>
       String(value),
     );
@@ -607,7 +607,7 @@ it("never recommends a selected column whose own probe fails for another reason"
   ).toThrow(
     expect.objectContaining({
       reason: "column-evaluation",
-      message: `SQLite cannot evaluate selected column(s) of table "t" on REA's read-only connection: "payload": string or blob too big; "digest": unknown function: application_digest()`,
+      message: `SQLite cannot evaluate selected column(s) of table "t" on NRE's read-only connection: "payload": string or blob too big; "digest": unknown function: application_digest()`,
       readableColumns: ["id"],
     }),
   );
@@ -642,7 +642,7 @@ it("recommends stored columns outside an inventory-scope selection without decod
   ).toThrow(
     expect.objectContaining({
       reason: "column-evaluation",
-      message: `SQLite cannot evaluate selected column(s) of table "t" on REA's read-only connection: "digest": unknown function: application_digest()`,
+      message: `SQLite cannot evaluate selected column(s) of table "t" on NRE's read-only connection: "digest": unknown function: application_digest()`,
       readableColumns: ["id", "payload"],
     }),
   );
@@ -734,7 +734,7 @@ it("classifies SQLite's result-column capacity refusal without blaming the datab
 it.each(["inventory", "selected_table", "database"] as const)(
   "keeps unavailable row sources separate from generated expressions in %s scope",
   async (schema_scope) => {
-    const workspace = await createTestWorkspace("rea-sqlite-collation-");
+    const workspace = await createTestWorkspace("nre-sqlite-collation-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const path = createSqliteApplicationCollationFixture(workspace.root);
     const before = await readFile(path);

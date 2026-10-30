@@ -94,7 +94,7 @@ describe("inspection branch diagnostics", () => {
           "--json",
         ],
         cwd: workspace.root,
-        environment: { ...workspace.environment, REA_LOG_LEVEL: "silent" },
+        environment: { ...workspace.environment, NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode).toBe(1);
       expect(result.json).toMatchObject({
@@ -121,7 +121,7 @@ describe("browser and Inspector CLI input diagnostics", () => {
       const result = await cli.run({
         arguments: [input.command, ...input.arguments, "--json"],
         cwd: workspace.root,
-        environment: { ...workspace.environment, REA_LOG_LEVEL: "silent" },
+        environment: { ...workspace.environment, NRE_LOG_LEVEL: "silent" },
       });
 
       expect(result.exitCode).toBe(1);
@@ -156,11 +156,11 @@ describe("browser and Inspector CLI input diagnostics", () => {
     "%s does not echo rejected endpoint credentials",
     async ([command, field], { cli, workspace }) => {
       const endpoint =
-        "http://rea-diagnostic-user:rea-diagnostic-secret@127.0.0.1:9222/";
+        "http://nre-diagnostic-user:nre-diagnostic-secret@127.0.0.1:9222/";
       const result = await cli.run({
         arguments: [command, endpoint, "--json"],
         cwd: workspace.root,
-        environment: { ...workspace.environment, REA_LOG_LEVEL: "debug" },
+        environment: { ...workspace.environment, NRE_LOG_LEVEL: "debug" },
       });
 
       expect(result.exitCode).toBe(1);
@@ -179,8 +179,8 @@ describe("browser and Inspector CLI input diagnostics", () => {
       });
       const output = result.stdout + result.stderr;
       expect(output).not.toContain(endpoint);
-      expect(output).not.toContain("rea-diagnostic-user");
-      expect(output).not.toContain("rea-diagnostic-secret");
+      expect(output).not.toContain("nre-diagnostic-user");
+      expect(output).not.toContain("nre-diagnostic-secret");
     },
   );
 
@@ -196,7 +196,7 @@ describe("browser and Inspector CLI input diagnostics", () => {
           "--json",
         ],
         cwd: workspace.root,
-        environment: { ...workspace.environment, REA_LOG_LEVEL: "silent" },
+        environment: { ...workspace.environment, NRE_LOG_LEVEL: "silent" },
       });
 
       expect(result.exitCode).toBe(1);
@@ -222,7 +222,7 @@ describe("browser and Inspector CLI input diagnostics", () => {
       const result = await cli.run({
         arguments: ["compare-web-captures", "{}", "{}", "--json"],
         cwd: workspace.root,
-        environment: { ...workspace.environment, REA_LOG_LEVEL: "silent" },
+        environment: { ...workspace.environment, NRE_LOG_LEVEL: "silent" },
       });
 
       expect(result.exitCode).toBe(1);
@@ -244,7 +244,7 @@ describe("browser and Inspector CLI input diagnostics", () => {
       const result = await cli.run({
         arguments: ["list-browser-targets", "--json"],
         cwd: workspace.root,
-        environment: { ...workspace.environment, REA_LOG_LEVEL: "silent" },
+        environment: { ...workspace.environment, NRE_LOG_LEVEL: "silent" },
       });
 
       expect(result.exitCode).toBe(1);

@@ -47,7 +47,7 @@ export class AnalysisSettings {
   inspect(input: z.infer<typeof inspectAnalysisSettingsInputSchema> = {}) {
     return {
       revision: this.#current.revision,
-      scope: "rea-runtime" as const,
+      scope: "nre-runtime" as const,
       active_values: { status: "not_observed" as const },
       settings: analysisSettingIds
         .filter((id) => {
@@ -134,7 +134,7 @@ export class AnalysisSettings {
         };
       }),
       active_work_changed: false as const,
-      rea_restart_required: false as const,
+      nre_restart_required: false as const,
     });
   }
   #describe(setting: AnalysisSettingId) {

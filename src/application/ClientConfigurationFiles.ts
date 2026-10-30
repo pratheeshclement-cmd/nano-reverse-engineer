@@ -40,10 +40,10 @@ const invalidEnvironment = (
     );
   const location =
     overrideSettings.length > 0
-      ? `The proposed registration environment includes launch overrides (${overrideSettings.join(", ")}) that do not satisfy the effective REA configuration constraints`
+      ? `The proposed registration environment includes launch overrides (${overrideSettings.join(", ")}) that do not satisfy the effective NRE configuration constraints`
       : overrideNames.size > 0
-        ? `The effective REA server environment for ${path} is invalid; check the client configuration and proposed launch overrides`
-        : `Configuration ${path} has an invalid REA server environment`;
+        ? `The effective NRE server environment for ${path} is invalid; check the client configuration and proposed launch overrides`
+        : `Configuration ${path} has an invalid NRE server environment`;
   return {
     kind: "malformed",
     path,

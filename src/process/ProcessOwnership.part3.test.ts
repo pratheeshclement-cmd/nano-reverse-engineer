@@ -26,7 +26,7 @@ const environmentForExited = (...pids: number[]) =>
   vi.fn((pid: number) =>
     pids.includes(pid)
       ? Promise.reject(new Error("process exited during environment read"))
-      : Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+      : Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
   );
 const environmentForReplacementReads = (
   runIdAtRead: (read: number) => string | undefined,
@@ -38,10 +38,10 @@ const environmentForReplacementReads = (
         new Error("process exited during environment read"),
       );
     if (pid !== 102)
-      return Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" });
+      return Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" });
     reads += 1;
     const runId = runIdAtRead(reads);
-    return Promise.resolve(runId ? { REA_PROCESS_RUN_ID: runId } : {});
+    return Promise.resolve(runId ? { NRE_PROCESS_RUN_ID: runId } : {});
   });
   return { environment, reads: () => reads };
 };
@@ -59,7 +59,7 @@ describe("owned process-group cleanup discovery", () => {
   it("walks the PPID tree across process-group boundaries", async () => {
     const environment = vi.fn((pid: number) =>
       Promise.resolve({
-        REA_PROCESS_RUN_ID: pid === 103 ? "unrelated-run" : "run-token",
+        NRE_PROCESS_RUN_ID: pid === 103 ? "unrelated-run" : "run-token",
       }),
     );
     const adapter: ProcessOwnershipHost = {
@@ -192,7 +192,7 @@ describe("identityless lineage refresh ignores the prior process table", () => {
         ? Promise.reject(new Error("process exited during environment read"))
         : pid === 50
           ? Promise.reject(new Error("unreadable pre-existing process"))
-          : Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+          : Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
     );
     const listProcesses = vi
       .fn<ProcessOwnershipHost["listProcesses"]>()
@@ -256,7 +256,7 @@ describe("identityless lineage refresh follows tree membership", () => {
           new Error("process exited during environment read"),
         );
       if (pid !== 102)
-        return Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" });
+        return Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" });
       outsiderReads += 1;
       return Promise.resolve({});
     });
@@ -284,7 +284,7 @@ describe("identityless lineage refresh follows tree membership", () => {
     ).resolves.toMatchObject({
       status: "unavailable",
       reason:
-        "REA_PROCESS_RUN_ID was absent from the readable environment for PID 102; process lineage ownership remains unverified",
+        "NRE_PROCESS_RUN_ID was absent from the readable environment for PID 102; process lineage ownership remains unverified",
     });
     expect(outsiderReads).toBe(2);
     expect(environment.mock.calls.filter(([pid]) => pid === 50)).toHaveLength(
@@ -311,7 +311,7 @@ describe("identityless lineage refresh follows tree membership", () => {
     ).resolves.toMatchObject({
       status: "unavailable",
       reason:
-        "REA_PROCESS_RUN_ID was absent from the readable environment for PID 102; process lineage ownership remains unverified",
+        "NRE_PROCESS_RUN_ID was absent from the readable environment for PID 102; process lineage ownership remains unverified",
     });
     expect(reads()).toBe(2);
   });
@@ -322,7 +322,7 @@ describe("identityless lineage refresh drops exited descendants", () => {
     const environment = vi.fn((pid: number) =>
       pid === 101 || pid === 103
         ? Promise.reject(new Error("process exited during environment read"))
-        : Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+        : Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
     );
     const listProcesses = vi
       .fn<ProcessOwnershipHost["listProcesses"]>()
@@ -409,10 +409,10 @@ describe("identityless lineage refresh rechecks the launcher", () => {
           new Error("process exited during environment read"),
         );
       if (pid !== 100)
-        return Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" });
+        return Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" });
       launcherReads += 1;
       return Promise.resolve(
-        launcherReads === 1 ? { REA_PROCESS_RUN_ID: "run-token" } : {},
+        launcherReads === 1 ? { NRE_PROCESS_RUN_ID: "run-token" } : {},
       );
     });
     const listProcesses = vi
@@ -428,7 +428,7 @@ describe("identityless lineage refresh rechecks the launcher", () => {
     ).resolves.toMatchObject({
       status: "unavailable",
       reason:
-        "REA_PROCESS_RUN_ID was absent from the readable environment for PID 100; process lineage ownership remains unverified",
+        "NRE_PROCESS_RUN_ID was absent from the readable environment for PID 100; process lineage ownership remains unverified",
     });
     expect(launcherReads).toBe(2);
   });
@@ -443,10 +443,10 @@ describe("identityless lineage refresh rechecks an initial descendant", () => {
           new Error("process exited during environment read"),
         );
       if (pid !== 102)
-        return Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" });
+        return Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" });
       reads += 1;
       return Promise.resolve(
-        reads === 1 ? { REA_PROCESS_RUN_ID: "run-token" } : {},
+        reads === 1 ? { NRE_PROCESS_RUN_ID: "run-token" } : {},
       );
     });
     const descendant = row(102, 100, 102);
@@ -463,7 +463,7 @@ describe("identityless lineage refresh rechecks an initial descendant", () => {
     ).resolves.toMatchObject({
       status: "unavailable",
       reason:
-        "REA_PROCESS_RUN_ID was absent from the readable environment for PID 102; process lineage ownership remains unverified",
+        "NRE_PROCESS_RUN_ID was absent from the readable environment for PID 102; process lineage ownership remains unverified",
     });
     expect(reads).toBe(2);
   });
@@ -474,7 +474,7 @@ describe("identityless lineage refresh publishes one row per PID", () => {
     const environment = vi.fn((pid: number) =>
       pid === 101 || pid === 104
         ? Promise.reject(new Error("process exited during environment read"))
-        : Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+        : Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
     );
     const listProcesses = vi
       .fn<ProcessOwnershipHost["listProcesses"]>()

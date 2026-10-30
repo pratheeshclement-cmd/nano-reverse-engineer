@@ -27,7 +27,7 @@ cliTest("rejects the removed compare-bundles command", async ({ cli }) => {
 cliTest(
   "compares Evidence bundles without unexplained display-only changes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-bundle-comparison-cli-");
+    const root = await createTestTempDirectory("nre-bundle-comparison-cli-");
     const leftPath = join(root, "left.json");
     const displayPath = join(root, "display.json");
     const changedPath = join(root, "changed.json");
@@ -174,7 +174,7 @@ cliTest(
 cliTest(
   "rejects relative bundle paths over stdio MCP while CLI resolves them from its cwd",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-bundle-path-boundary-");
+    const root = await createTestTempDirectory("nre-bundle-path-boundary-");
     const leftPath = join(root, "left.json");
     const rightPath = join(root, "right.json");
     const encoded = serializeEvidenceBundle(createEvidenceBundle([]));
@@ -190,14 +190,14 @@ cliTest(
     const transport = new StdioClientTransport({
       command: process.execPath,
       args: [
-        fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../../scripts/nre.mjs", import.meta.url)),
         "mcp",
       ],
       cwd: root,
       env: {
         PATH: process.env.PATH ?? "",
         HOME: root,
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
       stderr: "pipe",
     });
@@ -251,7 +251,7 @@ cliTest(
     const relativeCli = await cli.run({
       arguments: ["compare", "left.json", "right.json", "--json"],
       cwd: root,
-      environment: { HOME: root, REA_LOG_LEVEL: "silent" },
+      environment: { HOME: root, NRE_LOG_LEVEL: "silent" },
     });
     expect(relativeCli.exitCode).toBe(0);
     expect(bundleComparisonResultSchema.parse(relativeCli.json)).toMatchObject({

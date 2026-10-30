@@ -43,13 +43,13 @@ const MIPS_LANGUAGE_DEFINITIONS = `<?xml version="1.0" encoding="UTF-8"?>
 `;
 
 const installedMipsConfig = async () => {
-  const installDir = await createTestTempDirectory("rea-ghidra-mips-");
+  const installDir = await createTestTempDirectory("nre-ghidra-mips-");
   const languages = join(installDir, "Ghidra/Processors/MIPS/data/languages");
   await mkdir(languages, { recursive: true });
   await writeFile(join(languages, "mips.ldefs"), MIPS_LANGUAGE_DEFINITIONS);
   const installed = parseConfig({
     GHIDRA_INSTALL_DIR: installDir,
-    REA_GHIDRA_LANGUAGE_ID: "MIPS:LE:32:16e",
+    NRE_GHIDRA_LANGUAGE_ID: "MIPS:LE:32:16e",
   });
   if (!installed.ok) throw installed.error;
   return installed.value;
@@ -359,7 +359,7 @@ describe("caller-selected MIPS-I language", () => {
     const limitations = health.value.limitations.join("\n");
     expect(limitations).toContain("caller-selected MIPS:LE:32:16e");
     expect(limitations).not.toContain(
-      "REA pins the generic 32-bit MIPS language",
+      "NRE pins the generic 32-bit MIPS language",
     );
   });
 });
@@ -386,7 +386,7 @@ const session = async (
         counts.starts++;
         return Promise.resolve(
           ok({
-            name: "REA Ghidra bridge" as const,
+            name: "NRE Ghidra bridge" as const,
             run_id: "11111111-1111-4111-8111-111111111111",
             profile_digest: "a".repeat(64),
             provider: { id: "ghidra" as const, version: "12.1.4" },
@@ -619,7 +619,7 @@ describe("MIPS16 shared-image profile", () => {
   it("rejects a caller-selected global MIPS16 processor without replacing the request", async () => {
     const parsed = parseConfig({
       GHIDRA_INSTALL_DIR: "/ghidra",
-      REA_GHIDRA_LANGUAGE_ID: "MIPS:LE:32:16e",
+      NRE_GHIDRA_LANGUAGE_ID: "MIPS:LE:32:16e",
     });
     if (!parsed.ok) throw parsed.error;
     const ghidra = new GhidraProvider(parsed.value, silentLogger, {}, host);
@@ -631,7 +631,7 @@ describe("MIPS16 shared-image profile", () => {
       );
       expect(resolved.error).toMatchObject({
         _tag: "ConfigurationError",
-        settings: [{ setting: "REA_GHIDRA_LANGUAGE_ID" }],
+        settings: [{ setting: "NRE_GHIDRA_LANGUAGE_ID" }],
       });
     }
   });

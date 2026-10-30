@@ -55,7 +55,7 @@ import { JadxSession } from "./JadxSession.js";
 import { captureJadxFailure } from "./JadxFailure.js";
 
 const BRIDGE_SOURCE = fileURLToPath(
-  new URL("../../bridge/android/ReaJadxBridge.java", import.meta.url),
+  new URL("../../bridge/android/NreJadxBridge.java", import.meta.url),
 );
 type Outcome = Awaited<ReturnType<AndroidAnalysisPort["execute"]>>;
 
@@ -272,7 +272,7 @@ interface RetainedSession {
   readonly bridgeHash: string;
 }
 
-/** One serialized, immutable APK session per REA instance, retired on idle or shutdown. */
+/** One serialized, immutable APK session per NRE instance, retired on idle or shutdown. */
 export class JadxProvider implements AndroidAnalysisPort {
   #tail: Promise<void> = Promise.resolve();
   #pendingCleanup: PendingCleanup | undefined;
@@ -643,7 +643,7 @@ export class JadxProvider implements AndroidAnalysisPort {
           workspaceSignal,
           retainSnapshot,
         );
-        const bridge = join(root.path, "ReaJadxBridge.java");
+        const bridge = join(root.path, "NreJadxBridge.java");
         await copyFile(BRIDGE_SOURCE, bridge);
         await chmod(bridge, 0o400);
         const copiedBridgeHash = await hashAndroidSource(

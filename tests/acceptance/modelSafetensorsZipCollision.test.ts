@@ -7,7 +7,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "classifies a ZIP-signature safetensors length before applying its representation limit",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-zip-collision-");
+    const root = await createTestTempDirectory("nre-model-zip-collision-");
     const length = 67_324_752;
     const path = join(root, "model.safetensors");
     const prefix = Buffer.alloc(8);

@@ -106,7 +106,7 @@ type WorkerPrimaryFailure =
 
 /** One sequential owned worker, retained between source files and closed after analysis. */
 export class JavaScriptAnalysisWorker {
-  readonly #runId = `rea-javascript-analysis-${randomUUID()}`;
+  readonly #runId = `nre-javascript-analysis-${randomUUID()}`;
   readonly #runtime: OwnedWorkerRuntime;
   #ready = false;
   #heapLimitBytes = 0;
@@ -180,7 +180,7 @@ export class JavaScriptAnalysisWorker {
   ) {
     this.#workerCleanup = workerCleanup;
     this.#runtime = new OwnedWorkerRuntime({
-      rootPrefix: "rea-javascript-analysis-",
+      rootPrefix: "nre-javascript-analysis-",
       launcher,
       cleanupRegistry: workerCleanup,
       supervisorOptions: {
@@ -1110,7 +1110,7 @@ export class JavaScriptAnalysisWorker {
           capturedOutput: this.#captured(),
           userMessage: `JavaScript source analysis reached its ${String(this.limits.timeoutMs)}ms per-source server/provider deadline (analysis_timeout_ms), not the MCP client deadline.`,
           remediationAction:
-            "Reuse accessible partial_observation Evidence to avoid recomputation; reading it is not a prerequisite for a corrected retry. Increase analysis_timeout_ms through MCP, or use rea analyze-javascript-application <input_path> --analysis-timeout-ms <milliseconds> on the CLI. Alternatively, reduce semantic limits or select exact inventoried source_paths (CLI: --source-path on that command). Omit source_paths to analyze all sources; an empty array is invalid. detail: summary reduces response size, not analysis work. Allow execution, cleanup and delivery headroom in the MCP client tool deadline; increasing that client deadline alone does not change this server budget. Resolve any reported incomplete cleanup before retrying.",
+            "Reuse accessible partial_observation Evidence to avoid recomputation; reading it is not a prerequisite for a corrected retry. Increase analysis_timeout_ms through MCP, or use nre analyze-javascript-application <input_path> --analysis-timeout-ms <milliseconds> on the CLI. Alternatively, reduce semantic limits or select exact inventoried source_paths (CLI: --source-path on that command). Omit source_paths to analyze all sources; an empty array is invalid. detail: summary reduces response size, not analysis work. Allow execution, cleanup and delivery headroom in the MCP client tool deadline; increasing that client deadline alone does not change this server budget. Resolve any reported incomplete cleanup before retrying.",
         })
       : new AnalysisCancelledError(OPERATION, {
           cause: deadline.signal.reason,
@@ -1186,7 +1186,7 @@ export class JavaScriptAnalysisWorker {
         capturedOutput: this.#captured(),
         userMessage: `Owned JavaScript worker storage failed for ${path} during ${phase}. Retained observations and cleanup status are reported separately.`,
         remediationAction:
-          "Check the availability and permissions of REA's private temporary storage, correct the reported I/O failure, and retry. Changing the selected source is not required by this storage failure.",
+          "Check the availability and permissions of NRE's private temporary storage, correct the reported I/O failure, and retry. Changing the selected source is not required by this storage failure.",
         diagnostics: {
           source_path: path,
           phase,

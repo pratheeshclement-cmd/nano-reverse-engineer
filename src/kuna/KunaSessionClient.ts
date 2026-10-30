@@ -210,7 +210,7 @@ const descriptorCleanupError = (
  * How a request that needs the export reports the export's failure. A session
  * never rebuilds a failed export, so repeating the request cannot succeed; the
  * error says what to change before reopening the target. Kuna settings are read
- * when REA starts, so changing one also needs a restart. Cancellation and
+ * when NRE starts, so changing one also needs a restart. Cancellation and
  * unproven cleanup keep their own errors, which callers must still observe.
  */
 const exportUnavailable = (
@@ -222,10 +222,10 @@ const exportUnavailable = (
   const reason = failure.userMessage ?? failure.message;
   const exported = projectAnalysisError(failure);
   const restart =
-    "REA reads Kuna settings when it starts, so restart REA, then reopen the target.";
+    "NRE reads Kuna settings when it starts, so restart NRE, then reopen the target.";
   const next =
     failure instanceof AnalysisTimeoutError
-      ? `To retry, set REA_KUNA_PROJECT_TIMEOUT_MS above ${String(failure.timeoutMs)} ms or raise REA_KUNA_JOBS in the environment that starts REA. ${restart}`
+      ? `To retry, set NRE_KUNA_PROJECT_TIMEOUT_MS above ${String(failure.timeoutMs)} ms or raise NRE_KUNA_JOBS in the environment that starts NRE. ${restart}`
       : failure instanceof AnalysisResourceConstraintError &&
           failure.remediationAction !== undefined
         ? // A fixed buffer (`memory`) is no setting, so a restart cannot help.
@@ -258,7 +258,7 @@ const procedureSelectorSchema = z.string().min(1);
 /**
  * One Kuna analysis session for one target.
  *
- * Reads come from the verified project export in REA's cache. Until that
+ * Reads come from the verified project export in NRE's cache. Until that
  * export exists, listings use the inventory the export takes first and
  * pseudocode a single-function `kuna decompile`, while the export builds in
  * the background; assembly waits for it. Kuna always runs on a private copy

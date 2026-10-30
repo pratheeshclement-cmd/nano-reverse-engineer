@@ -9,7 +9,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform !== "darwin")(
   "inspects a Mach-O whose filename ends in parentheses with real otool",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-parenthesized-macho-");
+    const root = await createTestTempDirectory("nre-parenthesized-macho-");
     const target = join(root, "Example (Beta)");
     const temporary = join(root, "temp");
     await mkdir(temporary);
@@ -31,7 +31,7 @@ cliTest.skipIf(process.platform !== "darwin")(
     const inspected = inspectMachoSchema.parse(evidence.normalized_result);
     const operand = inspected.provenance
       .flatMap(({ command }) => command)
-      .find((argument) => argument.includes("rea-macho-operand-"));
+      .find((argument) => argument.includes("nre-macho-operand-"));
     expect(operand).toEqual(expect.any(String));
     if (operand === undefined) throw new Error("missing otool operand");
     await expect(stat(operand)).rejects.toMatchObject({ code: "ENOENT" });

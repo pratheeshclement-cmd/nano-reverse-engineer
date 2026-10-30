@@ -19,7 +19,7 @@ it.skipIf(process.platform !== "darwin").each([
 ] as const)(
   "preserves asset catalog %s with reader cleanup failure %s and join cleanup %s",
   async (primary, failCleanup, failJoinCleanup) => {
-    const bundle = await createTestTempDirectory("rea-asset-finalization-");
+    const bundle = await createTestTempDirectory("nre-asset-finalization-");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     const catalog = join(resources, "Assets.car");
@@ -136,7 +136,7 @@ it.each(["decode_interface_builder", "inspect_keyed_archive"] as const)(
   "retains the %s primary failure and its exact reader until cleanup succeeds",
   async (operation) => {
     const bundle = await createTestTempDirectory(
-      "rea-apple-reader-finalization-",
+      "nre-apple-reader-finalization-",
     );
     let denyCleanup = true;
     const originalClose = DirectoryArtifactReader.prototype.close;

@@ -6,7 +6,7 @@ Issue #6236; PR #4360. Linux x64, 2026-10-22.
 
 Baseline `main@4a4bbab3c337701febeb6b532ace49041c4876e0`; candidate `461f342c71a72ef2be60912391df2393aa4e2ea3`. This is a pinned comparison.
 
-In separate inspector/forced-GC diagnostics, retained REA V8 heap decreases by about 9.6 MiB. The three-pair ranges do not overlap in either profile. Inspector perturbation is included. Normal task timing, CPU and peak memory are reported separately; these observations do not establish a general latency or peak-memory reduction.
+In separate inspector/forced-GC diagnostics, retained NRE V8 heap decreases by about 9.6 MiB. The three-pair ranges do not overlap in either profile. Inspector perturbation is included. Normal task timing, CPU and peak memory are reported separately; these observations do not establish a general latency or peak-memory reduction.
 
 <!-- END:allocation-report:provenance -->
 
@@ -22,7 +22,7 @@ Seven dependency-boundary variants match parsed values and complete error issues
 
 ## Tasks, artifacts and bounds
 
-Reuse the shared SDK task driver and independent ELF/section/zlib/JSON oracles from [the archived catalog study](https://github.com/morluto/rea/blob/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency/mcp-input-catalog.md): official Alpine v3.21 x86_64 ripgrep 14.1.1-r0 and Zellij 0.40.0-r0. All 42/422 packages and 88/1,063 edges match the independent oracles. Select serde name/version/kind, repeat exact retained-parent reads twice, verify a canonical negative-offset refusal, export/check complete Evidence and confirm the unchanged directory. `kind: null` stays unknown. Targets are not executed; dependency presence does not establish runtime use. Acquisition URLs, archive/executable/oracle hashes and complete answers are in [the receipts](https://github.com/morluto/rea/blob/main/docs/verification/analysis-efficiency/mcp-integer-allocation.json). Previously acquired public bytes are rehashed, not redownloaded.
+Reuse the shared SDK task driver and independent ELF/section/zlib/JSON oracles from [the archived catalog study](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency/mcp-input-catalog.md): official Alpine v3.21 x86_64 ripgrep 14.1.1-r0 and Zellij 0.40.0-r0. All 42/422 packages and 88/1,063 edges match the independent oracles. Select serde name/version/kind, repeat exact retained-parent reads twice, verify a canonical negative-offset refusal, export/check complete Evidence and confirm the unchanged directory. `kind: null` stays unknown. Targets are not executed; dependency presence does not establish runtime use. Acquisition URLs, archive/executable/oracle hashes and complete answers are in [the receipts](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/verification/analysis-efficiency/mcp-integer-allocation.json). Previously acquired public bytes are rehashed, not redownloaded.
 
 Normal cohort: three alternating baseline/candidate pairs for each task × cold/warm server compile cache × default compact/full inputs: 72 trials, plus four excluded full-task warm priming runs. Separate diagnostic cohort: three alternating pairs per profile, cold Zellij tasks, 12 trials. All pass, with identical complete parent IDs/hashes and answers.
 
@@ -80,18 +80,18 @@ Full-profile warm Zellij is slower than its cold condition in both roles in this
 
 ## Separate retained-heap diagnostics
 
-The same completed SDK task launches only its owned REA process with `--inspect=127.0.0.1:0`. Four CDP calls verify the owned transport PID, read heap, force GC and read heap again. The endpoint comes from that child’s stderr; the PID is a cross-check of the owned endpoint, not sole ownership proof. The inspector socket closes before MCP shutdown. These V8 values include inspector perturbation and exclude the client; diagnostic wall/CPU/family peaks include inspector and forced-GC overhead and are not normal-task timing results.
+The same completed SDK task launches only its owned NRE process with `--inspect=127.0.0.1:0`. Four CDP calls verify the owned transport PID, read heap, force GC and read heap again. The endpoint comes from that child’s stderr; the PID is a cross-check of the owned endpoint, not sole ownership proof. The inspector socket closes before MCP shutdown. These V8 values include inspector perturbation and exclude the client; diagnostic wall/CPU/family peaks include inspector and forced-GC overhead and are not normal-task timing results.
 
 <!-- BEGIN:allocation-report:heap -->
 
-| Inputs  | REA V8 retained MiB |  Baseline range | Candidate range | Diagnostic wall s |           CPU s | Family peak MiB |
+| Inputs  | NRE V8 retained MiB |  Baseline range | Candidate range | Diagnostic wall s |           CPU s | Family peak MiB |
 | ------- | ------------------: | --------------: | --------------: | ----------------: | --------------: | --------------: |
 | default |   189.835 → 180.242 | 189.823–189.855 | 180.208–180.366 |   15.490 → 14.291 | 15.246 → 14.123 |   814.1 → 786.3 |
 | full    |   191.260 → 181.693 | 191.165–191.304 | 181.588–181.848 |     8.979 → 8.377 |   8.769 → 8.142 |   810.3 → 824.9 |
 
 <!-- END:allocation-report:heap -->
 
-A mismatched PID is rejected; removing only that guard makes the negative oracle fail. Both connections in that check use the same owned REA endpoint, with no foreign-process attachment. Aggregation rejects diagnostic GC in a normal trial. Historical #4424 receipt reaggregation preserves previous metrics and adds the separately reported SDK-span fields; its aggregator source hash changes.
+A mismatched PID is rejected; removing only that guard makes the negative oracle fail. Both connections in that check use the same owned NRE endpoint, with no foreign-process attachment. Aggregation rejects diagnostic GC in a normal trial. Historical #4424 receipt reaggregation preserves previous metrics and adds the separately reported SDK-span fields; its aggregator source hash changes.
 
 ## Context accounting
 
@@ -116,10 +116,10 @@ Question, explicit recipe, server instructions, one complete name/description/in
 - All 84 measured tasks and four warm priming tasks pass independent oracles, canonical refusal, parent/directory identity and owned cleanup checks. This does not verify external Hopper/Ghidra/IDA, Android devices, all providers or foreign OS behavior. The earlier macOS numbers in #4360 describe a different revision/platform and are not combined with these results.
 
 The historical cohort commands below use the retired experiment layout. Run them
-from the matching recorded producer checkout; the [archived source tree](https://github.com/morluto/rea/tree/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency)
+from the matching recorded producer checkout; the [archived source tree](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/tree/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency)
 provides the former files for reference. Current checkouts retain the report and
 its conformance producer, rather than the full measurement suite. Moving these
-files does not requalify the historical measurements against current REA.
+files does not requalify the historical measurements against current NRE.
 
 Build the pinned baseline/candidate in separate clean worktrees with the locked toolchain. Use the candidate’s producer scripts for both roles. `measurement_inputs` in the JSON records the complete matrix, questions/recipes, runtime bindings and producer hashes; extract it unchanged as the bindings file. Historical receipts require their matching producer revision. One normal task:
 

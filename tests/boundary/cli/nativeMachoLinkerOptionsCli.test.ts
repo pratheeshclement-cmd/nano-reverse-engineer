@@ -16,7 +16,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "retains every compiler-recorded linker option string in order",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-linker-option-");
+        const directory = await createTestTempDirectory("nre-linker-option-");
         const source = join(directory, "options.c");
         const object = join(directory, "options.o");
         await writeFile(
@@ -36,7 +36,7 @@ describe.skipIf(process.platform !== "darwin")(
         expect(compiled.exitCode, compiled.stderr).toBe(0);
         const result = await cli.run({
           arguments: ["inspect-macho", object, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(result.exitCode, result.stdout + result.stderr).toBe(0);
         const { load_commands: loadCommands } = evidenceSchema.parse(

@@ -36,7 +36,7 @@ both refreshed export variants:
 Each completed measurement executed one public CLI call:
 
 ```bash
-node scripts/rea.mjs inspect-analysis-view request.json --format jsonl
+node scripts/nre.mjs inspect-analysis-view request.json --format jsonl
 ```
 
 The view contained 202 observation rows. Every before/after pair reconstructed
@@ -105,7 +105,7 @@ reusable test drivers consume those same facts.
   array-valued row undercounted tokens (15 instead of 21, 57 instead of 63).
   Emission and counting now share `jsonLineParts`; both cases and all 29 JSONL
   tests pass after the fix. The 241-test run includes these regressions.
-- A real `rea mcp doctor --format jsonl` run reported healthy in one JSON line.
+- A real `nre mcp doctor --format jsonl` run reported healthy in one JSON line.
   Startup/validation failures, full-output framing and advertised help are
   exercised separately.
 
@@ -131,4 +131,4 @@ No resource stop occurred. Native provider behavior is outside this CLI change.
 The refreshed measurements are in the `refreshed/` subdirectory; earlier
 measurements against `169512a35` remain separate. Raw stdout/stderr, commands,
 per-run resource samples, equivalence assertions and summaries are retained under
-`/tmp/rea-maintenance-20261023/5629/`; they are not committed artifacts.
+`/tmp/nre-maintenance-20261023/5629/`; they are not committed artifacts.

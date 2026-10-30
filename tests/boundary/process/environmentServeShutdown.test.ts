@@ -53,7 +53,7 @@ const MODES = [
   },
 ] as const;
 
-describe("rea environment-serve shutdown", () => {
+describe("nre environment-serve shutdown", () => {
   // On Windows, Node's child.kill() terminates the child outright for SIGTERM and SIGINT alike,
   // so no signal handler runs and there is no graceful shutdown to observe.
   for (const { mode, fixture, flags, environment, tools, state } of MODES)
@@ -61,7 +61,7 @@ describe("rea environment-serve shutdown", () => {
       `closes the listener on SIGTERM, prints one stopped document and exits 143 when serving ${mode}`,
       async ({ processes }) => {
         const root = await createTestTempDirectory(
-          "rea-environment-serve-stop-",
+          "nre-environment-serve-stop-",
         );
         const files = await writeEnvironmentServeFiles(root, fixture());
         const started = await startListeningProcess(processes, [
@@ -126,11 +126,11 @@ describe.skipIf(process.platform === "win32")(
         `cancels paused startup at ${phase} without announcing a listener`,
         async ({ processes }) => {
           const root = await createTestTempDirectory(
-            "rea-environment-start-cancel-",
+            "nre-environment-start-cancel-",
           );
           const files = await writeEnvironmentServeFiles(root);
           const preload = join(root, "pause-read.mjs");
-          const marker = "REA_STARTUP_PAUSED";
+          const marker = "NRE_STARTUP_PAUSED";
           const pause = `
 const interrupted = new Promise(resolve => process.once("SIGTERM", resolve));
 const keepAlive = setInterval(() => undefined, 1000);
@@ -177,7 +177,7 @@ syncBuiltinESMExports();
             [
               "--import",
               preload,
-              "scripts/rea.mjs",
+              "scripts/nre.mjs",
               "environment-serve",
               files.manifestPath,
               "--evidence",
@@ -192,7 +192,7 @@ syncBuiltinESMExports();
               env: {
                 PATH: process.env.PATH ?? "",
                 NODE_OPTIONS: "--max-old-space-size=768",
-                REA_LOG_LEVEL: "info",
+                NRE_LOG_LEVEL: "info",
               },
             },
           );

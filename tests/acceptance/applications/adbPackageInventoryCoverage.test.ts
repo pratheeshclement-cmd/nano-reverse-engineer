@@ -19,7 +19,7 @@ const unrecognized = (count: number) =>
 cliTest.skipIf(process.platform === "win32")(
   "reports unrecognized package rows through package search and listing via CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-adb-package-coverage-");
+    const root = await createTestTempDirectory("nre-adb-package-coverage-");
     const binary = join(root, "adb");
     const inventory = join(root, "packages.txt");
     await writeFile(
@@ -41,8 +41,8 @@ process.exit(91);
     const environment = {
       HOME: root,
       USERPROFILE: root,
-      REA_ADB_PATH: binary,
-      REA_LOG_LEVEL: "silent",
+      NRE_ADB_PATH: binary,
+      NRE_LOG_LEVEL: "silent",
     };
     const { call } = await connectLocalToolsMcp(environment);
 

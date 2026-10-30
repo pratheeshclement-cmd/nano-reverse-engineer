@@ -95,7 +95,7 @@ interface LinuxDistributionIdentity {
  *
  * `hopperSetupSupported` is the automated Hopper installer's tested list,
  * restricted to hosts whose architecture matches the pinned package. It is
- * narrower than the hosts where REA itself runs, which {@link supportsReaHost}
+ * narrower than the hosts where NRE itself runs, which {@link supportsReaHost}
  * answers from the package family.
  */
 export type LinuxDistribution = LinuxDistributionIdentity &
@@ -111,7 +111,7 @@ export type LinuxDistribution = LinuxDistributionIdentity &
   );
 
 /**
- * Whether REA's analysis providers run on this distribution. A recognized
+ * Whether NRE's analysis providers run on this distribution. A recognized
  * package family means a glibc host with a known package layout, which is what
  * the providers need; downloading and installing the official Hopper package
  * additionally requires a distribution on its tested list.
@@ -526,10 +526,10 @@ export const installLinuxHopper = async (
 
 /** Canonical launcher path for a legacy user-local Linux Hopper installation. */
 export const linuxHopperLauncherPath = (home: string): string =>
-  appendCallerPath(home, ".local/share/rea/hopper/bin/Hopper", "linux");
+  appendCallerPath(home, ".local/share/nre/hopper/bin/Hopper", "linux");
 
-/** REA's managed Linux install path, preferred when no explicit launcher is set. */
-export const REA_MANAGED_LINUX_HOPPER_LAUNCHER = "/opt/hopper/bin/Hopper";
+/** NRE's managed Linux install path, preferred when no explicit launcher is set. */
+export const NRE_MANAGED_LINUX_HOPPER_LAUNCHER = "/opt/hopper/bin/Hopper";
 
 /** Other system-wide Hopper paths used by package installations. */
 const systemLinuxHopperLauncherCandidates: readonly string[] = [
@@ -537,11 +537,11 @@ const systemLinuxHopperLauncherCandidates: readonly string[] = [
   "/usr/bin/hopper",
 ];
 
-/** Probe REA-managed and user-local installs before arbitrary system builds. */
+/** Probe NRE-managed and user-local installs before arbitrary system builds. */
 export const linuxHopperLauncherCandidates = (
   home: string,
 ): readonly string[] => [
-  REA_MANAGED_LINUX_HOPPER_LAUNCHER,
+  NRE_MANAGED_LINUX_HOPPER_LAUNCHER,
   linuxHopperLauncherPath(home),
   ...systemLinuxHopperLauncherCandidates,
 ];
@@ -560,7 +560,7 @@ export const systemLinuxHopperInstallHost = (
     distribution,
     release: (family, signal) => publisher.currentRelease(family, signal),
     download: downloadHopperPackage,
-    createTemporaryDirectory: () => mkdtemp(join(tmpdir(), "rea-hopper-")),
+    createTemporaryDirectory: () => mkdtemp(join(tmpdir(), "nre-hopper-")),
     writeArchive: (path, bytes) => writeFile(path, bytes, { mode: 0o600 }),
     installPackage: (family, archive, options) =>
       installSystemPackage(family, archive, environment, options?.signal),

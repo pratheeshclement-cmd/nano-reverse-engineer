@@ -11,7 +11,7 @@ import {
   renderMcpHttpHelp,
 } from "../../../src/main/mcpHttpArguments.js";
 
-describe("rea mcp --http arguments", () => {
+describe("nre mcp --http arguments", () => {
   it("accepts --http with optional host and port in either flag spelling", () => {
     expect(parseMcpHttpArguments(["--http"])).toEqual({ ok: true });
     expect(
@@ -49,7 +49,9 @@ describe("rea mcp --http arguments", () => {
       ok: true,
       maxSessions: 10,
     });
-    expect(parseMcpHttpArguments(["--http", "--max-sessions", "0"])).toMatchObject({
+    expect(
+      parseMcpHttpArguments(["--http", "--max-sessions", "0"]),
+    ).toMatchObject({
       ok: false,
       message: expect.stringContaining("Invalid --max-sessions"),
     });
@@ -61,7 +63,7 @@ describe("rea mcp --http arguments", () => {
 
   it("renders help from the option schema without Incur global options", () => {
     const help = renderMcpHttpHelp();
-    expect(help).toContain("rea mcp --http");
+    expect(help).toContain("nre mcp --http");
     expect(help).toContain("--host");
     expect(help).toContain("--port");
     expect(help).toContain("MCP_PORT");
@@ -113,9 +115,10 @@ describe("MCP_HOST and MCP_PORT", () => {
         { host: "::1", port: 1 },
       ),
     ).toEqual({ ok: true, value: { host: "::1", port: 1 } });
-    expect(
-      parseMcpHttpEndpoint({ NRE_MCP_MAX_SESSIONS: "8" }),
-    ).toEqual({ ok: true, value: { host: "127.0.0.1", port: 0, maxConcurrentSessions: 8 } });
+    expect(parseMcpHttpEndpoint({ NRE_MCP_MAX_SESSIONS: "8" })).toEqual({
+      ok: true,
+      value: { host: "127.0.0.1", port: 0, maxConcurrentSessions: 8 },
+    });
   });
 
   it("rejects malformed values by setting name without echoing them", () => {
@@ -135,14 +138,14 @@ describe("MCP_ALLOWED_HOSTS", () => {
   it.each([
     "not a host",
     "127.0.0.1@evil.example",
-    "rea.lan/path",
-    "rea.lan\\path",
-    "rea.lan?query",
-    "rea.lan#fragment",
-    "rea.lan:80",
-    "https://rea.lan",
-    "rea.\tlan",
-    "rea.%6Can",
+    "nre.lan/path",
+    "nre.lan\\path",
+    "nre.lan?query",
+    "nre.lan#fragment",
+    "nre.lan:80",
+    "https://nre.lan",
+    "nre.\tlan",
+    "nre.%6Can",
   ])(
     "rejects malformed hostname %j at both configuration inputs",
     (invalidHost) => {
@@ -168,27 +171,27 @@ describe("MCP_ALLOWED_HOSTS", () => {
     expect(
       parseMcpHttpEndpoint({
         MCP_ALLOWED_HOSTS:
-          "REA.LAN,rea.lan,[0:0:0:0:0:0:0:1],::1,bücher.example",
+          "NRE.LAN,nre.lan,[0:0:0:0:0:0:0:1],::1,bücher.example",
       }),
     ).toEqual({
       ok: true,
       value: {
         host: "127.0.0.1",
         port: 0,
-        allowedHosts: ["rea.lan", "[::1]", "xn--bcher-kva.example"],
+        allowedHosts: ["nre.lan", "[::1]", "xn--bcher-kva.example"],
       },
     });
   });
 
   it("parses comma-separated allowlist text and lets an explicit value win", () => {
     expect(
-      parseMcpHttpEndpoint({ MCP_ALLOWED_HOSTS: "rea.lan, 10.0.0.5" }),
+      parseMcpHttpEndpoint({ MCP_ALLOWED_HOSTS: "nre.lan, 10.0.0.5" }),
     ).toEqual({
       ok: true,
       value: {
         host: "127.0.0.1",
         port: 0,
-        allowedHosts: ["rea.lan", "10.0.0.5"],
+        allowedHosts: ["nre.lan", "10.0.0.5"],
       },
     });
     expect(
@@ -203,7 +206,7 @@ describe("MCP_ALLOWED_HOSTS", () => {
   });
 
   it("rejects an empty or blank allowlist by setting name without echoing it", () => {
-    for (const text of ["", "  ", "rea.lan,,10.0.0.5"]) {
+    for (const text of ["", "  ", "nre.lan,,10.0.0.5"]) {
       const result = parseMcpHttpEndpoint({ MCP_ALLOWED_HOSTS: text });
       expect(result.ok).toBe(false);
       if (result.ok) continue;
@@ -218,12 +221,12 @@ describe("MCP_ALLOWED_HOSTS", () => {
 
   it("accepts --allowed-hosts with either flag spelling and rejects empty entries", () => {
     expect(
-      parseMcpHttpArguments(["--http", "--allowed-hosts=rea.lan, 10.0.0.5"]),
-    ).toEqual({ ok: true, allowedHosts: ["rea.lan", "10.0.0.5"] });
+      parseMcpHttpArguments(["--http", "--allowed-hosts=nre.lan, 10.0.0.5"]),
+    ).toEqual({ ok: true, allowedHosts: ["nre.lan", "10.0.0.5"] });
     expect(
-      parseMcpHttpArguments(["--http", "--allowed-hosts", "rea.lan"]),
-    ).toEqual({ ok: true, allowedHosts: ["rea.lan"] });
-    for (const text of ["", " ", "rea.lan,,10.0.0.5"])
+      parseMcpHttpArguments(["--http", "--allowed-hosts", "nre.lan"]),
+    ).toEqual({ ok: true, allowedHosts: ["nre.lan"] });
+    for (const text of ["", " ", "nre.lan,,10.0.0.5"])
       expect(
         parseMcpHttpArguments(["--http", `--allowed-hosts=${text}`]),
       ).toMatchObject({

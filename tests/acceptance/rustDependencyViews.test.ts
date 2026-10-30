@@ -112,7 +112,7 @@ const assertRetainedPages = async (
 cliTest(
   "queries stable Rust packages and edges through real CLI/MCP and portable Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-views-");
+    const root = await createTestTempDirectory("nre-rust-views-");
     const { call } = await connectLocalToolsMcp();
     for (const format of ["elf", "pe", "macho"] as const) {
       const path = join(root, `source.${format}`);
@@ -265,7 +265,7 @@ cliTest(
 cliTest(
   "queries historical feature omissions from authenticated bundles without changing the parent",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-historical-features-");
+    const root = await createTestTempDirectory("nre-rust-historical-features-");
     const path = join(root, "source.elf");
     await writeFile(
       path,
@@ -364,7 +364,7 @@ cliTest(
 cliTest(
   "preserves unknown Rust metadata and refuses invalid compact CLI choices before reading",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-view-missing-");
+    const root = await createTestTempDirectory("nre-rust-view-missing-");
     const path = join(root, "plain.elf");
     await writeFile(
       path,

@@ -16,7 +16,7 @@ import { createToolResultDelivery } from "../../../src/server/toolResult.js";
 it.skipIf(process.platform === "win32").each(["kill", "detach"])(
   "retains a valid GDB session through disposition refusal and explicit %s recovery",
   async (disposition) => {
-    const directory = await createTestTempDirectory("rea-gdb-disposition-");
+    const directory = await createTestTempDirectory("nre-gdb-disposition-");
     const provider = join(directory, "fake-gdb.mjs");
     await writeFile(
       provider,
@@ -52,7 +52,7 @@ createInterface({ input: process.stdin }).on('line', line => {
     await chmod(provider, 0o700);
     const manager = new GdbSessionManager({
       platform: "linux",
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     onTestFinished(() => manager.closeAll());
     const server = new McpServer({

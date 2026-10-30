@@ -19,7 +19,7 @@ it.each(["ENOENT", "EACCES", "EPERM", "ENOTDIR"] as const)(
       { code },
     );
     const service = new TestReverseEngineeringService({
-      environment: { REA_OBJDUMP_COMMAND: command },
+      environment: { NRE_OBJDUMP_COMMAND: command },
       runOwned: async () => {
         throw new OwnedCommandFailure("process", "launch failed", null, null, {
           cause: hostFailure,
@@ -47,10 +47,14 @@ it.each(["ENOENT", "EACCES", "EPERM", "ENOTDIR"] as const)(
             },
           },
           remediation: {
-            action: expect.stringContaining("REA_OBJDUMP_COMMAND"),
+            action: expect.stringContaining("NRE_OBJDUMP_COMMAND"),
           },
         });
-        expect(projected.message).toContain(command);
+        expect(projected.message).toContain(
+          process.platform === "win32"
+            ? JSON.stringify(command).slice(1, -1)
+            : command,
+        );
         expect(projected.message).toContain(code);
         expect(projected.remediation.action).toContain("execute permission");
         expect(projected.remediation.action).not.toContain("another target");

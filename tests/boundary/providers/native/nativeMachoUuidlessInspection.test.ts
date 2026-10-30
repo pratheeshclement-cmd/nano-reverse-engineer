@@ -27,7 +27,7 @@ const dyldDiagnosticOutput = (path: string, diagnostic: string): string =>
   `${path} [arm64]:\n   ${diagnostic}\n`;
 
 const makeTarget = async (name: string, fileType = 2, uuid = false) => {
-  const directory = await createTestTempDirectory("rea-macho-uuid-test-");
+  const directory = await createTestTempDirectory("nre-macho-uuid-test-");
   const path = join(directory, name);
   await writeFile(
     path,
@@ -289,7 +289,7 @@ it("does not call a target UUID-less when binary contains LC_UUID", async () => 
 });
 
 it("delivers partial UUID-less inspection Evidence through production MCP", async () => {
-  const directory = await createTestTempDirectory("rea-macho-no-uuid-mcp-");
+  const directory = await createTestTempDirectory("nre-macho-no-uuid-mcp-");
   const path = join(directory, "probe");
   await writeFile(path, machoImage({}));
   const session = createTestBinarySession(

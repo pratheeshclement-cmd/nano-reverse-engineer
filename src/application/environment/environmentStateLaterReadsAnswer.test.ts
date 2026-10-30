@@ -54,7 +54,7 @@ describe("served writes modelled on later reads", () => {
     expect(contacts.answer("get_contacts_by_id", { id: "4" }).body).toEqual(
       deleted,
     );
-    const held = snapshot.rea_state.entities.find(
+    const held = snapshot.nre_state.entities.find(
       (entity) => entity.id === "4",
     )!;
     expect(
@@ -66,7 +66,7 @@ describe("served writes modelled on later reads", () => {
     expect(
       contacts.store
         .snapshot()
-        .rea_state.entities.filter((entity) => entity.id === "4"),
+        .nre_state.entities.filter((entity) => entity.id === "4"),
     ).toHaveLength(1);
     expect(contacts.store.byteLength()).toBe(
       Buffer.byteLength(JSON.stringify(contacts.store.snapshot())),

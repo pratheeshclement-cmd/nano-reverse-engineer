@@ -40,13 +40,13 @@ import { createTestTempDirectory } from "../../tests/fixtures/temporaryDirectory
 import { scanCanonicalArtifactInventory } from "../../tests/fixtures/artifactInventory.js";
 
 const writeCarrier = async (name: string, bytes: Buffer): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-node-sea-");
+  const directory = await createTestTempDirectory("nre-node-sea-");
   const path = join(directory, name);
   await writeFile(path, bytes);
   return path;
 };
 
-const script = 'console.log("rea-node-sea")\n';
+const script = 'console.log("nre-node-sea")\n';
 const populated = {
   codePath: "app/main.js",
   main: script,
@@ -414,7 +414,7 @@ it("keeps one blob when the same bytes are declared twice", async () => {
 });
 
 it("extracts the main script and assets without executing them", async () => {
-  const directory = await createTestTempDirectory("rea-node-sea-extract-");
+  const directory = await createTestTempDirectory("nre-node-sea-extract-");
   const path = join(directory, "sea.elf");
   await writeFile(path, nodeSeaElf(populated));
   const resourceScope = new ArtifactResourceScope();

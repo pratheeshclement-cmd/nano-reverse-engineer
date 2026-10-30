@@ -62,16 +62,16 @@ const options = (launcherPath: string): HopperApplicationLauncherOptions => ({
   targetPath: "/target",
   targetKind: "executable",
   loaderArgs: [],
-  bridgeScriptPath: "/rea/hopper_bridge.py",
+  bridgeScriptPath: "/nre/hopper_bridge.py",
   launchMode: "verified_linux_demo",
-  demoHelperPath: "/rea/hopper-demo-x11.py",
+  demoHelperPath: "/nre/hopper-demo-x11.py",
 });
 
 for (const deniedStops of [0, 2])
   it.skipIf(process.platform === "win32")(
     `retains a timed-out private-display probe through cleanup retry (denied stops=${String(deniedStops)})`,
     async () => {
-      const directory = await createTestTempDirectory("rea-probe-owner-retry-");
+      const directory = await createTestTempDirectory("nre-probe-owner-retry-");
       const originalStop = ProviderProcessSupervisor.prototype.stop;
       const captured: { current?: ProviderProcessSupervisor } = {};
       let attempts = 0;
@@ -154,7 +154,7 @@ for (const deniedStops of [0, 2])
   );
 
 it("resolves mixed image and publisher cleanup only after each owner releases", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-mixed-cleanup-");
+  const directory = await createTestTempDirectory("nre-hopper-mixed-cleanup-");
   const targetPath = join(directory, "target.macho");
   const source = Buffer.alloc(64);
   source.writeUInt32BE(0xfeedfacf, 0);
@@ -288,11 +288,11 @@ it("resolves mixed image and publisher cleanup only after each owner releases", 
 });
 
 it("retains cancelled verification cleanup through client shutdown and retries it", async () => {
-  const directory = await createTestTempDirectory("rea-publisher-cancel-");
+  const directory = await createTestTempDirectory("nre-publisher-cancel-");
   const targetPath = join(directory, "target");
   await writeFile(targetPath, "source-owned target");
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-publisher-pending-",
+    prefix: "nre-publisher-pending-",
   });
   const resources = new ArtifactResourceScope();
   let allowCleanup = false;
@@ -387,7 +387,7 @@ describe("Hopper bridge launcher selection", () => {
         targetPath: "/target",
         targetKind: "executable",
         loaderArgs: [],
-        bridgeScriptPath: "/rea/hopper_bridge.py",
+        bridgeScriptPath: "/nre/hopper_bridge.py",
         launchMode: "native",
       }),
     ).toBe(false);
@@ -397,8 +397,8 @@ describe("Hopper bridge launcher selection", () => {
     const launch = linuxDemoLaunch(
       options("/opt/hopper/bin/Hopper"),
       {
-        directory: "/tmp/rea-fixture",
-        socketPath: "/tmp/rea-fixture/bridge.sock",
+        directory: "/tmp/nre-fixture",
+        socketPath: "/tmp/nre-fixture/bridge.sock",
         token: "not-forwarded",
         runId: "fixture-run",
       },
@@ -417,7 +417,7 @@ describe("Hopper bridge launcher selection", () => {
         "--propagation",
         "private",
         "/usr/bin/python3",
-        "/rea/hopper-demo-x11.py",
+        "/nre/hopper-demo-x11.py",
         "--owner-stdin",
         "--strategy",
         "user-mount-namespace",
@@ -427,7 +427,7 @@ describe("Hopper bridge launcher selection", () => {
         "--expected-launcher-sha256",
         verifiedSha256,
         "--socket",
-        "/tmp/rea-fixture/bridge.sock",
+        "/tmp/nre-fixture/bridge.sock",
         "--",
         "/opt/hopper/bin/Hopper",
         "--analysis",
@@ -442,8 +442,8 @@ describe("Hopper bridge launcher selection", () => {
       linuxDemoLaunch(
         options("/opt/hopper/bin/Hopper"),
         {
-          directory: "/tmp/rea-fixture",
-          socketPath: "/tmp/rea-fixture/bridge.sock",
+          directory: "/tmp/nre-fixture",
+          socketPath: "/tmp/nre-fixture/bridge.sock",
           token: "not-forwarded",
           runId: "fixture-run",
         },
@@ -454,7 +454,7 @@ describe("Hopper bridge launcher selection", () => {
     ).toMatchObject({
       command: "/usr/bin/python3",
       args: [
-        "/rea/hopper-demo-x11.py",
+        "/nre/hopper-demo-x11.py",
         "--owner-stdin",
         "--strategy",
         "direct",
@@ -463,7 +463,7 @@ describe("Hopper bridge launcher selection", () => {
         "--expected-launcher-sha256",
         verifiedSha256,
         "--socket",
-        "/tmp/rea-fixture/bridge.sock",
+        "/tmp/nre-fixture/bridge.sock",
         "--",
         "/opt/hopper/bin/Hopper",
       ],
@@ -471,7 +471,7 @@ describe("Hopper bridge launcher selection", () => {
   });
 
   it("rejects launcher bytes changed since publisher verification before executing them", async () => {
-    const directory = await createTestTempDirectory("rea-hopper-wrapper-");
+    const directory = await createTestTempDirectory("nre-hopper-wrapper-");
     const wrapper = join(directory, "hopper-wrapper");
     const marker = join(directory, "executed");
     try {
@@ -507,20 +507,20 @@ describe("Hopper bridge launcher selection", () => {
 });
 
 it("launches Hopper helpers with the caller-selected environment without restoring ambient values", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-selected-env-");
+  const directory = await createTestTempDirectory("nre-hopper-selected-env-");
   const targetPath = join(directory, "target");
   await writeFile(targetPath, "fixture target");
   const launcher = new HopperApplicationLauncher({
-    environment: { REA_SELECTED_VALUE: "caller-value" },
+    environment: { NRE_SELECTED_VALUE: "caller-value" },
     launcherPath: process.execPath,
     targetPath,
     targetKind: "executable",
     loaderArgs: [
       "-e",
-      "process.stdout.write(JSON.stringify({ selected: process.env.REA_SELECTED_VALUE ?? null, home: process.env.HOME ?? null }))",
+      "process.stdout.write(JSON.stringify({ selected: process.env.NRE_SELECTED_VALUE ?? null, home: process.env.HOME ?? null }))",
       "--",
     ],
-    bridgeScriptPath: "/rea/unused-bridge.py",
+    bridgeScriptPath: "/nre/unused-bridge.py",
     launchMode: "native",
   });
   const launched = await launcher.launch({
@@ -549,7 +549,7 @@ it("launches Hopper helpers with the caller-selected environment without restori
 it.skipIf(process.platform !== "linux")(
   "gives the demo helper a live owner stream through Node's actual stdio transport",
   async () => {
-    const directory = await createTestTempDirectory("rea-hopper-owner-stdio-");
+    const directory = await createTestTempDirectory("nre-hopper-owner-stdio-");
     const selectPrivateDisplay = vi.fn(readyDirectDisplay);
     const launcher = new HopperApplicationLauncher(
       {
@@ -596,7 +596,7 @@ it.skipIf(process.platform !== "linux")(
 it.skipIf(process.platform !== "linux")(
   "preserves a publisher rejection through the public error without inventing a helper exit",
   async () => {
-    const directory = await createTestTempDirectory("rea-publisher-rejection-");
+    const directory = await createTestTempDirectory("nre-publisher-rejection-");
     const targetPath = join(directory, "target");
     await writeFile(targetPath, "fixture target");
     const rejected = new HopperReleaseError(
@@ -638,14 +638,14 @@ it.skipIf(process.platform !== "linux")(
 it.skipIf(process.platform !== "linux")(
   "asks the demo helper to shut down orderly so its X lock is removed",
   async () => {
-    const directory = await createTestTempDirectory("rea-hopper-orderly-");
+    const directory = await createTestTempDirectory("nre-hopper-orderly-");
     const lockPath = join(directory, ".X199-lock");
     const markerPath = join(directory, "orderly-shutdown");
     const launcher = new HopperApplicationLauncher(
       {
         ...options(process.execPath),
         launchMode: "verified_linux_demo",
-        environment: { REA_FIXTURE_LOCK_DIR: directory },
+        environment: { NRE_FIXTURE_LOCK_DIR: directory },
         demoHelperPath: fileURLToPath(
           new URL(
             "../../../fixtures/hopperOrderlyShutdown.py",
@@ -702,7 +702,7 @@ it.skipIf(process.platform !== "linux")(
   "still cleans up when the demo helper ignores the orderly shutdown request",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-hopper-orderly-ignored-",
+      "nre-hopper-orderly-ignored-",
     );
     const lockPath = join(directory, ".X199-lock");
     const launcher = new HopperApplicationLauncher(
@@ -710,8 +710,8 @@ it.skipIf(process.platform !== "linux")(
         ...options(process.execPath),
         launchMode: "verified_linux_demo",
         environment: {
-          REA_FIXTURE_LOCK_DIR: directory,
-          REA_FIXTURE_IGNORE_SHUTDOWN: "1",
+          NRE_FIXTURE_LOCK_DIR: directory,
+          NRE_FIXTURE_IGNORE_SHUTDOWN: "1",
         },
         demoHelperPath: fileURLToPath(
           new URL(
@@ -776,15 +776,15 @@ it.skipIf(process.platform !== "linux")(
 it.skipIf(process.platform !== "linux")(
   "does not wait out the orderly grace when the demo helper already died from a signal",
   async () => {
-    const directory = await createTestTempDirectory("rea-hopper-signal-dead-");
+    const directory = await createTestTempDirectory("nre-hopper-signal-dead-");
     const lockPath = join(directory, ".X199-lock");
     const launcher = new HopperApplicationLauncher(
       {
         ...options(process.execPath),
         launchMode: "verified_linux_demo",
         environment: {
-          REA_FIXTURE_LOCK_DIR: directory,
-          REA_FIXTURE_SIGNAL_DEATH: "1",
+          NRE_FIXTURE_LOCK_DIR: directory,
+          NRE_FIXTURE_SIGNAL_DEATH: "1",
         },
         demoHelperPath: fileURLToPath(
           new URL(
@@ -850,7 +850,7 @@ it.skipIf(process.platform !== "linux")(
 );
 
 it("ordinary executable launches pass a verified private image with configured loader arguments", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-ordinary-image-");
+  const directory = await createTestTempDirectory("nre-hopper-ordinary-image-");
   const targetPath = join(directory, "target.exe");
   const selected = Buffer.from("MZ selected image");
   await writeFile(targetPath, selected);
@@ -861,7 +861,7 @@ it("ordinary executable launches pass a verified private image with configured l
     targetKind: "executable",
     targetSha256: createHash("sha256").update(selected).digest("hex"),
     loaderArgs: ["-e", "process.stdout.write(process.argv.at(-1))", "--"],
-    bridgeScriptPath: "/rea/unused-bridge.py",
+    bridgeScriptPath: "/nre/unused-bridge.py",
     launchMode: "native",
   });
   const launched = await launcher.launch({

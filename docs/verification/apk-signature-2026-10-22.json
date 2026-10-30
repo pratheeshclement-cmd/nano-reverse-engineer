@@ -171,7 +171,7 @@
         "-c",
         "0,1",
         "node",
-        "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+        "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
         "complete",
         "task-current-full"
       ],
@@ -190,7 +190,7 @@
         "-c",
         "0,1",
         "node",
-        "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+        "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
         "selected",
         "task-current-selected"
       ],
@@ -209,7 +209,7 @@
         "-c",
         "0,1",
         "node",
-        "/home/yann/yann/rea-4537-lab/probe-apk-resources.mjs"
+        "/home/yann/yann/nre-4537-lab/probe-apk-resources.mjs"
       ],
       "exit_code": 0,
       "wall_s": 2.0474989989888854,
@@ -245,7 +245,7 @@
   "public_input": {
     "original_url": "https://f-droid.org/F-Droid.apk",
     "final_url": "https://f-droid.org/F-Droid.apk",
-    "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+    "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
     "bytes": 12569951,
     "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
     "headers": {
@@ -262,7 +262,7 @@
     "method": "apksigner verify --verbose --print-certs reports v3 successfully verified; fingerprints refer to that effective signer set, not platform-wide signing compatibility"
   },
   "generated_large_input": {
-    "path": "/home/yann/yann/rea-4537-lab/large-signed.apk",
+    "path": "/home/yann/yann/nre-4537-lab/large-signed.apk",
     "bytes": 180350384,
     "sha256": "cf3a3936f90bb79dabe2598dc4290f8c47d10680993c054fe8cac9d391fadaaf",
     "method": "Official real F-Droid input with a160MiB stored opaque asset, re-signed by apksigner with a generated fixture key. This generated stress artifact is distinct from the unmodified public APK. No Android code executes.",
@@ -270,7 +270,7 @@
     "apksigner_verify_exit_code": 0
   },
   "oracle_toolchain": {
-    "sdk": "/home/yann/.cache/rea-4537-android-sdk",
+    "sdk": "/home/yann/.cache/nre-4537-android-sdk",
     "packages": [
       {
         "path": "build-tools;36.1.0",
@@ -281,7 +281,7 @@
         "sha1_verified": true,
         "sha256": "a7b5889e4a79fcf3b0976bef40d401f4240fb1eed891d9d91169da1111e11d78",
         "download_bytes": 64195204,
-        "destination": "/home/yann/.cache/rea-4537-android-sdk/build-tools/36.1.0",
+        "destination": "/home/yann/.cache/nre-4537-android-sdk/build-tools/36.1.0",
         "extracted": [
           "NOTICE.txt",
           "aapt2",
@@ -305,7 +305,7 @@
         "sha1_verified": true,
         "sha256": "37607369a28c5b640b3a7998868d45898ebcb777565a0e85f9acf36f29631d2e",
         "download_bytes": 65878410,
-        "destination": "/home/yann/.cache/rea-4537-android-sdk/platforms/android-36",
+        "destination": "/home/yann/.cache/nre-4537-android-sdk/platforms/android-36",
         "extracted": ["android.jar", "source.properties"]
       }
     ],
@@ -319,7 +319,7 @@
       "source": {
         "original_url": "https://f-droid.org/F-Droid.apk",
         "final_url": "https://f-droid.org/F-Droid.apk",
-        "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+        "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
         "bytes": 12569951,
         "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
         "headers": {
@@ -343,7 +343,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "before",
           "task-before"
         ],
@@ -363,7 +363,7 @@
       "source": {
         "original_url": "https://f-droid.org/F-Droid.apk",
         "final_url": "https://f-droid.org/F-Droid.apk",
-        "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+        "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
         "bytes": 12569951,
         "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
         "headers": {
@@ -387,7 +387,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "complete",
           "task-current-full"
         ],
@@ -407,7 +407,7 @@
       "source": {
         "original_url": "https://f-droid.org/F-Droid.apk",
         "final_url": "https://f-droid.org/F-Droid.apk",
-        "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+        "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
         "bytes": 12569951,
         "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
         "headers": {
@@ -431,7 +431,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "selected",
           "task-current-selected"
         ],
@@ -809,7 +809,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "complete",
           "task-review-full"
         ],
@@ -828,7 +828,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "selected",
           "task-review-selected"
         ],
@@ -847,7 +847,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/probe-apk-concurrent.mjs",
+          "/home/yann/yann/nre-4537-lab/probe-apk-concurrent.mjs",
           "concurrent-after-receipt"
         ],
         "exit_code": 0,
@@ -878,7 +878,7 @@
         "source": {
           "original_url": "https://f-droid.org/F-Droid.apk",
           "final_url": "https://f-droid.org/F-Droid.apk",
-          "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+          "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
           "bytes": 12569951,
           "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
           "headers": {
@@ -902,7 +902,7 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+            "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
             "complete",
             "task-review-full"
           ],
@@ -922,7 +922,7 @@
         "source": {
           "original_url": "https://f-droid.org/F-Droid.apk",
           "final_url": "https://f-droid.org/F-Droid.apk",
-          "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+          "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
           "bytes": 12569951,
           "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
           "headers": {
@@ -946,7 +946,7 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+            "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
             "selected",
             "task-review-selected"
           ],
@@ -969,7 +969,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/probe-apk-concurrent.mjs",
+          "/home/yann/yann/nre-4537-lab/probe-apk-concurrent.mjs",
           "concurrent-before-receipt"
         ],
         "exit_code": 0,
@@ -986,7 +986,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/probe-apk-concurrent.mjs",
+          "/home/yann/yann/nre-4537-lab/probe-apk-concurrent.mjs",
           "concurrent-after-receipt"
         ],
         "exit_code": 0,
@@ -1194,7 +1194,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "complete",
           "task-main3-full"
         ],
@@ -1213,7 +1213,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "selected",
           "task-main3-selected"
         ],
@@ -1248,7 +1248,7 @@
         "source": {
           "original_url": "https://f-droid.org/F-Droid.apk",
           "final_url": "https://f-droid.org/F-Droid.apk",
-          "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+          "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
           "bytes": 12569951,
           "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
           "headers": {
@@ -1272,7 +1272,7 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+            "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
             "complete",
             "task-main3-full"
           ],
@@ -1292,7 +1292,7 @@
         "source": {
           "original_url": "https://f-droid.org/F-Droid.apk",
           "final_url": "https://f-droid.org/F-Droid.apk",
-          "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+          "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
           "bytes": 12569951,
           "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
           "headers": {
@@ -1316,7 +1316,7 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+            "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
             "selected",
             "task-main3-selected"
           ],
@@ -1452,7 +1452,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "complete",
           "task-posture-full"
         ],
@@ -1471,7 +1471,7 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+          "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
           "selected",
           "task-posture-selected"
         ],
@@ -1556,7 +1556,7 @@
         "source": {
           "original_url": "https://f-droid.org/F-Droid.apk",
           "final_url": "https://f-droid.org/F-Droid.apk",
-          "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+          "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
           "bytes": 12569951,
           "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
           "headers": {
@@ -1580,7 +1580,7 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+            "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
             "complete",
             "task-posture-full"
           ],
@@ -1600,7 +1600,7 @@
         "source": {
           "original_url": "https://f-droid.org/F-Droid.apk",
           "final_url": "https://f-droid.org/F-Droid.apk",
-          "path": "/home/yann/yann/rea-4537-lab/F-Droid.apk",
+          "path": "/home/yann/yann/nre-4537-lab/F-Droid.apk",
           "bytes": 12569951,
           "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
           "headers": {
@@ -1624,7 +1624,7 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-4537-lab/bench-apk.mjs",
+            "/home/yann/yann/nre-4537-lab/bench-apk.mjs",
             "selected",
             "task-posture-selected"
           ],

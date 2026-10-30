@@ -8,8 +8,8 @@ it("resolves absolute POSIX paths independently of an unavailable cwd", () => {
   });
   try {
     expect(
-      absoluteCallerPath("/cache//rea/kuna/.", { platform: "linux" }),
-    ).toBe("/cache/rea/kuna/");
+      absoluteCallerPath("/cache//nre/kuna/.", { platform: "linux" }),
+    ).toBe("/cache/nre/kuna/");
     expect(
       absoluteCallerPath("sample", { cwd: "/explicit", platform: "linux" }),
     ).toBe("/explicit/sample");

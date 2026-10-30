@@ -38,7 +38,7 @@ const installAdmission = (cli: CliInstance) => {
 
 it("rejects surplus public CLI inputs before importing and retains the one-path control", async () => {
   const directory = await createTestTempDirectory(
-    "rea-strict-cli-positionals-",
+    "nre-strict-cli-positionals-",
   );
   const path = join(directory, "bundle.json");
   await writeFile(

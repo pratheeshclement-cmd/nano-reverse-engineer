@@ -3,7 +3,7 @@ import { z } from "zod";
 import { nativeSearchInput } from "./native/nativeSearch.js";
 import { AnalysisInputError } from "./analysisErrorCore.js";
 
-/** Parsed `search_procedures`/`search_strings` query shared by providers that match in REA. */
+/** Parsed `search_procedures`/`search_strings` query shared by providers that match in NRE. */
 export const analysisSearchQuerySchema = z.object(nativeSearchInput);
 
 export type AnalysisSearchQuery = z.infer<typeof analysisSearchQuerySchema>;

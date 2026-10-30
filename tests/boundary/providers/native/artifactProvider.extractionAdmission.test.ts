@@ -26,7 +26,7 @@ import { withArtifactClient } from "../../../support/artifactClientScope.js";
 import { buildGodotPck, embedGodotPck } from "../../../fixtures/godotPck.js";
 
 it("refuses an unsupported source without hashing its bytes", async () => {
-  const root = await createTestTempDirectory("rea-extraction-admission-");
+  const root = await createTestTempDirectory("nre-extraction-admission-");
   const source = join(root, "unsupported.dmg");
   const output = join(root, "output");
   await writeFile(source, "not a supported extraction container");
@@ -59,7 +59,7 @@ it("refuses an unsupported source without hashing its bytes", async () => {
 });
 
 it("preserves cancellation arriving during the detection descriptor's final close", async () => {
-  const root = await createTestTempDirectory("rea-extraction-admission-close-");
+  const root = await createTestTempDirectory("nre-extraction-admission-close-");
   const source = join(root, "unsupported.dmg");
   const output = join(root, "output");
   await writeFile(source, "not a supported extraction container");
@@ -108,7 +108,7 @@ it("preserves cancellation arriving during the detection descriptor's final clos
 });
 
 it("keeps detection I/O failure distinct from unsupported format and closes its source", async () => {
-  const root = await createTestTempDirectory("rea-extraction-admission-read-");
+  const root = await createTestTempDirectory("nre-extraction-admission-read-");
   const source = join(root, "unsupported.dmg");
   const output = join(root, "output");
   await writeFile(source, "not a supported extraction container");
@@ -162,7 +162,7 @@ it.each([
   "refuses to reuse completed detection facts after %s before inventory output",
   async (change) => {
     const root = await createTestTempDirectory(
-      "rea-extraction-admission-identity-",
+      "nre-extraction-admission-identity-",
     );
     const source = join(root, "game");
     const output = join(root, "output");
@@ -261,7 +261,7 @@ it.each([
   "reuses completed $format detection facts while classifying observed bytes independently of the caller carrier",
   async ({ format, bytes, probes }) => {
     const root = await createTestTempDirectory(
-      "rea-extraction-admission-reuse-",
+      "nre-extraction-admission-reuse-",
     );
     const source = join(root, "game");
     await writeFile(source, bytes());
@@ -328,7 +328,7 @@ it.each([
 
 it("refuses an incomplete PyInstaller detection tail without reporting unsupported format", async () => {
   const root = await createTestTempDirectory(
-    "rea-extraction-pyinstaller-tail-",
+    "nre-extraction-pyinstaller-tail-",
   );
   const source = join(root, "app");
   const output = join(root, "output");
@@ -385,7 +385,7 @@ it("refuses an incomplete PyInstaller detection tail without reporting unsupport
 
 it("keeps incidental rejected cookie signatures unsupported during native extraction", async () => {
   const root = await createTestTempDirectory(
-    "rea-extraction-pyinstaller-candidate-",
+    "nre-extraction-pyinstaller-candidate-",
   );
   const source = join(root, "app");
   const output = join(root, "output");

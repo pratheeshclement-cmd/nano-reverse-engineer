@@ -17,7 +17,7 @@ const clientClosingWith = (cause: unknown): AnalysisClient => ({
 });
 
 it("keeps the leftover resources a typed cleanup failure names", async () => {
-  const leftover = "/tmp/rea-ghidra-fixture";
+  const leftover = "/tmp/nre-ghidra-fixture";
   const failure = new ProviderCleanupError("ghidra", [leftover], {
     reason: "runtime directory retained",
   });

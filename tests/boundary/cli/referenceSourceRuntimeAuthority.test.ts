@@ -19,7 +19,7 @@ const writeSources = async (root: string, sources: Record<string, string>) => {
 
 const importGraph = async (cli: TestCli, root: string) => {
   const config = await createTestTempDirectory(
-    "rea-reference-authority-config-",
+    "nre-reference-authority-config-",
   );
   const result = await cli.run({
     arguments: ["import-reference-source", root, "--json"],
@@ -37,7 +37,7 @@ cliTest(
   "shares runtime authority without promoting unresolved source contexts",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-reference-runtime-authority-",
+      "nre-reference-runtime-authority-",
     );
     const request = 'require("./dep.cjs");\n';
     const derived = [
@@ -145,7 +145,7 @@ cliTest(
 cliTest(
   "preserves owned CommonJS factories through erased TypeScript syntax",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-reference-ts-factory-");
+    const root = await createTestTempDirectory("nre-reference-ts-factory-");
     const source = [
       'import type { Stats } from "node:fs";',
       'const { createRequire } = require("node:module");',
@@ -193,7 +193,7 @@ cliTest(
   "retains unknown bases when the selected root omits its package scope",
   async ({ cli }) => {
     const parent = await createTestTempDirectory(
-      "rea-reference-unseen-authority-",
+      "nre-reference-unseen-authority-",
     );
     await writeSources(parent, {
       "package.json": '{"type":"module"}\n',

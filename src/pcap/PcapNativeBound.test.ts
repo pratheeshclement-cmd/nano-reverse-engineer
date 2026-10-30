@@ -56,31 +56,36 @@ it("uses the shared 1 GiB ceiling for the Windows job memory limit", async () =>
   });
 });
 
-it("accepts selected limiter symlinks with different and whitespace-bearing basenames", async () => {
-  const root = await createTestTempDirectory("rea-prlimit-alias-");
-  const executable = join(root, "prlimit");
-  await writeFile(executable, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
-  for (const name of ["bounded-capture", " limiter", " limiter "]) {
-    const selected = join(root, name);
-    await symlink(executable, selected);
-    await withPlatform("linux", async () => {
-      const bound = await preparePcapNativeBound(
-        { REA_TSHARK_PRLIMIT_COMMAND: selected },
-        resources,
-        async (selection, args) => {
-          expect(selection.invocationPath).toBe(selected);
-          return probeResult(
-            args[0] === "--help" ? help : `${name} from util-linux 2.38.1\n`,
-          );
-        },
-      );
-      expect(bound.nativeBound.limiter?.command.invocationPath).toBe(selected);
-    });
-  }
-});
+it.skipIf(process.platform === "win32")(
+  "accepts selected limiter symlinks with different and whitespace-bearing basenames",
+  async () => {
+    const root = await createTestTempDirectory("nre-prlimit-alias-");
+    const executable = join(root, "prlimit");
+    await writeFile(executable, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
+    for (const name of ["bounded-capture", " limiter", " limiter "]) {
+      const selected = join(root, name);
+      await symlink(executable, selected);
+      await withPlatform("linux", async () => {
+        const bound = await preparePcapNativeBound(
+          { NRE_TSHARK_PRLIMIT_COMMAND: selected },
+          resources,
+          async (selection, args) => {
+            expect(selection.invocationPath).toBe(selected);
+            return probeResult(
+              args[0] === "--help" ? help : `${name} from util-linux 2.38.1\n`,
+            );
+          },
+        );
+        expect(bound.nativeBound.limiter?.command.invocationPath).toBe(
+          selected,
+        );
+      });
+    }
+  },
+);
 
 it("attributes malformed limiter version output while retaining producer evidence", async () => {
-  const root = await createTestTempDirectory("rea-prlimit-invalid-output-");
+  const root = await createTestTempDirectory("nre-prlimit-invalid-output-");
   const selected = join(root, "prlimit");
   await writeFile(selected, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
   const capturedOutput = { stdout: "\ufffd", stderr: "", truncated: false };
@@ -95,7 +100,7 @@ it("attributes malformed limiter version output while retaining producer evidenc
   await withPlatform("linux", async () => {
     await expect(
       preparePcapNativeBound(
-        { REA_TSHARK_PRLIMIT_COMMAND: selected },
+        { NRE_TSHARK_PRLIMIT_COMMAND: selected },
         resources,
         async () => {
           throw failure;
@@ -106,7 +111,7 @@ it("attributes malformed limiter version output while retaining producer evidenc
       capturedOutput,
       diagnostics: {
         invalid_utf8_streams: ["stdout"],
-        configuration_key: "REA_TSHARK_PRLIMIT_COMMAND",
+        configuration_key: "NRE_TSHARK_PRLIMIT_COMMAND",
         configured: selected,
       },
       userMessage: expect.stringContaining("unreadable version output"),
@@ -115,7 +120,7 @@ it("attributes malformed limiter version output while retaining producer evidenc
 });
 
 it("pins capture ceilings through the shared prlimit prefix and keeps 300 CPU seconds", async () => {
-  const root = await createTestTempDirectory("rea-pcap-prlimit-");
+  const root = await createTestTempDirectory("nre-pcap-prlimit-");
   const limiter = join(root, "prlimit");
   await writeFile(limiter, "#!/bin/sh\n");
   await chmod(limiter, 0o700);
@@ -126,7 +131,7 @@ it("pins capture ceilings through the shared prlimit prefix and keeps 300 CPU se
   };
   await withPlatform("linux", async () => {
     const prepared = await preparePcapNativeBound(
-      { REA_TSHARK_PRLIMIT_COMMAND: limiter },
+      { NRE_TSHARK_PRLIMIT_COMMAND: limiter },
       resources,
       async (_selection, args) =>
         probeResult(
@@ -141,7 +146,7 @@ it("pins capture ceilings through the shared prlimit prefix and keeps 300 CPU se
 });
 
 it("rejects a directory or a command that does not identify as util-linux prlimit", async () => {
-  const root = await createTestTempDirectory("rea-invalid-prlimit-");
+  const root = await createTestTempDirectory("nre-invalid-prlimit-");
   const executable = join(root, "not-prlimit");
   await writeFile(executable, "#!/bin/sh\nexit 0\n");
   await chmod(executable, 0o700);
@@ -152,14 +157,14 @@ it("rejects a directory or a command that does not identify as util-linux prlimi
     ] as const) {
       await expect(
         preparePcapNativeBound(
-          { REA_TSHARK_PRLIMIT_COMMAND: path },
+          { NRE_TSHARK_PRLIMIT_COMMAND: path },
           resources,
           async () => probeResult(output),
         ),
       ).rejects.toMatchObject({
         _tag: "AnalysisCapabilityUnavailableError",
         diagnostics: {
-          configuration_key: "REA_TSHARK_PRLIMIT_COMMAND",
+          configuration_key: "NRE_TSHARK_PRLIMIT_COMMAND",
           configured: path,
         },
       });
@@ -168,7 +173,7 @@ it("rejects a directory or a command that does not identify as util-linux prlimi
 });
 
 it("preserves cancellation and selected-command identity failures during the probe", async () => {
-  const root = await createTestTempDirectory("rea-prlimit-probe-failure-");
+  const root = await createTestTempDirectory("nre-prlimit-probe-failure-");
   const limiter = join(root, "prlimit");
   await writeFile(limiter, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
   await withPlatform("linux", async () => {
@@ -185,7 +190,7 @@ it("preserves cancellation and selected-command identity failures during the pro
     ]) {
       await expect(
         preparePcapNativeBound(
-          { REA_TSHARK_PRLIMIT_COMMAND: limiter },
+          { NRE_TSHARK_PRLIMIT_COMMAND: limiter },
           resources,
           async () => {
             throw failure;
@@ -197,7 +202,7 @@ it("preserves cancellation and selected-command identity failures during the pro
 });
 
 it("rejects another util-linux command and retains the rejected help output", async () => {
-  const root = await createTestTempDirectory("rea-prlimit-impostor-");
+  const root = await createTestTempDirectory("nre-prlimit-impostor-");
   const selected = join(root, "lsblk");
   await writeFile(selected, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
   const capturedOutput = probeResult(
@@ -207,7 +212,7 @@ it("rejects another util-linux command and retains the rejected help output", as
   await withPlatform("linux", async () => {
     await expect(
       preparePcapNativeBound(
-        { REA_TSHARK_PRLIMIT_COMMAND: selected },
+        { NRE_TSHARK_PRLIMIT_COMMAND: selected },
         resources,
         async (_selection, args) =>
           args[0] === "--help"
@@ -222,14 +227,14 @@ it("rejects another util-linux command and retains the rejected help output", as
 });
 
 it("retains rejected version output", async () => {
-  const root = await createTestTempDirectory("rea-prlimit-rejected-version-");
+  const root = await createTestTempDirectory("nre-prlimit-rejected-version-");
   const selected = join(root, "prlimit");
   await writeFile(selected, "#!/bin/sh\nexit 0\n", { mode: 0o700 });
   const output = probeResult("unexpected banner", "diagnostic");
   await withPlatform("linux", async () => {
     await expect(
       preparePcapNativeBound(
-        { REA_TSHARK_PRLIMIT_COMMAND: selected },
+        { NRE_TSHARK_PRLIMIT_COMMAND: selected },
         resources,
         async () => output,
       ),

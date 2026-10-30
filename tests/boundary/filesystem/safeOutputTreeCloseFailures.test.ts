@@ -69,7 +69,7 @@ describe("safe artifact output close failures", () => {
   it.skipIf(process.platform === "win32")(
     "retains a failed commit handle and does not remove published output",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-commit-");
+      const parent = await createTestTempDirectory("nre-safe-output-commit-");
       const output = join(parent, "published");
       const tree = await SafeOutputTree.create(output);
       const bytes = Buffer.from("durable output");
@@ -96,7 +96,7 @@ describe("safe artifact output close failures", () => {
   it.skipIf(process.platform === "win32")(
     "keeps the tree unpublished when cancellation arrives during commit durability",
     async () => {
-      const parent = await createTestTempDirectory("rea-safe-output-cancel-");
+      const parent = await createTestTempDirectory("nre-safe-output-cancel-");
       const output = join(parent, "unpublished");
       const tree = await SafeOutputTree.create(output);
       const bytes = Buffer.from("pending output");
@@ -125,7 +125,7 @@ describe("safe artifact output close failures", () => {
     "preserves setup failure when closing the staging handle also fails",
     async () => {
       const parent = await createTestTempDirectory(
-        "rea-safe-output-setup-close-",
+        "nre-safe-output-setup-close-",
       );
       const output = join(parent, "published");
       injectedFilesystemFailures.chmodNext = true;
@@ -148,7 +148,7 @@ describe("safe artifact output close failures", () => {
   );
 
   it("retains an unknown root owner without inferring identity on retry", async () => {
-    const parent = await createTestTempDirectory("rea-safe-output-unknown-");
+    const parent = await createTestTempDirectory("nre-safe-output-unknown-");
     const output = join(parent, "published");
     injectedFilesystemFailures.rootIdentityPath = output;
 
@@ -179,7 +179,7 @@ describe("safe artifact output close failures", () => {
 it.skipIf(process.platform === "win32").each([false, true])(
   "preserves extracted output when commit close fails (persistent: %s)",
   async (persistent) => {
-    const root = await createTestTempDirectory("rea-extraction-commit-close-");
+    const root = await createTestTempDirectory("nre-extraction-commit-close-");
     const source = join(root, "source.zip");
     const output = join(root, "published");
     const writer = new ZipWriter(new Uint8ArrayWriter());

@@ -62,7 +62,7 @@ export const registerErlangCommands = (
                 { signal },
               ),
             service,
-            providerId: "rea-erlang-beam",
+            providerId: "nre-erlang-beam",
             operation: "inspect_erlang_beam",
             signal,
             detail: delivery.value.detail,

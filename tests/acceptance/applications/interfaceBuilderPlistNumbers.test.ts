@@ -33,7 +33,7 @@ const scenarios = [
 cliTest.for(scenarios)(
   "preserves numeric meaning and graph identity for %s Interface Builder attributes",
   async (scenario, { cli }) => {
-    const root = await createTestTempDirectory("rea-ib-plist-numbers-");
+    const root = await createTestTempDirectory("nre-ib-plist-numbers-");
     const app = join(root, "Numbers.app");
     const contents = join(app, "Contents");
     const resources = join(contents, "Resources");
@@ -115,7 +115,7 @@ cliTest.for(scenarios)(
     await writeFile(join(resources, "Main.nib"), bytes);
     const output = await cli.run({
       arguments: ["decode-interface-builder", app, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = interfaceBuilderAnalysisSchema.parse(

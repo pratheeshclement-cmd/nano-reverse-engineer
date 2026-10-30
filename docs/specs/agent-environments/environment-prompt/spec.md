@@ -2,8 +2,8 @@
 
 ## Outcome
 
-`rea environment-build` builds a bundle from one capture, but an agent asked to
-"make an environment of this app" still cannot finish the job through REA's MCP
+`nre environment-build` builds a bundle from one capture, but an agent asked to
+"make an environment of this app" still cannot finish the job through NRE's MCP
 server. A browser scenario can only reach an application's API through the UI or
 a `goto` GET, so recording the writes an environment serves means scripting every
 form, and there is no MCP tool that writes a bundle. Nothing tells the agent how

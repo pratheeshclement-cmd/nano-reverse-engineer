@@ -23,7 +23,7 @@ import {
 import type { runPcapCommand } from "./PcapCommand.js";
 import type { ArtifactCommandPath } from "../process/ArtifactCommandPath.js";
 
-const PRLIMIT_COMMAND_ENV = "REA_TSHARK_PRLIMIT_COMMAND";
+const PRLIMIT_COMMAND_ENV = "NRE_TSHARK_PRLIMIT_COMMAND";
 /** Capture CPU ceiling, in seconds. */
 const PCAP_CPU_SECONDS = 300;
 

@@ -14,7 +14,7 @@ it.each([
 ])(
   "keeps the exact last string waiter's command cancellation reason: %j",
   async (reason) => {
-    const fixture = await session("rea-kuna-string-reason-", {
+    const fixture = await session("nre-kuna-string-reason-", {
       strings: "hang",
     });
     const client = fixture.open();
@@ -52,7 +52,7 @@ it.each([
 it.each(["peer", "last"] as const)(
   "retains the exact %s single-function waiter reason",
   async (mode) => {
-    const fixture = await session("rea-kuna-function-reason-", {
+    const fixture = await session("nre-kuna-function-reason-", {
       project: "hang",
       decompile: "hang",
     });
@@ -100,7 +100,7 @@ it.each(["peer", "last"] as const)(
 it("keeps cancellation output and primary reason while exact command cleanup is retried", async () => {
   const unproven = unprovenCleanupLauncher("strings");
   const fixture = await session(
-    "rea-kuna-query-cleanup-reason-",
+    "nre-kuna-query-cleanup-reason-",
     { strings: "hang" },
     {},
     unproven.launcher,
@@ -114,7 +114,7 @@ it("keeps cancellation output and primary reason while exact command cleanup is 
     .spyOn(PrivateRuntimeRoot, "create")
     .mockImplementation(async (options) => {
       const root = await createRoot(options);
-      if (options?.prefix === "rea-kuna-") workspace = root;
+      if (options?.prefix === "nre-kuna-") workspace = root;
       return root;
     });
   let refuseRootClose: ReturnType<typeof vi.spyOn> | undefined;

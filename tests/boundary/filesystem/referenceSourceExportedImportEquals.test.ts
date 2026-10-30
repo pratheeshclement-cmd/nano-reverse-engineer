@@ -8,7 +8,7 @@ import { importReferenceSource } from "../../support/referenceSourceResourceScop
 
 it("retains external-module targets from exported and plain import-equals declarations", async () => {
   const root = await createTestTempDirectory(
-    "rea-reference-exported-import-equals-",
+    "nre-reference-exported-import-equals-",
   );
   await Promise.all([
     writeFile(

@@ -23,16 +23,16 @@ helper = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(helper)
 assert "--owner-stdin" in sys.argv
 
-lock_dir = Path(os.environ["REA_FIXTURE_LOCK_DIR"])
+lock_dir = Path(os.environ["NRE_FIXTURE_LOCK_DIR"])
 lock = lock_dir / ".X199-lock"
 # Xvfb writes its PID right-justified in a 10-character field.
 lock.write_text(f"{os.getpid():10d}\n")
 
-if os.environ.get("REA_FIXTURE_IGNORE_SHUTDOWN") == "1":
+if os.environ.get("NRE_FIXTURE_IGNORE_SHUTDOWN") == "1":
     while True:
         time.sleep(60)
 
-if os.environ.get("REA_FIXTURE_SIGNAL_DEATH") == "1":
+if os.environ.get("NRE_FIXTURE_SIGNAL_DEATH") == "1":
     # Die from a signal before the launcher asks for cleanup: teardown must
     # notice the signal exit instead of waiting out the orderly grace period.
     os.kill(os.getpid(), signal.SIGKILL)

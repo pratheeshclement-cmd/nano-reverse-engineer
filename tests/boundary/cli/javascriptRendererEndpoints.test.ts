@@ -8,7 +8,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 cliTest(
   "preserves renderer endpoint certainty through CLI graph delivery",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-renderer-endpoints-");
+    const root = await createTestTempDirectory("nre-renderer-endpoints-");
     await writeFixtureFiles(root, {
       "main.cjs": `
       const { BrowserWindow } = require("electron");
@@ -77,7 +77,7 @@ cliTest(
 cliTest(
   "qualifies local browser request spellings through CLI Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-network-spellings-");
+    const root = await createTestTempDirectory("nre-network-spellings-");
     await writeFixtureFiles(root, {
       "index.js": `
     const local = { fetch(x) { return x; }, sendBeacon(x) { return x; }, EventSource(x) { return x; } };
@@ -116,7 +116,7 @@ cliTest(
 cliTest(
   "preserves binding-backed XHR identity and qualifies replaced open methods",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-xhr-identity-");
+    const root = await createTestTempDirectory("nre-xhr-identity-");
     await writeFixtureFiles(root, {
       "index.js": `
     const xhr = new XMLHttpRequest();

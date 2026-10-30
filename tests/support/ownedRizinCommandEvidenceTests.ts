@@ -60,7 +60,7 @@ const registerOwnedRizinCommandOutcomeTests = (options: {
       const runOwned = vi.fn(async () => snapshot);
       const service = new TestReverseEngineeringService({
         runOwned,
-        environment: { REA_RIZIN_COMMAND: "rizin-test" },
+        environment: { NRE_RIZIN_COMMAND: "rizin-test" },
       });
 
       try {
@@ -74,7 +74,7 @@ const registerOwnedRizinCommandOutcomeTests = (options: {
             command: "rizin-test",
             arguments: expect.arrayContaining(["-q", "-c", "iI"]),
             expectedCommand: null,
-            env: expect.objectContaining({ REA_RIZIN_COMMAND: "rizin-test" }),
+            env: expect.objectContaining({ NRE_RIZIN_COMMAND: "rizin-test" }),
             hostEnvironment: {},
             ...(options.sweepTokenOwnedProcesses
               ? { sweepTokenOwnedProcesses: true }

@@ -38,10 +38,10 @@ const providerWith = async (
     beforeClose?: () => void;
   } = {},
 ) => {
-  const root = await createTestTempDirectory("rea-pcap-");
+  const root = await createTestTempDirectory("nre-pcap-");
   const { tshark, capinfos } = await writeStubTools(root, options);
   const provider = new PcapProvider({
-    environment: { REA_TSHARK_COMMAND: tshark, REA_CAPINFOS_COMMAND: capinfos },
+    environment: { NRE_TSHARK_COMMAND: tshark, NRE_CAPINFOS_COMMAND: capinfos },
     ...(options.launcher === undefined ? {} : { launcher: options.launcher }),
   });
   onTestFinished(async () => {
@@ -92,7 +92,7 @@ it("inspects both tools without reading a capture", async () => {
 });
 
 it("rejects a selected TShark whose bytes change during its version probe", async () => {
-  const root = await createTestTempDirectory("rea-pcap-tool-identity-");
+  const root = await createTestTempDirectory("nre-pcap-tool-identity-");
   const { tshark, capinfos } = await writeStubTools(root);
   await writeFile(
     tshark,
@@ -107,7 +107,7 @@ exit 2
     { mode: 0o755 },
   );
   const provider = new PcapProvider({
-    environment: { REA_TSHARK_COMMAND: tshark, REA_CAPINFOS_COMMAND: capinfos },
+    environment: { NRE_TSHARK_COMMAND: tshark, NRE_CAPINFOS_COMMAND: capinfos },
   });
   onTestFinished(() => provider.close());
   const result = await provider.execute({
@@ -443,7 +443,7 @@ it("reports a non-capture file as unsupported", async () => {
 
 it("reports a missing tshark binary as a capability gap", async () => {
   const provider = new PcapProvider({
-    environment: { REA_TSHARK_COMMAND: "/nonexistent/tshark" },
+    environment: { NRE_TSHARK_COMMAND: "/nonexistent/tshark" },
   });
   expect(await provider.inspectAvailability()).toMatchObject({
     status: "unavailable",
@@ -484,13 +484,13 @@ it("cancels before spawning anything", async () => {
 });
 
 it("reports relative configuration and missing capinfos as capability gaps", async () => {
-  const root = await createTestTempDirectory("rea-pcap-config-");
+  const root = await createTestTempDirectory("nre-pcap-config-");
   const { tshark } = await writeStubTools(root);
   for (const environment of [
-    { REA_TSHARK_COMMAND: "relative/tshark" },
+    { NRE_TSHARK_COMMAND: "relative/tshark" },
     {
-      REA_TSHARK_COMMAND: tshark,
-      REA_CAPINFOS_COMMAND: join(root, "missing-capinfos"),
+      NRE_TSHARK_COMMAND: tshark,
+      NRE_CAPINFOS_COMMAND: join(root, "missing-capinfos"),
     },
   ]) {
     const provider = new PcapProvider({ environment });
@@ -516,13 +516,13 @@ it("reports relative configuration and missing capinfos as capability gaps", asy
 });
 
 it("names the prlimit selection when the Linux limiter is unusable", async () => {
-  const root = await createTestTempDirectory("rea-pcap-prlimit-");
+  const root = await createTestTempDirectory("nre-pcap-prlimit-");
   const tools = await writeStubTools(root);
   const provider = new PcapProvider({
     environment: {
-      REA_TSHARK_COMMAND: tools.tshark,
-      REA_CAPINFOS_COMMAND: tools.capinfos,
-      REA_TSHARK_PRLIMIT_COMMAND: "relative/prlimit",
+      NRE_TSHARK_COMMAND: tools.tshark,
+      NRE_CAPINFOS_COMMAND: tools.capinfos,
+      NRE_TSHARK_PRLIMIT_COMMAND: "relative/prlimit",
     },
   });
   onTestFinished(() => provider.close());
@@ -537,18 +537,18 @@ it("names the prlimit selection when the Linux limiter is unusable", async () =>
     details: { provider_id: "pcap", operation: "inspect_pcap_capture" },
   });
   expect(projected.message).toContain("must be absolute");
-  expect(projected.message).toContain("Check that REA_TSHARK_PRLIMIT_COMMAND");
+  expect(projected.message).toContain("Check that NRE_TSHARK_PRLIMIT_COMMAND");
 });
 
 it("rejects directory and non-prlimit selections before opening the capture", async () => {
-  const root = await createTestTempDirectory("rea-pcap-invalid-limiter-");
+  const root = await createTestTempDirectory("nre-pcap-invalid-limiter-");
   const tools = await writeStubTools(root);
   for (const configured of [root, "/usr/bin/true"]) {
     const provider = new PcapProvider({
       environment: {
-        REA_TSHARK_COMMAND: tools.tshark,
-        REA_CAPINFOS_COMMAND: tools.capinfos,
-        REA_TSHARK_PRLIMIT_COMMAND: configured,
+        NRE_TSHARK_COMMAND: tools.tshark,
+        NRE_CAPINFOS_COMMAND: tools.capinfos,
+        NRE_TSHARK_PRLIMIT_COMMAND: configured,
       },
     });
     try {
@@ -562,12 +562,12 @@ it("rejects directory and non-prlimit selections before opening the capture", as
         code: "capability_unavailable",
         details: {
           diagnostics: {
-            configuration_key: "REA_TSHARK_PRLIMIT_COMMAND",
+            configuration_key: "NRE_TSHARK_PRLIMIT_COMMAND",
             configured,
           },
         },
       });
-      expect(error.message).toContain("REA_TSHARK_PRLIMIT_COMMAND");
+      expect(error.message).toContain("NRE_TSHARK_PRLIMIT_COMMAND");
       expect(error.message).not.toContain("Cannot run selected tool");
     } finally {
       await provider.close();
@@ -576,13 +576,13 @@ it("rejects directory and non-prlimit selections before opening the capture", as
 });
 
 it("rejects a different util-linux command before opening capture bytes", async () => {
-  const root = await createTestTempDirectory("rea-pcap-other-util-linux-");
+  const root = await createTestTempDirectory("nre-pcap-other-util-linux-");
   const tools = await writeStubTools(root);
   const provider = new PcapProvider({
     environment: {
-      REA_TSHARK_COMMAND: tools.tshark,
-      REA_CAPINFOS_COMMAND: tools.capinfos,
-      REA_TSHARK_PRLIMIT_COMMAND: "/usr/bin/lsblk",
+      NRE_TSHARK_COMMAND: tools.tshark,
+      NRE_CAPINFOS_COMMAND: tools.capinfos,
+      NRE_TSHARK_PRLIMIT_COMMAND: "/usr/bin/lsblk",
     },
   });
   try {
@@ -601,16 +601,16 @@ it("rejects a different util-linux command before opening capture bytes", async 
 });
 
 it("accepts real prlimit selected through differently named symlinks", async () => {
-  const root = await createTestTempDirectory("rea-pcap-prlimit-alias-");
+  const root = await createTestTempDirectory("nre-pcap-prlimit-alias-");
   const tools = await writeStubTools(root);
   for (const name of ["bounded-capture", " limiter "]) {
     const limiter = join(root, name);
     await symlink("/usr/bin/prlimit", limiter);
     const provider = new PcapProvider({
       environment: {
-        REA_TSHARK_COMMAND: tools.tshark,
-        REA_CAPINFOS_COMMAND: tools.capinfos,
-        REA_TSHARK_PRLIMIT_COMMAND: limiter,
+        NRE_TSHARK_COMMAND: tools.tshark,
+        NRE_CAPINFOS_COMMAND: tools.capinfos,
+        NRE_TSHARK_PRLIMIT_COMMAND: limiter,
       },
     });
     try {
@@ -754,7 +754,7 @@ const versionProbe =
   "if (process.argv[2] === '--version') { console.log((process.argv[1].includes('capinfos') ? 'Capinfos' : 'TShark') + ' (Wireshark) 4.6.6-test'); process.exit(0); }";
 
 it("refuses observations whose owned snapshot changed during dissection", async () => {
-  const root = await createTestTempDirectory("rea-pcap-mutated-");
+  const root = await createTestTempDirectory("nre-pcap-mutated-");
   const { capinfos } = await writeStubTools(root);
   const path = await captureFixture(root);
   const before = await readFile(path);
@@ -767,7 +767,7 @@ fs.chmodSync(selected, 0o600); fs.writeFileSync(selected, 'changed private snaps
 console.log(process.argv.includes("-x") ? ${JSON.stringify(TSHARK_DNS_JSON)} : ${JSON.stringify(TSHARK_JSON)});`,
   );
   const provider = new PcapProvider({
-    environment: { REA_TSHARK_COMMAND: tshark, REA_CAPINFOS_COMMAND: capinfos },
+    environment: { NRE_TSHARK_COMMAND: tshark, NRE_CAPINFOS_COMMAND: capinfos },
   });
   onTestFinished(() => provider.close());
   const result = await provider.execute({
@@ -783,7 +783,7 @@ console.log(process.argv.includes("-x") ? ${JSON.stringify(TSHARK_DNS_JSON)} : $
 });
 
 it("binds both tools to the snapshot when the original capture changes", async () => {
-  const root = await createTestTempDirectory("rea-pcap-identity-");
+  const root = await createTestTempDirectory("nre-pcap-identity-");
   const path = join(root, "caller capture.pcap");
   await writeFile(path, "192.0.2.1");
   const capinfos = await nodeTool(
@@ -802,7 +802,7 @@ const selected = process.argv[process.argv.indexOf('-r') + 1];
 console.log(JSON.stringify([{_source:{layers:{'frame.number':['1'],'frame.protocols':['ip'],'ip.src':[fs.readFileSync(selected,'utf8')]}}}]));`,
   );
   const provider = new PcapProvider({
-    environment: { REA_TSHARK_COMMAND: tshark, REA_CAPINFOS_COMMAND: capinfos },
+    environment: { NRE_TSHARK_COMMAND: tshark, NRE_CAPINFOS_COMMAND: capinfos },
   });
   onTestFinished(() => provider.close());
   const result = await provider.execute({
@@ -825,7 +825,7 @@ console.log(JSON.stringify([{_source:{layers:{'frame.number':['1'],'frame.protoc
 it.each(["probe", "capinfos", "tshark"] as const)(
   "preserves in-flight %s cancellation and cleans up",
   async (phase) => {
-    const root = await createTestTempDirectory("rea-pcap-cancel-");
+    const root = await createTestTempDirectory("nre-pcap-cancel-");
     const marker = join(root, "ready");
     const slow = await nodeTool(
       root,
@@ -837,8 +837,8 @@ fs.writeFileSync(${JSON.stringify(marker)}, 'ready'); setInterval(() => {}, 1000
     const path = await captureFixture(root);
     const provider = new PcapProvider({
       environment: {
-        REA_TSHARK_COMMAND: phase === "capinfos" ? tshark : slow,
-        REA_CAPINFOS_COMMAND: phase === "capinfos" ? slow : capinfos,
+        NRE_TSHARK_COMMAND: phase === "capinfos" ? tshark : slow,
+        NRE_CAPINFOS_COMMAND: phase === "capinfos" ? slow : capinfos,
       },
     });
     onTestFinished(() => provider.close());

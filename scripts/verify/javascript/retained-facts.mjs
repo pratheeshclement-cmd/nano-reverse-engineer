@@ -41,13 +41,13 @@ const timeout = values["analysis-timeout-ms"];
 assert.ok(timeout === undefined || Number(timeout) === 1);
 const environment = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "auto",
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "auto",
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [fileURLToPath(new URL("../../rea.mjs", import.meta.url)), "mcp"],
+  args: [fileURLToPath(new URL("../../nre.mjs", import.meta.url)), "mcp"],
   env: environment,
   stderr: "pipe",
 });
@@ -69,7 +69,7 @@ const ownedCommand = async (command, arguments_) => {
         arguments: arguments_,
         cwd: temporary.path,
         env: environment,
-        runId: `rea-retained-facts-${randomUUID()}`,
+        runId: `nre-retained-facts-${randomUUID()}`,
         expectedCommand: command === process.execPath ? process.execPath : null,
         sweepTokenOwnedProcesses: true,
       },
@@ -90,7 +90,7 @@ const resourceSnapshot = async () => {
     .split("\n")
     .find((line) => line.startsWith("0::"))
     ?.slice(3);
-  if (!group || !/\/rea-efficiency-[a-f0-9]{32}\.scope$/u.test(group))
+  if (!group || !/\/nre-efficiency-[a-f0-9]{32}\.scope$/u.test(group))
     return null;
   const [cpu, peak] = await Promise.all([
     readFile(join("/sys/fs/cgroup", group, "cpu.stat"), "utf8"),
@@ -112,7 +112,7 @@ await withVerifierCleanup(async () => {
     artifactHash.update(chunk);
   const artifactSha256 = artifactHash.digest("hex");
   temporary = await PrivateRuntimeRoot.create({
-    prefix: "rea-retained-facts-verifier-",
+    prefix: "nre-retained-facts-verifier-",
   });
   await client.connect(transport);
   transport.stderr?.on("data", () => undefined);
@@ -183,7 +183,7 @@ await withVerifierCleanup(async () => {
   };
   const projectionProgram = `import {readFile} from 'node:fs/promises';\nconst selectExportedJavaScriptFacts = ${selectExportedJavaScriptFacts.toString()};\nconst [bundlePath, evidenceId, rawQuery] = process.argv.slice(2);\nconst bundle = JSON.parse(await readFile(bundlePath, 'utf8'));\nconst parent = bundle.records.find(record => record.evidence_id === evidenceId);\nif (!parent) throw new Error('Retained parent missing');\nconsole.log(JSON.stringify(selectExportedJavaScriptFacts(parent, JSON.parse(rawQuery))));\n`;
   const quote = (value) => "'" + value.replaceAll("'", "'\\''") + "'";
-  const baselineCommand = `${[process.execPath, "--input-type=module", "-", bundlePath, sourceId, serialize(query)].map(quote).join(" ")} <<'REA_FACTS_PROGRAM'\n${projectionProgram}REA_FACTS_PROGRAM`;
+  const baselineCommand = `${[process.execPath, "--input-type=module", "-", bundlePath, sourceId, serialize(query)].map(quote).join(" ")} <<'NRE_FACTS_PROGRAM'\n${projectionProgram}NRE_FACTS_PROGRAM`;
   const samples = [];
   let first;
   let firstWire;
@@ -274,7 +274,7 @@ await withVerifierCleanup(async () => {
       serialize({ source: { kind: "inline", evidence: parent }, view: query }),
     );
     const cli = await ownedCommand(process.execPath, [
-      fileURLToPath(new URL("../../rea.mjs", import.meta.url)),
+      fileURLToPath(new URL("../../nre.mjs", import.meta.url)),
       "inspect-analysis-view",
       requestPath,
       "--json",

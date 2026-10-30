@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import { syncBuiltinESMExports } from "node:module";
 import { dirname, basename, resolve } from "node:path";
-const root = process.env.REA_CLEANUP_PROBE_ROOT;
-const trace = process.env.REA_CLEANUP_PROBE_TRACE;
-const mode = process.env.REA_CLEANUP_PROBE_MODE;
-const selected = process.env.REA_CLEANUP_PROBE_INPUT;
+const root = process.env.NRE_CLEANUP_PROBE_ROOT;
+const trace = process.env.NRE_CLEANUP_PROBE_TRACE;
+const mode = process.env.NRE_CLEANUP_PROBE_MODE;
+const selected = process.env.NRE_CLEANUP_PROBE_INPUT;
 let removals = 0;
 let deniedInput = false;
 const record = (value) =>
@@ -12,7 +12,7 @@ const record = (value) =>
 const rm = fs.promises.rm.bind(fs.promises);
 fs.promises.rm = async (path, ...args) => {
   const value = resolve(String(path));
-  if (dirname(value) !== root || !basename(value).startsWith("rea-wabt-"))
+  if (dirname(value) !== root || !basename(value).startsWith("nre-wabt-"))
     return rm(path, ...args);
   const deny =
     (mode === "runtime-once" && removals++ === 0) ||

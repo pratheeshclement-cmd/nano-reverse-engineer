@@ -23,11 +23,11 @@ for (const [version, keyStyle] of [
   cliTest(
     `Hermes setup preserves string environment values under YAML ${version} with ${keyStyle} keys`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-hermes-yaml-strings-");
+      const home = await createTestTempDirectory("nre-hermes-yaml-strings-");
       const profile = join(home, "hermes");
       const config = join(profile, "config.yaml");
       const environment = {
-        REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+        NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
         ON: "on",
         YES: "yes",
         NO: "no",
@@ -47,7 +47,7 @@ for (const [version, keyStyle] of [
         "timestamp: 2026-10-14T00:00:00.123456+08:00\n";
       const original =
         settings +
-        "mcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n    env:\n" +
+        "mcp_servers:\n  nre:\n    command: nre\n    args: [mcp]\n    env:\n" +
         Object.entries(environment)
           .map(
             ([key, value]) =>
@@ -74,7 +74,7 @@ for (const [version, keyStyle] of [
       expect((await run(setup)).json).toMatchObject({ status: "ready" });
       const configured = await readFile(config, "utf8");
       expect(parse(configured, { version })).toMatchObject({
-        mcp_servers: { rea: { env: environment, enabled: true } },
+        mcp_servers: { nre: { env: environment, enabled: true } },
       });
       // Hermes's C loader applies YAML 1.1 even with the explicit directive.
       // Independently model that schema; real Hermes loader verification is
@@ -91,11 +91,11 @@ for (const [version, keyStyle] of [
         expect(
           parse(configured.slice(directive.length), { version: "1.1" }),
         ).toMatchObject({
-          mcp_servers: { rea: { env: environment, enabled: true } },
+          mcp_servers: { nre: { env: environment, enabled: true } },
         });
       }
       expect(configured.startsWith(settings)).toBe(true);
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
       expect(
         (await run(["doctor", "--client", "hermes", "--json"])).json,
       ).toMatchObject({
@@ -114,14 +114,14 @@ for (const [version, keyStyle] of [
 cliTest(
   "Hermes setup preserves an existing tool allowlist and client-owned policy",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-hermes-tool-policy-");
+    const home = await createTestTempDirectory("nre-hermes-tool-policy-");
     const profile = join(home, "hermes");
     const config = join(profile, "config.yaml");
     const original = [
       "# Caller configuration",
       "mcp_servers:",
-      "  rea: # Registration explanation",
-      "    command: rea # Launcher explanation",
+      "  nre: # Registration explanation",
+      "    command: nre # Launcher explanation",
       "    args: [mcp]",
       "    env:",
       "      CALLER_SETTING: keep exactly",
@@ -153,7 +153,7 @@ cliTest(
       ]),
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
@@ -166,7 +166,7 @@ cliTest(
     const configured = await readFile(config, "utf8");
     expect(parse(configured)).toMatchObject({
       mcp_servers: {
-        rea: {
+        nre: {
           command: expect.stringMatching(/\S/u),
           args: expect.arrayContaining(["mcp"]),
           enabled: true,
@@ -180,12 +180,12 @@ cliTest(
       },
     });
     expect(parse(configured)).not.toMatchObject({
-      mcp_servers: { rea: { command: "rea" } },
+      mcp_servers: { nre: { command: "nre" } },
     });
     expect(configured).toContain("# Curated for this client.");
     expect(configured).toContain("# Registration explanation");
     expect(configured).toContain("# Launcher explanation");
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     expect(
       (await run(["doctor", "--client", "hermes", "--skill=false", "--json"]))
         .json,
@@ -199,17 +199,17 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
 cliTest(
   "Hermes setup, doctor and uninstall use the expanded profile and its personal skill",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-hermes-cli-");
+    const home = await createTestTempDirectory("nre-hermes-cli-");
     const profile = join(home, "profile");
     const config = join(profile, "config.yaml");
-    const skill = join(profile, "skills/reverse-engineer-anything/SKILL.md");
+    const skill = join(profile, "skills/nano-reverse-engineer/SKILL.md");
     const original =
       "# user settings\nmodel: custom\nmcp_servers:\n  other:\n    command: other-server\n";
     await mkdir(profile);
@@ -220,8 +220,8 @@ cliTest(
         cwd: home,
         environment: {
           USERPROFILE: home,
-          REA_CLIENT_PROFILE_HOME: home,
-          HERMES_HOME: " ${REA_CLIENT_PROFILE_HOME}/profile ",
+          NRE_CLIENT_PROFILE_HOME: home,
+          HERMES_HOME: " ${NRE_CLIENT_PROFILE_HOME}/profile ",
         },
         timeoutMs: 20_000,
       });
@@ -238,7 +238,7 @@ cliTest(
       plannedActions: expect.arrayContaining([
         expect.objectContaining({ target: config }),
         expect.objectContaining({
-          target: join(profile, "skills/reverse-engineer-anything"),
+          target: join(profile, "skills/nano-reverse-engineer"),
         }),
       ]),
     });
@@ -257,15 +257,13 @@ cliTest(
       model: "custom",
       mcp_servers: {
         other: { command: "other-server" },
-        rea: { enabled: true },
+        nre: { enabled: true },
       },
     });
-    expect(await readFile(config + ".rea.backup", "utf8")).toBe(original);
-    expect(await readFile(skill, "utf8")).toContain(
-      "reverse-engineer-anything",
-    );
+    expect(await readFile(config + ".nre.backup", "utf8")).toBe(original);
+    expect(await readFile(skill, "utf8")).toContain("nano-reverse-engineer");
     await expect(
-      access(join(home, ".agents/skills/reverse-engineer-anything/SKILL.md")),
+      access(join(home, ".agents/skills/nano-reverse-engineer/SKILL.md")),
     ).rejects.toMatchObject({ code: "ENOENT" });
     const doctor = await run([
       "doctor",
@@ -298,7 +296,7 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
   cliTest(
     `Hermes ${selection} sticky-profile selection preserves the root configuration`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-hermes-sticky-");
+      const home = await createTestTempDirectory("nre-hermes-sticky-");
       const suffix = selection === "suffix" ? "-dev" : "";
       const native =
         process.platform === "win32"
@@ -348,7 +346,7 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
         plannedActions: expect.arrayContaining([
           expect.objectContaining({ target: config }),
           expect.objectContaining({
-            target: join(profile, "skills", "reverse-engineer-anything"),
+            target: join(profile, "skills", "nano-reverse-engineer"),
           }),
         ]),
       });
@@ -362,19 +360,19 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
       expect(applied.exitCode, applied.stdout).toBe(0);
       expect(parse(await readFile(config, "utf8"))).toMatchObject({
         mcp_servers: {
-          rea: { enabled: true },
+          nre: { enabled: true },
           other: { command: "other-server" },
         },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
       const skill = join(
         profile,
         "skills",
-        "reverse-engineer-anything",
+        "nano-reverse-engineer",
         "SKILL.md",
       );
       expect(await readFile(skill, "utf8")).toContain(
-        "name: reverse-engineer-anything",
+        "name: nano-reverse-engineer",
       );
       if (selection === "custom") {
         const doctor = await run([
@@ -406,11 +404,11 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
         await expect(access(skill)).rejects.toMatchObject({ code: "ENOENT" });
       }
       expect(await readFile(rootConfig, "utf8")).toBe("model: root-model\n");
-      await expect(access(`${rootConfig}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${rootConfig}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
       await expect(
-        access(join(root, "skills", "reverse-engineer-anything")),
+        access(join(root, "skills", "nano-reverse-engineer")),
       ).rejects.toMatchObject({ code: "ENOENT" });
     },
   );
@@ -425,7 +423,7 @@ for (const selection of [
   cliTest(
     `Hermes nested homes use the native profile root: ${selection}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-hermes-nested-");
+      const home = await createTestTempDirectory("nre-hermes-nested-");
       const native =
         process.platform === "win32"
           ? join(home, "AppData", "Local", "hermes")
@@ -486,7 +484,7 @@ for (const selection of [
           plannedActions: expect.arrayContaining([
             expect.objectContaining({ target: join(selected, "config.yaml") }),
             expect.objectContaining({
-              target: join(selected, "skills", "reverse-engineer-anything"),
+              target: join(selected, "skills", "nano-reverse-engineer"),
             }),
           ]),
           appliedActions: [],
@@ -522,7 +520,7 @@ for (const selection of [
         join(root, "profiles", "other"),
       ]) {
         await expect(
-          access(join(directory, "config.yaml.rea.backup")),
+          access(join(directory, "config.yaml.nre.backup")),
         ).rejects.toMatchObject({ code: "ENOENT" });
         await expect(access(join(directory, "skills"))).rejects.toMatchObject({
           code: "ENOENT",
@@ -537,7 +535,7 @@ for (const layout of ["symlinked-default", "escaping-prefix"] as const) {
     `Hermes preview resolves existing ancestors for missing and existing overrides: ${layout}`,
     async ({ cli }) => {
       const home = await createTestTempDirectory(
-        "rea-hermes-missing-override-",
+        "nre-hermes-missing-override-",
       );
       const native =
         process.platform === "win32"
@@ -584,12 +582,12 @@ for (const layout of ["symlinked-default", "escaping-prefix"] as const) {
               kind: "configure_client",
               target: join(selected, "config.yaml"),
               operation: usesNative ? "update" : "create",
-              ...(usesNative ? { backupPath: `${config}.rea.backup` } : {}),
+              ...(usesNative ? { backupPath: `${config}.nre.backup` } : {}),
             }),
             expect.objectContaining({
               id: "install_skill:hermes",
               kind: "install_skill",
-              target: join(selected, "skills", "reverse-engineer-anything"),
+              target: join(selected, "skills", "nano-reverse-engineer"),
               operation: "install",
             }),
           ]),
@@ -608,7 +606,7 @@ for (const layout of ["symlinked-default", "escaping-prefix"] as const) {
             { code: "ENOENT" },
           );
           await expect(
-            access(join(directory, "config.yaml.rea.backup")),
+            access(join(directory, "config.yaml.nre.backup")),
           ).rejects.toMatchObject({ code: "ENOENT" });
         }
         await expect(access(join(root, "config.yaml"))).rejects.toMatchObject({
@@ -627,7 +625,7 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
   cliTest(
     `Hermes rejects unusable sticky profile ${name} without writing a fallback home`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-hermes-invalid-profile-");
+      const home = await createTestTempDirectory("nre-hermes-invalid-profile-");
       const root = join(home, "hermes root");
       await mkdir(root);
       await writeFile(join(root, "active_profile"), name);
@@ -701,13 +699,13 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
 cliTest.skipIf(process.platform === "win32")(
   "Hermes named-user home aligns setup, doctor, skill and uninstall despite an isolated HOME",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-hermes-named-caller-");
+    const home = await createTestTempDirectory("nre-hermes-named-caller-");
     const account = userInfo();
-    const profile = await mkdtemp(join(account.homedir, ".rea-hermes-named-"));
+    const profile = await mkdtemp(join(account.homedir, ".nre-hermes-named-"));
     onTestFinished(() => removeTestWorkspace(profile));
     const override = `~${account.username}//${relative(account.homedir, profile)}`;
     const config = join(profile, "config.yaml");
-    const skill = join(profile, "skills/reverse-engineer-anything/SKILL.md");
+    const skill = join(profile, "skills/nano-reverse-engineer/SKILL.md");
     const original =
       "# owned fixture\nmodel: custom\nmcp_servers:\n  other:\n    command: other-server\n";
     await writeFile(config, original);
@@ -717,8 +715,8 @@ cliTest.skipIf(process.platform === "win32")(
         cwd: home,
         environment: {
           USERPROFILE: home,
-          HERMES_HOME: "$REA_HERMES_PROFILE",
-          REA_HERMES_PROFILE: override,
+          HERMES_HOME: "$NRE_HERMES_PROFILE",
+          NRE_HERMES_PROFILE: override,
         },
         timeoutMs: 20_000,
       });
@@ -735,7 +733,7 @@ cliTest.skipIf(process.platform === "win32")(
       plannedActions: expect.arrayContaining([
         expect.objectContaining({ target: config }),
         expect.objectContaining({
-          target: join(profile, "skills/reverse-engineer-anything"),
+          target: join(profile, "skills/nano-reverse-engineer"),
         }),
       ]),
     });
@@ -748,12 +746,12 @@ cliTest.skipIf(process.platform === "win32")(
       model: "custom",
       mcp_servers: {
         other: { command: "other-server" },
-        rea: { enabled: true },
+        nre: { enabled: true },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     expect(await readFile(skill, "utf8")).toContain(
-      "name: reverse-engineer-anything",
+      "name: nano-reverse-engineer",
     );
     expect(
       (await run(["doctor", "--client", "hermes", "--skill", "--json"])).json,
@@ -776,7 +774,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest(
   "Hermes unresolved named home refuses setup before writes and remains diagnostic in doctor",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-hermes-named-refusal-");
+    const home = await createTestTempDirectory("nre-hermes-named-refusal-");
     const override = `~${userInfo().username}-other/profile`;
     const run = (arguments_: readonly string[]) =>
       cli.run({
@@ -816,7 +814,7 @@ cliTest(
       code: "ENOENT",
     });
     await expect(
-      access(join(home, ".agents/skills/reverse-engineer-anything")),
+      access(join(home, ".agents/skills/nano-reverse-engineer")),
     ).rejects.toMatchObject({ code: "ENOENT" });
   },
 );

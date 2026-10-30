@@ -82,11 +82,11 @@ export const resolveNativeMatchingSources = async (
   ): Promise<Evidence> => {
     const evidence = await resolve(raw, path, borrowable);
     if (
-      evidence.predicate_type !== "rea.analysis" ||
+      evidence.predicate_type !== "nre.analysis" ||
       !operations.includes(evidence.operation) ||
       evidence.subject === null
     ) {
-      const message = `Expected artifact-bound rea.analysis ${operations.join(" or ")} Evidence, received ${evidence.predicate_type} ${evidence.operation}`;
+      const message = `Expected artifact-bound nre.analysis ${operations.join(" or ")} Evidence, received ${evidence.predicate_type} ${evidence.operation}`;
       throw new AnalysisInputError(
         admission.operation,
         { userMessage: message },

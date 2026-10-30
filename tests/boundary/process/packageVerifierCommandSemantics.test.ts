@@ -21,7 +21,7 @@ const commandFixture = async (
   beforeWorkspaceClose?: (path: string) => void | Promise<void>,
 ) => {
   const parent = await createTestTempDirectory(
-    "rea-package-command-semantics-",
+    "nre-package-command-semantics-",
   );
   const path = join(parent, "workspace");
   await mkdir(path);
@@ -171,9 +171,9 @@ it.skipIf(process.platform === "win32")(
 it("uses the exact selected environment and npm entry without rewriting arguments", async () => {
   const fixture = await commandFixture();
   const entry = join(fixture.parent, "selected npm entry.mjs");
-  const sentinel = "REA_PACKAGE_COMMAND_AMBIENT_SENTINEL";
+  const sentinel = "NRE_PACKAGE_COMMAND_AMBIENT_SENTINEL";
   const previous = process.env[sentinel];
-  const source = `process.stdout.write(JSON.stringify({ args: process.argv.slice(2), cwd: process.cwd(), selected: process.env.REA_PACKAGE_COMMAND_SELECTED, ambient: process.env.${sentinel} ?? null }));`;
+  const source = `process.stdout.write(JSON.stringify({ args: process.argv.slice(2), cwd: process.cwd(), selected: process.env.NRE_PACKAGE_COMMAND_SELECTED, ambient: process.env.${sentinel} ?? null }));`;
   await writeFile(entry, source);
   const arguments_ = [
     "pack",
@@ -185,7 +185,7 @@ it("uses the exact selected environment and npm entry without rewriting argument
     ...(process.platform === "win32"
       ? { SystemRoot: process.env.SystemRoot }
       : {}),
-    REA_PACKAGE_COMMAND_SELECTED: "caller-selected",
+    NRE_PACKAGE_COMMAND_SELECTED: "caller-selected",
     npm_execpath: entry,
   };
   let direct;

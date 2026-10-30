@@ -36,13 +36,13 @@ import { OwnedFileHandle } from "../../../src/filesystem/OwnedFileHandle.js";
 const linux = it.skipIf(process.platform !== "linux");
 
 linux("refuses a directory configured as the mitmdump executable", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-mitmdump-command-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-mitmdump-command-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const command = join(root, "mitmdump");
   await mkdir(command);
 
   await expect(
-    new MitmproxyCaptureAdapter({ REA_MITMDUMP_COMMAND: command }).command(
+    new MitmproxyCaptureAdapter({ NRE_MITMDUMP_COMMAND: command }).command(
       join(root, "request.json"),
       join(root, "runtime"),
     ),
@@ -53,7 +53,7 @@ linux("refuses a directory configured as the mitmdump executable", async () => {
 });
 
 linux("allows a symlink to a regular mitmdump executable", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-mitmdump-command-symlink-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-mitmdump-command-symlink-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const command = join(root, "mitmdump");
   const target = join(root, "mitmdump-bin");
@@ -61,7 +61,7 @@ linux("allows a symlink to a regular mitmdump executable", async () => {
   await symlink(target, command);
 
   await expect(
-    new MitmproxyCaptureAdapter({ REA_MITMDUMP_COMMAND: command }).command(
+    new MitmproxyCaptureAdapter({ NRE_MITMDUMP_COMMAND: command }).command(
       join(root, "request.json"),
       join(root, "runtime"),
     ),
@@ -69,13 +69,13 @@ linux("allows a symlink to a regular mitmdump executable", async () => {
 });
 
 it("keeps the admitted decoder environment across adapter preparation and refreshes it for the next call", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-capture-environment-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-capture-environment-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "capture.har");
   const observedPath = join(root, "observed.json");
   const text = JSON.stringify(historicalHar());
   await writeFile(path, text);
-  const environment = { ...process.env, REA_CAPTURE_TEST_VALUE: "first" };
+  const environment = { ...process.env, NRE_CAPTURE_TEST_VALUE: "first" };
   let runtimePath: string | undefined;
   const decoder = new HistoricalCaptureDecoder(
     [
@@ -85,14 +85,14 @@ it("keeps the admitted decoder environment across adapter preparation and refres
         command: async (_, selectedRuntime) => {
           // Adapter preparation can yield while callers reconfigure the next operation.
           await Promise.resolve();
-          environment.REA_CAPTURE_TEST_VALUE = "changed-during-preparation";
+          environment.NRE_CAPTURE_TEST_VALUE = "changed-during-preparation";
           return {
             command: process.execPath,
             arguments: [
               "-e",
               `
             const fs = require("node:fs");
-            fs.writeFileSync(process.argv[1], JSON.stringify(process.env.REA_CAPTURE_TEST_VALUE));
+            fs.writeFileSync(process.argv[1], JSON.stringify(process.env.NRE_CAPTURE_TEST_VALUE));
             fs.writeFileSync(process.argv[2], process.argv[3]);
           `,
               observedPath,
@@ -106,7 +106,7 @@ it("keeps the admitted decoder environment across adapter preparation and refres
     environment,
     async () => {
       const runtime = await PrivateRuntimeRoot.create({
-        prefix: "rea-capture-environment-",
+        prefix: "nre-capture-environment-",
       });
       runtimePath = runtime.path;
       return runtime;
@@ -114,7 +114,7 @@ it("keeps the admitted decoder environment across adapter preparation and refres
   );
   onTestFinished(() => decoder.close());
   for (const selected of ["first", "second"]) {
-    environment.REA_CAPTURE_TEST_VALUE = selected;
+    environment.NRE_CAPTURE_TEST_VALUE = selected;
     const result = await decoder.inspect(
       inspectWebNetworkCaptureInputSchema.parse({
         capture_path: path,
@@ -131,7 +131,7 @@ it("keeps the admitted decoder environment across adapter preparation and refres
 it.skipIf(process.platform === "win32")(
   "binds independently selected mitmproxy configuration before runtime preparation",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-mitmproxy-environment-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-mitmproxy-environment-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const capturePath = join(root, "capture.mitm");
     const observedPath = join(root, "observed.json");
@@ -147,8 +147,8 @@ it.skipIf(process.platform === "win32")(
         command,
         `#!${process.execPath}
 const fs = require("node:fs");
-const request = JSON.parse(fs.readFileSync(process.argv.find(a => a.startsWith("rea_request_path=")).slice("rea_request_path=".length), "utf8"));
-fs.writeFileSync(${JSON.stringify(observedPath)}, JSON.stringify({ command: ${JSON.stringify(command)}, host: process.env.REA_CAPTURE_TEST_VALUE }));
+const request = JSON.parse(fs.readFileSync(process.argv.find(a => a.startsWith("nre_request_path=")).slice("nre_request_path=".length), "utf8"));
+fs.writeFileSync(${JSON.stringify(observedPath)}, JSON.stringify({ command: ${JSON.stringify(command)}, host: process.env.NRE_CAPTURE_TEST_VALUE }));
 fs.writeFileSync(request.reply_path, ${JSON.stringify(JSON.stringify({ ok: true, value }))});
 `,
         { mode: 0o700 },
@@ -173,21 +173,21 @@ fs.writeFileSync(request.reply_path, ${JSON.stringify(JSON.stringify({ ok: true,
     onTestFinished(() => {
       vi.restoreAllMocks();
     });
-    const adapterEnvironment = { REA_MITMDUMP_COMMAND: first };
+    const adapterEnvironment = { NRE_MITMDUMP_COMMAND: first };
     const hostEnvironment = {
       ...process.env,
-      REA_MITMDUMP_COMMAND: "independent-host-setting",
-      REA_CAPTURE_TEST_VALUE: "first-host",
+      NRE_MITMDUMP_COMMAND: "independent-host-setting",
+      NRE_CAPTURE_TEST_VALUE: "first-host",
     };
     let runtimePath: string | undefined;
     const decoder = new HistoricalCaptureDecoder(
       [new MitmproxyCaptureAdapter(adapterEnvironment)],
       hostEnvironment,
       async () => {
-        adapterEnvironment.REA_MITMDUMP_COMMAND = second;
-        hostEnvironment.REA_CAPTURE_TEST_VALUE = "changed-during-preparation";
+        adapterEnvironment.NRE_MITMDUMP_COMMAND = second;
+        hostEnvironment.NRE_CAPTURE_TEST_VALUE = "changed-during-preparation";
         const runtime = await PrivateRuntimeRoot.create({
-          prefix: "rea-mitmproxy-environment-",
+          prefix: "nre-mitmproxy-environment-",
         });
         runtimePath = runtime.path;
         return runtime;
@@ -198,8 +198,8 @@ fs.writeFileSync(request.reply_path, ${JSON.stringify(JSON.stringify({ ok: true,
       [first, "first-host"],
       [second, "second-host"],
     ] as const) {
-      adapterEnvironment.REA_MITMDUMP_COMMAND = selectedCommand;
-      hostEnvironment.REA_CAPTURE_TEST_VALUE = selectedHost;
+      adapterEnvironment.NRE_MITMDUMP_COMMAND = selectedCommand;
+      hostEnvironment.NRE_CAPTURE_TEST_VALUE = selectedHost;
       const result = await decoder.inspect(
         inspectWebNetworkCaptureInputSchema.parse({
           capture_path: capturePath,
@@ -243,7 +243,7 @@ const expectOwnedDecoderPrimary = (
 it.each(["cancelled", "process"] as const)(
   "retains an unresolved decoder and its root across concurrent inspection and shutdown (%s)",
   async (outcome) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-capture-owned-cleanup-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-capture-owned-cleanup-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const capturePath = join(root, "capture.har");
     const markerPath = join(root, "started.json");
@@ -395,7 +395,7 @@ it.each(["cancelled", "process"] as const)(
 );
 
 it("applies a non-default capture deadline and releases its runtime", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-capture-deadline-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-capture-deadline-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "capture.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -415,7 +415,7 @@ it("applies a non-default capture deadline and releases its runtime", async () =
     process.env,
     async () => {
       const runtime = await PrivateRuntimeRoot.create({
-        prefix: "rea-capture-deadline-",
+        prefix: "nre-capture-deadline-",
       });
       runtimePath = runtime.path;
       return runtime;
@@ -440,7 +440,7 @@ it("applies a non-default capture deadline and releases its runtime", async () =
 it.each([true, false])(
   "binds decoder replies to the complete selected provider identity (matching name: %s)",
   async (matching) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-capture-identity-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-capture-identity-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "capture.har");
     const text = JSON.stringify(historicalHar());
@@ -476,7 +476,7 @@ it.each([true, false])(
 );
 
 it("classifies an oversized selected capture before creating an owned decoder", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-limit-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-historical-limit-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, "");
@@ -518,7 +518,7 @@ it("classifies an oversized selected capture before creating an owned decoder", 
 });
 
 it("retains a failed capture reader and retries it before a fresh load", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-capture-reader-close-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-capture-reader-close-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -581,7 +581,7 @@ it("retains a failed capture reader and retries it before a fresh load", async (
 });
 
 it("does not misclassify decoder filesystem failures as missing selected input", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-command-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-historical-command-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -621,7 +621,7 @@ it("does not misclassify decoder filesystem failures as missing selected input",
 it.each(["missing-capture", "missing-reply", "failed-command"])(
   "redacts declared paths and diagnostics while preserving the %s failure",
   async (mode) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-sensitive-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-historical-sensitive-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "explicit-private-value.har");
     if (mode !== "missing-capture")
@@ -670,7 +670,7 @@ it.each(["missing-capture", "missing-reply", "failed-command"])(
 );
 
 it("reports an absent owned reply as output failure and removes its private snapshot root", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-decoder-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-historical-decoder-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -706,7 +706,7 @@ it("reports an absent owned reply as output failure and removes its private snap
 });
 
 it("cancels after snapshot acquisition before launch and removes private input declarations", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-cancel-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-historical-cancel-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   await writeFile(path, JSON.stringify(historicalHar()));
@@ -745,7 +745,7 @@ it("cancels after snapshot acquisition before launch and removes private input d
 });
 
 it("preserves the exact cancellation reason observed during final runtime close", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-final-cancel-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-historical-final-cancel-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   const text = JSON.stringify(historicalHar());
@@ -772,7 +772,7 @@ it("preserves the exact cancellation reason observed during final runtime close"
     process.env,
     async () => {
       const runtime = await PrivateRuntimeRoot.create({
-        prefix: "rea-final-cancel-proof-",
+        prefix: "nre-final-cancel-proof-",
       });
       return {
         path: runtime.path,
@@ -800,7 +800,7 @@ it("preserves the exact cancellation reason observed during final runtime close"
 });
 
 it("retains completed capture facts and binds final root cleanup to its retry lease", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-report-cleanup-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-historical-report-cleanup-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   const text = JSON.stringify(historicalHar());
@@ -828,7 +828,7 @@ it("retains completed capture facts and binds final root cleanup to its retry le
     process.env,
     async () => {
       runtime = await PrivateRuntimeRoot.create({
-        prefix: "rea-report-cleanup-proof-",
+        prefix: "nre-report-cleanup-proof-",
       });
       runtimePath = runtime.path;
       onTestFinished(() => runtime?.close());
@@ -865,7 +865,7 @@ it("retains completed capture facts and binds final root cleanup to its retry le
 });
 
 it("keeps late cancellation primary when runtime close also fails, then clears on retry", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-historical-cancel-cleanup-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-historical-cancel-cleanup-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "input.har");
   const text = JSON.stringify(historicalHar());
@@ -894,7 +894,7 @@ it("keeps late cancellation primary when runtime close also fails, then clears o
     process.env,
     async () => {
       runtime = await PrivateRuntimeRoot.create({
-        prefix: "rea-cancel-cleanup-proof-",
+        prefix: "nre-cancel-cleanup-proof-",
       });
       onTestFinished(() => runtime?.close());
       return {
@@ -946,7 +946,7 @@ it.each([
 ])(
   "preserves $reason decoder failures through the public error boundary",
   async ({ reason, tag }) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-reply-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-historical-reply-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "input.har");
     await writeFile(path, JSON.stringify(historicalHar()));
@@ -1033,7 +1033,7 @@ it.each([
       expect(projected.remediation.action).toContain(
         "no completed capture Evidence",
       );
-      expect(projected.remediation.action).not.toContain("rea doctor");
+      expect(projected.remediation.action).not.toContain("nre doctor");
       expect(result.error.partialObservation).toMatchObject({
         kind: "file-snapshot-hash",
         path,
@@ -1060,7 +1060,7 @@ it.each([
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports a real filesystem permission denial separately from missing capture input",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-denied-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-historical-denied-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "unreadable.har");
     await writeFile(path, JSON.stringify(historicalHar()), { mode: 0o000 });
@@ -1103,7 +1103,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 it.each(["format", "process"])(
   "preserves the structured %s failure when runtime cleanup fails",
   async (kind) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-historical-cleanup-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-historical-cleanup-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "capture-private.har");
     await writeFile(path, JSON.stringify(historicalHar()));
@@ -1138,7 +1138,7 @@ it.each(["format", "process"])(
       process.env,
       async () => {
         const runtime = await PrivateRuntimeRoot.create({
-          prefix: "rea-cleanup-proof-",
+          prefix: "nre-cleanup-proof-",
         });
         onTestFinished(() => runtime.close());
         return {
@@ -1210,7 +1210,7 @@ it.each([
 ])(
   "retains validated reply completion through descriptor cancellation %j",
   async ({ closeFails, reply }) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-reply-finalization-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-reply-finalization-"));
     onTestFinished(() => rm(root, { recursive: true, force: true }));
     const path = join(root, "input.har");
     const text = JSON.stringify(historicalHar());
@@ -1334,7 +1334,7 @@ it.each([
 );
 
 it("excludes normalized native numbers before retaining a completed decoder reply", async () => {
-  const root = await createTestTempDirectory("rea-native-number-redaction-");
+  const root = await createTestTempDirectory("nre-native-number-redaction-");
   const capturePath = join(root, "capture.mitm");
   const original = "controlled native decoder input";
   await writeFile(capturePath, original);

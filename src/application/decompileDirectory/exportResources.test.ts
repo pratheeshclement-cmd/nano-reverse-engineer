@@ -10,7 +10,7 @@ import { ExportResources } from "./exportResources.js";
 it.each([false, true])(
   "retains publication outcome and staging cleanup authority (conflict: %s)",
   async (conflict) => {
-    const root = await createTestTempDirectory("rea-export-resources-");
+    const root = await createTestTempDirectory("nre-export-resources-");
     const destination = join(root, "published");
     if (conflict) await writeFile(destination, "existing");
     const lease = { release: vi.fn(async () => undefined) };

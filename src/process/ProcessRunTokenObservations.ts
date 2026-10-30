@@ -24,8 +24,8 @@ const errorMessage = (cause: unknown): string =>
 export const processRunIdFromEnvironment = (
   environment: Readonly<Record<string, string>>,
 ): string | undefined =>
-  Object.hasOwn(environment, "REA_PROCESS_RUN_ID")
-    ? environment.REA_PROCESS_RUN_ID
+  Object.hasOwn(environment, "NRE_PROCESS_RUN_ID")
+    ? environment.NRE_PROCESS_RUN_ID
     : undefined;
 
 /** Read only ownership tokens, using per-process fallback for missing batch rows. */

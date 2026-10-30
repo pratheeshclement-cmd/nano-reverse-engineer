@@ -11,17 +11,17 @@ try {
     extra.length !== 0 ||
     !/^\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?$/u.test(version ?? "")
   )
-    throw new Error("requires one exact rea-agents@VERSION pin");
+    throw new Error("requires one exact nano-reverse-engineer@VERSION pin");
 
   const bundledPackage = JSON.parse(
     await readFile(new URL("../package.json", import.meta.url), "utf8"),
   );
   if (
-    bundledPackage.name !== "rea-agents" ||
+    bundledPackage.name !== "nano-reverse-engineer" ||
     bundledPackage.version !== version
   )
     throw new Error(
-      "version pin does not match its installed rea-agents package; reinstall the plugin",
+      "version pin does not match its installed nano-reverse-engineer package; reinstall the plugin",
     );
 
   await access(new URL("../dist/mcp/main.js", import.meta.url)).catch(
@@ -34,15 +34,15 @@ try {
     },
   );
 } catch (cause) {
-  process.stderr.write(`REA plugin ${cause.message}.\n`);
+  process.stderr.write(`NRE plugin ${cause.message}.\n`);
   process.exitCode = 1;
 }
 
 if (process.exitCode !== 1) {
   process.argv = [
     process.execPath,
-    fileURLToPath(new URL("./rea.mjs", import.meta.url)),
+    fileURLToPath(new URL("./nre.mjs", import.meta.url)),
     "mcp",
   ];
-  await import("./rea.mjs");
+  await import("./nre.mjs");
 }

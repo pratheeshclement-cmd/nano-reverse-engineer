@@ -10,7 +10,7 @@ import {
 } from "../../fixtures/jebMcp.js";
 
 const jebEnvironment = {
-  REA_JEB_MCP_URL: "http://127.0.0.1:1/mcp",
+  NRE_JEB_MCP_URL: "http://127.0.0.1:1/mcp",
 };
 
 const serve = async (
@@ -21,7 +21,7 @@ const serve = async (
 it("reports an unreachable engine endpoint with recovery guidance", async () => {
   const result = await serve(["inspect-jeb-client", "--json"]);
   expect(result.stdout).toContain("capability_unavailable");
-  expect(result.stdout).toContain("REA_JEB_MCP_URL");
+  expect(result.stdout).toContain("NRE_JEB_MCP_URL");
 });
 
 it("validates decompile item input before contacting the engine", async () => {
@@ -39,8 +39,8 @@ it("validates decompile item input before contacting the engine", async () => {
 });
 
 it.each([
-  { setting: "REA_JEB_MCP_URL", value: "http://localhost:8425/mcp" },
-  { setting: "REA_JEB_MCP_TIMEOUT_MS", value: "1.5" },
+  { setting: "NRE_JEB_MCP_URL", value: "http://localhost:8425/mcp" },
+  { setting: "NRE_JEB_MCP_TIMEOUT_MS", value: "1.5" },
 ])(
   "reports invalid $setting without breaking other commands",
   async ({ setting, value }) => {
@@ -119,10 +119,10 @@ it.each(
     const processes = createTestProcessRegistry();
     const cli = createTestCli(processes);
     try {
-      const home = await createTestTempDirectory("rea-jeb-attribution-cli-");
+      const home = await createTestTempDirectory("nre-jeb-attribution-cli-");
       const result = await cli.run({
         arguments: argv,
-        environment: { HOME: home, REA_JEB_MCP_URL: fixture.endpoint },
+        environment: { HOME: home, NRE_JEB_MCP_URL: fixture.endpoint },
         timeoutMs: 10_000,
       });
       const output = JSON.parse(result.stdout);

@@ -1,6 +1,6 @@
 # Managed-code analysis
 
-REA inspects .NET PE/CLI artifacts without loading or executing their code.
+NRE inspects .NET PE/CLI artifacts without loading or executing their code.
 It can identify an assembly, inspect metadata and CIL, compare members across
 builds, and connect declared native calls to supplied native-analysis evidence.
 CIL is Common Intermediate Language, the instruction format used by managed
@@ -19,7 +19,7 @@ The seven shipped tools are:
 | Add managed findings to an application graph                                | `project_managed_application_graph` |
 
 Each has a matching CLI command: replace underscores with hyphens and prefix
-the name with `rea`, for example `rea inspect-managed-artifact`.
+the name with `nre`, for example `nre inspect-managed-artifact`.
 Native-body bridge mapping and managed runtime execution are outside the
 current tool set.
 
@@ -29,8 +29,8 @@ The canonical tool inventory is the
 ## Inspect an assembly
 
 ```bash
-rea inspect-managed-artifact /absolute/path/Assembly.dll --json
-rea inspect-managed-members /absolute/path/Assembly.dll --json
+nre inspect-managed-artifact /absolute/path/Assembly.dll --json
+nre inspect-managed-members /absolute/path/Assembly.dll --json
 ```
 
 Use the artifact result to identify the assembly and its metadata coverage.
@@ -172,11 +172,11 @@ new Evidence bundle destination so its original complete parent remains
 available after the command exits:
 
 ```bash
-rea inspect-managed-members /absolute/path/Assembly.dll --type Namespace.Type \
+nre inspect-managed-members /absolute/path/Assembly.dll --type Namespace.Type \
   --detail summary --evidence-bundle /absolute/path/evidence/members.json --json
 ```
 
-`--evidence-bundle` writes the complete original Evidence in REA's canonical
+`--evidence-bundle` writes the complete original Evidence in NRE's canonical
 bundle format. Its parent directory must exist, and it never replaces an
 existing path. Relative paths resolve against the command's working directory.
 The option also works with complete delivery when a saved bundle is useful.
@@ -193,7 +193,7 @@ Copy `normalized_result.parent_evidence_id` from the summary into the
 small request as `members-page.json` and run:
 
 ```bash
-rea inspect-analysis-view /absolute/path/evidence/members-page.json \
+nre inspect-analysis-view /absolute/path/evidence/members-page.json \
   --evidence-bundle /absolute/path/evidence/members.json --json
 ```
 
@@ -226,7 +226,7 @@ A valid implementation marker establishes a candidate native boundary, not
 recovered native semantics or runtime behavior.
 
 An assembly targeting [.NET Standard](https://learn.microsoft.com/en-us/dotnet/standard/net-standard)
-declares API compatibility across multiple .NET implementations. REA preserves
+declares API compatibility across multiple .NET implementations. NRE preserves
 that target in `target_frameworks` and leaves `runtime_family` as `unknown`
 unless independent markers identify a runtime family, such as a ReadyToRun
 signature.
@@ -261,7 +261,7 @@ baseline and prior generations. The released
 [metadata serializer](https://github.com/dotnet/runtime/blob/v9.0.0/src/libraries/System.Reflection.Metadata/src/System/Reflection/Metadata/Ecma335/MetadataBuilder.cs)
 emits this marker with `#-`; the
 [PE writer](https://github.com/dotnet/runtime/blob/v9.0.0/src/libraries/System.Reflection.Metadata/src/System/Reflection/PortableExecutable/ManagedPEBuilder.cs)
-can embed that metadata root. REA reports `unsupported-metadata` at the marker
+can embed that metadata root. NRE reports `unsupported-metadata` at the marker
 header before interpreting table rows, preserving the selected path, artifact
 digest, parsed metadata version and stream names, and admitted PE/CLI facts.
 Metadata status is partial; member and native
@@ -290,7 +290,7 @@ Use the returned `types[].full_name` values to select declaring types before
 their signatures and CIL bodies are decoded:
 
 ```bash
-rea inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser
+nre inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser
 ```
 
 MCP uses `inspect_managed_members` with
@@ -475,7 +475,7 @@ digest never pairs with an equal resolved one.
 Raw signature bytes name types by metadata row, and rows are build-local, so
 the same signature usually has different raw bytes in two builds. A signature
 that names no types resolves to its raw digest. When an operand cannot be
-resolved, such as a TypeSpec, or when REA could not parse the signature, the
+resolved, such as a TypeSpec, or when NRE could not parse the signature, the
 raw digest stands in. Missing or unreadable TypeDef and TypeRef operands are
 reported as coverage issues. Invalid NestedClass rows retain their failure
 reasons and withhold TypeDef signature identities; type names and nesting are
@@ -494,7 +494,7 @@ Version 1 Evidence remains readable and compares using the same digest policy.
 Historical Evidence defaults this attestation to `null`. When either
 observation predates resolution, both sides compare raw digests, which pair only where type rows agree,
 and the comparison reports that limitation. The signature is exact whether or
-not REA decoded it, so undecoded signatures pair by that tuple too, but they
+not NRE decoded it, so undecoded signatures pair by that tuple too, but they
 never enter structural rounds. An unmatched member is therefore reported as
 `unknown`, not added or removed, when its own signature was not decoded or when
 the other side has an unpaired member, one-sided or ambiguous, with the same
@@ -558,14 +558,14 @@ lists supported OS/architecture targets and deployment limitations, while its
 [native library guide](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/libraries)
 describes exported shared-library entry points.
 
-REA offers a built-in read-only snapshot parser for x64 PE/RTR 9.1 metadata and
+NRE offers a built-in read-only snapshot parser for x64 PE/RTR 9.1 metadata and
 an optional Linux headless Ghidra adapter for annotations and broader recovery.
-The adapter requires a locally built `REA_GHIDRA_NATIVEAOT_JAR`; REA does not
+The adapter requires a locally built `NRE_GHIDRA_NATIVEAOT_JAR`; NRE does not
 install it or its toolchain. The [NativeAOT guide](ghidra-nativeaot.md) defines
 these routes, their layout/host restrictions, derived-memory provenance, and
 verification coverage.
 
-REA's experimental Windows Ghidra boundary admits native x86, x86-64, ARMNT (Thumb-2) and ARM64 PE
+NRE's experimental Windows Ghidra boundary admits native x86, x86-64, ARMNT (Thumb-2) and ARM64 PE
 applications and DLLs for static analysis. For x64 PE NativeAOT, the read-only
 parser also runs there; the [NativeAOT guide](ghidra-nativeaot.md) lists what a
 Windows host covers.
@@ -584,7 +584,7 @@ function implements a specific managed method.
 point identities with supplied native export or function evidence. Name/module
 matches establish declaration links; they do not establish that a call executed.
 When either side lacks a usable module identity, a matching name remains
-unresolved and retains the candidate evidence; REA reports a module mismatch
+unresolved and retains the candidate evidence; NRE reports a module mismatch
 only when both identities are available and their format-specific comparison
 establishes a difference. ELF module names retain case, PE module names compare
 case-insensitively, and a case-only match for Mach-O or an unknown format stays
@@ -678,13 +678,13 @@ facts remain explicit in coverage and per-member status.
 
 Metadata table streams may carry the CLR-compatible `ExtraData` extension
 (`HeapSizes` flag `0x40`), which Microsoft readers honor although it is not
-specified by ECMA-335. REA skips its fixed four-byte word after the row counts
+specified by ECMA-335. NRE skips its fixed four-byte word after the row counts
 before decoding table rows; the word's value is not a length. An incomplete
 word is reported as a metadata coverage failure at its file offset, without
 reading beyond the declared table stream.
 
 For unoptimized `#-` metadata, nonempty `FieldPtr` and `MethodPtr` tables
-translate TypeDef list positions to physical member definitions. REA resolves
+translate TypeDef list positions to physical member definitions. NRE resolves
 these indirections for member ownership and local attribute-constructor types;
 field and method tokens still identify the original definition rows.
 `field_list` and `method_list` retain the metadata's list coordinates, which
@@ -702,13 +702,13 @@ type or required enclosing facts cannot be resolved.
 `exported_types` reports ExportedType rows as declared. Facade assemblies such
 as .NET `System.Runtime.dll` provide their types this way: `forwarder: true`
 marks a type forwarder, and `implementation_token` names the AssemblyRef, File,
-or enclosing ExportedType row that implements it. REA does not load the
+or enclosing ExportedType row that implements it. NRE does not load the
 implementing assembly to resolve the forwarded definition, and
 `compare_managed_members` does not compare exported types. Member Evidence
 recorded before this field existed reads back with `exported_types: null`,
 which means the table was not examined.
 
-CLI `#GUID` heap values retain their exact 16-byte GUID text. REA does not impose
+CLI `#GUID` heap values retain their exact 16-byte GUID text. NRE does not impose
 RFC 4122 UUID version or variant bits on MVID, EncId, or EncBaseId because
 ECMA-335 metadata does not require those bit patterns. Tokens and RVAs are
 build-local coordinates, not durable cross-build identities or native addresses.
@@ -717,7 +717,7 @@ against the artifact's metadata tables. An invalid operand leaves the member
 name and raw signature digest available while marking that signature malformed
 and coverage partial.
 A fat method header's nonzero LocalVarSigTok must name an existing StandAloneSig
-row whose blob is a structurally valid LocalVarSig. REA validates its local
+row whose blob is a structurally valid LocalVarSig. NRE validates its local
 types and exact blob coverage, retaining `local_var_signature` with the raw blob
 digest and whether named types, modifiers, or generic variables require metadata
 or declaring context. Historical Evidence defaults this field to null. An invalid
@@ -772,7 +772,7 @@ UTF-8 encoding, and lowercase hexadecimal output.
 
 ## Tool and packaging boundary
 
-The production parser is REA-owned TypeScript and ships with the existing Node
+The production parser is NRE-owned TypeScript and ships with the existing Node
 application. Deterministic conformance uses source-owned byte-built PE/CLI
 fixtures and expected semantic facts. An optional real ILSpy lane runs only when
 its executable is explicitly supplied; the default lane does not establish
@@ -780,7 +780,7 @@ independent pinned-oracle parity. Production inspection needs none of those tool
 
 - `ICSharpCode.Decompiler`/`ilspycmd` can supply reconstruction inference.
   A BYO reconstruction import records the supplied version
-  and remains non-canonical. When `REA_ILSPY_CMD_PATH` points to an absolute
+  and remains non-canonical. When `NRE_ILSPY_CMD_PATH` points to an absolute
   runnable `ilspycmd`, `verify:managed` runs a source-owned real ILSpy oracle
   and imports its C# output as reconstruction inference against exact static
   member Evidence.
@@ -795,9 +795,9 @@ into isolated directories. Updating any coordinate requires review of license,
 runtime, supported host, output contract, and conformance results.
 
 Target platform is not host support. The canonical parser must inspect
-Windows-produced PE/CLI bytes on REA's supported Linux and macOS hosts with the
+Windows-produced PE/CLI bytes on NRE's supported Linux and macOS hosts with the
 same result. Pinned Windows oracle jobs may provide additional conformance, but
-do not establish that the REA managed analysis workflow has been verified on a
+do not establish that the NRE managed analysis workflow has been verified on a
 Windows host. The [experimental Windows Ghidra boundary](windows-ghidra-p0.md)
 has its own host and provider verification scope. Native
 ReadyToRun, C++/CLI, NativeAOT, or IL2CPP coverage is additionally constrained
@@ -825,20 +825,20 @@ The optional osu! benchmark accepts only paths and expectations supplied by the
 operator. Run it with:
 
 ```sh
-REA_MANAGED_APP_MANIFEST_PATH=/absolute/managed-app-manifest.json npm run verify:managed
+NRE_MANAGED_APP_MANIFEST_PATH=/absolute/managed-app-manifest.json npm run verify:managed
 ```
 
 `verify:managed` always runs a source-owned manifest-verifier self-test first.
-If `REA_ILSPY_CMD_PATH` is set to an absolute `ilspycmd` path, it also runs a
+If `NRE_ILSPY_CMD_PATH` is set to an absolute `ilspycmd` path, it also runs a
 source-owned ILSpy oracle: version discovery, class listing, bounded C# output
 for a pinned fixture type, and import through `import_managed_reconstruction`.
 The verifier prints only command/version, executable and output digests,
 Evidence IDs, method locks, and compact fixture identity; it does not print
 decompiled C# text. A failing ILSpy oracle fails the verifier because it is an
-explicit real-tool claim, but leaving `REA_ILSPY_CMD_PATH` unset keeps the
+explicit real-tool claim, but leaving `NRE_ILSPY_CMD_PATH` unset keeps the
 oracle disabled.
 
-When `REA_MANAGED_APP_MANIFEST_PATH` is set, the manifest's target path may be
+When `NRE_MANAGED_APP_MANIFEST_PATH` is set, the manifest's target path may be
 absolute or relative to the manifest file. A compact manifest contains:
 
 ```json
@@ -889,7 +889,7 @@ assembly name, runtime-family, and managed-architecture mismatches whenever the
 manifest supplies those fields. It then pages each declared MethodDef token
 directly by row, so selected methods do not need to appear in the first member
 page of a large application. Optional `il_sha256` locks the exact raw CIL bytes
-in addition to REA's decoded-instruction-tuple digest. That normalized field
+in addition to NRE's decoded-instruction-tuple digest. That normalized field
 has the byte boundaries documented above and is not a complete semantic CIL
 identity.
 
@@ -897,7 +897,7 @@ The optional `application_graph` block reuses those exact-build method
 commitments. For each referenced MethodDef token, the verifier builds a bounded
 managed application-graph projection from the authenticated artifact and the
 single selected member page, then checks requested node kinds and feature-trace
-seed matches. This proves only that the selected static facts enter REA's graph
+seed matches. This proves only that the selected static facts enter NRE's graph
 and tracing vocabulary for that exact local build; it does not execute the
 application, inspect arbitrary unlisted methods, or infer runtime behavior.
 
@@ -909,7 +909,7 @@ does not print method bodies, reconstructed C#, application data, runtime
 telemetry, account/service details, full filesystem inventories, or the
 target's absolute path. The manifest and target remain outside git.
 
-The benchmark may prove that REA reproduces selected facts for that exact local
+The benchmark may prove that NRE reproduces selected facts for that exact local
 build. It cannot establish general support on its own; source-built conformance
 remains the admission requirement.
 

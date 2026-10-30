@@ -36,7 +36,7 @@ afterEach(async () => {
 });
 
 it("routes bundle resource MCP calls with null executable identity and retained Evidence", async () => {
-  const parent = await mkdtemp(join(tmpdir(), "rea-bundle-resource-mcp-"));
+  const parent = await mkdtemp(join(tmpdir(), "nre-bundle-resource-mcp-"));
   const bundle = join(parent, "Fixture.app");
   await mkdir(bundle);
   const plistPath = join(bundle, "Info.plist");
@@ -193,7 +193,7 @@ it("routes bundle resource MCP calls with null executable identity and retained 
 
 it("exposes the production resource session through the MCP SDK for a keyless bundle", async () => {
   const parent = await mkdtemp(
-    join(tmpdir(), "rea-bundle-resource-production-mcp-"),
+    join(tmpdir(), "nre-bundle-resource-production-mcp-"),
   );
   const bundle = join(parent, "Fixture.app");
   const resourceDirectory = join(bundle, "Resources");

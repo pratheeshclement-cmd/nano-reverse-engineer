@@ -31,7 +31,7 @@ it.each([false, true])(
     let cancelOnCleanup = false;
     let completedRemovals = 0;
     fs.promises.rm = async (path, options) => {
-      const finalJobRemoval = String(path).includes('rea-javascript-analysis-') && String(path).endsWith('.records');
+      const finalJobRemoval = String(path).includes('nre-javascript-analysis-') && String(path).endsWith('.records');
       if (finalJobRemoval && cancelOnCleanup && ${JSON.stringify(failCleanup)}) {
         controller.abort(reason);
         throw new Error('fixture final removal denied');

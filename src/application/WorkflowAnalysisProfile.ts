@@ -3,14 +3,14 @@ import {
   createAnalysisProfile,
   type AnalysisProfileCommitment,
 } from "../domain/analysisProfile.js";
-import { REA_WORKFLOW_PROVIDER } from "../domain/investigationProviders.js";
+import { NRE_WORKFLOW_PROVIDER } from "../domain/investigationProviders.js";
 
 /** Commit a workflow result to its upstream profile and applicable semantic revision. */
 export const workflowAnalysisProfile = (
   upstream: AnalysisProfileCommitment,
   operation?: AnalysisOperation,
 ): AnalysisProfileCommitment =>
-  createAnalysisProfile(REA_WORKFLOW_PROVIDER, {
+  createAnalysisProfile(NRE_WORKFLOW_PROVIDER, {
     upstream_analysis_profile: upstream,
     source_limitations: "provider-operation-caveats-v1",
     ...(operation === "binary_overview"

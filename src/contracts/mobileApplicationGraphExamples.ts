@@ -81,8 +81,8 @@ const inventory = (
 };
 
 const provider = {
-  id: "rea-artifact-graph",
-  name: "REA safe artifact graph provider",
+  id: "nre-artifact-graph",
+  name: "NRE safe artifact graph provider",
   version: "1",
 } as const;
 

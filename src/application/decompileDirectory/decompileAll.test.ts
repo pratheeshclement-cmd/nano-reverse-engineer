@@ -272,7 +272,7 @@ const of = (calls: readonly RecordedCall[], operation: AnalysisOperation) =>
 const useOutputDirectory = (): (() => string) => {
   let parent = "";
   beforeEach(async () => {
-    parent = await createTestTempDirectory("rea-decompile-all-");
+    parent = await createTestTempDirectory("nre-decompile-all-");
   });
   return () => join(parent, "out");
 };
@@ -310,7 +310,7 @@ describe("decompile_all manifest", () => {
     );
     expect(
       text.startsWith(
-        "// rea decompile_all\n// name: Foo::main\n// address: 0x1000\n",
+        "// nre decompile_all\n// name: Foo::main\n// address: 0x1000\n",
       ),
     ).toBe(true);
     expect(text).toContain("// range: 0x1000-0x1000 inclusive");
@@ -1116,22 +1116,25 @@ describe("decompile_all identity and recovery", () => {
 describe("decompile_all untrusted directory and provider facts", () => {
   const directory = useOutputDirectory();
 
-  it("refuses a journal that is a symlink and leaves its target unchanged", async () => {
-    expect((await run(harness().tools, directory(), { limit: 1 })).ok).toBe(
-      true,
-    );
-    const journalPath = join(directory(), DECOMPILE_DIRECTORY_JOURNAL_NAME);
-    const outside = join(directory(), "..", "outside.jsonl");
-    const torn = `${await readFile(journalPath, "utf8")}{"kind":"func`;
-    await writeFile(outside, torn);
-    await rm(journalPath);
-    await symlink(outside, journalPath);
-    const next = harness();
-    const resumed = await run(next.tools, directory(), { resume: true });
-    expect(resumed.ok).toBe(false);
-    expect(of(next.calls, "procedure_pseudo_code")).toHaveLength(0);
-    expect(await readFile(outside, "utf8")).toBe(torn);
-  });
+  it.skipIf(process.platform === "win32")(
+    "refuses a journal that is a symlink and leaves its target unchanged",
+    async () => {
+      expect((await run(harness().tools, directory(), { limit: 1 })).ok).toBe(
+        true,
+      );
+      const journalPath = join(directory(), DECOMPILE_DIRECTORY_JOURNAL_NAME);
+      const outside = join(directory(), "..", "outside.jsonl");
+      const torn = `${await readFile(journalPath, "utf8")}{"kind":"func`;
+      await writeFile(outside, torn);
+      await rm(journalPath);
+      await symlink(outside, journalPath);
+      const next = harness();
+      const resumed = await run(next.tools, directory(), { resume: true });
+      expect(resumed.ok).toBe(false);
+      expect(of(next.calls, "procedure_pseudo_code")).toHaveLength(0);
+      expect(await readFile(outside, "utf8")).toBe(torn);
+    },
+  );
 
   it("does not take body ranges from procedure_info for another entry point", async () => {
     const port: AnalysisOperationPort = {

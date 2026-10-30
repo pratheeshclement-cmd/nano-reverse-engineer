@@ -67,7 +67,7 @@ export const assertArtifactCommandPath = async (
         systemCode,
         failureOptions,
       );
-    throw new ProviderAdapterError("rea", operation, {
+    throw new ProviderAdapterError("nre", operation, {
       ...failureOptions,
       diagnostics: {
         path: selected.invocationPath,

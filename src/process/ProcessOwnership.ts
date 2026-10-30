@@ -50,7 +50,7 @@ interface OwnedProcessGroupFacts {
   readonly sampledProcessGroupIds?: readonly number[];
 }
 
-/** Identity proof required before REA may signal an owned process group.
+/** Identity proof required before NRE may signal an owned process group.
  * Token-swept resources must carry one ledger for the whole resource lifetime.
  */
 export type OwnedProcessGroup = OwnedProcessGroupFacts &
@@ -95,7 +95,7 @@ export type ProcessIdentityObservation =
       readonly identity: string;
       /** Effective UID from the same native observation, when that boundary reports it. */
       readonly effectiveUid?: number;
-      /** Linux procfs reason the kernel withholds this generation's environment from REA. */
+      /** Linux procfs reason the kernel withholds this generation's environment from NRE. */
       readonly environmentRestriction?: LinuxEnvironmentRestriction;
       /** Kept separate from the start identity; optional for older/custom hosts. */
       readonly lifecycle?: ProcessLifecycleObservation;

@@ -71,7 +71,7 @@ const DIGEST = createHash("sha256").update(CONTENT).digest("hex");
 it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
   "inventories and extracts literal POSIX backslashes from %s without changing names",
   async (format) => {
-    const root = await createTestTempDirectory("rea-literal-backslash-");
+    const root = await createTestTempDirectory("nre-literal-backslash-");
     const source = join(root, "source");
     await mkdir(source);
     for (const name of NAMES) {
@@ -126,7 +126,7 @@ it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
 it.each(NAMES.filter((name) => name.includes("\\")))(
   "rejects Windows separator interpretation before materializing %j",
   async (name) => {
-    const root = await createTestTempDirectory("rea-backslash-output-");
+    const root = await createTestTempDirectory("nre-backslash-output-");
     const output = join(root, "output");
     const tree = await SafeOutputTree.create(output, "win32");
     const stream = Readable.from(CONTENT);
@@ -157,7 +157,7 @@ it.each([
   "C:/outside",
   "safe/\0bad",
 ])("keeps output containment rejection for %j", async (name) => {
-  const root = await createTestTempDirectory("rea-backslash-containment-");
+  const root = await createTestTempDirectory("nre-backslash-containment-");
   const output = join(root, "output");
   const tree = await SafeOutputTree.create(output);
   try {
@@ -176,7 +176,7 @@ it.each([
 it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
   "retains literal POSIX JavaScript names in application and semantic graphs from %s",
   async (format) => {
-    const root = await createTestTempDirectory("rea-backslash-js-graph-");
+    const root = await createTestTempDirectory("nre-backslash-js-graph-");
     const source = join(root, "source");
     await mkdir(source);
     const names = [
@@ -211,7 +211,7 @@ it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
 );
 
 it("rejects inherited encoded separators with the real Node ESM loader before file lookup", async () => {
-  const root = await createTestTempDirectory("rea-backslash-esm-url-");
+  const root = await createTestTempDirectory("nre-backslash-esm-url-");
   const source = pathToFileURL(join(root, "a.mjs"));
   source.pathname = source.pathname.replace(/a\.mjs$/u, "literal%5Cdir/a.mjs");
   const target = new URL("./b.mjs", source);
@@ -233,7 +233,7 @@ it("rejects inherited encoded separators with the real Node ESM loader before fi
 });
 
 it("keeps loader modes separate from forwarded export relationships", async () => {
-  const root = await createTestTempDirectory("rea-loader-export-contract-");
+  const root = await createTestTempDirectory("nre-loader-export-contract-");
   const source = join(root, "source");
   await writeLoaderExportFixture(
     source,
@@ -288,7 +288,7 @@ it("keeps loader modes separate from forwarded export relationships", async () =
 it.skipIf(process.platform === "win32").each(["directory", "asar"] as const)(
   "preserves loader-specific relative paths inside a literal POSIX directory from %s",
   async (format) => {
-    const root = await createTestTempDirectory("rea-backslash-import-base-");
+    const root = await createTestTempDirectory("nre-backslash-import-base-");
     const source = join(root, "source");
     const literal = "literal\\dir";
     await mkdir(join(source, "literal", "dir"), { recursive: true });

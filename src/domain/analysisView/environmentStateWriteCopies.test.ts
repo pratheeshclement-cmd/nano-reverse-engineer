@@ -72,7 +72,7 @@ describe("members a created field derives from", () => {
   });
 
   it("accepts an echoed member only with its recorded value when a constant holds its text", () => {
-    const url = "https://scratch.example.test/rea-capture-1";
+    const url = "https://scratch.example.test/nre-capture-1";
     const body = create(
       {
         id: 9,

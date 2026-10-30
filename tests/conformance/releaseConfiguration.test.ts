@@ -68,7 +68,7 @@ describe("release configuration", () => {
                     {
                       type: "json",
                       path,
-                      jsonpath: "$.mcpServers.rea.args[1]",
+                      jsonpath: "$.mcpServers.nre.args[1]",
                     },
                   ]
                 : []),
@@ -76,7 +76,7 @@ describe("release configuration", () => {
             {
               type: "json",
               path: pluginServerConfig,
-              jsonpath: "$.mcpServers.rea.args[1]",
+              jsonpath: "$.mcpServers.nre.args[1]",
             },
             ...[
               ".claude-plugin/marketplace.json",
@@ -111,9 +111,9 @@ describe("release configuration", () => {
           example,
         ).toHaveLength(1);
       for (const block of versionBlocks)
-        expect(new Set(block.match(/rea-agents@[^\s"`]+/gu))).toEqual(
-          new Set([`rea-agents@${packageJson.version}`]),
-        );
+        expect(
+          new Set(block.match(/nano-reverse-engineer@[^\s"`]+/gu)),
+        ).toEqual(new Set([`nano-reverse-engineer@${packageJson.version}`]));
     },
   );
 
@@ -153,8 +153,8 @@ describe("release configuration", () => {
     };
 
     expect(packageJson).toMatchObject({
-      name: "rea-agents",
-      mcpName: "io.github.morluto/rea",
+      name: "nano-reverse-engineer",
+      mcpName: "io.github.pratheeshclement-cmd/nano-reverse-engineer",
     });
     expect(serverJson).toMatchObject({
       name: packageJson.mcpName,
@@ -198,7 +198,7 @@ describe("plugin manifests", () => {
           {
             source: {
               source: "npm",
-              package: "rea-agents",
+              package: "nano-reverse-engineer",
               version: pkg.version,
             },
           },
@@ -264,7 +264,7 @@ describe("plugin release pins", () => {
     expect(updatedJson.get(".claude-plugin/plugin.json")).toMatchObject({
       version: nextVersion,
       mcpServers: {
-        rea: {
+        nre: {
           args: [
             "${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs",
             nextVersion,
@@ -277,7 +277,7 @@ describe("plugin release pins", () => {
     });
     expect(updatedJson.get(pluginServerConfig)).toMatchObject({
       mcpServers: {
-        rea: {
+        nre: {
           args: ["./scripts/plugin-mcp-launcher.mjs", nextVersion],
           startup_timeout_sec: 30,
         },
@@ -292,7 +292,7 @@ describe("plugin release pins", () => {
           {
             source: {
               source: "npm",
-              package: "rea-agents",
+              package: "nano-reverse-engineer",
               version: nextVersion,
             },
           },
@@ -307,7 +307,7 @@ describe("plugin release pins", () => {
 
     expect(await readJson(pluginServerConfig)).toMatchObject({
       mcpServers: {
-        rea: {
+        nre: {
           command: "node",
           args: ["./scripts/plugin-mcp-launcher.mjs", packageJson.version],
           cwd: ".",
@@ -357,7 +357,7 @@ describe("plugin release pins", () => {
   it("carries the owned Codex startup timeout in the companion server entry", async () => {
     expect(await readJson(pluginServerConfig)).toMatchObject({
       mcpServers: {
-        rea: {
+        nre: {
           startup_timeout_sec: MCP_STARTUP_POLICY.codexStartupTimeoutSeconds,
         },
       },

@@ -18,7 +18,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "preserves caller destination and reports the effective pushed file path through MCP",
   async () => {
-    const directory = await createTestTempDirectory("rea-adb-push-mcp-");
+    const directory = await createTestTempDirectory("nre-adb-push-mcp-");
     const localPath = join(directory, "payload.bin");
     const adbPath = join(directory, "adb");
     const stagedMode = join(directory, "staged-mode");
@@ -53,7 +53,7 @@ else if (args[0] === "-s" && args[2] === "shell" && args[3] === "test") {
       },
       {
         adbDeviceAnalysis: new AdbProvider({
-          environment: { REA_ADB_PATH: adbPath },
+          environment: { NRE_ADB_PATH: adbPath },
         }),
       },
     );
@@ -99,7 +99,7 @@ const responseText = (response: { readonly content: readonly unknown[] }) =>
     .join("");
 
 const createFakeAdb = async () => {
-  const directory = await createTestTempDirectory("rea-adb-start-mcp-");
+  const directory = await createTestTempDirectory("nre-adb-start-mcp-");
   const binary = join(directory, "adb");
   const stdoutFile = join(directory, "stdout");
   const stderrFile = join(directory, "stderr");
@@ -195,7 +195,7 @@ it
       },
       {
         adbDeviceAnalysis: new AdbProvider({
-          environment: { REA_ADB_PATH: binary },
+          environment: { NRE_ADB_PATH: binary },
         }),
       },
     );
@@ -334,7 +334,7 @@ it.skipIf(process.platform === "win32")(
       },
       {
         adbDeviceAnalysis: new AdbProvider({
-          environment: { REA_ADB_PATH: fakeAdb.binary },
+          environment: { NRE_ADB_PATH: fakeAdb.binary },
         }),
       },
     );

@@ -46,11 +46,11 @@ const where = {
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [fileURLToPath(new URL("../../rea.mjs", import.meta.url)), "mcp"],
+  args: [fileURLToPath(new URL("../../nre.mjs", import.meta.url)), "mcp"],
   env: {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
-    REA_LOG_LEVEL: "silent",
-    REA_ANALYSIS_PROVIDER: "auto",
+    NRE_LOG_LEVEL: "silent",
+    NRE_ANALYSIS_PROVIDER: "auto",
   },
   stderr: "pipe",
 });
@@ -267,7 +267,7 @@ await withVerifierCleanup(async () => {
   let cliParity = null;
   if (values["cli-parity"]) {
     temporary = await PrivateRuntimeRoot.create({
-      prefix: "rea-module-reference-verifier-",
+      prefix: "nre-module-reference-verifier-",
     });
     const bundlePath = join(temporary.path, "bundle.json");
     const exported = await client.callTool({
@@ -313,7 +313,7 @@ await withVerifierCleanup(async () => {
   let tokenCosts = null;
   if (values["tokenizer-python"]) {
     temporary ??= await PrivateRuntimeRoot.create({
-      prefix: "rea-module-reference-verifier-",
+      prefix: "nre-module-reference-verifier-",
     });
     const input = join(temporary.path, "token-input.json");
     await writeFile(input, serialize(costInputs));
@@ -345,7 +345,7 @@ print(json.dumps(dict(tokenizer='cl100k_base',tiktoken_version=tiktoken.__versio
             input,
           ],
           cwd: temporary.path,
-          runId: `rea-module-token-${randomUUID()}`,
+          runId: `nre-module-token-${randomUUID()}`,
           // An interpreter wrapper may exec another command. The shared owner
           // still verifies native identities and the exact inherited run token.
           expectedCommand: null,

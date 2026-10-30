@@ -27,7 +27,7 @@ const archive = build({
 const selectedPath = "Contents/Resources/Model.plist";
 
 const bundle = async () => {
-  const root = await createTestTempDirectory("rea-keyed-access-denied-");
+  const root = await createTestTempDirectory("nre-keyed-access-denied-");
   await mkdir(join(root, "Contents", "Resources"), { recursive: true });
   await writeFile(
     join(root, "Contents", "Resources", "Model.plist"),

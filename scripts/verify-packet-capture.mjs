@@ -24,13 +24,13 @@ if (process.platform !== "linux")
   throw new Error(
     "Real packet capture verification requires Linux with util-linux prlimit.",
   );
-if (!isAbsolute(process.env.REA_TSHARK_COMMAND ?? ""))
-  throw new Error("Supply absolute REA_TSHARK_COMMAND for TShark 4.x.");
+if (!isAbsolute(process.env.NRE_TSHARK_COMMAND ?? ""))
+  throw new Error("Supply absolute NRE_TSHARK_COMMAND for TShark 4.x.");
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
 const root = await PrivateRuntimeRoot.create({
-  prefix: "rea-capture-verifier-",
+  prefix: "nre-capture-verifier-",
 });
 const path = join(root.path, "network with spaces.pcap");
 const bluetooth = join(root.path, "bluetooth.pcap");
@@ -91,7 +91,7 @@ const dnsQuery = Buffer.from(
   "hex",
 );
 const source = pcap(1, [
-  udp(5554, Buffer.from("REA")),
+  udp(5554, Buffer.from("NRE")),
   udp(5555, dnsQuery),
   udp(5555, dnsQuery),
 ]);
@@ -144,10 +144,10 @@ await withVerifierCleanup(async () => {
     );
     assert.equal(report.hardware_acquisition, "not-performed");
     assert.equal(report.limits.address_space_bytes, expectedAddressSpace);
-    assert.equal(report.tool.configured_path, process.env.REA_TSHARK_COMMAND);
+    assert.equal(report.tool.configured_path, process.env.NRE_TSHARK_COMMAND);
     assert.equal(
       report.resource_limiter.configured_path,
-      process.env.REA_TSHARK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
+      process.env.NRE_TSHARK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit",
     );
     assert.ok(
       report.resource_limiter.arguments.includes(
@@ -282,7 +282,7 @@ await withVerifierCleanup(async () => {
   for (const capturePath of [path, bluetooth]) {
     const capinfosOutput = (
       await execute(
-        process.env.REA_CAPINFOS_COMMAND ?? "capinfos",
+        process.env.NRE_CAPINFOS_COMMAND ?? "capinfos",
         ["-M", "-S", "--", capturePath],
         {
           env: { ...environment, LC_ALL: "C", LANG: "C" },
@@ -398,7 +398,7 @@ await withVerifierCleanup(async () => {
   const nativeProfile = join(root.path, "native-profile");
   await mkdir(nativeProfile);
   const native = (
-    await execute(process.env.REA_TSHARK_COMMAND, ["-G", "fields"], {
+    await execute(process.env.NRE_TSHARK_COMMAND, ["-G", "fields"], {
       env: { ...environment, WIRESHARK_CONFIG_DIR: nativeProfile },
       timeout: 30000,
       maxBuffer: 32 * 1024 * 1024,
@@ -413,7 +413,7 @@ await withVerifierCleanup(async () => {
     { offset: 1, limit: 2 },
     { kind: "fields", protocol: "usb", query: "idVendor" },
     { kind: "fields", protocol: "udp", limit: null },
-    { kind: "fields", query: "rea_no_such_field" },
+    { kind: "fields", query: "nre_no_such_field" },
   ]) {
     const started = performance.now();
     const response = await client.callTool({
@@ -500,7 +500,7 @@ await withVerifierCleanup(async () => {
       );
     if (input.query === "usb")
       assert.ok(report.records.some((row) => row.abbreviation === "usb"));
-    if (input.query === "rea_no_such_field")
+    if (input.query === "nre_no_such_field")
       assert.equal(report.output_window.matching, 0);
     const flags = Object.entries(input).flatMap(([key, value]) =>
       value === null ? ["--all"] : [`--${key}`, String(value)],

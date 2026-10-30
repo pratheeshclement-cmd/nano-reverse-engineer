@@ -59,20 +59,20 @@ if (installation.status !== "available")
   );
 
 const execute = promisify(execFile);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-dol-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-dol-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const baseEnv = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
 };
 for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
   if (process.env[setting] !== undefined)
@@ -102,14 +102,14 @@ const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 async function runPass({ fixture, languageOverride, label, layout }) {
   const env = { ...baseEnv };
   if (languageOverride !== undefined)
-    env.REA_GHIDRA_LANGUAGE_ID = languageOverride;
+    env.NRE_GHIDRA_LANGUAGE_ID = languageOverride;
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [entrypoint, "mcp"],
     env,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-real-dol-proof", version: "1" });
+  const client = new Client({ name: "nre-real-dol-proof", version: "1" });
   let stderr = "";
   transport.stderr?.on("data", (chunk) => {
     stderr = (stderr + chunk.toString()).slice(-65536);
@@ -181,7 +181,7 @@ async function runPass({ fixture, languageOverride, label, layout }) {
         });
         assert.equal(
           marker.bytes_hex,
-          Buffer.from("rea-ppc-source-owned-fixture\0").toString("hex"),
+          Buffer.from("nre-ppc-source-owned-fixture\0").toString("hex"),
         );
         const tail = await call("read_bytes", {
           address: `0x${layout.tail.toString(16)}`,
@@ -277,11 +277,11 @@ try {
     // Addresses come from the independent readelf symbol table, not from constants.
     const symbols = independentElf.symbols;
     const layout = {
-      entry: symbols.rea_ppc_entry,
-      leaf: symbols.rea_ppc_leaf,
-      global: symbols.rea_dol_global,
-      marker: symbols.rea_ppc_marker,
-      tail: symbols.rea_dol_tail,
+      entry: symbols.nre_ppc_entry,
+      leaf: symbols.nre_ppc_leaf,
+      global: symbols.nre_dol_global,
+      marker: symbols.nre_ppc_marker,
+      tail: symbols.nre_dol_tail,
       bssGap: BigInt(shape.gaps[0].start),
     };
     assert.equal(BigInt(resolved.value.entryPoint), layout.entry);
@@ -303,7 +303,7 @@ try {
       );
     } else {
       console.log(
-        `skipped: ${GEKKO_LANGUAGE} (not in the Ghidra installation catalog that REA admits); stock lane still verified`,
+        `skipped: ${GEKKO_LANGUAGE} (not in the Ghidra installation catalog that NRE admits); stock lane still verified`,
       );
     }
   }, [

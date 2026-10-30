@@ -16,7 +16,7 @@ cliTest.for(
 )(
   "keeps dependency main $main in its lookup domain through $surface",
   async ({ surface, main, status }, { cli }) => {
-    const root = await createTestTempDirectory("rea-dependency-host-main-");
+    const root = await createTestTempDirectory("nre-dependency-host-main-");
     await writeFixtureFiles(root, {
       "a/package.json": '{"main":"main.cjs"}',
       "a/main.cjs":

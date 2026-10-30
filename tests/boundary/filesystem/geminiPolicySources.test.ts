@@ -8,7 +8,7 @@ import type { SetupClient } from "../../../src/application/SupportedClients.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const fixture = async () => {
-  const home = await createTestTempDirectory("rea-gemini-policy-sources-");
+  const home = await createTestTempDirectory("nre-gemini-policy-sources-");
   const configPath = join(home, ".gemini", "settings.json");
   await mkdir(dirname(configPath), { recursive: true });
   const client: SetupClient = {
@@ -32,7 +32,7 @@ it("keeps observed user absence until the caller reads a new configuration", asy
   expect(absent).toEqual({ ok: true, value: undefined });
   if (!absent.ok) throw absent.error;
 
-  await writeFile(configPath, JSON.stringify({ mcp: { excluded: ["rea"] } }));
+  await writeFile(configPath, JSON.stringify({ mcp: { excluded: ["nre"] } }));
   expect(await readClientPolicyBlock(client, absent.value)).toEqual({
     ok: true,
     value: undefined,
@@ -48,7 +48,7 @@ it("keeps observed user absence until the caller reads a new configuration", asy
 
 it("preserves the parsed user policy when its source disappears", async () => {
   const { client, configPath } = await fixture();
-  await writeFile(configPath, JSON.stringify({ mcp: { excluded: ["rea"] } }));
+  await writeFile(configPath, JSON.stringify({ mcp: { excluded: ["nre"] } }));
   const observed = await readConfigurationFile(configPath, "json");
   if (!observed.ok) throw observed.error;
   await rm(configPath);
@@ -63,7 +63,7 @@ it("still reads independent system policy when the user file was absent", async 
   const { client, configPath, systemPath } = await fixture();
   const absent = await readConfigurationFile(configPath, "json");
   if (!absent.ok) throw absent.error;
-  await writeFile(systemPath, JSON.stringify({ mcp: { excluded: ["rea"] } }));
+  await writeFile(systemPath, JSON.stringify({ mcp: { excluded: ["nre"] } }));
 
   expect(await readClientPolicyBlock(client, absent.value)).toMatchObject({
     ok: true,

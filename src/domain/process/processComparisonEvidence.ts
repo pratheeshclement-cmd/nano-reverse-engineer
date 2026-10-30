@@ -24,7 +24,7 @@ export const compareProcessCaptureEvidence = (
     options,
   );
   const evidence = createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-comparison",
+    predicateType: "nre.process-comparison",
     operation: "compare_process_captures",
     parameters: {
       left_evidence_id: left.record.evidence_id,

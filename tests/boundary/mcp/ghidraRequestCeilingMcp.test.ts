@@ -28,8 +28,8 @@ it("reports local Ghidra admission through SDK MCP without dispatching or losing
   };
   const config = parseConfig({
     GHIDRA_INSTALL_DIR: "/fixture/ghidra",
-    REA_GHIDRA_STARTUP_TIMEOUT_MS: "10000",
-    REA_BRIDGE_MAX_REQUEST_BYTES: "8192",
+    NRE_GHIDRA_STARTUP_TIMEOUT_MS: "10000",
+    NRE_BRIDGE_MAX_REQUEST_BYTES: "8192",
   });
   if (!config.ok) throw config.error;
   const provider = new GhidraProvider(
@@ -74,12 +74,12 @@ it("reports local Ghidra admission through SDK MCP without dispatching or losing
           diagnostics: { failure_kind: "admission" },
         },
         remediation: {
-          action: expect.stringContaining("REA_BRIDGE_MAX_REQUEST_BYTES"),
+          action: expect.stringContaining("NRE_BRIDGE_MAX_REQUEST_BYTES"),
         },
       },
     });
     expect(projected.error.remediation?.action).toContain(
-      "only the REA client applies",
+      "only the NRE client applies",
     );
     expect(
       projected.error.remediation?.action.includes("Restart Hopper or Cutter"),

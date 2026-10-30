@@ -88,7 +88,7 @@ const setupRegistration = (
   });
   const registrationCommandBlocker =
     registrationCommand.length === 0
-      ? "REA could not determine the current executable entrypoint. Run setup through the installed REA CLI or a supported package runner before configuring clients."
+      ? "NRE could not determine the current executable entrypoint. Run setup through the installed NRE CLI or a supported package runner before configuring clients."
       : platform === "win32"
         ? packagePrivateLauncherBlocker(
             registrationCommand,
@@ -114,7 +114,7 @@ export const filterClientsNeedingConfigure = async (
   return detectedClients.filter((_, index) => needs[index]);
 };
 
-/** Refuse a Node.js runtime REA does not support before any setup work. */
+/** Refuse a Node.js runtime NRE does not support before any setup work. */
 export const hostRemediation = (host: SetupHost): string | undefined =>
   supportsNodeVersion(host.nodeVersion)
     ? undefined
@@ -176,7 +176,11 @@ export const systemSetupHost = (
     skillDestinations: (clientIds) =>
       skillDestinations(homeDirectory, clientIds, environment, platform),
     ...registration,
-    nodeVersion: process.versions.node,
+    nodeVersion:
+      doctorHost.runtime.id === "node"
+        ? doctorHost.runtime.version
+        : (doctorHost.runtime.nodeCompatibilityVersion ??
+          process.versions.node),
     macosVersion: () => doctorHost.macosVersion(),
     linuxDistribution,
     close: () => cleanup.close(),
@@ -192,7 +196,7 @@ export const systemSetupHost = (
         ...explicitSetupRegistrationEnvironment(environment),
       };
       const requestedProvider = analysisProviderSelectorSchema.safeParse(
-        environment.REA_ANALYSIS_PROVIDER,
+        environment.NRE_ANALYSIS_PROVIDER,
       );
       return {
         ...(diagnosis.hopperPath === undefined
@@ -208,7 +212,7 @@ export const systemSetupHost = (
           diagnosis.providerInspections?.some(
             ({ configured }) => configured,
           ) === true ||
-          providerEnvironment.REA_JEB_MCP_URL !== undefined ||
+          providerEnvironment.NRE_JEB_MCP_URL !== undefined ||
           (requestedProvider.success && requestedProvider.data !== "auto"),
         providerEnvironment,
         doctor: diagnosis,

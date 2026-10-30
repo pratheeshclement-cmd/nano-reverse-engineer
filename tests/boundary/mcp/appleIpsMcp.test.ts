@@ -22,7 +22,7 @@ it("advertises and validates IPS facts and failures through production stdio MCP
     readOnlyHint: false,
     idempotentHint: true,
   });
-  const root = await createTestTempDirectory("rea-apple-ips-mcp-");
+  const root = await createTestTempDirectory("nre-apple-ips-mcp-");
   const path = join(root, "report.ips");
   await writeFile(path, appleIpsBytes());
   expect(ajv.validate(inputSchema, { path, max_integer_text_bytes: 1 })).toBe(

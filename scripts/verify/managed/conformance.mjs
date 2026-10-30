@@ -33,7 +33,7 @@ import {
 } from "../../lib/verifier-run.mjs";
 
 const verifierRun = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-managed-conformance-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-managed-conformance-"));
 let completionReportInput;
 let finalReport;
 const {
@@ -421,12 +421,12 @@ try {
       ...(ilspyOracle === null ? [] : ["ilspy-reconstruction-oracle"]),
     ],
     managedAppManifest: {
-      env: "REA_MANAGED_APP_MANIFEST_PATH",
+      env: "NRE_MANAGED_APP_MANIFEST_PATH",
       selfTest: manifestSelfTest,
       operator: operatorManifest ?? { configured: false },
     },
     ilspyOracle: ilspyOracle ?? {
-      env: "REA_ILSPY_CMD_PATH",
+      env: "NRE_ILSPY_CMD_PATH",
       configured: false,
     },
   };

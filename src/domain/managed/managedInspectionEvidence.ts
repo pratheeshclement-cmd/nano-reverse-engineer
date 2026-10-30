@@ -44,9 +44,9 @@ export const readManagedInspectionEvidence = <
   const evidence = record.value;
   if (
     evidence.operation !== operation ||
-    evidence.predicate_type !== "rea.analysis"
+    evidence.predicate_type !== "nre.analysis"
   ) {
-    const message = `Expected rea.analysis ${operation} Evidence, received ${evidence.predicate_type} ${evidence.operation}`;
+    const message = `Expected nre.analysis ${operation} Evidence, received ${evidence.predicate_type} ${evidence.operation}`;
     return err(
       new AnalysisInputError(selection.operation, { userMessage: message }, [
         { path: selection.path, reason: "invalid_value", message },

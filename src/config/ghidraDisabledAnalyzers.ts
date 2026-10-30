@@ -4,14 +4,14 @@ export const MAX_GHIDRA_DISABLED_ANALYZER_NAMES = 32;
 export const MAX_GHIDRA_DISABLED_ANALYZER_NAME_LENGTH = 120;
 
 // Ghidra's headless parser consumes `-`-prefixed arguments after a script path
-// as its own options, and REA joins the names with commas into one pre-script
+// as its own options, and NRE joins the names with commas into one pre-script
 // argument, so a name can neither start with `-` nor contain a comma. The
 // remaining admitted characters keep the argument a single quotable token on
 // every supported launcher, including the Windows batch invocation.
 const ghidraAnalyzerNamePattern = /^[A-Za-z0-9][A-Za-z0-9 ._-]*$/u;
 
 /**
- * Parse `REA_GHIDRA_DISABLED_ANALYZERS` into the Ghidra auto-analyzer names to
+ * Parse `NRE_GHIDRA_DISABLED_ANALYZERS` into the Ghidra auto-analyzer names to
  * disable before default auto-analysis, such as
  * `Objective-C Message Analyzer`. Empty and blank entries are dropped; a list
  * without names selects no override.

@@ -61,7 +61,7 @@ it("keeps the 192 MiB decoder heap when the setting is unset", async () => {
   expect(command.arguments).toContain("--max-semi-space-size=8");
 });
 
-it("uses a valid REA_CAPTURE_DECODER_OLD_GENERATION_MIB override", async () => {
+it("uses a valid NRE_CAPTURE_DECODER_OLD_GENERATION_MIB override", async () => {
   expect(parseCaptureDecoderHeap("256")).toEqual({
     ok: true,
     value: configured(256),
@@ -72,7 +72,7 @@ it("uses a valid REA_CAPTURE_DECODER_OLD_GENERATION_MIB override", async () => {
     ok: true,
     value: configured(MAXIMUM_CAPTURE_DECODER_OLD_GENERATION_MIB),
   });
-  const environment = { REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "256" };
+  const environment = { NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "256" };
   const parsed = parseConfig(environment);
   if (!parsed.ok) throw new Error("valid heap was rejected");
   const adapter = new NodeCaptureAdapter("har", environment);
@@ -109,7 +109,7 @@ it("uses a valid REA_CAPTURE_DECODER_OLD_GENERATION_MIB override", async () => {
         unit: "MiB",
         applies_at: "next_worker",
         agent_editable: true,
-        rea_restart_required: false,
+        nre_restart_required: false,
       },
       reported_limits: {
         old_generation_heap_mib: 256,
@@ -122,7 +122,7 @@ it("keeps a parsed heap instead of reading the adapter environment again", async
   const heap = configured(256);
   const adapter = new NodeCaptureAdapter(
     "har",
-    { REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "512" },
+    { NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "512" },
     heap,
   );
   expect(adapter.heap).toBe(heap);
@@ -133,12 +133,12 @@ it("keeps a parsed heap instead of reading the adapter environment again", async
 
 it("reports the heap the selected adapter launches when decoder environment differs", async () => {
   const launched = new NodeCaptureAdapter("har", {
-    REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
+    NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
   });
   const other = new NodeCaptureAdapter("saz", {
-    REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "512",
+    NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "512",
   });
-  const root = await mkdtemp(join(tmpdir(), "rea-capture-heap-report-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-capture-heap-report-"));
   const capturePath = join(root, "input.har");
   const text = JSON.stringify(historicalHar());
   await writeFile(capturePath, text);
@@ -146,7 +146,12 @@ it("reports the heap the selected adapter launches when decoder environment diff
     capture_path: capturePath,
     format: "har",
   });
-  const decoder = new HistoricalCaptureDecoder([launched, other], {});
+  const decoder = new HistoricalCaptureDecoder(
+    [launched, other],
+    process.env.SystemRoot === undefined
+      ? {}
+      : { SystemRoot: process.env.SystemRoot },
+  );
   try {
     vi.spyOn(launched, "command").mockImplementation(async (requestPath) => {
       const runtimePath = join(requestPath, "..");
@@ -193,8 +198,8 @@ it("reports the heap the selected adapter launches when decoder environment diff
 
 it("registers CLI commands when the capture decoder heap setting is invalid", async () => {
   const cli = createCli({
-    REA_LOG_LEVEL: "silent",
-    REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "7",
+    NRE_LOG_LEVEL: "silent",
+    NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "7",
   });
   let text = "";
   await cli.serve(["inspect-web-network-capture", "--help"], {
@@ -231,7 +236,7 @@ it.each([
   ]);
   expect(parsed.error.message).toBe(captureDecoderHeapConstraint);
   const startup = parseEnvironment({
-    REA_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
+    NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
   });
   if (startup.ok) throw new Error(`Startup accepted ${JSON.stringify(value)}`);
   expect(startup.error.settings).toContainEqual({
@@ -239,29 +244,29 @@ it.each([
     constraint: captureDecoderHeapConstraint,
   });
   const config = parseConfig({
-    REA_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
+    NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
   });
   if (config.ok)
     throw new Error(`parseConfig accepted ${JSON.stringify(value)}`);
   expect(projectAnalysisError(config.error)).toMatchObject({
     code: "configuration_invalid",
-    message: expect.stringContaining("REA_CAPTURE_DECODER_OLD_GENERATION_MIB"),
+    message: expect.stringContaining("NRE_CAPTURE_DECODER_OLD_GENERATION_MIB"),
   });
   expect(
     () =>
       new NodeCaptureAdapter("har", {
-        REA_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
+        NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
       }),
   ).toThrow(ConfigurationError);
   expect(
     () =>
       new HistoricalCaptureDecoder([], {
-        REA_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
+        NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
       }),
   ).toThrow(ConfigurationError);
   expect(() =>
     createWebNetworkCaptureService({
-      REA_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
+      NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: value,
     }),
   ).toThrow(ConfigurationError);
 });

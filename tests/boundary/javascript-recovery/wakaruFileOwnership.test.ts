@@ -100,7 +100,7 @@ linuxX64.each([
     expect(handle.fd).toBeGreaterThanOrEqual(0);
     const resources = outcome.error.cleanupResources;
     const workspace = resources.find((path) =>
-      basename(path).startsWith("rea-wakaru-"),
+      basename(path).startsWith("nre-wakaru-"),
     );
     if (stage !== "engine") {
       expect(workspace).toBeDefined();

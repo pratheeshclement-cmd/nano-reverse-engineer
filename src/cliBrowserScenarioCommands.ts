@@ -77,7 +77,7 @@ export const registerBrowserScenarioCommands = (
                 await provider?.close?.();
               },
             },
-            "rea-playwright-browser-scenario",
+            "nre-playwright-browser-scenario",
             OPERATION,
             signal,
             undefined,
@@ -89,7 +89,7 @@ export const registerBrowserScenarioCommands = (
               ...result.error,
             };
           return publishCliAnalysisEvidence(result, {
-            providerId: "rea-playwright-browser-scenario",
+            providerId: "nre-playwright-browser-scenario",
             operation: OPERATION,
             signal,
             detail: delivery.detail,

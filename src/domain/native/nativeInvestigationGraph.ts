@@ -426,9 +426,9 @@ export const joinInterfaceBuilderDispatch = (
   return nativeInvestigationGraphSchema.parse({
     ...graph,
     provider: {
-      id: "rea-native-investigation",
+      id: "nre-native-investigation",
       version: null,
-      tool_version: "rea-native-investigation/1",
+      tool_version: "nre-native-investigation/1",
     },
     nodes: [...nodes.values()],
     edges,

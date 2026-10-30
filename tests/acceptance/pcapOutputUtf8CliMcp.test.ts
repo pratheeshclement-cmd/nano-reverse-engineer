@@ -44,15 +44,15 @@ const environmentFor = (
   USERPROFILE: root,
   XDG_CONFIG_HOME: root,
   XDG_CACHE_HOME: root,
-  REA_LOG_LEVEL: "silent",
-  REA_TSHARK_COMMAND: tools.tshark,
-  REA_CAPINFOS_COMMAND: tools.capinfos,
+  NRE_LOG_LEVEL: "silent",
+  NRE_TSHARK_COMMAND: tools.tshark,
+  NRE_CAPINFOS_COMMAND: tools.capinfos,
 });
 
 cliTest.skipIf(process.platform !== "linux")(
   "preserves contradictory packet counts through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pcap-count-mismatch-");
+    const root = await createTestTempDirectory("nre-pcap-count-mismatch-");
     const path = join(root, "capture.pcap");
     await writeFile(path, Buffer.from("pcap-fixture-bytes"));
     const { tshark, capinfos } = await writeStubTools(root, {
@@ -93,7 +93,7 @@ cliTest.skipIf(process.platform === "win32")(
   "returns the same unreadable-output diagnostic for invalid version streams through CLI and stdio MCP",
   async ({ cli }) => {
     for (const scenario of invalidVersionCases) {
-      const root = await createTestTempDirectory("rea-pcap-version-utf8-");
+      const root = await createTestTempDirectory("nre-pcap-version-utf8-");
       const tools = await writeStubTools(
         root,
         scenario.options as PcapStubToolsOptions,
@@ -131,7 +131,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform === "win32")(
   "preserves literal replacement characters in version output through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pcap-version-literal-");
+    const root = await createTestTempDirectory("nre-pcap-version-literal-");
     const tools = await writeStubTools(root, { literalTsharkVersion: true });
     const environment = environmentFor(root, tools);
     const outputSchema = toolContract("inspect_pcap_client").outputSchema;

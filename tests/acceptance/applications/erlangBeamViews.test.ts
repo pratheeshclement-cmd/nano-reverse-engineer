@@ -105,7 +105,7 @@ cliTest(
   "queries same-name BEAM export arities through CLI/MCP after deleting the source",
   { timeout: 60_000 },
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-views-");
+    const root = await createTestTempDirectory("nre-beam-views-");
     const path = join(root, "app.beam");
     await writeFile(path, erlangBeamFixture("views"));
     const run = cli.sharedCliRun?.bind(cli) ?? cli.run.bind(cli);
@@ -230,7 +230,7 @@ cliTest(
 cliTest(
   "preserves missing tables, empty exports and unresolved atom references in BEAM views",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-missing-tables-");
+    const root = await createTestTempDirectory("nre-beam-missing-tables-");
     const path = join(root, "app.beam");
     const imports = Buffer.alloc(16);
     [1, 999, 998, 2].forEach((value, i) => imports.writeUInt32BE(value, i * 4));
@@ -311,7 +311,7 @@ cliTest(
 cliTest(
   "rejects invalid BEAM delivery before reading the target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-beam-invalid-view-");
+    const root = await createTestTempDirectory("nre-beam-invalid-view-");
     const output = join(root, "unused.json");
     const run = cli.sharedCliRun?.bind(cli) ?? cli.run.bind(cli);
     const view = JSON.stringify({ kind: "beam", collection: "exports" });
@@ -329,7 +329,7 @@ cliTest(
       const result = await run({
         arguments: [
           "inspect-erlang-beam",
-          "/rea-missing/app.beam",
+          "/nre-missing/app.beam",
           ...flags,
           "--json",
         ],

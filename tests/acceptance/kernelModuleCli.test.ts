@@ -12,7 +12,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "reports license, duplicate aliases, and version CRCs through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-kernel-module-cli-");
+    const root = await createTestTempDirectory("nre-kernel-module-cli-");
     const path = join(root, "demo.ko");
     await writeFile(path, kernelModuleFixture());
     const result = await cli.run({
@@ -45,7 +45,7 @@ cliTest(
 cliTest(
   "resolves a relative kernel module path against the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-kernel-module-cli-rel-");
+    const root = await createTestTempDirectory("nre-kernel-module-cli-rel-");
     await writeFile(join(root, "demo.ko"), kernelModuleFixture({ type: 3 }));
     const result = await cli.run({
       arguments: ["inspect-kernel-module", "demo.ko", "--json"],
@@ -62,7 +62,7 @@ cliTest(
 );
 
 cliTest("reports a non-ELF file as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-kernel-module-cli-bad-");
+  const root = await createTestTempDirectory("nre-kernel-module-cli-bad-");
   const path = join(root, "broken.ko");
   await writeFile(path, Buffer.from("not an elf"));
   const result = await cli.run({
@@ -78,7 +78,7 @@ cliTest("reports a non-ELF file as invalid input", async ({ cli }) => {
 cliTest(
   "reports a compressed container without claiming the payload is a module",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-kernel-module-cli-xz-");
+    const root = await createTestTempDirectory("nre-kernel-module-cli-xz-");
     const path = join(root, "demo.ko.xz");
     await writeFile(path, compressedKernelModuleContainer("xz"));
     const result = await cli.run({

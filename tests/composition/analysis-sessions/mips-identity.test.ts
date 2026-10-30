@@ -29,7 +29,7 @@ const profile = createAnalysisProfile(provider, {
 
 describe("MIPS identity through lifecycle, Evidence and snapshot consumers", () => {
   it("round-trips query bindings without relaxing integrity", () => {
-    const result = [{ address: "0x20150", value: "rea_mips_entry" }];
+    const result = [{ address: "0x20150", value: "nre_mips_entry" }];
     const parameters = {};
     const evidence = createEvidence(target, provider, {
       operation: "list_procedures",

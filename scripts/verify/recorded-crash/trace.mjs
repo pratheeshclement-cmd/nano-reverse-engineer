@@ -20,12 +20,12 @@ export async function verifyCoreInspectionTrace({
   runId,
   historicalPid = sentinel.pid,
 }) {
-  const gdb = await realpath(environment.REA_PWNDBG_GDB);
-  const python = await realpath(environment.REA_PWNTOOLS_PYTHON);
-  const plugin = resolve(environment.REA_PWNDBG_GDBINIT, "..");
+  const gdb = await realpath(environment.NRE_PWNDBG_GDB);
+  const python = await realpath(environment.NRE_PWNTOOLS_PYTHON);
+  const plugin = resolve(environment.NRE_PWNDBG_GDBINIT, "..");
   const helperPaths = (name) =>
     new Set([
-      join(environment.REA_PWNDBG_VENV_PATH, "bin", name),
+      join(environment.NRE_PWNDBG_VENV_PATH, "bin", name),
       ...(environment.PATH ?? "")
         .split(":")
         .filter(isAbsolute)
@@ -56,7 +56,7 @@ export async function verifyCoreInspectionTrace({
           ];
     const result = await runOwnedCommand(
       {
-        command: environment.REA_VERIFY_STRACE_COMMAND,
+        command: environment.NRE_VERIFY_STRACE_COMMAND,
         arguments: [
           "-ff",
           "-qq",

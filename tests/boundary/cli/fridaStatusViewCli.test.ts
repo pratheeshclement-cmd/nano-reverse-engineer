@@ -32,7 +32,7 @@ cliTest(
         },
       },
     );
-    const root = await createTestTempDirectory("rea-frida-status-view-");
+    const root = await createTestTempDirectory("nre-frida-status-view-");
     const source = join(root, "parent.json");
     const request = join(root, "request.json");
     await writeFile(source, JSON.stringify(parent));

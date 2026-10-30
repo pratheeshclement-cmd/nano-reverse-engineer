@@ -9,10 +9,10 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "mcp add discovery does not create or change Amp settings",
   async ({ processes }) => {
-    const home = await createTestTempDirectory("rea-mcp-discovery-");
+    const home = await createTestTempDirectory("nre-mcp-discovery-");
     const path = join(home, ".config", "amp", "settings.json");
     const run = (args: string[]) =>
-      processes.run(process.execPath, [resolve("scripts/rea.mjs"), ...args], {
+      processes.run(process.execPath, [resolve("scripts/nre.mjs"), ...args], {
         env: {
           ...process.env,
           HOME: home,
@@ -75,14 +75,14 @@ cliTest(
     await writeFile(path, original);
     for (const flag of ["--schema", "--version", "--help"]) {
       const result = await run(["mcp", "add", "--agent", "amp", flag]);
-      expect(result.stdout).not.toContain("Registered rea");
+      expect(result.stdout).not.toContain("Registered nre");
       expect(result.exitCode).toBe(flag === "--schema" ? 1 : 0);
       expect(await readFile(path, "utf8")).toBe(original);
     }
     const registration = await run(["mcp", "add", "--agent", "amp"]);
     expect(registration.exitCode).toBe(0);
     expect(
-      JSON.parse(await readFile(path, "utf8"))["amp.mcpServers"].rea,
+      JSON.parse(await readFile(path, "utf8"))["amp.mcpServers"].nre,
     ).toBeDefined();
   },
 );

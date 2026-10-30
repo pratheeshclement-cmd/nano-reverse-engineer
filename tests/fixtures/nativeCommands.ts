@@ -144,7 +144,7 @@ export const nativeFixture = (name: string): Promise<string> =>
 /** Parsed signature facts for lifecycle controls that do not invoke native tools. */
 export const signatureInspectionFixture = (): InspectSignature => ({
   signed: true,
-  identifier: "rea.lifecycle-fixture",
+  identifier: "nre.lifecycle-fixture",
   team_identifier: null,
   format: "Mach-O thin (arm64)",
   cdhashes: ["0123456789abcdef"],

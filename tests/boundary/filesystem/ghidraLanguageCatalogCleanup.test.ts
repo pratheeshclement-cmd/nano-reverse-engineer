@@ -99,7 +99,7 @@ const control = (name: string, overrides: Partial<FileControl> = {}) => {
 };
 
 const installation = async (name: string): Promise<string> => {
-  const root = await createTestTempDirectory("rea-ghidra-ldefs-cleanup-");
+  const root = await createTestTempDirectory("nre-ghidra-ldefs-cleanup-");
   const languages = join(root, "Ghidra/Processors", name, "data/languages");
   await mkdir(languages, { recursive: true });
   await writeFile(
@@ -227,7 +227,7 @@ it("reports retained cleanup for a catalog without definitions", async () => {
   await expect(
     readGhidraLanguageCatalog(await installation("pending"), resources),
   ).rejects.toBeInstanceOf(ArtifactReaderFailure);
-  const empty = await createTestTempDirectory("rea-ghidra-ldefs-empty-");
+  const empty = await createTestTempDirectory("nre-ghidra-ldefs-empty-");
   await expect(
     readGhidraLanguageCatalog(empty, resources),
   ).rejects.toMatchObject({

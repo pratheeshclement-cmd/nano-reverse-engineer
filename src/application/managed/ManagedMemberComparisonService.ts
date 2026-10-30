@@ -215,7 +215,7 @@ const createManagedMemberComparisonEvidence = (
   sourcePaths?: { readonly leftPath: string; readonly rightPath: string },
 ): Evidence =>
   createEvidence(undefined, MANAGED_WORKFLOW_PROVIDER, {
-    predicateType: "rea.managed-member-comparison",
+    predicateType: "nre.managed-member-comparison",
     operation: "compare_managed_members",
     parameters: {
       left_evidence_id: left.evidence_id,

@@ -94,7 +94,7 @@ const sazBytes = async () => {
 cliTest(
   "preserves same-scheme Location paths and excludes actual redirect credentials through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-history-redirects-");
+    const root = await createTestTempDirectory("nre-history-redirects-");
     const { call } = await connectLocalToolsMcp();
     for (const format of ["har", "saz"] as const) {
       const path = join(root, `redirects.${format}`);

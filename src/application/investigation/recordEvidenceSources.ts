@@ -29,7 +29,7 @@ export const retainAnalysisResultSources = <Value>(
     sources.length > 0 && recordEvidence === undefined
       ? err(
           new AnalysisCapabilityUnavailableError(
-            "rea",
+            "nre",
             operation,
             "Provider source Evidence requires an explicit retention owner.",
             {

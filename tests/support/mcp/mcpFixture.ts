@@ -24,7 +24,7 @@ export interface TestMcp {
 }
 
 const DEFAULT_CLIENT_IDENTITY: McpClientIdentity = {
-  name: "rea-vitest",
+  name: "nre-vitest",
   version: "1.0.0",
 };
 

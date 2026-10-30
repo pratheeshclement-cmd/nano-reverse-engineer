@@ -30,7 +30,7 @@ const cases = (["frida", "jeb"] as const).flatMap((provider) =>
 
 /** Copy the actual script; substitute only the engine-facing module boundary. */
 const verifierFixture = async (provider: Provider) => {
-  const root = await createTestTempDirectory("rea-provider-verifier-cleanup-");
+  const root = await createTestTempDirectory("nre-provider-verifier-cleanup-");
   const temporary = join(root, "temporary");
   await mkdir(temporary);
   await mkdir(join(root, "scripts", "lib"), { recursive: true });
@@ -46,13 +46,13 @@ const verifierFixture = async (provider: Provider) => {
     join(root, "scripts", "lib", "verifier-cleanup.mjs"),
   );
   const closeBody = `
-    await appendFile(process.env.REA_TEST_VERIFIER_CLOSE_LOG, "${provider}\\n");
-    if (process.env.REA_TEST_VERIFIER_CLOSE_FAIL === "1")
+    await appendFile(process.env.NRE_TEST_VERIFIER_CLOSE_LOG, "${provider}\\n");
+    if (process.env.NRE_TEST_VERIFIER_CLOSE_FAIL === "1")
       throw new Error("controlled ${provider} cleanup denial");
   `;
   const primaryBody = `
-    if (process.env.REA_TEST_VERIFIER_PRIMARY === "undefined") throw undefined;
-    if (process.env.REA_TEST_VERIFIER_PRIMARY === "null") throw null;
+    if (process.env.NRE_TEST_VERIFIER_PRIMARY === "undefined") throw undefined;
+    if (process.env.NRE_TEST_VERIFIER_PRIMARY === "null") throw null;
   `;
 
   if (provider === "frida") {
@@ -81,7 +81,7 @@ export class FridaInstrumentationManager {
       cleanupError: null,
       evidence: { normalized_result: {
         pid: 77,
-        messages: [{ type: "send", payload: { rea_frida_verification: "ok", pid: 77 } }],
+        messages: [{ type: "send", payload: { nre_frida_verification: "ok", pid: 77 } }],
       } },
     } };
   }
@@ -145,9 +145,9 @@ processTest.for(cases)(
           TMPDIR: fixture.temporary,
           TEMP: fixture.temporary,
           TMP: fixture.temporary,
-          REA_TEST_VERIFIER_PRIMARY: primary,
-          REA_TEST_VERIFIER_CLOSE_FAIL: closeFails ? "1" : "0",
-          REA_TEST_VERIFIER_CLOSE_LOG: fixture.closeLog,
+          NRE_TEST_VERIFIER_PRIMARY: primary,
+          NRE_TEST_VERIFIER_CLOSE_FAIL: closeFails ? "1" : "0",
+          NRE_TEST_VERIFIER_CLOSE_LOG: fixture.closeLog,
         },
         timeoutMs: 10_000,
       },
@@ -166,7 +166,7 @@ processTest.for(cases)(
       expect(retained).toHaveLength(1);
       const name = retained[0];
       if (name === undefined) throw new Error("Missing retained JEB fixture");
-      expect(name).toMatch(/^rea-jeb-/u);
+      expect(name).toMatch(/^nre-jeb-/u);
       retainedMessage = `JEB fixture retained at ${join(fixture.temporary, name)}\n`;
     } else expect(retained).toEqual([]);
     expect(result.stderr).toBe(

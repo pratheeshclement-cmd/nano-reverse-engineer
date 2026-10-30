@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../tests/fixtures/temporaryDirectory
 import { mkdir, readFile, symlink, writeFile } from "node:fs/promises";
 
 it("inspects a resolved app plist without executable identity", async () => {
-  const bundle = await createTestTempDirectory("rea-plist-resource-root-");
+  const bundle = await createTestTempDirectory("nre-plist-resource-root-");
   const infoPlist = join(bundle, "Info.plist");
   await writeFile(infoPlist, '<?xml version="1.0"?><plist><dict/></plist>');
   const root = {
@@ -48,7 +48,7 @@ it("inspects a resolved app plist without executable identity", async () => {
 it.skipIf(process.platform === "win32")(
   "preserves physical selected plist paths in resource-only roots",
   async () => {
-    const bundle = await createTestTempDirectory("rea-plist-resource-path-");
+    const bundle = await createTestTempDirectory("nre-plist-resource-path-");
     const physical = join(bundle, "physical");
     await mkdir(join(physical, "child"), { recursive: true });
     await writeFile(join(bundle, "Info.plist"), "lexical decoy");

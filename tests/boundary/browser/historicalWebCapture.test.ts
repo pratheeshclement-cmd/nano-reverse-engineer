@@ -11,7 +11,7 @@ import { webNetworkCaptureSchema } from "../../../src/domain/webNetworkCapture.j
 import { connectLocalToolsMcp } from "../../fixtures/localToolsMcp.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const entrypoint = fileURLToPath(
-  new URL("../../../scripts/rea.mjs", import.meta.url),
+  new URL("../../../scripts/nre.mjs", import.meta.url),
 );
 const cli = async (
   path: string,
@@ -29,7 +29,7 @@ const cli = async (
         "--json",
         ...extra,
       ],
-      { env: { ...process.env, REA_MITMDUMP_COMMAND: "" }, timeout: 40_000 },
+      { env: { ...process.env, NRE_MITMDUMP_COMMAND: "" }, timeout: 40_000 },
     );
     return { ok: true, stdout: result.stdout };
   } catch (cause: unknown) {
@@ -48,7 +48,7 @@ import {
 } from "../../fixtures/historicalHar.js";
 
 it("preserves opaque HAR container fields through CLI and MCP", async () => {
-  const root = await createTestTempDirectory("rea-har-container-fields-");
+  const root = await createTestTempDirectory("nre-har-container-fields-");
   const path = join(root, "capture.har");
   const fixture = harWithContainerLookalikes();
   const original = JSON.stringify(fixture);
@@ -111,7 +111,7 @@ it.each([
 ])(
   "excludes normalized HAR numbers through CLI and MCP: $encoded",
   async ({ encoded, literal }) => {
-    const root = await createTestTempDirectory("rea-har-normalized-number-");
+    const root = await createTestTempDirectory("nre-har-normalized-number-");
     const path = join(root, "capture.har");
     const original = JSON.stringify(historicalHar())
       .replace('"log":{', `"_number":${encoded},"log":{`)
@@ -166,11 +166,11 @@ it.each([
 );
 
 it("retains Playwright IPv6 spelling through public CLI and MCP workflows", async () => {
-  const root = await createTestTempDirectory("rea-har-ipv6-");
+  const root = await createTestTempDirectory("nre-har-ipv6-");
   const path = join(root, "capture.har");
   const original = JSON.stringify(historicalHar())
     .replace(
-      '"name":"rea-source-owned-fixture","version":"1"',
+      '"name":"nre-source-owned-fixture","version":"1"',
       '"name":"Playwright","version":"1.58.2"',
     )
     .replace(
@@ -205,7 +205,7 @@ it("retains Playwright IPv6 spelling through public CLI and MCP workflows", asyn
 });
 
 it("excludes declared binary lengths through CLI, MCP and retained capture pages", async () => {
-  const root = await createTestTempDirectory("rea-har-byte-length-");
+  const root = await createTestTempDirectory("nre-har-byte-length-");
   const path = join(root, "capture.har");
   const fixture = historicalHar();
   const entry = fixture.log.entries[0];
@@ -290,7 +290,7 @@ it("excludes declared binary lengths through CLI, MCP and retained capture pages
 }, 60_000);
 
 it("reads actual upstream HAR packages in an owned process and retains selected producer order", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-history-har-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-history-har-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const fixture = historicalHar();
   const first = fixture.log.entries[0];
@@ -313,7 +313,7 @@ it("reads actual upstream HAR packages in an owned process and retains selected 
 });
 
 it("keeps malformed JSON separate from absent external mitmproxy capability", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-history-errors-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-history-errors-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const path = join(root, "capture.har");
   await writeFile(path, "{malformed-private-json");
@@ -327,12 +327,12 @@ it("keeps malformed JSON separate from absent external mitmproxy capability", as
   expect(missing.ok).toBe(false);
   expect(JSON.parse(missing.stdout)).toMatchObject({
     category: "unsupported_provider",
-    message: expect.stringContaining("REA_MITMDUMP_COMMAND"),
+    message: expect.stringContaining("NRE_MITMDUMP_COMMAND"),
   });
 });
 
 it("reports the actual HAR decoder nesting constraint as a typed selected-input issue", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-history-depth-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-history-depth-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   let extension: unknown = "leaf";
   for (let depth = 0; depth < 66; depth++) extension = { child: extension };

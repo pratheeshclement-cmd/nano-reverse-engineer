@@ -17,7 +17,7 @@ export const createElectronActiveEvidence = (
   resolvedInput?: CanonicalElectronActiveObservationInput,
 ): Evidence =>
   createEvidence(undefined, provider, {
-    predicateType: "rea.electron-active-scenario",
+    predicateType: "nre.electron-active-scenario",
     operation: "capture_electron_scenario",
     parameters: parameters(input, resolvedInput),
     result,

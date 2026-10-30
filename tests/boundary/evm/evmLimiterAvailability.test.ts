@@ -42,7 +42,7 @@ it("probes the default limiter with executable and regular-file checks", async (
 it("uses the exact absolute override and reports a failed executable check", async () => {
   const limiter = "/fixture/util-linux/prlimit";
   const availability = await evmLimiterAvailability(
-    { REA_EVM_PRLIMIT_COMMAND: limiter },
+    { NRE_EVM_PRLIMIT_COMMAND: limiter },
     {
       ...linux,
       fs: {
@@ -69,7 +69,7 @@ it("uses the exact absolute override and reports a failed executable check", asy
 
 it("rejects a relative override and non-file without probing an alternate command", async () => {
   const relative = await evmLimiterAvailability(
-    { REA_EVM_PRLIMIT_COMMAND: "prlimit" },
+    { NRE_EVM_PRLIMIT_COMMAND: "prlimit" },
     {
       ...linux,
       fs: {
@@ -86,7 +86,7 @@ it("rejects a relative override and non-file without probing an alternate comman
     diagnostics: {
       limiter_path: "prlimit",
       code: "prlimit_not_absolute",
-      setting: "REA_EVM_PRLIMIT_COMMAND",
+      setting: "NRE_EVM_PRLIMIT_COMMAND",
     },
   });
 

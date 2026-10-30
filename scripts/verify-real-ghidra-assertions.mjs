@@ -300,8 +300,8 @@ export function assertDebugFixture(observed) {
     throw new Error(
       `Ghidra did not expose the digest-bound debug Program identity ${expectedDocument}: ${JSON.stringify(observed.documents)}`,
     );
-  const entry = findValue(observed.procedures, "rea_ghidra_inventory_entry");
-  const leaf = findValue(observed.procedures, "rea_ghidra_inventory_leaf");
+  const entry = findValue(observed.procedures, "nre_ghidra_inventory_entry");
+  const leaf = findValue(observed.procedures, "nre_ghidra_inventory_leaf");
   const external = observed.procedures.find(
     (item) => item.procedure.external && matchesSymbol(item.value, "puts"),
   );
@@ -317,7 +317,7 @@ export function assertDebugFixture(observed) {
     throw new Error(
       "Ghidra procedure inventory did not distinguish a resolved thunk",
     );
-  const entryName = findValue(observed.names, "rea_ghidra_inventory_entry");
+  const entryName = findValue(observed.names, "nre_ghidra_inventory_entry");
   if (entryName === undefined || !entryName.symbol.primary)
     throw new Error("Ghidra symbol inventory missed the primary entry symbol");
   if (!observed.names.some((item) => item.symbol.external))
@@ -330,7 +330,7 @@ export function assertStrippedFixture(observed) {
   if (
     observed.procedures.length === 0 ||
     observed.names.length === 0 ||
-    findValue(observed.procedures, "rea_ghidra_inventory_entry") !== undefined
+    findValue(observed.procedures, "nre_ghidra_inventory_entry") !== undefined
   )
     throw new Error(
       "Stripped Ghidra fixture did not preserve stripped semantics",
@@ -364,8 +364,8 @@ export async function assertMalformedFixture(path) {
 
 function assertStrings(strings) {
   for (const expected of [
-    "REA_GHIDRA_INVENTORY_ENTRY",
-    "REA_GHIDRA_LEAF_VALUE",
+    "NRE_GHIDRA_INVENTORY_ENTRY",
+    "NRE_GHIDRA_LEAF_VALUE",
   ]) {
     const item = strings.find((candidate) => candidate.value === expected);
     if (

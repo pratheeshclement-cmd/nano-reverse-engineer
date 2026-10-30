@@ -40,7 +40,7 @@ const observation = (completionStatus: "complete" | "unknown") =>
     undefined,
     { id: "gnu.objdump", name: "GNU objdump", version: null },
     {
-      predicateType: "rea.reverse-engineering.command-observation",
+      predicateType: "nre.reverse-engineering.command-observation",
       operation: "inspect_with_objdump",
       parameters: { operation: "file_headers" },
       result: { completion_status: completionStatus },
@@ -415,7 +415,7 @@ it.each([false, true])(
       undefined,
       { id: "rizin.debugger", name: "Rizin debugger", version: null },
       {
-        predicateType: "rea.debugger.command-observation",
+        predicateType: "nre.debugger.command-observation",
         operation: "rizin_debug_command",
         parameters: {
           session_id: "session-1",
@@ -481,7 +481,7 @@ it.each([false, true])(
       expect.any(AbortSignal),
     );
 
-    const parserCli = Cli.create("rea-test", { version: "1.0.0", sync: false });
+    const parserCli = Cli.create("nre-test", { version: "1.0.0", sync: false });
     registerReverseEngineeringCommands(
       parserCli as unknown as CliInstance,
       pino({ enabled: false }),
@@ -535,7 +535,7 @@ it.each(["incomplete", "interrupt", "control"] as const)(
       undefined,
       { id: "rizin.debugger", name: "Rizin debugger", version: null },
       {
-        predicateType: "rea.debugger.command-observation",
+        predicateType: "nre.debugger.command-observation",
         operation: "rizin_debug_command",
         parameters: {
           session_id: "fixture-session",

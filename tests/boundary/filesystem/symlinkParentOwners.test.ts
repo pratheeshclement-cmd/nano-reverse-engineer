@@ -30,11 +30,11 @@ describe.skipIf(process.platform === "win32")(
   "file owners preserve POSIX path traversal",
   () => {
     it("snapshots the firmware image the filesystem selects", async () => {
-      const root = await layout("rea-symlink-parent-firmware-");
+      const root = await layout("nre-symlink-parent-firmware-");
       const selected = Buffer.from("selected firmware");
       await writeFile(join(root, "target/image.bin"), selected);
       await writeFile(join(root, "image.bin"), "sibling firmware");
-      const work = await createTestTempDirectory("rea-firmware-snapshot-");
+      const work = await createTestTempDirectory("nre-firmware-snapshot-");
       // Concatenate: path.join would collapse `link/..` itself.
       const path = `${root}/link/../image.bin`;
       const snapshot = await new FirmwareFileAccess().snapshot(
@@ -49,7 +49,7 @@ describe.skipIf(process.platform === "win32")(
     });
 
     it("rejects a trailing separator after a regular file", async () => {
-      const root = await layout("rea-trailing-separator-");
+      const root = await layout("nre-trailing-separator-");
       // A real executable, so only the trailing separator can reject it.
       await copyFile(process.execPath, join(root, "sample"));
       expect((await parseBinaryTarget(`${root}/sample`)).ok).toBe(true);
@@ -76,7 +76,7 @@ describe.skipIf(process.platform === "win32")(
     });
 
     it("creates the output directory the filesystem selects", async () => {
-      const root = await layout("rea-symlink-parent-output-");
+      const root = await layout("nre-symlink-parent-output-");
       const tree = await SafeOutputTree.create(`${root}/link/../out`);
       try {
         expect(tree.outputRoot).toBe(join(root, "target/out"));
@@ -92,7 +92,7 @@ describe.skipIf(process.platform === "win32")(
     it.each(["file/out", "file/../out"])(
       "refuses an output parent traversing a regular file: %s",
       async (relative) => {
-        const root = await layout("rea-nondirectory-parent-output-");
+        const root = await layout("nre-nondirectory-parent-output-");
         await writeFile(join(root, "file"), "original");
         // Darwin realpath can collapse file/.. even though stat rejects it.
         const output = `${root}/${relative}`;

@@ -217,7 +217,7 @@ export async function verifyScenarioEnvironment(endpoint, targetId, origin) {
     await assertRestored();
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
+      args: [fileURLToPath(new URL("../nre.mjs", import.meta.url)), "mcp"],
       env: process.env,
       stderr: "pipe",
     });
@@ -254,7 +254,7 @@ export async function verifyScenarioEnvironment(endpoint, targetId, origin) {
     await assertRestored();
     const initializationFailure = await provider.captureScenario({
       ...scenario,
-      environment: { ...scenario.environment, timezone: "REA/Invalid" },
+      environment: { ...scenario.environment, timezone: "NRE/Invalid" },
     });
     assert.equal(initializationFailure.ok, false);
     await assertRestored();

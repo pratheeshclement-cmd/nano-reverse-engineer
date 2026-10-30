@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "setup dry run resolves empty home values without writing to the cwd",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-empty-home-dry-run-");
+    const directory = await createTestTempDirectory("nre-empty-home-dry-run-");
     const workingDirectory = join(directory, "cwd");
     await mkdir(workingDirectory);
     const hostHome = userInfo().homedir;
@@ -68,7 +68,7 @@ cliTest.skipIf(process.platform === "win32")(
   "setup, doctor, and uninstall use the nonempty fallback home when HOME is empty",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-empty-home-lifecycle-",
+      "nre-empty-home-lifecycle-",
     );
     const home = join(directory, "fallback-home");
     const workingDirectory = join(directory, "cwd");
@@ -91,7 +91,7 @@ cliTest.skipIf(process.platform === "win32")(
     expect(setup.json).toMatchObject({ status: "ready" });
     await access(join(home, ".cursor", "mcp.json"));
     await access(
-      join(home, ".agents", "skills", "reverse-engineer-anything", "SKILL.md"),
+      join(home, ".agents", "skills", "nano-reverse-engineer", "SKILL.md"),
     );
     await expect(
       access(join(workingDirectory, ".cursor", "mcp.json")),
@@ -118,16 +118,10 @@ cliTest.skipIf(process.platform === "win32")(
     const remainingConfig = parse(
       await readFile(join(home, ".cursor", "mcp.json"), "utf8"),
     );
-    expect(remainingConfig).not.toHaveProperty("mcpServers.rea");
+    expect(remainingConfig).not.toHaveProperty("mcpServers.nre");
     await expect(
       access(
-        join(
-          home,
-          ".agents",
-          "skills",
-          "reverse-engineer-anything",
-          "SKILL.md",
-        ),
+        join(home, ".agents", "skills", "nano-reverse-engineer", "SKILL.md"),
       ),
     ).rejects.toMatchObject({ code: "ENOENT" });
     await expect(

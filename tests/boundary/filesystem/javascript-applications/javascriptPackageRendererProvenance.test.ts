@@ -9,7 +9,7 @@ import { javascriptApplicationAnalysisResultSchema } from "../../../../src/domai
 
 const packageGraph = async (metadata: Record<string, unknown>) => {
   const root = await createTestTempDirectory(
-    "rea-package-renderer-provenance-",
+    "nre-package-renderer-provenance-",
   );
   await Promise.all([
     writeFile(join(root, "package.json"), JSON.stringify(metadata)),

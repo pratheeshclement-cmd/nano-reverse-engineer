@@ -32,7 +32,7 @@ export const applicationToolRegistrationOptions = <
   const inputSchema: StandardSchemaWithJSON = {
     "~standard": {
       ...registration.inputSchema["~standard"],
-      vendor: "rea-application",
+      vendor: "nre-application",
       validate: (value: unknown) => ({ value }),
     },
   };

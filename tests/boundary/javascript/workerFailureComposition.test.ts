@@ -32,13 +32,13 @@ vi.mock("node:fs/promises", async (original) => {
     ...actual,
     rm: async (...args: Parameters<typeof actual.rm>) => {
       if (
-        String(args[0]).includes("rea-javascript-analysis-") &&
+        String(args[0]).includes("nre-javascript-analysis-") &&
         String(args[0]).endsWith(".source")
       )
         faults.onSourceRemoval?.();
       if (
         faults.sourceRemoval &&
-        String(args[0]).includes("rea-javascript-analysis-") &&
+        String(args[0]).includes("nre-javascript-analysis-") &&
         String(args[0]).endsWith(".source")
       ) {
         faults.removals += 1;

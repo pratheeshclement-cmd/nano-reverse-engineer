@@ -39,7 +39,7 @@ const relationshipGraph = async (root: string) => {
 it.each(["browser", "module", "renderer", "main"] as const)(
   "distinguishes %s package metadata from an imported module's application owner",
   async (field) => {
-    const root = await createTestTempDirectory("rea-frontend-package-owner-");
+    const root = await createTestTempDirectory("nre-frontend-package-owner-");
     await writeFixtureFiles(root, {
       "package.json": JSON.stringify({ main: "main.cjs" }),
       "main.cjs": 'require("./lib/window.cjs");',
@@ -98,7 +98,7 @@ it.each([
 ] as const)(
   "deduplicates %s limitations on import and export relationships",
   async (limit, source) => {
-    const root = await createTestTempDirectory("rea-module-limit-evidence-");
+    const root = await createTestTempDirectory("nre-module-limit-evidence-");
     await writeFixtureFiles(root, {
       "entry.js": `import imported from "./dep.js"; ${source} export { result };`,
       "dep.js": "export default 42;",
@@ -134,7 +134,7 @@ it.each([
 
 describe("cross-version source module identity", () => {
   it("keeps exact source identity without claiming unchanged unresolved relationships", async () => {
-    const root = await createTestTempDirectory("rea-source-module-sibling-");
+    const root = await createTestTempDirectory("nre-source-module-sibling-");
     const mainSource = 'require("./util.js");\n';
     const sourceSha256 = createHash("sha256").update(mainSource).digest("hex");
     const versions = await Promise.all(
@@ -230,7 +230,7 @@ describe("cross-version source module identity", () => {
 
 describe("TypeScript source module loader semantics", () => {
   it("publishes each source module's own content digest", async () => {
-    const root = await createTestTempDirectory("rea-source-module-digest-");
+    const root = await createTestTempDirectory("nre-source-module-digest-");
     const source = "module.exports = 42;\n";
     await writeFixtureFiles(root, { "main.js": source });
 
@@ -246,7 +246,7 @@ describe("TypeScript source module loader semantics", () => {
   });
 
   it("keeps whole type-only declarations out of runtime module relationships", async () => {
-    const root = await createTestTempDirectory("rea-type-module-links-");
+    const root = await createTestTempDirectory("nre-type-module-links-");
     await writeFixtureFiles(root, {
       "main.ts": `
         import type { Whole } from "./whole";
@@ -300,7 +300,7 @@ describe("TypeScript source module loader semantics", () => {
   });
 
   it("uses emitted TypeScript loader semantics without changing dynamic imports", async () => {
-    const root = await createTestTempDirectory("rea-cts-module-loader-");
+    const root = await createTestTempDirectory("nre-cts-module-loader-");
     await writeFixtureFiles(root, {
       "package.json": '{"type":"module"}',
       "main.cts": `
@@ -520,7 +520,7 @@ describe("JavaScript module relationships", () => {
 
 describe("Compiler-dependent TypeScript resolution", () => {
   it("retains only compiler-independent targets for .ts static imports", async () => {
-    const root = await createTestTempDirectory("rea-ts-conditional-loader-");
+    const root = await createTestTempDirectory("nre-ts-conditional-loader-");
     await writeFixtureFiles(root, {
       "package.json": '{"type":"commonjs"}',
       "main.ts": `import { value as different } from "different";
@@ -635,7 +635,7 @@ void different; void same;`,
 });
 
 it("does not assign one module origin to an export with colliding path encodings", async () => {
-  const root = await createTestTempDirectory("rea-ambiguous-module-origin-");
+  const root = await createTestTempDirectory("nre-ambiguous-module-origin-");
   await writeFixtureFiles(root, {
     "index.js": String.raw`
         import * as ns from "./fixture.js";
@@ -704,7 +704,7 @@ describe("complete static application projections", () => {
 });
 
 const moduleFixture = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-module-relationships-");
+  const root = await createTestTempDirectory("nre-module-relationships-");
   await writeFixtureFiles(root, {
     "package.json": '{"main":"main.cjs"}',
     "main.cjs": `

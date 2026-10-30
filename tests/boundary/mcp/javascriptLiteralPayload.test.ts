@@ -16,7 +16,7 @@ const boundedLargeLiteralPayloads = (): readonly string[] => {
   // Preserve the former aggregate payload size while each normalized value
   // stays within its independent semantic byte budget.
   const values = Array.from({ length: 16 }, (_, index) =>
-    `rea_literal_payload_ğ\\"\0${String(index)}_`.padEnd(24, "x").repeat(4096),
+    `nre_literal_payload_ğ\\"\0${String(index)}_`.padEnd(24, "x").repeat(4096),
   );
   expect(
     values.reduce((total, value) => total + value.length, 0),
@@ -28,7 +28,7 @@ const boundedLargeLiteralPayloads = (): readonly string[] => {
 cliTest(
   "delivers aggregate large literal payloads through CLI and default stdio MCP without metadata copies",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-literal-payload-");
+    const root = await createTestTempDirectory("nre-literal-payload-");
     const values = boundedLargeLiteralPayloads();
     const value = values[0];
     if (value === undefined) throw new Error("Missing literal payload");
@@ -59,7 +59,7 @@ cliTest(
     const client = new Client({ name: "literal-payload-e2e", version: "1" });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: { PATH: process.env.PATH ?? "" },
       stderr: "pipe",

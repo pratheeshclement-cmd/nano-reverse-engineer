@@ -27,7 +27,7 @@ it("executes the advertised export presence example with matching analyzed Evide
     throw new Error("Missing advertised presence example");
   const { client, close } = await createApplicationMcpHarness({
     serverOptions: {
-      environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
+      environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: "full" },
     },
   });
   onTestFinished(close);
@@ -133,7 +133,7 @@ it("traces example semantic modules with their parsed artifact digests", async (
 
 describe("application workflow MCP parity", () => {
   it("compares exact parser export shapes with inline Evidence", async () => {
-    const root = await createTestTempDirectory("rea-export-shape-mcp-");
+    const root = await createTestTempDirectory("nre-export-shape-mcp-");
     const leftRoot = join(root, "left");
     const rightRoot = join(root, "right");
     await Promise.all([mkdir(leftRoot), mkdir(rightRoot)]);
@@ -223,7 +223,7 @@ describe("application workflow MCP parity", () => {
         expect.arrayContaining([
           expect.objectContaining({
             operation: "compare_javascript_export_shapes",
-            predicate_type: "rea.javascript-export-shape-comparison",
+            predicate_type: "nre.javascript-export-shape-comparison",
           }),
         ]),
       );
@@ -494,7 +494,7 @@ ${returnSites}
 });
 
 const analyzeSourceEvidence = async (source: string) => {
-  const root = await createTestTempDirectory("rea-export-shape-inventory-");
+  const root = await createTestTempDirectory("nre-export-shape-inventory-");
   await writeFile(join(root, "parser.mjs"), source);
   const analyzed = await analyzeJavaScriptApplication({ input_path: root });
   if (!analyzed.ok) throw analyzed.error;

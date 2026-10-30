@@ -122,7 +122,7 @@ async function exerciseTrustedRetentionWithLegacyTarget(
   retentionEnv: Record<string, string>,
 ) {
   const runnerWorkspace = await createTestTempDirectory(
-    "rea-ci-retention-trusted-checkout-",
+    "nre-ci-retention-trusted-checkout-",
   );
   const legacyTarget = join(runnerWorkspace, "triggering-source");
   const legacyRoot = join(runnerWorkspace, "legacy-root");
@@ -165,7 +165,7 @@ async function exerciseTrustedRetentionWithLegacyTarget(
     legacyRoot,
   );
 
-  const prefix = "rea-static-v1-Linux-X64-";
+  const prefix = "nre-static-v1-Linux-X64-";
   const keepKey = `${prefix}${targetHash}-${targetSha}`;
   const cacheFixture = {
     actions_caches: [
@@ -228,7 +228,7 @@ async function exerciseTrustedRetentionWithLegacyTarget(
     cwd: runnerWorkspace,
     env: {
       PATH: join(runnerWorkspace, "bin"),
-      CI_REPOSITORY: "morluto/rea",
+      CI_REPOSITORY: "pratheeshclement-cmd/nano-reverse-engineer",
       CACHE_PREFIX: prefix,
       CACHE_KEEP_KEY: keepKey,
       FAKE_GH_LOG: ghLog,
@@ -244,8 +244,8 @@ async function exerciseTrustedRetentionWithLegacyTarget(
     npmDuplicateDeleteBytes: 0,
   });
   expect(requests.trim().split("\n")).toEqual([
-    "GET repos/morluto/rea/actions/caches?per_page=100&page=1&key=rea-static-v1-Linux-X64-",
-    "DELETE repos/morluto/rea/actions/caches/1",
+    "GET repos/pratheeshclement-cmd/nano-reverse-engineer/actions/caches?per_page=100&page=1&key=nre-static-v1-Linux-X64-",
+    "DELETE repos/pratheeshclement-cmd/nano-reverse-engineer/actions/caches/1",
   ]);
 }
 
@@ -256,7 +256,7 @@ describe("hosted npm download-cache policy", () => {
     const command = z.string().parse(policy?.run);
 
     const outputDirectory = await createTestTempDirectory(
-      "rea-ci-cache-policy-",
+      "nre-ci-cache-policy-",
     );
     const npmStub = join(outputDirectory, "npm");
     await writeFile(
@@ -571,10 +571,10 @@ it("deletes superseded caches only from the trusted follow-up workflow", async (
   expect(retention).toBeDefined();
   const retentionEnv = z.record(z.string(), z.string()).parse(retention?.env);
   expect(retentionEnv.CACHE_PREFIX).toBe(
-    "rea-static-v1-${{ runner.os }}-${{ runner.arch }}-",
+    "nre-static-v1-${{ runner.os }}-${{ runner.arch }}-",
   );
   expect(retentionEnv.CACHE_KEEP_KEY).toBe(
-    "rea-static-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('triggering-source/.nvmrc', 'triggering-source/.npmrc', 'triggering-source/package-lock.json') }}-${{ github.event.workflow_run.head_sha }}",
+    "nre-static-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('triggering-source/.nvmrc', 'triggering-source/.npmrc', 'triggering-source/package-lock.json') }}-${{ github.event.workflow_run.head_sha }}",
   );
   expect(retentionEnv.CACHE_DEEP_KEEP_KEY).toContain(
     "hashFiles('triggering-source/.nvmrc', 'triggering-source/.npmrc', 'triggering-source/package-lock.json')",
@@ -583,7 +583,7 @@ it("deletes superseded caches only from the trusted follow-up workflow", async (
     "hashFiles('triggering-source/knip.json', 'triggering-source/tsconfig.json', 'triggering-source/package.json', 'triggering-source/package-lock.json')",
   );
   expect(retentionEnv.CACHE_PORTABLE_PREFIX).toBe(
-    "rea-portable-build-v2-${{ runner.os }}-${{ runner.arch }}-",
+    "nre-portable-build-v2-${{ runner.os }}-${{ runner.arch }}-",
   );
   expect(retentionEnv.DEDUPE_NPM_DOWNLOADS).toBe("true");
   expect(retentionEnv.GH_TOKEN).toBe("${{ github.token }}");
@@ -602,7 +602,7 @@ it("deletes superseded caches only from the trusted follow-up workflow", async (
           .parse(deepSteps.find((step) => step.id === id)?.with).key,
       );
   const savedOnThisRun = "${{ github.event.workflow_run.head_sha }}";
-  const deepPrefix = "rea-static-deep-v1-${{ runner.os }}-${{ runner.arch }}-";
+  const deepPrefix = "nre-static-deep-v1-${{ runner.os }}-${{ runner.arch }}-";
   const knipPrefix = "knip-meta-v1-${{ runner.os }}-";
   const targetSourceKey = (id: string) =>
     publishedKey(id)

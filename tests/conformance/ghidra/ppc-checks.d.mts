@@ -3,11 +3,11 @@ import type { ElfFamilyMetadata } from "../../../src/domain/binaryTargetTypes.js
 export interface PowerPcReadelfFacts {
   powerpc: ElfFamilyMetadata;
   symbols: Record<
-    | "rea_ppc_entry"
-    | "rea_ppc_leaf"
-    | "rea_ppc_probe"
-    | "rea_ppc_global"
-    | "rea_ppc_marker",
+    | "nre_ppc_entry"
+    | "nre_ppc_leaf"
+    | "nre_ppc_probe"
+    | "nre_ppc_global"
+    | "nre_ppc_marker",
     string
   >;
 }

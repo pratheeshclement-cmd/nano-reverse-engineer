@@ -25,20 +25,20 @@ assert(
   "Native OpenCode verifier requires POSIX; Windows is unverified",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_OPENCODE_COMMAND ?? "opencode";
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_OPENCODE_COMMAND ?? "opencode";
 const mode = process.argv[2] ?? "call";
-const configFormat = process.env.REA_VERIFY_OPENCODE_CONFIG_FORMAT ?? "jsonc";
+const configFormat = process.env.NRE_VERIFY_OPENCODE_CONFIG_FORMAT ?? "jsonc";
 assert(
   ["chat", "call"].includes(mode),
   "Usage: verify-opencode-client.mjs [chat|call]",
 );
 assert(
   ["json", "jsonc"].includes(configFormat),
-  "REA_VERIFY_OPENCODE_CONFIG_FORMAT must be json or jsonc",
+  "NRE_VERIFY_OPENCODE_CONFIG_FORMAT must be json or jsonc",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-opencode-client-"));
+const lab = await mkdtemp(join(tmpdir(), "nre-opencode-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -47,7 +47,7 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
 );
 const isManagedSkillTarget = (target) => {
   const value = relative(skillDirectory, target);
@@ -94,7 +94,7 @@ await withVerifierCleanup(async () => {
       OPENCODE_DISABLE_MODELS_FETCH: "true",
       // Use the native core without external account plugins.
       OPENCODE_PURE: "true",
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     try {
       clientVersion = (
@@ -106,7 +106,7 @@ await withVerifierCleanup(async () => {
       ).stdout.trim();
     } catch (cause) {
       throw new Error(
-        `OpenCode preflight failed for ${command}; install OpenCode or set REA_VERIFY_OPENCODE_COMMAND. ${String(cause)}`,
+        `OpenCode preflight failed for ${command}; install OpenCode or set NRE_VERIFY_OPENCODE_COMMAND. ${String(cause)}`,
         { cause },
       );
     }
@@ -123,25 +123,25 @@ await withVerifierCleanup(async () => {
       onRequest: async ({ body, tools, requestIndex }) => {
         // Native session-title requests do not execute the analyst's workflow.
         if (tools.length === 0)
-          return { role: "assistant", content: "REA fixture title" };
+          return { role: "assistant", content: "NRE fixture title" };
         const analysis = tools.find((t) =>
           t.name.endsWith("analyze_javascript_application"),
         );
-        assert(analysis, "OpenCode must expose the REA analysis tool");
+        assert(analysis, "OpenCode must expose the NRE analysis tool");
         const prefix = analysis.name.slice(
           0,
           -"analyze_javascript_application".length,
         );
         const expected = TOOL_CONTRACTS.map((t) => prefix + t.name).sort();
-        const reaTools = tools.filter((t) => expected.includes(t.name));
-        catalogSize = reaTools.length;
+        const nreTools = tools.filter((t) => expected.includes(t.name));
+        catalogSize = nreTools.length;
         assert.deepEqual(
-          reaTools.map((t) => t.name).sort(),
+          nreTools.map((t) => t.name).sort(),
           expected,
-          "OpenCode must forward the complete REA catalog",
+          "OpenCode must forward the complete NRE catalog",
         );
         if (schemasChecked === 0) {
-          for (const tool of reaTools) {
+          for (const tool of nreTools) {
             assert(
               tool.parameters,
               `${tool.name}: missing advertised input schema`,
@@ -174,7 +174,7 @@ await withVerifierCleanup(async () => {
         }
         if (mode === "chat" || evidenceSeen) {
           finalSeen = true;
-          return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+          return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
         }
         assert(
           requestIndex <= 8,
@@ -195,11 +195,11 @@ await withVerifierCleanup(async () => {
           const skill = tools.find((t) => t.name === "skill");
           assert(skill, "OpenCode must expose its native skill tool");
           skillRequested = true;
-          return call(skill.name, { name: "reverse-engineer-anything" });
+          return call(skill.name, { name: "nano-reverse-engineer" });
         }
         assert(
           skillLoaded,
-          "OpenCode must load the installed personal REA skill",
+          "OpenCode must load the installed personal NRE skill",
         );
         return call(analysis.name, { input_path: target, format: "directory" });
       },
@@ -212,16 +212,16 @@ await withVerifierCleanup(async () => {
           skills: { paths: [join(account, ".agents", "skills")] },
           permission: { "*": "allow" },
           provider: {
-            "rea-fixture": {
+            "nre-fixture": {
               npm: "@ai-sdk/openai-compatible",
-              name: "REA local model fixture",
+              name: "NRE local model fixture",
               options: {
                 baseURL: fixture.baseUrl,
                 apiKey: "local-fixture-key",
               },
               models: {
-                "rea-client-fixture": {
-                  name: "REA fixture",
+                "nre-client-fixture": {
+                  name: "NRE fixture",
                   tool_call: true,
                   limit: { context: 1_000_000, output: 4096 },
                 },
@@ -247,7 +247,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const result = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
       await writeFile(
@@ -277,7 +277,7 @@ await withVerifierCleanup(async () => {
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert(configured.includes("unrelated-server"));
     if (configFormat === "jsonc")
@@ -285,7 +285,7 @@ await withVerifierCleanup(async () => {
     const repeated = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/nre.mjs"),
         "setup",
         "--client",
         "opencode",
@@ -296,12 +296,12 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const installedSkill = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",
     );
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: nano-reverse-engineer"));
     const skillLines = installedSkill.split("\n");
     const headerEnd = skillLines.indexOf("---", 1);
     assert(
@@ -322,10 +322,10 @@ await withVerifierCleanup(async () => {
             "--format",
             "json",
             "--model",
-            "rea-fixture/rea-client-fixture",
+            "nre-fixture/nre-client-fixture",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use REA to analyze the JavaScript directory ${target}. Report the result.`,
+              : `Use NRE to analyze the JavaScript directory ${target}. Report the result.`,
           ],
           {
             env: environment,
@@ -342,7 +342,7 @@ await withVerifierCleanup(async () => {
     );
     assert.equal(fixture.failure, undefined);
     assert(
-      finalSeen && response.stdout.includes("REA_CLIENT_COMPATIBILITY_OK"),
+      finalSeen && response.stdout.includes("NRE_CLIENT_COMPATIBILITY_OK"),
     );
     if (mode === "call") assert(evidenceSeen && skillLoaded);
   }, [

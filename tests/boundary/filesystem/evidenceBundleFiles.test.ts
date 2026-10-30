@@ -63,7 +63,7 @@ const bundle = (result = true) =>
   ]);
 
 it("preserves tagged refusal JSON without interpreting Evidence-shaped fields", async () => {
-  const root = await createTestTempDirectory("rea-refused-delivery-");
+  const root = await createTestTempDirectory("nre-refused-delivery-");
   const refusal = {
     code: "unreadable_output",
     evidence_id: "caller-selected diagnostic",
@@ -84,7 +84,7 @@ it("preserves tagged refusal JSON without interpreting Evidence-shaped fields", 
 });
 
 it("preserves direct duplicate rejection and CLI identity merging for repeated inspection sources", async () => {
-  const root = await createTestTempDirectory("rea-repeated-delivery-");
+  const root = await createTestTempDirectory("nre-repeated-delivery-");
   const input = join(root, "input.txt");
   await writeFile(input, "artifact contents");
   const inventory = await inventoryArtifact(input);
@@ -139,7 +139,7 @@ it("preserves direct duplicate rejection and CLI identity merging for repeated i
 });
 
 it("retains a malformed artifact parent and refuses publication through both delivery paths", async () => {
-  const root = await createTestTempDirectory("rea-malformed-delivery-");
+  const root = await createTestTempDirectory("nre-malformed-delivery-");
   const evidence = createEvidence(
     undefined,
     { id: "fixture", name: "Fixture", version: "1" },
@@ -169,7 +169,7 @@ it("retains a malformed artifact parent and refuses publication through both del
 it.each([undefined, "../selected-link/./artifact"])(
   "keeps same-invocation caller input on delivered summary and saved parent (%s)",
   async (callerInputPath) => {
-    const root = await createTestTempDirectory("rea-delivery-input-path-");
+    const root = await createTestTempDirectory("nre-delivery-input-path-");
     const path = join(root, "bundle.json");
     const original = analysisViewLayoutEvidence();
     const parent =
@@ -193,7 +193,7 @@ it.each([undefined, "../selected-link/./artifact"])(
 it.each([0, 9 * 1024 * 1024])(
   "preserves the format owner's BOM recovery with %i bytes of padding",
   async (padding) => {
-    const root = await createTestTempDirectory("rea-bundle-bom-");
+    const root = await createTestTempDirectory("nre-bundle-bom-");
     const path = join(root, "bundle.json");
     await writeFile(
       path,
@@ -230,7 +230,7 @@ it.each([
 ] as const)(
   "cancels a %s bundle read before opening its selected path",
   async (_, read) => {
-    const root = await createTestTempDirectory("rea-bundle-pre-cancel-");
+    const root = await createTestTempDirectory("nre-bundle-pre-cancel-");
     const controller = new AbortController();
     const reason = new Error("cancel before bundle read");
     controller.abort(reason);
@@ -255,7 +255,7 @@ it.each([
 ] as const)(
   "preserves the caller cancellation reason during %s read",
   async (_, read) => {
-    const root = await createTestTempDirectory("rea-bundle-read-cancel-");
+    const root = await createTestTempDirectory("nre-bundle-read-cancel-");
     const path = join(root, "bundle.json");
     await writeFile(path, JSON.stringify(bundle()));
     const reader = await holdFirstFileRead(path);
@@ -290,7 +290,7 @@ it.each([
 ] as const)(
   "keeps the physical null read cause for %s import after cancellation",
   async (_, read) => {
-    const root = await createTestTempDirectory("rea-bundle-late-io-");
+    const root = await createTestTempDirectory("nre-bundle-late-io-");
     const path = join(root, "bundle.json");
     await writeFile(path, JSON.stringify(bundle()));
     const controller = new AbortController();
@@ -320,7 +320,7 @@ it.each([
 ] as const)(
   "keeps an identical physical and abort reason for %s import",
   async (_, read) => {
-    const root = await createTestTempDirectory("rea-bundle-identical-abort-");
+    const root = await createTestTempDirectory("nre-bundle-identical-abort-");
     const path = join(root, "bundle.json");
     await writeFile(path, JSON.stringify(bundle()));
     const controller = new AbortController();
@@ -343,7 +343,7 @@ it.each([
 );
 
 it("preserves the failed-close owner when import is also cancelled", async () => {
-  const root = await createTestTempDirectory("rea-import-cancel-cleanup-");
+  const root = await createTestTempDirectory("nre-import-cancel-cleanup-");
   const path = join(root, "bundle.json");
   await writeFile(path, JSON.stringify(bundle()));
   const controller = new AbortController();
@@ -389,7 +389,7 @@ it("preserves the failed-close owner when import is also cancelled", async () =>
 
 describe("evidence bundle export cancellation", () => {
   it("retains the completed parent and exact reason when delivery is cancelled before publication", async () => {
-    const root = await createTestTempDirectory("rea-delivery-cancel-");
+    const root = await createTestTempDirectory("nre-delivery-cancel-");
     const parent = analysisViewLayoutEvidence();
     const controller = new AbortController();
     const reason = new Error("cancel before bundle publication");
@@ -415,7 +415,7 @@ describe("evidence bundle export cancellation", () => {
   });
 
   it("does not inspect the path or advance a source cancelled before writing", async () => {
-    const root = await createTestTempDirectory("rea-export-pre-cancel-");
+    const root = await createTestTempDirectory("nre-export-pre-cancel-");
     const controller = new AbortController();
     controller.abort();
     let advanced = false;
@@ -458,7 +458,7 @@ describe("evidence bundle export cancellation", () => {
   it.each([false, true])(
     "closes a cancelled source and preserves the destination (overwrite: %s)",
     async (overwrite) => {
-      const root = await createTestTempDirectory("rea-export-cancel-");
+      const root = await createTestTempDirectory("nre-export-cancel-");
       const path = join(root, "bundle.json");
       if (overwrite) await writeFile(path, "original");
       const controller = new AbortController();
@@ -504,7 +504,7 @@ describe("evidence bundle export cancellation", () => {
   );
 
   it("does not publish when cancellation arrives at source exhaustion", async () => {
-    const root = await createTestTempDirectory("rea-export-final-cancel-");
+    const root = await createTestTempDirectory("nre-export-final-cancel-");
     const path = join(root, "bundle.json");
     await writeFile(path, "original");
     const controller = new AbortController();
@@ -526,7 +526,7 @@ describe("evidence bundle export cancellation", () => {
 it.each([1, 2])(
   "reports only unresolved cancellation cleanup after %s failed close attempts",
   async (failedAttempts) => {
-    const root = await createTestTempDirectory("rea-delivery-cleanup-retry-");
+    const root = await createTestTempDirectory("nre-delivery-cleanup-retry-");
     const parent = analysisViewLayoutEvidence();
     const controller = new AbortController();
     const reason = new Error("cancel before bundle publication");
@@ -611,7 +611,7 @@ const writeParts = (
 describe("evidence bundle publication", () => {
   it("retains the committed bundle receipt when cancellation arrives during final cleanup", async () => {
     const root = await createTestTempDirectory(
-      "rea-delivery-published-cancel-",
+      "nre-delivery-published-cancel-",
     );
     const path = join(root, "bundle.json");
     const parent = analysisViewLayoutEvidence();
@@ -656,7 +656,7 @@ describe("evidence bundle publication", () => {
   it.each([false, true])(
     "never publishes a partial streamed file (overwrite: %s)",
     async (overwrite) => {
-      const root = await createTestTempDirectory("rea-stream-publication-");
+      const root = await createTestTempDirectory("nre-stream-publication-");
       const path = join(root, "bundle.json");
       if (overwrite) await writeFile(path, "original");
       function* brokenParts() {
@@ -673,7 +673,7 @@ describe("evidence bundle publication", () => {
   );
 
   it("counts complete Unicode bytes and publishes a private file", async () => {
-    const root = await createTestTempDirectory("rea-stream-bytes-");
+    const root = await createTestTempDirectory("nre-stream-bytes-");
     const path = join(root, "bundle.json");
     const parts = ["雪", "😀", "\n"];
     expect(await writeParts(parts, path, false)).toEqual({
@@ -685,7 +685,7 @@ describe("evidence bundle publication", () => {
       expect((await stat(path)).mode & 0o777).toBe(0o600);
   });
   it("allows only one simultaneous export without overwrite approval", async () => {
-    const root = await createTestTempDirectory("rea-evidence-exclusive-");
+    const root = await createTestTempDirectory("nre-evidence-exclusive-");
     const path = join(root, "bundle.json");
     const candidates = [bundle(), bundle(false)];
     const results = await Promise.all(
@@ -704,7 +704,7 @@ describe("evidence bundle publication", () => {
   });
 
   it("round trips caller-selected paths without configured roots", async () => {
-    const root = await createTestTempDirectory("rea-evidence-dot-child-");
+    const root = await createTestTempDirectory("nre-evidence-dot-child-");
     const directory = join(root, "..cache");
     await mkdir(directory);
     const path = join(directory, "bundle.json");
@@ -720,7 +720,7 @@ describe("evidence bundle publication", () => {
 });
 
 it("reuses authenticated file snapshots while isolating mutable public reads", async () => {
-  const directory = await createTestTempDirectory("rea-evidence-owned-");
+  const directory = await createTestTempDirectory("nre-evidence-owned-");
   const path = join(directory, "bundle.json");
   const evidence = createEvidence(
     {
@@ -762,7 +762,7 @@ it("reuses authenticated file snapshots while isolating mutable public reads", a
 it.skipIf(process.platform === "win32")(
   "rejects a regular-file parent traversal without writing to its lexical sibling",
   async () => {
-    const directory = await createTestTempDirectory("rea-evidence-parent-");
+    const directory = await createTestTempDirectory("nre-evidence-parent-");
     const blocker = join(directory, "file");
     await writeFile(blocker, "unchanged");
     const selected = `${blocker}/../bundle.json`;
@@ -789,7 +789,7 @@ describe("evidence bundle process-capture payloads", () => {
     "rejects semantically invalid capture export before publication (overwrite: %s)",
     async (overwrite) => {
       const directory = await createTestTempDirectory(
-        "rea-invalid-capture-bundle-",
+        "nre-invalid-capture-bundle-",
       );
       const path = join(directory, "bundle.json");
       if (overwrite) await writeFile(path, "original");
@@ -797,7 +797,7 @@ describe("evidence bundle process-capture payloads", () => {
       // capture commitment, so generic bundle authentication still succeeds.
       const capture = EMPTY_PROCESS_CAPTURE_EXAMPLE;
       const record = createEvidence(undefined, PROCESS_PROVIDER, {
-        predicateType: "rea.process-capture",
+        predicateType: "nre.process-capture",
         operation: "capture_process_scenario",
         parameters: {},
         result: {
@@ -838,24 +838,24 @@ describe("evidence bundle process-capture payloads", () => {
       label: "current provider",
       provider: PROCESS_PROVIDER,
       operation: "capture_process_scenario",
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       result: EMPTY_PROCESS_CAPTURE_EXAMPLE,
     },
     {
       label: "historical provider name",
       provider: {
         ...PROCESS_PROVIDER,
-        name: "REA deterministic process harness",
+        name: "NRE deterministic process harness",
       },
       operation: "capture_process_scenario",
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       result: EMPTY_PROCESS_CAPTURE_EXAMPLE,
     },
     {
       label: "foreign provider and operation",
       provider: { id: "foreign", name: "Foreign capture", version: "1" },
       operation: "historical_capture",
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       result: EMPTY_PROCESS_CAPTURE_EXAMPLE,
     },
     {
@@ -869,7 +869,7 @@ describe("evidence bundle process-capture payloads", () => {
     "round trips capture-related records without narrowing their identities ($label)",
     async ({ provider, operation, predicateType, result }) => {
       const directory = await createTestTempDirectory(
-        "rea-capture-bundle-identity-",
+        "nre-capture-bundle-identity-",
       );
       const path = join(directory, "bundle.json");
       const value = createEvidenceBundle([
@@ -890,7 +890,7 @@ describe("evidence bundle process-capture payloads", () => {
 it.each([true, false])(
   "refuses symlink exports in both overwrite modes (target exists: %s)",
   async (targetExists) => {
-    const directory = await createTestTempDirectory("rea-evidence-link-");
+    const directory = await createTestTempDirectory("nre-evidence-link-");
     const outside = join(directory, "outside");
     await mkdir(outside);
     const outsidePath = join(outside, "bundle.json");
@@ -927,7 +927,7 @@ describe("evidence bundle filesystem adapter", () => {
     "preserves the directory requirement of a missing output ending in %s",
     async (suffix) => {
       const directory = await createTestTempDirectory(
-        "rea-evidence-directory-",
+        "nre-evidence-directory-",
       );
       const selected = `${join(directory, "report.json")}${suffix}`;
       expect(await writeBundle(bundle(), selected, false)).toMatchObject({
@@ -939,7 +939,7 @@ describe("evidence bundle filesystem adapter", () => {
   );
 
   it("round trips canonical bytes and requires explicit overwrite", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("nre-evidence-");
     const path = join(directory, "bundle.json");
     const evidenceBundle = bundle();
     const first = await writeBundle(evidenceBundle, path, false);
@@ -973,7 +973,7 @@ describe("evidence bundle filesystem adapter", () => {
   });
 
   it("reports a missing file or output directory with the selected path", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("nre-evidence-");
     const absent = join(directory, "absent.json");
     const read = await readEvidenceBundle(absent);
     expect(read).toMatchObject({
@@ -1001,7 +1001,7 @@ describe("evidence bundle filesystem adapter", () => {
   it.each([readEvidenceBundle, readImmutableEvidenceBundle])(
     "rejects malformed and tampered input (%s)",
     async (readBundle) => {
-      const directory = await createTestTempDirectory("rea-evidence-");
+      const directory = await createTestTempDirectory("nre-evidence-");
       const malformed = join(directory, "malformed.json");
       await writeFile(malformed, "{");
       expect(await readBundle(malformed)).toMatchObject({
@@ -1031,7 +1031,7 @@ describe("evidence bundle filesystem adapter", () => {
   );
 
   it("names schema mismatches that prevent bundle parsing", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("nre-evidence-");
     const partial = join(directory, "partial.json");
     await writeFile(partial, JSON.stringify({ evidence_id: "typo" }));
     const rejected = await readEvidenceBundle(partial);
@@ -1063,7 +1063,7 @@ describe("evidence bundle filesystem adapter", () => {
 
 describe("standalone Evidence bundle inputs", () => {
   it("classifies a record only after authenticating it", async () => {
-    const directory = await createTestTempDirectory("rea-evidence-");
+    const directory = await createTestTempDirectory("nre-evidence-");
     const record = bundle().records[0];
     const single = join(directory, "record.json");
     await writeFile(single, JSON.stringify(record));

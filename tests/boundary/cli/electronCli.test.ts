@@ -47,7 +47,7 @@ afterEach(async () => {
 it(
   "returns the same endpoint-scoped Electron Evidence contracts",
   async () => {
-    const root = await createTestTempDirectory("rea-electron-cli-");
+    const root = await createTestTempDirectory("nre-electron-cli-");
     temporary.push(root);
     await writeFile(join(root, "index.html"), "<script src='app.js'></script>");
     await writeFile(join(root, "app.js"), "export const app = true;");
@@ -105,7 +105,7 @@ it(
     expect(inspected).toMatchObject({
       operation: "inspect_electron_page",
       environment: listed.environment,
-      provider: { id: "rea-cdp-electron" },
+      provider: { id: "nre-cdp-electron" },
       normalized_result: {
         target: { file_path: join(root, "index.html") },
         scripts: {
@@ -170,7 +170,7 @@ it(
 it.skipIf(process.platform === "win32")(
   "forwards SIGINT through Electron page inspection and completes target cleanup",
   async () => {
-    const root = await createTestTempDirectory("rea-electron-cli-cancel-");
+    const root = await createTestTempDirectory("nre-electron-cli-cancel-");
     temporary.push(root);
     const page = join(root, "index.html");
     await writeFile(page, "<main>fixture</main>");
@@ -182,7 +182,7 @@ it.skipIf(process.platform === "win32")(
     const child = spawn(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "inspect-electron-page",
         browser.endpoint,
         "electron-page",
@@ -250,7 +250,7 @@ it.skipIf(process.platform === "win32")(
 it(
   "returns the static JavaScript application Evidence contract",
   async () => {
-    const root = await createTestTempDirectory("rea-electron-static-cli-");
+    const root = await createTestTempDirectory("nre-electron-static-cli-");
     temporary.push(root);
     await writeElectronBoundaryFixture(root);
     const environment = {
@@ -264,7 +264,7 @@ it(
 
     expect(analyzed).toMatchObject({
       operation: "analyze_javascript_application",
-      provider: { id: "rea-javascript-application" },
+      provider: { id: "nre-javascript-application" },
       normalized_result: {
         input_path: root,
         summary: {
@@ -285,7 +285,7 @@ describe("Electron CLI artifact behavior", () => {
   it(
     "keeps artifact format separate from structured output format",
     async () => {
-      const root = await createTestTempDirectory("rea-electron-format-cli-");
+      const root = await createTestTempDirectory("nre-electron-format-cli-");
       temporary.push(root);
       await writeElectronBoundaryFixture(root);
       const environment = {
@@ -315,7 +315,7 @@ describe("Electron CLI artifact behavior", () => {
   it(
     "routes generic directory analysis to static JavaScript",
     async () => {
-      const root = await createTestTempDirectory("rea-electron-routed-cli-");
+      const root = await createTestTempDirectory("nre-electron-routed-cli-");
       temporary.push(root);
       await writeElectronBoundaryFixture(root);
       const environment = {
@@ -326,7 +326,7 @@ describe("Electron CLI artifact behavior", () => {
 
       expect(analyzed).toMatchObject({
         operation: "analyze_javascript_application",
-        provider: { id: "rea-javascript-application" },
+        provider: { id: "nre-javascript-application" },
         normalized_result: {
           input_path: root,
           format: "directory",
@@ -368,7 +368,7 @@ describe("Electron CLI runtime reconciliation", () => {
   it(
     "reads a file and returns the derived static/runtime reconciliation contract",
     async () => {
-      const root = await createTestTempDirectory("rea-runtime-cli-");
+      const root = await createTestTempDirectory("nre-runtime-cli-");
       const inputPath = join(root, "reconciliation.json");
       temporary.push(root);
       await writeFile(
@@ -382,7 +382,7 @@ describe("Electron CLI runtime reconciliation", () => {
 
       expect(reconciled).toMatchObject({
         operation: "reconcile_javascript_runtime",
-        provider: { id: "rea-javascript-runtime-reconciliation" },
+        provider: { id: "nre-javascript-runtime-reconciliation" },
         normalized_result: {
           summary: { runtime_scripts: 1, matched: 1 },
           source_map_authority: { used_for_primary_matching: false },
@@ -406,8 +406,8 @@ describe("Electron CLI runtime reconciliation", () => {
     "keeps ambiguous runtime candidates unknown while unrelated scoped assets remain absent",
     async () => {
       const application = await applicationFixture();
-      const assets = await createTestTempDirectory("rea-runtime-cli-assets-");
-      const runtime = await createTestTempDirectory("rea-runtime-cli-live-");
+      const assets = await createTestTempDirectory("nre-runtime-cli-assets-");
+      const runtime = await createTestTempDirectory("nre-runtime-cli-live-");
       const inputPath = join(assets, "reconciliation.json");
       temporary.push(application, assets, runtime);
       await Promise.all([

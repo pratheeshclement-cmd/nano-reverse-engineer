@@ -77,8 +77,8 @@ export async function verifyGhidraAddressBoundaries(client, entry, cli) {
     assert.deepEqual(
       await query("set_addresses_names", {
         names: {
-          [entry]: "rea_same_address_alias",
-          [padded]: "rea_same_address_alias",
+          [entry]: "nre_same_address_alias",
+          [padded]: "nre_same_address_alias",
         },
       }),
       Object.fromEntries(aliasKeys.map((address) => [address, true])),
@@ -87,12 +87,12 @@ export async function verifyGhidraAddressBoundaries(client, entry, cli) {
     const nameBeforeAliasedBatch = await query("address_name", {
       address: entry,
     });
-    assert.equal(nameBeforeAliasedBatch, "rea_same_address_alias");
+    assert.equal(nameBeforeAliasedBatch, "nre_same_address_alias");
     assert.deepEqual(
       await query("set_addresses_names", {
         names: {
-          [entry]: "rea_first_address_alias",
-          [padded]: "rea_second_address_alias",
+          [entry]: "nre_first_address_alias",
+          [padded]: "nre_second_address_alias",
         },
       }),
       Object.fromEntries(aliasKeys.map((address) => [address, false])),

@@ -1,9 +1,9 @@
 import { promises as fs } from "node:fs";
 import { syncBuiltinESMExports } from "node:module";
 
-const path = process.env.REA_TEST_EXPORT_INPUT;
-const marker = process.env.REA_TEST_EXPORT_READ_MARKER;
-const action = process.env.REA_TEST_EXPORT_READ_ACTION;
+const path = process.env.NRE_TEST_EXPORT_INPUT;
+const marker = process.env.NRE_TEST_EXPORT_READ_MARKER;
+const action = process.env.NRE_TEST_EXPORT_READ_ACTION;
 if (!path || !marker || !["append", "record", "fail-copy"].includes(action))
   throw new Error("Expected an explicit export input, read marker and action");
 

@@ -20,7 +20,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 const { values } = parseArgs({
   options: {
     target: { type: "string" },
-    procedure: { type: "string", default: "rea_fixture_add" },
+    procedure: { type: "string", default: "nre_fixture_add" },
     "second-procedure": { type: "string" },
     "second-marker": { type: "string" },
     "expected-string": { type: "string" },
@@ -29,9 +29,9 @@ const { values } = parseArgs({
     report: { type: "string" },
   },
 });
-if (values.target === undefined || process.env.REA_IDA_MCP_CONFIG === undefined)
+if (values.target === undefined || process.env.NRE_IDA_MCP_CONFIG === undefined)
   throw new Error(
-    "IDA verification requires --target and REA_IDA_MCP_CONFIG; see docs/ida-provider.md. No toolchain is installed by this lane.",
+    "IDA verification requires --target and NRE_IDA_MCP_CONFIG; see docs/ida-provider.md. No toolchain is installed by this lane.",
   );
 if (
   (values["second-procedure"] === undefined) !==
@@ -47,7 +47,7 @@ const packageRoot = resolve(
   values["package-root"] ?? fileURLToPath(new URL("..", import.meta.url)),
 );
 const target = resolve(values.target);
-const entry = join(packageRoot, "scripts", "rea.mjs");
+const entry = join(packageRoot, "scripts", "nre.mjs");
 const importBuilt = (path) =>
   import(pathToFileURL(join(packageRoot, "dist", path)).href);
 const [
@@ -67,7 +67,7 @@ const [
 ]);
 const config = await withVerifierResourceOwner(async (resourceScope) => {
   const registration = await readIdaConfiguration(
-    process.env.REA_IDA_MCP_CONFIG,
+    process.env.NRE_IDA_MCP_CONFIG,
     { resourceScope },
   );
   if (!registration.ok) throw registration.error;
@@ -84,8 +84,8 @@ if (
 const environment = Object.fromEntries(
   Object.entries({
     ...process.env,
-    REA_ANALYSIS_PROVIDER: "ida",
-    REA_LOG_LEVEL: "error",
+    NRE_ANALYSIS_PROVIDER: "ida",
+    NRE_LOG_LEVEL: "error",
   }).filter(([, value]) => value !== undefined),
 );
 const report = {
@@ -161,7 +161,7 @@ const cli = async () => {
   return dossier;
 };
 const mcp = async (cliDossier) => {
-  const client = new Client({ name: "rea-real-ida-verifier", version: "1" });
+  const client = new Client({ name: "nre-real-ida-verifier", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [entry, "mcp"],

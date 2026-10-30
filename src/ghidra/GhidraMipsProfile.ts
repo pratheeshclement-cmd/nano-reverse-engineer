@@ -245,16 +245,16 @@ export const ghidraMips1Limitations = (
     "conformance to the MIPS-I subset is not established from the header alone.";
   if (providerPinned)
     return [
-      `The ELF header declares the MIPS-I ISA. REA pins the generic 32-bit MIPS language, which also decodes later MIPS32 instructions; ${consequence}`,
+      `The ELF header declares the MIPS-I ISA. NRE pins the generic 32-bit MIPS language, which also decodes later MIPS32 instructions; ${consequence}`,
     ];
   return [
     importLanguage === undefined
       ? `The ELF header declares the MIPS-I ISA. No import language is committed to the profile, so the decoder's MIPS-I conformance is not established from the header alone.`
-      : `The ELF header declares the MIPS-I ISA. REA imports it with the caller-selected ${importLanguage.languageId} language, which may decode instructions outside the MIPS-I subset; ${consequence}`,
+      : `The ELF header declares the MIPS-I ISA. NRE imports it with the caller-selected ${importLanguage.languageId} language, which may decode instructions outside the MIPS-I subset; ${consequence}`,
   ];
 };
 
-/** Soft-float prototype policy applied by ReaGhidraMipsSoftFloat.java after analysis. */
+/** Soft-float prototype policy applied by NreGhidraMipsSoftFloat.java after analysis. */
 export const GHIDRA_MIPS_SOFT_FLOAT_STORAGE = "o32-soft-float-prototype-v1";
 
 /** Whether the admitted target declares the soft-float o32 ABI. */
@@ -282,14 +282,14 @@ export const ghidraMipsSoftFloatFailure = (
       ? "The Ghidra session did not report the committed MIPS soft-float prototype."
       : "The Ghidra session reported MIPS soft-float storage that the profile did not commit.";
 
-/** Keep REA's soft-float prototype distinct from Ghidra's hard-float o32 model. */
+/** Keep NRE's soft-float prototype distinct from Ghidra's hard-float o32 model. */
 export const ghidraMipsSoftFloatLimitations = (
   expected: boolean,
   report?: GhidraMipsSoftFloatReport,
 ): readonly string[] =>
   expected
     ? [
-        "Soft-float o32: Ghidra's MIPS32 compiler specifications model hard-float o32 only. After analysis REA installs a program-specific `__rea_soft_float` prototype, derived from the default o32 model without its floating-point registers and rules, and assigns it to every function, external function and function-pointer definition whose declared types use float or double, so those values keep their types and use integer registers and stack slots.",
+        "Soft-float o32: Ghidra's MIPS32 compiler specifications model hard-float o32 only. After analysis NRE installs a program-specific `__rea_soft_float` prototype, derived from the default o32 model without its floating-point registers and rules, and assigns it to every function, external function and function-pointer definition whose declared types use float or double, so those values keep their types and use integer registers and stack slots.",
         ...(report === undefined
           ? []
           : [

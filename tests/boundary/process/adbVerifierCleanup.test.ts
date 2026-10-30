@@ -27,7 +27,7 @@ const runVerifier = async (
     pull?: "error" | "throw";
   } = {},
 ) => {
-  const root = await mkdtemp(join(tmpdir(), "rea-adb-verifier-test-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-adb-verifier-test-"));
   roots.push(root);
   await mkdir(join(root, "scripts", "lib"), { recursive: true });
   await mkdir(join(root, "dist", "application", "adb"), { recursive: true });
@@ -51,11 +51,11 @@ const runVerifier = async (
     adb,
     [
       "#!/bin/sh",
-      `printf '%s\\n' "$*" >> "$REA_FAKE_ADB_LOG"`,
-      `[ "$REA_FAKE_ADB_REMOVAL" = "fails" ] && exit 1`,
-      `[ "$REA_FAKE_ADB_REMOVAL" = "leaves_probe" ] && exit 0`,
+      `printf '%s\\n' "$*" >> "$NRE_FAKE_ADB_LOG"`,
+      `[ "$NRE_FAKE_ADB_REMOVAL" = "fails" ] && exit 1`,
+      `[ "$NRE_FAKE_ADB_REMOVAL" = "leaves_probe" ] && exit 0`,
       `[ "$1 $3 $4 $5" = "-s shell rm --" ] || exit 2`,
-      `rm -- "$REA_FAKE_DEVICE/$(basename -- "$6")"`,
+      `rm -- "$NRE_FAKE_DEVICE/$(basename -- "$6")"`,
       "",
     ].join("\n"),
   );
@@ -65,8 +65,8 @@ const runVerifier = async (
     `import { writeFile } from "node:fs/promises";
 export const createAdbDeviceAnalysisProvider = () => ({
   async close() {
-    await writeFile(process.env.REA_ADB_CLOSE_MARKER, "closed");
-    if (process.env.REA_ADB_CLOSE_FAIL === "1") {
+    await writeFile(process.env.NRE_ADB_CLOSE_MARKER, "closed");
+    if (process.env.NRE_ADB_CLOSE_FAIL === "1") {
       const error = new Error("provider cleanup refused");
       error.cleanupResources = ["fixture/private-root"];
       error.diagnostics = { reason: "retry remains possible" };
@@ -81,17 +81,17 @@ export const createAdbDeviceAnalysisProvider = () => ({
 import { basename, join } from "node:path";
 export class AdbDeviceAnalysisService {
   async execute(operation, input) {
-    if (process.env.REA_ADB_THROW === "undefined") throw undefined;
-    if (process.env.REA_ADB_THROW === "null") throw null;
-    const device = process.env.REA_FAKE_DEVICE;
+    if (process.env.NRE_ADB_THROW === "undefined") throw undefined;
+    if (process.env.NRE_ADB_THROW === "null") throw null;
+    const device = process.env.NRE_FAKE_DEVICE;
     if (operation === "push_adb_file")
       await writeFile(join(device, basename(input.device_path)), "probe");
-    if (operation === "pull_adb_file" && process.env.REA_ADB_PULL === "throw")
+    if (operation === "pull_adb_file" && process.env.NRE_ADB_PULL === "throw")
       throw new Error("pull transport crashed");
-    if (operation === "pull_adb_file" && process.env.REA_ADB_PULL === "error")
+    if (operation === "pull_adb_file" && process.env.NRE_ADB_PULL === "error")
       return { ok: false, error: { message: "pull refused" } };
     const result = {
-      inspect_adb_client: { client: { version: "1", binary_path: process.env.REA_FAKE_ADB } },
+      inspect_adb_client: { client: { version: "1", binary_path: process.env.NRE_FAKE_ADB } },
       list_adb_devices: { devices: [{ serial: "test", state: "device", kind: "emulator", kind_basis: "stub" }] },
       inspect_adb_device: { properties: [{ name: "ro.build.version.sdk", value: "35" }], emulator_observed: true },
       list_adb_processes: { processes: [{ name: "probe" }], columns: "pid name" },
@@ -121,16 +121,16 @@ export class AdbDeviceAnalysisService {
       timeout: 10_000,
       env: {
         ...process.env,
-        REA_ADB_CLOSE_MARKER: marker,
-        REA_ADB_CLOSE_FAIL: settings.closeFails ? "1" : "0",
-        REA_FAKE_ADB: adb,
-        REA_FAKE_ADB_LOG: adbLog,
-        REA_FAKE_ADB_REMOVAL: settings.removal ?? "removes",
-        REA_ADB_PULL: settings.pull ?? "succeeds",
-        REA_FAKE_DEVICE: device,
+        NRE_ADB_CLOSE_MARKER: marker,
+        NRE_ADB_CLOSE_FAIL: settings.closeFails ? "1" : "0",
+        NRE_FAKE_ADB: adb,
+        NRE_FAKE_ADB_LOG: adbLog,
+        NRE_FAKE_ADB_REMOVAL: settings.removal ?? "removes",
+        NRE_ADB_PULL: settings.pull ?? "succeeds",
+        NRE_FAKE_DEVICE: device,
         ...(settings.thrown === undefined
           ? {}
-          : { REA_ADB_THROW: settings.thrown }),
+          : { NRE_ADB_THROW: settings.thrown }),
       },
     },
   );
@@ -164,7 +164,7 @@ posix(
     expect(result.status, `${result.stdout}\n${result.stderr}`).toBe(0);
     expect(result.adbCalls).toHaveLength(1);
     expect(result.adbCalls[0]).toMatch(
-      /^-s test shell rm -- \/data\/local\/tmp\/rea-verify-\d+\.txt$/u,
+      /^-s test shell rm -- \/data\/local\/tmp\/nre-verify-\d+\.txt$/u,
     );
     expect(result.stdout).toContain("[ok] verifier transfer probe removed");
     expect(result.deviceFiles).toEqual([]);
@@ -178,7 +178,7 @@ posix(
 
     expect(result.status).toBe(1);
     expect(result.stdout).toMatch(
-      /\[FAIL\] verifier transfer probe removed — \/data\/local\/tmp\/rea-verify-\d+\.txt: /u,
+      /\[FAIL\] verifier transfer probe removed — \/data\/local\/tmp\/nre-verify-\d+\.txt: /u,
     );
     expect(result.stdout).not.toContain("all adb device checks passed");
     expect(result.deviceFiles).toHaveLength(1);
@@ -194,7 +194,7 @@ posix(
     expect(result.status).toBe(1);
     expect(result.adbCalls).toHaveLength(1);
     expect(result.stdout).toMatch(
-      /\[FAIL\] verifier transfer probe removed — \/data\/local\/tmp\/rea-verify-\d+\.txt\n/u,
+      /\[FAIL\] verifier transfer probe removed — \/data\/local\/tmp\/nre-verify-\d+\.txt\n/u,
     );
     expect(result.stdout).not.toContain("all adb device checks passed");
     expect(result.deviceFiles).toHaveLength(1);
@@ -213,7 +213,7 @@ posix.each([
     expect(`${result.stdout}${result.stderr}`).toContain(failure);
     expect(result.adbCalls).toHaveLength(1);
     expect(result.adbCalls[0]).toMatch(
-      /^-s test shell rm -- \/data\/local\/tmp\/rea-verify-\d+\.txt$/u,
+      /^-s test shell rm -- \/data\/local\/tmp\/nre-verify-\d+\.txt$/u,
     );
     expect(result.stdout).toContain("[ok] verifier transfer probe removed");
     expect(result.deviceFiles).toEqual([]);

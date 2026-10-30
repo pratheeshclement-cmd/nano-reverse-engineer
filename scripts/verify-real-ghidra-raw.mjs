@@ -38,20 +38,20 @@ const installation = await inspectVerifierGhidraInstallation({
 assert.equal(installation.status, "available", JSON.stringify(installation));
 
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-raw-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-raw-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const bytes = Buffer.from("1eff2fe1", "hex"); // ARM little-endian bx lr.
 const sha256 = createHash("sha256").update(bytes).digest("hex");
 const path = join(workspace, "image.bin");
 await writeFile(path, bytes);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR,
   ...(process.env.JAVA_HOME === undefined
     ? {}
@@ -59,11 +59,11 @@ const env = {
   ...(process.env.GHIDRA_HEADLESS_MAXMEM === undefined
     ? {}
     : { GHIDRA_HEADLESS_MAXMEM: process.env.GHIDRA_HEADLESS_MAXMEM }),
-  ...(process.env.REA_GHIDRA_DISABLED_ANALYZERS === undefined
+  ...(process.env.NRE_GHIDRA_DISABLED_ANALYZERS === undefined
     ? {}
     : {
-        REA_GHIDRA_DISABLED_ANALYZERS:
-          process.env.REA_GHIDRA_DISABLED_ANALYZERS,
+        NRE_GHIDRA_DISABLED_ANALYZERS:
+          process.env.NRE_GHIDRA_DISABLED_ANALYZERS,
       }),
 };
 const transport = new StdioClientTransport({
@@ -72,7 +72,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-raw-proof", version: "1" });
+const client = new Client({ name: "nre-real-raw-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);

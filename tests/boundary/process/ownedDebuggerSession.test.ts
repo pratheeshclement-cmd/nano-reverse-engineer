@@ -35,7 +35,7 @@ const startStopProbe = (source: string, pipeInput = false) => {
   const runId = randomUUID();
   const child = spawn(process.execPath, ["--input-type=module", "-e", source], {
     detached: process.platform !== "win32",
-    env: { ...process.env, REA_PROCESS_RUN_ID: runId },
+    env: { ...process.env, NRE_PROCESS_RUN_ID: runId },
     stdio: [pipeInput ? "pipe" : "ignore", "pipe", "pipe"],
   });
   const leaderPid = child.pid;
@@ -1166,7 +1166,7 @@ it.skipIf(process.platform === "win32")(
   "retains the debugger owner while an unknown descendant holds output pipes open",
   async () => {
     const releaseDirectory = await mkdtemp(
-      join(tmpdir(), "rea-debugger-output-writer-"),
+      join(tmpdir(), "nre-debugger-output-writer-"),
     );
     const releaseFile = join(releaseDirectory, "release-writer");
     const writerSource = `const{watch}=require("node:fs");const watcher=watch(${JSON.stringify(releaseDirectory)},(_event,name)=>{if(name==="release-writer"){watcher.close();process.exit(0)}});process.stdout.write("writer-ready\\n");`;
@@ -1246,7 +1246,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it.skipIf(process.platform === "win32")(
-  "preserves inferior output written to its selected PTY after the REA probe exits",
+  "preserves inferior output written to its selected PTY after the NRE probe exits",
   async () => {
     const inferiorSource = [
       "process.stdout.write(`inferior-ready=${process.pid}\\n`);",
@@ -1313,7 +1313,7 @@ it.skipIf(process.platform === "win32")(
       inferiorPid = await ready;
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(
-          () => reject(new Error("REA probe did not exit")),
+          () => reject(new Error("NRE probe did not exit")),
           3_000,
         );
         void probeExit.then(() => {

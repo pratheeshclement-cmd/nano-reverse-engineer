@@ -213,7 +213,7 @@ it("parses historical report omissions as unknown without supplying a default", 
 
 it("preserves producer failures and rejects pre-cancelled requests before effects", async () => {
   const failure = new AnalysisCapabilityUnavailableError(
-    "rea-sqlite",
+    "nre-sqlite",
     "inspect_sqlite_database",
     "Selected worker could not start",
   );

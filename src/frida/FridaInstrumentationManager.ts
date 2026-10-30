@@ -491,11 +491,11 @@ export class FridaInstrumentationManager implements FridaInstrumentationPort {
     let nativeFailure: { readonly cause: unknown } | undefined;
     try {
       const nativeScript = await managed.session.createScript(scriptSource, {
-        name: `rea-${scriptId}`,
+        name: `nre-${scriptId}`,
       });
       entry = {
         id: scriptId,
-        name: `rea-${scriptId}`,
+        name: `nre-${scriptId}`,
         script: nativeScript,
         onMessage,
         state: "active",
@@ -1266,7 +1266,7 @@ export class FridaInstrumentationManager implements FridaInstrumentationPort {
         {
           cause,
           userMessage: `Frida device lookup reached its ${String(DEVICE_LOOKUP_TIMEOUT_MS)} ms deadline (deadlineExpired). This release has no runtime override.`,
-          remediationAction: `The ${String(DEVICE_LOOKUP_TIMEOUT_MS)} ms Frida device lookup has no runtime override. Confirm the selected device is attached, then retry. Another REA timeout does not raise this lookup.`,
+          remediationAction: `The ${String(DEVICE_LOOKUP_TIMEOUT_MS)} ms Frida device lookup has no runtime override. Confirm the selected device is attached, then retry. Another NRE timeout does not raise this lookup.`,
         },
       );
     }

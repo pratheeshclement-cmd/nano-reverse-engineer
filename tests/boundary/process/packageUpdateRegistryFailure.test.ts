@@ -12,7 +12,7 @@ const execFileAsync = promisify(execFile);
 const injectedFailure = "injected upstream body failure";
 
 it("retains upstream body failure and joins the active updater and installer child", async () => {
-  const testRoot = await createTestTempDirectory("rea-update-registry-");
+  const testRoot = await createTestTempDirectory("nre-update-registry-");
   const packageRoot = join(testRoot, "package");
   const workspace = join(testRoot, "workspace");
   const prefix = join(testRoot, "prefix");
@@ -29,14 +29,14 @@ it("retains upstream body failure and joins the active updater and installer chi
     writeFile(tarball, "archive"),
     writeFile(
       join(packageRoot, "package.json"),
-      JSON.stringify({ name: "rea-agents", version: "6.0.0" }),
+      JSON.stringify({ name: "nano-reverse-engineer", version: "6.0.0" }),
     ),
     writeFile(
       join(packageRoot, "dist", "generatedPackageMetadata.js"),
       'export const generated = { version: "6.0.0" };\n',
     ),
     writeFile(
-      join(packageRoot, "scripts", "rea.mjs"),
+      join(packageRoot, "scripts", "nre.mjs"),
       [
         'import { readFileSync } from "node:fs";',
         'const metadata = new URL("../package.json", import.meta.url);',

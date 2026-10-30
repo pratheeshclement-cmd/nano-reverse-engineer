@@ -1138,7 +1138,7 @@ it.each(["alpha", "beta"])(
     const unknown = new ProviderAdapterError(unknownOwner, "close_binary", {
       userMessage: "cleanup completion unknown",
     });
-    const tracked = new ProviderCleanupError("rea", ["owned-reader"], {});
+    const tracked = new ProviderCleanupError("nre", ["owned-reader"], {});
     let released = false;
     const registry = new AnalysisProviderRegistry(
       ["alpha", "beta"].map((id) => ({

@@ -194,7 +194,7 @@ posix(
   "does not interpret a root's zero exit while a detached descendant holds its output open",
   async () => {
     const resources = createInspectionResources();
-    const root = await createTestTempDirectory("rea-java-descendant-");
+    const root = await createTestTempDirectory("nre-java-descendant-");
     const release = join(root, "release");
     let launched: Launched | undefined;
     let descendantGroup: number | undefined;

@@ -24,9 +24,9 @@ const [
 ]);
 const recordCatalog = async (profile) => {
   // Catalog generation is independent of the host account and user configuration.
-  const home = await mkdtemp(join(tmpdir(), "rea-mcp-catalog-"));
+  const home = await mkdtemp(join(tmpdir(), "nre-mcp-catalog-"));
   const environment = {
-    REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+    NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
     HOME: home,
     USERPROFILE: home,
     XDG_CONFIG_HOME: join(home, "config"),
@@ -49,7 +49,7 @@ const recordCatalog = async (profile) => {
     });
     const server = createServer({ kind: "session", session }, { environment });
     cleanup.push(() => server.close());
-    const client = new Client({ name: "rea-catalog-recorder", version: "1" });
+    const client = new Client({ name: "nre-catalog-recorder", version: "1" });
     cleanup.push(() => client.close());
     const [clientTransport, serverTransport] =
       InMemoryTransport.createLinkedPair();

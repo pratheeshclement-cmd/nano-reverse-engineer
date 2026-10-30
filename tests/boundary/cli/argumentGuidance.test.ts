@@ -29,7 +29,7 @@ it.each([
     expect(result).toMatchObject({
       code: "VALIDATION_ERROR",
       message:
-        "REA could not read the command arguments. Check the named argument and its expected type, then try again.",
+        "NRE could not read the command arguments. Check the named argument and its expected type, then try again.",
       fieldErrors: expect.any(Array),
     });
     expect(text).not.toContain("Details:");

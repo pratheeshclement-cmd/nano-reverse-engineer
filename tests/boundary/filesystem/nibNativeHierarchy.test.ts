@@ -26,7 +26,7 @@ const compileNestedViews = async (
   withWindow = false,
   withTextField = false,
 ) => {
-  const root = await createTestTempDirectory("rea-nib-hierarchy-");
+  const root = await createTestTempDirectory("nre-nib-hierarchy-");
   const bundle = join(root, "Fixture.app");
   const resources = join(bundle, "Contents", "Resources");
   await mkdir(resources, { recursive: true });
@@ -250,8 +250,8 @@ describe.skipIf(process.platform !== "darwin")(
         const output = await cli.run({
           arguments: ["decode-interface-builder", fixture.app, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(output.exitCode, JSON.stringify(output)).toBe(0);

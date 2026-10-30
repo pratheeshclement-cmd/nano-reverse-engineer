@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("retains CommonJS requires spelled as exact no-substitution templates", async () => {
-  const root = await createTestTempDirectory("rea-reference-template-require-");
+  const root = await createTestTempDirectory("nre-reference-template-require-");
   await writeFile(
     join(root, "main.cjs"),
     [
@@ -51,7 +51,7 @@ it("retains CommonJS requires spelled as exact no-substitution templates", async
 
 it("retains TypeScript-wrapped exact requires through the shared literal reader", async () => {
   const root = await createTestTempDirectory(
-    "rea-reference-ts-template-require-",
+    "nre-reference-ts-template-require-",
   );
   await writeFile(
     join(root, "main.ts"),

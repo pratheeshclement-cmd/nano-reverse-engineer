@@ -20,7 +20,7 @@
 #include <utility>
 #include <vector>
 
-namespace rea {
+namespace nre {
 
 // Translate ordinary DOS drive separators without resolving components or
 // changing extended, device, UNC, relative, or drive-relative namespaces.
@@ -265,4 +265,4 @@ napi_value processCall(napi_env env, const std::wstring& operation,
                        const std::vector<napi_value>& args);
 napi_value inspect(napi_env env, std::unique_ptr<Runtime>& pending);
 
-} // namespace rea
+} // namespace nre

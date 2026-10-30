@@ -1,6 +1,6 @@
-"""Authenticated REA adapter executed on Hopper's dedicated Python thread.
+"""Authenticated NRE adapter executed on Hopper's dedicated Python thread.
 
-The bootstrap injects ``REA_SOCKET`` and a random ``REA_TOKEN`` before executing
+The bootstrap injects ``NRE_SOCKET`` and a random ``NRE_TOKEN`` before executing
 this file with Hopper's supported ``--python`` launcher option. Keep all Hopper
 API access on this thread: moving dispatch to a worker can deadlock Hopper.
 """
@@ -16,7 +16,7 @@ BAD_ADDRESSES = (-1, 0xFFFFFFFFFFFFFFFF, None)
 # The native label setter truncates NSString names at this UTF-16 extent.
 HOPPER_SYMBOL_NAME_UTF16_UNITS = 1024
 # Request JSON payload budget in bytes, excluding the trailing LF.
-# REA_BRIDGE_MAX_REQUEST_BYTES selects it. Unset stays 16777216.
+# NRE_BRIDGE_MAX_REQUEST_BYTES selects it. Unset stays 16777216.
 # 7464 is the authenticated Cutter frame of the largest bounded symbol name.
 # Cutter's 64-receipt recovery status is smaller with a null path. A path
 # that does not fit is null, not an older descriptor path.
@@ -25,7 +25,7 @@ HOPPER_SYMBOL_NAME_UTF16_UNITS = 1024
 # Encoded JSON allowance, in bytes, shared by one instruction list, one
 # native-caller list, and one caller-scan page. This release has no runtime override.
 CALLER_SCAN_ALLOWANCE_BYTES = 512 * 1024
-_BRIDGE_MAX_REQUEST_BYTES_SETTING = "REA_BRIDGE_MAX_REQUEST_BYTES"
+_BRIDGE_MAX_REQUEST_BYTES_SETTING = "NRE_BRIDGE_MAX_REQUEST_BYTES"
 DEFAULT_BRIDGE_MAX_REQUEST_BYTES = 16 * 1024 * 1024
 MINIMUM_BRIDGE_MAX_REQUEST_BYTES = 7464
 MAXIMUM_BRIDGE_MAX_REQUEST_BYTES = 536870887
@@ -33,7 +33,7 @@ MAXIMUM_BRIDGE_MAX_REQUEST_BYTES = 536870887
 
 def _bridge_max_request_bytes_constraint():
     return (
-        "REA_BRIDGE_MAX_REQUEST_BYTES must be a positive decimal integer "
+        "NRE_BRIDGE_MAX_REQUEST_BYTES must be a positive decimal integer "
         "from %d to %d bytes; the default is %d bytes (16 MiB). "
         "A value below %d bytes cannot carry the largest admitted "
         "symbol-name command, and a larger value is refused so the encoded "
@@ -89,10 +89,10 @@ MAX_REQUEST_BYTES, BRIDGE_MAX_REQUEST_BYTES_SOURCE = (
 
 def _bridge_max_request_bytes_recovery():
     return (
-        "The effective REA_BRIDGE_MAX_REQUEST_BYTES value is %d bytes "
+        "The effective NRE_BRIDGE_MAX_REQUEST_BYTES value is %d bytes "
         "(source %s; default %d, floor %d, maximum %d). "
-        "Set REA_BRIDGE_MAX_REQUEST_BYTES in the environment that starts REA "
-        "to a decimal integer from %d to %d, then restart REA. "
+        "Set NRE_BRIDGE_MAX_REQUEST_BYTES in the environment that starts NRE "
+        "to a decimal integer from %d to %d, then restart NRE. "
         "Restart Hopper or Cutter from that same environment so the bridge "
         "uses this ceiling."
         % (
@@ -176,7 +176,7 @@ def _api():
 
 
 def _session_document():
-    """Return the exact document bound to this authenticated REA session."""
+    """Return the exact document bound to this authenticated NRE session."""
     global _rea_session_document
     documents = _api().documents()
     if _rea_session_document is not None:
@@ -196,7 +196,7 @@ def _bind_session_document(documents=None):
     api = _api()
     if documents is None:
         documents = api.documents()
-    target = os.path.realpath(REA_TARGET_PATH)
+    target = os.path.realpath(NRE_TARGET_PATH)
 
     def matches_target(document):
         paths = (document.getExecutableFilePath(), document.getDatabaseFilePath())
@@ -212,7 +212,7 @@ def _bind_session_document(documents=None):
         return matching[0]
     if len(matching) > 1:
         raise CapabilityUnavailableError(
-            "The REA session document is ambiguous; Hopper did not identify the launched document"
+            "The NRE session document is ambiguous; Hopper did not identify the launched document"
         )
     return None
 
@@ -235,9 +235,9 @@ EXHAUSTIVE_ANALYSIS_METHODS = frozenset(
         "procedure_assembly",
         "procedure_callees",
         "procedure_callers",
-        "rea_caller_scan_page",
-        "rea_caller_scan_target",
-        "rea_caller_base",
+        "nre_caller_scan_page",
+        "nre_caller_scan_target",
+        "nre_caller_base",
         "procedure_info",
         "procedure_pseudo_code",
         "procedure_references",
@@ -270,11 +270,11 @@ def _json_safe(value):
 
 
 def _document(name=None):
-    """Keep observations and mutations bound to the active REA target."""
+    """Keep observations and mutations bound to the active NRE target."""
     documents = _api().documents()
     session_document = _session_document()
     if session_document is None:
-        raise CapabilityUnavailableError("The active REA target's Hopper document is no longer open; reopen the target with open_binary")
+        raise CapabilityUnavailableError("The active NRE target's Hopper document is no longer open; reopen the target with open_binary")
     if name is not None:
         # A document name is display metadata; scope it to the bound native
         # handle even when another open target happens to have the same name.
@@ -805,7 +805,7 @@ def _search_results(document, kind, params):
         needle = pattern if case_sensitive else pattern.casefold()
         matches = lambda value: needle in (value if case_sensitive else value.casefold())
     else:
-        raise CapabilityUnavailableError("Regex matching requires REA's supervised worker; the native bridge only executes literal searches")
+        raise CapabilityUnavailableError("Regex matching requires NRE's supervised worker; the native bridge only executes literal searches")
 
     if kind == "string":
         return [
@@ -987,12 +987,12 @@ def _analyze_function(document, params):
 
 
 def _dispatch(method, params):
-    """Dispatch only the closed operation set implemented by REA's public tools."""
+    """Dispatch only the closed operation set implemented by NRE's public tools."""
     if method == "health":
         return {
-            "name": "REA Hopper bridge",
+            "name": "NRE Hopper bridge",
             "version": "1.0.0",
-            "run_id": REA_RUN_ID,
+            "run_id": NRE_RUN_ID,
             "process_id": os.getpid(),
             "max_request_bytes": MAX_REQUEST_BYTES,
         }
@@ -1000,7 +1000,7 @@ def _dispatch(method, params):
         document = _session_document()
         if document is None:
             return {"shutdown": True, "analysis_stopped": True, "document_closed": True}
-        if method == "shutdown" and not REA_OWNS_PROCESS_LIFETIME:
+        if method == "shutdown" and not NRE_OWNS_PROCESS_LIFETIME:
             return {
                 "shutdown": True,
                 "analysis_stopped": not document.backgroundProcessActive(),
@@ -1009,7 +1009,7 @@ def _dispatch(method, params):
             }
         if document.backgroundProcessActive():
             document.requestBackgroundProcessStop()
-        if method == "shutdown" and REA_OWNS_PROCESS_LIFETIME:
+        if method == "shutdown" and NRE_OWNS_PROCESS_LIFETIME:
             return {
                 "shutdown": True,
                 "analysis_stopped": not document.backgroundProcessActive(),
@@ -1034,13 +1034,13 @@ def _dispatch(method, params):
     if method in EXHAUSTIVE_ANALYSIS_METHODS:
         _api().require_analysis_complete(document, method)
 
-    if method == "rea_caller_scan_target":
+    if method == "nre_caller_scan_target":
         return _caller_scan_target(document, params)
 
-    if method == "rea_caller_base":
+    if method == "nre_caller_base":
         return _caller_base(document, params)
 
-    if method == "rea_caller_scan_page":
+    if method == "nre_caller_scan_page":
         return _caller_scan_page(document, params)
 
     if method == "analyze_function":
@@ -1349,7 +1349,7 @@ def _serve_connection(connection):
                     raise InvalidRequestError("Invalid bridge method or parameters")
                 if (
                     not isinstance(request["token"], str) or not request["token"].isascii()
-                    or not hmac.compare_digest(request["token"], REA_TOKEN)
+                    or not hmac.compare_digest(request["token"], NRE_TOKEN)
                 ):
                     raise PermissionError("Invalid bridge capability")
                 authenticated = True
@@ -1442,32 +1442,32 @@ def _safe_diagnostic(error):
 
 def _run():
     """Own a permission-restricted, single-client Unix socket for this bridge."""
-    if os.path.exists(REA_SOCKET):
-        os.unlink(REA_SOCKET)
+    if os.path.exists(NRE_SOCKET):
+        os.unlink(NRE_SOCKET)
     server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    server.bind(REA_SOCKET)
-    os.chmod(REA_SOCKET, 0o600)
+    server.bind(NRE_SOCKET)
+    os.chmod(NRE_SOCKET, 0o600)
     server.listen(1)
     # A bridge can start after its caller's startup/cleanup deadline. Bound
     # the first accept as well as reconnects so an orphan cannot pin Hopper's
-    # dedicated Python thread and prevent later documents from starting REA.
-    server.settimeout(REA_RECONNECT_TIMEOUT_SECONDS)
+    # dedicated Python thread and prevent later documents from starting NRE.
+    server.settimeout(NRE_RECONNECT_TIMEOUT_SECONDS)
     try:
         while True:
             try:
                 connection, _ = server.accept()
             except socket.timeout:
                 break
-            connection.settimeout(REA_RECONNECT_TIMEOUT_SECONDS)
+            connection.settimeout(NRE_RECONNECT_TIMEOUT_SECONDS)
             if _serve_connection(connection):
                 break
-            # Match REA's cleanup handshake budget without pinning Hopper's
+            # Match NRE's cleanup handshake budget without pinning Hopper's
             # Python thread indefinitely after a client disappears.
-            server.settimeout(REA_RECONNECT_TIMEOUT_SECONDS)
+            server.settimeout(NRE_RECONNECT_TIMEOUT_SECONDS)
     finally:
         server.close()
-        if os.path.exists(REA_SOCKET):
-            os.unlink(REA_SOCKET)
+        if os.path.exists(NRE_SOCKET):
+            os.unlink(NRE_SOCKET)
 
 
 # Hopper's public objects are bound to its dedicated Python execution thread.

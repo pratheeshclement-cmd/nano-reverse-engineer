@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 cliTest(
   "CLI compares incomplete HTTP responses without inventing changes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-http-comparison-");
+    const root = await createTestTempDirectory("nre-http-comparison-");
     const response = {
       requestId: "request-1",
       status: 200,

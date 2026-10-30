@@ -75,7 +75,7 @@ if (mode === "interactive") {
   });
   const unowned = spawn(process.execPath, [process.argv[1], "detached-child"], {
     detached: true,
-    env: { ...process.env, REA_PROCESS_RUN_ID: "unowned-neighbor" },
+    env: { ...process.env, NRE_PROCESS_RUN_ID: "unowned-neighbor" },
     stdio: "ignore",
   });
   if (owned.pid === undefined || unowned.pid === undefined)

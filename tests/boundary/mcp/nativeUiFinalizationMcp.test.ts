@@ -14,7 +14,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 it.each([false, true])(
   "retains native UI reports over MCP when its deadline expires during close (cleanup fails: %s)",
   async (fails) => {
-    const directory = await createTestTempDirectory("rea-native-ui-mcp-");
+    const directory = await createTestTempDirectory("nre-native-ui-mcp-");
     const path = join(directory, "Inert");
     const header = Buffer.alloc(32);
     header.writeUInt32LE(0xfeedfacf, 0);

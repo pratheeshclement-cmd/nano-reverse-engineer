@@ -278,7 +278,7 @@ const heldIds = (
   store: EnvironmentStateStore | undefined,
 ): ReadonlySet<string> =>
   new Set(
-    store?.snapshot().rea_state.entities.map((entity) => entity.id) ?? [],
+    store?.snapshot().nre_state.entities.map((entity) => entity.id) ?? [],
   );
 
 const stepOf = (

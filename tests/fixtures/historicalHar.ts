@@ -2,7 +2,7 @@
 export const historicalHar = () => ({
   log: {
     version: "1.2",
-    creator: { name: "rea-source-owned-fixture", version: "1" },
+    creator: { name: "nre-source-owned-fixture", version: "1" },
     entries: [
       {
         startedDateTime: "2026-10-07T13:00:00.123+08:00",
@@ -255,7 +255,7 @@ const ENVIRONMENT_MANIFEST_ROWS: readonly ManifestRow[] = [
     "http://grafana.example/api/annotations",
     "application/json",
     '{"id":11,"message":"Annotation added"}',
-    '{"dashboardUID":"acb4v6","panelId":1,"time":1792000000000,"text":"probe","tags":["rea"]}',
+    '{"dashboardUID":"acb4v6","panelId":1,"time":1792000000000,"text":"probe","tags":["nre"]}',
   ],
   [
     "PUT",

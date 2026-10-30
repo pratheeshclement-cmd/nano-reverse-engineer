@@ -19,7 +19,7 @@ const SESSION = "00000000-0000-4000-8000-000000000001";
 const TOKEN = "bridge-token-0123456789abcdef";
 
 const privateDirectory = async (): Promise<string> => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-cutter-request-limit-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-cutter-request-limit-"));
   await chmod(directory, 0o700);
   onTestFinished(async () => {
     await rm(directory, { recursive: true, force: true });
@@ -45,8 +45,8 @@ const listen = async (
 
 const clientFor = (directory: string, ceiling: string): CutterBridgeClient => {
   const client = new CutterBridgeClient({
-    REA_CUTTER_BRIDGE_DIR: directory,
-    REA_BRIDGE_MAX_REQUEST_BYTES: ceiling,
+    NRE_CUTTER_BRIDGE_DIR: directory,
+    NRE_BRIDGE_MAX_REQUEST_BYTES: ceiling,
   });
   onTestFinished(() => client.close());
   return client;
@@ -56,7 +56,7 @@ it("rejects a bridge ceiling below the floor at client construction", () => {
   expect(
     () =>
       new CutterBridgeClient({
-        REA_BRIDGE_MAX_REQUEST_BYTES: "7463",
+        NRE_BRIDGE_MAX_REQUEST_BYTES: "7463",
       }),
   ).toThrow(ConfigurationError);
 });
@@ -82,7 +82,7 @@ const ceilingMismatch = (error: unknown): boolean => {
   expect(error.reason).toContain(
     "No status request was sent to the mismatched session.",
   );
-  expect(error.remediationAction).toContain("Set REA_BRIDGE_MAX_REQUEST_BYTES");
+  expect(error.remediationAction).toContain("Set NRE_BRIDGE_MAX_REQUEST_BYTES");
   return true;
 };
 
@@ -303,7 +303,7 @@ it("refuses an escaped Cutter command before serializing it", async () => {
       if (!(error instanceof AnalysisResourceConstraintError)) return false;
       expect(error.reason).toContain("authenticated frame limit of 8192 bytes");
       expect(error.reason).toContain("no command was sent");
-      expect(error.reason).toContain("REA_BRIDGE_MAX_REQUEST_BYTES");
+      expect(error.reason).toContain("NRE_BRIDGE_MAX_REQUEST_BYTES");
       return true;
     });
     expect(connections).toBe(0);
@@ -397,7 +397,7 @@ it("accepts a Cutter response at the ceiling and excludes the terminating LF", a
     error: {
       partialObservation: {
         normalized_result: {
-          message: expect.stringContaining("REA_BRIDGE_MAX_REQUEST_BYTES"),
+          message: expect.stringContaining("NRE_BRIDGE_MAX_REQUEST_BYTES"),
         },
       },
     },
@@ -458,7 +458,7 @@ it("sends a Cutter command above 16 MiB when both sides raise the ceiling", asyn
     maxRequestBytes: ceiling,
   });
   const defaults = new CutterBridgeClient({
-    REA_CUTTER_BRIDGE_DIR: directoryForDefault,
+    NRE_CUTTER_BRIDGE_DIR: directoryForDefault,
   });
   onTestFinished(() => defaults.close());
   await expect(

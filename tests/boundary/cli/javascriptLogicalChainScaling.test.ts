@@ -15,7 +15,7 @@ const operands = 38;
 cliTest(
   "analyzes a long short-circuit dispatch chain within the source deadline",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-logical-chain-");
+    const root = await createTestTempDirectory("nre-js-logical-chain-");
     const chain = Array.from(
       { length: operands },
       (unused, index) => `f${String(index)}(s)`,

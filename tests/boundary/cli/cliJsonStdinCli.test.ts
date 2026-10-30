@@ -40,7 +40,7 @@ cliTest.for([false, true])(
     const child = processes.spawn(
       process.execPath,
       [
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/nre.mjs"),
         ...(snapshot
           ? ["environment-serve", "-", "--evidence", "{}"]
           : ["compare-wasm-interfaces", "-"]),
@@ -50,7 +50,7 @@ cliTest.for([false, true])(
         env: {
           ...process.env,
           NODE_OPTIONS: `--max-old-space-size=256 --import=${probe}`,
-          REA_LOG_LEVEL: "silent",
+          NRE_LOG_LEVEL: "silent",
         },
       },
     );
@@ -72,12 +72,12 @@ cliTest.for([false, true])(
       child.once("close", () => resolve());
     });
     await expect
-      .poll(() => /REA_TEST_STDIN_READ (\d+)/u.test(stderr), {
+      .poll(() => /NRE_TEST_STDIN_READ (\d+)/u.test(stderr), {
         timeout: 10_000,
       })
       .toBe(true);
     const heapSizeLimit = Number(
-      /REA_TEST_STDIN_READ (\d+)/u.exec(stderr)?.[1],
+      /NRE_TEST_STDIN_READ (\d+)/u.exec(stderr)?.[1],
     );
     // Exceed the child's whole heap, independently of startup allocations or
     // when V8 last collected. Reuse the production owner's expansion estimate.
@@ -159,12 +159,12 @@ cliTest.skipIf(process.platform === "win32").for(
   async ({ command, signal, exitCode }, { processes }) => {
     const child = processes.spawn(
       process.execPath,
-      [resolve("scripts/rea.mjs"), command, "-", "--json"],
+      [resolve("scripts/nre.mjs"), command, "-", "--json"],
       {
         env: {
           ...process.env,
           NODE_OPTIONS: `--import=${probe}`,
-          REA_LOG_LEVEL: "silent",
+          NRE_LOG_LEVEL: "silent",
         },
       },
     );
@@ -181,7 +181,7 @@ cliTest.skipIf(process.platform === "win32").for(
       child.once("close", () => resolve());
     });
     await expect
-      .poll(() => stderr.includes("REA_TEST_STDIN_READ"), { timeout: 10_000 })
+      .poll(() => stderr.includes("NRE_TEST_STDIN_READ"), { timeout: 10_000 })
       .toBe(true);
     // Keep the pipe open: EOF must not be what releases the pending read.
     child.kill(signal);

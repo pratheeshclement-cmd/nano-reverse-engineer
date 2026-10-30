@@ -610,7 +610,7 @@ it.each(["completed", "failed"] as const)(
   "preserves physical file ownership separately from a typed close rejection after %s work",
   async (outcome) => {
     const directory = await createTestTempDirectory(
-      "rea-scope-file-authority-",
+      "nre-scope-file-authority-",
     );
     const path = join(directory, "payload");
     await writeFile(path, "selected bytes");

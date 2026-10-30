@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "linux")(
   "enforces both address-space limits before any producer allocation",
   async () => {
-    const directory = await createTestTempDirectory("rea-sigrok-limits-");
+    const directory = await createTestTempDirectory("nre-sigrok-limits-");
     const command = join(directory, "memory-probe");
     await writeFile(
       command,
@@ -37,7 +37,7 @@ else:
     const service = new SignalRecordingService(
       new SigrokRecordingProvider({
         ...process.env,
-        REA_SIGROK_COMMAND: command,
+        NRE_SIGROK_COMMAND: command,
       }),
     );
     onTestFinished(() => service.close());
@@ -54,7 +54,7 @@ it.skipIf(process.platform !== "linux")(
   "preserves lower inherited file/CPU limits in the real launch",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-sigrok-inherited-limits-",
+      "nre-sigrok-inherited-limits-",
     );
     const command = join(directory, "limit-probe");
     const path = join(directory, "recording.vcd");
@@ -85,7 +85,7 @@ else:
       runner,
       `import { SignalRecordingService } from ${JSON.stringify(serviceModule)};
 import { SigrokRecordingProvider } from ${JSON.stringify(providerModule)};
-const service = new SignalRecordingService(new SigrokRecordingProvider({ ...process.env, REA_SIGROK_COMMAND: ${JSON.stringify(command)} }));
+const service = new SignalRecordingService(new SigrokRecordingProvider({ ...process.env, NRE_SIGROK_COMMAND: ${JSON.stringify(command)} }));
 try {
   const result = await service.decode({ path: ${JSON.stringify(path)}, decoders: 'uart' });
   if (!result.ok) throw result.error;

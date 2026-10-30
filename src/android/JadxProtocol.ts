@@ -21,7 +21,7 @@ const jadxMemoryFailureSchema = z.strictObject({
   message: z.string().optional(),
   max_heap_bytes: z.int().positive().safe(),
 });
-/** Selector failures authored by REA's bridge, separate from arbitrary engine errors. */
+/** Selector failures authored by NRE's bridge, separate from arbitrary engine errors. */
 const jadxInputFailureSchema = z.strictObject({
   kind: z.literal("invalid-input"),
   field: z.enum(["class_name", "method_name", "overload_index"]),

@@ -18,7 +18,7 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 type Streams = { readonly stdout: string; readonly stderr: string };
 
 const fixture = async (streams: (path: string) => Streams) => {
-  const root = await createTestTempDirectory("rea-plist-diagnostic-");
+  const root = await createTestTempDirectory("nre-plist-diagnostic-");
   const target = join(root, "program");
   await writeFile(target, thinMach(0xfeedfacf, 0x100000c));
   await mkdir(join(root, "Contents"));

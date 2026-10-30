@@ -49,7 +49,7 @@ afterEach(() => {
 mcpTest.for(["gguf", "safetensors"] as const)(
   "reports host I/O failures for a valid %s file as execution failures, not unavailable targets",
   async (format, { mcp }) => {
-    const root = await createTestTempDirectory("rea-model-host-failure-");
+    const root = await createTestTempDirectory("nre-model-host-failure-");
     const path = join(root, `selected.${format}`);
     await writeFile(
       path,

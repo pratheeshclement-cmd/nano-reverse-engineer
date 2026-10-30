@@ -31,7 +31,7 @@ import {
 const exec = promisify(execFile);
 const packedFiles = [
   "package/bridge/hopper_bridge.py",
-  "package/bridge/cutter/rea_bridge.py",
+  "package/bridge/cutter/nre_bridge.py",
   ...Object.values(GHIDRA_BRIDGE_SOURCES).map(
     (name) => `package/bridge/ghidra/${name}`,
   ),
@@ -54,7 +54,7 @@ const expectedPythonCommandFailure = (diagnostic: string | RegExp) => ({
 });
 
 async function fixture(source: string = validSource, omitHopper = false) {
-  const scratch = await createTestWorkspace("rea-packed-bridge-");
+  const scratch = await createTestWorkspace("nre-packed-bridge-");
   const directory = scratch.root;
   let commands: PackageVerifierCommands | undefined;
   onTestFinished(() =>
@@ -96,7 +96,7 @@ it.each(["cwd", "pythonpath", "sitecustomize"] as const)(
     const moduleSource = [
       "import os",
       "from pathlib import Path",
-      "Path(os.environ['REA_PACKED_IMPORT_MARKER']).write_text('executed')",
+      "Path(os.environ['NRE_PACKED_IMPORT_MARKER']).write_text('executed')",
       ...(kind === "sitecustomize"
         ? ["import ast", "ast.parse = lambda *args, **kwargs: None"]
         : ["def parse(*args, **kwargs): return None"]),
@@ -120,12 +120,12 @@ it.each(["cwd", "pythonpath", "sitecustomize"] as const)(
 import { createPackageVerifierCommands } from ${JSON.stringify(new URL("../../../scripts/lib/verify-package-commands.mjs", import.meta.url).href)};
 import { withVerifierCleanup } from ${JSON.stringify(new URL("../../../scripts/lib/verifier-cleanup.mjs", import.meta.url).href)};
 import { PrivateRuntimeRoot } from ${JSON.stringify(new URL("../../../dist/process/PrivateRuntimeRoot.js", import.meta.url).href)};
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-packed-python-command-" });
+const root = await PrivateRuntimeRoot.create({ prefix: "nre-packed-python-command-" });
 let commands;
 await withVerifierCleanup(async () => {
 commands = await createPackageVerifierCommands({ workspace: root });
 try {
-  await verifyPackedBridge({ ...JSON.parse(process.env.REA_PACKED_VERIFY_INPUT), commands });
+  await verifyPackedBridge({ ...JSON.parse(process.env.NRE_PACKED_VERIFY_INPUT), commands });
   console.log(JSON.stringify({ accepted: true }));
 } catch (error) {
   console.log(JSON.stringify({ accepted: false, name: error.name, code: error.code, stderr: error.snapshot?.stderr?.text }));
@@ -141,8 +141,8 @@ try {
             ),
           ),
           PYTHONPATH: kind === "cwd" ? "" : modules,
-          REA_PACKED_IMPORT_MARKER: marker,
-          REA_PACKED_VERIFY_INPUT: JSON.stringify({
+          NRE_PACKED_IMPORT_MARKER: marker,
+          NRE_PACKED_VERIFY_INPUT: JSON.stringify({
             tarball: input.tarball,
             packedFiles: input.packedFiles,
           }),
@@ -205,7 +205,7 @@ it.each(["valid", "invalid"] as const)(
       kind === "valid" ? validSource : "def broken(:\n",
     );
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-packed-bridge-lease-",
+      prefix: "nre-packed-bridge-lease-",
     });
     let commands: PackageVerifierCommands | undefined;
     await withVerifierCleanup(async () => {

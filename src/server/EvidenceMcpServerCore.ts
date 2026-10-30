@@ -756,7 +756,7 @@ class ErrorEvidenceTransport implements Transport {
     // transport authentication and caller arguments are never added here.
     const evidence = createEvidence(
       undefined,
-      { id: "rea-mcp", name: "REA MCP delivery", version: "1" },
+      { id: "nre-mcp", name: "NRE MCP delivery", version: "1" },
       {
         operation: "mcp_tool_error",
         parameters: { tool_name: operation },
@@ -781,7 +781,7 @@ class ErrorEvidenceTransport implements Transport {
         ? "Export the retained original error through export_evidence_bundle to a caller-selected path. The connection remains usable."
         : encoded.constraint === "string-length"
           ? "The original error could not be retained by this server. Use complete CLI JSON output when the analysis completed. Repeating the unchanged MCP call fails the same way."
-          : "The original error could not be retained by this server. Restart REA with a larger REA_MCP_MAX_RESPONSE_BYTES and a matching client receive buffer, then retry.",
+          : "The original error could not be retained by this server. Restart NRE with a larger NRE_MCP_MAX_RESPONSE_BYTES and a matching client receive buffer, then retry.",
     });
     const replacement = this.transportConstraintResult(
       operation,
@@ -907,7 +907,7 @@ class ErrorEvidenceTransport implements Transport {
         { max_input_elements: this.maximumInputElements },
         {
           remediationAction:
-            "Reduce the combined array elements and object members in the arguments, or restart REA with a larger REA_MCP_MAX_INPUT_ELEMENTS allowance for this workload.",
+            "Reduce the combined array elements and object members in the arguments, or restart NRE with a larger NRE_MCP_MAX_INPUT_ELEMENTS allowance for this workload.",
         },
       );
       const result = this.delivery.toErrorToolResult(error, targetContent);
@@ -979,7 +979,7 @@ class ErrorEvidenceTransport implements Transport {
       error: {
         ...recovered.error,
         message:
-          "The requested MCP tool is not advertised by this REA server. Call tools/list, select an advertised tool, and retry; do not repeat the unknown tool name.",
+          "The requested MCP tool is not advertised by this NRE server. Call tools/list, select an advertised tool, and retry; do not repeat the unknown tool name.",
       },
     };
   }

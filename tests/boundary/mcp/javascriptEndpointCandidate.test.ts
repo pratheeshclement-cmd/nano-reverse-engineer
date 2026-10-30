@@ -9,7 +9,7 @@ import { javascriptApplicationAnalysisResultSchema } from "../../../src/domain/j
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("preserves Map omission and uncertain endpoint Evidence through public MCP", async () => {
-  const root = await createTestTempDirectory("rea-map-endpoint-mcp-");
+  const root = await createTestTempDirectory("nre-map-endpoint-mcp-");
   await writeFile(
     join(root, "app.mjs"),
     `
@@ -24,7 +24,7 @@ it("preserves Map omission and uncertain endpoint Evidence through public MCP", 
   const client = new Client({ name: "map-endpoint-regression", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: process.cwd(),
     env: { PATH: process.env.PATH ?? "" },
     stderr: "pipe",

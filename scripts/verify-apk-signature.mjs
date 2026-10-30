@@ -95,7 +95,7 @@ if ([apksigner, aapt2, androidJar, keytool].includes(undefined)) {
 
 const entrypoint =
   process.argv.slice(2).find((arg) => !arg.startsWith("--")) ??
-  fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  fileURLToPath(new URL("./nre.mjs", import.meta.url));
 
 const run = async (tool, args) =>
   execute(tool, args, {
@@ -216,7 +216,7 @@ const inspectCli = async (path) => {
 };
 
 const verifierRun = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-apk-signature-verifier-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-apk-signature-verifier-"));
 const client = new Client({ name: "apk-signature-verifier", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -274,9 +274,9 @@ try {
   await writeFile(
     join(workspace, "AndroidManifest.xml"),
     `<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="tools.rea.fixture">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="tools.nre.fixture">
   <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="34"/>
-  <application android:label="rea"/>
+  <application android:label="nre"/>
 </manifest>
 `,
   );
@@ -311,7 +311,7 @@ try {
     "-keysize",
     "2048",
     "-dname",
-    "CN=REA Lane One",
+    "CN=NRE Lane One",
   ]);
   await key("k2", [
     "-keyalg",
@@ -319,7 +319,7 @@ try {
     "-groupname",
     "secp256r1",
     "-dname",
-    "CN=REA Lane Two",
+    "CN=NRE Lane Two",
   ]);
   const ks = (name) => [
     "--ks",
@@ -351,15 +351,15 @@ try {
 
   // 2) v1-only signing (X-Android-APK-Signed is not read, so this cannot be
   //    told apart from a v2/v3 block that was removed). Android requires v2+
-  //    for targetSdk >= 30, so this case uses a legacy-target base APK. REA's
+  //    for targetSdk >= 30, so this case uses a legacy-target base APK. NRE's
   //    v1.present is structural; apksigner's "verified using v1" is platform
   //    applicability and is false for minSdk >= 24 even when CERT.SF exists.
   await writeFile(
     join(workspace, "LegacyManifest.xml"),
     `<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="tools.rea.legacy">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="tools.nre.legacy">
   <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
-  <application android:label="rea"/>
+  <application android:label="nre"/>
 </manifest>
 `,
   );
@@ -394,7 +394,7 @@ try {
   assert.equal(v1Report.schemes.v2.present, false);
   assert.equal(v1Report.posture.v1_only, true);
   assert.equal(v1Report.posture.strongest_scheme, "v1");
-  /** REA's declared v1 signer must be the certificate apksigner and keytool name. */
+  /** NRE's declared v1 signer must be the certificate apksigner and keytool name. */
   const assertV1Signer = async (apk, report, expected) => {
     const [signer, ...rest] = report.schemes.v1.signers;
     assert.equal(rest.length, 0, "one v1 signer");
@@ -403,7 +403,7 @@ try {
     assert.deepEqual(
       signer.certificates.map((c) => c.sha256_fingerprint),
       await oracleJarSigners(apk),
-      "REA v1 certificates must equal keytool -printcert -jarfile",
+      "NRE v1 certificates must equal keytool -printcert -jarfile",
     );
     assert.equal(signer.signer_infos[0]?.certificate_sha256, expected);
     assert.ok(signer.certificate?.subject, "v1 signer subject");
@@ -466,13 +466,13 @@ try {
   ]);
   const lineageOracle = await oracleLineage(rotated);
   const rotatedReport = await inspectBoth(rotated);
-  const reaLineage = rotatedReport.schemes.v3.signers[0].rotation.lineage.map(
+  const nreLineage = rotatedReport.schemes.v3.signers[0].rotation.lineage.map(
     (n) => n.certificate.sha256_fingerprint,
   );
   assert.deepEqual(
-    reaLineage,
+    nreLineage,
     lineageOracle,
-    "REA lineage must equal apksigner lineage (order + digests)",
+    "NRE lineage must equal apksigner lineage (order + digests)",
   );
   // Observed: v2 (old key) and v3 (new key) differ. Declared: the lineage
   // covers both. The two facts stay separate.
@@ -609,7 +609,7 @@ try {
   assert.equal(
     stampedReport.source_stamp.certificate?.sha256_fingerprint,
     fullOracle.signerSha256,
-    "REA must read the declared stamp certificate (k1)",
+    "NRE must read the declared stamp certificate (k1)",
   );
 
   // 4) One changed entry byte with the declared digest left alone: apksigner
@@ -631,7 +631,7 @@ try {
   assert.equal(
     tamperedReport.posture.self_consistent,
     false,
-    "REA must report the tampered APK as not self-consistent",
+    "NRE must report the tampered APK as not self-consistent",
   );
 
   // 4b) The same byte change with the declared digests recomputed and written

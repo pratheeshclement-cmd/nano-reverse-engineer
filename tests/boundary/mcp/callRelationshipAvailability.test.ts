@@ -100,7 +100,7 @@ describe("call relationship capability inventory at the public MCP boundary", ()
   it.each(scenarios)(
     "keeps $name inventory aligned with callable modes",
     async (scenario) => {
-      directory = await createTestTempDirectory("rea-call-availability-");
+      directory = await createTestTempDirectory("nre-call-availability-");
       const calls: string[] = [];
       const { mcp, first } = await createSessionMcpHarness(
         directory,
@@ -138,7 +138,7 @@ describe("call relationship capability inventory at the public MCP boundary", ()
 
   it("keeps call relationship tools unavailable before a target is open", async () => {
     directory = await createTestTempDirectory(
-      "rea-call-availability-no-target-",
+      "nre-call-availability-no-target-",
     );
     const { mcp } = await createSessionMcpHarness(
       directory,

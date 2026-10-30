@@ -23,7 +23,7 @@ it("allows larger streamed transfers only with corresponding parent capacity", (
 });
 
 it("enforces the offered complete-file byte budget while preserving authenticated round trips", async () => {
-  const root = await createTestTempDirectory("rea-js-transfer-budget-");
+  const root = await createTestTempDirectory("nre-js-transfer-budget-");
   const text = "export function add(value) { return value + 1; }";
   const file: JavaScriptArtifactFile = {
     path: "app.mjs",
@@ -100,7 +100,7 @@ it("enforces the offered complete-file byte budget while preserving authenticate
 });
 
 it("rejects authenticated worker rows beyond the offered node or unknown capacity", async () => {
-  const root = await createTestTempDirectory("rea-js-transfer-capacity-");
+  const root = await createTestTempDirectory("nre-js-transfer-capacity-");
   const text = "globalThis.u.p(globalThis.v[k]);";
   const file: JavaScriptArtifactFile = {
     path: "app.js",

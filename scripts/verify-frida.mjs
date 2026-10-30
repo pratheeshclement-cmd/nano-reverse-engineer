@@ -43,7 +43,7 @@ try {
         argv: ["-e", "setTimeout(() => {}, 1500)"],
         source: {
           sourceKind: "inline",
-          source: "send({ rea_frida_verification: 'ok', pid: Process.id });",
+          source: "send({ nre_frida_verification: 'ok', pid: Process.id });",
         },
         durationMs: 500,
       };
@@ -64,7 +64,7 @@ try {
         pid: options.pid,
         source: {
           sourceKind: "inline",
-          source: "send({ rea_frida_verification: 'ok', pid: Process.id });",
+          source: "send({ nre_frida_verification: 'ok', pid: Process.id });",
         },
         durationMs: 500,
       };
@@ -89,7 +89,7 @@ try {
         typeof message.payload === "object" &&
         message.payload !== null &&
         !Array.isArray(message.payload) &&
-        message.payload.rea_frida_verification === "ok" &&
+        message.payload.nre_frida_verification === "ok" &&
         message.payload.pid === observed.pid,
     );
     if (!messageObserved)

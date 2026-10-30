@@ -46,7 +46,7 @@ afterEach(() => {
 
 describe("environment build heap headroom", () => {
   it("refuses to serialize the manifest the live heap cannot hold, before writing", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-heap-");
+    const root = await createTestTempDirectory("nre-environment-build-heap-");
     const path = join(root, "grafana.capture.json");
     await writeFile(
       path,
@@ -86,14 +86,14 @@ describe("environment build heap headroom", () => {
   });
 
   it("refuses to serialize an inspected HAR's Evidence the live heap cannot hold, before writing", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-heap-");
+    const root = await createTestTempDirectory("nre-environment-build-heap-");
     const har = join(root, "grafana.har");
     await writeFile(har, JSON.stringify(environmentManifestHar()));
     const exitCode = process.exitCode;
     starveHeap();
     let stdout = "";
     try {
-      await createCli({ REA_LOG_LEVEL: "silent" }).serve(
+      await createCli({ NRE_LOG_LEVEL: "silent" }).serve(
         ["environment-build", har, join(root, "built"), "--json"],
         {
           env: {},

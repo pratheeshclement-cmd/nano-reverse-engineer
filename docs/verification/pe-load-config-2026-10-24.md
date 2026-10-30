@@ -25,7 +25,7 @@ Both images declare one callback and no load-config directory.
 - Sysinternals `strings64.exe` (PE32+, MSVC): load-config fields match
   `llvm-readobj --coff-load-config`.
 - Sysinternals `strings.exe` (PE32, MSVC): the data directory declares 64 bytes
-  while the structure `Size` is 188 (`0xBC`). REA reports `size: 188`,
+  while the structure `Size` is 188 (`0xBC`). NRE reports `size: 188`,
   security cookie `0x4560dc` in `.data`, SafeSEH table `0x453b28` with 7
   handlers and guard flags `0x100`, matching `llvm-readobj`.
 

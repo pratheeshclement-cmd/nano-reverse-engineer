@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "linux")(
   "enforces both address-space limits before any producer allocation",
   async () => {
-    const directory = await createTestTempDirectory("rea-tshark-limits-");
+    const directory = await createTestTempDirectory("nre-tshark-limits-");
     const command = join(directory, "memory-probe");
     await writeFile(
       command,
@@ -37,7 +37,7 @@ else:
     const service = new PacketCaptureService(
       new TsharkCaptureProvider({
         ...process.env,
-        REA_TSHARK_COMMAND: command,
+        NRE_TSHARK_COMMAND: command,
       }),
     );
     onTestFinished(() => service.close());
@@ -54,7 +54,7 @@ it.skipIf(process.platform !== "linux")(
   "preserves lower inherited file/CPU limits in the real launch",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-tshark-inherited-limits-",
+      "nre-tshark-inherited-limits-",
     );
     const command = join(directory, "limit-probe");
     const path = join(directory, "recording.pcap");
@@ -85,7 +85,7 @@ else:
       runner,
       `import { PacketCaptureService } from ${JSON.stringify(serviceModule)};
 import { TsharkCaptureProvider } from ${JSON.stringify(providerModule)};
-const service = new PacketCaptureService(new TsharkCaptureProvider({ ...process.env, REA_TSHARK_COMMAND: ${JSON.stringify(command)} }));
+const service = new PacketCaptureService(new TsharkCaptureProvider({ ...process.env, NRE_TSHARK_COMMAND: ${JSON.stringify(command)} }));
 try {
   const result = await service.inspect({ path: ${JSON.stringify(path)}, fields: ['frame.number'] });
   if (!result.ok) throw result.error;
@@ -114,7 +114,7 @@ try {
 it.skipIf(process.platform !== "linux")(
   "reports a real kernel file-limit termination with its effective ceiling",
   async () => {
-    const directory = await createTestTempDirectory("rea-tshark-file-limit-");
+    const directory = await createTestTempDirectory("nre-tshark-file-limit-");
     const command = join(directory, "file-probe");
     const path = join(directory, "recording.pcap");
     await writeFile(path, "selected fixture");
@@ -135,7 +135,7 @@ else:
     );
     const service = new PacketCaptureService(
       new TsharkCaptureProvider(
-        { ...process.env, REA_TSHARK_COMMAND: command },
+        { ...process.env, NRE_TSHARK_COMMAND: command },
         undefined,
         undefined,
         process.platform,

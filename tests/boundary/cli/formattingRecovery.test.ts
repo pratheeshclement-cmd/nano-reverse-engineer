@@ -76,7 +76,7 @@ describe("CLI formatting stage admission", () => {
   it("preserves native CTA sentinel output", async () => {
     const replies: string[] = [];
     for (const wrapped of [false, true]) {
-      const cli = Cli.create("rea-output-test", { sync: false });
+      const cli = Cli.create("nre-output-test", { sync: false });
       cli.command("fixture", {
         run: (context) =>
           context.ok(
@@ -154,7 +154,7 @@ describe("CLI formatting stage admission", () => {
   });
 
   it("leaves command RangeErrors under Incur's command failure protocol", async () => {
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("nre-output-test", { sync: false });
     cli.command("fixture", {
       run: () => {
         throw new RangeError("Invalid string length");

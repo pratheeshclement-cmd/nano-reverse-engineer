@@ -1,6 +1,6 @@
 """Offline adapter to unchanged pwntools 4.15.0; never use libs/maps/libc.
 
-Owned request/snapshot/reply paths are supplied by REA. No host target-process launch,
+Owned request/snapshot/reply paths are supplied by NRE. No host target-process launch,
 user configuration initialization, debugger startup, or dependency installation.
 """
 import base64
@@ -335,6 +335,6 @@ def inspect_elf(path, cache):
 
 if __name__ == "__main__":
     runtime_path = Path(__file__).with_name("decoder_runtime.py")
-    runtime = {"__file__": str(runtime_path), "__name__": "rea_decoder_runtime"}
+    runtime = {"__file__": str(runtime_path), "__name__": "nre_decoder_runtime"}
     exec(compile(runtime_path.read_bytes(), str(runtime_path), "exec"), runtime)
     runtime["main"](sys.argv[-1], inspect_elf, LayoutFailure, PROFILE)

@@ -127,7 +127,7 @@ it("closes export resources when the operation throws", async () => {
 cliTest.skipIf(process.platform === "win32")(
   "exits with a capture_path invalid_request for a named pipe before publishing output",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-script-selection-cli-");
+    const root = await createTestTempDirectory("nre-script-selection-cli-");
     const capturePath = join(root, "capture.pipe");
     const outputDirectory = join(root, "export");
     const created = await processes.run("mkfifo", [capturePath], {
@@ -137,7 +137,7 @@ cliTest.skipIf(process.platform === "win32")(
 
     const response = await cli.run({
       arguments: ["export-web-scripts", capturePath, outputDirectory, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
       timeoutMs: 5_000,
     });
     expect(response.exitCode).toBe(1);
@@ -166,7 +166,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest(
   "refuses an existing output directory or link as invalid output_directory input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-script-export-existing-");
+    const root = await createTestTempDirectory("nre-script-export-existing-");
     const capturePath = join(root, "capture.json");
     await writeFile(capturePath, JSON.stringify(scriptScenarioFixture()));
     const retained = join(root, "retained");
@@ -187,7 +187,7 @@ cliTest(
           outputDirectory,
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode).toBe(1);
       expect(response.json).toMatchObject({

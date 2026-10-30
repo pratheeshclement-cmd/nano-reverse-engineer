@@ -1,11 +1,11 @@
 # Serve writes whose calls send different members
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
 A fresh recording round of seven applications, main against #7332, showed the recording skill now varies what the two
-creates and two updates of a type send, as it asks. Where the second call left out a member the first sent, REA
+creates and two updates of a type send, as it asks. Where the second call left out a member the first sent, NRE
 withheld the write:
 
 - **Updates.** An update plan required every member its first call sent and never narrowed that, so EspoCRM's second

@@ -9,7 +9,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "linux")(
   "keeps invalid UTF-8 filenames distinct from a valid U+FFFD sibling",
   async () => {
-    const root = await createTestTempDirectory("rea-artifact-filename-bytes-");
+    const root = await createTestTempDirectory("nre-artifact-filename-bytes-");
     const rawName = Buffer.from([
       0x62, 0x61, 0x64, 0xff, 0x2e, 0x74, 0x78, 0x74,
     ]);

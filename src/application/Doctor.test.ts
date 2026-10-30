@@ -29,7 +29,7 @@ describe("doctor Hopper startup timeout", () => {
   ): DoctorHost => ({
     ...systemDoctorHost({
       environment:
-        value === undefined ? {} : { REA_HOPPER_STARTUP_TIMEOUT_MS: value },
+        value === undefined ? {} : { NRE_HOPPER_STARTUP_TIMEOUT_MS: value },
     }),
     ...host({
       installationPaths: () => Promise.resolve([]),
@@ -86,8 +86,8 @@ describe("doctor Hopper startup timeout", () => {
           name: "hopper-startup-timeout",
           ok: false,
           classification: "config_drift",
-          detail: expect.stringContaining("REA_HOPPER_STARTUP_TIMEOUT_MS"),
-          remediation: expect.stringContaining("REA_HOPPER_STARTUP_TIMEOUT_MS"),
+          detail: expect.stringContaining("NRE_HOPPER_STARTUP_TIMEOUT_MS"),
+          remediation: expect.stringContaining("NRE_HOPPER_STARTUP_TIMEOUT_MS"),
         }),
       );
     },
@@ -168,19 +168,19 @@ describe("doctor Hopper startup timeout", () => {
 
 describe("doctor native analysis configuration", () => {
   it.each([
-    ["REA_ANALYSIS_PROVIDER", "Hopper"],
-    ["REA_REGEX_MATCHING_DEADLINE_MS", "0"],
-    ["REA_BRIDGE_MAX_REQUEST_BYTES", "7463"],
-    ["REA_CAPTURE_DECODER_OLD_GENERATION_MIB", "7"],
-    ["REA_REGEX_WORKER_HEAP_REQUEST_MIB", "6"],
-    ["REA_MCP_INITIALIZE_BUDGET_MS", "0"],
-    ["REA_MCP_TOOLS_LIST_BUDGET_MS", "0"],
-    ["REA_MCP_FIRST_CATALOG_BUDGET_MS", "0"],
-    ["REA_MCP_DOCTOR_DEADLINE_MS", "0"],
-    ["REA_GHIDRA_STARTUP_TIMEOUT_MS", "abc"],
-    ["REA_SWIFTC_COMPILE_TIMEOUT_MS", "0"],
-    ["REA_LOG_LEVEL", "verbose"],
-    ["REA_GHIDRA_COMPILER_SPEC_ID", "gcc"],
+    ["NRE_ANALYSIS_PROVIDER", "Hopper"],
+    ["NRE_REGEX_MATCHING_DEADLINE_MS", "0"],
+    ["NRE_BRIDGE_MAX_REQUEST_BYTES", "7463"],
+    ["NRE_CAPTURE_DECODER_OLD_GENERATION_MIB", "7"],
+    ["NRE_REGEX_WORKER_HEAP_REQUEST_MIB", "6"],
+    ["NRE_MCP_INITIALIZE_BUDGET_MS", "0"],
+    ["NRE_MCP_TOOLS_LIST_BUDGET_MS", "0"],
+    ["NRE_MCP_FIRST_CATALOG_BUDGET_MS", "0"],
+    ["NRE_MCP_DOCTOR_DEADLINE_MS", "0"],
+    ["NRE_GHIDRA_STARTUP_TIMEOUT_MS", "abc"],
+    ["NRE_SWIFTC_COMPILE_TIMEOUT_MS", "0"],
+    ["NRE_LOG_LEVEL", "verbose"],
+    ["NRE_GHIDRA_COMPILER_SPEC_ID", "gcc"],
   ] as const)(
     "rejects %s before scoped Hopper readiness reports success",
     async (setting, value) => {
@@ -209,9 +209,9 @@ describe("doctor native analysis configuration", () => {
   );
 
   it.each([
-    ["REA_GHIDRA_STARTUP_TIMEOUT_MS", "abc"],
+    ["NRE_GHIDRA_STARTUP_TIMEOUT_MS", "abc"],
     ["HOPPER_LOADER_ARGS_JSON", "{"],
-    ["REA_GHIDRA_COMPILER_SPEC_ID", "gcc"],
+    ["NRE_GHIDRA_COMPILER_SPEC_ID", "gcc"],
     ["CALLER_SETTING", "private\0value"],
   ] as const)(
     "keeps a valid supplied Hopper timeout when %s rejects native admission",
@@ -220,7 +220,7 @@ describe("doctor native analysis configuration", () => {
         undefined,
         configurationHost({
           [setting]: value,
-          REA_HOPPER_STARTUP_TIMEOUT_MS: "120001",
+          NRE_HOPPER_STARTUP_TIMEOUT_MS: "120001",
         }),
         { providers: ["hopper"] },
       );
@@ -229,7 +229,7 @@ describe("doctor native analysis configuration", () => {
         expect.objectContaining({
           name: "hopper-startup-timeout",
           ok: true,
-          detail: "REA_HOPPER_STARTUP_TIMEOUT_MS=120001",
+          detail: "NRE_HOPPER_STARTUP_TIMEOUT_MS=120001",
         }),
       );
       expect(result.scope_checks).toContainEqual(
@@ -246,7 +246,7 @@ describe("doctor native analysis configuration", () => {
       undefined,
       configurationHost({
         CALLER_SETTING: "private\0value",
-        REA_HOPPER_STARTUP_TIMEOUT_MS: "0",
+        NRE_HOPPER_STARTUP_TIMEOUT_MS: "0",
       }),
       { providers: ["hopper"] },
     );
@@ -256,7 +256,7 @@ describe("doctor native analysis configuration", () => {
         name: "hopper-startup-timeout",
         ok: false,
         detail:
-          "REA_HOPPER_STARTUP_TIMEOUT_MS: must be a positive decimal integer",
+          "NRE_HOPPER_STARTUP_TIMEOUT_MS: must be a positive decimal integer",
       }),
     );
     expect(result.scope_checks).toContainEqual(
@@ -277,7 +277,7 @@ describe("doctor native analysis configuration", () => {
   it("keeps a lowercase provider preference ready for the selected engine", async () => {
     const result = await runDoctor(
       undefined,
-      configurationHost({ REA_ANALYSIS_PROVIDER: "hopper" }),
+      configurationHost({ NRE_ANALYSIS_PROVIDER: "hopper" }),
       { providers: ["hopper"] },
     );
 
@@ -292,18 +292,18 @@ describe("doctor native analysis configuration", () => {
   it("keeps an invalid native setting informational when nothing starts MCP", async () => {
     const result = await runDoctor(
       undefined,
-      configurationHost({ REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc" }),
+      configurationHost({ NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc" }),
       { providers: [] },
     );
 
     expect(result.healthy).toBe(true);
     expect(result.environment_healthy).toBe(false);
     expect(result.scope_checks.map(({ name }) => name)).not.toContain(
-      "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+      "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
     );
     expect(result.informational_checks).toContainEqual(
       expect.objectContaining({
-        name: "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+        name: "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
         ok: false,
       }),
     );
@@ -312,7 +312,7 @@ describe("doctor native analysis configuration", () => {
   it("does not treat a JEB-only timeout as native analysis configuration", async () => {
     const result = await runDoctor(
       undefined,
-      configurationHost({ REA_JEB_MCP_TIMEOUT_MS: "abc" }),
+      configurationHost({ NRE_JEB_MCP_TIMEOUT_MS: "abc" }),
       { providers: ["hopper"] },
     );
 
@@ -329,7 +329,7 @@ describe("doctor MCP startup readiness", () => {
   const alignedCodex: ClientRegistrationStatus = {
     client: "codex",
     config_path: "/home/user/.codex/config.toml",
-    command: ["/current/rea", "mcp"],
+    command: ["/current/nre", "mcp"],
     state: "aligned",
     remediation: null,
   };
@@ -344,22 +344,22 @@ describe("doctor MCP startup readiness", () => {
     const client = await runDoctor(
       undefined,
       selectedHost({
-        REA_LOG_LEVEL: "verbose",
-        REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
+        NRE_LOG_LEVEL: "verbose",
+        NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
       }),
       { clients: ["codex"] },
     );
     expect(client.healthy).toBe(false);
     expect(client.scope_checks).toContainEqual(
       expect.objectContaining({
-        name: "runtime-configuration:REA_LOG_LEVEL",
+        name: "runtime-configuration:NRE_LOG_LEVEL",
         ok: false,
-        details: { setting: "REA_LOG_LEVEL" },
+        details: { setting: "NRE_LOG_LEVEL" },
       }),
     );
     expect(client.scope_checks).toContainEqual(
       expect.objectContaining({
-        name: "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+        name: "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
         ok: false,
       }),
     );
@@ -370,33 +370,33 @@ describe("doctor MCP startup readiness", () => {
     const skill = await runDoctor(
       undefined,
       selectedHost({
-        REA_LOG_LEVEL: "verbose",
-        REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
+        NRE_LOG_LEVEL: "verbose",
+        NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
       }),
       { skill: true },
     );
     expect(skill.healthy).toBe(false);
     expect(skill.scope_checks).toContainEqual(
       expect.objectContaining({
-        name: "runtime-configuration:REA_LOG_LEVEL",
+        name: "runtime-configuration:NRE_LOG_LEVEL",
         ok: false,
       }),
     );
     expect(skill.scope_checks.map(({ name }) => name)).not.toContain(
-      "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+      "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
     );
   });
 
   it("requires every MCP startup failure for an aligned client", async () => {
     const ghidraTimeout = await runDoctor(
       undefined,
-      selectedHost({ REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc" }),
+      selectedHost({ NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc" }),
       { clients: ["codex"] },
     );
     expect(ghidraTimeout.healthy).toBe(false);
     expect(ghidraTimeout.scope_checks).toContainEqual(
       expect.objectContaining({
-        name: "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+        name: "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
         ok: false,
       }),
     );
@@ -406,7 +406,7 @@ describe("doctor MCP startup readiness", () => {
 
     const hopperTimeout = await runDoctor(
       undefined,
-      selectedHost({ REA_HOPPER_STARTUP_TIMEOUT_MS: "abc" }),
+      selectedHost({ NRE_HOPPER_STARTUP_TIMEOUT_MS: "abc" }),
       { clients: ["codex"] },
     );
     expect(hopperTimeout.healthy).toBe(false);
@@ -418,7 +418,7 @@ describe("doctor MCP startup readiness", () => {
 
     const hopperAndClient = await runDoctor(
       undefined,
-      selectedHost({ REA_HOPPER_STARTUP_TIMEOUT_MS: "abc" }),
+      selectedHost({ NRE_HOPPER_STARTUP_TIMEOUT_MS: "abc" }),
       { clients: ["codex"], providers: ["hopper"] },
     );
     expect(
@@ -429,13 +429,13 @@ describe("doctor MCP startup readiness", () => {
 
     const skill = await runDoctor(
       undefined,
-      selectedHost({ REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc" }),
+      selectedHost({ NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc" }),
       { skill: true },
     );
     expect(skill.healthy).toBe(true);
     expect(skill.informational_checks).toContainEqual(
       expect.objectContaining({
-        name: "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+        name: "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
         ok: false,
       }),
     );
@@ -549,8 +549,8 @@ describe("doctor", () => {
       ),
     ).toEqual({
       node: `Install ${SUPPORTED_NODE_VERSION_PROSE}.`,
-      host: "REA supports macOS 12+, Linux distributions with a recognized apt, dnf, or pacman package family, and the experimental Windows x64 Ghidra P0 boundary; automated Hopper setup on Linux additionally requires an x86_64 host running Ubuntu 24.04+, Fedora 41+, Nobara 44+, Arch Linux, CachyOS, or Omarchy.",
-      hopper: "Run rea setup to install Hopper, or set HOPPER_LAUNCHER_PATH.",
+      host: "NRE supports macOS 12+, Linux distributions with a recognized apt, dnf, or pacman package family, and the experimental Windows x64 Ghidra P0 boundary; automated Hopper setup on Linux additionally requires an x86_64 host running Ubuntu 24.04+, Fedora 41+, Nobara 44+, Arch Linux, CachyOS, or Omarchy.",
+      hopper: "Run nre setup to install Hopper, or set HOPPER_LAUNCHER_PATH.",
       target: "Supply a readable local app or program path.",
     });
   });
@@ -651,7 +651,7 @@ describe("doctor", () => {
       classification: "config_drift",
       detail: "/missing/ilspycmd",
       remediation:
-        "Unset REA_ILSPY_CMD_PATH or point it at a runnable ilspycmd executable.",
+        "Unset NRE_ILSPY_CMD_PATH or point it at a runnable ilspycmd executable.",
     });
   });
 
@@ -688,13 +688,13 @@ describe("doctor installation identity", () => {
             issues: [
               {
                 client: "claude_code",
-                path: "/home/.claude/skills/rea",
+                path: "/home/.claude/skills/nre",
                 kind: "stale",
                 detail: "Selected skill copy is stale",
               },
               {
                 client: "shared",
-                path: "/home/.agents/skills/rea",
+                path: "/home/.agents/skills/nre",
                 kind: "missing",
                 detail: "Selected skill copy is missing",
               },
@@ -704,16 +704,16 @@ describe("doctor installation identity", () => {
     );
     expect(result.identity?.skill).toMatchObject({ state: "stale" });
     expect(result.identity?.skill.remediation).toContain(
-      "rea setup --skill-client claude_code --skill",
+      "nre setup --skill-client claude_code --skill",
     );
     expect(result.identity?.skill.remediation).toContain(
-      "rea setup --skill-client shared --skill",
+      "nre setup --skill-client shared --skill",
     );
     expect(result.identity?.skill.remediation).toContain(
-      "/home/.claude/skills/rea",
+      "/home/.claude/skills/nre",
     );
     expect(result.identity?.skill.remediation).toContain(
-      "/home/.agents/skills/rea",
+      "/home/.agents/skills/nre",
     );
   });
 
@@ -722,7 +722,7 @@ describe("doctor installation identity", () => {
       undefined,
       host({
         installationPaths: () =>
-          Promise.resolve(["/usr/local/bin/rea", "/home/user/bin/rea"]),
+          Promise.resolve(["/usr/local/bin/nre", "/home/user/bin/nre"]),
         installedSkillIdentity: () =>
           Promise.resolve({
             version: "10",
@@ -738,7 +738,7 @@ describe("doctor installation identity", () => {
       skill: {
         installed_version: "10",
         state: "stale",
-        remediation: "Run rea setup to update the installed REA skill.",
+        remediation: "Run nre setup to update the installed NRE skill.",
       },
     });
   });
@@ -751,14 +751,14 @@ describe("doctor installation identity", () => {
     expect(result.healthy).toBe(false);
     expect(result.identity?.skill).toMatchObject({
       state: "missing",
-      remediation: "Run rea setup to update the installed REA skill.",
+      remediation: "Run nre setup to update the installed NRE skill.",
     });
     expect(result.checks).toContainEqual({
       name: "skill:identity",
       ok: false,
       classification: "config_drift",
-      detail: "Installed REA skill identity is missing.",
-      remediation: "Run rea setup to update the installed REA skill.",
+      detail: "Installed NRE skill identity is missing.",
+      remediation: "Run nre setup to update the installed NRE skill.",
     });
   });
   it("classifies an unreadable installed skill as unknown, not drift", async () => {
@@ -773,7 +773,7 @@ describe("doctor installation identity", () => {
             issues: [
               {
                 client: "shared",
-                path: "/home/.agents/skills/rea",
+                path: "/home/.agents/skills/nre",
                 kind: "unreadable",
                 detail: "Selected skill copy could not be read",
               },
@@ -800,10 +800,10 @@ describe("doctor installation identity", () => {
             {
               client: "codex",
               config_path: "/home/user/.codex/config.toml",
-              command: ["/old/rea", "mcp"],
+              command: ["/old/nre", "mcp"],
               state: "stale",
               remediation:
-                "Run rea setup to refresh this registration, then restart the client.",
+                "Run nre setup to refresh this registration, then restart the client.",
             },
           ]),
       }),
@@ -865,16 +865,16 @@ describe("doctor scoped readiness", () => {
       {
         client: "codex",
         config_path: "/home/user/.codex/config.toml",
-        command: ["/current/rea", "mcp"],
+        command: ["/current/nre", "mcp"],
         state: "aligned",
         remediation: null,
       },
       {
         client: "cursor",
         config_path: "/home/user/.cursor/mcp.json",
-        command: ["/old/rea", "mcp"],
+        command: ["/old/nre", "mcp"],
         state: "unknown",
-        remediation: "Run rea setup to refresh this registration.",
+        remediation: "Run nre setup to refresh this registration.",
       },
     ];
     const scoped = await runDoctor(
@@ -916,7 +916,7 @@ describe("doctor scoped readiness", () => {
             {
               client: "kimi",
               config_path: "/home/user/.kimi-code/mcp.json",
-              command: ["/current/rea", "mcp"],
+              command: ["/current/nre", "mcp"],
               state: "aligned",
               remediation: null,
               advisory: "The configured toolTimeoutMs is shorter than startup.",
@@ -1006,7 +1006,7 @@ describe("doctor scoped readiness", () => {
             {
               client: "codex",
               config_path: "/home/user/.codex/config.toml",
-              command: ["rea", "mcp"],
+              command: ["nre", "mcp"],
               state: "aligned",
               remediation: null,
             },
@@ -1094,7 +1094,7 @@ describe("doctor scoped readiness", () => {
 
 describe("doctor Linux and Hopper discovery", () => {
   it("accepts an officially supported Linux distribution", async () => {
-    const path = "/home/user/.local/share/rea/hopper/bin/Hopper";
+    const path = "/home/user/.local/share/nre/hopper/bin/Hopper";
     const result = await runDoctor(
       undefined,
       host({
@@ -1238,7 +1238,7 @@ describe("doctor Hopper discovery matches runtime selection", () => {
     "on %s with %j executable, selects %s",
     async (platform, executable, expected) => {
       // Runtime enumerates renamed bundles from disk; doctor reads its host scan.
-      const home = await createTestTempDirectory("rea-doctor-hopper-");
+      const home = await createTestTempDirectory("nre-doctor-hopper-");
       await mkdir(join(home, "Applications/Hopper 5.app"), { recursive: true });
       const paths = launchers(home);
       const executables = new Set(executable.map((name) => paths[name]));

@@ -142,11 +142,14 @@ async function initializeWebsite() {
     if (count === null || count === undefined) return;
 
     try {
-      const response = await fetch("https://api.github.com/repos/morluto/Nre", {
-        headers: { Accept: "application/vnd.github+json" },
-        credentials: "omit",
-        signal: AbortSignal.timeout(5000),
-      });
+      const response = await fetch(
+        "https://api.github.com/repos/pratheeshclement-cmd/nano-reverse-engineer",
+        {
+          headers: { Accept: "application/vnd.github+json" },
+          credentials: "omit",
+          signal: AbortSignal.timeout(5000),
+        },
+      );
       if (!response.ok) return;
       const repository = await response.json();
       const stars = repository.stargazers_count;

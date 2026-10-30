@@ -16,7 +16,7 @@ import {
 cliTest(
   "inspects and extracts a uImage through the compiled CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-uimage-cli-");
+    const root = await createTestTempDirectory("nre-uimage-cli-");
     const partA = Buffer.from("first-part");
     const partB = Buffer.from("second-part");
     const source = join(root, "firmware.bin");

@@ -11,7 +11,7 @@ const CLOCK_TIME = String.raw`(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?`;
 const UTC_OFFSET = String.raw`(?:Z|[+\x2d](?:[01]\d|2[0-3]):[0-5]\d)`;
 
 /**
- * REA's ISO-8601 timestamps preserve optional seconds and arbitrary fractional
+ * NRE's ISO-8601 timestamps preserve optional seconds and arbitrary fractional
  * precision, including inputs admitted before Zod 4.6.6 required seconds.
  * Keep this grammar independent of the installed validator version. The
  * escaped offset hyphen also compiles in ECMA-262 Unicode-set (`v`) mode.

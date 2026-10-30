@@ -9,7 +9,7 @@ import { listArchitecturesSchema } from "../../../src/domain/native/nativeInspec
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
-const environment = { REA_LOG_LEVEL: "silent" } as const;
+const environment = { NRE_LOG_LEVEL: "silent" } as const;
 
 // The one slice of each container below is never the host's architecture.
 const foreign =
@@ -20,7 +20,7 @@ const foreign =
 cliTest.skipIf(process.platform !== "darwin")(
   "inventories a universal Mach-O whose only slice is foreign to the host",
   async ({ cli, processes }) => {
-    const directory = await createTestTempDirectory("rea-foreign-fat-cli-");
+    const directory = await createTestTempDirectory("nre-foreign-fat-cli-");
     const thin = join(directory, "thin");
     const universal = join(directory, "universal");
     const compiled = await processes.run(
@@ -71,7 +71,7 @@ cliTest.skipIf(process.platform !== "darwin")(
 cliTest.skipIf(process.platform === "darwin")(
   "admits a universal Mach-O whose only slice is foreign to the host",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-foreign-fat-cli-");
+    const directory = await createTestTempDirectory("nre-foreign-fat-cli-");
     const universal = join(directory, "universal");
     await writeFile(universal, fat([foreign.cpuType]));
 

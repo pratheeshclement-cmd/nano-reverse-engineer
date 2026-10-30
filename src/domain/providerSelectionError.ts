@@ -97,13 +97,13 @@ const providerSelectionUserMessage = (
 ): string => {
   switch (options.reason) {
     case "ambiguous":
-      return "Multiple analysis providers support this target. Choose one with provider_id, --provider, or REA_ANALYSIS_PROVIDER.";
+      return "Multiple analysis providers support this target. Choose one with provider_id, --provider, or NRE_ANALYSIS_PROVIDER.";
     case "unknown_provider":
       return `The requested analysis provider is unknown. Choose one of: ${options.candidateIds.join(", ") || "no configured providers"}.`;
     case "provider_unavailable":
       return providerAvailabilityOnly(options.rejections)
-        ? "Provider selection failed local readiness checks. No target-support refusal was reported. Review the local provider diagnostics or run `rea doctor`, then retry."
-        : "The selected analysis provider is unavailable. Review the reported local diagnostics or run `rea doctor`, then retry.";
+        ? "Provider selection failed local readiness checks. No target-support refusal was reported. Review the local provider diagnostics or run `nre doctor`, then retry."
+        : "The selected analysis provider is unavailable. Review the reported local diagnostics or run `nre doctor`, then retry.";
     case "target_unsupported":
       return "The selected analysis provider does not support this target. Choose another provider or open a supported extracted binary.";
     case "invalid_options":

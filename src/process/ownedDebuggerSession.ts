@@ -37,7 +37,7 @@ export const debuggerAdmissionDiagnostics = (
 export const debuggerAdmissionRecovery = (
   admission: DebuggerAdmissionLimit,
 ): string =>
-  `The effective ${admission.setting} value is ${String(admission.value)} ${admission.unit} (source ${admission.source}; default ${String(admission.defaultValue)} ${admission.unit}, floor ${String(admission.minimum)} ${admission.unit}, maximum ${String(admission.maximum)} ${admission.unit}). Set ${admission.setting} in the environment that starts REA to a positive decimal integer from ${String(admission.minimum)} to ${String(admission.maximum)}, then restart REA.`;
+  `The effective ${admission.setting} value is ${String(admission.value)} ${admission.unit} (source ${admission.source}; default ${String(admission.defaultValue)} ${admission.unit}, floor ${String(admission.minimum)} ${admission.unit}, maximum ${String(admission.maximum)} ${admission.unit}). Set ${admission.setting} in the environment that starts NRE to a positive decimal integer from ${String(admission.minimum)} to ${String(admission.maximum)}, then restart NRE.`;
 
 /** Fixed startup deadline. Distinct from the shared command deadline setting. */
 export const fixedDeadlineGuidance = (

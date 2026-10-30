@@ -198,7 +198,7 @@ const verifyExecutable = async (
   return sha256 === installation.sha256 ? undefined : sha256;
 };
 
-/** Run Kuna under an owned process group with REA's environment and limits. */
+/** Run Kuna under an owned process group with NRE's environment and limits. */
 export const runKunaCommand = async (
   request: KunaCommandRequest,
 ): Promise<KunaCommandOutcome> => {
@@ -214,7 +214,7 @@ export const runKunaCommand = async (
       return {
         kind: "failed",
         error: new ProviderAdapterError(KUNA_PROVIDER_ID, request.operation, {
-          userMessage: `${installation.executable} changed after this target was opened; reopen the target so REA probes the current Kuna executable.`,
+          userMessage: `${installation.executable} changed after this target was opened; reopen the target so NRE probes the current Kuna executable.`,
           diagnostics: {
             expected_sha256: installation.sha256,
             observed_sha256: changed,
@@ -250,7 +250,7 @@ export const runKunaCommand = async (
       {
         command: installation.configuration.command,
         arguments: request.arguments,
-        runId: `rea-kuna-${randomUUID()}`,
+        runId: `nre-kuna-${randomUUID()}`,
         // A script's process reports its interpreter, not the configured path.
         ...(installation.script ? { expectedCommand: null } : {}),
         cwd: request.workspace,
@@ -347,7 +347,7 @@ const commandFailure = (
       ...details,
       userMessage: `kuna ${subcommand} did not finish within ${setting} (${String(ms)} ms).`,
       // The same run takes as long again, so only a longer deadline helps.
-      remediationAction: `Raise ${setting} in the environment that starts REA, then restart REA; it reads Kuna settings when it starts.${
+      remediationAction: `Raise ${setting} in the environment that starts NRE, then restart NRE; it reads Kuna settings when it starts.${
         subcommand === "decompile"
           ? " Within a session, pseudocode is also read from the project export once it finishes."
           : ""
@@ -363,7 +363,7 @@ const commandFailure = (
       { output_limit_bytes: request.outputBytes },
       {
         ...details,
-        remediationAction: `REA buffers at most ${String(request.outputBytes)} bytes of kuna ${subcommand} output, so repeating this request for this target fails the same way. Use another provider for it.`,
+        remediationAction: `NRE buffers at most ${String(request.outputBytes)} bytes of kuna ${subcommand} output, so repeating this request for this target fails the same way. Use another provider for it.`,
       },
     );
   else {

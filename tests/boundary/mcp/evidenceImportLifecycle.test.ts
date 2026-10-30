@@ -14,7 +14,7 @@ import {
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const connectImportSession = async () => {
-  const root = await createTestTempDirectory("rea-mcp-import-lifecycle-");
+  const root = await createTestTempDirectory("nre-mcp-import-lifecycle-");
   const session = createTestBinarySession(() => {
     throw new Error("Evidence import must not start a binary provider");
   });
@@ -155,7 +155,7 @@ it("admits a later import after close_binary without retaining the earlier bundl
 });
 
 it("reports newly committed Unknown revisions and counts a repeated import once", async () => {
-  const root = await createTestTempDirectory("rea-mcp-import-counts-");
+  const root = await createTestTempDirectory("nre-mcp-import-counts-");
   const source = createTestBinarySession(() => {
     throw new Error("Evidence import must not start a binary provider");
   });

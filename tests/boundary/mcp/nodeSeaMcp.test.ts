@@ -17,7 +17,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 it.each(["full", "compact"] as const)(
   "exposes SEA facts and extraction through MCP (%s)",
   async (profile) => {
-    const root = await createTestTempDirectory("rea-sea-mcp-");
+    const root = await createTestTempDirectory("nre-sea-mcp-");
     const path = join(root, "application.exe");
     await writeFile(
       path,
@@ -29,7 +29,7 @@ it.each(["full", "compact"] as const)(
       }),
     );
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
     });
     let outputRoot: string | undefined;
     try {

@@ -15,8 +15,8 @@ export const pwntoolsInputBytesSchema = z
   .pipe(z.int().safe().max(MAXIMUM_INPUT_BYTES));
 
 const CONSTRAINT =
-  `REA_PWNTOOLS_MAX_INPUT_BYTES must be a decimal integer from 1 to ` +
-  `${String(MAXIMUM_INPUT_BYTES)} bytes, and REA never installs Python or packages.`;
+  `NRE_PWNTOOLS_MAX_INPUT_BYTES must be a decimal integer from 1 to ` +
+  `${String(MAXIMUM_INPUT_BYTES)} bytes, and NRE never installs Python or packages.`;
 
 /** Resolved input bound, or the reason the caller's override cannot be used. */
 export type PwntoolsInputBytes =
@@ -30,7 +30,7 @@ export type PwntoolsInputBytes =
 export const pwntoolsInputBytes = (
   environment: Readonly<NodeJS.ProcessEnv>,
 ): PwntoolsInputBytes => {
-  const value = environment.REA_PWNTOOLS_MAX_INPUT_BYTES;
+  const value = environment.NRE_PWNTOOLS_MAX_INPUT_BYTES;
   if (value === undefined)
     return { configured: true, bytes: PWNTOOLS_LIMITS.inputBytes };
   const parsed = pwntoolsInputBytesSchema.safeParse(value);

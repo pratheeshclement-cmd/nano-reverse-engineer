@@ -113,7 +113,7 @@ export class NativeModuleResolver implements WebModuleResolutionPort {
       );
     const pending = await this.#retryCleanup();
     if (pending !== undefined) return err(pending);
-    const executable = this.environment.REA_BROWSER_EXECUTABLE;
+    const executable = this.environment.NRE_BROWSER_EXECUTABLE;
     if (executable === undefined || !isAbsolute(executable))
       return err(
         new AnalysisCapabilityUnavailableError(
@@ -124,7 +124,7 @@ export class NativeModuleResolver implements WebModuleResolutionPort {
             : "invalid_browser_executable",
           {
             userMessage:
-              "Provide an absolute REA_BROWSER_EXECUTABLE for a caller-supplied Chromium browser supporting import.meta.resolve. REA installs no browser.",
+              "Provide an absolute NRE_BROWSER_EXECUTABLE for a caller-supplied Chromium browser supporting import.meta.resolve. NRE installs no browser.",
             ...(executable === undefined
               ? {}
               : { diagnostics: { executable } }),
@@ -201,7 +201,7 @@ export class NativeModuleResolver implements WebModuleResolutionPort {
             "--disable-background-networking",
             "--renderer-process-limit=1",
             "--js-flags=--max-old-space-size=128",
-            ...(this.environment.REA_BROWSER_NO_SANDBOX === "true"
+            ...(this.environment.NRE_BROWSER_NO_SANDBOX === "true"
               ? ["--no-sandbox"]
               : []),
           ],
@@ -347,7 +347,7 @@ const resolveInBrowser = async (
     effect: "fulfilled" | "blocked";
   }[] = [];
   const importerUrl = new URL(input.importerUrl).href;
-  const documentUrl = new URL("/.rea-module-resolver/document", importerUrl)
+  const documentUrl = new URL("/.nre-module-resolver/document", importerUrl)
     .href;
   const transportUrl = new URL(importerUrl);
   transportUrl.hash = "";

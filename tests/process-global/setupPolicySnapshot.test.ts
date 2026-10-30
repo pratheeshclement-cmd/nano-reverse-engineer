@@ -42,7 +42,7 @@ afterEach(() => {
 it.each(["inspect", "configure"] as const)(
   "%s uses the authoritative user snapshot after Gemini policy is repaired",
   async (operation) => {
-    const home = await createTestTempDirectory("rea-setup-policy-snapshot-");
+    const home = await createTestTempDirectory("nre-setup-policy-snapshot-");
     await mkdir(join(home, ".gemini"));
     const configPath = join(home, ".gemini", "settings.json");
     const client: SetupClient = {
@@ -57,67 +57,67 @@ it.each(["inspect", "configure"] as const)(
         platform: process.platform,
       },
     };
-    await writeFile(configPath, JSON.stringify({ mcp: { excluded: ["rea"] } }));
+    await writeFile(configPath, JSON.stringify({ mcp: { excluded: ["nre"] } }));
     const repaired = '{"caller_setting":true}\n';
     refresh.afterDiscovery = () => writeFile(configPath, repaired);
     if (operation === "inspect") {
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toMatchObject({ status: "update" });
       expect(await readFile(configPath, "utf8")).toBe(repaired);
     } else {
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toMatchObject({ status: "configured" });
       expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
         caller_setting: true,
-        mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+        mcpServers: { nre: { command: "nre", args: ["mcp"] } },
       });
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(repaired);
+      expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(repaired);
     }
   },
 );
 
 it("rechecks registration ownership after preflight before creating any backup", async () => {
-  const home = await createTestTempDirectory("rea-setup-ownership-recheck-");
+  const home = await createTestTempDirectory("nre-setup-ownership-recheck-");
   const configPath = join(home, "settings.json");
   const client: SetupClient = { name: "test", configPath, format: "json" };
   await writeFile(
     configPath,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}',
+    '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}',
   );
   expect(
     await inspectClientConfiguration(client, {}, [
       "npx",
       "-y",
-      "rea-agents@6.8.0",
+      "nano-reverse-engineer@6.8.0",
       "mcp",
     ]),
   ).toMatchObject({ status: "update" });
   const replacement =
-    '{"mcpServers":{"rea":{"command":"other","args":["mcp"]}}}';
+    '{"mcpServers":{"nre":{"command":"other","args":["mcp"]}}}';
   // Change after layered discovery, so only the transaction's physical snapshot sees it.
   refresh.afterDiscovery = () => writeFile(configPath, replacement);
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({
     status: "failed",
     reason: "registration_ownership",
     detail: expect.stringContaining("foreign ownership"),
   });
   expect(await readFile(configPath, "utf8")).toBe(replacement);
-  await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+  await expect(readFile(`${configPath}.nre.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
 
 it("blocks an inherited foreign row before planning creation of a missing write target", async () => {
-  const home = await createTestTempDirectory("rea-setup-inherited-ownership-");
+  const home = await createTestTempDirectory("nre-setup-inherited-ownership-");
   const lower = join(home, "config.json");
   const configPath = join(home, "opencode.json");
   await writeFile(
     lower,
-    '{"mcp":{"rea":{"type":"local","command":["other"]}}}',
+    '{"mcp":{"nre":{"type":"local","command":["other"]}}}',
   );
   const client: SetupClient = {
     name: "opencode",
@@ -126,21 +126,21 @@ it("blocks an inherited foreign row before planning creation of a missing write 
     configPaths: [lower, configPath],
   };
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+    await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({
     status: "invalid",
     remediation: expect.stringContaining("foreign ownership"),
   });
   await expect(readFile(configPath)).rejects.toMatchObject({ code: "ENOENT" });
-  await expect(readFile(`${lower}.rea.backup`)).rejects.toMatchObject({
+  await expect(readFile(`${lower}.nre.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
 
-it.each(["other", "rea"])(
+it.each(["other", "nre"])(
   "rechecks an inherited %s launcher after preflight for a policy fragment",
   async (command) => {
-    const home = await createTestTempDirectory("rea-setup-layer-recheck-");
+    const home = await createTestTempDirectory("nre-setup-layer-recheck-");
     const lower = join(home, "config.json");
     const configPath = join(home, "opencode.json");
     const client: SetupClient = {
@@ -151,22 +151,22 @@ it.each(["other", "rea"])(
     };
     await writeFile(
       lower,
-      '{"mcp":{"rea":{"type":"local","command":["rea","mcp"]}}}',
+      '{"mcp":{"nre":{"type":"local","command":["nre","mcp"]}}}',
     );
-    const original = '{"mcp":{"rea":{"environment":{"CUSTOM":"keep"}}}}';
+    const original = '{"mcp":{"nre":{"environment":{"CUSTOM":"keep"}}}}';
     await writeFile(configPath, original);
     expect(
-      await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+      await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
     ).toMatchObject({ status: "update" });
     // The write transaction must use a fresh source discovery after preflight.
     await writeFile(
       lower,
       JSON.stringify({
-        mcp: { rea: { type: "local", command: [command, "mcp"] } },
+        mcp: { nre: { type: "local", command: [command, "mcp"] } },
       }),
     );
     const result = await configureClientConfiguration(client, {}, [
-      "rea",
+      "nre",
       "mcp",
     ]);
     if (command === "other") {
@@ -176,12 +176,12 @@ it.each(["other", "rea"])(
         detail: expect.stringContaining("foreign ownership"),
       });
       expect(await readFile(configPath, "utf8")).toBe(original);
-      await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${configPath}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     } else {
       expect(result).toMatchObject({ status: "configured" });
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     }
   },
 );

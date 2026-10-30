@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "keeps unavailable source-selection scopes unknown in version comparisons",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-version-scope-");
+    const root = await createTestTempDirectory("nre-version-scope-");
     const application = join(root, "application");
     const copy = join(root, "copy");
     await Promise.all([mkdir(application), mkdir(copy)]);
@@ -35,7 +35,7 @@ cliTest(
           ...(selected ? ["--source-path", "main.js"] : []),
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       return parseEvidence(response.json);
@@ -71,7 +71,7 @@ cliTest(
       await writeFile(inputPath, JSON.stringify({ left, right }));
       const response = await cli.run({
         arguments: ["compare-application-versions", inputPath, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       return applicationVersionComparisonResultSchema.parse(
@@ -119,7 +119,7 @@ cliTest(
 cliTest(
   "uses syntax-aware bundle fingerprints for changed syntax and renamed bindings",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-fingerprint-version-");
+    const root = await createTestTempDirectory("nre-fingerprint-version-");
     const pairs = [
       ["bigint", "exports.v = 1n;", "exports.v = 2n;"],
       ["bigint-key", "exports.v = { 1n: 1 };", "exports.v = { 2n: 1 };"],
@@ -155,7 +155,7 @@ cliTest(
         );
       const response = await cli.run({
         arguments: ["analyze-javascript-application", application, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       versions.push(parseEvidence(response.json));
@@ -182,7 +182,7 @@ cliTest(
     await writeFile(inputPath, JSON.stringify({ left, right }));
     const response = await cli.run({
       arguments: ["compare-application-versions", inputPath, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(0);
     const result = applicationVersionComparisonResultSchema.parse(
@@ -264,7 +264,7 @@ cliTest(
 cliTest(
   "pairs repeated factory bodies by identity when application versions retain a shared bundle",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-version-matching-");
+    const root = await createTestTempDirectory("nre-version-matching-");
     const factoryCount = 32;
     const factories = Array.from(
       { length: factoryCount },
@@ -282,7 +282,7 @@ cliTest(
         await writeFile(join(application, "chunk.js"), bundle);
         const response = await cli.run({
           arguments: ["analyze-javascript-application", application, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(response.exitCode, response.stderr).toBe(0);
         return parseEvidence(response.json);
@@ -317,7 +317,7 @@ cliTest(
     await writeFile(inputPath, JSON.stringify({ left, right }));
     const response = await cli.run({
       arguments: ["compare-application-versions", inputPath, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(0);
     const result = applicationVersionComparisonResultSchema.parse(
@@ -352,7 +352,7 @@ cliTest(
 cliTest(
   "retains exact source-module pairing while a changed sibling's identity is unresolved",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-source-module-version-");
+    const root = await createTestTempDirectory("nre-source-module-version-");
     const versions = await Promise.all(
       ["left", "right"].map(async (name) => {
         const application = join(root, name);
@@ -375,7 +375,7 @@ cliTest(
         );
         const response = await cli.run({
           arguments: ["analyze-javascript-application", application, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(response.exitCode, response.stderr).toBe(0);
         return parseEvidence(response.json);
@@ -409,7 +409,7 @@ cliTest(
     await writeFile(inputPath, JSON.stringify({ left, right }));
     const response = await cli.run({
       arguments: ["compare-application-versions", inputPath, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(0);
     const result = applicationVersionComparisonResultSchema.parse(
@@ -458,7 +458,7 @@ cliTest(
 cliTest(
   "matches unchanged module exports after a sibling file changes",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-export-version-");
+    const root = await createTestTempDirectory("nre-export-version-");
     const util = {
       v1: "module.exports = { greet: () => 1 };\n",
       v2: "module.exports = { greet: () => 2 };\n",
@@ -485,7 +485,7 @@ cliTest(
       await writeFile(join(application, "src/util.js"), utilSource);
       const response = await cli.run({
         arguments: ["analyze-javascript-application", application, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       return parseEvidence(response.json);
@@ -495,7 +495,7 @@ cliTest(
       await writeFile(inputPath, JSON.stringify({ left, right }));
       const response = await cli.run({
         arguments: ["compare-application-versions", inputPath, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       return applicationVersionComparisonResultSchema.parse(

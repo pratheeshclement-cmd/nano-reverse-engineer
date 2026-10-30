@@ -20,33 +20,33 @@ it.skipIf(process.platform === "win32").each([
   { name: "missing", selected: {}, expected: "absent" },
   {
     name: "unset",
-    selected: { REA_APKTOOL_ENV_PROFILE: undefined },
+    selected: { NRE_APKTOOL_ENV_PROFILE: undefined },
     expected: "absent",
   },
   {
     name: "empty",
-    selected: { REA_APKTOOL_ENV_PROFILE: "" },
+    selected: { NRE_APKTOOL_ENV_PROFILE: "" },
     expected: "empty",
   },
   {
     name: "selected",
-    selected: { REA_APKTOOL_ENV_PROFILE: "selected-profile" },
+    selected: { NRE_APKTOOL_ENV_PROFILE: "selected-profile" },
     expected: "selected-profile",
   },
 ])(
   "preserves $name Apktool settings after the ambient environment changes",
   async ({ selected, expected }) => {
     const root = await createTestTempDirectory(
-      "rea-apktool-selected-environment-",
+      "nre-apktool-selected-environment-",
     );
     const command = join(root, "apktool");
     await writeFile(
       command,
-      '#!/bin/sh\nprofile=${REA_APKTOOL_ENV_PROFILE-absent}\n[ -n "$profile" ] || profile=empty\nprintf "2.11.1+%s\\n" "$profile"\n',
+      '#!/bin/sh\nprofile=${NRE_APKTOOL_ENV_PROFILE-absent}\n[ -n "$profile" ] || profile=empty\nprintf "2.11.1+%s\\n" "$profile"\n',
       { mode: 0o755 },
     );
-    const cli = createCli({ REA_APKTOOL_COMMAND: command, ...selected });
-    vi.stubEnv("REA_APKTOOL_ENV_PROFILE", "late-ambient-profile");
+    const cli = createCli({ NRE_APKTOOL_COMMAND: command, ...selected });
+    vi.stubEnv("NRE_APKTOOL_ENV_PROFILE", "late-ambient-profile");
     let stdout = "";
     await cli.serve(["inspect-apktool-client", "--json"], {
       env: {},
@@ -67,16 +67,16 @@ it.skipIf(process.platform === "win32")(
   "inherits the current default launcher when no environment was selected",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-apktool-default-environment-",
+      "nre-apktool-default-environment-",
     );
     const command = join(root, "apktool");
     await writeFile(command, '#!/bin/sh\nprintf "2.11.1+later\\n"\n', {
       mode: 0o755,
     });
-    vi.stubEnv("REA_APKTOOL_COMMAND", "/ambient/initial-apktool");
+    vi.stubEnv("NRE_APKTOOL_COMMAND", "/ambient/initial-apktool");
     const provider = new ApktoolProvider();
     onTestFinished(() => provider.close());
-    vi.stubEnv("REA_APKTOOL_COMMAND", command);
+    vi.stubEnv("NRE_APKTOOL_COMMAND", command);
     const result = await new ApktoolResourceAnalysisService(provider).execute(
       "inspect_apktool_client",
       {},

@@ -32,7 +32,7 @@ describe("prefix-only Node builtins", () => {
   it.each(["import", "require"] as const)(
     "resolves ordinary packages named test, sqlite and sea for %s",
     async (moduleKind) => {
-      const root = await createTestTempDirectory("rea-prefix-only-builtins-");
+      const root = await createTestTempDirectory("nre-prefix-only-builtins-");
       const names = ["test", "sqlite", "sea"];
       for (const name of [...names, "fs"]) {
         const directory = join(root, "node_modules", name);
@@ -170,7 +170,7 @@ describe("ESM module URL decoding", () => {
       ["./nested\\direct.mjs", "nested/direct.mjs", "static"],
       ["./unused\\..\\nested\\parent.mjs", "nested/parent.mjs", "dynamic"],
     ] as const;
-    const root = await createTestTempDirectory("rea-module-url-");
+    const root = await createTestTempDirectory("nre-module-url-");
     const main = join(root, "main.mjs");
     await mkdir(join(root, "nested"));
     await writeFile(
@@ -286,7 +286,7 @@ const packageEntryUrlCases = [
 it.each(["import", "require"] as const)(
   "matches Node %s across package exports and main path representations",
   async (moduleKind) => {
-    const root = await createTestTempDirectory("rea-package-export-url-");
+    const root = await createTestTempDirectory("nre-package-export-url-");
     for (const [
       index,
       [field, declaredPath, target],

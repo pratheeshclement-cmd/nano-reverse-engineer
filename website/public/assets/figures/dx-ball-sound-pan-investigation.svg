@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1774" height="887" viewBox="0 0 1774 887" role="img" aria-labelledby="title desc">
   <title id="title">DX-Ball sound-pan investigation</title>
-  <desc id="desc">Nre provides the instruction, caller and byte-Nred evidence for one DX-Ball function. A stack input is multiplied by 1.5625, offset by 500, scaled, and converted to an integer. Maintained C is checked in 3,205 original-x86 cases and a separate 63-byte compiler replay.</desc>
+  <desc id="desc">Nre provides the instruction, caller and byte-Read evidence for one DX-Ball function. A stack input is multiplied by 1.5625, offset by 500, scaled, and converted to an integer. Maintained C is checked in 3,205 original-x86 cases and a separate 63-byte compiler replay.</desc>
   <defs>
     <marker id="arrow" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L11 7 L1 13 Z" fill="#5b6570"/></marker>
   </defs>

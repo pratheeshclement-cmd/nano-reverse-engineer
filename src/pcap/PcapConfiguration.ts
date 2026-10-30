@@ -44,10 +44,10 @@ export const assertWiresharkExecutableIdentity = (
 };
 
 /** Environment keys selecting the caller's tshark and capinfos binaries. */
-export const TSHARK_COMMAND_ENV = "REA_TSHARK_COMMAND";
-export const CAPINFOS_COMMAND_ENV = "REA_CAPINFOS_COMMAND";
+export const TSHARK_COMMAND_ENV = "NRE_TSHARK_COMMAND";
+export const CAPINFOS_COMMAND_ENV = "NRE_CAPINFOS_COMMAND";
 
-const TOOL_REMEDIATION = `Supply Wireshark 4.x tshark and capinfos on PATH or through absolute ${TSHARK_COMMAND_ENV} and ${CAPINFOS_COMMAND_ENV}; REA does not install them.`;
+const TOOL_REMEDIATION = `Supply Wireshark 4.x tshark and capinfos on PATH or through absolute ${TSHARK_COMMAND_ENV} and ${CAPINFOS_COMMAND_ENV}; NRE does not install them.`;
 
 /**
  * Host-tool refusals concern the caller's Wireshark installation, not the
@@ -85,7 +85,7 @@ const TOOL_COMMAND_ENV = {
  * The one selection rule for a caller-supplied Wireshark tool: an absolute
  * environment path, otherwise the bare tool name resolved through PATH. A
  * relative environment value is configuration to fix, never a PATH lookup.
- * REA never installs the Wireshark suite.
+ * NRE never installs the Wireshark suite.
  */
 export const selectWiresharkTool = (
   environment: Readonly<Record<string, string | undefined>>,

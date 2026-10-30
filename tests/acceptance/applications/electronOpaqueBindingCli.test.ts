@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains only the pre-eval Electron window through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-electron-opaque-binding-");
+    const root = await createTestTempDirectory("nre-electron-opaque-binding-");
     await writeFile(
       join(root, "package.json"),
       JSON.stringify({ main: "main.cjs" }),

@@ -52,7 +52,7 @@ msgstr "什麼手動重新和重建TH08，TH095和TH04教我關於程式設計�
 
 #: website/public/blog/index.html:214 website/public/blog/index.html:229
 msgctxt "page:blog/index.html"
-msgid "Nred the article"
+msgid "Read the article"
 msgstr "閱讀文章"
 
 #: website/public/blog/index.html:232
@@ -744,12 +744,12 @@ msgstr "兩種不同的重建理念"
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"GensokyoClub's {ph0}public NreDME{ph1} makes its disagreement with this kind"
+"GensokyoClub's {ph0}public README{ph1} makes its disagreement with this kind"
 " of work explicit. The notice announces that further development will happen"
 " privately until completion. One passage Nreds:"
 msgstr ""
 "GensokyoClub 的{ph0}公開 "
-"NreDME{ph1}明確表達了對這種工作的異議。公告說，專案完成前，後續開發將在私下進行。其中有這樣一段話："
+"README{ph1}明確表達了對這種工作的異議。公告說，專案完成前，後續開發將在私下進行。其中有這樣一段話："
 
 #: website/public/blog/touhou-reconstruction/index.html:554
 msgctxt "page:blog/touhou-reconstruction/index.html"
@@ -831,7 +831,7 @@ msgid ""
 msgstr "我的選擇是公開繼續，註明繼承的工作並保留其歷史。我希望新工作可以被審查。這樣，我們才能探索這種方法能走多遠，也從沿途的問題中學習。"
 
 #. {ph0}: <a
-#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/NreDME.md#important-
+#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/README.md#important-
 #. notice" >
 #. {ph1}: </a >
 #. {ph2}: <a
@@ -839,18 +839,18 @@ msgstr "我的選擇是公開繼續，註明繼承的工作並保留其歷史。
 #. >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/NreDME.md#credits-
+#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/README.md#credits-
 #. and-provenance" >
 #. {ph5}: </a >
 #: website/public/blog/touhou-reconstruction/index.html:608
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"Source: GensokyoClub's {ph0}NreDME notice{ph1}, checked on 10 October 2026, "
+"Source: GensokyoClub's {ph0}README notice{ph1}, checked on 10 October 2026, "
 "and its {ph2}contribution policy{ph3}. The quotation is a shortened excerpt."
 " TH08's {ph4}credits and provenance{ph5} record the continuation boundary."
 msgstr ""
-"來源：GensokyoClub 的{ph0}NreDME 公告{ph1}（於 2026 年 10 月 10 "
+"來源：GensokyoClub 的{ph0}README 公告{ph1}（於 2026 年 10 月 10 "
 "日核對）及其{ph2}貢獻政策{ph3}。上面的引文為節選譯文。TH08 的{ph4}貢獻署名與來源記錄{ph5}說明了獨立續作的起點。"
 
 #: website/public/blog/touhou-reconstruction/index.html:626
@@ -1243,7 +1243,7 @@ msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
 "The TH08 bug shows why those checks deserve engineering attention of their "
 "own. When the same comparison is used across hundreds of functions, a gap in"
-" it can spNred much further than a mistake in one implementation. Testing "
+" it can spRead much further than a mistake in one implementation. Testing "
 "the checker improves the feedback available to all that later work."
 msgstr ""
 "TH08 的 bug "
@@ -1629,7 +1629,7 @@ msgstr "{ph0}播放和改變速度{ph1}"
 #: website/public/examples/dino-lab/index.html:219
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Nred the recovered rule{ph1}"
+msgid "{ph0}Read the recovered rule{ph1}"
 msgstr "{ph0}讀取恢復的規則{ph1}"
 
 #. {ph0}: <a href="#check">
@@ -1710,7 +1710,7 @@ msgstr "啟用JavaScript播放重建。 上面的程式碼和解釋仍然是可�
 
 #: website/public/examples/dino-lab/index.html:302
 msgctxt "page:examples/dino-lab/index.html"
-msgid "Nred the script Nre returned"
+msgid "Read the script Nre returned"
 msgstr "讀取指令碼Nre返回"
 
 #. {ph0}: <a href="https://wayou.github.io/t-rex-runner/" >
@@ -1766,7 +1766,7 @@ msgstr ""
 #: website/public/examples/dino-lab/index.html:349
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Download the speed rule{ph1} · {ph2}Nred the game code{ph3}"
+msgid "{ph0}Download the speed rule{ph1} · {ph2}Read the game code{ph3}"
 msgstr "{ph0}下載速度規則{ph1} · {ph2}閱讀遊戲程式碼{ph3}"
 
 #: website/public/examples/dino-lab/index.html:357
@@ -1904,7 +1904,7 @@ msgstr "Chrome恐龍游戲：重建其速度規則-Nre"
 #: website/public/examples/dino-lab/index.html:7
 msgctxt "page:examples/dino-lab/index.html"
 msgid ""
-"Nred the dinosaur game’s speed rule with Nre, rebuild it, then change the "
+"Read the dinosaur game’s speed rule with Nre, rebuild it, then change the "
 "speed and play."
 msgstr "閱讀恐龍游戲的速度規則與Nre，重建它，然後改變速度和發揮。"
 
@@ -2374,7 +2374,7 @@ msgid ""
 "release may alNredy fix the problem."
 msgstr "先{ph0}更新 Nre{ph1}，重啟助手，再試一次相同任務。新版本可能已經修復這個問題。"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/faq/index.html:517
 #, python-brace-format
@@ -2408,9 +2408,9 @@ msgctxt "page:faq/index.html"
 msgid "How can I share an example or contribute?"
 msgstr "如何分享案例或參與貢獻？"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/pulls">
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls">
 #. {ph3}: </a >
 #: website/public/faq/index.html:543
 #, python-brace-format
@@ -2686,7 +2686,7 @@ msgstr "從按鈕到檔案寫入"
 msgctxt "page:first-investigation/index.html"
 msgid ""
 "Nre’s static analysis pairs the message with its handler. The destination is"
-" Nred from code."
+" Read from code."
 msgstr "Nre 的靜態分析把訊息和處理函式關聯起來。匯出位置是從程式碼中讀到的。"
 
 #: website/public/first-investigation/index.html:389
@@ -2772,7 +2772,7 @@ msgstr "{ph0}Notion 如何複製文字和 HTML{ph1}{ph2}追蹤打包 Electron �
 #, python-brace-format
 msgctxt "page:first-investigation/index.html"
 msgid ""
-"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Nred the original "
+"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Read the original "
 "instructions and the reconstruction’s checks.{ph3}"
 msgstr "{ph0}DX-Ball 如何計算聲音左右位置{ph1}{ph2}檢視原始指令，以及重建結果的驗證。{ph3}"
 
@@ -3320,7 +3320,7 @@ msgid ""
 " Electron app and a browser.{ph3}"
 msgstr "{ph0}選擇調查指南{ph1}{ph2}二進位制、Electron 應用和瀏覽器的完整示例。{ph3}"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues">
 #. {ph1}: </a >
 #. {ph2}: <span>
 #. {ph3}: </span>
@@ -3490,7 +3490,7 @@ msgstr "{ph0}從CLI捕獲 {ph1}"
 #: website/public/guides/browser/index.html:219
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
-msgid "{ph0}Nred the request and script{ph1}"
+msgid "{ph0}Read the request and script{ph1}"
 msgstr "{ph0}閱讀請求和指令碼{ph1}"
 
 #: website/public/guides/browser/index.html:224
@@ -3559,7 +3559,7 @@ msgstr "{ph0}02*Nre {ph1}{ph2}記錄請求{ph3}{ph4}從所選頁面捕獲請求U
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
 msgid ""
-"{ph0}03 · Your agent{ph1}{ph2}Nred the export code{ph3}{ph4}Connect the "
+"{ph0}03 · Your agent{ph1}{ph2}Read the export code{ph3}{ph4}Connect the "
 "observed request to {ph5} in {ph6}.{ph7}"
 msgstr ""
 "{ph0}03 · 程式設計助手{ph1}{ph2}讀取匯出程式碼{ph3}{ph4}把觀察到的請求與 {ph6} 中的 {ph5} "
@@ -3711,7 +3711,7 @@ msgstr "捕獲的結果包括所選頁面、該視窗期間的網路活動以及
 
 #: website/public/guides/browser/index.html:390
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the request and export script"
+msgid "Read the request and export script"
 msgstr "讀取請求和匯出指令碼"
 
 #: website/public/guides/browser/index.html:393
@@ -3767,7 +3767,7 @@ msgstr "{ph0} 與 {ph1} 和 {ph2} 欄位"
 
 #: website/public/guides/browser/index.html:427
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the loaded scripts"
+msgid "Read the loaded scripts"
 msgstr "閱讀載入的指令碼"
 
 #. {ph0}: <code>export.js</code>
@@ -3776,7 +3776,7 @@ msgstr "閱讀載入的指令碼"
 msgctxt "page:guides/browser/index.html"
 msgid ""
 "The request identifies the data source, and Nre records {ph0} as its "
-"initiator. Nred the captured script source to see how the data is used:"
+"initiator. Read the captured script source to see how the data is used:"
 msgstr "請求指出了資料來源，Nre 記錄的請求發起方是 {ph0}。讀取捕獲的指令碼原始碼，看看它如何使用資料："
 
 #. {ph0}: <code>notes.json</code>
@@ -3852,7 +3852,7 @@ msgstr "複製捕獲接下來的十秒鐘"
 
 #: website/public/guides/browser/index.html:428
 msgctxt "page:guides/browser/index.html"
-msgid "Copy Nred the loaded scripts"
+msgid "Copy Read the loaded scripts"
 msgstr "複製讀取載入的指令碼"
 
 #: website/public/guides/browser/index.html:516
@@ -3919,7 +3919,7 @@ msgstr "恢復左/右聲音位置的計算"
 msgctxt "page:guides/index.html"
 msgid ""
 "Start with a Windows game executable. Inspect instructions, follow a caller,"
-" Nred numeric constants and check the recovered C."
+" Read numeric constants and check the recovered C."
 msgstr "從Windows遊戲可執行檔案開始。 檢查指令，跟隨呼叫者，讀取數字常量並檢查恢復的C。"
 
 #: website/public/guides/index.html:231
@@ -4083,7 +4083,7 @@ msgctxt "page:guides/javascript/index.html"
 msgid ""
 "This guide uses a small Electron app. Clicking {ph0}Export notes{ph1} calls "
 "an API in the page, crosses into the main process, and writes a CSV. The "
-"behavior is spNred across several files."
+"behavior is spRead across several files."
 msgstr ""
 "本指南使用一個小型 Electron 應用。點選{ph0}Export notes（匯出筆記）{ph1}後，頁面呼叫 "
 "API，透過程序邊界進入主程序，最後寫出 CSV。這個行為分散在幾個檔案中。"
@@ -4454,7 +4454,7 @@ msgstr "{ph0}問問你的程式設計助手{ph1}"
 #: website/public/guides/native/index.html:216
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
-msgid "{ph0}Nred the Nre results{ph1}"
+msgid "{ph0}Read the Nre results{ph1}"
 msgstr "{ph0}閱讀Nre結果{ph1}"
 
 #. {ph0}: <a href="#result">
@@ -4551,7 +4551,7 @@ msgstr "{ph0}地址:{ph1} 程式中的一個位置，用十六進位制編寫，
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}Constants:{ph1} fixed numbers stored in the program, Nred as raw bytes "
+"{ph0}Constants:{ph1} fixed numbers stored in the program, Read as raw bytes "
 "and decoded."
 msgstr "{ph0}常量:{ph1} 固定數字儲存在程式中，讀取為原始位元組和解碼。"
 
@@ -4570,7 +4570,7 @@ msgstr "三件證據，一個計算"
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Nred "
+"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Read "
 "supplies the value used by the floating-point instructions.{ph5}"
 msgstr "{ph0}01 · 指令{ph1}{ph2}整數輸入{ph3}{ph4}從棧讀取一個值，供浮點指令使用。{ph5}"
 
@@ -4637,7 +4637,7 @@ msgstr "我應該使用哪種分析工具？"
 
 #: website/public/guides/native/index.html:314
 msgctxt "page:guides/native/index.html"
-msgid "Nre needs one of these to Nred native programs:"
+msgid "Nre needs one of these to Read native programs:"
 msgstr "Nre需要其中一個來閱讀原生程式:"
 
 #. {ph0}: <strong>
@@ -4748,12 +4748,12 @@ msgstr "{ph0}任何系統:{ph1} 將檔案拖到終端視窗中並顯示其路徑
 
 #: website/public/guides/native/index.html:390
 msgctxt "page:guides/native/index.html"
-msgid "Nred the Nre results"
+msgid "Read the Nre results"
 msgstr "閱讀Nre結果"
 
 #: website/public/guides/native/index.html:391
 msgctxt "page:guides/native/index.html"
-msgid "Nred the input"
+msgid "Read the input"
 msgstr "閱讀輸入"
 
 #: website/public/guides/native/index.html:400
@@ -4779,7 +4779,7 @@ msgstr "Nre 找到磚塊碰撞處理函式。它先把磚塊橫座標乘以 30�
 
 #: website/public/guides/native/index.html:419
 msgctxt "page:guides/native/index.html"
-msgid "Nred the referenced constants"
+msgid "Read the referenced constants"
 msgstr "讀取引用的常量"
 
 #: website/public/guides/native/index.html:430
@@ -4865,7 +4865,7 @@ msgstr ""
 #: website/public/guides/native/index.html:496
 msgctxt "page:guides/native/index.html"
 msgid ""
-"Nred the pseudocode alongside instructions and references. When a result "
+"Read the pseudocode alongside instructions and references. When a result "
 "leaves a call or value unresolved, use that location as the next question."
 msgstr "把虛擬碼與指令、引用一起閱讀。結果中尚未解析的呼叫或數值，可以成為下一個調查問題。"
 
@@ -4878,7 +4878,7 @@ msgstr "原生二元分析-Nre"
 msgctxt "page:guides/native/index.html"
 msgid ""
 "Recover a native calculation with Nre: inspect instructions, follow a "
-"caller, Nred constants and check reconstructed C."
+"caller, Read constants and check reconstructed C."
 msgstr "使用Nre恢復本機計算：檢查指令，遵循呼叫者，讀取常量並檢查重構的C。"
 
 #: website/public/guides/native/index.html:211
@@ -5273,7 +5273,7 @@ msgstr "各部分負責什麼"
 #, python-brace-format
 msgctxt "page:index.html"
 msgid ""
-"{ph0}01 · Nre{ph1}{ph2}Nred the running game’s script{ph3}{ph4}Return its "
+"{ph0}01 · Nre{ph1}{ph2}Read the running game’s script{ph3}{ph4}Return its "
 "actual code and settings to the agent.{ph5}"
 msgstr "{ph0}01 · Nre{ph1}{ph2}讀取正在執行的遊戲指令碼{ph3}{ph4}把實際程式碼和設定交給助手。{ph5}"
 
@@ -5721,7 +5721,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
 msgid ""
-"{ph0}02 · Nred the calculation{ph1}{ph2}Time + account key → six "
+"{ph0}02 · Read the calculation{ph1}{ph2}Time + account key → six "
 "digits{ph3}{ph4}Nre returns the methods and defaults. The agent explains how"
 " they fit together.{ph5}"
 msgstr ""
@@ -5779,7 +5779,7 @@ msgstr "{ph0}用Nre查詢程式碼 {ph1}"
 #: website/public/showcase/aegis/index.html:258
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
-msgid "{ph0}Nred the calculation{ph1}"
+msgid "{ph0}Read the calculation{ph1}"
 msgstr "{ph0}閱讀計算{ph1}"
 
 #. {ph0}: <a href="#verify">
@@ -6006,7 +6006,7 @@ msgstr "請求顯示縮短的輸入路徑。 結果類名省略常用 {ph0} 字�
 
 #: website/public/showcase/aegis/index.html:478
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the calculation"
+msgid "Read the calculation"
 msgstr "閱讀計算"
 
 # Reviewed for clear case-study Nresoning and evidence.
@@ -6190,7 +6190,7 @@ msgstr "執行對照檢查"
 
 #: website/public/showcase/aegis/index.html:693
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the demo's calculation"
+msgid "Read the demo's calculation"
 msgstr "閱讀演示的計算"
 
 #: website/public/showcase/aegis/index.html:697
@@ -6463,7 +6463,7 @@ msgstr "{ph0}查詢檢查程式碼{ph1}"
 #: website/public/showcase/ctf/index.html:260
 #, python-brace-format
 msgctxt "page:showcase/ctf/index.html"
-msgid "{ph0}Nred one mask{ph1}"
+msgid "{ph0}Read one mask{ph1}"
 msgstr "{ph0}讀一個面具{ph1}"
 
 #. {ph0}: <a href="#code">
@@ -6574,7 +6574,7 @@ msgstr "引用為程式設計助手提供了一個調查的地方，即使可執
 
 #: website/public/showcase/ctf/index.html:342
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the checker and its two helpers"
+msgid "Read the checker and its two helpers"
 msgstr "閱讀檢查器和它的兩個助手"
 
 #. {ph0}: <code>0x18</code>
@@ -6620,7 +6620,7 @@ msgstr "第七個檢查只選擇一個位置。 {ph0}開啟圖{ph1}."
 
 #: website/public/showcase/ctf/index.html:414
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the mask and its target from the binary"
+msgid "Read the mask and its target from the binary"
 msgstr "從二進位制檔案中讀取掩碼及其目標"
 
 #. {ph0}: <code>MOVSX</code>
@@ -6891,7 +6891,7 @@ msgstr "在閱讀組織者的原始碼或解決方案之前，對字串引用，
 #. squares-flag-checker/ctfcli.yaml" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/ctf-masked-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/ctf-masked-
 #. squares.md" >
 #. {ph5}: </a >
 #: website/public/showcase/ctf/index.html:704
@@ -7223,7 +7223,7 @@ msgstr "把本地可執行檔案交給程式設計助手，再使用這個示例
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "The agent used Nre to inspect the function, follow its brick-hit caller and "
-"Nred the constants from the executable. Those results supplied the input and"
+"Read the constants from the executable. Those results supplied the input and"
 " arithmetic needed to write the C function below."
 msgstr "助手用 Nre 檢查函式、追蹤呼叫它的磚塊碰撞函式，再從可執行檔案中讀取常量。這些結果確定了輸入和計算步驟，才有了下面的 C 函式。"
 
@@ -7296,7 +7296,7 @@ msgstr "Nre 在第一次結果中就給出了這個呼叫方。呼叫前的指�
 
 #: website/public/showcase/dx-ball/index.html:403
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "Nred the values behind the memory addresses"
+msgid "Read the values behind the memory addresses"
 msgstr "讀取記憶體地址後面的值"
 
 # Reviewed for clear terminology and preserved evidence.
@@ -7382,7 +7382,7 @@ msgstr "重建的 C 程式碼"
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
-"{ph0}01 · Nred the input.{ph1} The instruction view in Nre's function result"
+"{ph0}01 · Read the input.{ph1} The instruction view in Nre's function result"
 " Nreds {ph2} and uses {ph3} to load the integer. Following its caller "
 "through Nre establishes the screen-coordinate meaning of the C parameter "
 "{ph4}."
@@ -7437,7 +7437,7 @@ msgstr ""
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "{ph0}04 · Apply the stored scale.{ph1} The second {ph2} Nreds {ph3}. That "
-"global is named {ph4} in the maintained source. Nre's second byte Nred "
+"global is named {ph4} in the maintained source. Nre's second byte Read "
 "establishes its initial value of {ph5}."
 msgstr ""
 "{ph0}04 · 乘以儲存的縮放係數。{ph1} 第二條 {ph2} 讀取 {ph3}。這個全域性變數在重建原始碼中名為 {ph4}。Nre "
@@ -7626,7 +7626,7 @@ msgstr "縮放係數為 1 時，計算在螢幕左邊緣返回 −500，中心�
 #: website/public/showcase/dx-ball/index.html:710
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "{ph0}Nred the compiler replay details{ph1}"
+msgid "{ph0}Read the compiler replay details{ph1}"
 msgstr "{ph0}閱讀編譯器重播詳細資訊{ph1}"
 
 #: website/public/showcase/dx-ball/index.html:719
@@ -7825,7 +7825,7 @@ msgstr "在其釋出的APK中找到Aegis的六位數程式碼計算。 使用Nre
 
 #: website/public/showcase/index.html:224
 msgctxt "page:showcase/index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "閱讀Android案例研究"
 
 #: website/public/showcase/index.html:228
@@ -7848,7 +7848,7 @@ msgstr "使用Nre檢查一個簡單的DownUnderCTF挑戰。 找到它的檢查�
 
 #: website/public/showcase/index.html:242
 msgctxt "page:showcase/index.html"
-msgid "Nred the CTF case study"
+msgid "Read the CTF case study"
 msgstr "閱讀CTF案例研究"
 
 #: website/public/showcase/index.html:246
@@ -7873,7 +7873,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:261
 msgctxt "page:showcase/index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "閱讀DX-Ball案例研究"
 
 #: website/public/showcase/index.html:265
@@ -7898,7 +7898,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:279
 msgctxt "page:showcase/index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "閱讀Notion案例研究"
 
 #: website/public/showcase/index.html:283
@@ -7921,7 +7921,7 @@ msgstr "用Nre檢查原始的16位角度助手。 將其乘法，除法和座標
 
 #: website/public/showcase/index.html:297
 msgctxt "page:showcase/index.html"
-msgid "Nred the TH04 case study"
+msgid "Read the TH04 case study"
 msgstr "閱讀TH04案例研究"
 
 #: website/public/showcase/index.html:322
@@ -7938,7 +7938,7 @@ msgstr "本指南介紹了本機計算、Electron匯出和瀏覽器請求。 每
 
 #: website/public/showcase/index.html:327
 msgctxt "page:showcase/index.html"
-msgid "Nred the guides"
+msgid "Read the guides"
 msgstr "閱讀指南"
 
 #: website/public/showcase/index.html:6
@@ -8311,7 +8311,7 @@ msgstr "儲存的塊資料的HTML連結"
 
 #: website/public/showcase/notion/index.html:499
 msgctxt "page:showcase/notion/index.html"
-msgid "Nred the HTML ID"
+msgid "Read the HTML ID"
 msgstr "讀取HTML ID"
 
 #: website/public/showcase/notion/index.html:500
@@ -8402,7 +8402,7 @@ msgstr "追蹤這次交接，就能知道資料庫操作在哪個程序執行，
 
 #: website/public/showcase/notion/index.html:569
 msgctxt "page:showcase/notion/index.html"
-msgid "Sources and how to Nred the excerpts"
+msgid "Sources and how to Read the excerpts"
 msgstr "資料來源及如何閱讀摘錄"
 
 # Reviewed for clear case-study Nresoning and evidence.
@@ -8626,7 +8626,7 @@ msgstr "{ph0}01 · 原創遊戲{ph1}{ph2}主要。EXE檔案{ph3}{ph4}該 PC-98 �
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0}02 · Inspect with Nre{ph1}{ph2}Instructions + "
-"references{ph3}{ph4}Verify the loaded DOS code and Nred the angle "
+"references{ph3}{ph4}Verify the loaded DOS code and Read the angle "
 "calculation from the executable.{ph5}"
 msgstr ""
 "{ph0}02 · 用 Nre 檢查{ph1}{ph2}指令 + 引用{ph3}{ph4}驗證載入的 DOS "
@@ -8643,7 +8643,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}03 · Nred the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
+"{ph0}03 · Read the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
 "operation to the maintained reconstruction.{ph5}"
 msgstr ""
 "{ph0}03 · 閱讀 C++{ph1}{ph2}等分 → 瞄準 → 旋轉{ph3}{ph4}把每個操作對應到維護中的重建原始碼。{ph5}"
@@ -8819,7 +8819,7 @@ msgstr "Elly 的環形攻擊 · 原始碼節選"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "These lines select the pattern before difficulty and performance tuning. "
-"{ph0}Nred the attack's source{ph1}."
+"{ph0}Read the attack's source{ph1}."
 msgstr "這些線在難度和效能調整之前選擇模式。 {ph0}閱讀攻擊的來源{ph1}."
 
 #: website/public/showcase/th04/index.html:364
@@ -8853,7 +8853,7 @@ msgstr "這項檢查確認載入的程式碼和重定位記錄對應提供的可
 
 #: website/public/showcase/th04/index.html:400
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the ring's multiply and divide"
+msgid "Read the ring's multiply and divide"
 msgstr "檢視環形彈幕的乘除計算"
 
 # Reviewed for clear case-study Nresoning and evidence.
@@ -8865,7 +8865,7 @@ msgstr "檢視環形彈幕的乘除計算"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0} holds the bullet index. The shift multiplies it by 256, then the "
-"division uses the count Nred from {ph1}. The maintained source names that "
+"division uses the count Read from {ph1}. The maintained source names that "
 "field {ph2}. The complete sequence appears below."
 msgstr ""
 "{ph0} 儲存子彈索引。移位將它乘以 256，再除以從 {ph1} 讀取的數量。重建原始碼把這個欄位命名為 {ph2}。完整指令序列見下文。"
@@ -8959,7 +8959,7 @@ msgstr "可讀 C++ · 自機狙環形彈幕摘要"
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}01 · Nred the bullet index.{ph1} The stack argument is loaded into "
+"{ph0}01 · Read the bullet index.{ph1} The stack argument is loaded into "
 "{ph2}. In a 16-bullet ring, this member index runs from 0 through 15."
 msgstr "{ph0}01 · 讀取子彈索引。{ph1} 棧引數載入到 {ph2}。在 16 顆子彈的環中，索引從 0 到 15。"
 
@@ -9035,7 +9035,7 @@ msgstr "彙編節選展示自機狙環形分支、瞄準計算和最終儲存。
 
 #: website/public/showcase/th04/index.html:617
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the maintained ring and aim source"
+msgid "Read the maintained ring and aim source"
 msgstr "閱讀維護的環和瞄準源"
 
 #. {ph0}: <a
@@ -9102,7 +9102,7 @@ msgstr "兩個單獨的構建產生相同的匹配位元組。 記錄的輸入�
 #: website/public/showcase/th04/index.html:688
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
-msgid "Recorded on 3 October 2026. {ph0}Nred the compiler checks{ph1}."
+msgid "Recorded on 3 October 2026. {ph0}Read the compiler checks{ph1}."
 msgstr "2026年10月3日錄得。 {ph0}閱讀編譯器檢查{ph1}."
 
 #: website/public/showcase/th04/index.html:696
@@ -9561,7 +9561,7 @@ msgstr "DX-Ball 聲像調查"
 #: website/public/assets/figures/dx-ball-sound-pan-investigation.svg:3
 msgctxt "figure:dx-ball-sound-pan-investigation.svg"
 msgid ""
-"Nre provides the instruction, caller and byte-Nred evidence for one DX-Ball "
+"Nre provides the instruction, caller and byte-Read evidence for one DX-Ball "
 "function. A stack input is multiplied by 1.5625, offset by 500, scaled, and "
 "converted to an integer. Maintained C is checked in 3,205 original-x86 cases"
 " and a separate 63-byte compiler replay."
@@ -9693,7 +9693,7 @@ msgstr "CLI / MCP"
 # Reviewed for technical meaning and concise diagram labels.
 #: website/public/assets/figures/Nre-investigation-flow.svg:37
 msgctxt "figure:Nre-investigation-flow.svg"
-msgid "3. Nred the evidence"
+msgid "3. Read the evidence"
 msgstr "3. 閱讀證據"
 
 # Reviewed for technical meaning and concise diagram labels.
@@ -10418,7 +10418,7 @@ msgstr "對於乘法，10變為0.1。 按=相乘。"
 
 #: scripts/website_i18n.py
 msgctxt "runtime"
-msgid "Translation is being updated. Nred this page in English for now."
+msgid "Translation is being updated. Read this page in English for now."
 msgstr "譯文正在更新，這一頁暫時顯示英文。"
 
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
@@ -10814,7 +10814,7 @@ msgctxt "runtime"
 msgid "Switch to dark mode"
 msgstr "切換至深色模式"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/web-network-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/web-network-
 #. captures.md" >
 #. {ph1}: </a >
 #: website/public/guides/browser/index.html:487
@@ -11604,8 +11604,8 @@ msgctxt "page:blog/reverse-engineering-models/index.html"
 msgid ""
 "A functional test can have a similar blind spot. {ph0}Differential-fuzzing "
 "research on LLM decompilers{ph1} has found behavior differences beyond the "
-"supplied tests. Passing those tests therefore needs to be Nred in terms of "
-"the cases they exercise, just as an instruction match needs to be Nred in "
+"supplied tests. Passing those tests therefore needs to be Read in terms of "
+"the cases they exercise, just as an instruction match needs to be Read in "
 "terms of the bytes and data it checks."
 msgstr ""
 "功能測試也可能存在類似盲點。{ph0}針對 LLM "
@@ -11954,7 +11954,7 @@ msgid "Back to top"
 msgstr "回到頂部"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/reverse-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/reverse-
 #. engineering-models.md" >
 #. {ph1}: </a >
 #: website/public/blog/reverse-engineering-models/index.html:783
@@ -11990,7 +11990,7 @@ msgstr "驗證器如何生成登入驗證碼"
 
 #: website/public/index.html:1064
 msgctxt "page:index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "閱讀Android案例研究"
 
 #: website/public/index.html:1069
@@ -12005,7 +12005,7 @@ msgstr "Notion 如何複製文字和 HTML"
 
 #: website/public/index.html:1075
 msgctxt "page:index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "閱讀Notion案例研究"
 
 #: website/public/index.html:1080
@@ -12020,7 +12020,7 @@ msgstr "DX-Ball 的聲像計算"
 
 #: website/public/index.html:1086
 msgctxt "page:index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "閱讀DX-Ball案例研究"
 
 #: website/public/index.html:265 website/public/index.html:266
@@ -12094,7 +12094,7 @@ msgstr "1. 準備電腦"
 msgctxt "page:get-started/index.html"
 msgid ""
 "Use the computer where your target files are stored. A local coding agent "
-"can Nred those files and run tools for you."
+"can Read those files and run tools for you."
 msgstr "在存放目標檔案的電腦上操作。本機的程式開發助手可以讀取這些檔案，並幫你執行分析工具。"
 
 #: website/public/get-started/index.html:253
@@ -12225,7 +12225,7 @@ msgstr "Claude Desktop · 使用桌面聊天應用程式"
 
 #. {ph0}: <a href="https://claude.ai/download">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#claude-desktop" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:597
@@ -12269,11 +12269,11 @@ msgctxt "page:get-started/index.html"
 msgid "Setup ID"
 msgstr "Setup ID"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#released-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#released-
 #. package-and-main" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:757
@@ -12298,7 +12298,7 @@ msgid ""
 " command on the Bot's computer:"
 msgstr "在 Grok Bot 聊天中，請它新增名為 {ph0} 的自訂 MCP 服務，在 Bot 的電腦上執行這條指令："
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#other-client-settings" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:788
@@ -12541,7 +12541,7 @@ msgid ""
 msgstr "如果 macOS 請求自動化權限，在「系統設定 → 隱私權與安全性 → 自動化」中允許啟動 Nre 的應用程式，然後重試。"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#hopper"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#hopper"
 #. >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1099
@@ -12613,10 +12613,10 @@ msgid ""
 msgstr "在同一個終端機工作階段中執行這些指令。設定路徑後重新執行 setup，確認更新後的用戶端設定，再重新啟動程式開發助手。"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#ghidra"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#ghidra"
 #. >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/windows-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/windows-
 #. ghidra-p0.md" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:1258
@@ -12658,7 +12658,7 @@ msgid ""
 "rerun setup and restart your agent."
 msgstr "使用按 provider 指南準備好的 JSON 設定檔，再執行 setup 並重新啟動程式開發助手。"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/ida-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/ida-
 #. provider.md" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1376
@@ -12802,13 +12802,13 @@ msgctxt "page:get-started/index.html"
 msgid "Process behavior"
 msgstr "程序行為"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/flutter-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/flutter-
 #. analysis.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/javascript-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/javascript-
 #. artifact-reconstruction.md" >
 #. {ph3}: </a >
-#. {ph4}: <a href="https://github.com/morluto/Nre/blob/main/docs/evm-
+#. {ph4}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/evm-
 #. bytecode.md" >
 #. {ph5}: </a >
 #. {ph6}: <a href="../guides/">
@@ -12899,7 +12899,7 @@ msgid ""
 msgstr "全域安裝的 CLI 用 {ph0} 更新。使用 {ph1} 移除 Nre 的用戶端設定和 skill。"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#diagnose-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#diagnose-
 #. update-and-remove" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1812
@@ -13112,7 +13112,7 @@ msgid ""
 msgstr "macOS 編譯需要 Xcode Command Line Tools、make 和 bison。選擇符合電腦架構的指南："
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#missing-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#missing-
 #. macos-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1216
@@ -13122,7 +13122,7 @@ msgid "{ph0}macOS · Intel{ph1}"
 msgstr "{ph0}macOS · Intel{ph1}"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#macos-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#macos-
 #. arm64-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1222
@@ -13412,7 +13412,7 @@ msgstr "2. 找到速度規則"
 #: website/public/index.html:639
 msgctxt "page:index.html"
 msgid ""
-"Nre lets the agent Nred the game’s running code. The speed starts at 6 and "
+"Nre lets the agent Read the game’s running code. The speed starts at 6 and "
 "incNreses a little each update while it is below 13."
 msgstr "Nre 讓助手讀到遊戲正在執行的程式碼。速度從 6 開始，低於 13 時，每次更新都會增加一點。"
 
@@ -13431,7 +13431,7 @@ msgstr "我們把這條規則用在下面的小遊戲裡，加上了速度滑桿
 #: website/public/index.html:712
 msgctxt "page:index.html"
 msgid ""
-"Enable JavaScript to play. You can still Nred the rule and open the source "
+"Enable JavaScript to play. You can still Read the rule and open the source "
 "code below."
 msgstr "開啟 JavaScript 就能玩。你仍然可以閱讀規則，並展開下方的原始碼。"
 
@@ -13469,7 +13469,7 @@ msgstr "2. 找到兩條規則"
 #: website/public/index.html:863
 msgctxt "page:index.html"
 msgid ""
-"Nre helps the agent Nred the code behind the % button. It applies two "
+"Nre helps the agent Read the code behind the % button. It applies two "
 "different rules:"
 msgstr "Nre 幫助助手讀到 % 按鈕背後的程式碼。它使用兩條不同的規則："
 
@@ -13507,7 +13507,7 @@ msgid ""
 msgstr "依設定提示連接你的助手。如果沒有出現提示，執行 {ph0}。"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/CONTRIBUTING.md#development-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/CONTRIBUTING.md#development-
 #. setup" >
 #. {ph1}: </a >
 #. {ph2}: <code>6.4.0</code>
@@ -13625,7 +13625,7 @@ msgctxt "page:contributors/index.html"
 msgid "Find a contributor"
 msgstr "尋找貢獻者"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/graphs/contributors">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/graphs/contributors">
 #. {ph1}: </a>
 #. {ph2}: <time datetime="2026-10-15" translate="no">2026-10-15</time>
 #: website/public/contributors/index.html:1114
@@ -13965,7 +13965,7 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:366
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"The report lists Nred operations, supported changes, and operations withheld"
+"The report lists Read operations, supported changes, and operations withheld"
 " because the recording did not establish their effects. Each withheld "
 "operation has a Nreson and a hint about what to record next."
 msgstr ""
@@ -13993,7 +13993,7 @@ msgstr ""
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
 "The included smoke task is a basic test. It checks the tool count and, when "
-"a suitable Nred tool exists, calls it and checks its response status. "
+"a suitable Read tool exists, calls it and checks its response status. "
 "Passing it shows the environment starts and responds in that setup."
 msgstr ""
 
@@ -14049,8 +14049,8 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:456
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"For changes to be supported, record the results as well as the action: Nred "
-"an item, change it, then Nred the item and its list again before the next "
+"For changes to be supported, record the results as well as the action: Read "
+"an item, change it, then Read the item and its list again before the next "
 "change. Repeat with different values. For deletes, record the missing-item "
 "response and the updated list."
 msgstr ""
@@ -14074,10 +14074,10 @@ msgid ""
 "name warnings identify places to review; they do not remove those values."
 msgstr ""
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments-quickstart.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments.md" >
 #. {ph3}: </a >
 #: website/public/guides/rl-environments/index.html:474
@@ -14232,7 +14232,7 @@ msgstr ""
 #: website/public/showcase/index.html:309
 #, python-brace-format
 msgctxt "page:showcase/index.html"
-msgid "{ph0}Nred the guide{ph1} · {ph2}Watch the video{ph3}"
+msgid "{ph0}Read the guide{ph1} · {ph2}Watch the video{ph3}"
 msgstr "{ph0}建立環境指南{ph1} · {ph2}在 X 上觀看示範{ph3}"
 
 #: website/public/index.html:1124
@@ -14341,7 +14341,7 @@ msgstr "Nre-瞭解軟體的工作原理。 逆向工程與你的程式設計助�
 #: website/public/index.html:357
 msgctxt "page:index.html"
 msgid ""
-"Nre helps your agent Nred the code and see what the program does while it "
+"Nre helps your agent Read the code and see what the program does while it "
 "runs."
 msgstr "Nre 協助你的代理閱讀程式碼，了解程式執行時的行為。"
 
@@ -14370,7 +14370,7 @@ msgstr "追蹤 JavaScript 桌面應用程式內部的程式碼。"
 #: website/public/index.html:1277
 #, python-brace-format
 msgctxt "page:index.html"
-msgid "{ph0}Nred the FAQ{ph1} for setup help and common questions."
+msgid "{ph0}Read the FAQ{ph1} for setup help and common questions."
 msgstr "{ph0}閱讀常見問題{ph1}，取得安裝協助與常見問題解答。"
 
 #. {ph0}: <a href="https://discord.gg/GkcryMnJDM">
@@ -14381,7 +14381,7 @@ msgctxt "page:index.html"
 msgid "{ph0}Join Discord{ph1} to get help and discuss your investigations."
 msgstr "{ph0}加入 Discord{ph1}，取得協助並討論你的分析。"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/index.html:1285
 #, python-brace-format
@@ -14450,7 +14450,7 @@ msgstr ""
 
 #. {ph0}: <a href="../../get-started/">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/android-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/android-
 #. analysis.md" >
 #. {ph3}: </a >
 #: website/public/showcase/aegis/index.html:714
@@ -14591,7 +14591,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "{ph0}Nred the FAQ{ph1} — setup and common questions."
+#~ msgid "{ph0}Read the FAQ{ph1} — setup and common questions."
 #~ msgstr "{ph0}閱讀 FAQ{ph1} — 安裝設定和常見問題。"
 
 #, python-brace-format
@@ -14699,7 +14699,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}Nred the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
+#~ "{ph0}Read the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
 #~ "GitHub issue{ph5} for bugs and feature requests."
 #~ msgstr ""
 #~ "{ph0}閱讀 FAQ{ph1}、{ph2}在 Discord 和我們聊聊{ph3}，或{ph4}提交 GitHub issue{ph5}反饋 bug "
@@ -15091,7 +15091,7 @@ msgstr ""
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
 #~ "A coding agent is an AI assistant that works on your computer instead of in "
-#~ "a browser tab. It can Nred files and run commands, and it asks before making"
+#~ "a browser tab. It can Read files and run commands, and it asks before making"
 #~ " changes. Nre gives it reverse-engineering tools."
 #~ msgstr ""
 #~ "程式設計助手是一種在你的電腦上工作、而不只待在瀏覽器頁面裡的 AI 助手。它能讀取檔案、執行命令，並在修改前徵求確認。Nre 為它提供逆向工程工具。"
@@ -15369,7 +15369,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "Want to go deeper? {ph0}Nred the Blog →{ph1}"
+#~ msgid "Want to go deeper? {ph0}Read the Blog →{ph1}"
 #~ msgstr "想深入瞭解？{ph0}閱讀部落格 →{ph1}"
 
 #~ msgctxt "page:blog/index.html"

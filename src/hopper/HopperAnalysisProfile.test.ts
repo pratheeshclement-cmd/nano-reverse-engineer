@@ -55,7 +55,7 @@ it("routes physical universal Mach-O containers through Hopper's FAT loader", ()
 });
 
 it("prepares a verified thin arm64e slice for a FAT32 system container", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-fat32-profile-");
+  const directory = await createTestTempDirectory("nre-hopper-fat32-profile-");
   const writeUInt32 = (buffer: Buffer, offset: number, value: number): void => {
     buffer.writeUInt32BE(value, offset);
   };
@@ -132,7 +132,7 @@ it("prepares a verified thin arm64e slice for a FAT32 system container", async (
 });
 
 it("commits a thin header selection only for derived Hopper loader arguments", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-thin-profile-");
+  const directory = await createTestTempDirectory("nre-hopper-thin-profile-");
   const thin = Buffer.alloc(64);
   thin.writeUInt32LE(0xfeedfacf, 0);
   thin.writeUInt32LE(0x0100000c, 4);
@@ -219,7 +219,7 @@ it("commits a thin header selection only for derived Hopper loader arguments", a
 });
 
 it("keeps a read failure primary when cancellation arrives during descriptor cleanup", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-profile-read-");
+  const directory = await createTestTempDirectory("nre-hopper-profile-read-");
   const path = join(directory, "arm64.macho");
   await writeFile(path, Buffer.from([0xfe, 0xed, 0xfa, 0xcf]));
   const controller = new AbortController();
@@ -263,7 +263,7 @@ it("keeps a read failure primary when cancellation arrives during descriptor cle
 });
 
 it("retains the exact caller reason when cancellation arrives during the owned header read", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-profile-abort-");
+  const directory = await createTestTempDirectory("nre-hopper-profile-abort-");
   const path = join(directory, "arm64.macho");
   await writeFile(path, Buffer.from([0xfe, 0xed, 0xfa, 0xcf]));
   const controller = new AbortController();
@@ -306,7 +306,7 @@ it("retains the exact caller reason when cancellation arrives during the owned h
 });
 
 it("keeps failed Mach-O preflight cleanup attached to the supplied profile owner", async () => {
-  const directory = await createTestTempDirectory("rea-hopper-profile-owner-");
+  const directory = await createTestTempDirectory("nre-hopper-profile-owner-");
   const sourcePath = join(directory, "source.macho");
   const bytes = Buffer.alloc(100_000, 0x5a);
   bytes.writeUInt32BE(0xfeedfacf, 0);
@@ -404,7 +404,7 @@ it("preserves launcher fingerprint filesystem failures instead of an absent prof
 it.skipIf(process.platform === "win32").each(["header", "launcher"] as const)(
   "rejects a real FIFO at the %s profile boundary without a writer",
   async (kind) => {
-    const directory = await createTestTempDirectory("rea-hopper-profile-fifo-");
+    const directory = await createTestTempDirectory("nre-hopper-profile-fifo-");
     const path = join(directory, "hopper.fifo");
     execFileSync("mkfifo", [path]);
     const result = await resolveHopperAnalysisProfile(
@@ -442,7 +442,7 @@ it.each([
   "retains the %s descriptor through failed close, late cancellation and retry (read failed: %s)",
   async (kind, readFails) => {
     const directory = await createTestTempDirectory(
-      "rea-hopper-profile-close-",
+      "nre-hopper-profile-close-",
     );
     const path = join(directory, "selected-file");
     await writeFile(path, Buffer.from([0xfe, 0xed, 0xfa, 0xcf]));
@@ -539,7 +539,7 @@ it.each(["header", "launcher"] as const)(
   "retains completed %s facts when cancellation arrives during successful final close",
   async (kind) => {
     const directory = await createTestTempDirectory(
-      "rea-hopper-profile-late-abort-",
+      "nre-hopper-profile-late-abort-",
     );
     const path = join(directory, "selected-file");
     const bytes = Buffer.from([0xfe, 0xed, 0xfa, 0xcf]);
@@ -605,7 +605,7 @@ it.each([
   "retains FAT width from a four-byte profile prefix %i",
   async (magic, container) => {
     const directory = await createTestTempDirectory(
-      "rea-hopper-prefix-profile-",
+      "nre-hopper-prefix-profile-",
     );
     const bytes = Buffer.alloc(4);
     bytes.writeUInt32BE(magic);

@@ -513,7 +513,7 @@ const reconciliationEvidence = (
           },
     location: observation.evidence.location,
     extractor: {
-      name: "rea-javascript-runtime-reconciliation",
+      name: "nre-javascript-runtime-reconciliation",
       version: "1",
       operation: "reconcile_javascript_runtime",
       executable_sha256: null,

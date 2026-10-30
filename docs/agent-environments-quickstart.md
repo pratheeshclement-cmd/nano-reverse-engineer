@@ -1,24 +1,24 @@
-# Build RL environments with REA
+# Build RL environments with NRE
 
-REA turns a recorded web app session into a runnable environment for training
+NRE turns a recorded web app session into a runnable environment for training
 and testing AI agents. An agent can practice tasks such as finding an issue,
 creating a folder, or editing a record without running the original app.
 
-REA builds the tools the agent calls, the local data those tools use, and a
+NRE builds the tools the agent calls, the local data those tools use, and a
 test that checks the environment starts and responds. It supports changes
 when the recording confirms their effects. You can then use the environment
 with your RL framework to set task goals, check rewards, and run training.
 
 ## Before you start
 
-Install [REA and its agent integration](installation.md). To record an app,
+Install [NRE and its agent integration](installation.md). To record an app,
 you also need a running test instance and a Chrome-family browser. Choose an
-instance where the agent is allowed to create, edit, and delete data. REA
+instance where the agent is allowed to create, edit, and delete data. NRE
 records the app you provide; you start it and prepare its test data.
 
 To run the exported environment, install the
 [AgentEnv framework](https://github.com/scaleapi/agentenv-framework#install)
-and start Docker. REA's [compatibility check](testing.md#exported-environment-bundles)
+and start Docker. NRE's [compatibility check](testing.md#exported-environment-bundles)
 uses AgentEnv version `0.9.1334` with Python 3.12.
 
 There are two ways to build an environment: ask your agent to record the app,
@@ -30,7 +30,7 @@ Give your agent the app URL, the operations you need, your browser's executable
 path, and an output directory. For an app with folders, adapt this prompt:
 
 ```text
-Use REA to build an AgentEnv environment from my test web app at
+Use NRE to build an AgentEnv environment from my test web app at
 http://127.0.0.1:3000. Cover listing, creating, renaming, and deleting folders.
 You may create and remove test folders. Leave the existing data unchanged.
 
@@ -43,7 +43,7 @@ export it. Report any unsupported operations and what is missing.
 ```
 
 Replace the URL, account, paths, and folder operations with your own. Set
-`APP_PASSWORD` in the environment that starts REA's MCP server so REA can use
+`APP_PASSWORD` in the environment that starts NRE's MCP server so NRE can use
 it without putting the password in the prompt.
 
 Your agent inspects the app, records a session, checks the result, and exports
@@ -65,17 +65,17 @@ record those actions and the reads that show their results.
 Build the environment into a new or empty directory:
 
 ```sh
-rea environment-build ./session.har ./my-env --name my-env --json
+nre environment-build ./session.har ./my-env --name my-env --json
 ```
 
-You can also pass capture Evidence JSON saved by REA's
+You can also pass capture Evidence JSON saved by NRE's
 `capture-browser-scenario` or `inspect-web-network-capture` commands. Here,
-Evidence means REA's saved recording with its source information. The build
+Evidence means NRE's saved recording with its source information. The build
 accepts HAR files and those JSON recordings. It reads local data and writes
 the environment folder without contacting the app.
 
 Add `--dry-run` to review the build report without writing the folder. For an
-unreleased REA checkout, use `--package-tarball` with its packed package so
+unreleased NRE checkout, use `--package-tarball` with its packed package so
 the exported environment runs the same implementation.
 
 The build report tells you what the environment supports:
@@ -103,7 +103,7 @@ agent-env run ./my-env
 Use the folder path your agent reported if it differs. The first run builds
 the container image, so it needs access to the image and package sources.
 
-REA includes a basic test, called the smoke task. It checks the expected tool
+NRE includes a basic test, called the smoke task. It checks the expected tool
 count and, when a suitable read tool exists, calls it and checks its response
 status. Passing this test shows the environment starts and responds in the
 tested setup. It does not yet score an agent on an application task.
@@ -127,7 +127,7 @@ same data. Use the AgentEnv task and verifier formats.
 ```
 
 This asks your agent to help build the task and its grading check around the
-environment REA generated. A retrieval task might check an answer against a
+environment NRE generated. A retrieval task might check an answer against a
 recorded value. A task that changes data should check the resulting state.
 When state is available, the environment supports reset, load, and read-back
 operations for repeatable runs.
@@ -138,7 +138,7 @@ resulting tasks to your chosen RL training workflow.
 
 ## Improve an operation that is missing
 
-For REA to support a change, the recording needs to show what happened before
+For NRE to support a change, the recording needs to show what happened before
 and after it. When recording against your test app:
 
 1. Read the list and an existing item before making changes. Repeat the
@@ -152,7 +152,7 @@ and after it. When recording against your test app:
 
 Also record filters, searches, sorting, and paging if your tasks need them.
 The agent should check that every recording step completed before using it.
-The [recording workflow](https://github.com/morluto/rea/blob/main/.agents/skills/reverse-engineer-anything/references/environments.md)
+The [recording workflow](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/.agents/skills/nano-reverse-engineer/references/environments.md)
 has the detailed browser instructions, including timeouts and handling IDs
 assigned by the app.
 
@@ -163,7 +163,7 @@ Use the report's hints to decide what to record next:
 | `unconfirmed`                   | Read the item and its list after the change.                                                                                |
 | `no-state-target`               | Check the path template and recorded views; record missing reads. The route form may not be supported as a mutation target. |
 | `no-observation`                | Read back a created item. For an edit or delete, also read it before changing it.                                           |
-| `contradicted` or `side-effect` | Inspect the reported disagreement. The operation may need behavior REA cannot model yet.                                    |
+| `contradicted` or `side-effect` | Inspect the reported disagreement. The operation may need behavior NRE cannot model yet.                                    |
 
 See the [full reason table](agent-environments.md#build-a-bundle-in-one-step)
 for the other cases. Rebuild from the new recording and check the report
@@ -178,12 +178,12 @@ probe. Restore that starting data before each probe sequence, then compare
 the saved probe recordings with the environment:
 
 ```sh
-rea environment-compare ./my-env/envs/my-env/manifest.json \
+nre environment-compare ./my-env/envs/my-env/manifest.json \
   --evidence ./my-env/envs/my-env/evidence.json \
   --probe ./probe-create-edit-delete.json --probe ./probe-reads.json --json
 ```
 
-Each probe file must be capture Evidence JSON from REA. The comparison runs
+Each probe file must be capture Evidence JSON from NRE. The comparison runs
 offline and reports differences in responses, unsupported calls, and missing
 observations. It accounts for supported differences in IDs, times, and
 modeled generated values. Agreement applies to the calls those probes check.

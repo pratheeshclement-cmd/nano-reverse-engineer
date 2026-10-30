@@ -12,7 +12,7 @@ export const withLargeResultMcp = async (
     args: [entrypoint, "mcp"],
     env: {
       ...environment,
-      REA_MCP_MAX_RESPONSE_BYTES: String(maxBufferSize),
+      NRE_MCP_MAX_RESPONSE_BYTES: String(maxBufferSize),
     },
     stderr: "inherit",
     maxBufferSize,

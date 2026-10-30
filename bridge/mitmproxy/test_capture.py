@@ -21,7 +21,7 @@ def load_capture():
         "mitmproxy.io.tnetstring": fake_io.tnetstring,
     }
     spec = importlib.util.spec_from_file_location(
-        "rea_mitmproxy_capture", os.path.join(os.path.dirname(__file__), "capture.py")
+        "nre_mitmproxy_capture", os.path.join(os.path.dirname(__file__), "capture.py")
     )
     module = importlib.util.module_from_spec(spec)
     with mock.patch.dict(sys.modules, stand_ins):

@@ -74,7 +74,7 @@ it("does not report a native zombie as a live owned group member", async () => {
   const row = processes[0]!;
   const host: ProcessOwnershipHost = {
     listProcesses: () => Promise.resolve([row]),
-    environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+    environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
     runTokens: (members) =>
       Promise.resolve(
         new Map(
@@ -345,7 +345,7 @@ describe("multi-group observation short-circuit", () => {
     const listProcesses = vi.fn(() => Promise.resolve(processes));
     const environment = vi.fn((pid: number) =>
       Promise.resolve({
-        REA_PROCESS_RUN_ID: pid === 100 ? "other-run" : ownership.runId,
+        NRE_PROCESS_RUN_ID: pid === 100 ? "other-run" : ownership.runId,
       }),
     );
     const runTokens = vi.fn<NonNullable<ProcessOwnershipHost["runTokens"]>>(
@@ -424,8 +424,8 @@ it("builds lineage from same-generation native parent/group facts", async () => 
 
 it("observes group and lineage with one batch each and falls back only for missing rows", async () => {
   const { adapter } = host({
-    100: { REA_PROCESS_RUN_ID: ownership.runId },
-    101: { REA_PROCESS_RUN_ID: ownership.runId },
+    100: { NRE_PROCESS_RUN_ID: ownership.runId },
+    101: { NRE_PROCESS_RUN_ID: ownership.runId },
   });
   const environment = vi.fn(adapter.environment);
   const runTokens = vi.fn<NonNullable<ProcessOwnershipHost["runTokens"]>>(() =>
@@ -463,7 +463,7 @@ it.each(["batch", "environment"] as const)(
       async (_pid, signal) => {
         expect(signal).toBe(controller.signal);
         controller.abort(reason);
-        return { REA_PROCESS_RUN_ID: ownership.runId };
+        return { NRE_PROCESS_RUN_ID: ownership.runId };
       },
     );
     const runTokens = vi.fn<NonNullable<ProcessOwnershipHost["runTokens"]>>(
@@ -494,7 +494,7 @@ it.each([100, 101])(
       .mockResolvedValueOnce(processes)
       .mockResolvedValue(processes.filter(({ pid }) => pid !== exitedPid));
     const environment = vi.fn(() =>
-      Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId }),
+      Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId }),
     );
     const observedHost: ProcessOwnershipHost = {
       listProcesses,
@@ -530,8 +530,8 @@ it.each([100, 101])(
 describe("token sweep batch failures", () => {
   it("cleans token-owned groups when a failed batch has readable fallback observations", async () => {
     const { adapter, signalGroup } = host({
-      100: { REA_PROCESS_RUN_ID: ownership.runId },
-      101: { REA_PROCESS_RUN_ID: ownership.runId },
+      100: { NRE_PROCESS_RUN_ID: ownership.runId },
+      101: { NRE_PROCESS_RUN_ID: ownership.runId },
     });
     await expect(
       cleanupOwnedProcessGroup(
@@ -552,7 +552,7 @@ describe("token sweep batch failures", () => {
       listProcesses: () => Promise.resolve(processes),
       environment: (pid) =>
         pid === 100
-          ? Promise.resolve({ REA_PROCESS_RUN_ID: ownership.runId })
+          ? Promise.resolve({ NRE_PROCESS_RUN_ID: ownership.runId })
           : Promise.reject(new Error("individual unreadable")),
       runTokens: () => Promise.reject(new Error("batch reader unavailable")),
       signalGroup,

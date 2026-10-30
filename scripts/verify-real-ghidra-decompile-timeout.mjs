@@ -33,20 +33,20 @@ const LIMIT_SECONDS = 1;
 // decimal representation; the joined source and line array remain bounded.
 const FIXTURE_SOURCE_BYTES = 1024 * 1024;
 const FIXTURE_PREFIX = [
-  "volatile unsigned rea_state[64];",
-  "__attribute__((noinline, used)) unsigned rea_slow(unsigned x) {",
+  "volatile unsigned nre_state[64];",
+  "__attribute__((noinline, used)) unsigned nre_slow(unsigned x) {",
   "  unsigned a = x;",
 ];
 const FIXTURE_SUFFIX = [
   "  return a;",
   "}",
-  "__attribute__((noinline, used)) int rea_small(int v) {",
-  "  return v + (int)rea_state[0];",
+  "__attribute__((noinline, used)) int nre_small(int v) {",
+  "  return v + (int)nre_state[0];",
   "}",
   "",
 ];
 const MAX_BRANCH_LINE_BYTES = Buffer.byteLength(
-  `  if (rea_state[63] & 1073741824u) a = a * 31u + ${Number.MAX_SAFE_INTEGER}u; else a ^= rea_state[63];\n`,
+  `  if (nre_state[63] & 1073741824u) a = a * 31u + ${Number.MAX_SAFE_INTEGER}u; else a ^= nre_state[63];\n`,
 );
 const FIXTURE_FIXED_BYTES = Buffer.byteLength(
   [...FIXTURE_PREFIX, ...FIXTURE_SUFFIX].join("\n"),
@@ -54,10 +54,10 @@ const FIXTURE_FIXED_BYTES = Buffer.byteLength(
 const MAX_BRANCHES = Math.floor(
   (FIXTURE_SOURCE_BYTES - FIXTURE_FIXED_BYTES) / MAX_BRANCH_LINE_BYTES,
 );
-const BRANCHES = Number(process.env.REA_DECOMPILE_TIMEOUT_BRANCHES ?? 6000);
+const BRANCHES = Number(process.env.NRE_DECOMPILE_TIMEOUT_BRANCHES ?? 6000);
 assert.ok(
   Number.isSafeInteger(BRANCHES) && BRANCHES > 0 && BRANCHES <= MAX_BRANCHES,
-  `REA_DECOMPILE_TIMEOUT_BRANCHES must be an integer from 1 to ${MAX_BRANCHES} (generated source budget: ${FIXTURE_SOURCE_BYTES} bytes)`,
+  `NRE_DECOMPILE_TIMEOUT_BRANCHES must be an integer from 1 to ${MAX_BRANCHES} (generated source budget: ${FIXTURE_SOURCE_BYTES} bytes)`,
 );
 
 const run = createVerifierRun();
@@ -67,7 +67,7 @@ assert.ok(
 );
 const environment = {
   ...process.env,
-  REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: String(LIMIT_SECONDS),
+  NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: String(LIMIT_SECONDS),
 };
 const settings = new AnalysisSettings(environment);
 const config = parseConfig(environment);
@@ -86,7 +86,7 @@ const fixtureSource = () => {
   const lines = [...FIXTURE_PREFIX];
   for (let index = 0; index < BRANCHES; index += 1)
     lines.push(
-      `  if (rea_state[${index % 64}] & ${(1 << (index % 31)) >>> 0}u) a = a * 31u + ${index}u; else a ^= rea_state[${(index * 7) % 64}];`,
+      `  if (nre_state[${index % 64}] & ${(1 << (index % 31)) >>> 0}u) a = a * 31u + ${index}u; else a ^= nre_state[${(index * 7) % 64}];`,
     );
   lines.push(...FIXTURE_SUFFIX);
   const source = lines.join("\n");
@@ -95,7 +95,7 @@ const fixtureSource = () => {
 };
 
 const workspace = await mkdtemp(
-  join(tmpdir(), "rea-ghidra-decompile-timeout-"),
+  join(tmpdir(), "nre-ghidra-decompile-timeout-"),
 );
 let cleaned = true;
 let report;
@@ -110,7 +110,7 @@ try {
       : "slow-decompile.so",
   );
   const compiler = {
-    command: process.env.REA_CC ?? "cc",
+    command: process.env.NRE_CC ?? "cc",
     arguments: [
       ...(process.platform === "darwin" ? ["-dynamiclib"] : ["-shared"]),
       "-fPIC",
@@ -173,14 +173,14 @@ try {
       assert.ok(found, `Missing fixture function ${name}`);
       return found.address;
     };
-    const slowEntry = entry("rea_slow");
-    const smallEntry = entry("rea_small");
+    const slowEntry = entry("nre_slow");
+    const smallEntry = entry("nre_small");
     assert.ok(bridgeClient);
     const initialSession = await bridgeClient.ping();
     if (!initialSession.ok) throw initialSession.error;
     assert.equal(initialSession.value.target.sha256, targetDigest);
     observed.initial_session_run_id = initialSession.value.run_id;
-    const limitText = `exceeded the ${String(LIMIT_SECONDS)}-second configured decompilation limit (ghidra.decompile_timeout_seconds; launch seed REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS)`;
+    const limitText = `exceeded the ${String(LIMIT_SECONDS)}-second configured decompilation limit (ghidra.decompile_timeout_seconds; launch seed NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS)`;
     let started = performance.now();
     const slow = await client.execute("analyze_function", {
       procedure: slowEntry,
@@ -219,7 +219,7 @@ try {
     assert.ok(projected.message.includes(limitText), projected.message);
     assert.ok(
       projected.remediation.action.includes(
-        "REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
+        "NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
       ),
     );
     observed.pseudocode_error = {
@@ -242,7 +242,7 @@ try {
       client.execute("procedure_pseudo_code", { procedure: slowEntry }),
     );
     if (!recovered.ok) throw recovered.error;
-    assert.ok(String(recovered.value.result).includes("rea_state"));
+    assert.ok(String(recovered.value.result).includes("nre_state"));
     observed.runtime_recovery = {
       timeout_seconds: 60,
       pseudocode_bytes: Buffer.byteLength(String(recovered.value.result)),
@@ -253,7 +253,7 @@ try {
       procedure: smallEntry,
     });
     if (!small.ok) throw small.error;
-    assert.ok(String(small.value.result).includes("rea_state"));
+    assert.ok(String(small.value.result).includes("nre_state"));
     const continuedSession = await bridgeClient.ping();
     if (!continuedSession.ok) throw continuedSession.error;
     assert.equal(continuedSession.value.run_id, initialSession.value.run_id);

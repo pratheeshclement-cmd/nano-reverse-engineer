@@ -26,7 +26,7 @@ export const removeTestWorkspace = async (root: string): Promise<void> => {
 
 /** Create one isolated workspace for a fixture composition root. */
 export const createTestWorkspace = async (
-  prefix = "rea-test-workspace-",
+  prefix = "nre-test-workspace-",
 ): Promise<TestWorkspace> => {
   const canonicalTemporaryRoot = await realpath(tmpdir());
   const root = await realpath(

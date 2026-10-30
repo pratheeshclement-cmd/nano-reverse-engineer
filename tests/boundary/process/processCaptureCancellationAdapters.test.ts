@@ -92,7 +92,7 @@ const finishCleanup = async (steps: readonly (() => Promise<unknown>)[]) => {
 itWithCaptureCapability.each(["SIGINT", "SIGTERM"] as const)(
   "awaits owned workload cleanup and emits a typed CLI cancellation after %s",
   async (signal) => {
-    const root = await createTestTempDirectory("rea-process-cli-cancel-");
+    const root = await createTestTempDirectory("nre-process-cli-cancel-");
     const scenario = join(root, "scenario.json");
     await writeFile(
       scenario,
@@ -106,7 +106,7 @@ itWithCaptureCapability.each(["SIGINT", "SIGTERM"] as const)(
     );
     const cli = spawn(
       process.execPath,
-      ["scripts/rea.mjs", "capture-process", scenario, "--format", "json"],
+      ["scripts/nre.mjs", "capture-process", scenario, "--format", "json"],
       { stdio: ["ignore", "pipe", "pipe"] },
     );
     let stdout = "";
@@ -157,7 +157,7 @@ itWithCaptureCapability.each(["SIGINT", "SIGTERM"] as const)(
 itWithCaptureCapability(
   "preserves completed observations as partial evidence when SIGINT arrives during CLI cleanup",
   async () => {
-    const root = await createTestTempDirectory("rea-process-cleanup-cancel-");
+    const root = await createTestTempDirectory("nre-process-cleanup-cancel-");
     const scenario = join(root, "scenario.json");
     const cleanupMarker = join(root, "cleanup.json");
     await writeFile(
@@ -177,7 +177,7 @@ itWithCaptureCapability(
         [
           "--import",
           hook,
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "capture-process",
           scenario,
           "--format",
@@ -187,8 +187,8 @@ itWithCaptureCapability(
           env: {
             ...process.env,
             TMPDIR: root,
-            REA_TEST_CANCEL_DURING_CLEANUP: cancel ? "1" : "0",
-            REA_TEST_CLEANUP_MARKER: cleanupMarker,
+            NRE_TEST_CANCEL_DURING_CLEANUP: cancel ? "1" : "0",
+            NRE_TEST_CLEANUP_MARKER: cleanupMarker,
           },
           stdio: ["ignore", "pipe", "pipe"],
         },
@@ -244,7 +244,7 @@ itWithCaptureCapability(
   "stops the owned descendant when an MCP request is cancelled during post-exit settlement",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-process-mcp-settle-cancel-",
+      "nre-process-mcp-settle-cancel-",
     );
     const session = createTestBinarySession(() => {
       throw new Error("Process capture must not launch a binary provider");

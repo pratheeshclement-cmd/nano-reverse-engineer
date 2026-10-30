@@ -158,7 +158,7 @@ const fieldComparisonItemSchema = comparisonItemSchema(
 export const managedMemberComparisonResultSchema = z.strictObject({
   comparison_id: prefixedDigestSchema("mmc"),
   algorithm: z.strictObject({
-    name: z.literal("rea-managed-member-comparison"),
+    name: z.literal("nre-managed-member-comparison"),
     token_identity: z.literal("build-local"),
     name_matching: z.literal("exact-signature-fallback"),
   }),
@@ -310,7 +310,7 @@ export const compareManagedMembers = (
       "Managed comparison",
     )}`,
     algorithm: {
-      name: "rea-managed-member-comparison" as const,
+      name: "nre-managed-member-comparison" as const,
       token_identity: "build-local" as const,
       name_matching: "exact-signature-fallback" as const,
     },

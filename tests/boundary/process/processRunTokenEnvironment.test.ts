@@ -16,7 +16,7 @@ processTest.skipIf(process.platform !== "linux").for([
       EMPTY: "",
       VALUE: "a=b",
       ["__proto__"]: "source-value",
-      ...(runId === undefined ? {} : { REA_PROCESS_RUN_ID: runId }),
+      ...(runId === undefined ? {} : { NRE_PROCESS_RUN_ID: runId }),
     };
     const child = processes.spawn(
       process.execPath,

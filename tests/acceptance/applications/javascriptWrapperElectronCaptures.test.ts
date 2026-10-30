@@ -32,7 +32,7 @@ cliTest.for(
 )(
   "preserves Electron capture ownership through $surface after $name with capturedBeforeWrite=$capturedBeforeWrite",
   async ({ surface, source, capturedBeforeWrite }, { cli }) => {
-    const root = await createTestTempDirectory("rea-wrapper-electron-capture-");
+    const root = await createTestTempDirectory("nre-wrapper-electron-capture-");
     const capture = 'const {BrowserWindow}=require("electron");';
     await writeFixtureFiles(root, {
       "package.json": JSON.stringify({ main: "main.cjs" }),

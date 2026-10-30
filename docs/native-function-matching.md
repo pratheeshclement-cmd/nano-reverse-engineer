@@ -103,7 +103,7 @@ assert that every member pair is a candidate or equivalent.
 CLI uses the same service and JSON input:
 
 ```bash
-rea match-native-functions request.json \
+nre match-native-functions request.json \
   --source_bundle left-bundle.json --source_bundle right-bundle.json \
   --evidence_output matching-bundle.json --json
 ```
@@ -136,13 +136,13 @@ a bound on total process RSS.
 The allowance defaults to 96 MiB and is the runtime setting
 `native.matching_representation_bytes`, from 1 byte to 1 GiB. On MCP, call
 `update_analysis_settings` with that setting and retry; it applies to the next
-operation without restarting REA. For CLI or future REA processes, set
-`REA_NATIVE_MATCHING_REPRESENTATION_BYTES` in the launch environment; `rea
+operation without restarting NRE. For CLI or future NRE processes, set
+`NRE_NATIVE_MATCHING_REPRESENTATION_BYTES` in the launch environment; `nre
 setup` copies it into client registrations. An invalid launch value is refused
 by matching only, and a runtime value repairs it. A refusal carries
 `details.limit` with the effective value, its source and bounds. Raising the
-allowance lets matching retain more in the REA process. The 1 GiB maximum is
-an REA policy, not a host-capacity claim, and peak heap during a request can
+allowance lets matching retain more in the NRE process. The 1 GiB maximum is
+an NRE policy, not a host-capacity claim, and peak heap during a request can
 exceed the allowance.
 
 Summary delivery happens after complete matching Evidence is constructed and
@@ -151,7 +151,7 @@ raise the allowance. Repeated provenance remains
 part of the complete member contract; splitting inventories into separate matches
 would change global name/body uniqueness and is not an equivalent workaround.
 
-The self-owned source fixture is [nativeFunctionMatching.c](https://github.com/morluto/rea/blob/main/tests/fixtures/nativeFunctionMatching.c).
+The self-owned source fixture is [nativeFunctionMatching.c](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/tests/fixtures/nativeFunctionMatching.c).
 On Linux x86-64, compile with `cc -O2 -g0 -fno-pie -no-pie -DVERSION=1` and
 `-DVERSION=2`; copy the second binary and run `strip --strip-all` on that copy.
 It includes unchanged/changed code, a byte-identical rename, a removed/added

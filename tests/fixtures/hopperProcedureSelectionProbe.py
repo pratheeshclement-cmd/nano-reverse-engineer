@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 
 bridge_path = sys.argv[1]
-bridge = {"__file__": bridge_path, "__name__": "rea_hopper_bridge"}
+bridge = {"__file__": bridge_path, "__name__": "nre_hopper_bridge"}
 exec(compile(Path(bridge_path).read_text(encoding="utf-8"), bridge_path, "exec"), bridge)
 
 class Procedure:

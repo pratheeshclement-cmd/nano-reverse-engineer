@@ -42,7 +42,7 @@ describe("JavaScript runtime observation CLI parity", () => {
   cliTest(
     "returns the same passive Inspector Evidence contracts",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-v8-cli-");
+      const root = await createTestTempDirectory("nre-v8-cli-");
       const entry = join(root, "entry.js");
       await writeFile(entry, "export const value = 1;\n");
       const inspector = await startFakeV8Inspector({
@@ -62,7 +62,7 @@ describe("JavaScript runtime observation CLI parity", () => {
       expect(listed.exitCode, listed.stderr).toBe(0);
       expect(listed.json).toMatchObject({
         operation: "list_javascript_runtime_targets",
-        provider: { id: "rea-v8-inspector" },
+        provider: { id: "nre-v8-inspector" },
         normalized_result: {
           targets: [{ target_id: inspector.targetId }],
         },
@@ -84,7 +84,7 @@ describe("JavaScript runtime observation CLI parity", () => {
       expect(observed.exitCode, observed.stderr).toBe(0);
       expect(observed.json).toMatchObject({
         operation: "observe_javascript_runtime",
-        provider: { id: "rea-v8-inspector" },
+        provider: { id: "nre-v8-inspector" },
         normalized_result: {
           target: { target_id: inspector.targetId, runtime_kind: "node" },
           scripts: {
@@ -121,7 +121,7 @@ describe("JavaScript runtime observation CLI parity", () => {
     let closeAttempts = 0;
     runtimeFactory.provider = {
       identity: () => ({
-        id: "rea-v8-inspector",
+        id: "nre-v8-inspector",
         name: "V8 Inspector",
         version: "1",
       }),
@@ -142,14 +142,14 @@ describe("JavaScript runtime observation CLI parity", () => {
       close: async () => {
         closeAttempts += 1;
         throw new ProviderCleanupError(
-          "rea-v8-inspector",
+          "nre-v8-inspector",
           ["browser_transport"],
           { reason: "Inspector transport remains retained" },
           { operation: "list_javascript_runtime_targets" },
         );
       },
     };
-    const cli = Cli.create("rea-runtime-cleanup-test", { sync: false });
+    const cli = Cli.create("nre-runtime-cleanup-test", { sync: false });
     registerJavaScriptRuntimeObservationCommands(cli, silentLogger, {});
     let stdout = "";
     await cli.serve(

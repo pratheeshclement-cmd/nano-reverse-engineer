@@ -79,7 +79,7 @@ const validateAdvertisedFirmwareOutput = async (
 it.each(["existing", "missing-parent", "relative"] as const)(
   "refuses %s destinations before selecting or launching a firmware engine",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-firmware-destination-");
+    const root = await createTestTempDirectory("nre-firmware-destination-");
     const output =
       kind === "existing"
         ? join(root, "exists")
@@ -116,7 +116,7 @@ it.each(["existing", "missing-parent", "relative"] as const)(
 );
 
 it("early destination admission creates nothing and publication still acquires exclusively", async () => {
-  const root = await createTestTempDirectory("rea-firmware-preflight-");
+  const root = await createTestTempDirectory("nre-firmware-preflight-");
   const output = join(root, "output");
   await SafeOutputTree.checkDestination(output);
   await expect(access(output)).rejects.toMatchObject({ code: "ENOENT" });
@@ -128,7 +128,7 @@ it("early destination admission creates nothing and publication still acquires e
 });
 
 it("publishes the writer's normalized path while retaining source spelling and unclassified input coverage", async () => {
-  const root = await createTestTempDirectory("rea-firmware-published-name-");
+  const root = await createTestTempDirectory("nre-firmware-published-name-");
   const staging = join(root, "staging");
   await mkdir(staging);
   const name = "cafe\u0301.bin";

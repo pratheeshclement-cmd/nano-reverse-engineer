@@ -9,12 +9,12 @@ from mitmproxy.websocket import WebSocketData, WebSocketMessage
 
 class Generator:
     def load(self, loader):
-        loader.add_option("rea_fixture_root", str, "", "Owned synthetic fixture root")
-        loader.add_option("rea_adapter_path", str, "", "REA native adapter under verification")
+        loader.add_option("nre_fixture_root", str, "", "Owned synthetic fixture root")
+        loader.add_option("nre_adapter_path", str, "", "NRE native adapter under verification")
 
     def running(self):
-        root = Path(ctx.options.rea_fixture_root)
-        spec = importlib.util.spec_from_file_location("rea_capture_under_test", ctx.options.rea_adapter_path)
+        root = Path(ctx.options.nre_fixture_root)
+        spec = importlib.util.spec_from_file_location("nre_capture_under_test", ctx.options.nre_adapter_path)
         adapter = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(adapter)
         classifications = [

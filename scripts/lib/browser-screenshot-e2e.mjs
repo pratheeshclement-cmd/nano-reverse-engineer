@@ -23,11 +23,11 @@ export async function verifyLargeScreenshotE2e(endpoint, origin) {
     viewport: { width: 2048, height: 1536 },
     deviceScaleFactor: 1,
   });
-  const entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url));
+  const entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url));
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
-    REA_LOG_LEVEL: "silent",
-    HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+    NRE_LOG_LEVEL: "silent",
+    HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
   };
   let client;
   let transport;
@@ -80,7 +80,7 @@ export async function verifyLargeScreenshotE2e(endpoint, origin) {
     transport = new StdioClientTransport({
       command: process.execPath,
       args: [entrypoint, "mcp"],
-      env: { ...env, REA_MCP_MAX_RESPONSE_BYTES: String(maxBufferSize) },
+      env: { ...env, NRE_MCP_MAX_RESPONSE_BYTES: String(maxBufferSize) },
       stderr: "pipe",
       // The SDK defaults to a 10 MiB receive buffer; inline PNG output is larger.
       maxBufferSize,
@@ -141,7 +141,7 @@ const verifyDefaultScreenshotDelivery = async ({
   targetId,
   screenshot,
 }) => {
-  const workspace = await mkdtemp(join(tmpdir(), "rea-screenshot-delivery-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-screenshot-delivery-"));
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [entrypoint, "mcp"],

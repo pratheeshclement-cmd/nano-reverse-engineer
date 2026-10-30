@@ -64,8 +64,8 @@ const algorithm = (identifier: Buffer): Buffer => seq(identifier, nul());
 
 /** Hand-authored PKCS#7 signedData, independent of the production decoder. */
 export const pkcs7SignedDataFixture = (
-  commonName = "REA Fixture",
-  organization = "REA Tests",
+  commonName = "NRE Fixture",
+  organization = "NRE Tests",
   signature = octet(Buffer.from("sig")),
   unsignedAttributes?: readonly (readonly number[])[],
 ): Buffer => {

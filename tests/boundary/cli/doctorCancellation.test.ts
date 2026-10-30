@@ -27,7 +27,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform)).for(
 )(
   "doctor preserves $signal for $provider after logging and joined prerequisite cleanup",
   async ({ provider, signal, expected }, { processes }) => {
-    const root = await createTestTempDirectory("rea-doctor-cancel-");
+    const root = await createTestTempDirectory("nre-doctor-cancel-");
     const jdk = join(root, "jdk");
     const jar = join(root, "engine.jar");
     const ready = join(root, "ready.json");
@@ -44,7 +44,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform)).for(
       executable,
       `#!${process.execPath}
 if (!process.argv.slice(2).includes(${JSON.stringify(probeArgument)})) process.exit(7);
-require("node:fs").writeFileSync(${JSON.stringify(ready)}, JSON.stringify({pid: process.pid, runId: process.env.REA_PROCESS_RUN_ID}));
+require("node:fs").writeFileSync(${JSON.stringify(ready)}, JSON.stringify({pid: process.pid, runId: process.env.NRE_PROCESS_RUN_ID}));
 process.on("SIGTERM", () => {});
 setInterval(() => { if (require("node:fs").existsSync(${JSON.stringify(release)})) process.exit(0); }, 25).unref();
 setTimeout(() => process.exit(99), 20000);
@@ -53,17 +53,17 @@ setTimeout(() => process.exit(99), 20000);
     );
     const child = processes.spawn(
       process.execPath,
-      [resolve("scripts/rea.mjs"), "doctor", "--provider", provider, "--json"],
+      [resolve("scripts/nre.mjs"), "doctor", "--provider", provider, "--json"],
       {
         env: {
           PATH: process.env.PATH,
           HOME: join(root, "home"),
           JAVA_HOME: provider === "jadx" ? jdk : join(root, "missing-jdk"),
           ...(provider === "jadx"
-            ? { REA_JADX_MCP_JAR: jar }
-            : { REA_KUNA_COMMAND: executable }),
+            ? { NRE_JADX_MCP_JAR: jar }
+            : { NRE_KUNA_COMMAND: executable }),
           GHIDRA_INSTALL_DIR: join(root, "missing-ghidra"),
-          REA_LOG_LEVEL: "silent",
+          NRE_LOG_LEVEL: "silent",
         },
       },
     );
@@ -96,8 +96,8 @@ setTimeout(() => process.exit(99), 20000);
         .toBe(true);
       const readyRecord: unknown = JSON.parse(await readFile(ready, "utf8"));
       // JADX publishes a UUID. Kuna publishes an opaque
-      // `rea-kuna-version-<uuid>` token. Both are required: JSON.stringify
-      // drops an undefined REA_PROCESS_RUN_ID, and that omission must fail.
+      // `nre-kuna-version-<uuid>` token. Both are required: JSON.stringify
+      // drops an undefined NRE_PROCESS_RUN_ID, and that omission must fail.
       const observed =
         provider === "jadx"
           ? z
@@ -160,7 +160,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform)).for([
 ])(
   "doctor retains ordinary exit $exitCode without an interrupt",
   async ({ listing, exitCode, available }, { cli }) => {
-    const root = await createTestTempDirectory("rea-doctor-disposition-");
+    const root = await createTestTempDirectory("nre-doctor-disposition-");
     const jdk = join(root, "jdk");
     const jar = join(root, "engine.jar");
     await mkdir(join(jdk, "bin"), { recursive: true });
@@ -179,9 +179,9 @@ process.stdout.write(${JSON.stringify(listing)});
       environment: {
         HOME: join(root, "home"),
         JAVA_HOME: jdk,
-        REA_JADX_MCP_JAR: jar,
+        NRE_JADX_MCP_JAR: jar,
         GHIDRA_INSTALL_DIR: join(root, "missing-ghidra"),
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
     });
     expect(result.exitCode, result.stderr).toBe(exitCode);

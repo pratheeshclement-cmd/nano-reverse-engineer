@@ -18,7 +18,7 @@ const INVENTORY_LIMITATION =
   "Intel HEX/S-record inventory decodes data records into address-contiguous regions. It does not establish CPU, byte order, memory map, or that a declared start address is executable; gaps are unwritten, not zero.";
 
 const writeImage = async (name: string, text: string): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-hex-records-");
+  const directory = await createTestTempDirectory("nre-hex-records-");
   const path = join(directory, name);
   await writeFile(path, text);
   return path;
@@ -138,7 +138,7 @@ it("leaves an invalid first record to plain file classification", async () => {
 });
 
 it("extracts byte-exact regions that re-inventory as raw files", async () => {
-  const directory = await createTestTempDirectory("rea-hex-extract-");
+  const directory = await createTestTempDirectory("nre-hex-extract-");
   const path = join(directory, "firmware.hex");
   await writeFile(path, INTEL_HEX_I32_GAP);
   const resourceScope = new ArtifactResourceScope();

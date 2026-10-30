@@ -23,7 +23,7 @@ static DWORD inspectionSecurityInfo(HANDLE handle, SE_OBJECT_TYPE kind,
   // Force validation to fail only after FILE_CREATE has allocated the root.
   static std::atomic_flag failed = ATOMIC_FLAG_INIT;
   wchar_t enabled[2];
-  if (GetEnvironmentVariableW(L"REA_NATIVE_CREATION_FAILURE", enabled, 2) > 0 &&
+  if (GetEnvironmentVariableW(L"NRE_NATIVE_CREATION_FAILURE", enabled, 2) > 0 &&
       !failed.test_and_set()) return ERROR_ACCESS_DENIED;
   return GetSecurityInfo(handle, kind, information, owner, group, dacl, sacl, descriptor);
 }

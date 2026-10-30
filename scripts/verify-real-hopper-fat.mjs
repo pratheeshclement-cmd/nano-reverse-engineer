@@ -84,7 +84,7 @@ const transport = new StdioClientTransport({
   args: ["dist/main.js"],
   env: {
     ...process.env,
-    REA_ANALYSIS_PROVIDER: "hopper",
+    NRE_ANALYSIS_PROVIDER: "hopper",
     HOPPER_LOADER_ARGS_JSON: "[]",
   },
   stderr: "pipe",
@@ -247,8 +247,8 @@ try {
     const sourceHash = createHash("sha256").update(file).digest("hex");
     await call("open_binary", { path });
     const procedures = await call("list_procedures");
-    const entry = procedures.find((item) => item.value.endsWith("rea_entry"));
-    assert.ok(entry, "compiler fixture omitted rea_entry");
+    const entry = procedures.find((item) => item.value.endsWith("nre_entry"));
+    assert.ok(entry, "compiler fixture omitted nre_entry");
     let entryMapping;
     for (const address of [
       entry.address,
@@ -388,7 +388,7 @@ try {
     const pending = run(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/nre.mjs",
         "address-to-file-offset",
         path,
         expected.address,

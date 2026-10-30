@@ -48,7 +48,7 @@ it.skipIf(process.platform !== "linux" && process.platform !== "darwin")(
       const runId = randomUUID();
       const launcher = spawn(process.execPath, ["-e", launcherSource], {
         detached: true,
-        env: { ...process.env, REA_PROCESS_RUN_ID: runId },
+        env: { ...process.env, NRE_PROCESS_RUN_ID: runId },
         // FD3 is the descendant's lifetime barrier; launcher stdin only exits
         // the launcher. Its exit must not close the descendant's inherited pipe.
         stdio: ["pipe", "pipe", "pipe", "pipe"],

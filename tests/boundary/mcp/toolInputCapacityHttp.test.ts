@@ -18,7 +18,7 @@ const openHttp = async (
   maximum: string | undefined,
   outputProfile: "full" | "off" = "full",
 ) => {
-  const root = await createTestTempDirectory("rea-input-capacity-http-");
+  const root = await createTestTempDirectory("nre-input-capacity-http-");
   const { url, stderr, child } = await startListeningProcess(
     processes,
     ["mcp", "--http", "--port", "0"],
@@ -29,8 +29,8 @@ const openHttp = async (
       XDG_CACHE_HOME: join(root, "cache"),
       XDG_DATA_HOME: join(root, "data"),
       NODE_OPTIONS: "--max-old-space-size=3072",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: outputProfile,
-      ...(maximum === undefined ? {} : { REA_MCP_MAX_INPUT_ELEMENTS: maximum }),
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: outputProfile,
+      ...(maximum === undefined ? {} : { NRE_MCP_MAX_INPUT_ELEMENTS: maximum }),
     },
   );
   const client = new Client({ name: "input-capacity-http", version: "1" });

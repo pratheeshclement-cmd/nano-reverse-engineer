@@ -25,7 +25,7 @@ import { extractArtifact } from "../../../src/artifacts/extraction/ArtifactExtra
 
 const bytes = Buffer.from("selected companion bytes");
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-asar-selected-companion-");
+  const root = await createTestTempDirectory("nre-asar-selected-companion-");
   const source = join(root, "source");
   const selected = join(root, "app.asar");
   const canonical = join(root, "stored.asar");
@@ -226,7 +226,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "preserves symlink-parent traversal when opening the selected ASAR companion",
   async () => {
-    const root = await createTestTempDirectory("rea-asar-link-parent-");
+    const root = await createTestTempDirectory("nre-asar-link-parent-");
     const actual = join(root, "actual");
     await mkdir(join(actual, "sub"), { recursive: true });
     const source = join(root, "source");

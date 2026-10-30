@@ -48,7 +48,7 @@ cliTest.for([
 ])(
   "keeps format-specific Apple roots through CLI and MCP ($name)",
   async (fixture, { cli }) => {
-    const root = await createTestTempDirectory("rea-apple-root-format-");
+    const root = await createTestTempDirectory("nre-apple-root-format-");
     const path = join(root, `Sample.${fixture.extension}`);
     const writer = new ZipWriter(new Uint8ArrayWriter());
     if (fixture.payload)

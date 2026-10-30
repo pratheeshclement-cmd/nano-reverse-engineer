@@ -232,7 +232,7 @@ export const runDoctorOwned = async (
       const cleanupError =
         typeof cleanup === "string"
           ? new ProviderCleanupError(
-              "rea",
+              "nre",
               [],
               { reason: cleanup },
               { operation: "doctor" },
@@ -355,7 +355,7 @@ const doctorReportWithCleanup = (
     ...(typeof cleanup === "string"
       ? {}
       : { details: { cleanup_failure: projectAnalysisError(cleanup) } }),
-    remediation: "Resolve the reported cleanup failure, then rerun rea doctor.",
+    remediation: "Resolve the reported cleanup failure, then rerun nre doctor.",
   };
   return {
     ...report,
@@ -406,7 +406,7 @@ const collectDoctorIdentity = async (
         // cannot see the saved selection here, and one sentence has to fit both
         // a complete registration and a scope that omits the session family.
         remediation:
-          "Call binary_session in the active client to inspect the running server identity; a registration whose saved scope omits the session family cannot report it, so include session through rea setup --tool-families and restart first.",
+          "Call binary_session in the active client to inspect the running server identity; a registration whose saved scope omits the session family cannot report it, so include session through nre setup --tool-families and restart first.",
       },
       installations: {
         paths: installationPaths,
@@ -469,12 +469,12 @@ const skillIdentityRemediation = (
       .map(({ path, detail, kind, client }) => {
         const repair =
           kind === "stale" || kind === "missing"
-            ? `Run rea setup --skill-client ${client ?? "shared"} --skill to repair this copy.`
+            ? `Run nre setup --skill-client ${client ?? "shared"} --skill to repair this copy.`
             : "Repair the selected path/profile before rerunning setup, or use --skill=false to configure clients without installing the skill.";
         return `${detail} (${path}). ${repair}`;
       })
       .join(" ");
-  return "Run rea setup to update the installed REA skill.";
+  return "Run nre setup to update the installed NRE skill.";
 };
 
 const skillIdentityCheck = (
@@ -491,8 +491,8 @@ const skillIdentityCheck = (
       issues !== undefined && issues.length > 0
         ? `Selected skill identity is ${skillIdentityState(identity)}: ${issues.map(({ path }) => path).join(", ")}.`
         : identity === undefined
-          ? "Installed REA skill identity is missing."
-          : "Installed REA skill identity is stale.",
+          ? "Installed NRE skill identity is missing."
+          : "Installed NRE skill identity is stale.",
     remediation: skillIdentityRemediation(identity),
   };
 };
@@ -626,9 +626,9 @@ export const systemDoctorHost = (
       ? {}
       : { configuredHopperPath: environment.HOPPER_LAUNCHER_PATH }),
     nativeConfiguration,
-    ...(environment.REA_ILSPY_CMD_PATH === undefined
+    ...(environment.NRE_ILSPY_CMD_PATH === undefined
       ? {}
-      : { configuredIlspyCmdPath: environment.REA_ILSPY_CMD_PATH }),
+      : { configuredIlspyCmdPath: environment.NRE_ILSPY_CMD_PATH }),
     macosVersion: () =>
       readMacosVersion(hostExecFileOutput, commandEnvironment),
     linuxDistribution: () => readLinuxDistribution(architecture),
@@ -746,7 +746,7 @@ export const systemDoctorHost = (
     async installationPaths() {
       try {
         const command = platform === "win32" ? "where" : "which";
-        const arguments_ = platform === "win32" ? ["rea"] : ["-a", "rea"];
+        const arguments_ = platform === "win32" ? ["nre"] : ["-a", "nre"];
         return uniqueLines(
           (await hostExecFileOutput(command, arguments_, commandEnvironment))
             .stdout,
@@ -777,7 +777,7 @@ export const systemDoctorHost = (
           "doctor resources",
         );
         const failure = new ProviderCleanupError(
-          "rea",
+          "nre",
           observation.resources,
           { reason: observation.reason },
           { cause, operation: "doctor" },
@@ -843,7 +843,7 @@ const uncomposedLinuxDemoRuntimeCheck = (): Promise<DoctorCheck> =>
     ok: false,
     classification: "config_drift",
     detail: "Linux Hopper private-display diagnostics were not composed",
-    remediation: "Run rea doctor through the production CLI adapter.",
+    remediation: "Run nre doctor through the production CLI adapter.",
   });
 
 const uniqueLines = (value: string): string[] => [

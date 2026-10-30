@@ -865,7 +865,7 @@ export const openPlaywrightScenarioBrowser = async (
       commandTimeoutMs,
     );
 
-  const profilePath = await mkdtemp(join(tmpdir(), "rea-browser-scenario-"));
+  const profilePath = await mkdtemp(join(tmpdir(), "nre-browser-scenario-"));
   let context: BrowserContext;
   const executablePath = scenario.browser.executable_path;
   const headless = scenario.browser.headless;

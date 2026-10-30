@@ -36,7 +36,7 @@ it("keeps scattered tiny metadata reads proportional to the graph instead of cac
     Buffer.concat([data, offsets, BUN_TRAILER]),
   );
   const path = join(
-    await createTestTempDirectory("rea-bun-scattered-metadata-"),
+    await createTestTempDirectory("nre-bun-scattered-metadata-"),
     "app",
   );
   await writeFile(path, bytes);
@@ -82,7 +82,7 @@ it("refuses cumulative uncached metadata work before the next file read", async 
     Buffer.concat([data, offsets, BUN_TRAILER]),
   );
   const path = join(
-    await createTestTempDirectory("rea-bun-metadata-work-"),
+    await createTestTempDirectory("nre-bun-metadata-work-"),
     "app",
   );
   await writeFile(path, bytes);

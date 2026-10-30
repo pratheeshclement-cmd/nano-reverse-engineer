@@ -26,7 +26,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.each(["completed", "failed"] as const)(
   "keeps one cleanup lease through repeated retries after a %s read and late cancellation",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-file-lease-handoff-");
+    const root = await createTestTempDirectory("nre-file-lease-handoff-");
     const path = join(root, "input.txt");
     await writeFile(path, "completed bytes");
     const resources = new ArtifactResourceScope();
@@ -99,7 +99,7 @@ it.each(
 )(
   "keeps a $kind caller reason opaque $stage with scope=$scoped, close retry=$retryClose",
   async ({ kind, stage, scoped, retryClose }) => {
-    const root = await createTestTempDirectory("rea-file-caller-reason-");
+    const root = await createTestTempDirectory("nre-file-caller-reason-");
     const path = join(root, "input.txt");
     await writeFile(path, "fixture bytes");
     const callerOwner = new OwnedFileHandle(await open(path, "r"));
@@ -157,7 +157,7 @@ it.each(
 
 it("preserves a cleanup-shaped physical read rejection without borrowing its owner", async () => {
   const root = await createTestTempDirectory(
-    "rea-file-physical-cleanup-shape-",
+    "nre-file-physical-cleanup-shape-",
   );
   const input = join(root, "input.txt");
   const foreignPath = join(root, "foreign.txt");
@@ -197,7 +197,7 @@ it("preserves a cleanup-shaped physical read rejection without borrowing its own
 
 it("retries only the owned close when a cleanup-shaped physical read remains pending", async () => {
   const root = await createTestTempDirectory(
-    "rea-file-physical-cleanup-retry-",
+    "nre-file-physical-cleanup-retry-",
   );
   const input = join(root, "input.txt");
   const foreignPath = join(root, "foreign.txt");
@@ -269,7 +269,7 @@ it("retries only the owned close when a cleanup-shaped physical read remains pen
 
 it("retains physical read provenance for an opted-in caller after close retry", async () => {
   const root = await createTestTempDirectory(
-    "rea-file-physical-cleanup-recovered-",
+    "nre-file-physical-cleanup-recovered-",
   );
   const input = join(root, "input.txt");
   const foreignPath = join(root, "foreign.txt");
@@ -342,7 +342,7 @@ it("retains physical read provenance for an opted-in caller after close retry", 
 it.each([false, true])(
   "preserves a nested read cancellation with the same signal=%s",
   async (sameSignal) => {
-    const root = await createTestTempDirectory("rea-nested-file-cancel-");
+    const root = await createTestTempDirectory("nre-nested-file-cancel-");
     const path = join(root, "input.txt");
     const bytes = Buffer.from("nested read bytes");
     await writeFile(path, bytes);
@@ -397,7 +397,7 @@ it.each(
 )(
   "observes cancellation after $stage with scope=$scoped",
   async ({ stage, scoped }) => {
-    const root = await createTestTempDirectory("rea-file-finalization-");
+    const root = await createTestTempDirectory("nre-file-finalization-");
     const path = join(root, "input.txt");
     const bytes = Buffer.from("unchanged fixture bytes");
     await writeFile(path, bytes);
@@ -443,7 +443,7 @@ it.each(
 );
 
 it("observes cancellation during a recovered descriptor close", async () => {
-  const root = await createTestTempDirectory("rea-file-retry-cancel-");
+  const root = await createTestTempDirectory("nre-file-retry-cancel-");
   const path = join(root, "input.txt");
   await writeFile(path, "fixture bytes");
   const controller = new AbortController();
@@ -477,7 +477,7 @@ it("observes cancellation during a recovered descriptor close", async () => {
 it.each(["completed", "failed"] as const)(
   "retains the physical read outcome when close fails after cancellation: %s",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-file-close-cancel-");
+    const root = await createTestTempDirectory("nre-file-close-cancel-");
     const path = join(root, "input.txt");
     await writeFile(path, "fixture bytes");
     const controller = new AbortController();
@@ -541,7 +541,7 @@ it.each(
 )(
   "projects the exact checkpoint reason after application cleanup retry fails=$retryFails ($reason)",
   async ({ reason, retryFails }) => {
-    const root = await createTestTempDirectory("rea-file-retry-reason-");
+    const root = await createTestTempDirectory("nre-file-retry-reason-");
     const path = join(root, "input.bin");
     await writeFile(path, "file bytes");
     const controller = new AbortController();

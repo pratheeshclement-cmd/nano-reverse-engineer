@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "keeps getter receiver mutations uncertain in exported Evidence through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-getter-receivers-");
+    const root = await createTestTempDirectory("nre-getter-receivers-");
     await writeFile(
       join(root, "app.mjs"),
       `
@@ -91,7 +91,7 @@ export function untouched() {
     if (surface === "CLI") {
       const response = await cli.run({
         arguments: ["analyze-javascript-application", root, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       document = response.json;

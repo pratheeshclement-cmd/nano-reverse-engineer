@@ -17,7 +17,7 @@ describe("artifact directory diagnostics", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "retains the omission when extracting readable inventoried entries",
     async () => {
-      const root = await createTestTempDirectory("rea-directory-policy-");
+      const root = await createTestTempDirectory("nre-directory-policy-");
       const source = join(root, "Fixture.app");
       const blocked = join(source, "blocked");
       const output = join(root, "output");
@@ -85,7 +85,7 @@ describe("artifact directory diagnostics", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "retains an inaccessible member and its errno alongside readable inventory facts",
     async () => {
-      const root = await createTestTempDirectory("rea-directory-eacces-");
+      const root = await createTestTempDirectory("nre-directory-eacces-");
       const appPath = join(root, "Denied.app");
       const contentsPath = join(appPath, "Contents");
       const executablePath = join(contentsPath, "MacOS", "Fixture");

@@ -194,7 +194,7 @@ const nativeOptions = (
 it.skipIf(process.platform !== "linux" || !existsSync("/usr/bin/tshark"))(
   "excludes recorded HTTP credentials when real TShark exceeds the output allowance",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-private-native-");
+    const root = await createTestTempDirectory("nre-pcap-private-native-");
     const path = join(root, "http.pcap");
     await writeFile(path, offlineHttpCapture(uri));
     const options = nativeOptions(path);
@@ -230,7 +230,7 @@ it.skipIf(process.platform !== "linux" || !existsSync("/usr/bin/tshark"))(
 it.skipIf(process.platform !== "linux" || !existsSync("/usr/bin/tshark"))(
   "preserves origin-form request-target bytes in real TShark diagnostics",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-path-native-");
+    const root = await createTestTempDirectory("nre-pcap-path-native-");
     const path = join(root, "origin-form.pcap");
     const target = "//caller:keep@path/a?value=%2F";
     await writeFile(path, offlineHttpCapture(target));

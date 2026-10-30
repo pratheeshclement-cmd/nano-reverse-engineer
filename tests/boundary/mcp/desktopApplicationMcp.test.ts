@@ -20,7 +20,7 @@ import { artifactInventoryResultSchema } from "../../../src/domain/artifactGraph
 it.each([false, true])(
   "follows the ASAR selection probe with a previously active target: %s",
   async (previous) => {
-    const root = await createTestTempDirectory("rea-desktop-asar-probe-");
+    const root = await createTestTempDirectory("nre-desktop-asar-probe-");
     const source = join(root, "source");
     const installation = join(root, "installation");
     const resources = join(installation, "resources");
@@ -95,7 +95,7 @@ it.each([false, true])(
 );
 
 it("advertises exact schemas and retains a compact directory answer with typed selected pages", async () => {
-  const root = await createTestTempDirectory("rea-desktop-mcp-");
+  const root = await createTestTempDirectory("nre-desktop-mcp-");
   await mkdir(join(root, "resources"));
   await writeFile(join(root, "resources/app.asar"), "path marker only");
   const session = createTestBinarySession(() => {
@@ -199,7 +199,7 @@ it("surfaces unavailable probes and filters their complete retained diagnostics 
   );
   const views = await advertisedMcpToolSchemas(client, "inspect_analysis_view");
   const partialRoot = await createTestTempDirectory(
-    "rea-desktop-probe-issues-mcp-",
+    "nre-desktop-probe-issues-mcp-",
   );
   await mkdir(join(partialRoot, "clean"));
   for (let index = 0; index < 20; index++)
@@ -307,7 +307,7 @@ it("surfaces unavailable probes and filters their complete retained diagnostics 
 it.skipIf(process.platform === "win32")(
   "retains special-entry facts and advertises batched omission selections through MCP",
   async () => {
-    const root = await createTestTempDirectory("rea-desktop-omissions-mcp-");
+    const root = await createTestTempDirectory("nre-desktop-omissions-mcp-");
     execFileSync("mkfifo", [join(root, "b"), join(root, "a")], {
       timeout: 10_000,
     });

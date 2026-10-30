@@ -16,7 +16,7 @@ type ApplicationAnalysis = ReturnType<
 const analyzeFiles = async (
   files: ReadonlyMap<string, string>,
 ): Promise<ApplicationAnalysis> => {
-  const root = await createTestTempDirectory("rea-typescript-application-");
+  const root = await createTestTempDirectory("nre-typescript-application-");
   await Promise.all(
     [...files].map(([path, source]) => writeFile(join(root, path), source)),
   );

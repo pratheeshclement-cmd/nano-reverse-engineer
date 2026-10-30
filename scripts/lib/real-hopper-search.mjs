@@ -83,7 +83,7 @@ async function verifySearchModes(call, address) {
   await call("set_address_name", { address, name: "REA_Search_Upper" });
   assert.deepEqual(
     await call("search_procedures", {
-      pattern: "rea_search_upper",
+      pattern: "nre_search_upper",
       mode: "literal",
       case_sensitive: false,
     }),
@@ -91,7 +91,7 @@ async function verifySearchModes(call, address) {
   );
   assert.deepEqual(
     await call("search_procedures", {
-      pattern: "rea_search_upper",
+      pattern: "nre_search_upper",
       mode: "literal",
       case_sensitive: true,
     }),
@@ -107,13 +107,13 @@ async function verifySearchModes(call, address) {
   );
   const strings = await call("list_strings");
   const fullLiteral = await verifyHopperStringFragments(call, strings, {
-    symbol: `${fixtureSymbolPrefix}rea_long_literal`,
-    value: "REA_LONG_LITERAL_" + "x".repeat(4096) + "needle",
+    symbol: `${fixtureSymbolPrefix}nre_long_literal`,
+    value: "NRE_LONG_LITERAL_" + "x".repeat(4096) + "needle",
     recognitionOptional: true,
   });
   const fragmentedLiteral = await verifyHopperStringFragments(call, strings, {
-    symbol: `${fixtureSymbolPrefix}rea_fragmented_literal`,
-    value: "REA_FRAGMENTED_LITERAL_" + "x".repeat(512) + "fragment_tail",
+    symbol: `${fixtureSymbolPrefix}nre_fragmented_literal`,
+    value: "NRE_FRAGMENTED_LITERAL_" + "x".repeat(512) + "fragment_tail",
   });
   const [longItem] = fragmentedLiteral.fragments;
   assert.ok(longItem, "fixture omitted its typed fragmented literal");
@@ -121,7 +121,7 @@ async function verifySearchModes(call, address) {
   assert.ok(longItem.provider_value.endsWith("…"));
   assert.equal(longItem.string.termination, "missing");
   const literalProcedure = (await call("list_procedures")).find((item) =>
-    item.value.endsWith("rea_long_literal_procedure"),
+    item.value.endsWith("nre_long_literal_procedure"),
   );
   assert.ok(literalProcedure);
   const dossier = await call("analyze_function", {
@@ -155,12 +155,12 @@ async function verifySearchModes(call, address) {
     [fragmentedLiteral.fragments.at(-1)],
   );
   const expected = strings.filter((item) =>
-    /^REA_C_(?:ENTRY|LEAF)$/u.test(item.value),
+    /^NRE_C_(?:ENTRY|LEAF)$/u.test(item.value),
   );
   assert.equal(expected.length, 2);
   assert.deepEqual(
     await call("search_strings", {
-      pattern: "^REA_C_(?:ENTRY|LEAF)$",
+      pattern: "^NRE_C_(?:ENTRY|LEAF)$",
       mode: "regex",
       case_sensitive: true,
     }),
@@ -170,23 +170,23 @@ async function verifySearchModes(call, address) {
     call,
     [
       {
-        value: "REA_UTF8_é_😀",
+        value: "NRE_UTF8_é_😀",
         encoding: "utf-8",
-        symbol: `${fixtureSymbolPrefix}rea_utf8_literal`,
+        symbol: `${fixtureSymbolPrefix}nre_utf8_literal`,
         recognitionOptional: true,
       },
-      { value: 'REA_ESCAPED_"\\line\nend\t\r', encoding: "utf-8" },
-      { value: "REA_LITERAL_BACKSLASH_\\n", encoding: "utf-8" },
+      { value: 'NRE_ESCAPED_"\\line\nend\t\r', encoding: "utf-8" },
+      { value: "NRE_LITERAL_BACKSLASH_\\n", encoding: "utf-8" },
       {
-        value: "REA_LITERAL_…",
+        value: "NRE_LITERAL_…",
         encoding: "utf-8",
-        symbol: `${fixtureSymbolPrefix}rea_ellipsis_literal`,
+        symbol: `${fixtureSymbolPrefix}nre_ellipsis_literal`,
         recognitionOptional: true,
       },
       {
-        value: "REA_LATIN1_ÿ",
+        value: "NRE_LATIN1_ÿ",
         encoding: "latin-1",
-        symbol: `${fixtureSymbolPrefix}rea_latin1_literal`,
+        symbol: `${fixtureSymbolPrefix}nre_latin1_literal`,
         recognitionOptional: true,
       },
     ],

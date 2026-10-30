@@ -16,7 +16,7 @@ for (const electron of [false, true])
   cliTest(
     `declares ${electron ? "Electron UTF-8" : "web UTF-16"} DOM value lengths through CLI and MCP without reinterpreting historical captures`,
     async ({ cli, onTestFinished }) => {
-      const root = await createTestTempDirectory("rea-dom-value-units-");
+      const root = await createTestTempDirectory("nre-dom-value-units-");
       const path = join(root, "index.html");
       await writeFile(path, "<html/>");
       const fileUrl = pathToFileURL(path).href;

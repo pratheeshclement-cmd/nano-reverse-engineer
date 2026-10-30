@@ -11,7 +11,7 @@ const it = test.skipIf(process.platform === "win32");
 it.each(["changed", "missing"] as const)(
   "retains a %s target's failed workspace rollback and blocks replacement until retry",
   async (mode) => {
-    const fixture = await session("rea-kuna-workspace-rollback-");
+    const fixture = await session("nre-kuna-workspace-rollback-");
     if (mode === "changed")
       await writeFile(fixture.target.path, "changed bytes");
     else await unlink(fixture.target.path);
@@ -71,7 +71,7 @@ it.each(["changed", "missing"] as const)(
 it.each(["clean", "refuse"] as const)(
   "joins rollback finalization without replacing the primary failure when close cancels: %s",
   async (mode) => {
-    const fixture = await session("rea-kuna-workspace-finalization-");
+    const fixture = await session("nre-kuna-workspace-finalization-");
     await writeFile(fixture.target.path, "changed bytes");
     const lifetime = new AbortController();
     const commands = new KunaTargetCommands(fixture.target, {
@@ -145,7 +145,7 @@ it.each(["clean", "refuse"] as const)(
 it.each(["changed", "missing"] as const)(
   "permits a fresh workspace after a %s target rolls back cleanly",
   async (mode) => {
-    const fixture = await session("rea-kuna-workspace-clean-retry-");
+    const fixture = await session("nre-kuna-workspace-clean-retry-");
     if (mode === "changed")
       await writeFile(fixture.target.path, "changed bytes");
     else await unlink(fixture.target.path);
@@ -174,7 +174,7 @@ it.each([
 ])(
   "returns an allocation failure without inventing an owner and permits retry: %j",
   async (reason) => {
-    const fixture = await session("rea-kuna-workspace-allocation-");
+    const fixture = await session("nre-kuna-workspace-allocation-");
     const commands = new KunaTargetCommands(fixture.target, {
       signal: new AbortController().signal,
     });
@@ -197,7 +197,7 @@ it.each([
 );
 
 it("keeps caller attribution and the selected path through workspace rollback retry", async () => {
-  const fixture = await session("rea-kuna-workspace-caller-");
+  const fixture = await session("nre-kuna-workspace-caller-");
   await writeFile(fixture.target.path, "changed bytes");
   const client = fixture.open();
   const create = PrivateRuntimeRoot.create;

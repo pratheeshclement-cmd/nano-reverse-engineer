@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Initial-Translation: Machine-assisted baseline; see website/locales/NreDME.md for review workflow\n"
+"X-Initial-Translation: Machine-assisted baseline; see website/locales/README.md for review workflow\n"
 
 #: website/public/blog/index.html:111
 msgctxt "page:blog/index.html"
@@ -54,7 +54,7 @@ msgstr ""
 
 #: website/public/blog/index.html:214 website/public/blog/index.html:229
 msgctxt "page:blog/index.html"
-msgid "Nred the article"
+msgid "Read the article"
 msgstr "Leggi l'articolo"
 
 #: website/public/blog/index.html:232
@@ -832,7 +832,7 @@ msgstr "Due diverse idee di ricostruzione"
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"GensokyoClub's {ph0}public NreDME{ph1} makes its disagreement with this kind"
+"GensokyoClub's {ph0}public README{ph1} makes its disagreement with this kind"
 " of work explicit. The notice announces that further development will happen"
 " privately until completion. One passage Nreds:"
 msgstr ""
@@ -951,7 +951,7 @@ msgstr ""
 "andare e per imparare da ciò che va storto lungo la strada."
 
 #. {ph0}: <a
-#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/NreDME.md#important-
+#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/README.md#important-
 #. notice" >
 #. {ph1}: </a >
 #. {ph2}: <a
@@ -959,14 +959,14 @@ msgstr ""
 #. >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/NreDME.md#credits-
+#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/README.md#credits-
 #. and-provenance" >
 #. {ph5}: </a >
 #: website/public/blog/touhou-reconstruction/index.html:608
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"Source: GensokyoClub's {ph0}NreDME notice{ph1}, checked on 10 October 2026, "
+"Source: GensokyoClub's {ph0}README notice{ph1}, checked on 10 October 2026, "
 "and its {ph2}contribution policy{ph3}. The quotation is a shortened excerpt."
 " TH08's {ph4}credits and provenance{ph5} record the continuation boundary."
 msgstr ""
@@ -1475,7 +1475,7 @@ msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
 "The TH08 bug shows why those checks deserve engineering attention of their "
 "own. When the same comparison is used across hundreds of functions, a gap in"
-" it can spNred much further than a mistake in one implementation. Testing "
+" it can spRead much further than a mistake in one implementation. Testing "
 "the checker improves the feedback available to all that later work."
 msgstr ""
 "Il bug TH08 mostra perché quei controlli meritano attenzione ingegneristica."
@@ -1917,7 +1917,7 @@ msgstr "{ph0}Gioca e cambia la velocità{ph1}"
 #: website/public/examples/dino-lab/index.html:219
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Nred the recovered rule{ph1}"
+msgid "{ph0}Read the recovered rule{ph1}"
 msgstr "{ph0}Leggi la regola recuperata{ph1}"
 
 #. {ph0}: <a href="#check">
@@ -2006,7 +2006,7 @@ msgstr ""
 
 #: website/public/examples/dino-lab/index.html:302
 msgctxt "page:examples/dino-lab/index.html"
-msgid "Nred the script Nre returned"
+msgid "Read the script Nre returned"
 msgstr "Leggere lo script Nre restituito"
 
 #. {ph0}: <a href="https://wayou.github.io/t-rex-runner/" >
@@ -2068,7 +2068,7 @@ msgstr ""
 #: website/public/examples/dino-lab/index.html:349
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Download the speed rule{ph1} · {ph2}Nred the game code{ph3}"
+msgid "{ph0}Download the speed rule{ph1} · {ph2}Read the game code{ph3}"
 msgstr ""
 "{ph0}Scarica la regola della velocità{ph1} · {ph2}Leggi il codice del "
 "gioco{ph3}"
@@ -2221,7 +2221,7 @@ msgstr "Chrome Dinosaur Game: ricostruisci la sua regola di velocità-Nre"
 #: website/public/examples/dino-lab/index.html:7
 msgctxt "page:examples/dino-lab/index.html"
 msgid ""
-"Nred the dinosaur game’s speed rule with Nre, rebuild it, then change the "
+"Read the dinosaur game’s speed rule with Nre, rebuild it, then change the "
 "speed and play."
 msgstr ""
 "Leggi la regola di velocità del gioco dei dinosauri con Nre, ricostruiscilo,"
@@ -2745,7 +2745,7 @@ msgstr ""
 "{ph0}Aggiornamento Nre {ph1}, riavvia il tuo agente e riprova lo stesso "
 "compito. Una versione recente potrebbe già risolvere il problema."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/faq/index.html:517
 #, python-brace-format
@@ -2784,9 +2784,9 @@ msgctxt "page:faq/index.html"
 msgid "How can I share an example or contribute?"
 msgstr "Come posso condividere un esempio o contribuire?"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/pulls">
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls">
 #. {ph3}: </a >
 #: website/public/faq/index.html:543
 #, python-brace-format
@@ -3083,7 +3083,7 @@ msgstr "Dal pulsante al file writer"
 msgctxt "page:first-investigation/index.html"
 msgid ""
 "Nre’s static analysis pairs the message with its handler. The destination is"
-" Nred from code."
+" Read from code."
 msgstr ""
 "L'analisi statica di Nre associa il messaggio al suo gestore. La "
 "destinazione viene letta dal codice."
@@ -3184,7 +3184,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:first-investigation/index.html"
 msgid ""
-"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Nred the original "
+"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Read the original "
 "instructions and the reconstruction’s checks.{ph3}"
 msgstr ""
 "{ph0}Come DX-Ball calcola il posizionamento del suono stereo{ph1}{ph2}Leggi "
@@ -3785,7 +3785,7 @@ msgstr ""
 "{ph0}Scegli una guida all'indagine{ph1}{ph2}Esempi funzionanti per un "
 "binario, un'app Electron e un browser.{ph3}"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues">
 #. {ph1}: </a >
 #. {ph2}: <span>
 #. {ph3}: </span>
@@ -3960,7 +3960,7 @@ msgstr "{ph0}Cattura da CLI {ph1}"
 #: website/public/guides/browser/index.html:219
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
-msgid "{ph0}Nred the request and script{ph1}"
+msgid "{ph0}Read the request and script{ph1}"
 msgstr "{ph0}Leggi la richiesta e lo script{ph1}"
 
 #: website/public/guides/browser/index.html:224
@@ -4035,7 +4035,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
 msgid ""
-"{ph0}03 · Your agent{ph1}{ph2}Nred the export code{ph3}{ph4}Connect the "
+"{ph0}03 · Your agent{ph1}{ph2}Read the export code{ph3}{ph4}Connect the "
 "observed request to {ph5} in {ph6}.{ph7}"
 msgstr ""
 "{ph0}03 * Il tuo agente{ph1}{ph2}Leggi il codice di "
@@ -4209,7 +4209,7 @@ msgstr ""
 
 #: website/public/guides/browser/index.html:390
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the request and export script"
+msgid "Read the request and export script"
 msgstr "Leggere lo script di richiesta ed esportazione"
 
 #: website/public/guides/browser/index.html:393
@@ -4265,7 +4265,7 @@ msgstr "{ph0} con {ph1} e {ph2} campo"
 
 #: website/public/guides/browser/index.html:427
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the loaded scripts"
+msgid "Read the loaded scripts"
 msgstr "Leggi gli script caricati"
 
 #. {ph0}: <code>export.js</code>
@@ -4274,7 +4274,7 @@ msgstr "Leggi gli script caricati"
 msgctxt "page:guides/browser/index.html"
 msgid ""
 "The request identifies the data source, and Nre records {ph0} as its "
-"initiator. Nred the captured script source to see how the data is used:"
+"initiator. Read the captured script source to see how the data is used:"
 msgstr ""
 "La richiesta identifica l'origine dati e i record Nre {ph0} come suo "
 "iniziatore. Leggere l'origine dello script catturato per vedere come vengono"
@@ -4363,7 +4363,7 @@ msgstr "Copia cattura i prossimi dieci secondi"
 
 #: website/public/guides/browser/index.html:428
 msgctxt "page:guides/browser/index.html"
-msgid "Copy Nred the loaded scripts"
+msgid "Copy Read the loaded scripts"
 msgstr "Copia leggi gli script caricati"
 
 #: website/public/guides/browser/index.html:516
@@ -4432,7 +4432,7 @@ msgstr "Recuperare un calcolo della posizione del suono sinistra/destra"
 msgctxt "page:guides/index.html"
 msgid ""
 "Start with a Windows game executable. Inspect instructions, follow a caller,"
-" Nred numeric constants and check the recovered C."
+" Read numeric constants and check the recovered C."
 msgstr ""
 "Inizia con un eseguibile di gioco Windows. Ispezionare le istruzioni, "
 "seguire un chiamante, leggere costanti numeriche e controllare il C "
@@ -4610,7 +4610,7 @@ msgctxt "page:guides/javascript/index.html"
 msgid ""
 "This guide uses a small Electron app. Clicking {ph0}Export notes{ph1} calls "
 "an API in the page, crosses into the main process, and writes a CSV. The "
-"behavior is spNred across several files."
+"behavior is spRead across several files."
 msgstr ""
 "Questa guida utilizza una piccola app Electron. Scattandosi {ph0}Note di "
 "esportazione{ph1} chiama un'API nella pagina, attraversa il processo "
@@ -5030,7 +5030,7 @@ msgstr "{ph0}Chiedi al tuo agente{ph1}"
 #: website/public/guides/native/index.html:216
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
-msgid "{ph0}Nred the Nre results{ph1}"
+msgid "{ph0}Read the Nre results{ph1}"
 msgstr "{ph0}Leggi i risultati di Nre{ph1}"
 
 #. {ph0}: <a href="#result">
@@ -5141,7 +5141,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}Constants:{ph1} fixed numbers stored in the program, Nred as raw bytes "
+"{ph0}Constants:{ph1} fixed numbers stored in the program, Read as raw bytes "
 "and decoded."
 msgstr ""
 "{ph0}Costante:{ph1} numeri fissi memorizzati nel programma, letti come byte "
@@ -5162,7 +5162,7 @@ msgstr "Tre prove, un calcolo"
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Nred "
+"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Read "
 "supplies the value used by the floating-point instructions.{ph5}"
 msgstr ""
 "{ph0}01 * Istruzioni{ph1}{ph2}Un input intero{ph3}{ph4}Una lettura dello "
@@ -5239,7 +5239,7 @@ msgstr "Quale strumento di analisi dovrei usare?"
 
 #: website/public/guides/native/index.html:314
 msgctxt "page:guides/native/index.html"
-msgid "Nre needs one of these to Nred native programs:"
+msgid "Nre needs one of these to Read native programs:"
 msgstr "Nre ha bisogno di uno di questi per leggere i programmi nativi:"
 
 #. {ph0}: <strong>
@@ -5361,12 +5361,12 @@ msgstr ""
 
 #: website/public/guides/native/index.html:390
 msgctxt "page:guides/native/index.html"
-msgid "Nred the Nre results"
+msgid "Read the Nre results"
 msgstr "Leggi i risultati di Nre"
 
 #: website/public/guides/native/index.html:391
 msgctxt "page:guides/native/index.html"
-msgid "Nred the input"
+msgid "Read the input"
 msgstr "Leggi l'input"
 
 #: website/public/guides/native/index.html:400
@@ -5397,7 +5397,7 @@ msgstr ""
 
 #: website/public/guides/native/index.html:419
 msgctxt "page:guides/native/index.html"
-msgid "Nred the referenced constants"
+msgid "Read the referenced constants"
 msgstr "Leggi le costanti di riferimento"
 
 #: website/public/guides/native/index.html:430
@@ -5499,7 +5499,7 @@ msgstr ""
 #: website/public/guides/native/index.html:496
 msgctxt "page:guides/native/index.html"
 msgid ""
-"Nred the pseudocode alongside instructions and references. When a result "
+"Read the pseudocode alongside instructions and references. When a result "
 "leaves a call or value unresolved, use that location as the next question."
 msgstr ""
 "Leggi lo pseudocodice insieme a istruzioni e riferimenti. Quando un "
@@ -5515,7 +5515,7 @@ msgstr "Analisi binaria nativa-Nre"
 msgctxt "page:guides/native/index.html"
 msgid ""
 "Recover a native calculation with Nre: inspect instructions, follow a "
-"caller, Nred constants and check reconstructed C."
+"caller, Read constants and check reconstructed C."
 msgstr ""
 "Recuperare un calcolo nativo con Nre: ispezionare le istruzioni, seguire un "
 "chiamante, leggere le costanti e controllare ricostruito C."
@@ -5926,7 +5926,7 @@ msgstr "Cosa fa ogni parte"
 #, python-brace-format
 msgctxt "page:index.html"
 msgid ""
-"{ph0}01 · Nre{ph1}{ph2}Nred the running game’s script{ph3}{ph4}Return its "
+"{ph0}01 · Nre{ph1}{ph2}Read the running game’s script{ph3}{ph4}Return its "
 "actual code and settings to the agent.{ph5}"
 msgstr ""
 "{ph0}01 * Nre {ph1}{ph2}Leggi lo script del gioco in "
@@ -6412,7 +6412,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
 msgid ""
-"{ph0}02 · Nred the calculation{ph1}{ph2}Time + account key → six "
+"{ph0}02 · Read the calculation{ph1}{ph2}Time + account key → six "
 "digits{ph3}{ph4}Nre returns the methods and defaults. The agent explains how"
 " they fit together.{ph5}"
 msgstr ""
@@ -6472,7 +6472,7 @@ msgstr "{ph0}Trova il codice con Nre {ph1}"
 #: website/public/showcase/aegis/index.html:258
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
-msgid "{ph0}Nred the calculation{ph1}"
+msgid "{ph0}Read the calculation{ph1}"
 msgstr "{ph0}Leggi il calcolo{ph1}"
 
 #. {ph0}: <a href="#verify">
@@ -6714,7 +6714,7 @@ msgstr ""
 
 #: website/public/showcase/aegis/index.html:478
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the calculation"
+msgid "Read the calculation"
 msgstr "Leggi il calcolo"
 
 #. {ph0}: <strong >
@@ -6911,7 +6911,7 @@ msgstr "Eseguire controlli di riferimento"
 
 #: website/public/showcase/aegis/index.html:693
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the demo's calculation"
+msgid "Read the demo's calculation"
 msgstr "Leggi il calcolo della demo"
 
 #: website/public/showcase/aegis/index.html:697
@@ -7206,7 +7206,7 @@ msgstr "{ph0}Trova il codice di controllo{ph1}"
 #: website/public/showcase/ctf/index.html:260
 #, python-brace-format
 msgctxt "page:showcase/ctf/index.html"
-msgid "{ph0}Nred one mask{ph1}"
+msgid "{ph0}Read one mask{ph1}"
 msgstr "{ph0}Leggi una maschera{ph1}"
 
 #. {ph0}: <a href="#code">
@@ -7324,7 +7324,7 @@ msgstr ""
 
 #: website/public/showcase/ctf/index.html:342
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the checker and its two helpers"
+msgid "Read the checker and its two helpers"
 msgstr "Leggi il correttore e i suoi due aiutanti"
 
 #. {ph0}: <code>0x18</code>
@@ -7379,7 +7379,7 @@ msgstr ""
 
 #: website/public/showcase/ctf/index.html:414
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the mask and its target from the binary"
+msgid "Read the mask and its target from the binary"
 msgstr "Leggi la maschera e il suo obiettivo dal binario"
 
 #. {ph0}: <code>MOVSX</code>
@@ -7679,7 +7679,7 @@ msgstr ""
 #. squares-flag-checker/ctfcli.yaml" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/ctf-masked-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/ctf-masked-
 #. squares.md" >
 #. {ph5}: </a >
 #: website/public/showcase/ctf/index.html:704
@@ -8028,7 +8028,7 @@ msgstr ""
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "The agent used Nre to inspect the function, follow its brick-hit caller and "
-"Nred the constants from the executable. Those results supplied the input and"
+"Read the constants from the executable. Those results supplied the input and"
 " arithmetic needed to write the C function below."
 msgstr ""
 "L'agente ha utilizzato Nre per ispezionare la funzione, seguire il suo "
@@ -8109,7 +8109,7 @@ msgstr ""
 
 #: website/public/showcase/dx-ball/index.html:403
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "Nred the values behind the memory addresses"
+msgid "Read the values behind the memory addresses"
 msgstr "Leggere i valori dietro gli indirizzi di memoria"
 
 #: website/public/showcase/dx-ball/index.html:424
@@ -8194,7 +8194,7 @@ msgstr "Ricostruito C"
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
-"{ph0}01 · Nred the input.{ph1} The instruction view in Nre's function result"
+"{ph0}01 · Read the input.{ph1} The instruction view in Nre's function result"
 " Nreds {ph2} and uses {ph3} to load the integer. Following its caller "
 "through Nre establishes the screen-coordinate meaning of the C parameter "
 "{ph4}."
@@ -8250,7 +8250,7 @@ msgstr ""
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "{ph0}04 · Apply the stored scale.{ph1} The second {ph2} Nreds {ph3}. That "
-"global is named {ph4} in the maintained source. Nre's second byte Nred "
+"global is named {ph4} in the maintained source. Nre's second byte Read "
 "establishes its initial value of {ph5}."
 msgstr ""
 "{ph0}04 * Applicare la scala memorizzata.{ph1} Secondo {ph2} leggere {ph3}. "
@@ -8449,7 +8449,7 @@ msgstr ""
 #: website/public/showcase/dx-ball/index.html:710
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "{ph0}Nred the compiler replay details{ph1}"
+msgid "{ph0}Read the compiler replay details{ph1}"
 msgstr "{ph0}Leggi i dettagli di riproduzione del compilatore{ph1}"
 
 #: website/public/showcase/dx-ball/index.html:719
@@ -8661,7 +8661,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:224
 msgctxt "page:showcase/index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "Leggi il case study di Android"
 
 #: website/public/showcase/index.html:228
@@ -8687,7 +8687,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:242
 msgctxt "page:showcase/index.html"
-msgid "Nred the CTF case study"
+msgid "Read the CTF case study"
 msgstr "Leggi il caso di studio CTF"
 
 #: website/public/showcase/index.html:246
@@ -8714,7 +8714,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:261
 msgctxt "page:showcase/index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "Leggi il caso di studio DX-Ball"
 
 #: website/public/showcase/index.html:265
@@ -8741,7 +8741,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:279
 msgctxt "page:showcase/index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "Leggi il caso di studio Notion"
 
 #: website/public/showcase/index.html:283
@@ -8767,7 +8767,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:297
 msgctxt "page:showcase/index.html"
-msgid "Nred the TH04 case study"
+msgid "Read the TH04 case study"
 msgstr "Leggi il caso di studio TH04"
 
 #: website/public/showcase/index.html:322
@@ -8786,7 +8786,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:327
 msgctxt "page:showcase/index.html"
-msgid "Nred the guides"
+msgid "Read the guides"
 msgstr "Leggi le guide"
 
 #: website/public/showcase/index.html:6
@@ -9188,7 +9188,7 @@ msgstr "Collegamenti HTML ai dati di blocco salvati"
 
 #: website/public/showcase/notion/index.html:499
 msgctxt "page:showcase/notion/index.html"
-msgid "Nred the HTML ID"
+msgid "Read the HTML ID"
 msgstr "Leggi l'ID HTML"
 
 #: website/public/showcase/notion/index.html:500
@@ -9292,7 +9292,7 @@ msgstr ""
 
 #: website/public/showcase/notion/index.html:569
 msgctxt "page:showcase/notion/index.html"
-msgid "Sources and how to Nred the excerpts"
+msgid "Sources and how to Read the excerpts"
 msgstr "Fonti e come leggere gli estratti"
 
 #. {ph0}: <code>app.asar</code>
@@ -9529,7 +9529,7 @@ msgstr ""
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0}02 · Inspect with Nre{ph1}{ph2}Instructions + "
-"references{ph3}{ph4}Verify the loaded DOS code and Nred the angle "
+"references{ph3}{ph4}Verify the loaded DOS code and Read the angle "
 "calculation from the executable.{ph5}"
 msgstr ""
 "{ph0}02 * Ispezionare con Nre {ph1}{ph2}Istruzioni + "
@@ -9546,7 +9546,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}03 · Nred the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
+"{ph0}03 · Read the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
 "operation to the maintained reconstruction.{ph5}"
 msgstr ""
 "{ph0}03 * Leggere il C++{ph1}{ph2}Spazio → obiettivo → "
@@ -9732,7 +9732,7 @@ msgstr "Elly's ring attack * fonte estratto"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "These lines select the pattern before difficulty and performance tuning. "
-"{ph0}Nred the attack's source{ph1}."
+"{ph0}Read the attack's source{ph1}."
 msgstr ""
 "Queste linee selezionano il modello prima della difficoltà e della messa a "
 "punto delle prestazioni. {ph0}Leggi la fonte dell'attacco{ph1}."
@@ -9772,7 +9772,7 @@ msgstr ""
 
 #: website/public/showcase/th04/index.html:400
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the ring's multiply and divide"
+msgid "Read the ring's multiply and divide"
 msgstr "Leggi l'anello moltiplica e dividi"
 
 #. {ph0}: <code>SI</code>
@@ -9783,7 +9783,7 @@ msgstr "Leggi l'anello moltiplica e dividi"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0} holds the bullet index. The shift multiplies it by 256, then the "
-"division uses the count Nred from {ph1}. The maintained source names that "
+"division uses the count Read from {ph1}. The maintained source names that "
 "field {ph2}. The complete sequence appears below."
 msgstr ""
 "{ph0} contiene l'indice proiettile. Lo spostamento lo moltiplica per 256, "
@@ -9882,7 +9882,7 @@ msgstr "C++ leggibile * riepilogo dell'anello mirato"
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}01 · Nred the bullet index.{ph1} The stack argument is loaded into "
+"{ph0}01 · Read the bullet index.{ph1} The stack argument is loaded into "
 "{ph2}. In a 16-bullet ring, this member index runs from 0 through 15."
 msgstr ""
 "{ph0}01 * Leggere l'indice proiettile.{ph1} L'argomento stack viene caricato"
@@ -9967,7 +9967,7 @@ msgstr ""
 
 #: website/public/showcase/th04/index.html:617
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the maintained ring and aim source"
+msgid "Read the maintained ring and aim source"
 msgstr "Leggi l'anello mantenuto e la fonte aim"
 
 #. {ph0}: <a
@@ -10042,7 +10042,7 @@ msgstr ""
 #: website/public/showcase/th04/index.html:688
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
-msgid "Recorded on 3 October 2026. {ph0}Nred the compiler checks{ph1}."
+msgid "Recorded on 3 October 2026. {ph0}Read the compiler checks{ph1}."
 msgstr ""
 "Registrato il 3 ottobre 2026. {ph0}Leggi i controlli del compilatore{ph1}."
 
@@ -10541,7 +10541,7 @@ msgstr "DX-Ball suono-indagine pan"
 #: website/public/assets/figures/dx-ball-sound-pan-investigation.svg:3
 msgctxt "figure:dx-ball-sound-pan-investigation.svg"
 msgid ""
-"Nre provides the instruction, caller and byte-Nred evidence for one DX-Ball "
+"Nre provides the instruction, caller and byte-Read evidence for one DX-Ball "
 "function. A stack input is multiplied by 1.5625, offset by 500, scaled, and "
 "converted to an integer. Maintained C is checked in 3,205 original-x86 cases"
 " and a separate 63-byte compiler replay."
@@ -10679,7 +10679,7 @@ msgstr "CLI / MCP"
 # Reviewed for technical meaning and concise diagram labels.
 #: website/public/assets/figures/Nre-investigation-flow.svg:37
 msgctxt "figure:Nre-investigation-flow.svg"
-msgid "3. Nred the evidence"
+msgid "3. Read the evidence"
 msgstr "3. Leggi le prove"
 
 # Reviewed for technical meaning and concise diagram labels.
@@ -11405,7 +11405,7 @@ msgstr "Per la moltiplicazione, 10 diventa 0,1. Premere = per moltiplicare."
 
 #: scripts/website_i18n.py
 msgctxt "runtime"
-msgid "Translation is being updated. Nred this page in English for now."
+msgid "Translation is being updated. Read this page in English for now."
 msgstr ""
 "La traduzione è in fase di aggiornamento. Leggi questa pagina in inglese per"
 " ora."
@@ -11833,7 +11833,7 @@ msgctxt "runtime"
 msgid "Switch to dark mode"
 msgstr "Passa alla modalità scura"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/web-network-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/web-network-
 #. captures.md" >
 #. {ph1}: </a >
 #: website/public/guides/browser/index.html:487
@@ -12787,8 +12787,8 @@ msgctxt "page:blog/reverse-engineering-models/index.html"
 msgid ""
 "A functional test can have a similar blind spot. {ph0}Differential-fuzzing "
 "research on LLM decompilers{ph1} has found behavior differences beyond the "
-"supplied tests. Passing those tests therefore needs to be Nred in terms of "
-"the cases they exercise, just as an instruction match needs to be Nred in "
+"supplied tests. Passing those tests therefore needs to be Read in terms of "
+"the cases they exercise, just as an instruction match needs to be Read in "
 "terms of the bytes and data it checks."
 msgstr ""
 "Un test funzionale può avere un punto cieco simile. {ph0}La ricerca che "
@@ -13228,7 +13228,7 @@ msgid "Back to top"
 msgstr "Torna in alto"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/reverse-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/reverse-
 #. engineering-models.md" >
 #. {ph1}: </a >
 #: website/public/blog/reverse-engineering-models/index.html:783
@@ -13266,7 +13266,7 @@ msgstr "Come un autenticatore genera un codice di accesso"
 
 #: website/public/index.html:1064
 msgctxt "page:index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "Leggi il case study di Android"
 
 #: website/public/index.html:1069
@@ -13281,7 +13281,7 @@ msgstr "Come Notion copia testo e HTML"
 
 #: website/public/index.html:1075
 msgctxt "page:index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "Leggi il caso di studio Notion"
 
 #: website/public/index.html:1080
@@ -13296,7 +13296,7 @@ msgstr "DX-Ball ' s calcolo di sinistra / destra posizione del suono"
 
 #: website/public/index.html:1086
 msgctxt "page:index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "Leggi il caso di studio DX-Ball"
 
 #: website/public/index.html:265 website/public/index.html:266
@@ -13374,7 +13374,7 @@ msgstr "1. Prepara il computer"
 msgctxt "page:get-started/index.html"
 msgid ""
 "Use the computer where your target files are stored. A local coding agent "
-"can Nred those files and run tools for you."
+"can Read those files and run tools for you."
 msgstr ""
 "Usa il computer su cui si trovano i file da analizzare. Un agente di "
 "programmazione locale può leggere quei file ed eseguire strumenti per te."
@@ -13523,7 +13523,7 @@ msgstr "Claude Desktop · usa una chat desktop"
 
 #. {ph0}: <a href="https://claude.ai/download">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#claude-desktop" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:597
@@ -13571,11 +13571,11 @@ msgctxt "page:get-started/index.html"
 msgid "Setup ID"
 msgstr "ID di configurazione"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#released-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#released-
 #. package-and-main" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:757
@@ -13604,7 +13604,7 @@ msgstr ""
 "Nella chat di Grok Bot, chiedigli di aggiungere un server MCP personalizzato"
 " chiamato {ph0} usando questo comando sul computer del Bot:"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#other-client-settings" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:788
@@ -13875,7 +13875,7 @@ msgstr ""
 "System Settings → Privacy & Security → Automation, poi riprova."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#hopper"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#hopper"
 #. >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1099
@@ -13958,10 +13958,10 @@ msgstr ""
 "aggiornata dell'applicazione e poi riavvia l'agente."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#ghidra"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#ghidra"
 #. >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/windows-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/windows-
 #. ghidra-p0.md" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:1258
@@ -14011,7 +14011,7 @@ msgstr ""
 "Usa il file di registrazione JSON preparato con la guida del provider, poi "
 "rilancia la configurazione e riavvia l'agente."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/ida-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/ida-
 #. provider.md" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1376
@@ -14160,13 +14160,13 @@ msgctxt "page:get-started/index.html"
 msgid "Process behavior"
 msgstr "Comportamento dei processi"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/flutter-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/flutter-
 #. analysis.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/javascript-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/javascript-
 #. artifact-reconstruction.md" >
 #. {ph3}: </a >
-#. {ph4}: <a href="https://github.com/morluto/Nre/blob/main/docs/evm-
+#. {ph4}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/evm-
 #. bytecode.md" >
 #. {ph5}: </a >
 #. {ph6}: <a href="../guides/">
@@ -14271,7 +14271,7 @@ msgstr ""
 "rimuovere la configurazione delle applicazioni e la skill di Nre."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#diagnose-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#diagnose-
 #. update-and-remove" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1812
@@ -14502,7 +14502,7 @@ msgstr ""
 "Usa la guida per il tuo computer:"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#missing-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#missing-
 #. macos-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1216
@@ -14512,7 +14512,7 @@ msgid "{ph0}macOS · Intel{ph1}"
 msgstr "{ph0}macOS · Intel{ph1}"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#macos-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#macos-
 #. arm64-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1222
@@ -14835,7 +14835,7 @@ msgstr "2. Trova la regola della velocità"
 #: website/public/index.html:639
 msgctxt "page:index.html"
 msgid ""
-"Nre lets the agent Nred the game’s running code. The speed starts at 6 and "
+"Nre lets the agent Read the game’s running code. The speed starts at 6 and "
 "incNreses a little each update while it is below 13."
 msgstr ""
 "Nre permette all'agente di leggere il codice del gioco in esecuzione. La "
@@ -14859,7 +14859,7 @@ msgstr ""
 #: website/public/index.html:712
 msgctxt "page:index.html"
 msgid ""
-"Enable JavaScript to play. You can still Nred the rule and open the source "
+"Enable JavaScript to play. You can still Read the rule and open the source "
 "code below."
 msgstr ""
 "Attiva JavaScript per giocare. Puoi comunque leggere la regola e aprire il "
@@ -14902,7 +14902,7 @@ msgstr "2. Trova entrambe le regole"
 #: website/public/index.html:863
 msgctxt "page:index.html"
 msgid ""
-"Nre helps the agent Nred the code behind the % button. It applies two "
+"Nre helps the agent Read the code behind the % button. It applies two "
 "different rules:"
 msgstr ""
 "Nre aiuta l'agente a leggere il codice del pulsante %. Il codice applica due"
@@ -14945,7 +14945,7 @@ msgstr ""
 "compaiono, esegui {ph0}."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/CONTRIBUTING.md#development-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/CONTRIBUTING.md#development-
 #. setup" >
 #. {ph1}: </a >
 #. {ph2}: <code>6.4.0</code>
@@ -15075,7 +15075,7 @@ msgctxt "page:contributors/index.html"
 msgid "Find a contributor"
 msgstr "Trova un collaboratore"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/graphs/contributors">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/graphs/contributors">
 #. {ph1}: </a>
 #. {ph2}: <time datetime="2026-10-15" translate="no">2026-10-15</time>
 #: website/public/contributors/index.html:1114
@@ -15419,7 +15419,7 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:366
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"The report lists Nred operations, supported changes, and operations withheld"
+"The report lists Read operations, supported changes, and operations withheld"
 " because the recording did not establish their effects. Each withheld "
 "operation has a Nreson and a hint about what to record next."
 msgstr ""
@@ -15447,7 +15447,7 @@ msgstr ""
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
 "The included smoke task is a basic test. It checks the tool count and, when "
-"a suitable Nred tool exists, calls it and checks its response status. "
+"a suitable Read tool exists, calls it and checks its response status. "
 "Passing it shows the environment starts and responds in that setup."
 msgstr ""
 
@@ -15503,8 +15503,8 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:456
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"For changes to be supported, record the results as well as the action: Nred "
-"an item, change it, then Nred the item and its list again before the next "
+"For changes to be supported, record the results as well as the action: Read "
+"an item, change it, then Read the item and its list again before the next "
 "change. Repeat with different values. For deletes, record the missing-item "
 "response and the updated list."
 msgstr ""
@@ -15528,10 +15528,10 @@ msgid ""
 "name warnings identify places to review; they do not remove those values."
 msgstr ""
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments-quickstart.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments.md" >
 #. {ph3}: </a >
 #: website/public/guides/rl-environments/index.html:474
@@ -15692,7 +15692,7 @@ msgstr ""
 #: website/public/showcase/index.html:309
 #, python-brace-format
 msgctxt "page:showcase/index.html"
-msgid "{ph0}Nred the guide{ph1} · {ph2}Watch the video{ph3}"
+msgid "{ph0}Read the guide{ph1} · {ph2}Watch the video{ph3}"
 msgstr ""
 "{ph0}Guida alla cNrezione di un ambiente{ph1} · {ph2}Guarda la demo su "
 "X{ph3}"
@@ -15811,7 +15811,7 @@ msgstr ""
 #: website/public/index.html:357
 msgctxt "page:index.html"
 msgid ""
-"Nre helps your agent Nred the code and see what the program does while it "
+"Nre helps your agent Read the code and see what the program does while it "
 "runs."
 msgstr ""
 "Nre aiuta il tuo agente a leggere il codice e a osservare cosa fa il "
@@ -15847,7 +15847,7 @@ msgstr "Segui il codice di un’app desktop scritta in JavaScript."
 #: website/public/index.html:1277
 #, python-brace-format
 msgctxt "page:index.html"
-msgid "{ph0}Nred the FAQ{ph1} for setup help and common questions."
+msgid "{ph0}Read the FAQ{ph1} for setup help and common questions."
 msgstr ""
 "{ph0}Leggi le FAQ{ph1} per ricevere assistenza con la configurazione e "
 "trovare risposte alle domande comuni."
@@ -15862,7 +15862,7 @@ msgstr ""
 "{ph0}Unisciti a Discord{ph1} per ricevere assistenza e discutere le tue "
 "analisi."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/index.html:1285
 #, python-brace-format
@@ -15932,7 +15932,7 @@ msgstr ""
 
 #. {ph0}: <a href="../../get-started/">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/android-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/android-
 #. analysis.md" >
 #. {ph3}: </a >
 #: website/public/showcase/aegis/index.html:714
@@ -16086,7 +16086,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "{ph0}Nred the FAQ{ph1} — setup and common questions."
+#~ msgid "{ph0}Read the FAQ{ph1} — setup and common questions."
 #~ msgstr "{ph0}Leggi le FAQ{ph1} — configurazione e domande comuni."
 
 #, python-brace-format
@@ -16210,7 +16210,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}Nred the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
+#~ "{ph0}Read the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
 #~ "GitHub issue{ph5} for bugs and feature requests."
 #~ msgstr ""
 #~ "{ph0}Leggi le FAQ{ph1}, {ph2}chatta con noi su Discord {ph3}, o {ph4}aprire "
@@ -16654,7 +16654,7 @@ msgstr ""
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
 #~ "A coding agent is an AI assistant that works on your computer instead of in "
-#~ "a browser tab. It can Nred files and run commands, and it asks before making"
+#~ "a browser tab. It can Read files and run commands, and it asks before making"
 #~ " changes. Nre gives it reverse-engineering tools."
 #~ msgstr ""
 #~ "Un agente di codifica è un assistente AI che funziona sul computer anziché "
@@ -16969,7 +16969,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "Want to go deeper? {ph0}Nred the Blog →{ph1}"
+#~ msgid "Want to go deeper? {ph0}Read the Blog →{ph1}"
 #~ msgstr "Vuoi andare più a fondo? {ph0}Leggi il Blog →{ph1}"
 
 #~ msgctxt "page:blog/index.html"

@@ -1,14 +1,14 @@
 {
-  "name": "rea",
+  "name": "nre",
   "interface": {
-    "displayName": "REA"
+    "displayName": "NRE"
   },
   "plugins": [
     {
-      "name": "rea",
+      "name": "nre",
       "source": {
         "source": "npm",
-        "package": "rea-agents",
+        "package": "nano-reverse-engineer",
         "version": "6.8.0"
       },
       "policy": {

@@ -52,7 +52,7 @@ const fat = (reversed: boolean): Buffer => {
 cliTest.skipIf(process.platform !== "darwin" || process.arch !== "arm64")(
   "reports the selected ARM64 slice and segment coordinates despite repeated lipo names",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-macho-selected-slice-");
+    const root = await createTestTempDirectory("nre-macho-selected-slice-");
     for (const [name, bytes, selectedOffset] of [
       ["v8-first", fat(false), 32768],
       ["all-first", fat(true), 32768],
@@ -86,7 +86,7 @@ cliTest.skipIf(process.platform !== "darwin" || process.arch !== "arm64")(
 cliTest.skipIf(process.platform !== "darwin" || process.arch !== "arm64")(
   "retains a linker-generated multiline section name without changing the input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-macho-multiline-section-");
+    const root = await createTestTempDirectory("nre-macho-multiline-section-");
     const code = join(root, "main.c");
     const payload = join(root, "data");
     const path = join(root, "target");

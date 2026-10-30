@@ -10,11 +10,11 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "Claude Code routes an empty config directory to its home registration",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-claude-empty-config-dir-");
+    const root = await createTestTempDirectory("nre-claude-empty-config-dir-");
     const home = join(root, "home");
     const cwd = join(root, "work");
     const config = join(home, ".claude.json");
-    const backup = `${config}.rea.backup`;
+    const backup = `${config}.nre.backup`;
     const skill = join(home, ".claude", "skills", PRODUCT_IDENTITY.skillName);
     const cwdSkill = join(cwd, "skills", PRODUCT_IDENTITY.skillName);
     const original = JSON.stringify({
@@ -74,7 +74,7 @@ cliTest(
       theme: "dark",
       mcpServers: {
         other: { command: "other" },
-        rea: expect.any(Object),
+        nre: expect.any(Object),
       },
     });
     await expect(access(join(skill, "SKILL.md"))).resolves.toBeUndefined();
@@ -129,16 +129,16 @@ cliTest(
   },
 );
 
-for (const policy of [{ excluded: ["rea"] }, { allowed: ["other"] }]) {
+for (const policy of [{ excluded: ["nre"] }, { allowed: ["other"] }]) {
   cliTest(
     `Gemini refuses a registration blocked by ${Object.keys(policy)[0]}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-gemini-policy-");
+      const home = await createTestTempDirectory("nre-gemini-policy-");
       const config = join(home, ".gemini/settings.json");
       const original = JSON.stringify({
         mcp: policy,
         mcpServers: {
-          rea: {
+          nre: {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           },
@@ -168,7 +168,7 @@ for (const policy of [{ excluded: ["rea"] }, { allowed: ["other"] }]) {
         remediation: expect.stringContaining("mcp." + Object.keys(policy)[0]),
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(access(config + ".rea.backup")).rejects.toMatchObject({
+      await expect(access(config + ".nre.backup")).rejects.toMatchObject({
         code: "ENOENT",
       });
       const doctor = await run(["doctor", "--client", "gemini_cli", "--json"]);
@@ -192,14 +192,14 @@ for (const policy of [{ excluded: ["rea"] }, { allowed: ["other"] }]) {
 cliTest(
   "OpenCode diagnoses merged JSON/JSONC and removes owned entries from both files",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-opencode-layers-");
+    const home = await createTestTempDirectory("nre-opencode-layers-");
     const directory = join(home, ".config/opencode");
     await mkdir(directory, { recursive: true });
     const lower = join(directory, "opencode.json");
     const higher = join(directory, "opencode.jsonc");
     const originalLower = JSON.stringify({
       mcp: {
-        rea: {
+        nre: {
           type: "local",
           command: [
             "npx",
@@ -213,7 +213,7 @@ cliTest(
       },
     });
     const originalHigher =
-      '// keep this comment\n{"mcp":{"rea":{"enabled":false}},"theme":"system"}\n';
+      '// keep this comment\n{"mcp":{"nre":{"enabled":false}},"theme":"system"}\n';
     await writeFile(lower, originalLower);
     await writeFile(higher, originalHigher);
     const run = (arguments_: readonly string[]) =>
@@ -242,7 +242,7 @@ cliTest(
     expect(setup.exitCode).toBe(0);
     expect(setup.json).toMatchObject({ status: "ready" });
     expect(await readFile(lower, "utf8")).toBe(originalLower);
-    expect(await readFile(higher + ".rea.backup", "utf8")).toBe(originalHigher);
+    expect(await readFile(higher + ".nre.backup", "utf8")).toBe(originalHigher);
     expect(await readFile(higher, "utf8")).toContain("// keep this comment");
     expect(
       (await run(["doctor", "--client", "opencode", "--json"])).exitCode,
@@ -271,7 +271,7 @@ cliTest(
 cliTest(
   "malformed lower-priority OpenCode config blocks setup before any writes",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-opencode-invalid-layer-");
+    const home = await createTestTempDirectory("nre-opencode-invalid-layer-");
     const directory = join(home, ".config/opencode");
     await mkdir(directory, { recursive: true });
     const lower = join(directory, "opencode.json");
@@ -291,7 +291,7 @@ cliTest(
     });
     expect(await readFile(lower, "utf8")).toBe("malformed");
     expect(await readFile(higher, "utf8")).toBe("{}");
-    await expect(access(higher + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(higher + ".nre.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -300,10 +300,10 @@ cliTest(
 cliTest(
   "Gemini system policy blocks a new registration without modifying managed files",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-managed-");
+    const home = await createTestTempDirectory("nre-gemini-managed-");
     const policy = join(home, "managed.json");
     const original = JSON.stringify({
-      mcp: { excluded: ["rea"] },
+      mcp: { excluded: ["nre"] },
       unrelated: true,
     });
     await writeFile(policy, original);
@@ -329,7 +329,7 @@ cliTest(
     await expect(
       access(join(home, ".gemini/settings.json")),
     ).rejects.toMatchObject({ code: "ENOENT" });
-    await expect(access(policy + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(policy + ".nre.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -338,19 +338,19 @@ cliTest(
 cliTest(
   "Gemini intersects system/default/user allowlists and accepts an empty effective allowlist",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-allowlists-");
+    const home = await createTestTempDirectory("nre-gemini-allowlists-");
     const system = join(home, "system.json");
     const defaults = join(home, "defaults.json");
     const user = join(home, ".gemini/settings.json");
     await mkdir(dirname(user), { recursive: true });
     await writeFile(
       system,
-      JSON.stringify({ mcp: { allowed: ["rea", "other"] } }),
+      JSON.stringify({ mcp: { allowed: ["nre", "other"] } }),
     );
     await writeFile(defaults, JSON.stringify({ mcp: { allowed: ["other"] } }));
     await writeFile(
       user,
-      JSON.stringify({ mcp: { allowed: ["rea", "other"] } }),
+      JSON.stringify({ mcp: { allowed: ["nre", "other"] } }),
     );
     const environment = {
       HOME: home,
@@ -370,12 +370,12 @@ cliTest(
       status: "needs_human",
       appliedActions: [],
     });
-    await writeFile(defaults, JSON.stringify({ mcp: { allowed: ["rea"] } }));
+    await writeFile(defaults, JSON.stringify({ mcp: { allowed: ["nre"] } }));
     const allowed = await run();
     expect(allowed.exitCode).toBe(0);
     expect(allowed.json).toMatchObject({ status: "ready" });
     expect(JSON.parse(await readFile(defaults, "utf8"))).toEqual({
-      mcp: { allowed: ["rea"] },
+      mcp: { allowed: ["nre"] },
     });
     // The consumer treats an empty consolidated allowlist as unrestricted.
     await writeFile(defaults, JSON.stringify({ mcp: { allowed: [] } }));
@@ -388,10 +388,10 @@ cliTest(
 cliTest(
   "Gemini matches allowlist spellings independently of their policy order",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-case-");
+    const home = await createTestTempDirectory("nre-gemini-case-");
     const system = join(home, "system.json");
     const defaults = join(home, "defaults.json");
-    await writeFile(system, JSON.stringify({ mcp: { allowed: ["REA"] } }));
+    await writeFile(system, JSON.stringify({ mcp: { allowed: ["NRE"] } }));
     const environment = {
       HOME: home,
       USERPROFILE: home,
@@ -408,8 +408,8 @@ cliTest(
     // survives must not decide the outcome: the same pair of policies in
     // either arrangement has to consolidate to the same decision.
     for (const [systemSpelling, defaultSpelling] of [
-      ["REA", "rea"],
-      ["rea", "REA"],
+      ["NRE", "nre"],
+      ["nre", "NRE"],
     ]) {
       await writeFile(
         system,
@@ -433,7 +433,7 @@ cliTest(
 cliTest(
   "Gemini compares exclusions and padded allowlist entries through one normalization",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-normalized-");
+    const home = await createTestTempDirectory("nre-gemini-normalized-");
     const system = join(home, "system.json");
     const defaults = join(home, "defaults.json");
     const environment = {
@@ -452,7 +452,7 @@ cliTest(
     // An exclusion is a membership test over the same names the intersection
     // compares, so a differently spelled and padded entry blocks setup rather
     // than slipping past the raw comparison.
-    await writeFile(system, JSON.stringify({ mcp: { excluded: [" REA "] } }));
+    await writeFile(system, JSON.stringify({ mcp: { excluded: [" NRE "] } }));
     const blocked = await run();
     expect(blocked.exitCode).toBe(1);
     expect(blocked.json).toMatchObject({
@@ -463,7 +463,7 @@ cliTest(
     });
     // Padding is presentation, not identity: a padded allowlist entry permits
     // the same server its exact spelling permits.
-    await writeFile(system, JSON.stringify({ mcp: { allowed: [" REA "] } }));
+    await writeFile(system, JSON.stringify({ mcp: { allowed: [" NRE "] } }));
     const allowed = await run();
     expect(allowed.exitCode).toBe(0);
     expect(allowed.json).toMatchObject({ status: "ready" });
@@ -473,7 +473,7 @@ cliTest(
 cliTest(
   "OpenCode doctor sees a global registration when the custom directory is absent",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-opencode-absent-custom-");
+    const home = await createTestTempDirectory("nre-opencode-absent-custom-");
     const global = join(home, ".config/opencode/opencode.json");
     const custom = join(home, "missing-custom");
     await mkdir(dirname(global), { recursive: true });
@@ -481,10 +481,10 @@ cliTest(
       global,
       JSON.stringify({
         mcp: {
-          rea: {
+          nre: {
             type: "local",
             command: currentClientRegistrationCommand({
-              entrypointPath: resolve("scripts/rea.mjs"),
+              entrypointPath: resolve("scripts/nre.mjs"),
             }),
             enabled: true,
           },
@@ -532,7 +532,7 @@ cliTest(
 cliTest(
   "OpenCode retains the XDG global layer when a custom directory is selected",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-opencode-global-custom-");
+    const home = await createTestTempDirectory("nre-opencode-global-custom-");
     const global = join(home, ".config/opencode/opencode.json");
     const custom = join(home, "custom/opencode.jsonc");
     await mkdir(dirname(global), { recursive: true });
@@ -540,12 +540,12 @@ cliTest(
     const owned = {
       type: "local",
       command: currentClientRegistrationCommand({
-        entrypointPath: resolve("scripts/rea.mjs"),
+        entrypointPath: resolve("scripts/nre.mjs"),
       }),
       enabled: true,
     };
     const original = JSON.stringify({
-      mcp: { rea: owned, other: { type: "local", command: ["other"] } },
+      mcp: { nre: owned, other: { type: "local", command: ["other"] } },
     });
     await writeFile(global, original);
     await writeFile(custom, "{}");
@@ -593,7 +593,7 @@ cliTest(
 cliTest(
   "Gemini blocks a conflicting system definition and accepts an identical managed entry",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-managed-server-");
+    const home = await createTestTempDirectory("nre-gemini-managed-server-");
     const user = join(home, ".gemini/settings.json");
     const system = join(home, "system.json");
     const defaults = join(home, "defaults.json");
@@ -611,14 +611,14 @@ cliTest(
       defaults,
       JSON.stringify({
         mcpServers: {
-          rea: { command: "managed-default", env: { EXTRA: "default" } },
+          nre: { command: "managed-default", env: { EXTRA: "default" } },
         },
       }),
     );
     expect((await run(command)).exitCode).toBe(0);
     const original = await readFile(user, "utf8");
     const managed = JSON.stringify({
-      mcpServers: { rea: { command: "managed-override", args: [] } },
+      mcpServers: { nre: { command: "managed-override", args: [] } },
       unrelated: true,
     });
     await writeFile(system, managed);
@@ -637,7 +637,7 @@ cliTest(
           expect.objectContaining({
             client: "gemini_cli",
             state: "stale",
-            remediation: expect.stringContaining("mcpServers.rea"),
+            remediation: expect.stringContaining("mcpServers.nre"),
           }),
         ]),
       },
@@ -656,7 +656,7 @@ cliTest(
       (await run(["doctor", "--client", "gemini_cli", "--json"])).exitCode,
     ).toBe(0);
     expect(await readFile(system, "utf8")).toBe(aligned);
-    await expect(access(system + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(system + ".nre.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -665,7 +665,7 @@ cliTest(
 cliTest(
   "Gemini workspace policy follows persisted trust and explicit trust overrides",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-workspace-policy-");
+    const home = await createTestTempDirectory("nre-gemini-workspace-policy-");
     const project = join(home, "project");
     const workspace = join(project, ".gemini/settings.json");
     const trust = join(home, "trust.json");
@@ -681,7 +681,7 @@ cliTest(
       cli.run({ arguments: args, cwd: project, environment });
     const command = ["setup", "--client", "gemini_cli", "--yes", "--json"];
     const original = JSON.stringify({
-      mcp: { excluded: ["rea"] },
+      mcp: { excluded: ["nre"] },
       unrelated: true,
     });
     await writeFile(workspace, original);
@@ -733,7 +733,7 @@ cliTest(
     expect(JSON.parse(await readFile(workspace, "utf8"))).toEqual({
       mcp: { allowed: ["other"] },
     });
-    await expect(access(workspace + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(workspace + ".nre.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -742,7 +742,7 @@ cliTest(
 cliTest(
   "Gemini workspace definitions use shallow precedence and remain read-only",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-workspace-server-");
+    const home = await createTestTempDirectory("nre-gemini-workspace-server-");
     const project = join(home, "project");
     const workspace = join(project, ".gemini/settings.json");
     const system = join(home, "system.json");
@@ -758,7 +758,7 @@ cliTest(
       cli.run({ arguments: args, cwd: project, environment });
     const command = ["setup", "--client", "gemini_cli", "--yes", "--json"];
     const original = JSON.stringify({
-      mcpServers: { rea: { command: "project-server", args: [] } },
+      mcpServers: { nre: { command: "project-server", args: [] } },
     });
     await writeFile(workspace, original);
     expect((await run(command)).json).toMatchObject({
@@ -784,7 +784,7 @@ cliTest(
       (await run(["doctor", "--client", "gemini_cli", "--json"])).exitCode,
     ).toBe(0);
     expect(await readFile(workspace, "utf8")).toBe(original);
-    await expect(access(workspace + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(workspace + ".nre.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -793,14 +793,14 @@ cliTest(
 cliTest(
   "Gemini validates trust configuration and honors a disabled folder trust feature",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-gemini-trust-invalid-");
+    const home = await createTestTempDirectory("nre-gemini-trust-invalid-");
     const project = join(home, "project");
     const workspace = join(project, ".gemini/settings.json");
     const user = join(home, ".gemini/settings.json");
     const trust = join(home, ".gemini/trustedFolders.json");
     await mkdir(dirname(workspace), { recursive: true });
     await mkdir(dirname(user), { recursive: true });
-    await writeFile(workspace, JSON.stringify({ mcp: { excluded: ["rea"] } }));
+    await writeFile(workspace, JSON.stringify({ mcp: { excluded: ["nre"] } }));
     await writeFile(trust, JSON.stringify({ [project]: "INVALID" }));
     const run = () =>
       cli.run({

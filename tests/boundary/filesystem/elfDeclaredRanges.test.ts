@@ -52,7 +52,7 @@ const image = (bits: 32 | 64, little: boolean) => {
 };
 
 const admit = async (bytes: Buffer) => {
-  const directory = await createTestTempDirectory("rea-elf-declared-ranges-");
+  const directory = await createTestTempDirectory("nre-elf-declared-ranges-");
   const path = join(directory, "image.elf");
   await writeFile(path, bytes);
   const result = await parseBinaryTarget(path);

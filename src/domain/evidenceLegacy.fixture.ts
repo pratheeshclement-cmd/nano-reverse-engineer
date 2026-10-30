@@ -1,4 +1,4 @@
-/** ASCII golden for the rea-agents-6.5.0 semanticProjection rule in evidence.ts.
+/** ASCII golden for the nano-reverse-engineer-6.5.0 semanticProjection rule in evidence.ts.
  * Its independently computed canonical SHA-256 omits explicit null coverage.
  * This is a schema/identity fixture, not a claim of a released-provider run.
  */

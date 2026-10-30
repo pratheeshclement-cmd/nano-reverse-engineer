@@ -131,7 +131,7 @@ it("keeps main pushes proposal-only and gates merged-release automation", async 
     "fetch-depth": 0,
     "persist-credentials": false,
   });
-  expect(proposal.steps[0]?.run).toContain("rea:release-notes-finalized");
+  expect(proposal.steps[0]?.run).toContain("nre:release-notes-finalized");
   expect(proposal.steps[0]?.run).toContain("--paginate");
   const merged = workflow.jobs["merged-release"];
   expect(merged.if).toContain("github.event.pull_request.merged == true");
@@ -151,15 +151,16 @@ it("keeps main pushes proposal-only and gates merged-release automation", async 
 
 const finalizedRelease = {
   number: 1399,
-  headRefName: "release-please--branches--main--components--rea-agents",
-  headRepository: { nameWithOwner: "fixture/rea" },
+  headRefName:
+    "release-please--branches--main--components--nano-reverse-engineer",
+  headRepository: { nameWithOwner: "fixture/nre" },
 };
 
 function editorialPage(nodes: unknown[], hasNextPage = false) {
   return {
     data: {
       repository: {
-        nameWithOwner: "fixture/rea",
+        nameWithOwner: "fixture/nre",
         pullRequests: {
           nodes,
           pageInfo: { hasNextPage, endCursor: hasNextPage ? "next" : null },
@@ -180,7 +181,7 @@ it.each([
     name: "fork and unrelated head branch",
     pages: [
       editorialPage([
-        { ...finalizedRelease, headRepository: { nameWithOwner: "fork/rea" } },
+        { ...finalizedRelease, headRepository: { nameWithOwner: "fork/nre" } },
         {
           ...finalizedRelease,
           headRefName: "release-please--branches--other--component",
@@ -197,7 +198,7 @@ it.each([
   },
 ])("preserves the proposal freeze for $name", async ({ pages, frozen }) => {
   const step = (await readReleaseWorkflow()).jobs["release-proposal"].steps[0];
-  const directory = await createTestTempDirectory("rea-release-editorial-");
+  const directory = await createTestTempDirectory("nre-release-editorial-");
   const output = join(directory, "output");
   const summary = join(directory, "summary");
   const args = join(directory, "args");
@@ -216,7 +217,7 @@ it.each([
       env: {
         ...process.env,
         PATH: `${directory}${delimiter}${process.env.PATH ?? ""}`,
-        GH_REPO: "fixture/rea",
+        GH_REPO: "fixture/nre",
         GH_ARGS: args,
         GH_PAGES: join(directory, "pages"),
         GITHUB_OUTPUT: output,
@@ -227,9 +228,9 @@ it.each([
   const request = await readFile(args, "utf8");
   expect(request).toContain("api\ngraphql\n--paginate\n--slurp");
   expect(request).toContain("owner=fixture");
-  expect(request).toContain("name=rea");
+  expect(request).toContain("name=nre");
   expect(request).toContain(
-    'states:OPEN,baseRefName:"main",labels:["rea:release-notes-finalized"]',
+    'states:OPEN,baseRefName:"main",labels:["nre:release-notes-finalized"]',
   );
   expect(request).toContain("after:$endCursor");
   expect(await readFile(output, "utf8")).toBe(frozen ? "frozen=true\n" : "");
@@ -257,7 +258,7 @@ it.each([
     pages: [
       {
         data: {
-          repository: { nameWithOwner: "fixture/rea", pullRequests: {} },
+          repository: { nameWithOwner: "fixture/nre", pullRequests: {} },
         },
       },
     ],
@@ -289,7 +290,7 @@ it.each([
 ])("fails closed before release-please on $name", async ({ pages, status }) => {
   const step = (await readReleaseWorkflow()).jobs["release-proposal"].steps[0];
   const directory = await createTestTempDirectory(
-    "rea-release-editorial-error-",
+    "nre-release-editorial-error-",
   );
   const output = join(directory, "output");
   await writeFile(output, "");
@@ -313,7 +314,7 @@ it.each([
         env: {
           ...process.env,
           PATH: `${directory}${delimiter}${process.env.PATH ?? ""}`,
-          GH_REPO: "fixture/rea",
+          GH_REPO: "fixture/nre",
           GH_PAGES: join(directory, "pages"),
           GITHUB_OUTPUT: output,
           GITHUB_STEP_SUMMARY: join(directory, "summary"),
@@ -437,7 +438,7 @@ it.skipIf(process.platform === "win32").each([
           (phase === "publish" && step.if === "inputs.phase == 'publish'"),
       )
       .map((step) => z.string().parse(step.run));
-    const directory = await createTestTempDirectory("rea-release-credential-");
+    const directory = await createTestTempDirectory("nre-release-credential-");
     const output = join(directory, "github-output");
     await writeFile(
       join(directory, "gh"),
@@ -920,7 +921,7 @@ it("rehearses the qualified archive before npm authority and retains registry ve
     step.run?.includes("scripts/ci/verified-package.mjs validate"),
   );
   const runtime = action.runs.steps.findIndex(
-    (step) => step.with?.name === "rea-test-runtime",
+    (step) => step.with?.name === "nre-test-runtime",
   );
   expect(archive).toBeGreaterThanOrEqual(0);
   expect(validation).toBeGreaterThan(archive);

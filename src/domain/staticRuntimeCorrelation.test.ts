@@ -29,7 +29,7 @@ const artifactComparison = createEvidence(
   undefined,
   ARTIFACT_COMPARISON_PROVIDER,
   {
-    predicateType: "rea.artifact-comparison",
+    predicateType: "nre.artifact-comparison",
     operation: "compare_artifacts",
     parameters: {
       left_evidence_ids: [ARTIFACT_COMPARISON_EXAMPLE.left.evidence_id],
@@ -53,7 +53,7 @@ const capture = (digit: string): Evidence =>
     undefined,
     { id: "fixture", name: "Fixture", version: "1" },
     {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: { digit },
@@ -99,12 +99,12 @@ const processComparison = (
   return createEvidence(
     undefined,
     {
-      id: "rea-process",
-      name: "REA deterministic process harness",
+      id: "nre-process",
+      name: "NRE deterministic process harness",
       version: "3",
     },
     {
-      predicateType: "rea.process-comparison",
+      predicateType: "nre.process-comparison",
       operation: "compare_process_captures",
       parameters: {
         left_evidence_id: leftCapture.evidence_id,
@@ -170,7 +170,7 @@ it("keeps text, assembly and unavailable CFG caveats on their selected correlati
     functionSnapshotFixture(right),
   );
   const comparison = createEvidence(undefined, staticComparison.provider, {
-    predicateType: "rea.function-comparison",
+    predicateType: "nre.function-comparison",
     operation: "compare_functions",
     parameters: {
       left_evidence_id: left.evidence_id,

@@ -10,10 +10,10 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const exec = promisify(execFile);
 const repositoryRoot = fileURLToPath(new URL("../../..", import.meta.url));
 const authored =
-  '---\nname: reverse-engineer-anything\nmetadata:\n  version: "33"\n---\n\n# Instructions\n\nInspect the caller-selected artifact.\n';
+  '---\nname: nano-reverse-engineer\nmetadata:\n  version: "33"\n---\n\n# Instructions\n\nInspect the caller-selected artifact.\n';
 
 async function fixture(eol = "\n") {
-  const root = await createTestTempDirectory("rea-generated-skill-");
+  const root = await createTestTempDirectory("nre-generated-skill-");
   for (const path of [
     "scripts/generate-skill-metadata.mjs",
     "scripts/lib/generated-file.mjs",
@@ -30,14 +30,14 @@ async function fixture(eol = "\n") {
     join(root, "node_modules/yaml"),
     { recursive: true },
   );
-  const sourceRoot = join(root, ".agents/skills/reverse-engineer-anything");
-  const outputRoot = join(root, "skills/reverse-engineer-anything");
+  const sourceRoot = join(root, ".agents/skills/nano-reverse-engineer");
+  const outputRoot = join(root, "skills/nano-reverse-engineer");
   await mkdir(join(sourceRoot, "references"), { recursive: true });
   await mkdir(join(root, "dist"));
   await writeFile(join(root, "package.json"), '{"type":"module"}\n');
   await writeFile(
     join(root, "dist/identity.js"),
-    'export const PRODUCT_IDENTITY = { packageSpecifier: "rea-agents@latest", registrationPackageSpecifier: "rea-agents@6.2.0" };\n',
+    'export const PRODUCT_IDENTITY = { packageSpecifier: "nano-reverse-engineer@latest", registrationPackageSpecifier: "nano-reverse-engineer@6.2.0" };\n',
   );
   await writeFile(join(sourceRoot, "SKILL.md"), authored.replaceAll("\n", eol));
   await writeFile(
@@ -136,13 +136,15 @@ it("pins authored `@latest` commands to the packaged version", async () => {
     join(f.sourceRoot, "SKILL.md"),
     authored.replace(
       "Inspect the caller-selected artifact.",
-      "Run `npx -y rea-agents@latest doctor --json` first.",
+      "Run `npx -y nano-reverse-engineer@latest doctor --json` first.",
     ),
   );
   await f.generate();
   const generated = await readFile(join(f.outputRoot, "SKILL.md"), "utf8");
-  expect(generated).toContain("npx -y rea-agents@6.2.0 doctor --json");
-  expect(generated).not.toContain("rea-agents@latest");
+  expect(generated).toContain(
+    "npx -y nano-reverse-engineer@6.2.0 doctor --json",
+  );
+  expect(generated).not.toContain("nano-reverse-engineer@latest");
   await f.generate("--check");
 });
 
@@ -165,7 +167,7 @@ it("generates metadata from quoted frontmatter while preserving body metadata ex
     '\n# Instructions\n\n```yaml\nmetadata:\n  version: "body-only"\n  tool_count: 99\n  catalog_digest: example\n```\n';
   await writeFile(
     join(f.sourceRoot, "SKILL.md"),
-    "---\nname: reverse-engineer-anything\nmetadata:\n  version: '33'\n---\n" +
+    "---\nname: nano-reverse-engineer\nmetadata:\n  version: '33'\n---\n" +
       body,
   );
   await f.generate();
@@ -179,7 +181,7 @@ it("rejects body-only versions instead of generating metadata inside examples", 
   const f = await fixture();
   await writeFile(
     join(f.sourceRoot, "SKILL.md"),
-    '---\nname: reverse-engineer-anything\n---\n\n```yaml\nmetadata:\n  version: "body-only"\n```\n',
+    '---\nname: nano-reverse-engineer\n---\n\n```yaml\nmetadata:\n  version: "body-only"\n```\n',
   );
   await expect(f.generate()).rejects.toMatchObject({
     stderr: expect.stringContaining("Missing authored skill version"),

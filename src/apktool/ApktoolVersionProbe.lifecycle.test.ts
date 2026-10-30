@@ -15,7 +15,7 @@ import { inspectApktoolClient } from "./ApktoolConfiguration.js";
 it.skipIf(process.platform === "win32")(
   "stops an interpreter launcher and its pipe-holding child when the probe is cancelled",
   async () => {
-    const root = await createTestTempDirectory("rea-apktool-probe-");
+    const root = await createTestTempDirectory("nre-apktool-probe-");
     const fixture = await createApktoolProcessFixture(root, "probe");
     const controller = new AbortController();
     const started = performance.now();

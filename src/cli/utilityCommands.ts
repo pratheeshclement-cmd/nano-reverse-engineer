@@ -364,7 +364,7 @@ const runReferenceSourceImport = async (
       imported: await importReferenceSource(
         {
           root,
-          caller: "rea-cli",
+          caller: "nre-cli",
           policy,
           importer: PRODUCT_IDENTITY.packageName,
           importerVersion: PRODUCT_IDENTITY.packageVersion,

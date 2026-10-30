@@ -10,7 +10,7 @@ const digest = (bytes: Buffer) =>
   createHash("sha256").update(bytes).digest("hex");
 
 it("whole executable copying rejects pre-copy replacement and retains captured bytes after source replacement", async () => {
-  const root = await createTestTempDirectory("rea-hopper-executable-");
+  const root = await createTestTempDirectory("nre-hopper-executable-");
   const source = join(root, "input.exe");
   const destination = join(root, "private-image");
   const selected = Buffer.from("MZ selected executable bytes");

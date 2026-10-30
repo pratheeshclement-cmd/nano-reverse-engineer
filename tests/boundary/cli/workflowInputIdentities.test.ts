@@ -36,7 +36,7 @@ const runJson = async (
   return cli.run({
     arguments: [command, path, "--json"],
     cwd: root,
-    environment: { REA_LOG_LEVEL: "silent" },
+    environment: { NRE_LOG_LEVEL: "silent" },
   });
 };
 const connectMcp = async (root: string) => {
@@ -46,14 +46,14 @@ const connectMcp = async (root: string) => {
   });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: root,
     env: {
       PATH: process.env.PATH ?? "",
       HOME: root,
       XDG_CONFIG_HOME: join(root, "config"),
       XDG_CACHE_HOME: join(root, "cache"),
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
       ...INLINE_EVIDENCE_MCP_ENVIRONMENT,
     },
   });
@@ -309,7 +309,7 @@ cliTest(
   "preserves workflow identity validation through CLI and inline, retained and mixed MCP inputs",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-application-input-identities-",
+      "nre-application-input-identities-",
     );
     const left = join(root, "left"),
       right = join(root, "right");

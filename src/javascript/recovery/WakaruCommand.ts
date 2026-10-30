@@ -31,7 +31,7 @@ import { RECOVERY_LIMITS, wakaruFixedLimitRecovery } from "./WakaruRelease.js";
 
 const OPERATION = "recover_javascript_sources";
 const WAKARU_REQUIREMENT =
-  "Provide an absolute REA_WAKARU_COMMAND pointing to a Wakaru ^1.13.0 Linux x64 binary (verified with 1.14.0); no tool is installed by REA. See docs/javascript-recovery.md#install-wakaru.";
+  "Provide an absolute NRE_WAKARU_COMMAND pointing to a Wakaru ^1.13.0 Linux x64 binary (verified with 1.14.0); no tool is installed by NRE. See docs/javascript-recovery.md#install-wakaru.";
 
 /** Wakaru recovery runs only on Linux x64; discovery and execution share this check. */
 export const wakaruHostSupported = (
@@ -75,7 +75,7 @@ export const resolveWakaruCommand = async (
   resources?: ArtifactResourceScope,
   signal?: AbortSignal,
 ) => {
-  const configured = environment.REA_WAKARU_COMMAND;
+  const configured = environment.NRE_WAKARU_COMMAND;
   if (
     !wakaruHostSupported(process.platform, process.arch) ||
     configured === undefined ||
@@ -97,9 +97,9 @@ export const resolveWakaruCommand = async (
       resources,
     );
     const limiter =
-      environment.REA_JAVASCRIPT_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
+      environment.NRE_JAVASCRIPT_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
     if (!isAbsolute(limiter))
-      throw new TypeError("REA_JAVASCRIPT_PRLIMIT_COMMAND must be absolute");
+      throw new TypeError("NRE_JAVASCRIPT_PRLIMIT_COMMAND must be absolute");
     const limiterSelection = await selectArtifactCommandPath(limiter, signal);
     await access(limiterSelection.resolvedPath, constants.X_OK);
     if (!(await stat(limiter)).isFile())
@@ -137,7 +137,7 @@ type WakaruCommandContext = {
 /** Run one bounded command and verify cleanup before consuming its output. */
 export const runWakaruCommand = async (context: WakaruCommandContext) => {
   checkRecoveryDeadline(context.deadline, context.signal);
-  const runId = `rea-wakaru-${randomUUID()}`;
+  const runId = `nre-wakaru-${randomUUID()}`;
   const spawned = await (context.launcher ?? spawnOwnedProviderProcess)({
     command: context.limiter,
     arguments: [

@@ -209,7 +209,7 @@ const windowPreloadNodes = (result: Reconstruction) =>
   );
 
 const reconstructSource = async (source: string): Promise<Reconstruction> => {
-  const root = await createTestTempDirectory("rea-electron-option-keys-");
+  const root = await createTestTempDirectory("nre-electron-option-keys-");
   await Promise.all([
     writeFile(
       join(root, "package.json"),

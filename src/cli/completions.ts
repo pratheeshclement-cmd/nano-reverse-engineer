@@ -24,7 +24,7 @@ export const completionHelpNote = (
 ): string | undefined => {
   const split = splitIncurBuiltinArguments(arguments_);
   const words =
-    split.command[0] === "rea" ? split.command.slice(1) : split.command;
+    split.command[0] === "nre" ? split.command.slice(1) : split.command;
   if (words[0] !== "completions") return undefined;
   const rest = words.slice(1);
   if (
@@ -109,7 +109,7 @@ const completionCommands = (cli: CompletionCli): Commands => {
     description: "Generate shell completion script",
     commands: new Map(CLI_COMPLETION_SHELLS.map((shell) => [shell, {}])),
   });
-  // REA uses sync:false, so the framework's skills integration is disabled.
+  // NRE uses sync:false, so the framework's skills integration is disabled.
   return commands;
 };
 

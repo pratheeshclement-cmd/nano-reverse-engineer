@@ -66,7 +66,7 @@ const cString = (bytes: Uint8Array): string | null => {
   }
 };
 
-/** How a descriptor REA could not read is reported; tests compare with these. */
+/** How a descriptor NRE could not read is reported; tests compare with these. */
 export const ESP_DESCRIPTOR_LIMITATIONS = {
   fieldNotUtf8: (field: string): string =>
     `ESP image descriptor field ${field} is not valid UTF-8; its text is unknown.`,

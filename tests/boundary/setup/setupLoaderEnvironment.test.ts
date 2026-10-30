@@ -6,7 +6,7 @@ import { parseConfig } from "../../../src/config/parseConfig.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("setup carries explicit Hopper loader selections into Cursor without persisting target or unrelated settings", async () => {
-  const home = await createTestTempDirectory("rea-setup-loader-environment-");
+  const home = await createTestTempDirectory("nre-setup-loader-environment-");
   const path = join(home, ".cursor/mcp.json");
   await mkdir(join(home, ".cursor"));
   await writeFile(path, '{"caller":"retain"}\n');
@@ -38,7 +38,7 @@ it("setup carries explicit Hopper loader selections into Cursor without persisti
   const loaderFromSavedRegistration = async () => {
     const document = JSON.parse(await readFile(path, "utf8"));
     expect(document.caller).toBe("retain");
-    const saved = document.mcpServers.rea.env;
+    const saved = document.mcpServers.nre.env;
     expect(saved).not.toHaveProperty("CALLER_UNRELATED_SETTING");
     expect(saved).not.toHaveProperty("HOPPER_TARGET_PATH");
     expect(saved).not.toHaveProperty("HOPPER_TARGET_KIND");
@@ -54,14 +54,14 @@ it("setup carries explicit Hopper loader selections into Cursor without persisti
     "Mach-O",
   ]);
   const created = await readFile(path, "utf8");
-  expect(JSON.parse(created).mcpServers.rea.env.HOPPER_LOADER_ARGS_JSON).toBe(
+  expect(JSON.parse(created).mcpServers.nre.env.HOPPER_LOADER_ARGS_JSON).toBe(
     environment.HOPPER_LOADER_ARGS_JSON,
   );
   environment.HOPPER_LOADER_ARGS_JSON = "[]";
   expect(await setup()).toMatchObject({ status: "ready" });
   expect(await loaderFromSavedRegistration()).toEqual([]);
   const updated = await readFile(path, "utf8");
-  expect(JSON.parse(updated).mcpServers.rea.env.HOPPER_LOADER_ARGS_JSON).toBe(
+  expect(JSON.parse(updated).mcpServers.nre.env.HOPPER_LOADER_ARGS_JSON).toBe(
     "[]",
   );
   environment.HOPPER_LOADER_ARGS_JSON = "{";

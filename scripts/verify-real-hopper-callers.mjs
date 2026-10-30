@@ -38,7 +38,7 @@ const clang = (await run("xcrun", ["--find", "clang"])).stdout.trim();
 const sdk = (
   await run("xcrun", ["--sdk", "macosx", "--show-sdk-path"])
 ).stdout.trim();
-const directory = await mkdtemp(join("/tmp", "rea-hopper-callers-verifier-"));
+const directory = await mkdtemp(join("/tmp", "nre-hopper-callers-verifier-"));
 const fixture = join(directory, "tail-call");
 const large = join(directory, "long-scan");
 const source = fileURLToPath(
@@ -60,9 +60,9 @@ const transport = new StdioClientTransport({
   cwd: root,
   env: {
     ...process.env,
-    REA_ANALYSIS_PROVIDER: "hopper",
-    REA_LOG_LEVEL: "silent",
-    REA_HOPPER_CALLER_SCAN_BUDGET_MS: "5000",
+    NRE_ANALYSIS_PROVIDER: "hopper",
+    NRE_LOG_LEVEL: "silent",
+    NRE_HOPPER_CALLER_SCAN_BUDGET_MS: "5000",
   },
   stderr: "pipe",
 });
@@ -108,10 +108,10 @@ try {
   for (let i = 0; i < 4000; i++) {
     const id = String(i).padStart(4, "0");
     lines.push(
-      `__attribute__((noinline, used)) int rea_progress_${id}(void) { puts("REA_PROGRESS_${id}"); return ${i}; }`,
+      `__attribute__((noinline, used)) int nre_progress_${id}(void) { puts("NRE_PROGRESS_${id}"); return ${i}; }`,
     );
   }
-  lines.push("int main(void) { return rea_progress_0000(); }");
+  lines.push("int main(void) { return nre_progress_0000(); }");
   const largeSource = join(directory, "long-scan.c");
   await writeFile(largeSource, lines.join("\n"));
   await run(clang, [

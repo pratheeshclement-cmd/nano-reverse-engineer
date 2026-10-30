@@ -4,19 +4,19 @@ import { pluginPackageMetadata } from "../../../scripts/lib/plugin-package.mjs";
 
 const fixture = () => ({
   manifest: {
-    name: "rea-agents",
+    name: "nano-reverse-engineer",
     version: "6.8.0",
     dependencies: { runtime: "1.0.0" },
     devDependencies: { builder: "1.0.0" },
     overrides: { builder: { nested: "2.0.0" } },
   },
   lock: {
-    name: "rea-agents",
+    name: "nano-reverse-engineer",
     version: "6.8.0",
     lockfileVersion: 3,
     packages: {
       "": {
-        name: "rea-agents",
+        name: "nano-reverse-engineer",
         version: "6.8.0",
         dependencies: { runtime: "1.0.0" },
         devDependencies: { builder: "1.0.0" },
@@ -42,14 +42,14 @@ it("preserves locked runtime facts and optional dependencies without mutating so
   const packed = pluginPackageMetadata(source.manifest, source.lock);
   expect(source).toEqual(before);
   expect(packed.packageJson).toEqual({
-    name: "rea-agents",
+    name: "nano-reverse-engineer",
     version: "6.8.0",
     dependencies: { runtime: "1.0.0" },
     bundleDependencies: ["runtime"],
   });
   expect(packed.shrinkwrap.packages).toEqual({
     "": {
-      name: "rea-agents",
+      name: "nano-reverse-engineer",
       version: "6.8.0",
       dependencies: { runtime: "1.0.0" },
     },

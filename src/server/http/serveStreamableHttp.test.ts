@@ -37,7 +37,7 @@ afterEach(async () => {
   await Promise.all(servers.splice(0).map((server) => server.close()));
 });
 
-/** An echo server whose protocol onclose hook counts as a shutdown, as rea's provider cleanup does. */
+/** An echo server whose protocol onclose hook counts as a shutdown, as nre's provider cleanup does. */
 const createEchoServer = (onShutdown: () => void): RequestTrackingMcpServer => {
   const server = new RequestTrackingMcpServer({
     name: "echo-fixture",
@@ -314,8 +314,8 @@ it("refuses a non-loopback bind without an operator host allowlist as a typed li
 });
 
 it.each([
-  ["REA.LAN", "rea.lan"],
-  ["rea.lan.", "rea.lan."],
+  ["NRE.LAN", "nre.lan"],
+  ["nre.lan.", "nre.lan."],
   ["bücher.example", "xn--bcher-kva.example"],
   ["127.0.0.1", "127.0.0.1"],
   ["::1", "[::1]"],
@@ -2038,7 +2038,16 @@ describe("SEC-01 HTTP MCP authentication", () => {
         "content-type": "application/json",
         accept: "application/json, text/event-stream",
       },
-      body: JSON.stringify({ jsonrpc: "2.0", method: "initialize", id: 1, params: { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "test", version: "1" } } }),
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 1,
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "test", version: "1" },
+        },
+      }),
     });
     expect(response.status).toBe(401);
     expect(response.headers.get("www-authenticate")).toBe('Bearer realm="NRE"');
@@ -2055,7 +2064,16 @@ describe("SEC-01 HTTP MCP authentication", () => {
         accept: "application/json, text/event-stream",
         authorization: "Bearer wrong-token",
       },
-      body: JSON.stringify({ jsonrpc: "2.0", method: "initialize", id: 1, params: { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "test", version: "1" } } }),
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 1,
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "test", version: "1" },
+        },
+      }),
     });
     expect(response.status).toBe(401);
   });
@@ -2069,7 +2087,16 @@ describe("SEC-01 HTTP MCP authentication", () => {
         accept: "application/json, text/event-stream",
         authorization: "Bearer secret-token-12345",
       },
-      body: JSON.stringify({ jsonrpc: "2.0", method: "initialize", id: 1, params: { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "test", version: "1" } } }),
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 1,
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "test", version: "1" },
+        },
+      }),
     });
     expect(response.status).toBe(200);
     expect(response.headers.get("mcp-session-id")).toEqual(expect.any(String));
@@ -2084,119 +2111,152 @@ describe("SEC-01 HTTP MCP authentication", () => {
         accept: "application/json, text/event-stream",
         "x-nre-auth-token": "secret-token-12345",
       },
-      body: JSON.stringify({ jsonrpc: "2.0", method: "initialize", id: 1, params: { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "test", version: "1" } } }),
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 1,
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "test", version: "1" },
+        },
+      }),
     });
     expect(response.status).toBe(200);
     expect(response.headers.get("mcp-session-id")).toEqual(expect.any(String));
   });
+});
 
-  describe("multi-session concurrency", () => {
-    it("maintains independent concurrent sessions without evicting previous client", async () => {
-      const { served } = await start({ maxConcurrentSessions: 5 });
+describe("multi-session concurrency", () => {
+  it("maintains independent concurrent sessions without evicting previous client", async () => {
+    const { served } = await start({ maxConcurrentSessions: 5 });
 
-      // Client 1 initializes
-      const res1 = await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
+    // Client 1 initializes
+    const res1 = await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 1,
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "client1", version: "1" },
         },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "initialize", id: 1, params: { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "client1", version: "1" } } }),
-      });
-      expect(res1.status).toBe(200);
-      const session1 = res1.headers.get("mcp-session-id");
-      expect(session1).toBeTruthy();
-
-      // Client 2 initializes
-      const res2 = await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
-        },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "initialize", id: 2, params: { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "client2", version: "1" } } }),
-      });
-      expect(res2.status).toBe(200);
-      const session2 = res2.headers.get("mcp-session-id");
-      expect(session2).toBeTruthy();
-      expect(session1).not.toBe(session2);
-
-      // Client 1 sends notifications/initialized
-      await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
-          "mcp-session-id": session1!,
-        },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "notifications/initialized" }),
-      });
-
-      // Client 2 sends notifications/initialized
-      await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
-          "mcp-session-id": session2!,
-        },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "notifications/initialized" }),
-      });
-
-      // Both client sessions are active and functional
-      const ping1 = await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
-          "mcp-session-id": session1!,
-        },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 10 }),
-      });
-      expect(ping1.status).toBe(200);
-
-      const ping2 = await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
-          "mcp-session-id": session2!,
-        },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 20 }),
-      });
-      expect(ping2.status).toBe(200);
-
-      // Client 1 closes via DELETE
-      const delete1 = await fetch(served.url, {
-        method: "DELETE",
-        headers: {
-          "mcp-session-id": session1!,
-        },
-      });
-      expect(delete1.status).toBe(200);
-
-      // Client 1 is now closed (404), while Client 2 is still alive (200)
-      const postDelete1 = await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
-          "mcp-session-id": session1!,
-        },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 11 }),
-      });
-      expect(postDelete1.status).toBe(404);
-
-      const postDelete2 = await fetch(served.url, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json, text/event-stream",
-          "mcp-session-id": session2!,
-        },
-        body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 21 }),
-      });
-      expect(postDelete2.status).toBe(200);
+      }),
     });
+    expect(res1.status).toBe(200);
+    const session1 = res1.headers.get("mcp-session-id");
+    expect(session1).toBeTruthy();
+
+    // Client 2 initializes
+    const res2 = await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 2,
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "client2", version: "1" },
+        },
+      }),
+    });
+    expect(res2.status).toBe(200);
+    const session2 = res2.headers.get("mcp-session-id");
+    expect(session2).toBeTruthy();
+    expect(session1).not.toBe(session2);
+
+    // Client 1 sends notifications/initialized
+    await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+        "mcp-session-id": session1!,
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "notifications/initialized",
+      }),
+    });
+
+    // Client 2 sends notifications/initialized
+    await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+        "mcp-session-id": session2!,
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "notifications/initialized",
+      }),
+    });
+
+    // Both client sessions are active and functional
+    const ping1 = await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+        "mcp-session-id": session1!,
+      },
+      body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 10 }),
+    });
+    expect(ping1.status).toBe(200);
+
+    const ping2 = await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+        "mcp-session-id": session2!,
+      },
+      body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 20 }),
+    });
+    expect(ping2.status).toBe(200);
+
+    // Client 1 closes via DELETE
+    const delete1 = await fetch(served.url, {
+      method: "DELETE",
+      headers: {
+        "mcp-session-id": session1!,
+      },
+    });
+    expect(delete1.status).toBe(200);
+
+    // Client 1 is now closed (404), while Client 2 is still alive (200)
+    const postDelete1 = await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+        "mcp-session-id": session1!,
+      },
+      body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 11 }),
+    });
+    expect(postDelete1.status).toBe(404);
+
+    const postDelete2 = await fetch(served.url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+        "mcp-session-id": session2!,
+      },
+      body: JSON.stringify({ jsonrpc: "2.0", method: "ping", id: 21 }),
+    });
+    expect(postDelete2.status).toBe(200);
   });
 });

@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -euo pipefail
 
-report="$HOME/rea-ci"
+report="$HOME/nre-ci"
 exec > "$report/run.log" 2>&1
 # Publish the result only after all commands have settled. The host reads it as
 # root; no shared-storage permission or helper Android application is needed.

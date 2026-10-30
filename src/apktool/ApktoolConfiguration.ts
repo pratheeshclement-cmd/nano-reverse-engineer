@@ -33,7 +33,7 @@ import {
 } from "../process/WindowsBatchCommand.js";
 
 /** Environment key selecting the caller's apktool launcher. */
-export const APKTOOL_COMMAND_ENV = "REA_APKTOOL_COMMAND";
+export const APKTOOL_COMMAND_ENV = "NRE_APKTOOL_COMMAND";
 
 const VERSION_TIMEOUT_MS = 20_000;
 const VERSION_MAX_OUTPUT_BYTES = 64 * 1024;

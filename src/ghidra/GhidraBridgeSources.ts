@@ -1,13 +1,13 @@
 /** Required packaged sources, selected by their runtime role rather than order. */
 export const GHIDRA_BRIDGE_SOURCES = Object.freeze({
-  bridge: "ReaGhidraBridge.java",
-  bundleActivator: "ReaGhidraBundleActivator.java",
-  extensions: "ReaGhidraExtensions.java",
-  prepareCom: "ReaGhidraPrepareCom.java",
-  prepareRaw: "ReaGhidraPrepareRaw.java",
-  prepareDol: "ReaGhidraPrepareDol.java",
-  applySeeds: "ReaGhidraApplySeeds.java",
-  analysisOptions: "ReaGhidraAnalysisOptions.java",
-  noReturnFix: "ReaGhidraNoReturnFix.java",
-  mipsSoftFloat: "ReaGhidraMipsSoftFloat.java",
+  bridge: "NreGhidraBridge.java",
+  bundleActivator: "NreGhidraBundleActivator.java",
+  extensions: "NreGhidraExtensions.java",
+  prepareCom: "NreGhidraPrepareCom.java",
+  prepareRaw: "NreGhidraPrepareRaw.java",
+  prepareDol: "NreGhidraPrepareDol.java",
+  applySeeds: "NreGhidraApplySeeds.java",
+  analysisOptions: "NreGhidraAnalysisOptions.java",
+  noReturnFix: "NreGhidraNoReturnFix.java",
+  mipsSoftFloat: "NreGhidraMipsSoftFloat.java",
 } as const);

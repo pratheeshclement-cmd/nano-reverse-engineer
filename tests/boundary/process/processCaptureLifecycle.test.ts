@@ -135,7 +135,7 @@ const terminateFixtureProcess = async (pid: number): Promise<void> => {
 itWithCaptureCapability(
   "retains a deleted observed file when its parent becomes a regular file",
   async () => {
-    const root = await createTestTempDirectory("rea-observed-parent-type-");
+    const root = await createTestTempDirectory("nre-observed-parent-type-");
     const payload = '{"result":42}\n';
     await mkdir(join(root, "reports"));
     await writeFile(join(root, "reports", "final.json"), payload);
@@ -276,7 +276,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "cleans detached run-token children omitted by sampling and preserves an unowned neighbor",
   async () => {
-    const root = await createTestTempDirectory("rea-detached-cleanup-");
+    const root = await createTestTempDirectory("nre-detached-cleanup-");
     const pidMarker = join(root, "children.json");
     let ownedPid: number | undefined;
     let unownedPid: number | undefined;
@@ -471,7 +471,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "keeps selected executable evidence separate when the path identity changes before validation",
   async () => {
-    const root = await createTestTempDirectory("rea-executable-replaced-");
+    const root = await createTestTempDirectory("nre-executable-replaced-");
     const executable = join(root, "selected-executable");
     await symlink(process.execPath, executable);
     try {
@@ -494,7 +494,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "keeps the prelaunch executable sample when the selected path is replaced during capture",
   async () => {
-    const root = await createTestTempDirectory("rea-executable-identity-");
+    const root = await createTestTempDirectory("nre-executable-identity-");
     const executable = join(root, "selected-executable");
     const readyMarker = join(root, "child-ready");
     await symlink(process.execPath, executable);
@@ -548,7 +548,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "records external symlink metadata without following the target",
   async () => {
-    const root = await createTestTempDirectory("rea-symlink-test-");
+    const root = await createTestTempDirectory("nre-symlink-test-");
     await symlink("/etc/passwd", join(root, "escape"));
     try {
       const result = await captureProcessScenario(
@@ -674,7 +674,7 @@ const captureFinalizationFixture = async (
   scenario: Readonly<Record<string, unknown>>,
   signal?: AbortSignal,
 ): Promise<{ readonly result: CaptureRun; readonly root: string }> => {
-  const root = await createTestTempDirectory("rea-finalization-");
+  const root = await createTestTempDirectory("nre-finalization-");
   const result = await captureProcessScenario(
     processScenarioSchema.parse({
       executable: process.execPath,
@@ -967,7 +967,7 @@ itWithCaptureCapability(
         return signal === "SIGTERM" ? "signaled" : "unverified";
       },
     };
-    const root = await createTestTempDirectory("rea-finalization-host-");
+    const root = await createTestTempDirectory("nre-finalization-host-");
     const result = await captureProcessScenario(
       processScenarioSchema.parse({
         executable: process.execPath,
@@ -1029,7 +1029,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "classifies cancellation raised by the initial filesystem snapshot",
   async () => {
-    const root = await createTestTempDirectory("rea-snapshot-initial-cancel-");
+    const root = await createTestTempDirectory("nre-snapshot-initial-cancel-");
     const path = join(root, "input");
     await writeFile(path, "observed\n");
     const controller = new AbortController();
@@ -1067,7 +1067,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "classifies cancellation raised by the final filesystem snapshot",
   async () => {
-    const root = await createTestTempDirectory("rea-snapshot-final-cancel-");
+    const root = await createTestTempDirectory("nre-snapshot-final-cancel-");
     const controller = new AbortController();
     let initialSnapshotCompleted = false;
     const captureSnapshot: typeof snapshotRoots = async (scenario, signal) => {
@@ -1113,7 +1113,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "preserves filesystem errors that are not caller cancellation",
   async () => {
-    const root = await createTestTempDirectory("rea-snapshot-io-error-");
+    const root = await createTestTempDirectory("nre-snapshot-io-error-");
     const obstruction = join(root, "not-a-directory");
     await writeFile(obstruction, "file");
     const controller = new AbortController();

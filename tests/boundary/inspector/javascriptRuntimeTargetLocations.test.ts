@@ -9,7 +9,7 @@ import { startFakeV8Inspector } from "../../fixtures/inspector/fakeV8Inspector.j
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 async function entryFile(name: string): Promise<string> {
-  const root = await createTestTempDirectory("rea-node-discovery-");
+  const root = await createTestTempDirectory("nre-node-discovery-");
   const entry = join(root, name);
   await writeFile(entry, "setInterval(() => {}, 1000);\n");
   return entry;

@@ -38,7 +38,7 @@ describe("MCP tool families configuration", () => {
     (value) => {
       const parsed = parseMcpToolFamilies(value);
       if (parsed.ok) throw new Error("Expected invalid selection");
-      expect(parsed.error.message).toContain("REA_MCP_TOOL_FAMILIES");
+      expect(parsed.error.message).toContain("NRE_MCP_TOOL_FAMILIES");
     },
   );
 

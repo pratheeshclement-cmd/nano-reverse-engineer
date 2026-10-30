@@ -67,7 +67,7 @@ beforeEach(async () => {
 afterEach(() => openMock.mockReset());
 
 const setup = async (capture: unknown = scriptCaptureEvidenceFixture()) => {
-  const root = await createTestTempDirectory("rea-web-script-export-");
+  const root = await createTestTempDirectory("nre-web-script-export-");
   const resources = new ArtifactResourceScope();
   onTestFinished(() => resources.close());
   const input = {

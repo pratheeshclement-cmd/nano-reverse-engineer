@@ -16,7 +16,7 @@ import {
 
 describe("CI test history", () => {
   it("uses only successful in-root file durations", () => {
-    const root = resolve("/workspace/rea");
+    const root = resolve("/workspace/nre");
     const durations = parseTestDurations(
       JSON.stringify({
         version: 1,
@@ -65,7 +65,7 @@ describe("CI test history", () => {
   });
 
   it("falls back for missing history while preserving real filesystem errors", async () => {
-    const temporaryRoot = await createTestTempDirectory("rea-ci-sequencer-");
+    const temporaryRoot = await createTestTempDirectory("nre-ci-sequencer-");
     const missing = await readTestDurations(
       join(temporaryRoot, "missing.json"),
       temporaryRoot,

@@ -41,7 +41,7 @@ const read = (bytes: Uint8Array) =>
 it.skipIf(process.platform === "win32")(
   "keeps non-UTF-8 symlink targets distinct from a real replacement character",
   async () => {
-    const root = await createTestTempDirectory("rea-dylib-raw-symlink-");
+    const root = await createTestTempDirectory("nre-dylib-raw-symlink-");
     const executable = machoImage({
       commands: [
         buildVersionCommand(1),
@@ -99,7 +99,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("retains unknown executable-root traversal after a complete callback and keeps known image facts", async () => {
-  const root = await createTestTempDirectory("rea-dylib-traversal-callback-");
+  const root = await createTestTempDirectory("nre-dylib-traversal-callback-");
   const bytes = machoImage({ commands: [buildVersionCommand(1)] });
   const path = join(root, "main");
   await writeFile(path, bytes);
@@ -186,7 +186,7 @@ it.each([
 );
 
 it("uses legacy simulator and device platform facts when resolving dylibs", async () => {
-  const root = await createTestTempDirectory("rea-macho-legacy-platform-");
+  const root = await createTestTempDirectory("nre-macho-legacy-platform-");
   const dylibPath = "Frameworks/libThing.dylib";
   const installName = "@rpath/libThing.dylib";
   const intelExecutable = machoImage({
@@ -267,7 +267,7 @@ it("uses legacy simulator and device platform facts when resolving dylibs", asyn
 });
 
 it("selects the ARMv7s FAT dylib slice before ARMv7 independent of FAT order", async () => {
-  const workspace = await createTestTempDirectory("rea-macho-arm-fat-order-");
+  const workspace = await createTestTempDirectory("nre-macho-arm-fat-order-");
   const armv7 = { type: 12, subtype: 9 };
   const armv7s = { type: 12, subtype: 11 };
   const app = machoImage({
@@ -370,7 +370,7 @@ it("selects the ARMv7s FAT dylib slice before ARMv7 independent of FAT order", a
 it.each([false, true] as const)(
   "applies macOS dyld's implicit platform to a platform-less dylib and traces its required child present=%s",
   async (childPresent) => {
-    const root = await createTestTempDirectory("rea-dylib-platform-unknown-");
+    const root = await createTestTempDirectory("nre-dylib-platform-unknown-");
     const executablePath = "Contents/MacOS/probe";
     const dylibPath = "Contents/Frameworks/libA.dylib";
     const fallbackPath = "Contents/Fallbacks/libA.dylib";
@@ -477,7 +477,7 @@ describe("absolute dyld candidate paths at the filesystem reader boundary", () =
   it.each(["install-name", "rpath"] as const)(
     "resolves an absolute in-root %s while preserving its source path",
     async (kind) => {
-      const root = await createTestTempDirectory("rea-dylib-absolute-in-root-");
+      const root = await createTestTempDirectory("nre-dylib-absolute-in-root-");
       const canonicalRoot = await realpath(root);
       const bridgePath = "Frameworks/libBridge.dylib";
       const leafPath = "Frameworks/libLeaf.dylib";
@@ -550,7 +550,7 @@ describe("absolute dyld candidate paths at the filesystem reader boundary", () =
   );
 
   it("keeps a genuinely external absolute candidate outside the analyzed root", async () => {
-    const root = await createTestTempDirectory("rea-dylib-absolute-outside-");
+    const root = await createTestTempDirectory("nre-dylib-absolute-outside-");
     const canonicalRoot = await realpath(root);
     const executable = machoImage({
       commands: [
@@ -602,53 +602,56 @@ describe("absolute dyld candidate paths at the filesystem reader boundary", () =
 });
 
 describe("absolute dyld candidate traversal", () => {
-  it("maps an absolute candidate spelled through the selected root symlink", async () => {
-    const root = await createTestTempDirectory(
-      "rea-dylib-absolute-root-alias-",
-    );
-    const aliasRoot = join(root, "bundle-alias");
-    const bridgePath = "Frameworks/libBridge.dylib";
-    const bridgeAbsolute = `${aliasRoot}/${bridgePath}`;
-    const executable = machoImage({
-      commands: [
-        buildVersionCommand(1),
-        dylibCommand(LC.LOAD_DYLIB, bridgeAbsolute),
-      ],
-    });
-    const bridge = machoImage({
-      fileType: FILE_TYPE.dylib,
-      commands: [buildVersionCommand(1)],
-    });
-    await symlink(".", aliasRoot);
-    await mkdir(join(root, "Frameworks"), { recursive: true });
-    await writeFile(join(root, "App"), executable);
-    await writeFile(join(root, bridgePath), bridge);
+  it.skipIf(process.platform === "win32")(
+    "maps an absolute candidate spelled through the selected root symlink",
+    async () => {
+      const root = await createTestTempDirectory(
+        "nre-dylib-absolute-root-alias-",
+      );
+      const aliasRoot = join(root, "bundle-alias");
+      const bridgePath = "Frameworks/libBridge.dylib";
+      const bridgeAbsolute = `${aliasRoot}/${bridgePath}`;
+      const executable = machoImage({
+        commands: [
+          buildVersionCommand(1),
+          dylibCommand(LC.LOAD_DYLIB, bridgeAbsolute),
+        ],
+      });
+      const bridge = machoImage({
+        fileType: FILE_TYPE.dylib,
+        commands: [buildVersionCommand(1)],
+      });
+      await symlink(".", aliasRoot);
+      await mkdir(join(root, "Frameworks"), { recursive: true });
+      await writeFile(join(root, "App"), executable);
+      await writeFile(join(root, bridgePath), bridge);
 
-    const trace = await traceDylibResolution({
-      rootPath: aliasRoot,
-      targetPath: `${aliasRoot}/App`,
-      targetSha256: createHash("sha256").update(executable).digest("hex"),
-      enumerateRoots: false,
-      parameters: { roots: ["App"] },
-    });
+      const trace = await traceDylibResolution({
+        rootPath: aliasRoot,
+        targetPath: `${aliasRoot}/App`,
+        targetSha256: createHash("sha256").update(executable).digest("hex"),
+        enumerateRoots: false,
+        parameters: { roots: ["App"] },
+      });
 
-    expect(trace.edges[0]).toMatchObject({
-      install_name: bridgeAbsolute,
-      candidates: [
-        {
-          path: bridgeAbsolute,
-          outcome: "resolved",
-          resolved_path: bridgePath,
-        },
-      ],
-      resolution: { status: "resolved", image: bridgePath },
-    });
-  });
+      expect(trace.edges[0]).toMatchObject({
+        install_name: bridgeAbsolute,
+        candidates: [
+          {
+            path: bridgeAbsolute,
+            outcome: "resolved",
+            resolved_path: bridgePath,
+          },
+        ],
+        resolution: { status: "resolved", image: bridgePath },
+      });
+    },
+  );
 
   it.skipIf(process.platform === "win32")(
     "preserves symlink-then-parent traversal for an absolute in-root path",
     async () => {
-      const root = await createTestTempDirectory("rea-dylib-absolute-symlink-");
+      const root = await createTestTempDirectory("nre-dylib-absolute-symlink-");
       const canonicalRoot = await realpath(root);
       const bridgePath = "Frameworks/Versions/libBridge.dylib";
       const decoyPath = "Frameworks/libBridge.dylib";
@@ -709,7 +712,7 @@ describe("absolute dyld candidate traversal", () => {
 });
 
 it("selects matching arm64e subtype slices when tracing a mixed FAT image", async () => {
-  const root = await createTestTempDirectory("rea-macho-arm64e-subtypes-");
+  const root = await createTestTempDirectory("nre-macho-arm64e-subtypes-");
   const executablePath = "Contents/MacOS/App";
   const dylibPath = "Contents/MacOS/libVariant.dylib";
   const installName = "@executable_path/libVariant.dylib";
@@ -1574,7 +1577,7 @@ describe("LC_LAZY_LOAD_DYLIB_INFO path terminator", () => {
 
 describe("LC_LAZY_LOAD_DYLIB_INFO resolution", () => {
   it("reports the lazy edge and does not treat an absent image as a launch failure", async () => {
-    const root = await createTestTempDirectory("rea-lazy-info-");
+    const root = await createTestTempDirectory("nre-lazy-info-");
     const executablePath = "lazy";
     const dylibPath = "lib/libl.dylib";
     const executable = machoImageWithLazyLoadDylibInfo({

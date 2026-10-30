@@ -19,7 +19,7 @@ const job = (name: string, conclusion = "success") => ({
   steps: [],
 });
 const selection = () => ({
-  repository: "fixture/rea",
+  repository: "fixture/nre",
   version: "6.5.0",
   tagSha: sourceSha,
   run: {
@@ -28,11 +28,11 @@ const selection = () => ({
     path: ".github/workflows/release.yml",
     event: "pull_request",
     status: "completed",
-    repository: { full_name: "fixture/rea" },
-    head_repository: { full_name: "fixture/rea" },
+    repository: { full_name: "fixture/nre" },
+    head_repository: { full_name: "fixture/nre" },
   },
   release: {
-    tag_name: "rea-agents-6.5.0",
+    tag_name: "nano-reverse-engineer-6.5.0",
     draft: false,
     published_at: "2026-10-14T12:32:45Z",
   },
@@ -128,7 +128,7 @@ it.each(["duplicate", "running"])(
 
 it("refuses foreign runs, unrelated workflows and unpublished releases", () => {
   const foreign = selection();
-  foreign.run.head_repository.full_name = "outside/rea";
+  foreign.run.head_repository.full_name = "outside/nre";
   expect(() => selectRecoveryRelease(foreign)).toThrow();
   const unrelated = selection();
   unrelated.run.path = ".github/workflows/ci.yml";
@@ -137,14 +137,14 @@ it("refuses foreign runs, unrelated workflows and unpublished releases", () => {
   draft.release.draft = true;
   expect(() => selectRecoveryRelease(draft)).toThrow();
   const wrongTag = selection();
-  wrongTag.release.tag_name = "rea-agents-6.6.0";
+  wrongTag.release.tag_name = "nano-reverse-engineer-6.6.0";
   expect(() => selectRecoveryRelease(wrongTag)).toThrow();
 });
 
 it.each([1, 2])(
   "requires npm bytes to match the original v%d archive/source/run",
   async (schemaVersion) => {
-    const directory = await createTestTempDirectory("rea-release-recovery-");
+    const directory = await createTestTempDirectory("nre-release-recovery-");
     const archive = "original qualified archive";
     await writeFile(join(directory, "package.tgz"), archive);
     await writeFile(
@@ -218,7 +218,7 @@ it("limits recovery to verification and dependent MCP publication from the relea
     actions: "read",
   });
   const steps = workflow.jobs.verify.steps;
-  for (const name of ["verified-release-package", "rea-test-runtime"])
+  for (const name of ["verified-release-package", "nre-test-runtime"])
     expect(
       steps.find((candidate) => candidate.with?.name === name)?.with,
     ).toMatchObject({

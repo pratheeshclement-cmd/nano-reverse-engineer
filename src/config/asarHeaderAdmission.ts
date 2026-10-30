@@ -7,7 +7,7 @@ import { z } from "zod";
 import { ConfigurationError } from "../domain/configurationErrors.js";
 import { err, ok, type Result } from "../domain/result.js";
 
-export const ASAR_HEADER_ADMISSION_SETTING = "REA_ASAR_MAX_HEADER_BYTES";
+export const ASAR_HEADER_ADMISSION_SETTING = "NRE_ASAR_MAX_HEADER_BYTES";
 
 /** Effective ASAR header/index admission and where its value came from. */
 export interface AsarHeaderAdmission {

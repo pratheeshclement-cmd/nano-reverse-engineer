@@ -2,7 +2,7 @@
 
 This lane extends native ELF analysis for `EM_RISCV` targets. It does not
 execute RISC-V code, emulate a boot sequence, or rehost firmware. It addresses
-[#2063](https://github.com/morluto/rea/issues/2063) and follows the same
+[#2063](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/2063) and follows the same
 lane shape as [generic MIPS support](ghidra-mips.md).
 
 ## Admission boundary
@@ -51,10 +51,10 @@ Ghidra's header-based selection is not reliable for RV32. The 12.1.4
 | RV32 ELF, `e_flags 0x5`, no Andes declaration   | `RISCV:LE:32:AndeStar_v5:gcc` |
 
 So an ordinary RV32 image lands on an Andes processor model unless the language
-is stated. REA therefore pins `RISCV:LE:32:default` or `RISCV:LE:64:default`
+is stated. NRE therefore pins `RISCV:LE:32:default` or `RISCV:LE:64:default`
 with the `gcc` compiler specification per class, records
 `language_selection: provider-pinned-v1`, and refuses a caller-selected
-`REA_GHIDRA_LANGUAGE_ID` or `REA_GHIDRA_COMPILER_SPEC_ID` that disagrees with the
+`NRE_GHIDRA_LANGUAGE_ID` or `NRE_GHIDRA_COMPILER_SPEC_ID` that disagrees with the
 pin without changing the requested override. An override that matches the pin is
 accepted and recorded as `configured-v1`.
 
@@ -83,9 +83,9 @@ they are not on `PATH`:
 ```sh
 GHIDRA_INSTALL_DIR=/path/to/ghidra_12.1.4_PUBLIC \
 JAVA_HOME=/path/to/jdk-21 \
-REA_RISCV_CLANG=/path/to/llvm/bin/clang \
-REA_RISCV_LLD=/path/to/lld/bin/ld.lld \
-REA_RISCV_READELF=/path/to/llvm/bin/llvm-readelf \
+NRE_RISCV_CLANG=/path/to/llvm/bin/clang \
+NRE_RISCV_LLD=/path/to/lld/bin/ld.lld \
+NRE_RISCV_READELF=/path/to/llvm/bin/llvm-readelf \
 npm run verify:ghidra:riscv
 ```
 

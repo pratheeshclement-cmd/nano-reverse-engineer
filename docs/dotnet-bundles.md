@@ -1,8 +1,8 @@
 # .NET single-file bundles
 
-Use `rea inspect-artifact /absolute/path/host --json` to inventory an ordinary
-.NET single-file host and `rea extract-artifact /absolute/path/host --json` to
-materialize its members into a fresh, REA-owned output directory. With a host
+Use `nre inspect-artifact /absolute/path/host --json` to inventory an ordinary
+.NET single-file host and `nre extract-artifact /absolute/path/host --json` to
+materialize its members into a fresh, NRE-owned output directory. With a host
 selected through `open_binary`, the corresponding MCP tools are
 `inspect_artifact` and `extract_artifact`. No .NET installation is needed for
 inspection or extraction.
@@ -15,7 +15,7 @@ to retrieve expanded-byte digests. Include `format_metadata` and
 `source_location` when member declarations and stored extents matter. Identity
 fields survive projection, and the complete inspection Evidence stays retained.
 
-REA detects the apphost marker and its preceding header offset from PE, ELF,
+NRE detects the apphost marker and its preceding header offset from PE, ELF,
 and thin Mach-O bytes, regardless of filename. An unbundled apphost's zero
 offset remains an ordinary native artifact. Universal Mach-O slice inventory
 keeps its existing behavior; bundled contents inside slices are not expanded.
@@ -54,7 +54,7 @@ Metadata is range-read with a 64 KiB cache. Policy budgets are 16 MiB of
 manifest metadata, 100,000 files, 64 KiB per UTF-8 string, 512 MiB of stored or
 expanded bytes per file, 256 path parts per member, 250,000 distinct in-memory
 path-tree nodes, and 2 GiB of aggregate expanded bytes. The node budget counts
-shared directory prefixes only once. These are REA
+shared directory prefixes only once. These are NRE
 resource policies, not limits imposed by Microsoft's format. Marker scanning
 streams 64 KiB chunks and reuses completed probe facts during extraction;
 ordinary native files without a marker incur one extra
@@ -87,8 +87,8 @@ as the optional third generator argument to match that template.
 ```bash
 dotnet build scripts/fixtures/dotnet-bundle/BundleFixture.csproj -c Release --configfile scripts/fixtures/dotnet-bundle/NuGet.Config -o /absolute/path/producer -p:BaseIntermediateOutputPath=/absolute/path/producer-obj/
 dotnet /absolute/path/producer/BundleFixture.dll /absolute/path/apphost.exe /absolute/path/absent-bundles-directory
-rea inspect-artifact /absolute/path/absent-bundles-directory/net8-compressed/Probe.exe --json
-rea extract-artifact /absolute/path/absent-bundles-directory/net8-compressed/Probe.exe --json
+nre inspect-artifact /absolute/path/absent-bundles-directory/net8-compressed/Probe.exe --json
+nre extract-artifact /absolute/path/absent-bundles-directory/net8-compressed/Probe.exe --json
 ```
 
 The generator writes `oracle.json` beside each host. An independent C#

@@ -19,7 +19,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
       const root = await actual.mkdtemp(...args);
       if (
         typeof root === "string" &&
-        String(args[0]).includes("rea-process-token-")
+        String(args[0]).includes("nre-process-token-")
       )
         fault.roots.add(root);
       return root;
@@ -74,7 +74,7 @@ afterEach(async () => {
 
 const fixture = async (mode: "fail" | "active" = "fail") => {
   const directory = await createTestTempDirectory(
-    "rea-compiler-cleanup-fixture-",
+    "nre-compiler-cleanup-fixture-",
   );
   const compiler = join(directory, "compiler");
   await writeFile(
@@ -207,7 +207,7 @@ it.skipIf(process.platform === "win32")(
       environment: {},
       analyzeHeadlessPath: join(fixtureRoot, "support", "analyzeHeadless"),
       javaHome: join(fixtureRoot, "jdk"),
-      bridgeScriptPath: join(fixtureRoot, "ReaGhidraBridge.java"),
+      bridgeScriptPath: join(fixtureRoot, "NreGhidraBridge.java"),
       javaLaunch: async () => ({
         command: process.execPath,
         arguments: [],

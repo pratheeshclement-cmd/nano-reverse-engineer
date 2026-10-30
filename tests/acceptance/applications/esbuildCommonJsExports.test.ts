@@ -28,7 +28,7 @@ const esbuildBundle = `(() => {
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains exports from esbuild CommonJS factories that also accept module through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-esbuild-commonjs-exports-");
+    const root = await createTestTempDirectory("nre-esbuild-commonjs-exports-");
     await writeFixtureFiles(root, { "bundle.js": esbuildBundle });
 
     expect(await runNodeJsonControl(root, "bundle.js")).toEqual(["parse"]);

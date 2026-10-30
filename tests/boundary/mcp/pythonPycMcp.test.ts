@@ -47,7 +47,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-python-pyc-mcp-int64-");
+      const root = await createTestTempDirectory("nre-python-pyc-mcp-int64-");
       for (const [name, value, bits] of [
         ["positive", 42n, 6],
         ["negative", -1n, 1],
@@ -150,7 +150,7 @@ mcpTest(
       const outputSchema: Record<string, unknown> = advertised.outputSchema;
       const ajv = new Ajv2020({ strict: false, validateFormats: false });
       expect(ajv.validateSchema(outputSchema)).toBe(true);
-      const root = await createTestTempDirectory("rea-python-pyc-mcp-");
+      const root = await createTestTempDirectory("nre-python-pyc-mcp-");
       const path = join(root, "sample.pyc");
       const nested = marshalCode("py311", {
         name: "inner",
@@ -223,7 +223,7 @@ mcpTest(
         throw new Error("Missing inspect_python_pyc output schema");
       const outputSchema: Record<string, unknown> = advertised.outputSchema;
       const ajv = new Ajv2020({ strict: false, validateFormats: false });
-      const root = await createTestTempDirectory("rea-python-pyc-mcp-flags-");
+      const root = await createTestTempDirectory("nre-python-pyc-mcp-flags-");
       for (const testCase of [
         {
           name: "legacy-negative",
@@ -297,7 +297,7 @@ mcpTest(
   async ({ mcp }) => {
     const { client, session } = await connect(mcp);
     try {
-      const root = await createTestTempDirectory("rea-python-pyc-mcp-signed-");
+      const root = await createTestTempDirectory("nre-python-pyc-mcp-signed-");
       for (const { name, fields, message } of [
         {
           name: "negative-stacksize",
@@ -342,7 +342,7 @@ mcpTest(
 mcpTest("reports an unknown pyc magic as unsupported", async ({ mcp }) => {
   const { client, session } = await connect(mcp);
   try {
-    const root = await createTestTempDirectory("rea-python-pyc-mcp-magic-");
+    const root = await createTestTempDirectory("nre-python-pyc-mcp-magic-");
     const path = join(root, "unknown.pyc");
     const bytes = pythonPycFixture("py311");
     bytes.writeUInt16LE(1, 0);

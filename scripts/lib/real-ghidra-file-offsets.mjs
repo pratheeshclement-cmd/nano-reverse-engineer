@@ -32,13 +32,13 @@ export async function verifyGhidraFileOffsets(
 ) {
   const environment = {
     ...process.env,
-    REA_ANALYSIS_PROVIDER: "ghidra",
-    REA_LOG_LEVEL: "silent",
+    NRE_ANALYSIS_PROVIDER: "ghidra",
+    NRE_LOG_LEVEL: "silent",
   };
   const { requestOptions } = resolveGhidraVerifierTimeouts(environment);
   const timeoutMs = requestOptions.timeout;
   const original = await readFile(targetPath);
-  const workspace = await mkdtemp(join(tmpdir(), "rea-file-offsets-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-file-offsets-"));
   const runtime = join(workspace, "runtime");
   await mkdir(runtime);
   const env = {
@@ -47,7 +47,7 @@ export async function verifyGhidraFileOffsets(
     TMP: runtime,
     TMPDIR: runtime,
   };
-  const client = new Client({ name: "rea-file-offsets", version: "1" });
+  const client = new Client({ name: "nre-file-offsets", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [entrypoint, "mcp"],

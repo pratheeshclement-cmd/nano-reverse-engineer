@@ -106,7 +106,7 @@ for (const scenario of cases)
     `setup and uninstall explain ${scenario.client} configuration ${scenario.text}`,
     async ({ cli }) => {
       const home = await createTestTempDirectory(
-        "rea-client-config-diagnostic-",
+        "nre-client-config-diagnostic-",
       );
       const config = join(home, scenario.path);
       await mkdir(dirname(config), { recursive: true });
@@ -179,13 +179,13 @@ cliTest.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "doctor reports an unreadable configuration symlink without changing it",
   async ({ cli }) => {
     const home = await createTestTempDirectory(
-      "rea-doctor-denied-registration-",
+      "nre-doctor-denied-registration-",
     );
     const locked = join(home, "owned-denied");
     const target = join(locked, "client.json");
     await mkdir(locked);
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n';
     await writeFile(target, original);
     const config = join(home, ".claude.json");
     await symlink(target, config);

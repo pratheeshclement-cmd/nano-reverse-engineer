@@ -1,4 +1,4 @@
-ENTRY(rea_entry)
+ENTRY(nre_entry)
 /*
  * ESP32-C3 address ranges from ESP-IDF v6.1
  * components/soc/esp32c3/include/soc/soc.h. One program header per

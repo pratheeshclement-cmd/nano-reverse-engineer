@@ -37,7 +37,7 @@ const writeAccent = async (tree: SafeOutputTree) => {
 };
 
 it("accepts a decomposed directory listing while verifying the original owned file identity", async () => {
-  const root = await createTestTempDirectory("rea-output-unicode-");
+  const root = await createTestTempDirectory("nre-output-unicode-");
   const tree = await SafeOutputTree.create(join(root, "output"));
   await writeAccent(tree);
   boundary.decomposed = true;
@@ -53,7 +53,7 @@ it("accepts a decomposed directory listing while verifying the original owned fi
 it.skipIf(process.platform !== "linux")(
   "does not collapse an additional canonically equivalent foreign filename",
   async () => {
-    const root = await createTestTempDirectory("rea-output-unicode-foreign-");
+    const root = await createTestTempDirectory("nre-output-unicode-foreign-");
     const output = join(root, "output");
     const tree = await SafeOutputTree.create(output);
     await writeAccent(tree);

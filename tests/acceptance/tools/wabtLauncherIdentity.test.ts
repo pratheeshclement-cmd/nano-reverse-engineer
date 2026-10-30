@@ -34,7 +34,7 @@ const fixtureUrl = (name: string) =>
 
 /** Real shell/Node launchers with authored WABT output, not installed WABT engines. */
 const createFixture = async () => {
-  const root = await createTestTempDirectory("rea-wabt-launcher-");
+  const root = await createTestTempDirectory("nre-wabt-launcher-");
   const artifact = join(root, "selected module.wasm");
   const hold = join(root, "hold-decoder");
   const trace = join(root, "commands.jsonl");
@@ -53,16 +53,16 @@ const createFixture = async () => {
     const tool = process.argv[2];
     const version = process.argv[3] === "--version";
     const snapshot_sha256 = version ? null : require("node:crypto").createHash("sha256").update(fs.readFileSync("module.wasm")).digest("hex");
-    fs.appendFileSync(process.env.REA_WABT_TEST_TRACE, JSON.stringify({ tool, pid: process.pid, version, cwd: process.cwd(), run_id: process.env.REA_PROCESS_RUN_ID, snapshot_sha256 }) + "\\n");
+    fs.appendFileSync(process.env.NRE_WABT_TEST_TRACE, JSON.stringify({ tool, pid: process.pid, version, cwd: process.cwd(), run_id: process.env.NRE_PROCESS_RUN_ID, snapshot_sha256 }) + "\\n");
     if (version) {
       process.stdout.write("1.0.42\\n");
-      if (tool === "wasm-validate" && process.env.REA_WABT_TEST_REVOKE_COMMAND)
-        fs.chmodSync(process.env.REA_WABT_TEST_REVOKE_COMMAND, 0);
+      if (tool === "wasm-validate" && process.env.NRE_WABT_TEST_REVOKE_COMMAND)
+        fs.chmodSync(process.env.NRE_WABT_TEST_REVOKE_COMMAND, 0);
     }
-    else if (tool === "wasm-objdump") { process.stdout.write(fs.readFileSync(process.env.REA_WABT_TEST_DUMP)); }
+    else if (tool === "wasm-objdump") { process.stdout.write(fs.readFileSync(process.env.NRE_WABT_TEST_DUMP)); }
     else if (tool === "wasm2wat") {
-      const decode = () => process.stdout.write(fs.readFileSync(process.env.REA_WABT_TEST_WAT));
-      if (fs.existsSync(process.env.REA_WABT_TEST_HOLD)) {
+      const decode = () => process.stdout.write(fs.readFileSync(process.env.NRE_WABT_TEST_WAT));
+      if (fs.existsSync(process.env.NRE_WABT_TEST_HOLD)) {
         setTimeout(decode, 4000);
       } else { decode(); }
     }
@@ -75,18 +75,18 @@ const createFixture = async () => {
         join(directory, tool),
         decoy
           ? "#!/bin/sh\nprintf 'unselected-decoy\\n'\n"
-          : `#!/bin/sh\nexec "$REA_WABT_TEST_NODE" "$REA_WABT_TEST_RUNNER" "${tool}" "$@"\n`,
+          : `#!/bin/sh\nexec "$NRE_WABT_TEST_NODE" "$NRE_WABT_TEST_RUNNER" "${tool}" "$@"\n`,
         { mode: 0o700 },
       );
   };
   const environment = {
     ...process.env,
-    REA_WABT_TEST_NODE: process.execPath,
-    REA_WABT_TEST_RUNNER: runner,
-    REA_WABT_TEST_DUMP: fixtureUrl("objdump.txt"),
-    REA_WABT_TEST_WAT: fixtureUrl("decoded.wat"),
-    REA_WABT_TEST_HOLD: hold,
-    REA_WABT_TEST_TRACE: trace,
+    NRE_WABT_TEST_NODE: process.execPath,
+    NRE_WABT_TEST_RUNNER: runner,
+    NRE_WABT_TEST_DUMP: fixtureUrl("objdump.txt"),
+    NRE_WABT_TEST_WAT: fixtureUrl("decoded.wat"),
+    NRE_WABT_TEST_HOLD: hold,
+    NRE_WABT_TEST_TRACE: trace,
     TMPDIR: scratch,
     TMP: scratch,
     TEMP: scratch,
@@ -120,7 +120,7 @@ cliTest.skipIf(process.platform === "win32")(
         ],
         environment: {
           ...fixture.environment,
-          REA_WABT_BIN_DIRECTORY: selected,
+          NRE_WABT_BIN_DIRECTORY: selected,
         },
       });
     const control = await invoke(10_000);
@@ -138,10 +138,10 @@ cliTest.skipIf(process.platform === "win32")(
     expect(trace.length).toBeGreaterThan(0);
     expect(new Set(trace.map(({ cwd }) => cwd)).size).toBe(1);
     for (const command of trace) {
-      expect(command.cwd.startsWith(join(fixture.scratch, "rea-wabt-"))).toBe(
+      expect(command.cwd.startsWith(join(fixture.scratch, "nre-wabt-"))).toBe(
         true,
       );
-      expect(command.run_id).toMatch(/^rea-wabt-/u);
+      expect(command.run_id).toMatch(/^nre-wabt-/u);
       expect(command.snapshot_sha256).toBe(
         command.version ? null : report.artifact.sha256,
       );
@@ -203,8 +203,8 @@ cliTest.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         arguments: ["inspect-wasm-artifact", fixture.artifact, "--json"],
         environment: {
           ...fixture.environment,
-          REA_WABT_BIN_DIRECTORY: selected,
-          REA_WABT_TEST_REVOKE_COMMAND: revoked,
+          NRE_WABT_BIN_DIRECTORY: selected,
+          NRE_WABT_TEST_REVOKE_COMMAND: revoked,
         },
       });
       expect(invocation.exitCode, invocation.stderr).toBe(1);
@@ -257,7 +257,7 @@ cliTest.skipIf(process.platform === "win32")(
     }
     const invocation = await cli.run({
       arguments: ["inspect-wasm-artifact", fixture.artifact, "--json"],
-      environment: { ...fixture.environment, REA_WABT_BIN_DIRECTORY: selected },
+      environment: { ...fixture.environment, NRE_WABT_BIN_DIRECTORY: selected },
     });
     expect(
       invocation.exitCode,
@@ -294,7 +294,7 @@ cliTest.skipIf(process.platform === "win32")(
       arguments: ["inspect-wasm-artifact", fixture.artifact, "--json"],
       environment: {
         ...fixture.environment,
-        REA_WABT_BIN_DIRECTORY: `${fixture.root}/alias/../tools`,
+        NRE_WABT_BIN_DIRECTORY: `${fixture.root}/alias/../tools`,
       },
     });
     expect(

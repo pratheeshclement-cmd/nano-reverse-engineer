@@ -27,7 +27,7 @@ const createMcp = async (
     { kind: "session", session },
     {
       logger: silentLogger,
-      environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: profile },
+      environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: profile },
       firmwareAnalysis: {
         execute: async (request) => {
           firmwareCalls.push(request.operation);
@@ -238,7 +238,7 @@ it("advertises full host-absolute path constraints after SDK schema conversion",
   try {
     const listed = await client.listTools();
     const ajv = new Ajv2020({ strict: false, validateFormats: false });
-    const absolute = resolve("rea-absolute-input");
+    const absolute = resolve("nre-absolute-input");
     const relative = "relative-input";
 
     for (const { name, field, valid, invalid } of [
@@ -294,7 +294,7 @@ it("rejects relative paths through in-memory MCP handlers", async () => {
   const { client, close } = await createMcp(firmwareCalls);
   try {
     for (const { name, field, invalid, issuePath } of inputCases(
-      resolve("rea-absolute-input"),
+      resolve("nre-absolute-input"),
       "relative-input",
     )) {
       const result = await client.callTool({ name, arguments: invalid });

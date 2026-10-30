@@ -65,7 +65,7 @@ it.each([
 ] as const)(
   "refuses a JVM class with %i unused constant bytes and CPU lookalike %s without claiming FAT identity",
   async (constantBytes, fatCpuLookalike) => {
-    const directory = await createTestTempDirectory("rea-class-target-");
+    const directory = await createTestTempDirectory("nre-class-target-");
     const path = join(directory, "input.class");
     const bytes = javaClassFile(constantBytes, fatCpuLookalike);
     expect(parseExecutableHeader(bytes, "arm64")).toEqual({
@@ -90,7 +90,7 @@ it.each([
 it.each([MAX_JVM_CLASS_IDENTITY_BYTES, MAX_JVM_CLASS_IDENTITY_BYTES + 1])(
   "preserves JVM identity uncertainty at the class scan boundary for %i bytes",
   async (size) => {
-    const directory = await createTestTempDirectory("rea-class-boundary-");
+    const directory = await createTestTempDirectory("nre-class-boundary-");
     const path = join(directory, "input.class");
     const classPrefix = javaClassFile(4000, true);
     classPrefix.writeUInt16BE(1, classPrefix.length - 2);
@@ -119,7 +119,7 @@ it.each([MAX_JVM_CLASS_IDENTITY_BYTES, MAX_JVM_CLASS_IDENTITY_BYTES + 1])(
 it.each([0x01c0, 0x01c2, 0x01c4, 0xaa64])(
   "retains original PE COFF machine %i through file-backed target resolution",
   async (peMachine) => {
-    const directory = await createTestTempDirectory("rea-pe-machine-");
+    const directory = await createTestTempDirectory("nre-pe-machine-");
     const path = join(directory, "image.exe");
     const bytes = pe(peMachine === 0xaa64 ? 0xaa64 : 0x01c0);
     bytes.writeUInt16LE(peMachine, bytes.readUInt32LE(0x3c) + 4);
@@ -139,7 +139,7 @@ it.each([0x01c0, 0x01c2, 0x01c4, 0xaa64])(
 it.each([{ cpus: [0x0100000c] }, { cpus: [0x01000007, 0x0100000c] }])(
   "preserves a FAT container's format in the resolved target and Evidence ($cpus)",
   async ({ cpus }) => {
-    const directory = await createTestTempDirectory("rea-universal-target-");
+    const directory = await createTestTempDirectory("nre-universal-target-");
     const path = join(directory, "image");
     await writeFile(path, fat(cpus));
     const resolved = await parseBinaryTarget(path, {
@@ -170,7 +170,7 @@ it.each([{ cpus: [0x0100000c] }, { cpus: [0x01000007, 0x0100000c] }])(
 );
 
 it("reads a sparse FAT slice header beyond the bounded prefix", async () => {
-  const directory = await createTestTempDirectory("rea-sparse-fat-target-");
+  const directory = await createTestTempDirectory("nre-sparse-fat-target-");
   const path = join(directory, "image");
   const sliceOffset = 64 * 1024;
   const file = await open(path, "w+");
@@ -198,7 +198,7 @@ it("reads a sparse FAT slice header beyond the bounded prefix", async () => {
 });
 
 it("reads the complete bounded 128-entry FAT64 table beyond the prefix", async () => {
-  const directory = await createTestTempDirectory("rea-fat64-max-table-");
+  const directory = await createTestTempDirectory("nre-fat64-max-table-");
   const path = join(directory, "image");
   const entryCount = 128;
   const tableEnd = 8 + entryCount * 32;
@@ -234,7 +234,7 @@ it("reads the complete bounded 128-entry FAT64 table beyond the prefix", async (
 it.each([0, 1])(
   "rejects a file-backed FAT CPU mismatch in slice %i before host selection",
   async (wrongIndex) => {
-    const directory = await createTestTempDirectory("rea-fat-cpu-mismatch-");
+    const directory = await createTestTempDirectory("nre-fat-cpu-mismatch-");
     const path = join(directory, "image");
     const bytes = fatImage([
       { cpu: CPU.x86_64, bytes: machoImage({ cpu: CPU.x86_64 }) },
@@ -276,7 +276,7 @@ it.each([
     ],
   },
 ])("refuses FAT $name before provider selection", async ({ slices }) => {
-  const directory = await createTestTempDirectory("rea-fat-archive-target-");
+  const directory = await createTestTempDirectory("nre-fat-archive-target-");
   const path = join(directory, "image");
   await writeFile(path, fatImage(slices));
   expect(
@@ -295,7 +295,7 @@ describe("binary target I/O: app plist permissions and decoding", () => {
     ["EACCES", "permission denied reading app Info.plist"],
     ["EPERM", "permission denied reading app Info.plist"],
   ])("preserves %s while reading an app plist", async (code, message) => {
-    const directory = await createTestTempDirectory("rea-app-permission-");
+    const directory = await createTestTempDirectory("nre-app-permission-");
     const app = join(directory, "Permission.app");
     await mkdir(join(app, "Contents"), { recursive: true });
     await writeFile(join(app, "Contents", "Info.plist"), "placeholder");
@@ -320,7 +320,7 @@ describe("binary target I/O: app plist permissions and decoding", () => {
   });
 
   it("preserves non-permission plist read failures as read failures", async () => {
-    const directory = await createTestTempDirectory("rea-app-read-error-");
+    const directory = await createTestTempDirectory("nre-app-read-error-");
     const app = join(directory, "ReadError.app");
     await mkdir(join(app, "Contents"), { recursive: true });
     await writeFile(join(app, "Contents", "Info.plist"), "placeholder");
@@ -342,7 +342,7 @@ describe("binary target I/O: app plist permissions and decoding", () => {
   });
 
   it("does not label binary plist decoder I/O failures as malformed data", async () => {
-    const directory = await createTestTempDirectory("rea-app-decode-error-");
+    const directory = await createTestTempDirectory("nre-app-decode-error-");
     const app = join(directory, "DecodeError.app");
     await mkdir(join(app, "Contents"), { recursive: true });
     await writeFile(join(app, "Contents", "Info.plist"), "bplist00");
@@ -369,7 +369,7 @@ describe("binary target I/O: app plist permissions and decoding", () => {
   it.each(["EACCES", "EPERM", "ENOENT", "ENOTDIR"])(
     "preserves %s while resolving an app executable",
     async (code) => {
-      const directory = await createTestTempDirectory("rea-app-permission-");
+      const directory = await createTestTempDirectory("nre-app-permission-");
       const app = join(directory, "Permission.app");
       const programs = join(app, "Contents", "MacOS");
       await mkdir(programs, { recursive: true });
@@ -403,7 +403,7 @@ describe("binary target I/O: app plist permissions and decoding", () => {
   );
 
   it("keeps missing and malformed plist diagnostics distinct", async () => {
-    const directory = await createTestTempDirectory("rea-app-diagnostics-");
+    const directory = await createTestTempDirectory("nre-app-diagnostics-");
     const missing = join(directory, "Missing.app");
     await mkdir(join(missing, "Contents"), { recursive: true });
     const missingResult = await resolveAppBundleExecutable(missing);
@@ -440,7 +440,7 @@ describe("binary target I/O: app plist permissions and decoding", () => {
 
 describe("binary target I/O: package classification", () => {
   it("classifies ZIP package families and text artifacts without Hopper", async () => {
-    const directory = await createTestTempDirectory("rea-artifact-target-");
+    const directory = await createTestTempDirectory("nre-artifact-target-");
     const zip = join(directory, "fixture.apk");
     const msix = join(directory, "fixture.msixbundle");
     const appx = join(directory, "fixture.appx");
@@ -475,7 +475,7 @@ describe("binary target I/O: package classification", () => {
   });
 
   it("classifies a binary plist by its magic under any extension", async () => {
-    const directory = await createTestTempDirectory("rea-bplist-target-");
+    const directory = await createTestTempDirectory("nre-bplist-target-");
     const path = join(directory, "Model.archive");
     await writeFile(path, buildBinary({ $archiver: "NSKeyedArchiver" }));
     const result = await parseBinaryTarget(path);
@@ -486,7 +486,7 @@ describe("binary target I/O: package classification", () => {
   });
 
   it("classifies XML plists by content while preserving named formats", async () => {
-    const directory = await createTestTempDirectory("rea-xml-plist-target-");
+    const directory = await createTestTempDirectory("nre-xml-plist-target-");
     const xml = Buffer.from(
       '<?xml version="1.0"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>$archiver</key><string>NSKeyedArchiver</string></dict></plist>',
     );
@@ -508,7 +508,7 @@ describe("binary target I/O: package classification", () => {
   });
 
   it("continues a bounded XML plist probe beyond the initial file window", async () => {
-    const directory = await createTestTempDirectory("rea-xml-long-prolog-");
+    const directory = await createTestTempDirectory("nre-xml-long-prolog-");
     const path = join(directory, "Model.archive");
     await writeFile(
       path,
@@ -526,7 +526,7 @@ describe("binary target I/O: package classification", () => {
   });
 
   it("classifies Intel HEX and S-records by a valid first record", async () => {
-    const directory = await createTestTempDirectory("rea-hex-target-");
+    const directory = await createTestTempDirectory("nre-hex-target-");
     const hex = join(directory, "firmware.hex");
     const text = join(directory, "firmware.txt");
     const srec = join(directory, "firmware.mot");
@@ -553,7 +553,7 @@ describe("binary target I/O: package classification", () => {
   });
 
   it("classifies ESP images by bytes and refuses ESP8266 v1 images", async () => {
-    const directory = await createTestTempDirectory("rea-esp-target-");
+    const directory = await createTestTempDirectory("nre-esp-target-");
     const app = join(directory, "firmware.ota");
     const truncated = join(directory, "download.bin");
     const esp8266 = join(directory, "esp8266.bin");
@@ -585,7 +585,7 @@ describe("binary target I/O: package classification", () => {
   });
 
   it("does not trust a ZIP-family extension without ZIP magic", async () => {
-    const directory = await createTestTempDirectory("rea-fake-archive-");
+    const directory = await createTestTempDirectory("nre-fake-archive-");
     const path = join(directory, "fake.zip");
     await writeFile(path, "not a zip");
     const result = await parseBinaryTarget(path);
@@ -597,7 +597,7 @@ describe("binary target I/O: package classification", () => {
 });
 
 it("classifies a FIT by its /images node and leaves a plain DTB rejected", async () => {
-  const directory = await createTestTempDirectory("rea-fit-target-");
+  const directory = await createTestTempDirectory("nre-fit-target-");
   const itb = join(directory, "boot.itb");
   const extensionless = join(directory, "boot");
   const dtb = join(directory, "board.dtb");
@@ -622,7 +622,7 @@ it("classifies a FIT by its /images node and leaves a plain DTB rejected", async
 
 describe("binary target I/O: filesystem and app bundle target resolution", () => {
   it("resolves relative Hopper databases and rejects unknown or unreadable paths", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     await writeFile(join(directory, "sample.hop"), "database");
     await writeFile(join(directory, "text"), "hello");
     const database = await parseBinaryTarget("sample.hop", { cwd: directory });
@@ -640,7 +640,7 @@ describe("binary target I/O: filesystem and app bundle target resolution", () =>
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "reports an unreadable target as a host read denial",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-denied-");
+      const directory = await createTestTempDirectory("nre-target-denied-");
       const path = join(directory, "unreadable");
       await writeFile(path, thinMach(0xcffaedfe, 0x0100000c));
       await chmod(path, 0);
@@ -663,12 +663,12 @@ describe("binary target I/O: filesystem and app bundle target resolution", () =>
   );
 
   it("rejects non-regular targets before reading them", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     expect((await parseBinaryTarget(directory)).ok).toBe(false);
   });
 
   it("resolves a macOS app bundle to its declared program file", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const app = join(directory, "Example App.app");
     const contents = join(app, "Contents");
     const programs = join(contents, "MacOS");
@@ -694,7 +694,7 @@ describe("binary target I/O: filesystem and app bundle target resolution", () =>
   it.skipIf(process.platform === "win32")(
     "preserves a literal backslash in a POSIX app executable name",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Back.app");
       const programs = join(app, "Contents", "MacOS");
       const executable = join(programs, "App\\Name");
@@ -718,7 +718,7 @@ describe("binary target I/O: filesystem and app bundle target resolution", () =>
   it.skipIf(process.platform !== "win32")(
     "rejects a Windows separator in an app executable declaration",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Broken.app");
       await mkdir(join(app, "Contents", "MacOS"), { recursive: true });
       await writeFile(
@@ -745,7 +745,7 @@ describe("binary target I/O: filesystem and app bundle target resolution", () =>
       "<plist><dict><key>CFBundleExecutable</key><string>Missing</string></dict></plist>",
     ],
   ])("rejects an app bundle with %s", async (_case, plist) => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const app = join(directory, "Broken.app");
     const contents = join(app, "Contents");
     await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -766,7 +766,7 @@ describe("app bundle canonical containment", () => {
   it.skipIf(process.platform === "win32")(
     "rejects an app program symlink that leaves the bundle",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Escaping.app");
       const contents = join(app, "Contents");
       const programs = join(contents, "MacOS");
@@ -792,7 +792,7 @@ describe("app bundle canonical containment", () => {
   it.skipIf(process.platform === "win32")(
     "rejects a Contents/MacOS directory symlink that leaves the bundle",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Escaping.app");
       const contents = join(app, "Contents");
       const programs = join(contents, "MacOS");
@@ -826,7 +826,7 @@ describe("app bundle canonical containment", () => {
   it.skipIf(process.platform === "win32")(
     "allows bundle and program directory aliases within the canonical bundle",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Canonical.app");
       const alias = join(directory, "Alias.app");
       const contents = join(app, "Contents");
@@ -854,7 +854,7 @@ describe("app bundle canonical containment", () => {
 
 describe("binary target I/O: explicit kinds and executable headers", () => {
   it("honors an explicit database kind without relying on the file suffix", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     await writeFile(join(directory, "saved-analysis"), "database");
     const result = await parseBinaryTarget("saved-analysis", {
       cwd: directory,
@@ -868,7 +868,7 @@ describe("binary target I/O: explicit kinds and executable headers", () => {
   });
 
   it("reads a PE header beyond the initial probe", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const path = join(directory, "delayed.exe");
     await writeFile(path, pe(0x8664, 8192));
     const result = await parseBinaryTarget(path, {
@@ -882,7 +882,7 @@ describe("binary target I/O: explicit kinds and executable headers", () => {
   });
 
   it("extracts CodeView RSDS debug metadata from a PE target", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const path = join(directory, "symbols.exe");
     await writeFile(
       path,
@@ -912,7 +912,7 @@ describe("binary target I/O: explicit kinds and executable headers", () => {
   });
 
   it("extracts CodeView NB10 debug metadata from a PE target", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const path = join(directory, "legacy.exe");
     await writeFile(
       path,
@@ -941,7 +941,7 @@ describe("binary target I/O: explicit kinds and executable headers", () => {
   });
 
   it("refuses a truncated Mach-O header before any provider sees it", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const path = join(directory, "truncated");
     await writeFile(path, thinMach(0xcffaedfe, 0x0100000c).subarray(0, 12));
     const result = await parseBinaryTarget(path, {
@@ -957,7 +957,7 @@ describe("binary target I/O: explicit kinds and executable headers", () => {
   });
 
   it("checks Mach-O load commands against the whole file beyond the probe", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const path = join(directory, "large-commands");
     const firstCommand = rpathCommand("@loader_path/" + "a".repeat(8192));
     const bytes = Buffer.from(
@@ -995,7 +995,7 @@ describe("app executable filename fidelity", () => {
   it.each([" leading", "trailing ", " both "])(
     "preserves executable filename whitespace in an XML plist: %j",
     async (name) => {
-      const directory = await createTestTempDirectory("rea-app-name-");
+      const directory = await createTestTempDirectory("nre-app-name-");
       const app = join(directory, "Whitespace.app");
       const contents = join(app, "Contents");
       const executable = join(contents, "MacOS", name);
@@ -1023,7 +1023,7 @@ describe("app executable filename fidelity", () => {
   ])(
     "decodes an XML plist executable name containing %s",
     async (_case, encoded, name) => {
-      const directory = await createTestTempDirectory("rea-app-xml-name-");
+      const directory = await createTestTempDirectory("nre-app-xml-name-");
       const app = join(directory, "Encoded.app");
       const contents = join(app, "Contents");
       const executable = join(contents, "MacOS", name);
@@ -1045,7 +1045,7 @@ describe("app executable filename fidelity", () => {
   );
 
   it("reads the top-level executable key rather than commented or nested text", async () => {
-    const directory = await createTestTempDirectory("rea-app-xml-key-");
+    const directory = await createTestTempDirectory("nre-app-xml-key-");
     const app = join(directory, "Nested.app");
     const contents = join(app, "Contents");
     const executable = join(contents, "MacOS", "App");
@@ -1082,7 +1082,7 @@ describe("app executable filename fidelity", () => {
     "<key>__proto__</key><dict><key>CFBundleExecutable</key><string>Forged</string></dict>",
     "<key>&#95;_proto__</key><string>x</string>",
   ])("opens an app whose XML plist also holds %s", async (entry) => {
-    const directory = await createTestTempDirectory("rea-app-xml-proto-");
+    const directory = await createTestTempDirectory("nre-app-xml-proto-");
     const app = join(directory, "Proto.app");
     const contents = join(app, "Contents");
     const executable = join(contents, "MacOS", "App");
@@ -1104,7 +1104,7 @@ describe("app executable filename fidelity", () => {
   it.skipIf(process.platform !== "darwin")(
     "preserves executable filename whitespace from native binary plists",
     async () => {
-      const directory = await createTestTempDirectory("rea-app-binary-name-");
+      const directory = await createTestTempDirectory("nre-app-binary-name-");
       for (const name of ["Ordinary", " App ", "Tab\t"]) {
         const app = join(directory, `${name}.app`);
         const contents = join(app, "Contents");
@@ -1139,7 +1139,7 @@ describe("iOS-style app bundle targets", () => {
     `<plist><dict><key>CFBundleExecutable</key><string>${name}</string></dict></plist>`;
 
   it("resolves a flat bundle's program file beside its Info.plist", async () => {
-    const directory = await createTestTempDirectory("rea-target-");
+    const directory = await createTestTempDirectory("nre-target-");
     const app = join(directory, "Flat.app");
     await mkdir(app);
     await writeFile(join(app, "Info.plist"), plist("Flat"));
@@ -1158,7 +1158,7 @@ describe("iOS-style app bundle targets", () => {
   it.skipIf(process.platform === "win32")(
     "keeps the declaring Info.plist for a symlinked program file",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Linked.app");
       await mkdir(join(app, "bin"), { recursive: true });
       await writeFile(join(app, "Info.plist"), plist("Linked"));
@@ -1181,7 +1181,7 @@ describe("iOS-style app bundle targets", () => {
   it.skipIf(process.platform === "win32")(
     "follows a readable Contents/Info.plist symlink",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Linked.app");
       const contents = join(app, "Contents");
       await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -1204,7 +1204,7 @@ describe("iOS-style app bundle targets", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "reports a wrapper it cannot read as a permission denial",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Locked.app");
       const wrapper = join(app, "Wrapper");
       await mkdir(join(wrapper, "Locked.app"), { recursive: true });
@@ -1225,7 +1225,7 @@ describe("iOS-style app bundle targets", () => {
   it.skipIf(process.platform === "win32")(
     "resolves an iOS-on-Mac wrapper through its single Wrapper bundle",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Phone.app");
       const wrapped = join(app, "Wrapper", "Phone.app");
       await mkdir(wrapped, { recursive: true });
@@ -1256,7 +1256,7 @@ describe("iOS-style app bundle targets", () => {
   it.skipIf(process.platform === "win32")(
     "rejects a flat bundle program symlink that leaves the bundle",
     async () => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const app = join(directory, "Escaping.app");
       const outside = join(directory, "outside");
       await mkdir(app);
@@ -1280,7 +1280,7 @@ describe("binary Info.plist app bundle targets", () => {
   ])(
     "resolves %s from a binary Info.plist on every host",
     async (bundle, programs, plist) => {
-      const directory = await createTestTempDirectory("rea-app-bplist-");
+      const directory = await createTestTempDirectory("nre-app-bplist-");
       // Windows file names cannot hold a tab or end in a space.
       const names =
         process.platform === "win32"
@@ -1320,7 +1320,7 @@ describe("binary Info.plist app bundle targets", () => {
   ])(
     "ignores CFBundleExecutable nested under __proto__ in %s Info.plist files",
     async (_encoding, contents) => {
-      const directory = await createTestTempDirectory("rea-app-proto-only-");
+      const directory = await createTestTempDirectory("nre-app-proto-only-");
       const app = join(directory, "Proto.app");
       await mkdir(join(app, "Contents", "MacOS"), { recursive: true });
       await writeFile(join(app, "Contents", "Info.plist"), contents);
@@ -1340,7 +1340,7 @@ describe("binary Info.plist app bundle targets", () => {
 
 describe("DOS binary target I/O", () => {
   it("retains the declared PE signature when its overlapping layout is unsupported", async () => {
-    const directory = await createTestTempDirectory("rea-overlapping-pe-");
+    const directory = await createTestTempDirectory("nre-overlapping-pe-");
     const path = join(directory, "overlap.exe");
     await writeFile(path, pe(0x014c, 4));
     const result = await parseBinaryTarget(path);
@@ -1357,7 +1357,7 @@ describe("DOS binary target I/O", () => {
   });
 
   it("admits original DOS header padding after a relocation table", async () => {
-    const directory = await createTestTempDirectory("rea-dos-header-padding-");
+    const directory = await createTestTempDirectory("nre-dos-header-padding-");
     const path = join(directory, "legacy.exe");
     const bytes = Buffer.alloc(128);
     bytes.write("MZ", 0, "ascii");
@@ -1377,7 +1377,7 @@ describe("DOS binary target I/O", () => {
 
   it("resolves a PE signature beyond the prefix when DOS padding follows a relocation table", async () => {
     const directory = await createTestTempDirectory(
-      "rea-padded-stub-pe-target-",
+      "nre-padded-stub-pe-target-",
     );
     const path = join(directory, "padded-stub.dll");
     const offset = 8192;
@@ -1405,7 +1405,7 @@ describe("DOS binary target I/O", () => {
 
   it("validates ambiguous DOS facts after extending the bounded prefix for relocations", async () => {
     const directory = await createTestTempDirectory(
-      "rea-ambiguous-mz-relocations-",
+      "nre-ambiguous-mz-relocations-",
     );
     const path = join(directory, "legacy.exe");
     const bytes = Buffer.alloc(8192);
@@ -1438,7 +1438,7 @@ describe("DOS binary target I/O", () => {
 
   it("resolves a short-header PE signature beyond the bounded prefix", async () => {
     const directory = await createTestTempDirectory(
-      "rea-short-stub-pe-target-",
+      "nre-short-stub-pe-target-",
     );
     const path = join(directory, "short-stub.dll");
     const offset = 8192;
@@ -1463,7 +1463,7 @@ describe("DOS binary target I/O", () => {
   });
 
   it("validates a complete DOS file beyond the initial metadata probe", async () => {
-    const directory = await createTestTempDirectory("rea-dos-target-");
+    const directory = await createTestTempDirectory("nre-dos-target-");
     const path = join(directory, "legacy.exe");
     const bytes = dosMz(8192);
     await writeFile(path, bytes);
@@ -1501,7 +1501,7 @@ it.each([
 ])(
   "rejects an ELF with malformed %s during public target opening",
   async (_name, corrupt) => {
-    const directory = await createTestTempDirectory("rea-invalid-elf-header-");
+    const directory = await createTestTempDirectory("nre-invalid-elf-header-");
     const path = join(directory, "invalid.elf");
     const bytes = elf(1, 1, 3);
     corrupt(bytes);
@@ -1520,7 +1520,7 @@ describe("binary target I/O: PE CodeView header ranges", () => {
   it.each(["RSDS", "NB10"] as const)(
     "reads bounded %s header debug records and rejects unfinished names",
     async (type) => {
-      const directory = await createTestTempDirectory("rea-target-");
+      const directory = await createTestTempDirectory("nre-target-");
       const path = join(directory, "header-symbols.exe");
       const bytes = pe(0x8664, 64, 0x0002, false, {
         type,
@@ -1557,7 +1557,7 @@ describe("binary target I/O: PE CodeView header ranges", () => {
 });
 
 it("does not read a relocation table offset when DOS declares zero records", async () => {
-  const directory = await createTestTempDirectory("rea-empty-dos-relocations-");
+  const directory = await createTestTempDirectory("nre-empty-dos-relocations-");
   const path = join(directory, "legacy.exe");
   const bytes = dosMz(8192);
   bytes.writeUInt16LE(257, 8);
@@ -1584,7 +1584,7 @@ it("does not read a relocation table offset when DOS declares zero records", asy
 });
 
 it("recognizes Windows metadata independently of invalid DOS load declarations", async () => {
-  const directory = await createTestTempDirectory("rea-invalid-dos-valid-pe-");
+  const directory = await createTestTempDirectory("nre-invalid-dos-valid-pe-");
   const path = join(directory, "windows.exe");
   const bytes = pe(0x8664, 8192);
   bytes.writeUInt16LE(0, 4);
@@ -1600,7 +1600,7 @@ it("recognizes Windows metadata independently of invalid DOS load declarations",
 
 it("refuses a declared DOS relocation header that is not present in the file", async () => {
   const directory = await createTestTempDirectory(
-    "rea-truncated-dos-relocations-",
+    "nre-truncated-dos-relocations-",
   );
   const path = join(directory, "legacy.exe");
   const bytes = dosMz(8192);

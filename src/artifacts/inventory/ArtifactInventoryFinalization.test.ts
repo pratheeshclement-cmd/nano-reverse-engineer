@@ -19,7 +19,7 @@ afterEach(() => vi.restoreAllMocks());
 
 const zipFixture = async () => {
   const directory = await createTestTempDirectory(
-    "rea-inventory-finalization-",
+    "nre-inventory-finalization-",
   );
   const path = join(directory, "input.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());

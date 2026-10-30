@@ -9,7 +9,7 @@ import sys
 import tempfile
 
 root = pathlib.Path(__file__).resolve().parents[2]
-bridge = (root / "bridge/ghidra/ReaGhidraBridge.java").read_text()
+bridge = (root / "bridge/ghidra/NreGhidraBridge.java").read_text()
 start = bridge.index("    private static String readLoopbackHandshake(")
 end = bridge.index("    private void acceptClient(", start)
 methods = bridge[start:end]
@@ -100,7 +100,7 @@ public class ReaHandshakeProbe {
 __METHODS__
 }
 '''.replace("__METHODS__", methods)
-with tempfile.TemporaryDirectory(prefix="rea-ghidra-handshake-") as directory:
+with tempfile.TemporaryDirectory(prefix="nre-ghidra-handshake-") as directory:
     source = pathlib.Path(directory) / "ReaHandshakeProbe.java"
     source.write_text(harness)
     subprocess.run([sys.argv[1] if len(sys.argv) > 1 else "java", str(source)],

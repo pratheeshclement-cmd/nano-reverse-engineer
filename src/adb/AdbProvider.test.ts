@@ -49,7 +49,7 @@ const VERSION_BLOCK =
 const writeAdbStub = async (
   body: (root: string) => string,
 ): Promise<{ readonly binary: string; readonly root: string }> => {
-  const root = await mkdtemp(join("/tmp", "rea-adb-"));
+  const root = await mkdtemp(join("/tmp", "nre-adb-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const binary = join(root, "adb");
   await writeFile(binary, `#!/bin/sh\n${body(root)}\n`, { mode: 0o755 });
@@ -58,7 +58,7 @@ const writeAdbStub = async (
 };
 
 const providerOver = (binary: string): AdbProvider =>
-  new AdbProvider({ environment: { REA_ADB_PATH: binary } });
+  new AdbProvider({ environment: { NRE_ADB_PATH: binary } });
 
 const evidenceResult = async (
   provider: AdbProvider,
@@ -557,7 +557,7 @@ if [ "$1" = "-s" ] && [ "$4" = "pm" ] && [ "$5" = "path" ]; then exit 0; fi`,
     input: {
       serial: "emulator-5554",
       package: "com.absent",
-      output_directory: "/tmp/rea-adb-absent",
+      output_directory: "/tmp/nre-adb-absent",
     },
   });
   expect(projected).toMatchObject({ code: "unsupported_target" });
@@ -586,12 +586,12 @@ if [ "$1" = "-s" ]; then printf '%s\\n' "${stderr}" >&2; exit 1; fi`,
 
 it("reports a missing selected binary as a capability gap with recovery", async () => {
   const provider = new AdbProvider({
-    environment: { REA_ADB_PATH: "/nonexistent/adb" },
+    environment: { NRE_ADB_PATH: "/nonexistent/adb" },
   });
   const availability = await provider.inspectAvailability();
   expect(availability).toMatchObject({ status: "unavailable" });
   if (availability.status !== "unavailable") return;
-  expect(availability.diagnostics.remediation).toContain("REA_ADB_PATH");
+  expect(availability.diagnostics.remediation).toContain("NRE_ADB_PATH");
   const result = await provider.execute({
     operation: "list_adb_devices",
     input: {},
@@ -600,9 +600,9 @@ it("reports a missing selected binary as a capability gap with recovery", async 
   if (result.ok) return;
   const projected = projectAnalysisError(result.error);
   expect(projected).toMatchObject({ code: "capability_unavailable" });
-  expect(projected.message).toContain("REA_ADB_PATH");
+  expect(projected.message).toContain("NRE_ADB_PATH");
   expect(projected.remediation).toMatchObject({
-    action: expect.stringContaining("REA_ADB_PATH") as unknown,
+    action: expect.stringContaining("NRE_ADB_PATH") as unknown,
   });
   expect(projected.details).toMatchObject({
     provider_id: "adb",
@@ -612,12 +612,12 @@ it("reports a missing selected binary as a capability gap with recovery", async 
 
 it("reports relative adb configuration as an actionable refusal", async () => {
   const provider = new AdbProvider({
-    environment: { REA_ADB_PATH: "relative/adb" },
+    environment: { NRE_ADB_PATH: "relative/adb" },
   });
   const availability = await provider.inspectAvailability();
   expect(availability).toMatchObject({
     status: "unavailable",
-    reason: expect.stringContaining("REA_ADB_PATH") as unknown,
+    reason: expect.stringContaining("NRE_ADB_PATH") as unknown,
   });
   const projected = await refusedBy(provider, {
     operation: "list_adb_devices",
@@ -625,9 +625,9 @@ it("reports relative adb configuration as an actionable refusal", async () => {
   });
   expect(projected).toMatchObject({
     code: "capability_unavailable",
-    message: expect.stringContaining("REA_ADB_PATH") as unknown,
+    message: expect.stringContaining("NRE_ADB_PATH") as unknown,
     remediation: {
-      action: expect.stringContaining("REA_ADB_PATH") as unknown,
+      action: expect.stringContaining("NRE_ADB_PATH") as unknown,
     },
   });
 });
@@ -791,7 +791,7 @@ it("projects package details from dumpsys package output", async () => {
 
 // Package Manager prints an absent installer as the text "null"; the
 // normalized result must report the absence, not a package named "null"
-// (morluto/rea#3943).
+// (pratheeshclement-cmd/nano-reverse-engineer#3943).
 it("reports a null installer declaration as an absent installer", async () => {
   const { binary } = await writeAdbStub(
     shellStub({
@@ -1312,7 +1312,7 @@ exit 1`,
   await writeFile(localFile, "payload");
   let closeAttempts = 0;
   const provider = new AdbProvider({
-    environment: { REA_ADB_PATH: binary },
+    environment: { NRE_ADB_PATH: binary },
     createRuntimeRoot: async (options) => {
       const runtime = await PrivateRuntimeRoot.create(options);
       return {
@@ -1696,7 +1696,7 @@ it("inspects the display and window focus", async () => {
 });
 
 // Older builds print `wm density` as a bare number; the display projection
-// must keep it as the physical density (morluto/rea#3942).
+// must keep it as the physical density (pratheeshclement-cmd/nano-reverse-engineer#3942).
 it("keeps a bare numeric wm density as the physical density", async () => {
   const { binary } = await writeAdbStub(
     shellStub({
@@ -2171,7 +2171,7 @@ exit 1`,
     local_path: join(root, "bugreport test.zip"),
     bytes: 15,
     sha256: digest,
-    adb_reported_path: expect.stringContaining(".rea-bugreport-"),
+    adb_reported_path: expect.stringContaining(".nre-bugreport-"),
   });
 });
 

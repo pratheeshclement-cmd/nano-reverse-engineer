@@ -18,7 +18,7 @@ import {
 import { parseBinaryTarget } from "../../../src/application/BinaryTargetResolver.js";
 import { createEvidence } from "../../../src/domain/evidence.js";
 import { createEvidenceBundle } from "../../../src/domain/evidenceBundle.js";
-import { REA_WORKFLOW_PROVIDER } from "../../../src/domain/investigationProviders.js";
+import { NRE_WORKFLOW_PROVIDER } from "../../../src/domain/investigationProviders.js";
 import { workflowAnalysisProfile } from "../../../src/application/WorkflowAnalysisProfile.js";
 import { HOPPER_PROVIDER_IDENTITY } from "../../../src/hopper/HopperProviderCapabilities.js";
 
@@ -33,11 +33,11 @@ afterEach(async () => {
 
 describe("direct analysis snapshot files", () => {
   it("forwards the CLI provider selector ahead of the environment preference", async () => {
-    const directory = await createTestTempDirectory("rea-direct-provider-");
+    const directory = await createTestTempDirectory("nre-direct-provider-");
     const targetPath = join(directory, "fixture.hop");
     await writeFile(targetPath, "fixture");
     vi.stubEnv("HOPPER_LAUNCHER_PATH", process.execPath);
-    vi.stubEnv("REA_ANALYSIS_PROVIDER", "environment-provider");
+    vi.stubEnv("NRE_ANALYSIS_PROVIDER", "environment-provider");
 
     await expect(
       createDirectAnalysis(process.env)
@@ -62,7 +62,7 @@ describe("direct analysis snapshot files", () => {
   });
 
   it("does not replay unbound historical Evidence from a supplied snapshot", async () => {
-    const directory = await createTestTempDirectory("rea-direct-snapshot-");
+    const directory = await createTestTempDirectory("nre-direct-snapshot-");
     const snapshotPath = join(directory, "analysis.json");
     const launcherPath = join(directory, "hopper-launcher");
     await writeFile(launcherPath, "fixture Hopper launcher");
@@ -79,7 +79,7 @@ describe("direct analysis snapshot files", () => {
       throw new Error("fixture Hopper profile did not resolve");
     const profile = resolved.value.profile;
     const workflowProfile = workflowAnalysisProfile(profile);
-    const evidence = createEvidence(target.value, REA_WORKFLOW_PROVIDER, {
+    const evidence = createEvidence(target.value, NRE_WORKFLOW_PROVIDER, {
       operation: "binary_overview",
       parameters: {},
       result: { cached: true },

@@ -40,7 +40,7 @@ export const parseRecordedTransportUrl = (
   // backslash/control-character spellings), never to supply a projected origin.
   const parsed =
     credentialBase === null
-      ? (absolute ?? URL.parse(value, "https://rea.invalid"))
+      ? (absolute ?? URL.parse(value, "https://nre.invalid"))
       : URL.parse(value, credentialBase);
   const hasCredentials =
     parsed !== null && (parsed.username !== "" || parsed.password !== "");

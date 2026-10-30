@@ -18,7 +18,7 @@ bundles after a delete (7) and Miniflux's bookmark toggle (5).
   that created one item with neither (`null` and `[]`) and one with both was withheld: `tags` had no rule, and the
   first create fixed both members to their empty values.
 - **Miniflux.** `PUT /v1/entries/{id}/bookmark` sends no body and answers `204`. Chromium exposes no body for it and
-  the request names no `Content-Type`; REA read the body as unusable. Across the captures, every `POST`, `PUT` or
+  the request names no `Content-Type`; NRE read the body as unusable. Across the captures, every `POST`, `PUT` or
   `PATCH` whose body was captured names `content-type` among its request header names (835 of 835).
 
 ## Gates
@@ -57,7 +57,7 @@ merging `2817665d`, `174a0ff2`, `5691f97f` and
 - No write goes from served to withheld, and no served plan changes. Newly served: Grafana's folder create, update and
   delete in a fresh recording; Homebox's item create in another; Miniflux's bookmark toggle in three recordings.
 - Five withheld plans explain more. Two Miniflux recordings learn the toggle but stay withheld: a list of starred
-  entries with no `order` parameter lists them by `published_at`, which REA answers in state order. Linkding's
+  entries with no `order` parameter lists them by `published_at`, which NRE answers in state order. Linkding's
   unarchive learns its body-less call and stays `unconfirmed`, seen once. Two Homebox item writes learn their tag
   references and stay withheld for other members.
 - Views are unchanged: 3,188 views across the captures.

@@ -23,7 +23,7 @@ describe("CLI analysis selector boundaries", () => {
           "--file-offset=0x210",
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(selected.json).toMatchObject({ code: "target_unavailable" });
       const conflicting = await cli.run({
@@ -34,7 +34,7 @@ describe("CLI analysis selector boundaries", () => {
           "--file-offset=0x210",
           "--json",
         ],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(conflicting.json).toMatchObject({
         code: "invalid_request",
@@ -61,7 +61,7 @@ describe("CLI analysis selector boundaries", () => {
               "--format",
               "json",
             ],
-            environment: { REA_LOG_LEVEL: "silent" },
+            environment: { NRE_LOG_LEVEL: "silent" },
           });
           expect(result.exitCode).not.toBe(0);
           expect(result.json).toMatchObject({
@@ -82,7 +82,7 @@ describe("CLI analysis selector boundaries", () => {
             "--format",
             "json",
           ],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(result.exitCode).not.toBe(0);
         expect(result.json).toMatchObject({ code: "target_unavailable" });
@@ -108,7 +108,7 @@ describe("CLI analysis selector boundaries", () => {
               "--format",
               "json",
             ],
-            environment: { REA_LOG_LEVEL: "silent" },
+            environment: { NRE_LOG_LEVEL: "silent" },
           });
           expect(result.exitCode, label).not.toBe(0);
           expect(result.json, label).toMatchObject({
@@ -130,7 +130,7 @@ cliTest(
         "--procedure=-[Widget run]",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(result.exitCode).not.toBe(0);
     expect(result.json).toMatchObject({ code: "target_unavailable" });

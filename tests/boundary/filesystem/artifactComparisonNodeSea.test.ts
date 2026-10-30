@@ -33,7 +33,7 @@ const observe = (inventory: ArtifactInventoryResult) => {
       sha256: inventory.manifest.root_sha256,
       format: inventory.manifest.root_format,
     },
-    { id: "rea-artifact", name: "REA artifact graph", version: "1" },
+    { id: "nre-artifact", name: "NRE artifact graph", version: "1" },
     {
       operation: "inventory_artifact",
       parameters: {},
@@ -45,7 +45,7 @@ const observe = (inventory: ArtifactInventoryResult) => {
 };
 
 const inventory = async (key = "data/café.txt") => {
-  const directory = await createTestTempDirectory("rea-sea-comparison-");
+  const directory = await createTestTempDirectory("nre-sea-comparison-");
   const path = join(directory, "app");
   await writeFile(path, nodeSeaElf({ assets: [{ name: key, body: "asset" }] }));
   return artifactInventoryResultSchema.parse(

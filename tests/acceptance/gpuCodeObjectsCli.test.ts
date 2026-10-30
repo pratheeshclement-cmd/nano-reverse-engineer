@@ -30,7 +30,7 @@ import {
 cliTest(
   "reads CUDA/PTX and compressed HIP through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-gpu-cli-");
+    const root = await createTestTempDirectory("nre-gpu-cli-");
     for (const [name, bytes] of [
       ["cuda", cudaFixture("zstd")],
       ["hip", ccobFixture()],
@@ -72,7 +72,7 @@ cliTest(
 cliTest(
   "inventories a complete CCOB stream containing ordinary CCOB payload text",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ccob-embedded-marker-");
+    const root = await createTestTempDirectory("nre-ccob-embedded-marker-");
     const bundle = hipFixture(
         Buffer.from("ordinary CCOB marker"),
         "host-other",
@@ -134,7 +134,7 @@ cliTest(
 cliTest(
   "distinguishes unsupported HIP bitcode from corrupted ELF through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-hip-bitcode-cli-"),
+    const root = await createTestTempDirectory("nre-hip-bitcode-cli-"),
       bitcode = llvmBitcodeFixture(),
       corruptedElf = amdFixture(),
       bundleId = "hip-amdgcn-amd-amdhsa--gfx900";
@@ -214,7 +214,7 @@ cliTest(
 cliTest(
   "keeps embedded Clang bundle reads inside their native section",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-gpu-section-range-");
+    const root = await createTestTempDirectory("nre-gpu-section-range-");
     const magic = Buffer.from("__CLANG_OFFLOAD_BUNDLE__"),
       truncated = magic,
       complete = Buffer.concat([magic, Buffer.alloc(8)]);
@@ -292,7 +292,7 @@ cliTest(
 cliTest(
   "compares equivalent PTX targets and retains family-specific CUDA targets",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-gpu-target-spelling-");
+    const root = await createTestTempDirectory("nre-gpu-target-spelling-");
     for (const [name, target, payloadTarget, ptx, flags] of [
       [
         "compute",
@@ -350,7 +350,7 @@ cliTest(
 cliTest(
   "reads CUDA V2 parameter records through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-cubin-v2-parameter-"),
+    const root = await createTestTempDirectory("nre-cubin-v2-parameter-"),
       bytes = cudaFixture("none", [
         {
           kind: 2,
@@ -391,7 +391,7 @@ cliTest(
   "preserves HIP v3 feature target IDs for exact selection",
   async ({ cli }) => {
     const target = "amdgcn-amd-amdhsa--gfx906+xnack",
-      root = await createTestTempDirectory("rea-hip-v3-target-id-"),
+      root = await createTestTempDirectory("nre-hip-v3-target-id-"),
       payload = amdFixture(false, undefined, target);
     payload.writeUInt32LE(0x2f, 48); // EF_AMDGPU_MACH_AMDGCN_GFX906
     const bytes = hipFixture(payload, "hip-amdgcn-amd-amdhsa--gfx906+xnack"),
@@ -439,7 +439,7 @@ cliTest(
           ".reg .b64 %rd<5>;",
           ".reg .b64 %rd<5>; F: .callprototype _ (.reg.b32 _);",
         ),
-      root = await createTestTempDirectory("rea-ptx-callprototype-"),
+      root = await createTestTempDirectory("nre-ptx-callprototype-"),
       path = join(root, "prototype.ptx");
     await writeFile(path, source);
     const response = await cli.run({
@@ -488,7 +488,7 @@ cliTest(
 cliTest(
   "resolves CUBIN SHN_XINDEX symbols through their ELF extension table",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-cubin-shndx-cli-");
+    const root = await createTestTempDirectory("nre-cubin-shndx-cli-");
     const bytes = cubinFixture({ extendedSectionIndex: true });
     const path = join(root, "extended.cubin");
     await writeFile(path, bytes);
@@ -566,7 +566,7 @@ cliTest(
 cliTest(
   "counts numeric percent-prefixed PTX register declarations",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ptx-numeric-register-");
+    const root = await createTestTempDirectory("nre-ptx-numeric-register-");
     for (const register of ["%0", "%r0"] as const) {
       const text = `.version 7.0\n.target sm_80\n.address_size 64\n.visible .entry kernel() {\n.reg .b32 ${register};\nmov.u32 ${register}, 0;\nret;\n}\n`;
       const path = join(root, `${register.slice(1)}.ptx`);
@@ -604,7 +604,7 @@ cliTest(
 cliTest(
   "preserves PTX target spelling and percent-prefixed entry names",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ptx-identifiers-cli-");
+    const root = await createTestTempDirectory("nre-ptx-identifiers-cli-");
     const text = `.version 8.8\n.target sm_80\n.address_size 64\n.entry %kernel(.param .u32 input) {\nret;\n}\n`;
     const path = join(root, "identifiers.ptx");
     await writeFile(path, text);
@@ -652,7 +652,7 @@ cliTest(
 cliTest(
   "keeps entry-scoped PTX pragmas outside the body boundary",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ptx-entry-pragma-");
+    const root = await createTestTempDirectory("nre-ptx-entry-pragma-");
     const preamble = ".version 8.8\n.target sm_80\n.address_size 64\n",
       body = "{ .reg .b32 %r<3>; .shared .align 4 .b8 scratch[16]; ret; }",
       declarations = [
@@ -717,7 +717,7 @@ cliTest(
 cliTest(
   "accepts the PTX compute_xx .target synonym verbatim",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ptx-target-cli-");
+    const root = await createTestTempDirectory("nre-ptx-target-cli-");
     const text = `.version 8.8\n.target compute_80\n.address_size 64\n.entry kernel() {\nret;\n}\n`;
     const path = join(root, "target.ptx");
     await writeFile(path, text);
@@ -747,7 +747,7 @@ cliTest(
 cliTest(
   "extracts entry parameters declared in PTX 1.3 bodies",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ptx-legacy-cli-");
+    const root = await createTestTempDirectory("nre-ptx-legacy-cli-");
     const text = `.version 1.3\n.target sm_80\n.address_size 64\n.entry kernel {\n.param .u32 input;\nret;\n}\n`;
     const path = join(root, "legacy.ptx");
     await writeFile(path, text);
@@ -845,7 +845,7 @@ cliTest(
 );
 
 it("preserves incomplete decoder coverage through MCP target and object pages", async () => {
-  const root = await createTestTempDirectory("rea-gpu-partial-"),
+  const root = await createTestTempDirectory("nre-gpu-partial-"),
     { call } = await connectLocalToolsMcp();
   const cases = {
     "section-names": () => {
@@ -944,7 +944,7 @@ it("preserves incomplete decoder coverage through MCP target and object pages", 
 });
 
 it("keeps unknown target discovery visible in the default MCP summary", async () => {
-  const root = await createTestTempDirectory("rea-gpu-unknown-target-"),
+  const root = await createTestTempDirectory("nre-gpu-unknown-target-"),
     path = join(root, "cuda");
   await writeFile(path, cubinFixture({ osAbi: 0x41, flags: 0x06016402 }));
   const { call } = await connectLocalToolsMcp();
@@ -987,7 +987,7 @@ it("keeps unknown target discovery visible in the default MCP summary", async ()
 });
 
 it("preserves omitted AMD metadata in selected MCP object pages", async () => {
-  const root = await createTestTempDirectory("rea-gpu-metadata-columns-"),
+  const root = await createTestTempDirectory("nre-gpu-metadata-columns-"),
     path = join(root, "amd");
   await writeFile(path, amdFixture());
   const { call } = await connectLocalToolsMcp();
@@ -1017,7 +1017,7 @@ it("preserves omitted AMD metadata in selected MCP object pages", async () => {
 });
 
 it("retains selected kernel facts and complete PTX for historical MCP pages after source removal", async () => {
-  const root = await createTestTempDirectory("rea-gpu-mcp-"),
+  const root = await createTestTempDirectory("nre-gpu-mcp-"),
     path = join(root, "application");
   await writeFile(path, cudaFixture("zstd"));
   const { call } = await connectLocalToolsMcp();
@@ -1121,7 +1121,7 @@ it("retains selected kernel facts and complete PTX for historical MCP pages afte
 });
 
 it("rejects forged duplicate object IDs and mismatched Evidence subjects through MCP", async () => {
-  const root = await createTestTempDirectory("rea-gpu-import-"),
+  const root = await createTestTempDirectory("nre-gpu-import-"),
     path = join(root, "cuda");
   await writeFile(path, cudaFixture());
   const { call } = await connectLocalToolsMcp();
@@ -1185,7 +1185,7 @@ it("rejects forged duplicate object IDs and mismatched Evidence subjects through
 cliTest(
   "uses DOS relocation ownership before GPU section discovery through the CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-gpu-dos-relocations-cli-");
+    const root = await createTestTempDirectory("nre-gpu-dos-relocations-cli-");
     const path = join(root, "selected.exe");
     const bytes = peGpuFixture();
     bytes.writeUInt16LE(bytes.length % 512, 2);
@@ -1221,7 +1221,7 @@ cliTest(
 cliTest(
   "retains AMD target declarations and examined note coverage through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-amd-target-sources-");
+    const root = await createTestTempDirectory("nre-amd-target-sources-");
     const { call } = await connectLocalToolsMcp();
     const first = "amdgcn-amd-amdhsa--gfx900";
     const second = "amdgcn-amd-amdhsa--gfx1100";
@@ -1339,7 +1339,7 @@ cliTest(
 );
 
 it("does not interpret non-AMD ELF flags as AMD processor declarations through MCP", async () => {
-  const root = await createTestTempDirectory("rea-amd-machine-");
+  const root = await createTestTempDirectory("nre-amd-machine-");
   const path = join(root, "wrong-machine");
   const payload = amdFixture();
   payload.writeUInt16LE(62, 18);

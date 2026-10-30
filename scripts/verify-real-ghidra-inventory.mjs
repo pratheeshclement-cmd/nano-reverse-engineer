@@ -88,7 +88,7 @@ export async function verifyInventoryOperations({
   const rejections =
     variant === "debug" ? await verifyBridgeRejections(client) : null;
   const stringSearch = await call(client, "search_strings", {
-    pattern: String.raw`^REA_GHIDRA_(?:INVENTORY_ENTRY|LEAF_VALUE)$`,
+    pattern: String.raw`^NRE_GHIDRA_(?:INVENTORY_ENTRY|LEAF_VALUE)$`,
     mode: "regex",
     case_sensitive: true,
     document: null,
@@ -96,7 +96,7 @@ export async function verifyInventoryOperations({
   if (!Array.isArray(stringSearch) || stringSearch.length !== 2)
     throw new Error("Ghidra regex string search drifted");
   const stringItem = strings.find(
-    (item) => item.value === "REA_GHIDRA_INVENTORY_ENTRY",
+    (item) => item.value === "NRE_GHIDRA_INVENTORY_ENTRY",
   );
   if (stringItem === undefined)
     throw new Error("Ghidra string probe address is unavailable");
@@ -119,7 +119,7 @@ export async function verifyInventoryOperations({
     return { rejections, stringSearch, filteredStrings, functionAnalysis };
   }
 
-  const entry = findValue(procedures, "rea_ghidra_inventory_entry");
+  const entry = findValue(procedures, "nre_ghidra_inventory_entry");
   if (entry === undefined)
     throw new Error("Ghidra entry procedure probe is unavailable");
   const debug = await verifyDebugInventoryCore({
@@ -148,7 +148,7 @@ async function verifyDebugInventoryCore({
     document: null,
     address: entry.address,
   });
-  if (!matchesSymbol(addressName, "rea_ghidra_inventory_entry"))
+  if (!matchesSymbol(addressName, "nre_ghidra_inventory_entry"))
     throw new Error("Ghidra primary address-name resolution drifted");
   const resolvedAddress = await call(client, "procedure_address", {
     document: null,
@@ -164,7 +164,7 @@ async function verifyDebugInventoryCore({
   if (!containing.found || containing.procedure.address !== entry.address)
     throw new Error("Ghidra containing-procedure resolution drifted");
   const procedureSearch = await call(client, "search_procedures", {
-    pattern: "rea_ghidra_inventory_",
+    pattern: "nre_ghidra_inventory_",
     mode: "literal",
     case_sensitive: true,
     document: null,
@@ -173,7 +173,7 @@ async function verifyDebugInventoryCore({
     !Array.isArray(procedureSearch) ||
     procedureSearch.length < 2 ||
     !procedureSearch.some((item) =>
-      matchesSymbol(item.value, "rea_ghidra_inventory_entry"),
+      matchesSymbol(item.value, "nre_ghidra_inventory_entry"),
     )
   )
     throw new Error("Ghidra literal procedure search drifted");

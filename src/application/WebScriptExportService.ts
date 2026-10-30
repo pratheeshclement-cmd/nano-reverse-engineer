@@ -133,7 +133,7 @@ export const exportWebScriptsValidated = async (
         { path: input.capture_path, sha256, format: "file" },
         PROVIDER,
         {
-          predicateType: "rea.web-script-export",
+          predicateType: "nre.web-script-export",
           operation: OPERATION,
           parameters: {
             capture_path: input.capture_path,

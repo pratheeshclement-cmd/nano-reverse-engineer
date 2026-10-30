@@ -24,8 +24,8 @@ export async function buildMips16SharedFixture(directory, byteOrder, variant) {
       "section-relocations",
     ].includes(variant),
   );
-  const assembler = process.env.REA_MIPS_AS ?? "mips-linux-gnu-as";
-  const linker = process.env.REA_MIPS_LD ?? "mips-linux-gnu-ld";
+  const assembler = process.env.NRE_MIPS_AS ?? "mips-linux-gnu-as";
+  const linker = process.env.NRE_MIPS_LD ?? "mips-linux-gnu-ld";
   const endian = byteOrder === "little" ? "-EL" : "-EB";
   const prefix = join(directory, `${byteOrder}-${variant}`);
   const object = `${prefix}.o`;
@@ -48,7 +48,7 @@ export async function buildMips16SharedFixture(directory, byteOrder, variant) {
       "-mips32r2",
       endian,
       ...(variant === "symbol-relative"
-        ? ["--defsym", "REA_MIPS_SYMBOL_RELATIVE=1"]
+        ? ["--defsym", "NRE_MIPS_SYMBOL_RELATIVE=1"]
         : []),
       source,
       "-o",
@@ -97,15 +97,15 @@ export async function buildMips16SharedFixture(directory, byteOrder, variant) {
     return u32(mappings[0] + 4) + address - u32(mappings[0] + 8);
   };
   const readelf = await execute(
-    process.env.REA_MIPS_READELF ?? "readelf",
+    process.env.NRE_MIPS_READELF ?? "readelf",
     ["-W", "-h", "-l", "-s", "-r", path],
     { timeout: 10000 },
   );
   const symbols = {};
   for (const name of [
-    "rea_mips16_probe",
-    "rea_mips32_probe",
-    "rea_mips16_pointer",
+    "nre_mips16_probe",
+    "nre_mips32_probe",
+    "nre_mips16_pointer",
   ]) {
     const addresses = new Set(
       readelf.stdout
@@ -122,22 +122,22 @@ export async function buildMips16SharedFixture(directory, byteOrder, variant) {
     assert.equal(addresses.size, 1, `Missing or conflicting ${name}`);
     symbols[name] = [...addresses][0];
   }
-  assert.equal(symbols.rea_mips16_probe & 1, 1);
-  assert.equal(symbols.rea_mips32_probe & 1, 0);
-  const compressedOffset = fileOffset(symbols.rea_mips16_probe - 1, 8);
+  assert.equal(symbols.nre_mips16_probe & 1, 1);
+  assert.equal(symbols.nre_mips32_probe & 1, 0);
+  const compressedOffset = fileOffset(symbols.nre_mips16_probe - 1, 8);
   assert.equal(
     bytes.subarray(compressedOffset, compressedOffset + 8).toString("hex"),
     little ? "5a6a8eea074aa0e8" : "6a5aea8e4a07e8a0",
   );
-  const standardOffset = fileOffset(symbols.rea_mips32_probe, 12);
+  const standardOffset = fileOffset(symbols.nre_mips32_probe, 12);
   assert.equal(
     bytes.subarray(standardOffset, standardOffset + 12).toString("hex"),
     little ? "030082240800e00300000000" : "2482000303e0000800000000",
   );
-  const pointerOffset = fileOffset(symbols.rea_mips16_pointer, 4);
+  const pointerOffset = fileOffset(symbols.nre_mips16_pointer, 4);
   const rawPointer = u32(pointerOffset);
   if (variant !== "symbol-relative")
-    assert.equal(rawPointer, symbols.rea_mips16_probe);
+    assert.equal(rawPointer, symbols.nre_mips16_probe);
   return {
     path,
     sha256: hash(bytes),

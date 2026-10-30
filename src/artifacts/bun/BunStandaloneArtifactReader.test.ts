@@ -10,7 +10,7 @@ import {
 } from "./BunStandalone.fixture.js";
 
 it("keeps duplicate and unsafe names distinct while extracting exact bytes", async () => {
-  const path = join(await createTestTempDirectory("rea-bun-reader-"), "app");
+  const path = join(await createTestTempDirectory("nre-bun-reader-"), "app");
   await writeFile(
     path,
     elfAppendedBunPayload(

@@ -44,7 +44,7 @@ const graphExamples = [
 cliTest.for(graphExamples)(
   "CLI executes the canonical $name graph example without target files",
   async ({ command, operation, example }, { cli }) => {
-    const root = await createTestTempDirectory("rea-mobile-graph-example-");
+    const root = await createTestTempDirectory("nre-mobile-graph-example-");
     const input = JSON.stringify(example);
     const path = join(root, "example.json");
     await writeFile(path, input);

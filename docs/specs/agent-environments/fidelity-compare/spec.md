@@ -1,14 +1,14 @@
 # Compare an environment with the application it came from
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
 An environment is only as useful as it is faithful: an agent trained or graded on it should meet the behaviour of the
-application it was captured from. REA checks an environment only against its own capture, so nothing says how far it
+application it was captured from. NRE checks an environment only against its own capture, so nothing says how far it
 drifts from the application on calls the capture did not make, after writes, or on errors.
 
-`rea environment-compare` measures that. It takes an environment (a manifest and its capture Evidence) and one or more
+`nre environment-compare` measures that. It takes an environment (a manifest and its capture Evidence) and one or more
 **probe captures**, each a recording of one call sequence made against the live application, and reports how many of the
 probe's calls the environment answers as the application did, which tools disagree and how.
 
@@ -90,6 +90,6 @@ credentials and resets it between sequences.
 
 ## Non-goals
 
-- No network access, no credentials, no reset of the application: probes are recorded outside REA.
+- No network access, no credentials, no reset of the application: probes are recorded outside NRE.
 - No generation of call sequences; a later change generates them where the environment disagrees.
 - No change to how environments serve.

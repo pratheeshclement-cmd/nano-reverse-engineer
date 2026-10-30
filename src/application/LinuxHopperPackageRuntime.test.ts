@@ -86,7 +86,7 @@ describe("Linux Hopper package runtime", () => {
     },
   ])("$name", async ({ inspections, packageCalls, status }) => {
     const directory = await createTestTempDirectory(
-      "rea-linux-python-install-",
+      "nre-linux-python-install-",
     );
     const host = systemLinuxHopperInstallHost(
       { XDG_CACHE_HOME: directory },
@@ -124,7 +124,7 @@ describe("Linux Hopper package runtime", () => {
 
   it("preserves a failed runtime APT command and does not verify it as installed", async () => {
     const directory = await createTestTempDirectory(
-      "rea-linux-python-failure-",
+      "nre-linux-python-failure-",
     );
     const host = systemLinuxHopperInstallHost(
       { XDG_CACHE_HOME: directory },
@@ -166,7 +166,7 @@ describe("Linux Hopper package mapping", () => {
     "/usr/lib/x86_64-linux-gnu/libpython3.14d.so.1.0",
     "/usr/lib/x86_64-linux-gnu/libpython3.13.so.1.0",
   ])("keeps an unproven APT mapping unknown: %s", async (path) => {
-    const directory = await createTestTempDirectory("rea-python-package-map-");
+    const directory = await createTestTempDirectory("nre-python-package-map-");
     const host = systemLinuxHopperInstallHost(
       { XDG_CACHE_HOME: directory },
       async () => undefined,
@@ -210,7 +210,7 @@ describe("Linux Hopper package transaction failures", () => {
     "stops after failed install transaction %i without inspecting Python",
     async (failing) => {
       const directory = await createTestTempDirectory(
-        "rea-linux-install-failure-",
+        "nre-linux-install-failure-",
       );
       const host = systemLinuxHopperInstallHost(
         { XDG_CACHE_HOME: directory },
@@ -265,7 +265,7 @@ describe("Linux Hopper package cancellation and disclosure", () => {
     "honors cancellation at $phase without starting the next stage",
     async ({ phase, commands, inspections }) => {
       const directory = await createTestTempDirectory(
-        "rea-python-install-cancel-",
+        "nre-python-install-cancel-",
       );
       const host = systemLinuxHopperInstallHost(
         { XDG_CACHE_HOME: directory },

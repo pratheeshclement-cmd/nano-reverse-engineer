@@ -245,7 +245,7 @@ export const createGhidraProviderClient = (input: {
       new ProviderAdapterError("ghidra", "open_binary", {
         diagnostics: {
           reason:
-            "Resolve REA_GHIDRA_SEED_FILE into an analysis profile before opening the session.",
+            "Resolve NRE_GHIDRA_SEED_FILE into an analysis profile before opening the session.",
         },
       }),
     );
@@ -275,7 +275,7 @@ export const createGhidraProviderClient = (input: {
       new ProviderAdapterError("ghidra", "open_binary", {
         diagnostics: {
           reason:
-            "The committed legacy MIPS profile pins its import language; REA_GHIDRA_LANGUAGE_ID/REA_GHIDRA_COMPILER_SPEC_ID cannot be combined with it. Reopen the target without the override.",
+            "The committed legacy MIPS profile pins its import language; NRE_GHIDRA_LANGUAGE_ID/NRE_GHIDRA_COMPILER_SPEC_ID cannot be combined with it. Reopen the target without the override.",
         },
       }),
     );
@@ -289,7 +289,7 @@ export const createGhidraProviderClient = (input: {
       new ProviderAdapterError("ghidra", "open_binary", {
         diagnostics: {
           reason:
-            "The committed analysis profile and REA_GHIDRA_LANGUAGE_ID/REA_GHIDRA_COMPILER_SPEC_ID differ; reopen the target to resolve a new profile.",
+            "The committed analysis profile and NRE_GHIDRA_LANGUAGE_ID/NRE_GHIDRA_COMPILER_SPEC_ID differ; reopen the target to resolve a new profile.",
         },
       }),
     );
@@ -319,7 +319,7 @@ export const createGhidraProviderClient = (input: {
       new ProviderAdapterError("ghidra", "open_binary", {
         diagnostics: {
           reason:
-            "The committed analysis profile and REA_GHIDRA_DISABLED_ANALYZERS differ; reopen the target to resolve a new profile.",
+            "The committed analysis profile and NRE_GHIDRA_DISABLED_ANALYZERS differ; reopen the target to resolve a new profile.",
         },
       }),
     );
@@ -360,7 +360,7 @@ export const createGhidraProviderClient = (input: {
     ...(target.format === "gamecube-dol"
       ? [
           "GameCube DOL analysis maps the header's text and data sections at their load addresses; file bytes outside those sections (the 256-byte header and any padding) are not mapped.",
-          "The default language is stock Ghidra PowerPC:BE:32:default. Broadway-specific paired-single and Gekko instructions are not decoded unless REA_GHIDRA_LANGUAGE_ID selects an installed variant such as PowerPC:BE:32:Gekko_Broadway.",
+          "The default language is stock Ghidra PowerPC:BE:32:default. Broadway-specific paired-single and Gekko instructions are not decoded unless NRE_GHIDRA_LANGUAGE_ID selects an installed variant such as PowerPC:BE:32:Gekko_Broadway.",
           "BSS is mapped uninitialized only outside the data sections it overlaps. The DOL header is not an identification of the producing SDK, and no runtime initialization, OS, or hardware state is modeled.",
         ]
       : []),
@@ -393,7 +393,7 @@ export const createGhidraProviderClient = (input: {
       ? windowsP0Limitations
       : installation.platform === "darwin"
         ? [
-            "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+            "macOS sessions require a matching executable Ghidra native decompiler; NRE checks for it but does not build native components or change Gatekeeper quarantine state.",
           ]
         : [];
   if (input.signal.aborted)
@@ -1072,7 +1072,7 @@ const projectPrimarySessionError = (
         "Only the decompiler failed for this procedure; the Ghidra session remains usable.",
       )}`,
       remediationAction:
-        "Call analyze_function (CLI: `rea function`) for the same procedure. It returns assembly, callers, callees, references and basic blocks from the Ghidra listing and records this decompiler failure under facet_availability.pseudocode. Repeating the unchanged decompile request is not expected to succeed.",
+        "Call analyze_function (CLI: `nre function`) for the same procedure. It returns assembly, callers, callees, references and basic blocks from the Ghidra listing and records this decompiler failure under facet_availability.pseudocode. Repeating the unchanged decompile request is not expected to succeed.",
     });
   // A request-level deadline, not a provider failure: other operations stay
   // available. Only promise session reuse when no caller cancellation closed
@@ -1097,7 +1097,7 @@ const projectPrimarySessionError = (
           "Only this procedure's decompilation was stopped; the Ghidra session remains usable.",
         )}`,
         remediationAction:
-          "Use analyze_function (CLI: `rea function`) for listing facts. Call update_analysis_settings with setting ghidra.decompile_timeout_seconds and action set to raise the per-function deadline for the next operation on this Program. For CLI or future REA processes, set REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS. Set the MCP tool-call deadline to cover startup and the full call; earlier cancellation closes the session. `rea setup` estimates deadlines for new Codex/Kimi registrations and preserves existing positive values; edit existing deadlines yourself.",
+          "Use analyze_function (CLI: `nre function`) for listing facts. Call update_analysis_settings with setting ghidra.decompile_timeout_seconds and action set to raise the per-function deadline for the next operation on this Program. For CLI or future NRE processes, set NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS. Set the MCP tool-call deadline to cover startup and the full call; earlier cancellation closes the session. `nre setup` estimates deadlines for new Codex/Kimi registrations and preserves existing positive values; edit existing deadlines yourself.",
       },
     );
   if (failure.kind === "analysis_timeout")
@@ -1281,7 +1281,7 @@ const projectObservedJvmMemoryFailure = (
       ...(heapExhaustion
         ? {
             remediationAction:
-              "If the host has available memory, consider increasing GHIDRA_HEADLESS_MAXMEM or disabling expensive analyzers with REA_GHIDRA_DISABLED_ANALYZERS, then retry.",
+              "If the host has available memory, consider increasing GHIDRA_HEADLESS_MAXMEM or disabling expensive analyzers with NRE_GHIDRA_DISABLED_ANALYZERS, then retry.",
           }
         : {}),
     },
@@ -1295,7 +1295,7 @@ const ghidraSessionContinuationMessage = (
 ): string => {
   if (failure.concurrentCancellation === undefined) return healthyMessage;
   return failure.cleanupFailure === undefined
-    ? "The request was also cancelled before the failure settled, so REA closed the Ghidra session; the next request starts a new session and repeats import and analysis."
+    ? "The request was also cancelled before the failure settled, so NRE closed the Ghidra session; the next request starts a new session and repeats import and analysis."
     : "The request was also cancelled, and Ghidra session shutdown left cleanup unconfirmed. Close the target to retry retained cleanup before starting another Ghidra session.";
 };
 
@@ -1309,14 +1309,14 @@ const memoryCgroupSchema = z.object({
 });
 
 const GHIDRA_PROCESS_TREE_MEMORY_ACTION =
-  "A memory limit covers Ghidra's native decompiler processes as well as its Java heap, and their number follows the available CPUs, so a larger GHIDRA_HEADLESS_MAXMEM does not help. Raise the container or host memory limit, or allow fewer CPUs with a longer REA_GHIDRA_STARTUP_TIMEOUT_MS.";
+  "A memory limit covers Ghidra's native decompiler processes as well as its Java heap, and their number follows the available CPUs, so a larger GHIDRA_HEADLESS_MAXMEM does not help. Raise the container or host memory limit, or allow fewer CPUs with a longer NRE_GHIDRA_STARTUP_TIMEOUT_MS.";
 
 /**
  * Own SIGKILL interpretation for startup and running-provider failures.
  * The signal alone leaves its cause unknown. For process/protocol failures
- * observed before REA requested a stop, a rising cgroup oom_kill count supplies
+ * observed before NRE requested a stop, a rising cgroup oom_kill count supplies
  * separate memory evidence. That count covers the cgroup and its child groups,
- * not only REA's process tree.
+ * not only NRE's process tree.
  */
 const projectSigkill = (
   operation: AnalysisOperation,
@@ -1351,7 +1351,7 @@ const projectSigkill = (
     return new AnalysisResourceConstraintError(
       operation,
       "memory",
-      `Ghidra was killed by SIGKILL while the oom_kill count of REA's cgroup ${cgroup.data.path} rose from ${String(cgroup.data.oom_kill_before)} to ${String(cgroup.data.oom_kill_after)}, so the kernel OOM killer ended a process in that cgroup or one of its child groups. The Java heap need not have been full.`,
+      `Ghidra was killed by SIGKILL while the oom_kill count of NRE's cgroup ${cgroup.data.path} rose from ${String(cgroup.data.oom_kill_before)} to ${String(cgroup.data.oom_kill_after)}, so the kernel OOM killer ended a process in that cgroup or one of its child groups. The Java heap need not have been full.`,
       {
         cgroup_memory_max: cgroup.data.memory_max,
         configured_jvm_max_heap:
@@ -1378,8 +1378,8 @@ const ghidraStartupTimeoutGuidance = (timeoutMs: number) => ({
     timeoutMs,
     undefined,
   ),
-  userMessage: `Ghidra did not finish importing and analyzing the target within its configured ${String(timeoutMs)} ms startup deadline (REA_GHIDRA_STARTUP_TIMEOUT_MS).`,
-  remediationAction: `Large binaries can need longer: use update_analysis_settings with setting ghidra.startup_timeout_ms and action set above ${String(timeoutMs)}, or set REA_GHIDRA_STARTUP_TIMEOUT_MS in the launch environment for future REA processes; REA_GHIDRA_DISABLED_ANALYZERS can skip selected expensive analyzers with reduced coverage. Export useful Evidence and resolve any retained cleanup before starting a new provider attempt. Runtime updates apply to the next startup attempt without restarting REA. Reopening repeats import from scratch. The MCP client's tool-call deadline must also allow startup and the query.`,
+  userMessage: `Ghidra did not finish importing and analyzing the target within its configured ${String(timeoutMs)} ms startup deadline (NRE_GHIDRA_STARTUP_TIMEOUT_MS).`,
+  remediationAction: `Large binaries can need longer: use update_analysis_settings with setting ghidra.startup_timeout_ms and action set above ${String(timeoutMs)}, or set NRE_GHIDRA_STARTUP_TIMEOUT_MS in the launch environment for future NRE processes; NRE_GHIDRA_DISABLED_ANALYZERS can skip selected expensive analyzers with reduced coverage. Export useful Evidence and resolve any retained cleanup before starting a new provider attempt. Runtime updates apply to the next startup attempt without restarting NRE. Reopening repeats import from scratch. The MCP client's tool-call deadline must also allow startup and the query.`,
 });
 
 /** A provider already observed as running can be restarted by reopening. */

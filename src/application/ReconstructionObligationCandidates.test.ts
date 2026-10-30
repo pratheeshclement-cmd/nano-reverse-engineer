@@ -88,7 +88,7 @@ const applicationWithUnknowns = (
     limitations: base.limitations,
   });
   const application = createEvidence(undefined, MANAGED_WORKFLOW_PROVIDER, {
-    predicateType: "rea.managed-application-graph",
+    predicateType: "nre.managed-application-graph",
     operation: "project_managed_application_graph",
     parameters: {},
     result: {
@@ -210,7 +210,7 @@ describe("reconstruction obligation candidates", () => {
       ...rest
     } = FINALIZED_PROCESS_CAPTURE_EXAMPLE;
     const evidence = createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: {

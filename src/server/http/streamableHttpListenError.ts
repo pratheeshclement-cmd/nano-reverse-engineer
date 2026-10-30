@@ -91,7 +91,7 @@ const listenerRemediation = (
     return "Check the selected listener host, port, and binding permissions, then retry.";
   switch (classification.value.kind) {
     case "host_allowlist":
-      return "Set MCP_ALLOWED_HOSTS to the host names or IP addresses clients will use, without URL components or ports, then retry. For rea mcp --http, --allowed-hosts accepts the same comma-separated list.";
+      return "Set MCP_ALLOWED_HOSTS to the host names or IP addresses clients will use, without URL components or ports, then retry. For nre mcp --http, --allowed-hosts accepts the same comma-separated list.";
     case "host_lookup":
       return "Check --host or MCP_HOST and host name resolution; correct the value or resolve the lookup failure, then retry.";
     case "host_unavailable":

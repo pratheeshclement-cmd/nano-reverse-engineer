@@ -571,7 +571,7 @@ const acquireStagedFile = async (
     let failure: unknown;
     let directory: string | undefined;
     try {
-      directory = await mkdtemp(resolve(parent, ".rea-write-"));
+      directory = await mkdtemp(resolve(parent, ".nre-write-"));
     } catch (cause: unknown) {
       if (fileErrorCode(cause) !== "ENAMETOOLONG") throw cause;
       failure = cause;

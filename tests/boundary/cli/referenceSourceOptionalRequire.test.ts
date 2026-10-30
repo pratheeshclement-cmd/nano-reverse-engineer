@@ -12,10 +12,10 @@ cliTest.skipIf(process.platform === "win32")(
   "retains optional loader dependencies with their original identity and lookup uncertainty",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-reference-optional-require-",
+      "nre-reference-optional-require-",
     );
     const config = await createTestTempDirectory(
-      "rea-reference-optional-config-",
+      "nre-reference-optional-config-",
     );
     const resolverCallees = [
       "require.resolve",
@@ -62,7 +62,7 @@ cliTest.skipIf(process.platform === "win32")(
     );
 
     // Resolve-only Node controls confirm the equivalent spellings without loading
-    // the throwing dependency. REA only reads these self-authored fixtures.
+    // the throwing dependency. NRE only reads these self-authored fixtures.
     for (const [index] of resolverCallees.entries()) {
       const executed = await promisify(execFile)(
         process.execPath,
@@ -78,7 +78,7 @@ cliTest.skipIf(process.platform === "win32")(
         HOME: config,
         XDG_CONFIG_HOME: config,
         XDG_CACHE_HOME: config,
-        REA_REFERENCE_SECRET_PATTERNS_JSON: "[]",
+        NRE_REFERENCE_SECRET_PATTERNS_JSON: "[]",
       },
     });
     expect(result.exitCode, result.stderr + JSON.stringify(result.json)).toBe(

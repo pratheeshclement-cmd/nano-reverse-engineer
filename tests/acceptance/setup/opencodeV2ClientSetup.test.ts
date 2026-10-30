@@ -20,7 +20,7 @@ const layeredOpenCode = async (
   disabled: boolean,
   jsonc: boolean,
 ) => {
-  const home = await createTestTempDirectory("rea-opencode-v2-activation-");
+  const home = await createTestTempDirectory("nre-opencode-v2-activation-");
   const configurationHome = join(home, "config");
   const directory = join(configurationHome, "opencode");
   await mkdir(directory, { recursive: true });
@@ -30,11 +30,11 @@ const layeredOpenCode = async (
   const originalLower = JSON.stringify({
     mcp: {
       servers: {
-        rea: {
+        nre: {
           type: "local",
-          command: ["rea", "mcp"],
+          command: ["nre", "mcp"],
           disabled,
-          environment: { REA_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
+          environment: { NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
         },
         other,
       },
@@ -77,7 +77,7 @@ for (const disabled of [true, false]) {
         expect(parse(configured)).toMatchObject({
           mcp: {
             servers: {
-              rea: {
+              nre: {
                 type: "local",
               },
             },
@@ -85,7 +85,7 @@ for (const disabled of [true, false]) {
           theme: "system",
         });
         if (disabled)
-          expect(parse(configured).mcp.servers.rea.disabled).toBe(false);
+          expect(parse(configured).mcp.servers.nre.disabled).toBe(false);
         if (jsonc)
           expect(configured).toContain(
             "// Keep the user configuration comment.",
@@ -93,7 +93,7 @@ for (const disabled of [true, false]) {
         expect(await readFile(fixture.lower, "utf8")).toBe(
           fixture.originalLower,
         );
-        expect(await readFile(`${fixture.upper}.rea.backup`, "utf8")).toBe(
+        expect(await readFile(`${fixture.upper}.nre.backup`, "utf8")).toBe(
           fixture.originalUpper,
         );
 
@@ -147,7 +147,7 @@ cliTest(
     });
     expect(await readFile(fixture.lower, "utf8")).toBe(malformed);
     expect(await readFile(fixture.upper, "utf8")).toBe(fixture.originalUpper);
-    await expect(access(`${fixture.upper}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${fixture.upper}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },

@@ -108,7 +108,7 @@ rows, not merely the function count or MD5.
 ## Completed-task costs
 
 Three alternating pairs per fixture execute one fresh public CLI process:
-`rea inspect-pe-imports PATH --json`. All **24** tasks complete. Complete Evidence
+`nre inspect-pe-imports PATH --json`. All **24** tasks complete. Complete Evidence
 objects are equal across all six runs of each fixture, including provenance,
 coverage, limitations, locations and identity; nothing is stripped for equality.
 Artifact digests remain unchanged. The stress fixture contains 2,048 independent

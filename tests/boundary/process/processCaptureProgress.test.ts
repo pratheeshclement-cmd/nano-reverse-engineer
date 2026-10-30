@@ -19,7 +19,7 @@ import { itWithCaptureCapability } from "./processCaptureCapability.js";
 const PROGRESS_INTERVAL_MS = 100;
 
 const progressLineSchema = z.object({
-  rea_progress: z.object({
+  nre_progress: z.object({
     phase: z.string(),
     completed: z.number().nonnegative(),
     total: z.null(),
@@ -48,7 +48,7 @@ const progressMessageSchema = z.object({
     .optional(),
 });
 
-type ProgressLine = z.infer<typeof progressLineSchema>["rea_progress"];
+type ProgressLine = z.infer<typeof progressLineSchema>["nre_progress"];
 type ParsedProgress = ProgressLine & {
   readonly details: z.infer<typeof progressMessageSchema>;
 };
@@ -106,7 +106,7 @@ const runCaptureCli = async (
 ): Promise<CliCapture> => {
   const child = spawn(
     process.execPath,
-    ["scripts/rea.mjs", "capture-process", scenarioPath, "--json"],
+    ["scripts/nre.mjs", "capture-process", scenarioPath, "--json"],
     {
       stdio: ["ignore", "pipe", "pipe"],
       ...(options.env === undefined
@@ -168,7 +168,7 @@ const runCaptureCli = async (
     stderr,
     exitCode: result.code,
     lines: lines.map((line) => {
-      const update = progressLineSchema.parse(JSON.parse(line)).rea_progress;
+      const update = progressLineSchema.parse(JSON.parse(line)).nre_progress;
       return {
         update: { ...update, details: parseProgressMessage(update.message) },
       };
@@ -243,7 +243,7 @@ const connectProgressClient = async (
 itWithCaptureCapability(
   "keeps capture Evidence on stdout and live status on stderr for a sparse child",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-sparse-", {
+    const scenario = await writeScenario("nre-process-progress-sparse-", {
       executable: process.execPath,
       arguments: childScript(
         "process.stdout.write('SPARSE_CHILD_STARTED\\n'); setTimeout(() => process.stdout.write('SPARSE_CHILD_DONE\\n'), 1600);",
@@ -253,12 +253,12 @@ itWithCaptureCapability(
     });
     const capture = await runCaptureCli(scenario);
     expect(capture.exitCode, capture.stderr).toBe(0);
-    expect(capture.stdout).not.toContain("rea_progress");
+    expect(capture.stdout).not.toContain("nre_progress");
     const evidence = parseEvidence(JSON.parse(capture.stdout));
     const recorded = parseProcessCapture(evidence.normalized_result);
     expect(evidence).toMatchObject({
       operation: "capture_process_scenario",
-      predicate_type: "rea.process-capture",
+      predicate_type: "nre.process-capture",
     });
     const terminalText = recorded.frames.map(({ data }) => data).join("");
     expect(terminalText).toContain("SPARSE_CHILD_STARTED");
@@ -307,7 +307,7 @@ itWithCaptureCapability(
   "reports startup cleanup coverage when temporary storage is unavailable",
   async () => {
     const scenario = await writeScenario(
-      "rea-process-progress-prepare-failed-",
+      "nre-process-progress-prepare-failed-",
       {
         executable: process.execPath,
         arguments: childScript("process.stdout.write('ready\\n')"),
@@ -315,7 +315,7 @@ itWithCaptureCapability(
       },
     );
     const missingTempRoot = join(
-      await createTestTempDirectory("rea-process-progress-missing-tmpdir-"),
+      await createTestTempDirectory("nre-process-progress-missing-tmpdir-"),
       "missing",
     );
     const capture = await runCaptureCli(scenario, {
@@ -355,7 +355,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "bounds stderr progress while a busy child emits many output chunks",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-busy-", {
+    const scenario = await writeScenario("nre-process-progress-busy-", {
       executable: process.execPath,
       arguments: childScript(
         "let count = 0; const timer = setInterval(() => { process.stdout.write('BUSY_CHILD_LINE\\n'); count += 1; if (count >= 50) clearInterval(timer); }, 12);",
@@ -395,7 +395,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "reports timeout cleanup on stderr without changing Evidence shape",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-timeout-", {
+    const scenario = await writeScenario("nre-process-progress-timeout-", {
       executable: process.execPath,
       arguments: childScript("setInterval(() => undefined, 1000);"),
       timeout_ms: 700,
@@ -406,7 +406,7 @@ itWithCaptureCapability(
     const evidence = parseEvidence(JSON.parse(capture.stdout));
     const recorded = parseProcessCapture(evidence.normalized_result);
     expect(recorded.exit.reason).toBe("timeout");
-    expect(capture.stdout).not.toContain("rea_progress");
+    expect(capture.stdout).not.toContain("nre_progress");
     const updates = capture.lines.map(({ update }) => update);
     assertMonotonic(updates);
     expect(updates.at(-1)).toMatchObject({
@@ -424,7 +424,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "reports cleanup status on stderr when capture is cancelled",
   async () => {
-    const scenario = await writeScenario("rea-process-progress-cancel-", {
+    const scenario = await writeScenario("nre-process-progress-cancel-", {
       executable: process.execPath,
       arguments: childScript("setInterval(() => undefined, 1000);"),
       timeout_ms: 15_000,
@@ -438,7 +438,7 @@ itWithCaptureCapability(
       code: "cancelled",
       details: { operation: "process_capture", cleanup: "complete" },
     });
-    expect(capture.stdout).not.toContain("rea_progress");
+    expect(capture.stdout).not.toContain("nre_progress");
     const updates = capture.lines.map(({ update }) => update);
     assertMonotonic(updates);
     expect(updates.at(-1)).toMatchObject({

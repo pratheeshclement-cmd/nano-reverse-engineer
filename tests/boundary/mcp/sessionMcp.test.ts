@@ -64,7 +64,7 @@ afterEach(async () => {
 
 describe("MCP snapshot lifecycle ordering", () => {
   it("saves earlier in-flight observations, blocks later calls, and preserves the session on write failure", async () => {
-    directory = await createTestTempDirectory("rea-mcp-snapshot-order-");
+    directory = await createTestTempDirectory("nre-mcp-snapshot-order-");
     const started = createDeferred<void>();
     const release = createDeferred<ReturnType<typeof ok>>();
     const { mcp, first, closed } = await createSessionMcpHarness(
@@ -230,13 +230,13 @@ describe("owned-process prerequisite during status discovery", () => {
   it.skipIf(process.platform === "win32")(
     "keeps every other provider's status when the Apktool probe cannot prepare an owned child",
     async () => {
-      directory = await createTestTempDirectory("rea-mcp-ps-prerequisite-");
+      directory = await createTestTempDirectory("nre-mcp-ps-prerequisite-");
       const launcher = join(directory, "apktool");
       await writeFile(launcher, "#!/bin/sh\nprintf '2.9.3\\n'\n", {
         mode: 0o755,
       });
       const apktoolAnalysis = new ApktoolProvider({
-        environment: { REA_APKTOOL_COMMAND: launcher },
+        environment: { NRE_APKTOOL_COMMAND: launcher },
       });
       vi.spyOn(systemProcessOwnershipHost, "prepare").mockImplementation(
         async () => {
@@ -297,7 +297,7 @@ describe("owned-process prerequisite during status discovery", () => {
 
 describe("target-free MCP fixture host isolation", () => {
   it("uses fixed unavailable ports instead of probing installed Android tools", async () => {
-    directory = await createTestTempDirectory("rea-mcp-host-isolation-");
+    directory = await createTestTempDirectory("nre-mcp-host-isolation-");
     const { mcp } = await createSessionMcpHarness(
       directory,
       provider,
@@ -324,7 +324,7 @@ describe("target-free MCP fixture host isolation", () => {
 
 describe("target-free MCP lifecycle", () => {
   it("takes the session snapshot after Android readiness inspection completes", async () => {
-    directory = await createTestTempDirectory("rea-mcp-status-readiness-");
+    directory = await createTestTempDirectory("nre-mcp-status-readiness-");
     const targetPath = join(directory, "target.hop");
     await writeFile(targetPath, "fixture target");
     const entered = createDeferred<void>();
@@ -370,7 +370,7 @@ describe("target-free MCP lifecycle", () => {
   });
 
   it("reopens replaced content at one canonical path through MCP", async () => {
-    directory = await createTestTempDirectory("rea-mcp-replaced-target-");
+    directory = await createTestTempDirectory("nre-mcp-replaced-target-");
     const targetPath = join(directory, "mutable.hop");
     await writeFile(targetPath, "first");
     const closed: string[] = [];
@@ -438,7 +438,7 @@ describe("snapshot receipt after MCP cleanup", () => {
     "retains the saved snapshot receipt when process cleanup fails (session failure=%s)",
     async (sessionFailure) => {
       directory = await createTestTempDirectory(
-        "rea-mcp-snapshot-process-cleanup-",
+        "nre-mcp-snapshot-process-cleanup-",
       );
       const cleanupObservation = createEvidence(
         undefined,
@@ -518,7 +518,7 @@ describe("snapshot receipt after MCP cleanup", () => {
 
 describe("target-free MCP workflow", () => {
   it("reports no-target, opens, analyzes, switches, reports status, and closes", async () => {
-    directory = await createTestTempDirectory("rea-mcp-session-");
+    directory = await createTestTempDirectory("nre-mcp-session-");
     const lifecycle = await createSessionMcpHarness(
       directory,
       provider,
@@ -644,7 +644,7 @@ describe("target-free MCP workflow", () => {
 
 describe("MCP snapshot open ordering", () => {
   it("keeps a snapshot open ahead of later reads and closes on the same connection", async () => {
-    directory = await createTestTempDirectory("rea-mcp-snapshot-open-order-");
+    directory = await createTestTempDirectory("nre-mcp-snapshot-open-order-");
     const { mcp, first, second } = await createSessionMcpHarness(
       directory,
       provider,
@@ -683,7 +683,7 @@ describe("MCP snapshot open ordering", () => {
 
 describe("session filesystem path boundaries over MCP", () => {
   it("rejects relative snapshot and export paths with an absolute-path error", async () => {
-    directory = await createTestTempDirectory("rea-mcp-path-boundary-");
+    directory = await createTestTempDirectory("nre-mcp-path-boundary-");
     const { mcp, first } = await createSessionMcpHarness(
       directory,
       provider,
@@ -714,7 +714,7 @@ describe("session filesystem path boundaries over MCP", () => {
 
 describe("json depth bounds over MCP", () => {
   it("classifies deeply nested evidence parameters as an input validation error", async () => {
-    directory = await createTestTempDirectory("rea-mcp-depth-bound-");
+    directory = await createTestTempDirectory("nre-mcp-depth-bound-");
     const { mcp } = await createSessionMcpHarness(
       directory,
       provider,

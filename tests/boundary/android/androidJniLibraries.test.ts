@@ -17,8 +17,8 @@ import {
 import { AnalysisError } from "../../../src/domain/analysisErrorBase.js";
 import { projectAnalysisError } from "../../../src/domain/analysisErrorProjection.js";
 import { ProviderCleanupError } from "../../../src/domain/providerCleanupError.js";
-import type { AndroidJniSelection } from "../../../src/domain/android/androidJniBindings.js";
 import {
+  type AndroidJniSelection,
   androidJniLibraryCheckpointSchema,
   type AndroidJniLibraryCheckpoint,
 } from "../../../src/domain/android/androidJniBindings.js";
@@ -37,7 +37,7 @@ const fixture = async (
   ],
   rename?: readonly [string, string],
 ) => {
-  const directory = await createTestTempDirectory("rea-android-jni-libraries-");
+  const directory = await createTestTempDirectory("nre-android-jni-libraries-");
   const snapshot = join(directory, "selected app.apk");
   const resources = new ArtifactResourceScope();
   onTestFinished(async () => {

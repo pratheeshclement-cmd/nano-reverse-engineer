@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.each(["control", "close-failure", "close-cancel", "close-both"] as const)(
   "retains completed Go acquisition through %s",
   async (mode) => {
-    const root = await createTestTempDirectory("rea-go-finalization-");
+    const root = await createTestTempDirectory("nre-go-finalization-");
     const path = join(root, "selected.elf");
     const bytes = createGoBinaryFixture().bytes;
     await writeFile(path, bytes);

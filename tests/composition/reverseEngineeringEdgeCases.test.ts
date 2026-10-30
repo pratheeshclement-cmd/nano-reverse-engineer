@@ -71,7 +71,7 @@ it("records pathless objdump architecture support as provider capability evidenc
 
 it("uses the host environment when the service environment is omitted", async () => {
   const { directory, path } = await createArtifact();
-  const key = "REA_REVERSE_TOOLS_ENV_FALLBACK_TEST";
+  const key = "NRE_REVERSE_TOOLS_ENV_FALLBACK_TEST";
   const previous = process.env[key];
   process.env[key] = "host-value";
   let observedEnvironment: NodeJS.ProcessEnv | undefined;

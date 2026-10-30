@@ -32,11 +32,11 @@ it.each([
 ])(
   "keeps named expression %s calls distinct in the public CLI",
   async (name, source, callLine, targetLine) => {
-    const root = await createTestTempDirectory("rea-function-name-cli-");
+    const root = await createTestTempDirectory("nre-function-name-cli-");
     await writeFile(join(root, "app.js"), source);
     const { stdout } = await execute(
       process.execPath,
-      ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+      ["scripts/nre.mjs", "analyze-javascript-application", root, "--json"],
       { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
     );
     const result = javascriptApplicationAnalysisResultSchema.parse(

@@ -7,7 +7,7 @@ import {
 } from "./AdbConfiguration.js";
 
 describe("resolveAdbBinary", () => {
-  it("prefers an absolute REA_ADB_PATH", async () => {
+  it("prefers an absolute NRE_ADB_PATH", async () => {
     expect(
       await resolveAdbBinary({ [ADB_BINARY_ENV]: "/opt/tools/adb" }, "linux"),
     ).toEqual({

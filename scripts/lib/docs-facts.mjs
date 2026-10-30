@@ -42,7 +42,8 @@ const readmeLinkTargets = (root, from, content, language = "en") =>
       const url = new URL(target);
       const prefix = `/${language}/`;
       if (
-        url.origin !== "https://rea.tools" ||
+        url.origin !==
+          "https://github.com/pratheeshclement-cmd/nano-reverse-engineer" ||
         !url.pathname.startsWith(prefix)
       )
         return target;
@@ -96,7 +97,7 @@ export const skillReferenceIssues = async (skillRoot) => {
 /** Return every caller-visible documentation mismatch against canonical facts. */
 export const documentationFactIssues = async (root, catalog) => {
   const issues = await skillReferenceIssues(
-    join(root, "skills/reverse-engineer-anything"),
+    join(root, "skills/nano-reverse-engineer"),
   );
   const translatedFolder = join(root, "docs/readme");
   let translatedNames = [];

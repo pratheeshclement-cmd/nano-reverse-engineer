@@ -170,7 +170,7 @@ const createOmittedInventoryHost = () => {
 
 describe("DMG inventory reader ownership", () => {
   it("lets inventory clean up a lazy reader after attach fails", async () => {
-    const parent = await createTestTempDirectory("rea-dmg-inventory-owner-");
+    const parent = await createTestTempDirectory("nre-dmg-inventory-owner-");
     const path = join(parent, "image.dmg");
     const image = Buffer.alloc(512);
     image.write("koly", 0, "ascii");
@@ -1400,7 +1400,7 @@ describe("native DMG localized verification diagnostics", () => {
   ])(
     "keeps a localized refusal of a readable target unknown and retries it like %s could be",
     async (_target, reason) => {
-      const root = await createTestTempDirectory("rea-localized-dmg-readable-");
+      const root = await createTestTempDirectory("nre-localized-dmg-readable-");
       const path = join(root, "image.dmg");
       await writeFile(path, "This may or may not be a disk image.\n");
       const run = vi.fn(async () => localizedImageRefusal(path, reason));
@@ -1426,7 +1426,7 @@ describe("native DMG localized verification diagnostics", () => {
     const { host, state } = createOmittedInventoryHost();
     state.inventoryMode = "listed";
     state.detachAttempts = 4;
-    const root = await createTestTempDirectory("rea-localized-dmg-transient-");
+    const root = await createTestTempDirectory("nre-localized-dmg-transient-");
     const path = join(root, "image.dmg");
     await writeFile(path, "A disk image that is briefly busy.\n");
     let attempts = 0;
@@ -1452,7 +1452,7 @@ describe("native DMG localized verification diagnostics", () => {
   });
 
   it("classifies a localized refusal of a missing target as an I/O failure", async () => {
-    const root = await createTestTempDirectory("rea-localized-dmg-io-");
+    const root = await createTestTempDirectory("nre-localized-dmg-io-");
     const path = join(root, "missing.dmg");
     const run = vi.fn(async () =>
       localizedImageRefusal(path, "No existe este archivo o directorio"),
@@ -1471,7 +1471,7 @@ describe("native DMG localized verification diagnostics", () => {
   it.skipIf(process.platform === "win32")(
     "does not block on a target replaced by a named pipe",
     async () => {
-      const root = await createTestTempDirectory("rea-localized-dmg-fifo-");
+      const root = await createTestTempDirectory("nre-localized-dmg-fifo-");
       const path = join(root, "image.dmg");
       await execFileOutput("mkfifo", [path]);
       const run = vi.fn(async () =>
@@ -1502,7 +1502,7 @@ describe("native DMG localized verification diagnostics", () => {
 
 describe("native DMG localized verification cleanup", () => {
   it("preserves cancellation that arrives before the localized target probe", async () => {
-    const root = await createTestTempDirectory("rea-localized-dmg-cancel-");
+    const root = await createTestTempDirectory("nre-localized-dmg-cancel-");
     const path = join(root, "image.dmg");
     await writeFile(
       path,
@@ -1525,7 +1525,7 @@ describe("native DMG localized verification cleanup", () => {
   });
 
   it("retains a failed verification-probe close for reader cleanup", async () => {
-    const root = await createTestTempDirectory("rea-localized-dmg-close-");
+    const root = await createTestTempDirectory("nre-localized-dmg-close-");
     const path = join(root, "image.dmg");
     await writeFile(
       path,
@@ -1613,7 +1613,7 @@ describe("native DMG real verification diagnostics", () => {
   it.skipIf(process.platform !== "darwin")(
     "classifies a real hdiutil verify refusal as a format failure with captured output",
     async () => {
-      const root = await createTestTempDirectory("rea-invalid-dmg-");
+      const root = await createTestTempDirectory("nre-invalid-dmg-");
       const path = join(root, "invalid.dmg");
       await writeFile(path, "This is not a disk image.\n");
       const failure = await createAttachedReader(path, process.env).catch(
@@ -1639,7 +1639,7 @@ describe("native DMG real verification diagnostics", () => {
   it.skipIf(process.platform !== "darwin" || process.getuid?.() === 0)(
     "classifies real hdiutil target access failures as I/O, separately from malformed images",
     async () => {
-      const root = await createTestTempDirectory("rea-dmg-target-errors-");
+      const root = await createTestTempDirectory("nre-dmg-target-errors-");
       const missingPath = join(root, "missing.dmg");
       const unreadablePath = join(root, "unreadable.dmg");
       await writeFile(unreadablePath, "not a disk image\n");
@@ -1676,7 +1676,7 @@ describe("native DMG real verification diagnostics", () => {
     "classifies a checksum mismatch in an hdiutil-created DMG as an integrity failure",
     async () => {
       const root = await createTestTempDirectory(
-        "rea-dmg-checksum-corruption-",
+        "nre-dmg-checksum-corruption-",
       );
       const writableImagePath = join(root, "writable.dmg");
       const imagePath = join(root, "fixture.dmg");

@@ -28,7 +28,7 @@ const path = (name) => join(workspace, name);
 
 await withVerifierCleanup(async () => {
   const { compilerVersion, esptoolVersion, xtensaVersion } = await checkTools();
-  workspace = await mkdtemp(join(tmpdir(), "rea-esp-image-proof-"));
+  workspace = await mkdtemp(join(tmpdir(), "nre-esp-image-proof-"));
   const report = {
     esptool: esptoolVersion,
     compiler: compilerVersion,
@@ -74,7 +74,7 @@ await withVerifierCleanup(async () => {
     esp8266,
   ]);
 
-  // Producer goldens: REA and esptool image-info agree field by field. Each
+  // Producer goldens: NRE and esptool image-info agree field by field. Each
   // class follows from the region app.ld or bootloader.ld places a section in;
   // esptool adds the address-0 padding that aligns the flash text.
   const appClasses = ["mapped", "loaded", "loaded", "not-loaded", "mapped"];
@@ -84,14 +84,14 @@ await withVerifierCleanup(async () => {
     ["app-pad.bin", [...appClasses, "not-loaded"]],
     ["boot.bin", ["loaded", "loaded"]],
   ]) {
-    const [oracle, rea] = await Promise.all([
+    const [oracle, nre] = await Promise.all([
       imageInfo(path(name)),
       inspect(path(name)),
     ]);
-    assertAgrees(name, oracle, rea);
-    assert.equal(rea.inventory.coverage.status, "complete", name);
+    assertAgrees(name, oracle, nre);
+    assert.equal(nre.inventory.coverage.status, "complete", name);
     assert.deepEqual(
-      rea.segments.map(
+      nre.segments.map(
         ({ format_metadata: segment }) => segment.classification,
       ),
       classes,
@@ -99,13 +99,13 @@ await withVerifierCleanup(async () => {
     );
     report.images.push({
       name,
-      role: rea.root.descriptor?.kind ?? "unknown",
-      segments: rea.segments.map(
+      role: nre.root.descriptor?.kind ?? "unknown",
+      segments: nre.segments.map(
         ({ format_metadata: segment }) =>
           `${segment.index}:0x${segment.load_addr.toString(16)}:${segment.classification}`,
       ),
-      checksum: rea.root.checksum.status,
-      sha256: rea.root.appended_sha256.status,
+      checksum: nre.root.checksum.status,
+      sha256: nre.root.appended_sha256.status,
     });
   }
   const padded = await inspect(path("app-pad.bin"));
@@ -287,13 +287,13 @@ await withVerifierCleanup(async () => {
     ["bad-checksum.bin", "invalid", "not-appended"],
     ["bad-sha256.bin", "valid", "invalid"],
   ]) {
-    const [oracle, rea] = await Promise.all([
+    const [oracle, nre] = await Promise.all([
       imageInfo(path(name)),
       inspect(path(name)),
     ]);
-    assertAgrees(name, oracle, rea);
-    assert.equal(rea.root.checksum.status, checksum, name);
-    assert.equal(rea.root.appended_sha256.status, sha256, name);
+    assertAgrees(name, oracle, nre);
+    assert.equal(nre.root.checksum.status, checksum, name);
+    assert.equal(nre.root.appended_sha256.status, sha256, name);
     report.images.push({ name, checksum, sha256 });
   }
   const truncatedOracle = await imageInfo(path("truncated.bin")).then(
@@ -322,7 +322,7 @@ await withVerifierCleanup(async () => {
   if (xtensa === undefined)
     report.images.push({
       name: "app-esp32.bin",
-      skipped: "REA_XTENSA_ESP32_GCC is unset",
+      skipped: "NRE_XTENSA_ESP32_GCC is unset",
     });
   else {
     await execute(
@@ -347,18 +347,18 @@ await withVerifierCleanup(async () => {
       path("app-esp32.bin"),
       appDescriptor,
     );
-    const [oracle, rea] = await Promise.all([
+    const [oracle, nre] = await Promise.all([
       imageInfo(path("app-esp32.bin")),
       inspect(path("app-esp32.bin")),
     ]);
-    assertAgrees("app-esp32.bin", oracle, rea);
-    assert.deepEqual(rea.root.chip, {
+    assertAgrees("app-esp32.bin", oracle, nre);
+    assert.deepEqual(nre.root.chip, {
       target: "esp32",
       isa: "xtensa",
       source: "ESP-IDF v6.1",
     });
     assert.deepEqual(
-      rea.segments.map(
+      nre.segments.map(
         ({ format_metadata: segment }) => segment.classification,
       ),
       ["mapped", "loaded", "loaded", "not-loaded", "mapped"],
@@ -366,7 +366,7 @@ await withVerifierCleanup(async () => {
     report.images.push({
       name: "app-esp32.bin",
       compiler: xtensaVersion,
-      segments: rea.segments.map(
+      segments: nre.segments.map(
         ({ format_metadata: segment }) =>
           `${segment.index}:0x${segment.load_addr.toString(16)}:${segment.classification}`,
       ),
@@ -397,7 +397,7 @@ await withVerifierCleanup(async () => {
   );
   report.images.push({ name: "esp8266-v3.bin", refused: true });
 
-  // ESP8266 v1: esptool falls back to ESP8266; REA refuses it by name.
+  // ESP8266 v1: esptool falls back to ESP8266; NRE refuses it by name.
   const esp8266Image = path("esp8266-0x00000.bin");
   assert.equal((await imageInfo(esp8266Image)).detected, "ESP8266");
   const refused = await inspect(esp8266Image);

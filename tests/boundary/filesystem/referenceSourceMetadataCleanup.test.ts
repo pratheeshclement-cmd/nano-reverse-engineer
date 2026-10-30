@@ -53,14 +53,14 @@ const failCloseUntilAllowed = (
 };
 
 const createPackedRefRepository = async () => {
-  const root = await createTestTempDirectory("rea-reference-packed-owner-");
+  const root = await createTestTempDirectory("nre-reference-packed-owner-");
   await execFileOutput("git", ["init", "--initial-branch=main"], { cwd: root });
   await writeFile(join(root, "main.ts"), "export const value = 1;\n");
   await execFileOutput(
     "git",
     [
       "-c",
-      "user.name=REA fixture",
+      "user.name=NRE fixture",
       "-c",
       "user.email=fixture@example.invalid",
       "-c",
@@ -90,7 +90,7 @@ const createPackedRefRepository = async () => {
 it.each([".", "nested"])(
   "retains failed %s/.gitignore cleanup under the caller's scope",
   async (directory) => {
-    const root = await createTestTempDirectory("rea-reference-ignore-owner-");
+    const root = await createTestTempDirectory("nre-reference-ignore-owner-");
     await mkdir(join(root, directory), { recursive: true });
     const path = join(root, directory, ".gitignore");
     await writeFile(path, "generated/\n");
@@ -128,7 +128,7 @@ it.each([".", "nested"])(
 );
 
 it("retains local Git configuration cleanup before trusting ignore policy", async () => {
-  const root = await createTestTempDirectory("rea-reference-config-owner-");
+  const root = await createTestTempDirectory("nre-reference-config-owner-");
   await execFileOutput("git", ["init", "--initial-branch=main"], { cwd: root });
   const path = join(root, ".git", "config");
   const resources = new ArtifactResourceScope();
@@ -156,7 +156,7 @@ it("retains local Git configuration cleanup before trusting ignore policy", asyn
 });
 
 it("preserves Git metadata cleanup failure and the completed source read", async () => {
-  const root = await createTestTempDirectory("rea-reference-head-owner-");
+  const root = await createTestTempDirectory("nre-reference-head-owner-");
   const repository = join(root, "repository");
   const sourceRoot = join(root, "source");
   await Promise.all([mkdir(repository), mkdir(sourceRoot)]);

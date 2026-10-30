@@ -26,7 +26,7 @@ import { BinarySession } from "./BinarySession.js";
 import { SessionProviderRouter } from "./SessionProviderRouter.js";
 
 /**
- * Regression coverage for https://github.com/morluto/rea/issues/1719:
+ * Regression coverage for https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/1719:
  * `BinarySession#open` must not short-circuit on the `sameTarget &&
  * sameProfile` fast path when the retained provider client is dead. It must
  * start a fresh client instead.
@@ -116,7 +116,7 @@ it("retains live source Evidence without replaying a prior observation", async (
 
 it("keeps unbound observations out of persisted target snapshots", async () => {
   const { session, deep } = openSession();
-  const directory = await createTestTempDirectory("rea-unbound-snapshot-");
+  const directory = await createTestTempDirectory("nre-unbound-snapshot-");
   const path = join(directory, "snapshot.json");
   const parameters = { document: "0", address: "0x1000" };
   try {
@@ -181,7 +181,7 @@ it("keeps unbound observations out of persisted target snapshots", async () => {
     if (replay.ok) {
       expect(replay.value.evidenceId).toBe(bound.value.evidenceId);
       expect(replay.value.limitations).toContain(
-        "Loaded from a local REA analysis snapshot; this call did not re-run the provider.",
+        "Loaded from a local NRE analysis snapshot; this call did not re-run the provider.",
       );
     }
   } finally {
@@ -389,7 +389,7 @@ it("clears retired runtime availability after cancelled-switch restoration", asy
 
   const controller = new AbortController();
   const alternate = join(
-    await createTestTempDirectory("rea-liveness-switch-"),
+    await createTestTempDirectory("nre-liveness-switch-"),
     "alternate.elf",
   );
   await writeFile(alternate, elf(2, 1, 62));

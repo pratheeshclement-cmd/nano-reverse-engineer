@@ -135,7 +135,7 @@ it("leaves a heap percentage unestablished without reading host memory", () => {
 });
 
 it("does not report the 128 MiB request for NODE_OPTIONS supplied by an env file", () => {
-  const directory = mkdtempSync(join(tmpdir(), "rea-regex-env-file-"));
+  const directory = mkdtempSync(join(tmpdir(), "nre-regex-env-file-"));
   const file = join(directory, "heap.env");
   writeFileSync(file, "NODE_OPTIONS=--max-old-space-size=256\n");
   try {
@@ -171,7 +171,7 @@ it("does not report the 128 MiB request for NODE_OPTIONS supplied by an env file
 });
 
 it("does not report the 128 MiB request for a heap percentage in a Node config file", () => {
-  const directory = mkdtempSync(join(tmpdir(), "rea-regex-config-file-"));
+  const directory = mkdtempSync(join(tmpdir(), "nre-regex-config-file-"));
   const file = join(directory, "heap.config.json");
   const config = '{"nodeOptions":{"max-old-space-size-percentage":"1"}}\n';
   writeFileSync(file, config);
@@ -314,7 +314,7 @@ worker.once("error", (error) => {
 
 it("does not report the 128 MiB request after a preload clears process.execArgv", () => {
   if (assertUnrecoverableOffLinux()) return;
-  const directory = mkdtempSync(join(tmpdir(), "rea-regex-exec-argv-"));
+  const directory = mkdtempSync(join(tmpdir(), "nre-regex-exec-argv-"));
   try {
     const reported = spawnCommandLineReport(
       directory,
@@ -353,12 +353,12 @@ it("does not report the 128 MiB request after a preload clears process.execArgv"
 
 it("leaves the heap unknown when a preload title overwrites the command line", () => {
   if (assertUnrecoverableOffLinux()) return;
-  const directory = mkdtempSync(join(tmpdir(), "rea-regex-title-"));
+  const directory = mkdtempSync(join(tmpdir(), "nre-regex-title-"));
   try {
     const reported = spawnCommandLineReport(
       directory,
       ["--max-old-space-size=64"],
-      'process.title = "rea";\n',
+      'process.title = "nre";\n',
     );
     const pinned = probeWorkerHeap(["--max-old-space-size=64"], undefined);
     expect(reported.resourceOld).toBe(128);
@@ -380,11 +380,11 @@ it("leaves the heap unknown when a preload title overwrites the command line", (
 
 it("leaves the heap unknown when --title overwrites the command line", () => {
   if (assertUnrecoverableOffLinux()) return;
-  const directory = mkdtempSync(join(tmpdir(), "rea-regex-title-flag-"));
+  const directory = mkdtempSync(join(tmpdir(), "nre-regex-title-flag-"));
   try {
     const reported = spawnCommandLineReport(
       directory,
-      ["--title=rea", "--max-old-space-size=64"],
+      ["--title=nre", "--max-old-space-size=64"],
       undefined,
     );
     const pinned = probeWorkerHeap(["--max-old-space-size=64"], undefined);
@@ -457,7 +457,7 @@ it("stops a slow match at the configured deadline and names the setting", async 
     effective_value: 100,
     source: "setting",
     agent_editable: true,
-    rea_restart_required: false,
+    nre_restart_required: false,
   });
   expect(projected.remediation.action).toContain(
     regexMatchingDeadlineRecovery({ deadlineMs: 100, source: "setting" }),
@@ -473,7 +473,7 @@ it("stops a slow match at the configured deadline and names the setting", async 
 });
 
 it("matches a trivial pattern in a real worker at the heap floor", () => {
-  const directory = mkdtempSync(join(tmpdir(), "rea-regex-heap-floor-"));
+  const directory = mkdtempSync(join(tmpdir(), "nre-regex-heap-floor-"));
   const probe = join(directory, "probe.mjs");
   const repository = fileURLToPath(new URL("../../../", import.meta.url));
   const tsxApi = pathToFileURL(

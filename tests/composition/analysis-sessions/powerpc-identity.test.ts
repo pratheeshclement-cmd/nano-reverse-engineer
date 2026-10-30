@@ -29,7 +29,7 @@ const profile = createAnalysisProfile(provider, {
 
 describe("PowerPC identity through lifecycle, Evidence and snapshot consumers", () => {
   it("round-trips query bindings without relaxing integrity", () => {
-    const result = [{ address: "0x100101b0", value: "rea_ppc_entry" }];
+    const result = [{ address: "0x100101b0", value: "nre_ppc_entry" }];
     const parameters = {};
     const evidence = createEvidence(target, provider, {
       operation: "list_procedures",

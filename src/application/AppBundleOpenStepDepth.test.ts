@@ -11,7 +11,7 @@ describe("OpenStep Info.plist nesting during app target resolution", () => {
   it.each([127, 128, 3000])(
     "applies the shared bound to %s nested payload arrays",
     async (depth) => {
-      const root = await createTestTempDirectory("rea-app-openstep-depth-");
+      const root = await createTestTempDirectory("nre-app-openstep-depth-");
       const app = join(root, "Example.app");
       const programs = join(app, "Contents", "MacOS");
       await mkdir(programs, { recursive: true });
@@ -43,7 +43,7 @@ describe("OpenStep Info.plist nesting during app target resolution", () => {
   );
 
   it("resolves the first Info.plist root without decoding deeply nested trailing text", async () => {
-    const root = await createTestTempDirectory("rea-app-openstep-trailing-");
+    const root = await createTestTempDirectory("nre-app-openstep-trailing-");
     const app = join(root, "Example.app");
     const programs = join(app, "Contents", "MacOS");
     await mkdir(programs, { recursive: true });

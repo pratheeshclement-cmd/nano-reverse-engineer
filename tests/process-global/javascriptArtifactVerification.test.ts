@@ -48,7 +48,7 @@ it.each(
   "preserves $filename verifier provenance through $outcome",
   async ({ filename, outcome }) => {
     const root = await realpath(
-      await createTestTempDirectory("rea-js-verifier-failure-"),
+      await createTestTempDirectory("nre-js-verifier-failure-"),
     );
     const path = join(root, filename);
     await writeFile(path, "original payload");

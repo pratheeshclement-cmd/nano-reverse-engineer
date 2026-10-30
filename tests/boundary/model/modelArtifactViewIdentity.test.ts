@@ -10,7 +10,7 @@ import { ggufFixture } from "../../fixtures/model/model.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("checks each model parent digest independently of cached declarations and display paths", async () => {
-  const root = await createTestTempDirectory("rea-model-view-identity-");
+  const root = await createTestTempDirectory("nre-model-view-identity-");
   const path = join(root, "selected.gguf");
   await writeFile(path, ggufFixture().bytes);
   const service = createModelArtifactService();

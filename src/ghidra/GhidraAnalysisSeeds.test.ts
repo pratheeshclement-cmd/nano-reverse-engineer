@@ -38,7 +38,7 @@ afterEach(async () => {
     await rm(directory, { recursive: true, force: true });
 });
 const workspace = async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-ghidra-seeds-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-ghidra-seeds-"));
   directories.push(directory);
   return directory;
 };
@@ -88,7 +88,7 @@ describe("Ghidra seed parsing", () => {
     const parsed = parseGhidraSeeds(text);
     if (parsed.ok) throw new Error("Expected a seed error");
     expect(parsed.error.settings).toEqual([
-      { setting: "REA_GHIDRA_SEED_FILE", constraint },
+      { setting: "NRE_GHIDRA_SEED_FILE", constraint },
     ]);
   });
 });
@@ -103,7 +103,7 @@ describe("Ghidra seed commitment", () => {
     const commitment = resolved.value;
     if (commitment === undefined) throw new Error("Expected a commitment");
     expect(commitment).toMatchObject({
-      format: "rea-ghidra-seeds-v1",
+      format: "nre-ghidra-seeds-v1",
       configured_path: path,
       sha256: createHash("sha256").update(CANONICAL).digest("hex"),
       entries: { function: 2, code: 1, label: 1 },
@@ -142,17 +142,20 @@ describe("Ghidra seed commitment", () => {
     });
   });
 
-  it("commits the resolved path behind a configured symbolic link", async () => {
-    const directory = await workspace();
-    const path = join(directory, "seeds.tsv");
-    await writeFile(path, SEEDS);
-    const link = join(directory, "link.tsv");
-    await symlink(path, link);
-    const resolved = await resolveGhidraAnalysisSeeds(link, resources);
-    if (!resolved.ok || resolved.value === undefined)
-      throw new Error("Expected a commitment");
-    expect(resolved.value.path).toBe(await realpath(path));
-  });
+  it.skipIf(process.platform === "win32")(
+    "commits the resolved path behind a configured symbolic link",
+    async () => {
+      const directory = await workspace();
+      const path = join(directory, "seeds.tsv");
+      await writeFile(path, SEEDS);
+      const link = join(directory, "link.tsv");
+      await symlink(path, link);
+      const resolved = await resolveGhidraAnalysisSeeds(link, resources);
+      if (!resolved.ok || resolved.value === undefined)
+        throw new Error("Expected a commitment");
+      expect(resolved.value.path).toBe(await realpath(path));
+    },
+  );
 
   it.skipIf(process.platform === "win32")(
     "rejects an invalid file/.. traversal instead of reading a sibling seed file",
@@ -225,21 +228,21 @@ describe("Ghidra seed commitment", () => {
     );
     if (resolved.ok) throw new Error("Expected an error");
     expect(projectAnalysisError(resolved.error)).toMatchObject({
-      details: { diagnostics: { setting: "REA_GHIDRA_SEED_FILE" } },
+      details: { diagnostics: { setting: "NRE_GHIDRA_SEED_FILE" } },
     });
   });
 });
 
 describe("Ghidra seed session verification", () => {
   const commitment: GhidraSeedCommitment = {
-    format: "rea-ghidra-seeds-v1",
+    format: "nre-ghidra-seeds-v1",
     path: "/seeds.tsv",
     configured_path: "/seeds.tsv",
     sha256: "b".repeat(64),
     entries: { function: 2, code: 1, label: 1 },
   };
   const report: GhidraSeedReport = {
-    format: "rea-ghidra-seeds-v1",
+    format: "nre-ghidra-seeds-v1",
     sha256: "b".repeat(64),
     entries: 4,
     function_created: 1,
@@ -291,14 +294,14 @@ describe("Ghidra seed profile", () => {
     await writeFile(path, SEEDS);
     const parsed = parseConfig({
       GHIDRA_INSTALL_DIR: "/ghidra",
-      REA_GHIDRA_SEED_FILE: path,
+      NRE_GHIDRA_SEED_FILE: path,
     });
     if (!parsed.ok) throw parsed.error;
     const ghidra = new GhidraProvider(parsed.value, silentLogger, {}, host);
     const resolved = await ghidra.resolveAnalysisProfile(pe);
     if (!resolved.ok) throw resolved.error;
     expect(resolved.value.profile?.parameters.analysis_seeds).toMatchObject({
-      format: "rea-ghidra-seeds-v1",
+      format: "nre-ghidra-seeds-v1",
       entries: { function: 2, code: 1, label: 1 },
     });
   });
@@ -308,7 +311,7 @@ describe("Ghidra seed profile", () => {
     await writeFile(path, "0x401000\tdata\n");
     const parsed = parseConfig({
       GHIDRA_INSTALL_DIR: "/ghidra",
-      REA_GHIDRA_SEED_FILE: path,
+      NRE_GHIDRA_SEED_FILE: path,
     });
     if (!parsed.ok) throw parsed.error;
     const ghidra = new GhidraProvider(parsed.value, silentLogger, {}, host);
@@ -316,12 +319,12 @@ describe("Ghidra seed profile", () => {
     if (resolved.ok) throw new Error("Expected a configuration error");
     expect(projectAnalysisError(resolved.error)).toMatchObject({
       code: "configuration_invalid",
-      details: { settings: [{ setting: "REA_GHIDRA_SEED_FILE" }] },
+      details: { settings: [{ setting: "NRE_GHIDRA_SEED_FILE" }] },
     });
   });
 
   it("requires an absolute seed path", () => {
-    const parsed = parseConfig({ REA_GHIDRA_SEED_FILE: "seeds.tsv" });
+    const parsed = parseConfig({ NRE_GHIDRA_SEED_FILE: "seeds.tsv" });
     expect(parsed.ok).toBe(false);
   });
 });

@@ -16,7 +16,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("packaged application known-answer evaluation", () => {
   it("grades real packaged bytes and rejects false values, extra claims, and unrelated citations", async () => {
-    const root = await createTestTempDirectory("rea-known-answer-asar-");
+    const root = await createTestTempDirectory("nre-known-answer-asar-");
     const targets = await createAgentEvaluationFixtures(root, resolve("."));
     const claims = agentFixtureClaims("asar", targets);
     if (claims === undefined) throw new Error("Missing ASAR rubric");
@@ -92,7 +92,7 @@ describe("packaged application known-answer evaluation", () => {
   });
 
   it("binds its oracle to the requested packaged artifact path", async () => {
-    const root = await createTestTempDirectory("rea-known-answer-identity-");
+    const root = await createTestTempDirectory("nre-known-answer-identity-");
     const targets = await createAgentEvaluationFixtures(root, resolve("."));
     const claims = agentFixtureClaims("asar", targets);
     if (claims === undefined) throw new Error("Missing ASAR rubric");
@@ -120,7 +120,7 @@ describe("packaged application known-answer evaluation", () => {
 
 describe("known-answer packaged artifact digest binding", () => {
   it("rejects the same known facts when the target bytes change at the same path", async () => {
-    const root = await createTestTempDirectory("rea-known-answer-digest-");
+    const root = await createTestTempDirectory("nre-known-answer-digest-");
     const targets = await createAgentEvaluationFixtures(root, resolve("."));
     const claims = agentFixtureClaims("asar", targets);
     if (claims === undefined) throw new Error("Missing ASAR rubric");
@@ -155,7 +155,7 @@ describe("known-answer packaged artifact digest binding", () => {
 
 describe("source-produced parser comparison known answers", () => {
   it("accepts exact source-produced heading changes and rejects fabricated depth or runtime claims", async () => {
-    const root = await createTestTempDirectory("rea-known-answer-parser-");
+    const root = await createTestTempDirectory("nre-known-answer-parser-");
     const targets = await createAgentEvaluationFixtures(root, resolve("."));
     const claims = agentFixtureClaims("javascript-export-shape", targets);
     if (claims === undefined) throw new Error("Missing parser rubric");
@@ -247,7 +247,7 @@ describe("source-produced parser comparison known answers", () => {
 
 describe("Notes export known-answer evaluation", () => {
   it("grades real analysis and traces while rejecting false values and unsupported citations", async () => {
-    const root = await createTestTempDirectory("rea-known-answer-notes-");
+    const root = await createTestTempDirectory("nre-known-answer-notes-");
     const targets = await createAgentEvaluationFixtures(root, resolve("."));
     const claims = agentFixtureClaims("notes-export", targets);
     if (claims === undefined) throw new Error("Missing Notes rubric");
@@ -272,7 +272,7 @@ describe("Notes export known-answer evaluation", () => {
 
   it("binds Notes analysis and derived traces to the requested artifact path and bytes", async () => {
     const root = await createTestTempDirectory(
-      "rea-known-answer-notes-identity-",
+      "nre-known-answer-notes-identity-",
     );
     const targets = await createAgentEvaluationFixtures(root, resolve("."));
     const claims = agentFixtureClaims("notes-export", targets);
@@ -601,7 +601,7 @@ const toolEvent = (id: string, tool: string, result: unknown) => ({
   item: {
     id,
     type: "mcp_tool_call",
-    server: "rea",
+    server: "nre",
     tool,
     arguments: {},
     result,

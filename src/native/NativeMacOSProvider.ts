@@ -665,7 +665,7 @@ class NativeMacOSClient implements AnalysisClient {
     timeoutMs: number,
   ): Promise<Result<NativeObservation, AnalysisError>> {
     // lipo reads only Mach-O; its refusal of a PE, ELF, or plist target is not
-    // a tool failure that a retry or `rea doctor` could repair.
+    // a tool failure that a retry or `nre doctor` could repair.
     if (!isMachOFormat(this.target.format))
       return err(
         new AnalysisCapabilityUnavailableError(
@@ -1438,7 +1438,7 @@ class NativeMacOSClient implements AnalysisClient {
         let root: Pick<PrivateRuntimeRoot, "path" | "close">;
         try {
           root = await (this.privateRuntimeRootFactory?.() ??
-            PrivateRuntimeRoot.create({ prefix: "rea-macho-operand-" }));
+            PrivateRuntimeRoot.create({ prefix: "nre-macho-operand-" }));
         } catch (cause: unknown) {
           return err(
             new ProviderAdapterError(IDENTITY.id, "inspect_macho", {

@@ -61,7 +61,7 @@ const runChild = (
       prepareOwnership: async () => {},
       createRuntime: async () => {
         const runtime = await PrivateRuntimeRoot.create({
-          prefix: "rea-source-map-command-test-",
+          prefix: "nre-source-map-command-test-",
         });
         onRuntime?.(runtime.path);
         return runtime;
@@ -109,7 +109,7 @@ it.each([null, { caller: "late source-map cancellation" }])(
   "retains a late caller reason %j when runtime cleanup first fails",
   async (reason) => {
     const root = await PrivateRuntimeRoot.create({
-      prefix: "rea-source-map-late-cleanup-test-",
+      prefix: "nre-source-map-late-cleanup-test-",
     });
     const controller = new AbortController();
     let cleanupAttempts = 0;
@@ -186,53 +186,56 @@ it("preserves exact caller reason when cancellation precedes process exit", asyn
   await expect(access(runtimePath)).rejects.toMatchObject({ code: "ENOENT" });
 });
 
-it("preserves an observed nonzero exit before caller cancellation during output drain", async () => {
-  const reason = { caller: "later than owned exit" };
-  const controller = new AbortController();
-  let runtimePath: string | undefined;
-  let observedBeforeAbort:
-    | { readonly code: number | null; readonly signal: NodeJS.Signals | null }
-    | undefined;
-  const originalWait = ProviderProcessSupervisor.prototype.waitForOutputClose;
-  const waitSpy = vi
-    .spyOn(ProviderProcessSupervisor.prototype, "waitForOutputClose")
-    .mockImplementation(async function (
-      this: ProviderProcessSupervisor,
-      timeoutMs,
-      signal,
-    ) {
-      const exit = this.observedExit();
-      if (exit?.code === 7 && !controller.signal.aborted) {
-        observedBeforeAbort = exit;
-        controller.abort(reason);
-        return false;
-      }
-      return originalWait.call(this, timeoutMs, signal);
+it.skipIf(process.platform === "win32")(
+  "preserves an observed nonzero exit before caller cancellation during output drain",
+  async () => {
+    const reason = { caller: "later than owned exit" };
+    const controller = new AbortController();
+    let runtimePath: string | undefined;
+    let observedBeforeAbort:
+      | { readonly code: number | null; readonly signal: NodeJS.Signals | null }
+      | undefined;
+    const originalWait = ProviderProcessSupervisor.prototype.waitForOutputClose;
+    const waitSpy = vi
+      .spyOn(ProviderProcessSupervisor.prototype, "waitForOutputClose")
+      .mockImplementation(async function (
+        this: ProviderProcessSupervisor,
+        timeoutMs,
+        signal,
+      ) {
+        const exit = this.observedExit();
+        if (exit?.code === 7 && !controller.signal.aborted) {
+          observedBeforeAbort = exit;
+          controller.abort(reason);
+          return false;
+        }
+        return originalWait.call(this, timeoutMs, signal);
+      });
+    let result;
+    try {
+      result = await runChild(
+        controller.signal,
+        exitsAfterHoldingOutput,
+        (path) => {
+          runtimePath = path;
+        },
+      );
+    } finally {
+      waitSpy.mockRestore();
+    }
+    expect(observedBeforeAbort).toEqual({ code: 7, signal: null });
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("expected physical failure");
+    expect(result.error._tag).toBe("ProviderAdapterError");
+    expect(result.error.diagnostics).toMatchObject({
+      exit_code: 7,
+      output_complete: false,
     });
-  let result;
-  try {
-    result = await runChild(
-      controller.signal,
-      exitsAfterHoldingOutput,
-      (path) => {
-        runtimePath = path;
-      },
-    );
-  } finally {
-    waitSpy.mockRestore();
-  }
-  expect(observedBeforeAbort).toEqual({ code: 7, signal: null });
-  expect(result.ok).toBe(false);
-  if (result.ok) throw new Error("expected physical failure");
-  expect(result.error._tag).toBe("ProviderAdapterError");
-  expect(result.error.diagnostics).toMatchObject({
-    exit_code: 7,
-    output_complete: false,
-  });
-  expect(result.error.capturedOutput?.truncated).toBe(true);
-  if (runtimePath === undefined) throw new Error("runtime was not acquired");
-  await expect(access(runtimePath)).rejects.toMatchObject({ code: "ENOENT" });
-});
+    expect(result.error.capturedOutput?.truncated).toBe(true);
+    if (runtimePath === undefined) throw new Error("runtime was not acquired");
+    await expect(access(runtimePath)).rejects.toMatchObject({ code: "ENOENT" });
+  },
+);
 
 it("classifies the same nonzero exit without cancellation", async () => {
   const result = await runChild(undefined, exitsAfterHoldingOutput);
@@ -248,92 +251,98 @@ it("classifies the same nonzero exit without cancellation", async () => {
   });
 });
 
-it("stops a held drain after late output exceeds budget but keeps the exit primary", async () => {
-  const startedAt = performance.now();
-  const result = await runChild(
-    undefined,
-    exitsThenDescendantExceedsStderrBudget,
-  );
-  const elapsedMs = performance.now() - startedAt;
-  expect(result.ok).toBe(false);
-  if (result.ok) throw new Error("expected physical failure");
-  expect(result.error._tag).toBe("ProviderAdapterError");
-  expect(result.error.diagnostics).toMatchObject({
-    exit_code: 7,
-    output_limit_reached: true,
-    output_complete: false,
-  });
-  expect(result.error.diagnostics?.stderr).toContain("physical exit 7");
-  expect(result.error.capturedOutput?.truncated).toBe(true);
-  expect(elapsedMs).toBeLessThan(5_000);
-});
-
-it("preserves an observed process-memory limit over the codec exit status", async () => {
-  const controller = new AbortController();
-  const reason = { caller: "after memory-limit exit" };
-  let observedBeforeAbort:
-    | { readonly code: number | null; readonly signal: NodeJS.Signals | null }
-    | undefined;
-  const originalWait = ProviderProcessSupervisor.prototype.waitForOutputClose;
-  const waitSpy = vi
-    .spyOn(ProviderProcessSupervisor.prototype, "waitForOutputClose")
-    .mockImplementation(async function (
-      this: ProviderProcessSupervisor,
-      timeoutMs,
-      signal,
-    ) {
-      const exit = this.observedExit();
-      if (exit?.code === 3 && !controller.signal.aborted) {
-        observedBeforeAbort = exit;
-        controller.abort(reason);
-        return false;
-      }
-      return originalWait.call(this, timeoutMs, signal);
-    });
-  let result;
-  try {
-    result = await runSourceMapCommand(
-      "{}",
-      "/probe/source.map",
-      { signal: controller.signal },
-      {
-        prepareOwnership: async () => {},
-        launcher: async (options) => {
-          const spawned = await spawnOwnedProviderProcess({
-            ...options,
-            arguments: [
-              "-e",
-              'const {spawn}=require("node:child_process"); spawn(process.execPath,["-e","setTimeout(()=>{},400)"],{stdio:["ignore","inherit","inherit"]}); process.stderr.write("memory limit reached"); process.exit(3)',
-            ],
-          });
-          let exited = false;
-          spawned.process.once("exit", () => {
-            exited = true;
-          });
-          Object.defineProperty(spawned.process, "memoryLimitReached", {
-            get: () => exited,
-          });
-          return spawned;
-        },
-      },
-      unexpectedCleanup,
+it.skipIf(process.platform === "win32")(
+  "stops a held drain after late output exceeds budget but keeps the exit primary",
+  async () => {
+    const startedAt = performance.now();
+    const result = await runChild(
+      undefined,
+      exitsThenDescendantExceedsStderrBudget,
     );
-  } finally {
-    waitSpy.mockRestore();
-  }
-  expect(observedBeforeAbort).toEqual({ code: 3, signal: null });
-  expect(result.ok).toBe(false);
-  if (result.ok) throw new Error("expected memory-limit failure");
-  expect(result.error).toBeInstanceOf(AnalysisResourceConstraintError);
-  expect(result.error).toMatchObject({
-    resource: "memory",
-    reportedLimits: {
-      codec_process_memory_limit_bytes: SOURCE_MAP_CODEC_MEMORY_LIMIT_BYTES,
-    },
-    capturedOutput: { stderr: "memory limit reached" },
-  });
-  expect(result.error.capturedOutput?.truncated).toBe(true);
-});
+    const elapsedMs = performance.now() - startedAt;
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("expected physical failure");
+    expect(result.error._tag).toBe("ProviderAdapterError");
+    expect(result.error.diagnostics).toMatchObject({
+      exit_code: 7,
+      output_limit_reached: true,
+      output_complete: false,
+    });
+    expect(result.error.diagnostics?.stderr).toContain("physical exit 7");
+    expect(result.error.capturedOutput?.truncated).toBe(true);
+    expect(elapsedMs).toBeLessThan(5_000);
+  },
+);
+
+it.skipIf(process.platform === "win32")(
+  "preserves an observed process-memory limit over the codec exit status",
+  async () => {
+    const controller = new AbortController();
+    const reason = { caller: "after memory-limit exit" };
+    let observedBeforeAbort:
+      | { readonly code: number | null; readonly signal: NodeJS.Signals | null }
+      | undefined;
+    const originalWait = ProviderProcessSupervisor.prototype.waitForOutputClose;
+    const waitSpy = vi
+      .spyOn(ProviderProcessSupervisor.prototype, "waitForOutputClose")
+      .mockImplementation(async function (
+        this: ProviderProcessSupervisor,
+        timeoutMs,
+        signal,
+      ) {
+        const exit = this.observedExit();
+        if (exit?.code === 3 && !controller.signal.aborted) {
+          observedBeforeAbort = exit;
+          controller.abort(reason);
+          return false;
+        }
+        return originalWait.call(this, timeoutMs, signal);
+      });
+    let result;
+    try {
+      result = await runSourceMapCommand(
+        "{}",
+        "/probe/source.map",
+        { signal: controller.signal },
+        {
+          prepareOwnership: async () => {},
+          launcher: async (options) => {
+            const spawned = await spawnOwnedProviderProcess({
+              ...options,
+              arguments: [
+                "-e",
+                'const {spawn}=require("node:child_process"); spawn(process.execPath,["-e","setTimeout(()=>{},400)"],{stdio:["ignore","inherit","inherit"]}); process.stderr.write("memory limit reached"); process.exit(3)',
+              ],
+            });
+            let exited = false;
+            spawned.process.once("exit", () => {
+              exited = true;
+            });
+            Object.defineProperty(spawned.process, "memoryLimitReached", {
+              get: () => exited,
+            });
+            return spawned;
+          },
+        },
+        unexpectedCleanup,
+      );
+    } finally {
+      waitSpy.mockRestore();
+    }
+    expect(observedBeforeAbort).toEqual({ code: 3, signal: null });
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("expected memory-limit failure");
+    expect(result.error).toBeInstanceOf(AnalysisResourceConstraintError);
+    expect(result.error).toMatchObject({
+      resource: "memory",
+      reportedLimits: {
+        codec_process_memory_limit_bytes: SOURCE_MAP_CODEC_MEMORY_LIMIT_BYTES,
+      },
+      capturedOutput: { stderr: "memory limit reached" },
+    });
+    expect(result.error.capturedOutput?.truncated).toBe(true);
+  },
+);
 
 it("keeps a timeout distinct from caller cancellation", async () => {
   vi.useFakeTimers({
@@ -349,7 +358,7 @@ it("keeps a timeout distinct from caller cancellation", async () => {
         prepareOwnership: async () => {},
         createRuntime: async () => {
           const runtime = await PrivateRuntimeRoot.create({
-            prefix: "rea-source-map-timeout-test-",
+            prefix: "nre-source-map-timeout-test-",
           });
           runtimePath = runtime.path;
           return runtime;
@@ -387,7 +396,7 @@ it("applies a non-default decode deadline and releases its runtime", async () =>
         prepareOwnership: async () => {},
         createRuntime: async () => {
           const runtime = await PrivateRuntimeRoot.create({
-            prefix: "rea-source-map-selected-deadline-",
+            prefix: "nre-source-map-selected-deadline-",
           });
           runtimePath = runtime.path;
           return runtime;

@@ -112,7 +112,7 @@ const enhancedFixtureResult = (method) => {
       return [{ address: "0x1000", value: "fixture" }];
     case "procedure_pseudo_code":
       return "return 0;";
-    case "rea_caller_scan_target":
+    case "nre_caller_scan_target":
       return {
         target: {
           address: "0x1000",
@@ -127,7 +127,7 @@ const enhancedFixtureResult = (method) => {
         instructions: ["0x1000"],
         instructions_complete: true,
       };
-    case "rea_caller_base":
+    case "nre_caller_base":
       return {
         target: {
           address: "0x1000",
@@ -144,7 +144,7 @@ const enhancedFixtureResult = (method) => {
         callers: [],
         callers_complete: true,
       };
-    case "rea_caller_scan_page":
+    case "nre_caller_scan_page":
       return {
         start: 0,
         next: 0,
@@ -260,7 +260,7 @@ const server = createServer((socket) => {
             {
               id: request.id,
               result: {
-                name: "REA Hopper bridge",
+                name: "NRE Hopper bridge",
                 version: "1.0.0",
                 run_id: runId,
                 process_id: process.pid,

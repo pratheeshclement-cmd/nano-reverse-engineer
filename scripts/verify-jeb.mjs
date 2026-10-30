@@ -14,7 +14,7 @@ const options = parseArguments(process.argv.slice(2));
 if (options.help) {
   process.stdout.write(
     "Usage: npm run verify:jeb [-- --item-address ADDRESS --marker TEXT]\n" +
-      "Requires a running JEB client serving MCP at REA_JEB_MCP_URL\n" +
+      "Requires a running JEB client serving MCP at NRE_JEB_MCP_URL\n" +
       "(default http://127.0.0.1:8425/mcp) with a project already open.\n" +
       "JEB 5.48 headless instances open their target at start (--infile or\n" +
       "the documented programmatic launcher); open_jeb_project is verified\n" +
@@ -29,7 +29,7 @@ const service = new JebAnalysisService(provider);
 let fixtureDirectory;
 try {
   const report = await withVerifierCleanup(async () => {
-    fixtureDirectory = await mkdtemp(join(tmpdir(), "rea-jeb-"));
+    fixtureDirectory = await mkdtemp(join(tmpdir(), "nre-jeb-"));
     const client = await service.execute("inspect_jeb_client", {});
     if (!client.ok) throw new Error(client.error.message);
     const engine = client.value.normalized_result.engine;

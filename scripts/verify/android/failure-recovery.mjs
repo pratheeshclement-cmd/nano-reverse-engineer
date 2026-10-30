@@ -30,18 +30,18 @@ export async function verifyAndroidFailureRecovery({
   execute,
   fixture,
 }) {
-  const root = await mkdtemp(join(tmpdir(), "rea-android-recovery-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-android-recovery-"));
   const javaName = process.platform === "win32" ? "java.exe" : "java";
   const jlinkName = process.platform === "win32" ? "jlink.exe" : "jlink";
   try {
     const withoutJar = { ...environment };
-    delete withoutJar.REA_JADX_MCP_JAR;
+    delete withoutJar.NRE_JADX_MCP_JAR;
     await verifyAndroidReadiness({
       entrypoint,
       environment: withoutJar,
       repository,
       available: false,
-      remediation: /REA_JADX_MCP_JAR/u,
+      remediation: /NRE_JADX_MCP_JAR/u,
     });
     let jlink;
     for (const candidate of isAbsolute(java)
@@ -126,13 +126,13 @@ export async function verifyAndroidFailureRecovery({
       },
       {
         label: "invalid engine archive with a working JDK",
-        env: { ...environment, REA_JADX_MCP_JAR: invalidJar },
-        observation: "Cannot inspect REA_JADX_MCP_JAR",
+        env: { ...environment, NRE_JADX_MCP_JAR: invalidJar },
+        observation: "Cannot inspect NRE_JADX_MCP_JAR",
         diagnostics: {
           failure_kind: "jar",
           failure_code: "version_unresolved",
         },
-        message: /REA_JADX_MCP_JAR/u,
+        message: /NRE_JADX_MCP_JAR/u,
         remediation: /jadx-headless-mcp/u,
         forbiddenGuidance: /Select a full JDK/u,
       },
@@ -187,7 +187,7 @@ export async function verifyAndroidFailureRecovery({
       assert.match(failure.remediation.action, scenario.remediation);
       if (scenario.forbiddenGuidance)
         assert.doesNotMatch(failure.message, scenario.forbiddenGuidance);
-      assert.doesNotMatch(JSON.stringify(failure), /rea doctor/u);
+      assert.doesNotMatch(JSON.stringify(failure), /nre doctor/u);
       await verifyAndroidReadiness({
         entrypoint,
         environment: scenario.env,
@@ -217,7 +217,7 @@ export async function verifyAndroidFailureRecovery({
       stderr: "pipe",
     });
     const client = new Client({
-      name: "rea-real-android-failures",
+      name: "nre-real-android-failures",
       version: "1",
     });
     try {
@@ -249,7 +249,7 @@ export async function verifyAndroidFailureRecovery({
           requireMcpToolError(response).details.issues[0].message,
           /search_android_classes/u,
         );
-        assert.doesNotMatch(JSON.stringify(response), /rea doctor/u);
+        assert.doesNotMatch(JSON.stringify(response), /nre doctor/u);
         console.log(`PASS MCP selector correction: ${name}`);
       }
       const method = await client.callTool(
@@ -302,7 +302,7 @@ const verifyAndroidReadiness = async ({
     env: environment,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-android-readiness", version: "1" });
+  const client = new Client({ name: "nre-android-readiness", version: "1" });
   try {
     await client.connect(transport);
     const catalog = await client.listTools();

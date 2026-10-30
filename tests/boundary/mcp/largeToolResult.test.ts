@@ -111,15 +111,15 @@ describe("MCP response budget recovery", () => {
       nextStep: "Use complete CLI JSON output to consume the analysis.",
     });
     expect(projected.reason).toContain(
-      `The effective REA_MCP_MAX_RESPONSE_BYTES value is ${String(MINIMUM_RESPONSE_BYTES)} bytes`,
+      `The effective NRE_MCP_MAX_RESPONSE_BYTES value is ${String(MINIMUM_RESPONSE_BYTES)} bytes`,
     );
     expect(projected.reason).toContain("floor 10485760 bytes, 10 MiB");
-    expect(projected.reason).toContain("restarting the REA process");
+    expect(projected.reason).toContain("restarting the NRE process");
     expect(projected.reason).toContain("does not raise");
     expect(projected.reason).toContain("no runtime override");
     expect(NODE_MAX_STRING_LENGTH - MCP_RESULT_STRING_LIMIT).toBe(1024);
     expect(projected.reason).toContain(
-      `REA's reserved single-string limit of ${String(MCP_RESULT_STRING_LIMIT)} UTF-16 code units`,
+      `NRE's reserved single-string limit of ${String(MCP_RESULT_STRING_LIMIT)} UTF-16 code units`,
     );
     expect(projected.reason).toContain(
       `Node's single-string ceiling of ${String(NODE_MAX_STRING_LENGTH)} UTF-16 code units`,
@@ -130,22 +130,22 @@ describe("MCP response budget recovery", () => {
     expect(projected.reason).not.toContain(
       `Node's single-string ceiling is ${String(MCP_RESULT_STRING_LIMIT)}`,
     );
-    expect(projected.remediationAction).toContain("REA_MCP_MAX_RESPONSE_BYTES");
+    expect(projected.remediationAction).toContain("NRE_MCP_MAX_RESPONSE_BYTES");
     expect(projected.remediationAction).not.toContain(
-      "set REA_MCP_MAX_RESPONSE_BYTES above Node",
+      "set NRE_MCP_MAX_RESPONSE_BYTES above Node",
     );
   });
 
-  it("does not offer REA_MCP_MAX_RESPONSE_BYTES as a way to raise the string ceiling", () => {
+  it("does not offer NRE_MCP_MAX_RESPONSE_BYTES as a way to raise the string ceiling", () => {
     const projected = mcpResponseOverflowProjection({
       completed: false,
       constraint: "string-length",
       effectiveResponseBytes: MINIMUM_RESPONSE_BYTES * 2,
       nextStep: "Use complete CLI JSON output when the analysis completed.",
     });
-    expect(projected.reason).toContain("REA's reserved single-string limit");
+    expect(projected.reason).toContain("NRE's reserved single-string limit");
     expect(projected.reason).toContain(
-      `REA's reserved single-string limit is ${String(MCP_RESULT_STRING_LIMIT)} UTF-16 code units`,
+      `NRE's reserved single-string limit is ${String(MCP_RESULT_STRING_LIMIT)} UTF-16 code units`,
     );
     expect(projected.reason).toContain(
       `below Node's single-string ceiling of ${String(NODE_MAX_STRING_LENGTH)} UTF-16 code units`,
@@ -157,12 +157,12 @@ describe("MCP response budget recovery", () => {
       `Node's single-string ceiling of ${String(MCP_RESULT_STRING_LIMIT)}`,
     );
     expect(projected.reason).toContain(
-      "REA_MCP_MAX_RESPONSE_BYTES does not raise them",
+      "NRE_MCP_MAX_RESPONSE_BYTES does not raise them",
     );
     expect(projected.reason).toContain("no runtime override");
     expect(projected.reason).not.toContain("floor 10485760");
     expect(projected.remediationAction).toContain(
-      "REA_MCP_MAX_RESPONSE_BYTES does not raise them",
+      "NRE_MCP_MAX_RESPONSE_BYTES does not raise them",
     );
   });
 
@@ -179,7 +179,7 @@ describe("MCP response budget recovery", () => {
       })
       .parse(delivered.structuredContent).error.remediation.action;
     expect(action).toContain("get_evidence_bundle and detail: summary");
-    expect(action).toContain("REA_MCP_MAX_RESPONSE_BYTES");
+    expect(action).toContain("NRE_MCP_MAX_RESPONSE_BYTES");
     expect(action).toContain(
       `Node's single-string ceiling of ${String(NODE_MAX_STRING_LENGTH)}`,
     );
@@ -343,12 +343,12 @@ describe("large complete Evidence MCP delivery", () => {
         }),
       })
       .parse(detached.structuredContent).error;
-    expect(limits.message).toContain("REA_MCP_MAX_RESPONSE_BYTES");
+    expect(limits.message).toContain("NRE_MCP_MAX_RESPONSE_BYTES");
     expect(limits.message).toContain("10485760");
-    expect(limits.message).toContain("restarting the REA process");
+    expect(limits.message).toContain("restarting the NRE process");
     expect(limits.message).toContain("does not raise");
     expect(limits.message).not.toContain("Export retained evidence");
-    expect(limits.remediation.action).toContain("REA_MCP_MAX_RESPONSE_BYTES");
+    expect(limits.remediation.action).toContain("NRE_MCP_MAX_RESPONSE_BYTES");
     expect(limits.details.reported_limits).not.toHaveProperty(
       "evidence_reference",
     );

@@ -239,16 +239,16 @@ describe("parseApktoolYml Apktool 2.9+ metadata dialect", () => {
 describe("parseManifestPackage", () => {
   it("reads the package attribute from a decoded manifest", () => {
     const manifest =
-      '<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" package="com.rea.apktool.probe" platformBuildVersionCode="34">';
+      '<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" package="com.nre.apktool.probe" platformBuildVersionCode="34">';
     expect(parseManifestPackage(`${manifest}</manifest>`)).toBe(
-      "com.rea.apktool.probe",
+      "com.nre.apktool.probe",
     );
   });
 
   it("reads package with reordered or single-quoted XML attributes", () => {
     expect(
-      parseManifestPackage("<manifest debug='false' package='org.rea.app' />"),
-    ).toBe("org.rea.app");
+      parseManifestPackage("<manifest debug='false' package='org.nre.app' />"),
+    ).toBe("org.nre.app");
   });
 
   it("reports null when no package attribute exists", () => {
@@ -258,15 +258,15 @@ describe("parseManifestPackage", () => {
   it("reads the package when unrelated manifest text contains U+FFFD", () => {
     expect(
       parseManifestPackage(
-        '<manifest package="org.rea.app"><application label="\uFFFD"/></manifest>',
+        '<manifest package="org.nre.app"><application label="\uFFFD"/></manifest>',
       ),
-    ).toBe("org.rea.app");
+    ).toBe("org.nre.app");
   });
 
   it("still rejects malformed attributes alongside U+FFFD", () => {
     expect(() =>
       parseManifestPackage(
-        '<manifest package=org.rea.app><application label="\uFFFD"/></manifest>',
+        '<manifest package=org.nre.app><application label="\uFFFD"/></manifest>',
       ),
     ).toThrow(/AndroidManifest.xml is not well-formed XML/u);
   });

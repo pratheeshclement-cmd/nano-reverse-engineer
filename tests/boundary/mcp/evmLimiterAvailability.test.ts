@@ -58,12 +58,12 @@ const connect = async (
 it.runIf(linuxX64)(
   "reports a missing selected limiter in the live default-provider session inventory",
   async () => {
-    const directory = await createTestTempDirectory("rea-evm-limiter-mcp-");
+    const directory = await createTestTempDirectory("nre-evm-limiter-mcp-");
     const limiter = join(directory, "missing-prlimit");
     const harness = await connect({
       environment: {
-        REA_EVM_PRLIMIT_COMMAND: limiter,
-        REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+        NRE_EVM_PRLIMIT_COMMAND: limiter,
+        NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
       },
     });
     try {
@@ -79,7 +79,7 @@ it.runIf(linuxX64)(
 );
 
 it("keeps a caller-injected EVM service independent of the default prlimit prerequisite", async () => {
-  const directory = await createTestTempDirectory("rea-evm-limiter-injected-");
+  const directory = await createTestTempDirectory("nre-evm-limiter-injected-");
   const limiter = join(directory, "missing-prlimit");
   const service = new EvmInterfaceService({
     inspect: async () => {
@@ -89,8 +89,8 @@ it("keeps a caller-injected EVM service independent of the default prlimit prere
   });
   const harness = await connect({
     environment: {
-      REA_EVM_PRLIMIT_COMMAND: limiter,
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+      NRE_EVM_PRLIMIT_COMMAND: limiter,
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
     },
     evmInterface: service,
   });

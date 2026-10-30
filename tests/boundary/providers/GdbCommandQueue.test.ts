@@ -21,7 +21,7 @@ afterEach(async () => {
 });
 
 it("bounds active and queued GDB commands, including cancelled placeholders", async () => {
-  directory = await mkdtemp(join(tmpdir(), "rea-gdb-command-queue-limit-"));
+  directory = await mkdtemp(join(tmpdir(), "nre-gdb-command-queue-limit-"));
   const provider = join(directory, "fake-gdb-queue.mjs");
   const activePath = join(directory, "active-command");
   const releasePath = join(directory, "release-command");
@@ -57,7 +57,7 @@ process.stdin.on("data", async (chunk) => {
   await chmod(provider, 0o700);
   const manager = new GdbSessionManager({
     platform: "linux",
-    environment: { REA_GDB_COMMAND: provider },
+    environment: { NRE_GDB_COMMAND: provider },
   });
   managers.push(manager);
   const started = await manager.start();

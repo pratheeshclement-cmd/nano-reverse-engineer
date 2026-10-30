@@ -15,7 +15,7 @@ cliTest.for([
 ] as const)(
   "retains applicable unavailable HTML reference scope through CLI for %s",
   async (testCase, { cli }) => {
-    const root = await createTestTempDirectory("rea-unavailable-html-");
+    const root = await createTestTempDirectory("nre-unavailable-html-");
     const reference = '<script src="main.js"></script>';
     const html =
       testCase === "invalid-html"

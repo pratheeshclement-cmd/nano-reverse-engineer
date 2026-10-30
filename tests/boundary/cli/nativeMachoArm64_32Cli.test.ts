@@ -9,8 +9,8 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const environment = {
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "auto",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "auto",
 } as const;
 
 const resultSchema = z.object({
@@ -25,11 +25,11 @@ describe.skipIf(process.platform !== "darwin")(
       "admits the thin object for static Mach-O inspection",
       async ({ cli, processes }) => {
         const directory = await createTestTempDirectory(
-          "rea-native-cli-arm64-32-",
+          "nre-native-cli-arm64-32-",
         );
         // A header-free source keeps the object independent of SDK slices.
         const source = join(directory, "watch.c");
-        await writeFile(source, "int rea_watch_value(void) { return 42; }\n");
+        await writeFile(source, "int nre_watch_value(void) { return 42; }\n");
         const object = join(directory, "watch.o");
         const compiled = await processes.run(
           "/usr/bin/xcrun",

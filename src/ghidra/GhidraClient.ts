@@ -916,7 +916,7 @@ export class GhidraClient {
     try {
       this.#runtimeRoot = await PrivateRuntimeRoot.create({
         parent: SESSION_ROOT,
-        prefix: "rea-ghidra-",
+        prefix: "nre-ghidra-",
         platform: this.#options.platform,
       });
     } catch (cause: unknown) {
@@ -1458,7 +1458,7 @@ export class GhidraClient {
   }
 
   /**
-   * Compare REA's memory cgroup with its pre-launch observation once Ghidra is
+   * Compare NRE's memory cgroup with its pre-launch observation once Ghidra is
    * known to have died by SIGKILL, so a kernel OOM kill becomes evidence.
    */
   async #withMemoryCgroupEvidence(

@@ -20,7 +20,7 @@ cliTest(
     const fixture = await keyedArchivePrototypeKeyFixture();
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", fixture.path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     expectKeyedArchivePrototypeKeys(
@@ -34,7 +34,7 @@ cliTest(
   "preserves segmented XML root and field identities through inspection and root selection",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-keyed-character-data-",
+      "nre-keyed-character-data-",
     );
     const { call } = await connectLocalToolsMcp({
       HOME: directory,
@@ -81,7 +81,7 @@ cliTest(
             "--json",
           ],
           environment: {
-            REA_LOG_LEVEL: "silent",
+            NRE_LOG_LEVEL: "silent",
             HOME: directory,
             USERPROFILE: directory,
           },

@@ -8,7 +8,7 @@ const options = parseArguments(process.argv.slice(2));
 if (options.help) {
   process.stdout.write(
     "Usage: npm run verify:apktool [-- --apk PATH]\n" +
-      "Requires a caller-selected apktool launcher (REA_APKTOOL_COMMAND or\n" +
+      "Requires a caller-selected apktool launcher (NRE_APKTOOL_COMMAND or\n" +
       "PATH) and a Java runtime. Without --apk, only client availability is\n" +
       "checked. Supply a local APK to verify decoding; nothing is downloaded or built.\n",
   );

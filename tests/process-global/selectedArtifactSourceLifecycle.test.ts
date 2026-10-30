@@ -67,7 +67,7 @@ afterEach(async () => {
 });
 
 const machoCarrier = async () => {
-  const root = await createTestTempDirectory("rea-selected-artifact-source-");
+  const root = await createTestTempDirectory("nre-selected-artifact-source-");
   const selected = join(root, "selected");
   await mkdir(selected);
   const path = join(selected, "universal.bin");

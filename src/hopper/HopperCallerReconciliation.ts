@@ -204,7 +204,7 @@ async function buildIndex(
             },
           };
     const page = await client.callTool(
-      "rea_caller_scan_page",
+      "nre_caller_scan_page",
       args,
       pageOptions,
     );
@@ -477,7 +477,7 @@ export const reconcileHopperCallers = async (
         instructions_complete: base.data.instructions_complete,
       })
     : await client.callTool(
-        "rea_caller_scan_target",
+        "nre_caller_scan_target",
         args,
         reconciliationChildOptions(options),
       );

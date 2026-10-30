@@ -34,7 +34,7 @@ for (const { serial, section, focused, missing } of [
   cliTest.skipIf(process.platform === "win32")(
     `preserves focus presence through CLI and MCP: ${serial}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-adb-window-focus-");
+      const root = await createTestTempDirectory("nre-adb-window-focus-");
       const binary = join(root, "adb");
       await writeFile(
         binary,
@@ -60,11 +60,11 @@ exit 1
       );
       const output = await cli.run({
         arguments: ["inspect-adb-window", serial, "--json"],
-        environment: { REA_ADB_PATH: binary },
+        environment: { NRE_ADB_PATH: binary },
       });
       expect(output.exitCode).toBe(0);
       const provider = new AdbProvider({
-        environment: { REA_ADB_PATH: binary },
+        environment: { NRE_ADB_PATH: binary },
       });
       const harness = await createApplicationMcpHarness({
         serverOptions: { adbDeviceAnalysis: provider },

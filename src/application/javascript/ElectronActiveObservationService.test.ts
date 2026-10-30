@@ -36,7 +36,7 @@ const recordingProvider = () => {
 };
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-electron-admission-");
+  const root = await createTestTempDirectory("nre-electron-admission-");
   const denied = join(root, "denied");
   const readable = join(root, "readable");
   await mkdir(join(denied, "root"), { recursive: true });

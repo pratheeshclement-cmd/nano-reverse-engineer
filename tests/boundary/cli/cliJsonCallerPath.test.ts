@@ -53,7 +53,7 @@ const serveJson = async (
 it.skipIf(process.platform === "win32")(
   "keeps caller-selected JSON paths through the public CLI and provider boundaries",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-cli-json-path-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-cli-json-path-"));
     const originalCwd = process.cwd();
     const originalExitCode = process.exitCode;
     try {
@@ -88,7 +88,7 @@ it.skipIf(process.platform === "win32")(
         },
         close: async () => undefined,
       };
-      const electronCli = Cli.create("rea-path-electron-test", {
+      const electronCli = Cli.create("nre-path-electron-test", {
         sync: false,
       });
       registerElectronCommands(
@@ -138,7 +138,7 @@ it.skipIf(process.platform === "win32")(
         },
         close: async () => undefined,
       };
-      const browserCli = Cli.create("rea-path-browser-test", {
+      const browserCli = Cli.create("nre-path-browser-test", {
         sync: false,
       });
       registerBrowserScenarioCommands(
@@ -179,7 +179,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "reads the caller-selected Evidence file through the registered CLI",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-cli-evidence-path-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-cli-evidence-path-"));
     const originalCwd = process.cwd();
     const originalExitCode = process.exitCode;
     try {
@@ -202,7 +202,7 @@ it.skipIf(process.platform === "win32")(
           JSON.parse(await readFile(`${root}/link/../evidence.json`, "utf8")),
         ).evidence_id,
       ).toBe(selectedEvidence.evidence_id);
-      const analysisViewCli = Cli.create("rea-path-evidence-test", {
+      const analysisViewCli = Cli.create("nre-path-evidence-test", {
         sync: false,
       });
       registerAnalysisViewCommands(analysisViewCli, pino({ level: "silent" }));

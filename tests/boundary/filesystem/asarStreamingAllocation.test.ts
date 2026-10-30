@@ -62,7 +62,7 @@ const waitForNoMatchingDescriptor = async (identity: Stats): Promise<void> => {
 };
 
 const createUnpackedFixture = async () => {
-  const root = await createTestTempDirectory("rea-asar-unpacked-");
+  const root = await createTestTempDirectory("nre-asar-unpacked-");
   const source = join(root, "source");
   const archive = join(root, "fixture.asar");
   await mkdir(source);
@@ -101,7 +101,7 @@ describe("ASAR entry streaming", () => {
     "closes a packed member handle when its unopened output stream is destroyed",
     async () => {
       const root = await createTestTempDirectory(
-        "rea-asar-destroy-before-read-",
+        "nre-asar-destroy-before-read-",
       );
       const source = join(root, "source");
       const archive = join(root, "fixture.asar");
@@ -150,7 +150,7 @@ describe("ASAR entry streaming", () => {
   it.skipIf(process.platform === "win32")(
     "closes a packed member handle when cancellation arrives during open",
     async () => {
-      const root = await createTestTempDirectory("rea-asar-abort-during-stat-");
+      const root = await createTestTempDirectory("nre-asar-abort-during-stat-");
       const source = join(root, "source");
       const archive = join(root, "fixture.asar");
       await mkdir(source);
@@ -187,7 +187,7 @@ describe("ASAR entry streaming", () => {
   );
 
   it("keeps captured packed bytes readable after the original container disappears", async () => {
-    const root = await createTestTempDirectory("rea-asar-missing-member-");
+    const root = await createTestTempDirectory("nre-asar-missing-member-");
     const source = join(root, "source");
     const archive = join(root, "fixture.asar");
     await mkdir(source);
@@ -214,7 +214,7 @@ describe("ASAR entry producer identity", () => {
   it.each([false, true] as const)(
     "rejects a copied entry with a changed unpacked flag for unpacked=%s",
     async (unpacked) => {
-      const root = await createTestTempDirectory("rea-asar-entry-identity-");
+      const root = await createTestTempDirectory("nre-asar-entry-identity-");
       const source = join(root, "source");
       const archive = join(root, "fixture.asar");
       await mkdir(source);
@@ -265,7 +265,7 @@ describe("ASAR entry producer identity", () => {
   ] as const)(
     "rejects a retained %s entry after closing and recapturing the archive",
     async (_transition, wasUnpacked) => {
-      const root = await createTestTempDirectory("rea-asar-entry-refresh-");
+      const root = await createTestTempDirectory("nre-asar-entry-refresh-");
       const source = join(root, "source");
       const archive = join(root, "fixture.asar");
       const memberContents = "module.exports = 1;\n";
@@ -323,7 +323,7 @@ describe("ASAR read failures", () => {
   it.skipIf(process.platform === "win32")(
     "checks cancellation after closing an empty member handle",
     async () => {
-      const root = await createTestTempDirectory("rea-asar-empty-close-");
+      const root = await createTestTempDirectory("nre-asar-empty-close-");
       const archive = join(root, "container.asar");
       await writeFile(archive, "container bytes");
       const identity = await lstat(archive);
@@ -655,7 +655,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "releases unpacked handles after stream completion and cancellation",
   async () => {
-    const root = await createTestTempDirectory("rea-asar-unpacked-stream-");
+    const root = await createTestTempDirectory("nre-asar-unpacked-stream-");
     const source = join(root, "source");
     const archive = join(root, "fixture.asar");
     await mkdir(source);
@@ -689,7 +689,7 @@ it.skipIf(process.platform === "win32")(
 it.each(["missing", "replaced"] as const)(
   "reads a captured zero-length member when the original container is %s",
   async (change) => {
-    const root = await createTestTempDirectory("rea-asar-empty-member-");
+    const root = await createTestTempDirectory("nre-asar-empty-member-");
     const source = join(root, "source");
     const archive = join(root, "fixture.asar");
     await mkdir(source);
@@ -774,7 +774,7 @@ describe("ASAR entry streaming", () => {
 
   it("reports the observed digest when an unpacked member changes size", async () => {
     const root = await createTestTempDirectory(
-      "rea-asar-unpacked-size-change-",
+      "nre-asar-unpacked-size-change-",
     );
     const source = join(root, "source");
     const archive = join(root, "fixture.asar");
@@ -801,7 +801,7 @@ describe("ASAR entry streaming", () => {
   ] as const)(
     "streams a %s member in bounded chunks with its complete digest",
     async (_kind, options) => {
-      const root = await createTestTempDirectory("rea-asar-streaming-");
+      const root = await createTestTempDirectory("nre-asar-streaming-");
       const source = join(root, "source");
       const archive = join(root, "fixture.asar");
       const member = join(source, "large.bin");

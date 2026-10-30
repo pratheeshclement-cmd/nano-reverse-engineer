@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32").for(["pipe", "capacity"] as const)(
   "doctor reports selected properties %s without launching Java",
   async (kind, { cli }) => {
-    const root = await createTestTempDirectory("rea-doctor-properties-");
+    const root = await createTestTempDirectory("nre-doctor-properties-");
     const install = join(root, "ghidra");
     const path = join(install, "Ghidra/application.properties");
     await mkdir(join(install, "Ghidra"), { recursive: true });
@@ -24,7 +24,7 @@ cliTest.skipIf(process.platform === "win32").for(["pipe", "capacity"] as const)(
       environment: {
         GHIDRA_INSTALL_DIR: install,
         JAVA_HOME: join(root, "missing-jdk"),
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
       timeoutMs: 5000,
     });

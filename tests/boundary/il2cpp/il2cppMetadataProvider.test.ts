@@ -86,7 +86,7 @@ const sharedLiteralMetadata = (literalBytes: Buffer, count: number) => {
 };
 
 it("bounds repeated literal output during decoding and reuses one span instead of allocating every repetition", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-literals-");
+  const root = await createTestTempDirectory("nre-il2cpp-literals-");
   const path = join(root, "global-metadata.dat");
   await writeFile(path, sharedLiteralMetadata(Buffer.alloc(4096, 65), 20));
   const decode = vi.spyOn(TextDecoder.prototype, "decode");
@@ -105,7 +105,7 @@ it("bounds repeated literal output during decoding and reuses one span instead o
 });
 
 it("refuses raw literal expansion before decoding and admits invalid UTF-8 only when base64 fits", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-literal-forms-");
+  const root = await createTestTempDirectory("nre-il2cpp-literal-forms-");
   const path = join(root, "global-metadata.dat");
   const decode = vi.spyOn(TextDecoder.prototype, "decode");
   for (const [bytes, limit, expectedDecodes] of [
@@ -125,7 +125,7 @@ it("refuses raw literal expansion before decoding and admits invalid UTF-8 only 
 });
 
 it("counts an unclaimed parameter table before allocating any member rows", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-member-counts-");
+  const root = await createTestTempDirectory("nre-il2cpp-member-counts-");
   const path = join(root, "global-metadata.dat");
   const fixture = createIl2cppMetadataFixture({
     wide: { fillerTypes: 0, genericContainers: 0, parameters: 2000 },
@@ -158,7 +158,7 @@ it.each([
 ])(
   "refuses $name before allocating serialized text",
   async ({ bytes, limit }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-text-budget-");
+    const root = await createTestTempDirectory("nre-il2cpp-text-budget-");
     const path = join(root, "global-metadata.dat");
     await writeFile(path, bytes());
     const stringify = vi.spyOn(JSON, "stringify");
@@ -177,7 +177,7 @@ it.each([
 );
 
 it("admits a report whose escaped names fit the budget exactly", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-provider-fit-");
+  const root = await createTestTempDirectory("nre-il2cpp-provider-fit-");
   const path = join(root, "global-metadata.dat");
   await writeFile(path, sharedNameMetadata(4096, 1, 0x01));
   const unbounded = new Il2cppMetadataProvider();
@@ -199,7 +199,7 @@ it("admits a report whose escaped names fit the budget exactly", async () => {
 });
 
 it("keeps observed source facts with a complete-report refusal", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-report-evidence-");
+  const root = await createTestTempDirectory("nre-il2cpp-report-evidence-");
   const path = join(root, "global-metadata.dat");
   const bytes = createIl2cppMetadataFixture().bytes;
   await writeFile(path, bytes);
@@ -234,7 +234,7 @@ it("keeps observed source facts with a complete-report refusal", async () => {
 });
 
 it("refuses from row counts before decoding any row", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-provider-counts-");
+  const root = await createTestTempDirectory("nre-il2cpp-provider-counts-");
   const path = join(root, "global-metadata.dat");
   // A broken method name would fail as invalid-string if rows were decoded.
   const fixture = createIl2cppMetadataFixture();
@@ -258,7 +258,7 @@ it.each([
 ])(
   "accepts cancellation during decoded batches with exact reason %j",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-il2cpp-provider-cancel-");
+    const root = await createTestTempDirectory("nre-il2cpp-provider-cancel-");
     const path = join(root, "global-metadata.dat");
     const bytes = sharedNameMetadata(1, 100_000);
     await writeFile(path, bytes);
@@ -309,7 +309,7 @@ it.each([
 );
 
 it("bounds concurrent snapshots and retains active decoding until close completes", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-provider-close-");
+  const root = await createTestTempDirectory("nre-il2cpp-provider-close-");
   const path = join(root, "global-metadata.dat");
   await writeFile(path, createIl2cppMetadataFixture().bytes);
   let markEntered!: () => void;
@@ -361,7 +361,7 @@ it("bounds concurrent snapshots and retains active decoding until close complete
 });
 
 it("keeps occupied capacity retryable while the reader remains open", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-provider-occupied-");
+  const root = await createTestTempDirectory("nre-il2cpp-provider-occupied-");
   const path = join(root, "global-metadata.dat");
   await writeFile(path, createIl2cppMetadataFixture().bytes);
   let markEntered!: () => void;
@@ -404,7 +404,7 @@ it("keeps occupied capacity retryable while the reader remains open", async () =
 it.each([false, true])(
   "keeps an independent failure with shared cancellation reason: %s",
   async (sharedReason) => {
-    const root = await createTestTempDirectory("rea-il2cpp-failure-cancel-");
+    const root = await createTestTempDirectory("nre-il2cpp-failure-cancel-");
     const path = join(root, "global-metadata.dat");
     await writeFile(path, createIl2cppMetadataFixture().bytes);
     const controller = new AbortController();
@@ -432,7 +432,7 @@ it.each([false, true])(
 );
 
 it("retains the exact empty source observation without claiming a decoded inventory", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-empty-");
+  const root = await createTestTempDirectory("nre-il2cpp-empty-");
   const path = join(root, "empty.dat");
   await writeFile(path, Buffer.alloc(0));
   const result = await inspectMetadata(path);
@@ -453,7 +453,7 @@ it("retains the exact empty source observation without claiming a decoded invent
 });
 
 it("retains the exact source when recognized magic has no complete version", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-short-prefix-");
+  const root = await createTestTempDirectory("nre-il2cpp-short-prefix-");
   const path = join(root, "global-metadata.dat");
   const bytes = Buffer.alloc(7);
   bytes.writeUInt32LE(0xfab11baf, 0);
@@ -488,7 +488,7 @@ it("retains the exact source when recognized magic has no complete version", asy
 });
 
 it("keeps the metadata source observation when the selected binary does not link", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-binary-failure-");
+  const root = await createTestTempDirectory("nre-il2cpp-binary-failure-");
   const path = join(root, "global-metadata.dat");
   const binaryPath = join(root, "GameAssembly.dll");
   const fixture = createLinkedIl2cppMetadataFixture();
@@ -516,7 +516,7 @@ it("keeps the metadata source observation when the selected binary does not link
 });
 
 it("accepts cancellation between binary linking batches and keeps the metadata source", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-link-cancel-");
+  const root = await createTestTempDirectory("nre-il2cpp-link-cancel-");
   const path = join(root, "global-metadata.dat");
   const binaryPath = join(root, "libil2cpp.so");
   const fixture = createLinkedIl2cppMetadataFixture();
@@ -558,7 +558,7 @@ it("accepts cancellation between binary linking batches and keeps the metadata s
 
 it("refuses duplicate MethodDef tokens before publishing linked Evidence or Ghidra seeds", async () => {
   const root = await createTestTempDirectory(
-    "rea-il2cpp-duplicate-method-token-",
+    "nre-il2cpp-duplicate-method-token-",
   );
   const path = join(root, "global-metadata.dat");
   const binaryPath = join(root, "GameAssembly.dylib");
@@ -616,7 +616,7 @@ it("refuses duplicate MethodDef tokens before publishing linked Evidence or Ghid
 });
 
 it("retains both observed file identities and the selected architecture when native linking fails", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-failed-pair-");
+  const root = await createTestTempDirectory("nre-il2cpp-failed-pair-");
   const path = join(root, "global-metadata.dat"),
     binary_path = join(root, "GameAssembly.dylib");
   const bytes = createIl2cppBinaryFixture({ codeRegistration: false });
@@ -672,7 +672,7 @@ it.each([
 ])(
   "names the $architecture instruction form behind an inferred module array",
   async ({ name, binary, named, absent }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-inferred-form-");
+    const root = await createTestTempDirectory("nre-il2cpp-inferred-form-");
     const path = join(root, "global-metadata.dat"),
       binary_path = join(root, name);
     await writeFile(path, createLinkedIl2cppMetadataFixture().bytes);
@@ -694,7 +694,7 @@ it.each([
 );
 
 it("states that an inferred type table's count is a run length", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-inferred-types-");
+  const root = await createTestTempDirectory("nre-il2cpp-inferred-types-");
   const path = join(root, "global-metadata.dat"),
     binary_path = join(root, "GameAssembly.dylib");
   // A field typed as type 3 makes the metadata reference the whole
@@ -737,7 +737,7 @@ it("states that an inferred type table's count is a run length", async () => {
 });
 
 it("reports generic method instances only when generic_instances is set", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-provider-generic-");
+  const root = await createTestTempDirectory("nre-il2cpp-provider-generic-");
   const path = join(root, "global-metadata.dat");
   const binaryPath = join(root, "GameAssembly.dylib");
   await writeFile(
@@ -780,7 +780,7 @@ it("reports generic method instances only when generic_instances is set", async 
 });
 
 it("names the metadata, not the binary, when linking reads a malformed metadata name", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-link-metadata-name-");
+  const root = await createTestTempDirectory("nre-il2cpp-link-metadata-name-");
   const path = join(root, "global-metadata.dat"),
     binaryPath = join(root, "GameAssembly.dylib");
   const fixture = createLinkedIl2cppMetadataFixture({ version: 39 });
@@ -831,7 +831,7 @@ it("names the metadata, not the binary, when linking reads a malformed metadata 
 });
 
 it("refuses generic rows that exceed the report budget and keeps the requested pair", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-generic-budget-");
+  const root = await createTestTempDirectory("nre-il2cpp-generic-budget-");
   const path = join(root, "global-metadata.dat");
   const binary_path = join(root, "GameAssembly.dylib");
   await writeFile(

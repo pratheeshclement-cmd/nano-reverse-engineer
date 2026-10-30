@@ -1,23 +1,23 @@
 # CLI and Evidence
 
 Use the CLI for a direct inspection or a script. It uses the same application
-workflows and evidence contracts as REA's MCP server. Each CLI invocation is a
+workflows and evidence contracts as NRE's MCP server. Each CLI invocation is a
 separate process; save results when you want to use them in a later command.
 For a pinned, noninteractive workflow with retained reports, see
 [static analysis in GitHub Actions](ci-analysis.md).
 
 ## Run a command
 
-After [installing REA](installation.md), use `rea`. You can also run a command
+After [installing NRE](installation.md), use `nre`. You can also run a command
 without a global installation:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y nano-reverse-engineer@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 Use an extracted application directory or an ASAR as the target. Static
 JavaScript analysis returns the application graph and Evidence directly.
-Generic `rea analyze PATH` selects this workflow for directories and `.asar`
+Generic `nre analyze PATH` selects this workflow for directories and `.asar`
 files when neither `--provider` nor `--snapshot` is supplied. See
 [JavaScript artifact reconstruction](javascript-artifact-reconstruction.md)
 for results, integrity checks and coverage.
@@ -27,15 +27,15 @@ application. When an agent or a person reads the result, save it to a file and
 project a summary, a module page or one module from the saved Evidence:
 
 ```bash
-rea analyze-javascript-application /absolute/path/to/app --json > app-evidence.json
+nre analyze-javascript-application /absolute/path/to/app --json > app-evidence.json
 jq -c '{source: {kind: "inline", evidence: .}, view: {kind: "summary"}}' app-evidence.json > app-view.json
-rea inspect-analysis-view app-view.json
+nre inspect-analysis-view app-view.json
 ```
 
 The request can also name the saved file instead of embedding it:
 `{"source": {"kind": "evidence-file", "path": "app-evidence.json"}, "view": {"kind": "summary"}}`.
 The CLI resolves a relative path against the working directory; MCP clients
-pass an absolute path. REA reads and authenticates the file, then projects it
+pass an absolute path. NRE reads and authenticates the file, then projects it
 like retained Evidence, so a large file is bounded by the file reader rather
 than charged as inline input.
 
@@ -52,12 +52,12 @@ module page. See
 views, feature traces and comparisons that take the same saved Evidence.
 
 Add `--timings` to a command to write one JSON timing record to stderr. For
-example, `rea inspect-elf-notes program --json --timings > result.json` keeps
+example, `nre inspect-elf-notes program --json --timings > result.json` keeps
 stdout as a parseable result and writes
-`{"rea_timings":{"version":1,"command_ms":42}}` to stderr. `command_ms`
+`{"nre_timings":{"version":1,"command_ms":42}}` to stderr. `command_ms`
 measures CLI command dispatch and result delivery; it is not provider-only or
 analysis-only time. The flag is off by default, and the record omits stages
-that REA did not measure. Root version reporting does not dispatch a command
+that NRE did not measure. Root version reporting does not dispatch a command
 and has no command timing record.
 
 ## JSON Lines record output
@@ -68,7 +68,7 @@ Use `--format jsonl` to consume row-oriented results one record per line:
 cat > observations-view.json <<'JSON'
 {"source":{"kind":"evidence-file","path":"app-evidence.json"},"view":{"kind":"javascript-facts","property_keys":[],"offset":0,"limit":32}}
 JSON
-rea inspect-analysis-view observations-view.json --format jsonl > observations.jsonl
+nre inspect-analysis-view observations-view.json --format jsonl > observations.jsonl
 ```
 
 This request selects up to 32 observation identities and their provenance,
@@ -95,7 +95,7 @@ Object collections finish with a control record:
 
 ```json
 {
-  "$rea": "jsonl/v1",
+  "$nre": "jsonl/v1",
   "type": "metadata",
   "records": {
     "path": ["normalized_result", "rows"],
@@ -134,11 +134,11 @@ unchanged unless your field selection excludes them. Empty object collections
 still emit metadata; an empty top-level array emits no lines. Bare top-level
 arrays have no synthetic coverage record.
 
-Command and output-validation failures emit `{"$rea":"jsonl/v1","type":"error","ok":false,"result":…}`
+Command and output-validation failures emit `{"$nre":"jsonl/v1","type":"error","ok":false,"result":…}`
 and retain the original diagnostic payload. SDK validation/sentinel errors use
-the SDK's exit status rather than guessing from data fields. `$rea` is reserved
+the SDK's exit status rather than guessing from data fields. `$nre` is reserved
 at the top level of a data record, so control records are unambiguous; collisions
-are refused before rows are written. Nested `$rea` values are ordinary data.
+are refused before rows are written. Nested `$nre` values are ordinary data.
 A missing final metadata record or nonzero exit can indicate an interrupted
 export; do not treat already emitted rows as a complete result.
 
@@ -157,12 +157,12 @@ contracts are unchanged.
 
 ## Shell completion
 
-The CLI includes optional shell completion. Run `rea completions --help` to
+The CLI includes optional shell completion. Run `nre completions --help` to
 see the available shells and their setup commands. For Bash, load the hook
 into the current shell:
 
 ```bash
-eval "$(rea completions bash)"
+eval "$(nre completions bash)"
 ```
 
 For zsh, initialize completion before loading the hook. If your shell already
@@ -171,23 +171,23 @@ runs `compinit`, place the hook after that existing initialization:
 ```zsh
 autoload -Uz compinit
 compinit
-eval "$(rea completions zsh)"
+eval "$(nre completions zsh)"
 ```
 
 The Bash hook supports macOS system Bash 3.2. It uses optional completion
 features when the shell provides them and falls back to portable registration.
 Completion includes standard global options and the active command's options;
-`rea mcp ` offers only `add` and `doctor`. Output-option values remain data when
+`nre mcp ` offers only `add` and `doctor`. Output-option values remain data when
 resolving the command scope.
 
 For future interactive non-login Bash sessions, add the command to
 `~/.bashrc`. Interactive login Bash sessions read the first available file in
 `~/.bash_profile`, `~/.bash_login`, and `~/.profile`; add the command to the
 file your shell reads, or have that file source `~/.bashrc`. Remove the command
-from the startup file to stop loading completion, and run `complete -r rea` to
+from the startup file to stop loading completion, and run `complete -r nre` to
 remove the registration from the current shell. These are manual, opt-in
 steps.
-Completion is a discovery aid; use `rea COMMAND --help` to confirm the
+Completion is a discovery aid; use `nre COMMAND --help` to confirm the
 available options and subcommands.
 
 ## Managed assemblies (.NET)
@@ -198,9 +198,9 @@ Language (CIL) without loading or executing the assembly and require no native
 analysis engine:
 
 ```bash
-rea inspect-managed-artifact /absolute/path/Assembly.dll --json
-rea inspect-managed-members /absolute/path/Assembly.dll --json
-rea inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser --json
+nre inspect-managed-artifact /absolute/path/Assembly.dll --json
+nre inspect-managed-members /absolute/path/Assembly.dll --json
+nre inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser --json
 ```
 
 Replace `Example.Parser` with an exact `full_name` from the member inspection,
@@ -229,7 +229,7 @@ for supported deployment forms, selection semantics, and coverage limits.
 
 ## SQLite snapshots
 
-For a local database snapshot, use `rea inspect-sqlite-database PATH --json`.
+For a local database snapshot, use `nre inspect-sqlite-database PATH --json`.
 Add `--table NAME --row-limit 20` to read a bounded sample from an ordinary
 table. This command does not require a native analysis provider. See
 [SQLite database snapshots](sqlite-databases.md) for database/WAL identity,
@@ -241,7 +241,7 @@ Inspect embedded Go build metadata without installing Go or configuring a
 disassembler:
 
 ```bash
-rea inspect-go-binary /absolute/path/to/program --json
+nre inspect-go-binary /absolute/path/to/program --json
 ```
 
 The shared CLI/MCP workflow reports compiler version, modules, replacements,
@@ -251,8 +251,8 @@ for supported containers and absent or malformed metadata.
 Inspect a Godot PCK without running the game:
 
 ```sh
-rea inspect-artifact game.pck --detail summary --evidence_output evidence.json --json
-rea extract-artifact game.pck --json
+nre inspect-artifact game.pck --detail summary --evidence_output evidence.json --json
+nre extract-artifact game.pck --json
 ```
 
 Formats 2, 3 and 4 retain header, directory and integrity facts. Compact delivery
@@ -262,8 +262,8 @@ for embedded packs, batch queries and unknown encrypted coverage.
 Inspect a UnityFS AssetBundle without running Unity:
 
 ```sh
-rea inspect-artifact content.bundle --detail summary --evidence_output evidence.json --json
-rea extract-artifact content.bundle --json
+nre inspect-artifact content.bundle --detail summary --evidence_output evidence.json --json
+nre extract-artifact content.bundle --json
 ```
 
 Format versions 6 through 8 retain header, block and directory facts with
@@ -273,8 +273,8 @@ and LZMA coverage boundaries.
 Inspect an ESP32-family app or bootloader image without esptool:
 
 ```sh
-rea inspect-artifact firmware.bin --json
-rea extract-artifact firmware.bin --json
+nre inspect-artifact firmware.bin --json
+nre extract-artifact firmware.bin --json
 ```
 
 The inventory lists each segment with its ESP-IDF load classification, the
@@ -284,8 +284,8 @@ blocks. See [ESP images](esp-image.md) for recognition, coverage and refusals.
 Inspect a Node.js SEA carrier without running it:
 
 ```sh
-rea inspect-artifact ./application --json
-rea extract-artifact ./application --json
+nre inspect-artifact ./application --json
+nre extract-artifact ./application --json
 ```
 
 See [Node.js SEA](node-sea.md) for supported layouts, script and asset paths,
@@ -294,8 +294,8 @@ fuse observations, and the real-fixture verification lane.
 Inventory and extract Intel HEX or S-record regions:
 
 ```sh
-rea inspect-artifact ./firmware.hex --json
-rea extract-artifact ./firmware.hex --json
+nre inspect-artifact ./firmware.hex --json
+nre extract-artifact ./firmware.hex --json
 ```
 
 See [Intel HEX and S-record images](hex-records.md) for recognition, region
@@ -304,8 +304,8 @@ names, metadata and limits.
 Inspect and extract stored U-Boot legacy uImage payloads and components:
 
 ```sh
-rea inspect-artifact ./firmware.bin --detail summary --evidence_output firmware.json --json
-rea extract-artifact ./firmware.bin --json
+nre inspect-artifact ./firmware.bin --detail summary --evidence_output firmware.json --json
+nre extract-artifact ./firmware.bin --json
 ```
 
 See [U-Boot uImage](uimage.md) for verified CRCs, physical component ranges,
@@ -320,8 +320,8 @@ refused. Deprecated method 20 and other unregistered ZIP codecs remain unsupport
 Inventory and extract U-Boot FIT images:
 
 ```sh
-rea inspect-artifact ./boot.itb --json
-rea extract-artifact ./boot.itb --json
+nre inspect-artifact ./boot.itb --json
+nre extract-artifact ./boot.itb --json
 ```
 
 See [U-Boot FIT images](fit-images.md) for recognition, data sources, hashes
@@ -330,8 +330,8 @@ and limits.
 Inspect local model declarations without loading weights:
 
 ```bash
-rea inspect-model-artifact /absolute/path/model.gguf --json
-rea inspect-model-artifact /absolute/path/model.safetensors --hash full --json
+nre inspect-model-artifact /absolute/path/model.gguf --json
+nre inspect-model-artifact /absolute/path/model.safetensors --hash full --json
 ```
 
 Default hashing reads only headers and leaves full-file identity unknown.
@@ -343,7 +343,7 @@ uses `--detail summary --evidence_output FILE`. See [model files](model-artifact
 Inspect Unity IL2CPP metadata names without Unity or a disassembler:
 
 ```bash
-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
+nre inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
 ```
 
 The command decodes a version 24, 27, 29, 31 or 39 `global-metadata.dat` and reports assembly
@@ -361,7 +361,7 @@ Inspect an embedded cargo-auditable Rust dependency list without installing
 Rust or configuring a disassembler:
 
 ```bash
-rea inspect-rust-binary /absolute/path/to/program --json
+nre inspect-rust-binary /absolute/path/to/program --json
 ```
 
 The same workflow reports package names, versions, sources, the root package,
@@ -373,7 +373,7 @@ Inspect a PE Authenticode certificate table without executing the image or
 verifying signatures:
 
 ```bash
-rea inspect-pe-certificates /absolute/path/to/application.exe --json
+nre inspect-pe-certificates /absolute/path/to/application.exe --json
 ```
 
 The workflow reports `WIN_CERTIFICATE` entries and, for PKCS#7 signedData,
@@ -384,7 +384,7 @@ directory is observed absence of that table. See
 Inspect PE import and delay-load tables without executing the image:
 
 ```bash
-rea inspect-pe-imports /absolute/path/to/application.exe --json
+nre inspect-pe-imports /absolute/path/to/application.exe --json
 ```
 
 The workflow reports DLL names, named and ordinal functions, delay-load
@@ -395,7 +395,7 @@ A missing import directory is observed absence of that table. See
 Inspect ELF PT_NOTE and SHT_NOTE tables without executing the image:
 
 ```bash
-rea inspect-elf-notes /absolute/path/to/program --json
+nre inspect-elf-notes /absolute/path/to/program --json
 ```
 
 The workflow reports note owners, types, descriptor hashes, and GNU build-id
@@ -405,7 +405,7 @@ observed absence of those declarations. See [ELF note tables](elf-notes.md).
 Inspect an Apple `.ips` crash report without executing a target:
 
 ```bash
-rea inspect-apple-ips /absolute/path/to/report.ips --json
+nre inspect-apple-ips /absolute/path/to/report.ips --json
 ```
 
 The workflow reports first-line metadata, process/exception/termination facts,
@@ -416,7 +416,7 @@ Inspect Linux kernel module metadata without executing the module or requiring
 `modinfo`:
 
 ```bash
-rea inspect-kernel-module /absolute/path/to/module.ko --json
+nre inspect-kernel-module /absolute/path/to/module.ko --json
 ```
 
 The workflow reports ordered `.modinfo` keys (duplicate `alias` and `parm`
@@ -433,7 +433,7 @@ Inspect a CPython 3.7–3.13 `.pyc` header and nested marshal code objects
 without executing bytecode or installing Python:
 
 ```bash
-rea inspect-python-pyc /absolute/path/to/module.pyc --json
+nre inspect-python-pyc /absolute/path/to/module.pyc --json
 ```
 
 The workflow reports the pinned CPython version for the magic, PEP 552 hash or
@@ -443,7 +443,7 @@ not decompiled. See [CPython pyc inspection](python-pyc.md).
 Inspect an Erlang BEAM file without executing bytecode:
 
 ```bash
-rea inspect-erlang-beam /absolute/path/to/app.beam --json
+nre inspect-erlang-beam /absolute/path/to/app.beam --json
 ```
 
 The workflow reports IFF chunk names, atom tables, exports, imports, lambdas,
@@ -456,20 +456,20 @@ native target. Substitute
 your target, search text and function name or address in these examples:
 
 ```bash
-rea analyze /absolute/path/to/program --provider ghidra --json
-rea search /absolute/path/to/program "search" --provider ghidra --json
-rea function /absolute/path/to/program main --provider ghidra --json
-rea decompile /absolute/path/to/program 0x1000 --provider ghidra --json
-rea xrefs /absolute/path/to/program 0x1000 --provider ghidra --json
-rea trace /absolute/path/to/program "search" --provider ghidra --json
+nre analyze /absolute/path/to/program --provider ghidra --json
+nre search /absolute/path/to/program "search" --provider ghidra --json
+nre function /absolute/path/to/program main --provider ghidra --json
+nre decompile /absolute/path/to/program 0x1000 --provider ghidra --json
+nre xrefs /absolute/path/to/program 0x1000 --provider ghidra --json
+nre trace /absolute/path/to/program "search" --provider ghidra --json
 ```
 
 `analyze` and `inspect` share the native overview workflow. `function` returns
 a function dossier; `decompile` returns pseudocode. For assembly instructions
-alone, use `rea instructions`. A macOS `.app` bundle can be supplied directly.
+alone, use `nre instructions`. A macOS `.app` bundle can be supplied directly.
 
 A complete dossier can reach several megabytes of value-flow and references.
-`rea function ... --detail summary --evidence_output /absolute/path/dossier.json` returns the
+`nre function ... --detail summary --evidence_output /absolute/path/dossier.json` returns the
 compact summary and saves the complete dossier as an Evidence bundle, never
 overwriting an existing file. Page that bundle without reanalysis by naming it
 as an `inspect-analysis-view` source, selecting the summary's
@@ -478,7 +478,7 @@ as an `inspect-analysis-view` source, selecting the summary's
 MCP `analyze_function` defaults to the same summary and retains the complete
 dossier in the session for `inspect_analysis_view`.
 
-Run `rea --help` or a command's `--help` for arguments and output options.
+Run `nre --help` or a command's `--help` for arguments and output options.
 The [generated catalog](mcp-contracts.md#generated-catalog) lists all CLI commands and MCP
 tools. Provider-specific target support is described in the
 [native guide](native-investigation.md), [DOS guide](ghidra-dos.md),
@@ -490,22 +490,22 @@ tools. Provider-specific target support is described in the
 List the available providers and their supported operations:
 
 ```bash
-rea providers --json
-rea capabilities --json
+nre providers --json
+nre capabilities --json
 ```
 
 These commands describe binary-session providers and auxiliary capabilities.
 For the complete MCP surface, use the connected server's tool list and the
 session's advertised availability; individual guides describe prerequisites.
 
-With automatic selection, REA uses the single available provider that supports
+With automatic selection, NRE uses the single available provider that supports
 the target. When several providers support it, select one explicitly:
 
 ```bash
-rea analyze /absolute/path/to/program --provider hopper
+nre analyze /absolute/path/to/program --provider hopper
 ```
 
-Set `REA_ANALYSIS_PROVIDER` for a standing preference. An explicit `--provider`
+Set `NRE_ANALYSIS_PROVIDER` for a standing preference. An explicit `--provider`
 overrides it. In MCP, pass `provider_id` to `open_binary`:
 
 ```json
@@ -526,7 +526,7 @@ entries record a refused kind, format, architecture, or role. An availability-on
 message describes the recorded rejections without claiming that every provider
 is unconfigured or that target support is known.
 For Hopper, Ghidra, IDA, JADX, and Kuna, run
-`rea doctor --provider ID --json` to diagnose the selected engine. Other adapters,
+`nre doctor --provider ID --json` to diagnose the selected engine. Other adapters,
 such as `pwntools-elf`, report their configuration requirements directly and are
 not accepted by `doctor --provider`. See
 [task readiness](installation.md#check-readiness-for-your-task) and
@@ -547,7 +547,7 @@ output and partial observations remain in the original details.
 
 ## Save and reuse analysis snapshots
 
-A snapshot retains successful analysis results for later queries. REA reuses
+A snapshot retains successful analysis results for later queries. NRE reuses
 an exact result when the target bytes, operation, parameters, provider and
 settings match. Mutations and cursor-dependent calls are excluded from the
 cache. Snapshot files are local and use owner-only permissions.
@@ -579,9 +579,9 @@ cannot be retained, the entire history is excluded instead of reverting the
 question to an earlier revision or disposition.
 
 ```bash
-rea analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
+nre analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
 # Repeat the same query to reuse its saved result.
-rea analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
+nre analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
 ```
 
 An exact CLI cache hit is normally read before starting a provider process.
@@ -621,29 +621,29 @@ inferences and unresolved findings. Validate an existing bundle, export its
 canonical form, or compare two supplied bundles:
 
 ```bash
-rea evidence-import /absolute/path/to/evidence/bundle.json
-rea evidence-export /absolute/path/to/evidence/bundle.json /absolute/path/to/evidence/canonical.json
-rea compare /absolute/path/to/evidence/left.json /absolute/path/to/evidence/right.json
-rea compare left.json right.json --record_pairs '[{"left_evidence_id":"ev_<left-sha256>","right_evidence_id":"ev_<right-sha256>"}]' --json
+nre evidence-import /absolute/path/to/evidence/bundle.json
+nre evidence-export /absolute/path/to/evidence/bundle.json /absolute/path/to/evidence/canonical.json
+nre compare /absolute/path/to/evidence/left.json /absolute/path/to/evidence/right.json
+nre compare left.json right.json --record_pairs '[{"left_evidence_id":"ev_<left-sha256>","right_evidence_id":"ev_<right-sha256>"}]' --json
 ```
 
-Migration: replace `rea compare-bundles` with `rea compare`; the former command
+Migration: replace `nre compare-bundles` with `nre compare`; the former command
 has been removed. The MCP tool remains `compare_bundles`.
 
-`rea compare` compares records by Evidence identity and explicit pairs. It does
+`nre compare` compares records by Evidence identity and explicit pairs. It does
 not read artifact contents: the inventories of two builds are unresolved
 records, or one opaque change when you pair them. Use `compare-artifacts`,
 described at the end of this section, to compare their contents.
 
 `--record_pairs` supplies an explicit JSON array of observation pairs, matching
 MCP `compare_bundles.record_pairs`. Pair IDs must exist on their named sides and
-be one-to-one. Without pairs, one-sided membership remains unknown; REA does
+be one-to-one. Without pairs, one-sided membership remains unknown; NRE does
 not infer correspondence from position or display names.
 
 Exports preserve an existing destination unless `--overwrite` is explicit.
 
 Atomic Evidence output stages on the selected destination's filesystem. If the
-OS pathname ceiling prevents its internal staging name, REA retries in a shorter
+OS pathname ceiling prevents its internal staging name, NRE retries in a shorter
 ancestor on that same filesystem and removes the unused stage. Existing output
 protection still applies. A genuine pathname refusal uses `resource_constraint`
 with `details.reason: path-limit` and `boundary: filesystem-path`.
@@ -664,9 +664,9 @@ Compare two artifact inventories with `compare-artifacts`. It takes the same
 from a bundle. Relative paths resolve from the working directory:
 
 ```bash
-rea inspect-artifact old.zip --json > old.json
-rea inspect-artifact new.zip --json > new.json
-rea compare-artifacts '{"left":{"kind":"evidence-file","path":"old.json"},"right":{"kind":"evidence-file","path":"new.json"}}' --json
+nre inspect-artifact old.zip --json > old.json
+nre inspect-artifact new.zip --json > new.json
+nre compare-artifacts '{"left":{"kind":"evidence-file","path":"old.json"},"right":{"kind":"evidence-file","path":"new.json"}}' --json
 ```
 
 A one-shot command keeps no session Evidence, so it refuses a
@@ -688,8 +688,8 @@ load that filename or apply Node's runtime file-URL admission policy.
 Import an older source tree to compare with the current artifact:
 
 ```bash
-rea import-reference-source /absolute/path/to/source
-rea import-reference-source /absolute/path/to/source --detail summary --outline-depth 2 --json
+nre import-reference-source /absolute/path/to/source
+nre import-reference-source /absolute/path/to/source --detail summary --outline-depth 2 --json
 ```
 
 The default (`--detail full`) returns the complete `HistoricalSourceGraph`.
@@ -760,7 +760,7 @@ the exclusion explains why the target has no inventory entry, and the inventory
 remains partial. Exclusions record `entry_kind` when the importer observed it;
 older saved exclusions without that field have unknown kind. An excluded
 ancestor proves an internal descendant only when its kind is `directory`.
-Set `REA_REFERENCE_SECRET_PATTERNS_JSON` to a JSON array of ignore
+Set `NRE_REFERENCE_SECRET_PATTERNS_JSON` to a JSON array of ignore
 patterns when you want to mark selected paths as sensitive; those patterns are
 reported separately as configured-secret exclusions.
 
@@ -773,14 +773,14 @@ the graph keeps its observed children and records the root failure as a
 top-level limitation. That partial inventory does not establish absence among
 unexamined children. POSIX directory-entry bytes that are not valid UTF-8 cannot
 be represented as graph paths; the containing directory (or root) is marked
-unsupported, and REA does not access the entry through a replacement-character
+unsupported, and NRE does not access the entry through a replacement-character
 name. Symlink targets are read as bytes too: a target that is not valid UTF-8
 is retained as an unreadable symlink with its bytes reported in the limitation,
 and is never resolved through a replacement-character path. Readable siblings
 remain inventoried.
 
 JavaScript and TypeScript import parsing requires valid UTF-8. Malformed source
-bytes retain their original hashes and sizes with a decoding diagnostic; REA
+bytes retain their original hashes and sizes with a decoding diagnostic; NRE
 does not infer module targets from replacement characters. Exact dynamic-import
 strings, expression-free templates and runtime-transparent TypeScript wrappers
 retain their targets; computed imports remain unknown. TypeScript import-equals
@@ -790,7 +790,7 @@ and `typeof import("./dep")`) and declarations inside ambient module bodies;
 these source relationships do not assert runtime loading. Language labels retain
 the conventional case-sensitive `.C` (C++) and `.M` (Objective-C++) suffixes.
 
-REA derives historical CommonJS paths only when the selected loader and its
+NRE derives historical CommonJS paths only when the selected loader and its
 base are proven: this includes the exact
 `createRequire(new URL("./file.cjs", import.meta.url))` form and
 `require.resolve` with `{ paths: [__dirname] }`. Exact optional-call forms such
@@ -821,7 +821,7 @@ when they name the same file. CommonJS requests retain literal filename semantic
 for percent signs, query marks and fragments.
 
 Historical-source import requires safe no-follow file opens on Linux or
-macOS. Native Windows returns `unsupported_host`; use Linux REA inside WSL
+macOS. Native Windows returns `unsupported_host`; use Linux NRE inside WSL
 or another supported host. See
 [source-to-bundle comparison](javascript-application-workflows.md#historical-source-to-bundle-comparison)
 for mapping identities, inferences and unknowns.
@@ -842,12 +842,12 @@ user permissions; consult the chosen guide for host requirements and effects.
 
 ## Serve MCP over streamable HTTP
 
-`rea mcp` speaks stdio to the client that launched it. To serve the same MCP
+`nre mcp` speaks stdio to the client that launched it. To serve the same MCP
 catalog over streamable HTTP for one local client, such as an agent environment
 runtime, start the dispatcher entry with `--http`:
 
 ```sh
-rea mcp --http --port 8765
+nre mcp --http --port 8765
 ```
 
 `--host` and `--port` default to `MCP_HOST` and `MCP_PORT` from the environment,
@@ -856,14 +856,14 @@ then to `127.0.0.1` and an ephemeral port. A bind outside loopback requires
 names or IP addresses without URLs or ports. For example:
 
 ```sh
-rea mcp --http --host 0.0.0.0 --allowed-hosts 127.0.0.1,rea.lan
+nre mcp --http --host 0.0.0.0 --allowed-hosts 127.0.0.1,nre.lan
 ```
 
 Requests with a different `Host` or browser `Origin` receive `403`; a missing
 `Origin` is accepted. The announced client URL uses the bound hostname when
 admitted, otherwise the first declared hostname, with the actual bound port.
-It is written to stderr as one JSON log line (`"msg":"MCP transport listening"`) whatever `REA_LOG_LEVEL`
-is set to; nothing is written to stdout. `rea mcp --http --help` lists the accepted options. The listener serves
+It is written to stderr as one JSON log line (`"msg":"MCP transport listening"`) whatever `NRE_LOG_LEVEL`
+is set to; nothing is written to stdout. `nre mcp --http --help` lists the accepted options. The listener serves
 one client at a time: a session ends with the client's `DELETE`, and a client
 that connects while another session is open takes it over, so a client that
 exited without ending its session needs no restart. The listener runs until
@@ -874,7 +874,7 @@ entry keep stdio.
 
 ## Serve an environment manifest
 
-`rea environment-serve <manifest.json> --evidence <capture.json>
+`nre environment-serve <manifest.json> --evidence <capture.json>
 [--replay-only] [--host H] [--port N]` serves an environment manifest
 projected by `inspect-analysis-view` as an agent environment: an MCP server at
 `/mcp`, the environment card at `/.well-known/agent-env.json`, and a
@@ -896,17 +896,17 @@ member is `{"served": true, "evidence_id": …}`,
 [serve from the state](agent-environments.md#serve-from-the-state).
 
 ```sh
-rea environment-serve manifest.json --evidence capture.json --port 8765
+nre environment-serve manifest.json --evidence capture.json --port 8765
 ```
 
-`--host` and `--port` resolve like `rea mcp --http`: flags, then `MCP_HOST` and
+`--host` and `--port` resolve like `nre mcp --http`: flags, then `MCP_HOST` and
 `MCP_PORT`, then `127.0.0.1` and an ephemeral port. A non-loopback bind requires
 `MCP_ALLOWED_HOSTS` with the same hostname rules and Host/Origin gates as above.
 `environment-serve` uses this environment setting; `--allowed-hosts` belongs to
-`rea mcp --http`. For example:
+`nre mcp --http`. For example:
 
 ```sh
-MCP_ALLOWED_HOSTS=127.0.0.1,rea.lan rea environment-serve manifest.json --evidence capture.json --host 0.0.0.0
+MCP_ALLOWED_HOSTS=127.0.0.1,nre.lan nre environment-serve manifest.json --evidence capture.json --host 0.0.0.0
 ```
 
 `ENVIRONMENT_NAME` renames
@@ -918,7 +918,7 @@ return and do not establish.
 
 ## Build an environment bundle
 
-`rea environment-build <capture> [dir] [--name <name>] [--template-rule <rule> ...]
+`nre environment-build <capture> [dir] [--name <name>] [--template-rule <rule> ...]
 [--format-rules-only] [--package-tarball <path>] [--capture-timeout-ms <ms>] [--dry-run]` builds the bundle
 `environment-export` writes from one recorded capture: a `.har` file, which it
 inspects as `inspect-web-network-capture` does, or capture Evidence JSON from
@@ -935,7 +935,7 @@ and why each write is withheld with a hint, the files, warnings and the next
 command. `--dry-run` writes nothing and may omit the directory.
 
 ```sh
-rea environment-build grafana.har ./grafana --json
+nre environment-build grafana.har ./grafana --json
 ```
 
 See [agent environments](agent-environments.md#build-a-bundle-in-one-step)
@@ -943,7 +943,7 @@ for the report, the hints and what the bundle ships.
 
 ## Export an environment bundle
 
-`rea environment-export <manifest.json> --evidence <capture.json> <dir>
+`nre environment-export <manifest.json> --evidence <capture.json> <dir>
 [--package-tarball <path>] [--name <override>]` writes the same manifest and
 capture pair as a bundle folder the agentenv framework runs with
 `agent-env run <dir>`. It reads each file once, authenticates and cross-checks
@@ -954,16 +954,16 @@ copies the bytes it authenticated, refuses to write into a directory that
 exists and is not empty, and never overwrites a file.
 
 ```sh
-rea environment-export manifest.json --evidence capture.json ./grafana-example --json
+nre environment-export manifest.json --evidence capture.json ./grafana-example --json
 ```
 
 The folder holds a `README.md` with the bundle's provenance, an env folder
-`envs/<name>/` with a `Dockerfile` that installs this exact `rea-agents`
+`envs/<name>/` with a `Dockerfile` that installs this exact `nano-reverse-engineer`
 version and serves the copied `manifest.json` and `evidence.json` (written
 with mode `0600` on POSIX; Windows retains inherited ACLs) with
 `environment-serve` (from the state by default), a Python verifier under
 `artifacts/check_<name>/` that checks the served tool count and one served
-answer, and the smoke task `tasks/smoke.json`. `--package-tarball` copies a packed `rea-agents`
+answer, and the smoke task `tasks/smoke.json`. `--package-tarball` copies a packed `nano-reverse-engineer`
 tarball into the env folder and installs it instead of the registry package,
 which is how the hosted lane proves a checkout rather than a release. `--name`
 replaces the manifest's kebab-case name as the env folder and env id; a device
@@ -976,7 +976,7 @@ layout and what the smoke task checks.
 
 ## Compare an environment with its application
 
-`rea environment-compare <manifest.json> --evidence <capture.json> --probe <probe.json> [--probe <probe.json> ...]`
+`nre environment-compare <manifest.json> --evidence <capture.json> --probe <probe.json> [--probe <probe.json> ...]`
 compares the environment the pair serves with probe captures of the application it came from. Each probe is capture
 Evidence of one call sequence recorded against the application after a reset; the environment's state is reset before
 each probe, every request to the application's origin is answered as the served environment answers it, and the
@@ -987,24 +987,24 @@ without response bodies, or without the request bodies its writes need. See
 [agent environments](agent-environments.md#measure-fidelity-against-the-application) for the report.
 
 ```sh
-rea environment-compare manifest.json --evidence capture.json --probe probe.json --json
+nre environment-compare manifest.json --evidence capture.json --probe probe.json --json
 ```
 
 ## Report version and runtime
 
-`rea --version` prints the package version. Add an output format to get the
+`nre --version` prints the package version. Add an output format to get the
 version with the runtime and platform context that a support request needs:
 
 Version reports do not initialize analysis providers. Invalid global settings
 or output options still report their usual errors.
 
 ```bash
-rea --version --json
+nre --version --json
 ```
 
 ```json
 {
-  "name": "rea-agents",
+  "name": "nano-reverse-engineer",
   "version": "6.7.0",
   "runtime": { "id": "node", "version": "24.22.1" },
   "platform": "linux",
@@ -1024,7 +1024,7 @@ rea --version --json
 | `runtime.node_compatibility_version` | Bun only: the Node.js version it reports compatibility with.                                                   |
 | `platform`, `architecture`           | Node.js `process.platform` and `process.arch`, such as `linux` and `x64`.                                      |
 | `supported_runtime.range`            | Supported Node.js range.                                                                                       |
-| `supported_runtime.satisfied`        | Whether this runtime is supported, judged as `rea doctor` judges it; Bun by its Node.js compatibility version. |
+| `supported_runtime.satisfied`        | Whether this runtime is supported, judged as `nre doctor` judges it; Bun by its Node.js compatibility version. |
 
 The field names are stable. The report contains no paths, environment values,
 user or host names, and it starts no provider and reads no target. `--format`
@@ -1034,15 +1034,15 @@ takes precedence. With other output controls, `--version` keeps its existing
 behavior: valid controls such as `--filter-output` or `--full-output` print the
 plain version, and invalid combinations report the usual output-flag error,
 such as `UNSUPPORTED_OUTPUT_COMBINATION` for `--json` with `--token-limit`. Use
-`rea doctor` for provider and host readiness.
+`nre doctor` for provider and host readiness.
 
 ## Output and exit status
 
 Commands reject surplus positional arguments before execution, including commands
-that accept no positionals. Use `rea <command> --help` for the declared argument
+that accept no positionals. Use `nre <command> --help` for the declared argument
 shape; a final variadic argument continues to accept multiple values.
 
-`rea mcp doctor --json` checks production MCP startup and reports child logs in
+`nre mcp doctor --json` checks production MCP startup and reports child logs in
 `diagnostics`. It drains stderr while retaining at most its first 64 KiB of raw
 bytes as text, omitting a final UTF-8 code point if it crosses that byte limit.
 `stderr_bytes` counts all observed bytes, including omitted output;
@@ -1082,12 +1082,12 @@ exact array path with `--filter-output` and provide comma-separated direct
 scalar columns with `--columns`; column order is the output column order:
 
 ```bash
-rea inspect-analysis-view request.json --format csv \
+nre inspect-analysis-view request.json --format csv \
   --filter-output normalized_result.rows --columns name,address
 ```
 
-The first line is a REA metadata record,
-`# rea-delimited-v1 <JSON>`. It carries the selected path, view request, limitations and unknowns,
+The first line is a NRE metadata record,
+`# nre-delimited-v1 <JSON>`. It carries the selected path, view request, limitations and unknowns,
 coverage, source coverage and completeness, command, and duration. A metadata
 value of `null` means that the selected row collection did not provide that
 fact; it does not mean complete coverage. The following line is the header.
@@ -1136,11 +1136,11 @@ the CLI result should use JSON; either argument order is accepted.
 | `1`       | The operation could not complete. Structured output identifies invalid input, permissions, cancellation, timeouts or another failure when available.                                                                                                                                                                                                                                   |
 | `128 + N` | Signal-derived status. An unhandled signal may have ended the process, with the shell or runtime preserving the conventional status; a command may instead have handled the signal, waited for its operation and cleanup to settle, and assigned the same status (`130` for SIGINT, `143` for SIGTERM). In the handled case, it may also have printed a structured `cancelled` result. |
 
-`rea mcp --http` is long-running and prints no structured result. It exits
+`nre mcp --http` is long-running and prints no structured result. It exits
 `130` on SIGINT or `143` on SIGTERM after closing the listener, the session and
 its providers, and `1` when that cleanup fails.
 
-`rea environment-serve` is also long-running: it serves until SIGINT or
+`nre environment-serve` is also long-running: it serves until SIGINT or
 SIGTERM, closes the listener, then prints one structured
 `{"status":"stopped", …}` document naming the URL, environment and tool count
 and exits `130` or `143` through the shared cancellation handler below.
@@ -1154,11 +1154,11 @@ server resources. It preserves a primary listener diagnostic, or a
 tool count and Evidence identifiers. The successful `stopped` document is
 returned only after cleanup is confirmed. The same in-process server owner
 retains failed stages for retry; the CLI exposes no separate retry command.
-`rea environment-build` is one-shot too: it prints its report and exits `0`,
+`nre environment-build` is one-shot too: it prints its report and exits `0`,
 or prints the refusing stage's structured error and exits `1`, writing nothing
 when the refusal comes before the bundle is written. SIGINT cancels it with a
 `cancelled` error; a cancellation before the bundle stage writes nothing.
-`rea environment-export` is one-shot: it prints the written files and exits
+`nre environment-export` is one-shot: it prints the written files and exits
 `0`, or prints a structured `invalid_request` error and exits `1` for the same
 pair refusals, a non-empty or file-occupied directory, a missing package
 tarball or a name that is not a kebab-case label or is a Windows device name,
@@ -1201,7 +1201,7 @@ new file. A publication that has committed can win a later cancellation; the
 after commit, the `cleanup_incomplete` error reports the same file as
 `details.published_path` and `details.bytes`.
 
-When the reader of piped output closes early, as `rea ... | head` does, the
+When the reader of piped output closes early, as `nre ... | head` does, the
 CLI stops writing, prints no error and exits `141` (`128 + 13`, the status of a
 SIGPIPE-terminated writer). The operation itself may have completed; only its
 output was declined.
@@ -1218,11 +1218,11 @@ cancellation.
 unavailable optional providers remain informational for unrelated tasks.
 
 Enable `pipefail` in a supporting shell so a downstream formatter preserves
-REA's failure status:
+NRE's failure status:
 
 ```bash
 set -o pipefail
-rea inspect-artifact ./app.asar --json | jq . > inspection.json
+nre inspect-artifact ./app.asar --json | jq . > inspection.json
 ```
 
 `--token-count` reports a tokenx estimate for the selected emitted document,
@@ -1243,14 +1243,14 @@ selected phandle references. See [devicetree inspection](devicetree.md) for
 limits and retained-view pagination.
 
 ```bash
-rea inspect-devicetree /artifacts/board.dtb --json
-rea inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
+nre inspect-devicetree /artifacts/board.dtb --json
+nre inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
 ```
 
 ### PE TLS and load configuration
 
 ```sh
-rea inspect-pe-load-config /absolute/path/to/application.exe --json
+nre inspect-pe-load-config /absolute/path/to/application.exe --json
 ```
 
 Reports TLS callbacks and size-covered load-config fields without execution.

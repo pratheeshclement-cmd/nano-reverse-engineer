@@ -19,7 +19,7 @@ def run(arguments, **options):
     return types.SimpleNamespace(returncode=0)
 helper.subprocess.run = run
 helper.secrets.token_hex = lambda _bytes: cookie
-with tempfile.TemporaryDirectory(prefix="rea-xauth-fixture-") as root:
+with tempfile.TemporaryDirectory(prefix="nre-xauth-fixture-") as root:
     authority = Path(root) / "authority"
     authority.touch()
     helper.authorize_display(authority, ":123", "fixture-xauth")

@@ -72,7 +72,7 @@ cliTest(
   "queries same-name pyc objects through CLI/MCP after deleting the source",
   { timeout: 60_000 },
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pyc-views-");
+    const root = await createTestTempDirectory("nre-pyc-views-");
     const path = join(root, "module.pyc");
     await writeSameNamePyc(path);
     const run = cli.sharedCliRun?.bind(cli) ?? cli.run.bind(cli);
@@ -221,7 +221,7 @@ cliTest(
 cliTest(
   "rejects invalid pyc delivery before reading the target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pyc-invalid-delivery-");
+    const root = await createTestTempDirectory("nre-pyc-invalid-delivery-");
     const output = join(root, "unused.json");
     const run = cli.sharedCliRun?.bind(cli) ?? cli.run.bind(cli);
     const view = JSON.stringify({
@@ -242,7 +242,7 @@ cliTest(
       const result = await run({
         arguments: [
           "inspect-python-pyc",
-          "/rea-missing/module.pyc",
+          "/nre-missing/module.pyc",
           ...flags,
           "--json",
         ],

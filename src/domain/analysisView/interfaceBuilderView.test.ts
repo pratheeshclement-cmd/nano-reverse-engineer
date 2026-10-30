@@ -48,7 +48,7 @@ const report = (truncated = false) => ({
   documents: [document(main), document(second)],
   graph: {
     target_sha256: target,
-    provider: { id: "rea-ib", version: "1", tool_version: "1" },
+    provider: { id: "nre-ib", version: "1", tool_version: "1" },
     nodes: [
       node("main:root", "scene", main),
       node("main:button", "control", main),

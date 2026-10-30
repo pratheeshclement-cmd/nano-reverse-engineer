@@ -127,7 +127,9 @@ export const parseLinuxVmRssBytes = (status) => {
 /**
  * Collect unique file-backed ESM module URLs from Node's diagnostic stream.
  */
-export const createEsmModuleProfileCollector = (packageName = "rea-agents") => {
+export const createEsmModuleProfileCollector = (
+  packageName = "nano-reverse-engineer",
+) => {
   const modules = new Set();
   let buffer = "";
   let debugLines = 0;
@@ -223,7 +225,7 @@ const createLinuxRssSampler = (pid) => {
 export const mcpStartupPhaseBudgetRecovery = (budget) =>
   [
     `The effective ${budget.setting} value for the ${budget.phase} is ${String(budget.milliseconds)} ms (source ${budget.source}; default ${String(budget.defaultMilliseconds)} ms, floor ${String(budget.floorMilliseconds)} ms, maximum ${String(budget.maximumMilliseconds)} ms).`,
-    `Set ${budget.setting} in the environment that starts REA to a positive decimal integer from ${String(budget.floorMilliseconds)} to ${String(budget.maximumMilliseconds)}, then restart REA.`,
+    `Set ${budget.setting} in the environment that starts NRE to a positive decimal integer from ${String(budget.floorMilliseconds)} to ${String(budget.maximumMilliseconds)}, then restart NRE.`,
   ].join(" ");
 
 const phaseTimeout = (cause) => {

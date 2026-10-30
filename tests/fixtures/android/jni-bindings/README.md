@@ -76,7 +76,7 @@ candidates and must not claim that an undecoded table is absent.
 
 ## Independent evidence and limits
 
-`oracle.py` imports no REA parser. For these small generated artifacts it reads
+`oracle.py` imports no NRE parser. For these small generated artifacts it reads
 known ELF symbols and source-specified table slots, applies standard relative
 REL/RELA/RELR records, checks the exact Modified UTF-8 bytes, and requires each
 function pointer to equal the compiled function symbol inside executable PT_LOAD.
@@ -108,14 +108,14 @@ would be a different negative case.
 
 ## Public workflow checker
 
-After building REA and selecting the existing JADX MCP JAR, the maintained
+After building NRE and selecting the existing JADX MCP JAR, the maintained
 [public MCP checker](../../../support/analysis-efficiency/android-jni.mjs) accepts
 the generated `full-expectations.json`. Run it under the same external resource
 supervisor; it does not rebuild fixtures or run target code.
 
 ```sh
 node tests/support/analysis-efficiency/android-jni.mjs \
-  --repository /absolute/rea-checkout \
+  --repository /absolute/nre-checkout \
   --target /absolute/fixture-output/jni-ordinary-static.apk \
   --expectations /absolute/fixture-output/full-expectations.json \
   --variant ordinary --detail summary --proof --pages --cli \

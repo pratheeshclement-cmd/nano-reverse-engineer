@@ -31,7 +31,7 @@ describe("real Windows Ghidra workflow trust boundary", () => {
             }),
             expect.objectContaining({ run: "npm ci" }),
             expect.objectContaining({
-              env: { REA_ANALYSIS_PROVIDER: "ghidra" },
+              env: { NRE_ANALYSIS_PROVIDER: "ghidra" },
               run: "npm run verify:ghidra:windows | Tee-Object -FilePath windows-ghidra-proof.log",
             }),
             expect.objectContaining({

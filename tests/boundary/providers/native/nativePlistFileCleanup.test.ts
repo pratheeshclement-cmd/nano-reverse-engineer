@@ -19,7 +19,7 @@ import { projectAnalysisError } from "../../../../src/domain/analysisErrorProjec
 import { inspectPlistSchema } from "../../../../src/domain/native/nativeInspection.js";
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-native-plist-lifetime-");
+  const root = await createTestTempDirectory("nre-native-plist-lifetime-");
   const path = join(root, "selected.plist");
   await writeFile(path, "<plist><string>value</string></plist>");
   const probe = await open(path, "r");
@@ -55,7 +55,7 @@ it("does not adopt a command's arbitrary thrown cleanup marker as a file owner",
 });
 
 it("keeps mixed client cleanup live until both file and tracer owners resolve", async () => {
-  const root = await createTestTempDirectory("rea-native-mixed-close-");
+  const root = await createTestTempDirectory("nre-native-mixed-close-");
   const path = join(root, "selected.plist");
   await writeFile(path, "<plist><string>value</string></plist>");
   const probe = await open(path, "r");
@@ -126,7 +126,7 @@ it("keeps mixed client cleanup live until both file and tracer owners resolve", 
 it.for(["path-input", "target"] as const)(
   "retains %s prefix read and close failures through repeated client cleanup",
   async (selection, { onTestFinished }) => {
-    const root = await createTestTempDirectory("rea-native-plist-close-");
+    const root = await createTestTempDirectory("nre-native-plist-close-");
     const path = join(root, "selected.plist");
     await writeFile(path, "<plist><string>value</string></plist>");
     const probe = await open(path, "r");
@@ -454,7 +454,7 @@ it.for([
 );
 
 it("preserves a failed app plist read and its cleanup when the executable changes", async () => {
-  const root = await createTestTempDirectory("rea-app-plist-primary-");
+  const root = await createTestTempDirectory("nre-app-plist-primary-");
   const path = join(root, "Info.plist");
   const executable = join(root, "program");
   await writeFile(path, "<plist><string>value</string></plist>");

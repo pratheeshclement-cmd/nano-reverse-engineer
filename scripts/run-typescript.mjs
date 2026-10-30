@@ -50,7 +50,7 @@ const main = async () => {
   const compiler = resolveTypeScriptCompiler();
   if (
     process.env.TURBO_HASH !== undefined &&
-    process.env.REA_TYPESCRIPT_COMPILER !== compiler.identity
+    process.env.NRE_TYPESCRIPT_COMPILER !== compiler.identity
   )
     throw new Error(
       "Compiler identity is missing or stale. Run Turbo through scripts/run-turbo.mjs.",

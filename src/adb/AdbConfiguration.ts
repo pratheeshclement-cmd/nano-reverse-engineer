@@ -20,7 +20,7 @@ import { fixedAllowanceOptions } from "../domain/fixedAllowanceRemediation.js";
 import type { JsonValue } from "../domain/jsonValue.js";
 
 /** Environment key selecting the caller's adb binary. */
-export const ADB_BINARY_ENV = "REA_ADB_PATH";
+export const ADB_BINARY_ENV = "NRE_ADB_PATH";
 
 const VERSION_TIMEOUT_MS = 10_000;
 const VERSION_MAX_OUTPUT_BYTES = 64 * 1024;
@@ -33,7 +33,7 @@ export interface AdbBinarySelection {
 }
 
 /**
- * Resolve the caller-supplied adb binary. `REA_ADB_PATH` must be absolute so
+ * Resolve the caller-supplied adb binary. `NRE_ADB_PATH` must be absolute so
  * the selection stays explicit. Windows resolves the default from the selected
  * PATH before launch; POSIX retains execFile PATH lookup.
  */

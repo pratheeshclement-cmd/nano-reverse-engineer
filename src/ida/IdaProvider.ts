@@ -264,7 +264,7 @@ export class IdaProvider implements AnalysisProviderCandidate {
               workspace_root: config.value.workspaceRoot ?? null,
               private_workspace_available: false,
               configuration_remediation:
-                "Set workspaceRoot to an existing directory REA can create entries in, or omit it to use the system temporary directory; see docs/ida-provider.md.",
+                "Set workspaceRoot to an existing directory NRE can create entries in, or omit it to use the system temporary directory; see docs/ida-provider.md.",
             },
           },
           capabilities: unavailableCapabilities(
@@ -308,7 +308,7 @@ export class IdaProvider implements AnalysisProviderCandidate {
       return {
         status: "unsupported",
         code: "architecture_unsupported",
-        reason: `REA's IDA adapter has no verified ${
+        reason: `NRE's IDA adapter has no verified ${
           target.architecture === "mips"
             ? "MIPS"
             : target.architecture === "riscv"
@@ -323,7 +323,7 @@ export class IdaProvider implements AnalysisProviderCandidate {
       return {
         status: "unsupported",
         code: "architecture_unsupported",
-        reason: "REA's IDA adapter has no verified arm64_32 lane.",
+        reason: "NRE's IDA adapter has no verified arm64_32 lane.",
         diagnostics,
       };
     if (target.kind !== "executable")
@@ -374,7 +374,7 @@ export class IdaProvider implements AnalysisProviderCandidate {
       return {
         status: "unsupported",
         code: "target_format_unsupported",
-        reason: `Attached IDA records only the whole-file digest of a universal Mach-O, so REA cannot verify that the open database is its ${target.architecture} slice. Extract that slice with lipo -thin and open the thin file in both IDA and REA, or use headless mode.`,
+        reason: `Attached IDA records only the whole-file digest of a universal Mach-O, so NRE cannot verify that the open database is its ${target.architecture} slice. Extract that slice with lipo -thin and open the thin file in both IDA and NRE, or use headless mode.`,
         diagnostics: { ...base.diagnostics, mode: "attached" },
       };
     return {
@@ -397,7 +397,7 @@ export class IdaProvider implements AnalysisProviderCandidate {
     const config = await this.#configuration(options);
     if (!config.ok) return config;
     const profile = createAnalysisProfile(IDA_PROVIDER_IDENTITY, {
-      version_scope: "rea-ida-adapter",
+      version_scope: "nre-ida-adapter",
       engine_version: null,
       upstream_distribution_version: null,
       mode: config.value.mode,
@@ -481,6 +481,6 @@ export class IdaProvider implements AnalysisProviderCandidate {
 const readIdaConfigurationNotConfigured = () =>
   err(
     idaConfigurationError(
-      "Set REA_IDA_MCP_CONFIG to an upstream IDA MCP JSON registration; see docs/ida-provider.md.",
+      "Set NRE_IDA_MCP_CONFIG to an upstream IDA MCP JSON registration; see docs/ida-provider.md.",
     ),
   );

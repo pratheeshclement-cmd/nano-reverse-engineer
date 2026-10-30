@@ -32,7 +32,7 @@ class BinaryNativeRunner extends NativeFixtureRunner {
 }
 
 const binaryPath = async () => {
-  const root = await createTestTempDirectory("rea-native-binary-plist-");
+  const root = await createTestTempDirectory("nre-native-binary-plist-");
   const path = join(root, "selected.plist");
   await writeFile(path, Buffer.from("bplist00"));
   return { root, path };

@@ -23,8 +23,8 @@ export const nativeKunaStrings = async ({
 }) => {
   const installed = await inspectKunaInstallation(
     {
-      REA_KUNA_COMMAND: executable,
-      REA_KUNA_CACHE_DIR: cacheRoot,
+      NRE_KUNA_COMMAND: executable,
+      NRE_KUNA_CACHE_DIR: cacheRoot,
     },
     { resourceScope },
   );
@@ -98,7 +98,7 @@ export const verifyKunaStrings = async ({
     expected.find(({ value }) => value.length >= 8 && value.length <= 100)
       ?.value ??
     expected[0]?.value ??
-    "REA-empty-string-inventory";
+    "NRE-empty-string-inventory";
   const selected = expected.filter(({ value }) =>
     value.toLowerCase().includes(pattern.toLowerCase()),
   );

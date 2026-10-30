@@ -31,7 +31,7 @@ const itWithLinuxCaptureCapability =
 itWithCaptureCapability(
   "captures a POSIX PATH executable with a literal backslash in its basename",
   async () => {
-    const root = await createTestTempDirectory("rea-process-backslash-name-");
+    const root = await createTestTempDirectory("nre-process-backslash-name-");
     const bin = join(root, "bin");
     await mkdir(bin);
     const command = "selected\\node";
@@ -60,7 +60,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "preserves numeric reports and original normalized PTY text in Evidence",
   async () => {
-    const root = await createTestTempDirectory("rea-process-numeric-report-");
+    const root = await createTestTempDirectory("nre-process-numeric-report-");
     const report = JSON.stringify({
       pid: 32,
       size: 108,
@@ -118,7 +118,7 @@ itWithCaptureCapability.each([
 ])(
   "preserves literal replacement $replacement and rejects legacy comparison semantics",
   async ({ pattern, replacement, expected }) => {
-    const root = await createTestTempDirectory("rea-process-literal-");
+    const root = await createTestTempDirectory("nre-process-literal-");
     const scenario = processScenarioSchema.parse({
       executable: process.execPath,
       arguments: ["-e", 'process.stdout.write("AB")'],
@@ -171,7 +171,7 @@ itWithCaptureCapability.each([
 itWithLinuxCaptureCapability.each([false, true])(
   "honors pids=%s in owned Linux capture samples and committed Evidence",
   async (pids) => {
-    const root = await createTestTempDirectory("rea-process-identifiers-");
+    const root = await createTestTempDirectory("nre-process-identifiers-");
     const identityPath = join(root, "identity.json");
     const scenario = processScenarioSchema.parse({
       executable: process.execPath,
@@ -235,7 +235,7 @@ itWithLinuxCaptureCapability.each([false, true])(
 itWithCaptureCapability(
   "preserves selected nested path identities in actual PTY Evidence",
   async () => {
-    const root = await createTestTempDirectory("rea-process-nested-paths-");
+    const root = await createTestTempDirectory("nre-process-nested-paths-");
     const executable = join(root, "selected-node");
     const observed = join(root, "data");
     await symlink(process.execPath, executable);
@@ -312,7 +312,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "normalizes descendants of a selected directory spelled with a trailing slash in actual PTY Evidence",
   async () => {
-    const root = await createTestTempDirectory("rea-process-slash-root-");
+    const root = await createTestTempDirectory("nre-process-slash-root-");
     const observed = join(root, "selected");
     await mkdir(observed);
     const original = `P=${observed}/item.txt`;
@@ -340,7 +340,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "keeps sibling executable names distinct in actual PTY Evidence",
   async () => {
-    const root = await createTestTempDirectory("rea-process-sibling-path-");
+    const root = await createTestTempDirectory("nre-process-sibling-path-");
     const executable = join(root, "original", "tool");
     await mkdir(join(root, "original"), { recursive: true });
     await symlink(process.execPath, executable);
@@ -366,7 +366,7 @@ itWithCaptureCapability(
 itWithCaptureCapability.each([false, true])(
   "normalizes a sampled child in raw and rendered terminal projections, pids=%s",
   async (pids) => {
-    const root = await createTestTempDirectory("rea-sampled-terminal-pids-");
+    const root = await createTestTempDirectory("nre-sampled-terminal-pids-");
     const scenario = processScenarioSchema.parse({
       executable: process.execPath,
       working_directory: root,

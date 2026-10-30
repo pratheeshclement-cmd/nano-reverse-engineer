@@ -42,7 +42,7 @@ const createProvider = () =>
   );
 
 const createFixture = async (wal = false) => {
-  const workspace = await createTestWorkspace("rea-sqlite-boundary-");
+  const workspace = await createTestWorkspace("nre-sqlite-boundary-");
   const database = createSqliteDatabaseFixture(workspace.root, wal);
   if (!wal) database.close();
   onTestFinished(async () => {
@@ -771,7 +771,7 @@ it("does not execute views when selecting rows", async () => {
 nativeTest.each(["absent.db", "absent-parent/absent.db"])(
   "classifies a missing %s as an invalid value",
   async (name) => {
-    const workspace = await createTestWorkspace("rea-sqlite-missing-");
+    const workspace = await createTestWorkspace("nre-sqlite-missing-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const path = workspace.path(name);
     const provider = createProvider();
@@ -934,7 +934,7 @@ it("attributes inventory selections beyond metadata bind capacity to result-colu
 });
 
 it("reports application-collation row failures as unavailable while retaining schema-only recovery", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-collation-");
+  const workspace = await createTestWorkspace("nre-sqlite-collation-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = createSqliteApplicationCollationFixture(workspace.root);
   const original = await readFile(path);
@@ -978,7 +978,7 @@ it("reports application-collation row failures as unavailable while retaining sc
 });
 
 it("rejects malformed databases without altering the selected file", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-invalid-");
+  const workspace = await createTestWorkspace("nre-sqlite-invalid-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = await workspace.write(
     "not-a-database.db",
@@ -1038,7 +1038,7 @@ nativeTest(
 nativeTest.runIf(process.platform !== "win32")(
   "rejects FIFO input without waiting for a writer",
   async () => {
-    const workspace = await createTestWorkspace("rea-sqlite-fifo-");
+    const workspace = await createTestWorkspace("nre-sqlite-fifo-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const path = workspace.path("database.fifo");
     await promisify(execFile)("mkfifo", [path]);
@@ -1155,7 +1155,7 @@ nativeTest(
       },
       async () => {
         const root = await PrivateRuntimeRoot.create({
-          prefix: "rea-sqlite-cancel-root-",
+          prefix: "nre-sqlite-cancel-root-",
         });
         ownedRoot = root.path;
         controller.abort();
@@ -1175,7 +1175,7 @@ nativeTest(
 it.each(["UTF-8", "UTF-16le", "UTF-16be"] as const)(
   "preserves %s text, a leading BOM and empty table selection",
   async (encoding) => {
-    const workspace = await createTestWorkspace("rea-sqlite-encoding-");
+    const workspace = await createTestWorkspace("nre-sqlite-encoding-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const path = workspace.path("encoding.db");
     const writer = new DatabaseSync(path);
@@ -1212,7 +1212,7 @@ it.each(["UTF-8", "UTF-16le", "UTF-16be"] as const)(
 );
 
 it("retains an unavailable virtual module definition without executing it", async () => {
-  const workspace = await createTestWorkspace("rea-sqlite-virtual-");
+  const workspace = await createTestWorkspace("nre-sqlite-virtual-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = workspace.path("virtual.db");
   const writer = new DatabaseSync(path);

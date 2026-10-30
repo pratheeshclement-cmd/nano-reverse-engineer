@@ -16,7 +16,7 @@ import {
   type CliCommandSession,
 } from "./cliCommandSession.js";
 
-/** Caller-controlled values for one compiled REA CLI invocation. */
+/** Caller-controlled values for one compiled NRE CLI invocation. */
 export interface CliInvocation {
   readonly arguments: readonly string[];
   readonly cwd?: string;
@@ -25,7 +25,7 @@ export interface CliInvocation {
   readonly timeoutMs?: number;
 }
 
-/** Normalized result from the compiled REA CLI. */
+/** Normalized result from the compiled NRE CLI. */
 export interface CliResult extends ProcessResult {
   readonly json: unknown | undefined;
 }
@@ -37,7 +37,7 @@ export type SharedMcpCall = Awaited<
   >
 >["call"];
 
-/** Compiled REA CLI driver owned by one test. */
+/** Compiled NRE CLI driver owned by one test. */
 export interface TestCli {
   run(invocation: CliInvocation): Promise<CliResult>;
   /**
@@ -283,7 +283,7 @@ export const createTestCli = (
   }) => {
     const result = await processes.run(
       process.execPath,
-      [resolve("scripts/rea.mjs"), ...arguments_],
+      [resolve("scripts/nre.mjs"), ...arguments_],
       {
         cwd: cwd ?? process.cwd(),
         env: cliProcessEnvironment(environment, compileCache),
@@ -304,7 +304,7 @@ export const cliTest = processTest.extend<{
   cliCompileCache: [
     // oxlint-disable-next-line no-empty-pattern -- Vitest parses fixture dependencies from object destructuring.
     async ({}, use) => {
-      const workspace = await createTestWorkspace("rea-cli-compile-cache-");
+      const workspace = await createTestWorkspace("nre-cli-compile-cache-");
       try {
         await use(workspace.path("node-compile"));
       } finally {

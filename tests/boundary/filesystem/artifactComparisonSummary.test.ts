@@ -26,7 +26,7 @@ const observe = async (
       sha256: inventory.manifest.root_sha256,
       format: inventory.manifest.root_format,
     },
-    { id: "rea-artifact-graph", name: "REA artifact graph", version: "1" },
+    { id: "nre-artifact-graph", name: "NRE artifact graph", version: "1" },
     {
       operation: "inventory_artifact",
       parameters: {},
@@ -39,7 +39,7 @@ const observe = async (
 
 describe("artifact comparison summary", () => {
   it("counts unchanged paths alongside additions and removals", async () => {
-    const root = await createTestTempDirectory("rea-artifact-summary-");
+    const root = await createTestTempDirectory("nre-artifact-summary-");
     const leftPath = join(root, "left");
     const rightPath = join(root, "right");
     await Promise.all([mkdir(leftPath), mkdir(rightPath)]);
@@ -71,7 +71,7 @@ describe("artifact comparison summary", () => {
   });
 
   const writeChangedFiles = async () => {
-    const root = await createTestTempDirectory("rea-artifact-partial-root-");
+    const root = await createTestTempDirectory("nre-artifact-partial-root-");
     const leftPath = join(root, "left.txt");
     const rightPath = join(root, "right.txt");
     await Promise.all([

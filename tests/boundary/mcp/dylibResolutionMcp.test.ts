@@ -47,7 +47,7 @@ const structuredResult = (value: unknown): unknown =>
 
 it("traces dylib resolution for an opened app bundle and rejects a changed target", async () => {
   const app = join(
-    await createTestTempDirectory("rea-dylib-mcp-"),
+    await createTestTempDirectory("nre-dylib-mcp-"),
     "Fixture.app",
   );
   await mkdir(join(app, "Contents/MacOS"), { recursive: true });
@@ -116,7 +116,7 @@ it("traces dylib resolution for an opened app bundle and rejects a changed targe
 });
 
 it("traces architecture slices from a universal Mach-O target", async () => {
-  const root = await createTestTempDirectory("rea-dylib-universal-");
+  const root = await createTestTempDirectory("nre-dylib-universal-");
   const executable = join(root, "Universal");
   const cpu = process.arch === "arm64" ? CPU.arm64 : CPU.x86_64;
   const architecture = process.arch === "arm64" ? "arm64" : "x86_64";
@@ -154,7 +154,7 @@ it("traces architecture slices from a universal Mach-O target", async () => {
 });
 
 it("rejects targets that are not Mach-O", async () => {
-  const directory = await createTestTempDirectory("rea-dylib-mcp-plist-");
+  const directory = await createTestTempDirectory("nre-dylib-mcp-plist-");
   const path = join(directory, "Info.plist");
   await writeFile(path, "<plist><dict/></plist>");
   await withClient(async (client) => {
@@ -175,7 +175,7 @@ it("rejects targets that are not Mach-O", async () => {
 });
 
 it("reports target kinds that artifact operations cannot inspect as unsupported", async () => {
-  const directory = await createTestTempDirectory("rea-artifact-target-");
+  const directory = await createTestTempDirectory("nre-artifact-target-");
   const plist = join(directory, "Info.plist");
   await writeFile(plist, "<plist><dict/></plist>");
   const tool = join(directory, "tool");
@@ -207,7 +207,7 @@ it("reports target kinds that artifact operations cannot inspect as unsupported"
 });
 
 it("traces a standalone Mach-O file whose name ends in .app", async () => {
-  const directory = await createTestTempDirectory("rea-dylib-mcp-file-");
+  const directory = await createTestTempDirectory("nre-dylib-mcp-file-");
   await writeFile(
     join(directory, "Tool.app"),
     machoImage({
@@ -256,7 +256,7 @@ const traceBesideOutside = async (
   readonly trace: z.infer<typeof dylibResolutionResultSchema>;
   readonly outsideSha256: string;
 }> => {
-  const parent = await createTestTempDirectory("rea-dylib-mcp-contained-");
+  const parent = await createTestTempDirectory("nre-dylib-mcp-contained-");
   const analyzed = join(parent, "analyzed");
   await mkdir(analyzed);
   await mkdir(join(parent, "outside"));
@@ -429,7 +429,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "keeps a permission denied while canonicalizing the opened bundle",
   async () => {
-    const parent = await createTestTempDirectory("rea-dylib-mcp-revoked-");
+    const parent = await createTestTempDirectory("nre-dylib-mcp-revoked-");
     const app = join(parent, "Revoked.app");
     await mkdir(join(app, "Contents/MacOS"), { recursive: true });
     await writeFile(
@@ -468,7 +468,7 @@ it.each([
   "DYLD_ROOT_PATH=/external",
   "DYLD_OVERLAY_PATH=/external",
 ])("preserves %s and its resolution semantics through MCP", async (setting) => {
-  const root = await createTestTempDirectory("rea-dylib-environment-mcp-");
+  const root = await createTestTempDirectory("nre-dylib-environment-mcp-");
   const program = join(root, "program");
   await writeFile(
     program,
@@ -516,7 +516,7 @@ it.each([
 });
 
 it("ignores process settings on an explicitly selected library root through MCP", async () => {
-  const root = await createTestTempDirectory("rea-dylib-root-mcp-");
+  const root = await createTestTempDirectory("nre-dylib-root-mcp-");
   const path = join(root, "library.dylib");
   const settings = [
     "DYLD_LIBRARY_PATH=/external",
@@ -585,7 +585,7 @@ it.each([
 ] as const)(
   "retains the missing-dependency semantics of %s through MCP",
   async (setting, status) => {
-    const root = await createTestTempDirectory("rea-dyld-empty-mcp-");
+    const root = await createTestTempDirectory("nre-dyld-empty-mcp-");
     const path = join(root, "program");
     await writeFile(
       path,
@@ -642,7 +642,7 @@ for (const [root, message] of [
     `reports caller-selected root ${root} as invalid input`,
     async () => {
       const app = join(
-        await createTestTempDirectory("rea-dylib-roots-"),
+        await createTestTempDirectory("nre-dylib-roots-"),
         "Fixture.app",
       );
       await mkdir(join(app, "Contents/MacOS"), { recursive: true });

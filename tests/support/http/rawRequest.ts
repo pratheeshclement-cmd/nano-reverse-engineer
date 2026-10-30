@@ -54,7 +54,7 @@ export const expectForeignHostRefused = async (
   const refused = await rawHttpRequest(url, {
     method: "POST",
     headers: {
-      host: "rea.invalid",
+      host: "nre.invalid",
       "content-type": "application/json",
       accept: "application/json, text/event-stream",
     },

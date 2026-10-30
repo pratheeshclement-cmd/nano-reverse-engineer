@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("kernel module stable filesystem boundary", () => {
   it("reports non-file and malformed ELF selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-kernel-module-files-");
+    const root = await createTestTempDirectory("nre-kernel-module-files-");
     const path = join(root, "demo.ko");
     const alias = join(root, "alias");
     const malformed = join(root, "malformed");
@@ -46,7 +46,7 @@ describe("kernel module stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-kernel-module-budget-");
+    const root = await createTestTempDirectory("nre-kernel-module-budget-");
     const path = join(root, "demo.ko");
     await writeFile(path, kernelModuleFixture());
     const service = createKernelModuleService();
@@ -69,7 +69,7 @@ describe("kernel module stable filesystem boundary", () => {
   });
 
   it("reports a gzip container as unsupported without treating it as a module", async () => {
-    const root = await createTestTempDirectory("rea-kernel-module-gzip-");
+    const root = await createTestTempDirectory("nre-kernel-module-gzip-");
     const path = join(root, "demo.ko.gz");
     await writeFile(path, compressedKernelModuleContainer("gzip"));
     const service = createKernelModuleService();

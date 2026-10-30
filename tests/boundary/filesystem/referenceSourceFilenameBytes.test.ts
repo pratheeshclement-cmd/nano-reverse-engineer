@@ -10,7 +10,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform !== "linux")(
   "does not read an invalid UTF-8 directory name through its replacement-character sibling",
   async () => {
-    const root = await createTestTempDirectory("rea-reference-filename-bytes-");
+    const root = await createTestTempDirectory("nre-reference-filename-bytes-");
     const rawName = Buffer.from([0x62, 0x61, 0x64, 0xff, 0x2e, 0x6a, 0x73]);
     const rawPath = Buffer.concat([Buffer.from(`${root}/`), rawName]);
     const replacementPath = join(root, "bad\ufffd.js");

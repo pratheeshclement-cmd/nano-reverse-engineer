@@ -7,7 +7,7 @@ let activeVerifierRun;
 /** Allocate one verifier identity before work and propagate it to child processes. */
 export const createVerifierRun = () => {
   if (activeVerifierRun !== undefined) {
-    process.env.REA_PROCESS_RUN_ID = activeVerifierRun.run_id;
+    process.env.NRE_PROCESS_RUN_ID = activeVerifierRun.run_id;
     return activeVerifierRun;
   }
   activeVerifierRun = Object.freeze({
@@ -15,7 +15,7 @@ export const createVerifierRun = () => {
     verifier_pid: process.pid,
     parent_pid: process.ppid,
   });
-  process.env.REA_PROCESS_RUN_ID = activeVerifierRun.run_id;
+  process.env.NRE_PROCESS_RUN_ID = activeVerifierRun.run_id;
   return activeVerifierRun;
 };
 
@@ -195,8 +195,8 @@ const processRunId = async (pid) => {
     const environment = await readFile(`/proc/${String(pid)}/environ`, "utf8");
     return environment
       .split("\0")
-      .find((entry) => entry.startsWith("REA_PROCESS_RUN_ID="))
-      ?.slice("REA_PROCESS_RUN_ID=".length);
+      .find((entry) => entry.startsWith("NRE_PROCESS_RUN_ID="))
+      ?.slice("NRE_PROCESS_RUN_ID=".length);
   }
   const child = spawn("ps", ["eww", "-p", String(pid)], {
     stdio: ["ignore", "pipe", "ignore"],
@@ -208,7 +208,7 @@ const processRunId = async (pid) => {
     child.once("close", resolve);
   });
   if (code !== 0) throw new Error("process environment unavailable");
-  return /(?:^|\s)REA_PROCESS_RUN_ID=([^\s]*)/u.exec(
+  return /(?:^|\s)NRE_PROCESS_RUN_ID=([^\s]*)/u.exec(
     Buffer.concat(stdout).toString("utf8"),
   )?.[1];
 };

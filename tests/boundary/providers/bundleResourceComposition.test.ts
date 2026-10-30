@@ -27,7 +27,7 @@ afterEach(async () => {
 });
 
 it("routes a CLI app resource path through the resource session and preserves null target identity", async () => {
-  const bundlePath = await mkdtemp(join(tmpdir(), "rea-cli-resource-root-"));
+  const bundlePath = await mkdtemp(join(tmpdir(), "nre-cli-resource-root-"));
   temporaryDirectories.push(bundlePath);
   await mkdir(join(bundlePath, "Resources"));
   await writeFile(
@@ -72,7 +72,7 @@ it("routes a CLI app resource path through the resource session and preserves nu
 });
 
 it("reports resource capabilities from their providers on supported and unsupported hosts", async () => {
-  const rootPath = await mkdtemp(join(tmpdir(), "rea-resource-capabilities-"));
+  const rootPath = await mkdtemp(join(tmpdir(), "nre-resource-capabilities-"));
   temporaryDirectories.push(rootPath);
   await writeFile(join(rootPath, "Info.plist"), "<plist><dict/></plist>");
 

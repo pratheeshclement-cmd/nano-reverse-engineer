@@ -12,22 +12,22 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 for (const [setting, profile] of [
-  ["REA_MCP_INPUT_SCHEMA_PROFILE", ""],
-  ["REA_MCP_INPUT_SCHEMA_PROFILE", "bogus"],
-  ["REA_MCP_OUTPUT_SCHEMA_PROFILE", ""],
-  ["REA_MCP_OUTPUT_SCHEMA_PROFILE", "bogus"],
+  ["NRE_MCP_INPUT_SCHEMA_PROFILE", ""],
+  ["NRE_MCP_INPUT_SCHEMA_PROFILE", "bogus"],
+  ["NRE_MCP_OUTPUT_SCHEMA_PROFILE", ""],
+  ["NRE_MCP_OUTPUT_SCHEMA_PROFILE", "bogus"],
 ] as const)
   cliTest(
     `setup and doctor refuse an invalid retained ${setting} value ${JSON.stringify(profile)}`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-pi-invalid-profile-cli-");
+      const home = await createTestTempDirectory("nre-pi-invalid-profile-cli-");
       const agent = join(home, ".pi", "agent");
       const config = join(agent, "mcp.json");
       const original = JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             type: "stdio",
-            command: "rea",
+            command: "nre",
             args: ["mcp"],
             env: { [setting]: profile },
           },
@@ -74,7 +74,7 @@ for (const [setting, profile] of [
         },
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${config}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -83,20 +83,20 @@ for (const [setting, profile] of [
 cliTest(
   "setup preserves a configured compact catalog through CLI migration and MCP startup",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-pi-environment-cli-");
+    const home = await createTestTempDirectory("nre-pi-environment-cli-");
     const agent = join(home, ".pi", "agent");
     const config = join(agent, "mcp.json");
     const custom = {
-      REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
-      REA_LOG_LEVEL: "silent",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+      NRE_LOG_LEVEL: "silent",
     };
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
+        nre: {
           type: "stdio",
           command: "npx",
-          args: ["-y", "rea-agents@1.0.0", "mcp"],
+          args: ["-y", "nano-reverse-engineer@1.0.0", "mcp"],
           env: custom,
         },
       },
@@ -149,14 +149,14 @@ cliTest(
     const registration = z
       .object({
         mcpServers: z.object({
-          rea: z.object({
+          nre: z.object({
             command: z.string(),
             args: z.array(z.string()),
             env: z.record(z.string(), z.string()).optional(),
           }),
         }),
       })
-      .parse(JSON.parse(configured)).mcpServers.rea;
+      .parse(JSON.parse(configured)).mcpServers.nre;
     const transport = new StdioClientTransport({
       command: registration.command,
       args: registration.args,
@@ -188,7 +188,7 @@ cliTest(
       await transport.close();
     }
     expect(registration.env).toMatchObject(custom);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     const repeated = await cli.run({
       arguments: arguments_,
       cwd: home,
@@ -207,18 +207,15 @@ cliTest(
 cliTest(
   "Pi public CLI plans, requires approval, applies, diagnoses, repeats, and uninstalls only owned content",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-pi-cli-");
+    const home = await createTestTempDirectory("nre-pi-cli-");
     const agent = join(home, "custom-agent");
     const config = join(agent, "mcp.json");
-    const skill = join(
-      home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
-    );
+    const skill = join(home, ".agents/skills/nano-reverse-engineer/SKILL.md");
     const original =
       '{ "mcpServers": { "other": { "command": "other-server" } }, "autoEnableCodemode": false }\n';
     await mkdir(agent);
     await writeFile(config, original);
-    const cliPath = resolve("scripts/rea.mjs");
+    const cliPath = resolve("scripts/nre.mjs");
     const run = (arguments_: readonly string[]) =>
       cli.run({
         arguments: arguments_,
@@ -257,7 +254,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
@@ -280,7 +277,7 @@ cliTest(
     expect(JSON.parse(configured)).toMatchObject({
       mcpServers: {
         other: { command: "other-server" },
-        rea: {
+        nre: {
           type: "stdio",
           command: process.execPath,
           args: [cliPath, "mcp"],
@@ -288,10 +285,8 @@ cliTest(
       },
       autoEnableCodemode: false,
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
-    expect(await readFile(skill, "utf8")).toContain(
-      "reverse-engineer-anything",
-    );
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
+    expect(await readFile(skill, "utf8")).toContain("nano-reverse-engineer");
 
     const doctor = await run(["doctor", "--client", "pi", "--json"]);
     expect(doctor.exitCode).toBe(0);
@@ -312,7 +307,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
 
     // Uninstall is global; there is no --client or --yes on this CLI surface.
     const help = await run(["uninstall", "--help"]);
@@ -323,7 +318,7 @@ cliTest(
     expect(JSON.parse(await readFile(config, "utf8"))).toEqual(
       JSON.parse(original),
     );
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
@@ -331,7 +326,7 @@ cliTest(
 cliTest(
   "Pi public CLI creates missing strict-JSON configuration and never repairs a malformed file",
   async ({ cli }) => {
-    const created = await createTestTempDirectory("rea-pi-cli-strict-");
+    const created = await createTestTempDirectory("nre-pi-cli-strict-");
     const agent = join(created, "custom-agent");
     const config = join(agent, "mcp.json");
     await mkdir(agent);
@@ -357,7 +352,7 @@ cliTest(
     const text = await readFile(config, "utf8");
     expect(() => JSON.parse(text)).not.toThrow();
     expect(JSON.parse(text)).toMatchObject({
-      mcpServers: { rea: { type: "stdio" } },
+      mcpServers: { nre: { type: "stdio" } },
     });
     const doctor = await run(["doctor", "--client", "pi", "--json"]);
     expect(doctor.exitCode).toBe(0);
@@ -371,10 +366,10 @@ cliTest(
     });
     await run(["uninstall", "--json"]);
     expect(
-      JSON.parse(await readFile(config, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(config, "utf8")).mcpServers.nre,
     ).toBeUndefined();
 
-    const blocked = await createTestTempDirectory("rea-pi-cli-malformed-");
+    const blocked = await createTestTempDirectory("nre-pi-cli-malformed-");
     const malformedPath = join(blocked, "custom-agent", "mcp.json");
     await mkdir(join(blocked, "custom-agent"));
     const malformed = `{ // Pi loads strict JSON only\n"mcpServers": { "other": { "command": "other" } }\n}\n`;
@@ -408,7 +403,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(malformedPath, "utf8")).toBe(malformed);
-    await expect(readFile(`${malformedPath}.rea.backup`)).rejects.toMatchObject(
+    await expect(readFile(`${malformedPath}.nre.backup`)).rejects.toMatchObject(
       {
         code: "ENOENT",
       },
@@ -443,7 +438,7 @@ cliTest(
 cliTest(
   "malformed Pi overrides do not block selected Codex setup or doctor and never fall back for Pi",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-pi-invalid-cli-");
+    const home = await createTestTempDirectory("nre-pi-invalid-cli-");
     const run = (arguments_: readonly string[]) =>
       cli.run({
         arguments: arguments_,

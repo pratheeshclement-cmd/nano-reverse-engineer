@@ -25,7 +25,7 @@ cliTest.for([
   { name: "hexadecimal", element: "<integer>0x2A</integer>", expected: 42 },
   {
     name: "integer between processing instructions",
-    element: "<?integer 9007199254740993?><integer>42</integer><?rea ignored?>",
+    element: "<?integer 9007199254740993?><integer>42</integer><?nre ignored?>",
     expected: 42,
   },
   {
@@ -61,7 +61,7 @@ cliTest.for([
 ])(
   "preserves $name XML scalars through CLI and MCP",
   async (scenario, { cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-xml-numbers-");
+    const root = await createTestTempDirectory("nre-keyed-xml-numbers-");
     const bytes = Buffer.from(
       build({
         $archiver: "NSKeyedArchiver",
@@ -86,7 +86,7 @@ cliTest.for([
         "1",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = keyedArchiveResultSchema.parse(
@@ -137,7 +137,7 @@ cliTest.for([
 cliTest(
   "refuses invalid data without publishing observed bytes through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-data-refusal-");
+    const root = await createTestTempDirectory("nre-keyed-data-refusal-");
     const call = await cli.sharedMcpCall?.();
     if (call === undefined) throw new Error("Missing file-scoped MCP session");
     for (const [name, element, reason] of [
@@ -157,7 +157,7 @@ cliTest(
       await writeFile(path, bytes);
       const output = await runFileCli(cli, {
         arguments: ["inspect-keyed-archive", path, "--json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(output.exitCode).toBe(1);
       expect(output.json).toMatchObject({

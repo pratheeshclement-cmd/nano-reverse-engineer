@@ -46,7 +46,7 @@ export interface IncurBuiltinArgumentSplit {
 
 /**
  * Mirror Incur's builtin pass over normalized arguments without stopping at a
- * rejected value, so callers can still see every later token. REA's boolean
+ * rejected value, so callers can still see every later token. NRE's boolean
  * timing global follows the same valueless pass; no config flag is registered.
  */
 export const splitIncurBuiltinArguments = (
@@ -113,7 +113,7 @@ export const normalizeCliArguments = (
     : normalized;
 };
 
-/** Keep REA-owned delimited formats out of Incur's narrower formatter surface. */
+/** Keep NRE-owned delimited formats out of Incur's narrower formatter surface. */
 export const adaptCliOutputArgumentsForIncur = (
   arguments_: readonly string[],
 ): string[] => {

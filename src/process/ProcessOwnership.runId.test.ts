@@ -7,9 +7,9 @@ it.each([undefined, "selected-token", ""])(
   "reads only the process environment's own run token %j",
   async (selected) => {
     const environment: Record<string, string> = Object.create({
-      REA_PROCESS_RUN_ID: "inherited-token",
+      NRE_PROCESS_RUN_ID: "inherited-token",
     });
-    if (selected !== undefined) environment.REA_PROCESS_RUN_ID = selected;
+    if (selected !== undefined) environment.NRE_PROCESS_RUN_ID = selected;
     const host: ProcessOwnershipHost = {
       listProcesses: async () => [],
       environment: async () => environment,

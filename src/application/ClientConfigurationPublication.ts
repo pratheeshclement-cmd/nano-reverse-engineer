@@ -97,7 +97,7 @@ export class ClientConfigurationPublication {
       )
         throw new RegularFileChangedError(destination);
     }
-    const directory = await mkdtemp(`${parent}${sep}.rea-config-`);
+    const directory = await mkdtemp(`${parent}${sep}.nre-config-`);
     const staging = await OwnedStagedOutput.create(directory);
     const cleanup = new AnalysisCleanupLease(
       () => staging.close(),

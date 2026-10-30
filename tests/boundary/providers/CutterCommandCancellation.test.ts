@@ -22,9 +22,9 @@ it.each([
   "keeps a typed caller abort reason opaque at command admission: $_tag",
   async (reason) => {
     const directory = await createTestTempDirectory(
-      "rea-cutter-command-cancel-",
+      "nre-cutter-command-cancel-",
     );
-    const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: directory });
+    const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: directory });
     const service = new CutterBridgeService(client);
     onTestFinished(() => service.close());
     const controller = new AbortController();
@@ -93,7 +93,7 @@ it.skipIf(process.platform === "win32").each([
   "records cancellation during status recovery before command dispatch: %s",
   async (reason) => {
     const directory = await createTestTempDirectory(
-      "rea-cutter-status-cancel-",
+      "nre-cutter-status-cancel-",
     );
     await chmod(directory, 0o700);
     const sessionId = "27d3e3f1-f1e5-49ae-91ec-95af1f343a5a";
@@ -123,7 +123,7 @@ it.skipIf(process.platform === "win32").each([
     if (address === null || typeof address === "string")
       throw new Error("Missing listener");
     await writeDescriptor(directory, sessionId, address.port, token);
-    const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: directory });
+    const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: directory });
     try {
       const failure = await client
         .execute({

@@ -21,7 +21,7 @@ const root = resolve(process.argv[2] ?? ".");
 const artifact = resolve(
   process.argv[3] ?? ".cache/windows-native-inspection-fixture",
 );
-const workspace = await mkdtemp(join(tmpdir(), "rea-inspection-conformance-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-inspection-conformance-"));
 try {
   const loader = await prepareWindowsNativeInspectionWorkspace({
     root,
@@ -36,10 +36,10 @@ import {systemWindowsNativeAuthority} from ${JSON.stringify(loader)};
 const temp=process.env.TEMP;
 const mode=process.argv[2];
 const creation=mode.startsWith('create-');
-const native=creation?createRequire(import.meta.url)(${JSON.stringify(join(workspace, "native", "windows", "build", "rea-windows-x64.node"))}):null;
+const native=creation?createRequire(import.meta.url)(${JSON.stringify(join(workspace, "native", "windows", "build", "nre-windows-x64.node"))}):null;
 if(creation){
  let failure;
- try{native.call('runtime_create',[temp,'rea-native-created-'])}catch(error){failure=error}
+ try{native.call('runtime_create',[temp,'nre-native-created-'])}catch(error){failure=error}
  assert.ok(failure instanceof Error,'runtime_create unexpectedly passed injected post-create validation failure');
  assert.equal(failure.constraint,'Read private DACL by handle failed');
  assert.equal(failure.win32Code,5);
@@ -70,7 +70,7 @@ if(mode==='retry'){
  assert.equal(statSync(path,{bigint:true}).ino,replacement.ino);
  assert.equal(systemWindowsNativeAuthority(),second);
 } else if(mode==='create-retry') {
- const second=native.call('runtime_create',[temp,'rea-native-created-retry-']);
+ const second=native.call('runtime_create',[temp,'nre-native-created-retry-']);
  assert.equal(existsSync(renamed),false);
  assert.equal(readFileSync(sentinel,'utf8'),'unrelated replacement');
  native.call('runtime_close',[second.handle]);
@@ -93,7 +93,7 @@ console.log(JSON.stringify({mode,firstFailed:true,retainedOwner:true,name,rename
         TEMP: temp,
         TMP: temp,
         ...(mode.startsWith("create-")
-          ? { REA_NATIVE_CREATION_FAILURE: "1" }
+          ? { NRE_NATIVE_CREATION_FAILURE: "1" }
           : {}),
       },
     });

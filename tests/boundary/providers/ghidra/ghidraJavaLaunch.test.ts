@@ -59,7 +59,7 @@ const warning =
 it.skipIf(process.platform === "win32")(
   "keeps the same symlink parent selection from installation inspection through Java launch",
   async () => {
-    const root = await createTestTempDirectory("rea-ghidra-selected-parent-");
+    const root = await createTestTempDirectory("nre-ghidra-selected-parent-");
     const intended = join(root, "selected");
     for (const directory of [
       "child",
@@ -164,7 +164,7 @@ const fixture = async (
   mode: string,
   javaVmName: string | null = "OpenJDK 64-Bit Server VM",
 ) => {
-  const root = await createTestTempDirectory("rea-ghidra-java-launch-");
+  const root = await createTestTempDirectory("nre-ghidra-java-launch-");
   const javaHome = join(root, "jdk");
   await mkdir(join(javaHome, "bin"), { recursive: true });
   await writeFile(
@@ -224,7 +224,7 @@ if (mode === "env-failure" || (probe === "-vmargs" && mode === "vm-failure")) {
     ...(javaVmName === null ? {} : { javaVmName }),
     analyzeHeadlessPath: join(root, "ghidra", "support", "analyzeHeadless"),
     configurationDirectoryName: "ghidra_12.1.4_PUBLIC",
-    bridgeScriptPath: join(root, "ReaGhidraBridge.java"),
+    bridgeScriptPath: join(root, "NreGhidraBridge.java"),
     spawnProcess: async (options) => {
       analysisArguments.push(options.arguments);
       analysisEnvironments.push(options.env ?? {});
@@ -564,13 +564,13 @@ describe.skipIf(process.platform === "win32")(
   "Ghidra LaunchSupport JDK_JAVA_OPTIONS argument files",
   () => {
     it.each([
-      '-Dnote="prefix\\"#suffix" -Dos.arch=rea_argfile_probe\n',
-      '"-Dos.ar\\\n    ch=rea_argfile_probe"\n',
-      '"-Dos.ar"discard#comment\n  ch=rea_argfile_probe\n',
+      '-Dnote="prefix\\"#suffix" -Dos.arch=nre_argfile_probe\n',
+      '"-Dos.ar\\\n    ch=nre_argfile_probe"\n',
+      '"-Dos.ar"discard#comment\n  ch=nre_argfile_probe\n',
     ])(
       "rejects effective platform overrides after argfile quoting and continuation: %s",
       async (text) => {
-        const root = await createTestTempDirectory("rea-ghidra-jdk-grammar-");
+        const root = await createTestTempDirectory("nre-ghidra-jdk-grammar-");
         const optionsFile = join(root, "platform.options");
         await writeFile(optionsFile, text);
         const { session, launcher, analysisArguments, resources } =
@@ -590,9 +590,9 @@ describe.skipIf(process.platform === "win32")(
     );
 
     it("rejects argument-file platform overrides before starting analysis", async () => {
-      const root = await createTestTempDirectory("rea-ghidra-jdk-argfile-");
+      const root = await createTestTempDirectory("nre-ghidra-jdk-argfile-");
       const optionsFile = join(root, "platform.options");
-      await writeFile(optionsFile, "-Dos.arch=rea_argfile_probe\n");
+      await writeFile(optionsFile, "-Dos.arch=nre_argfile_probe\n");
       const { session, launcher, analysisArguments, resources } = await fixture(
         `env-injection:JDK_JAVA_OPTIONS=@${optionsFile}`,
       );
@@ -610,7 +610,7 @@ describe.skipIf(process.platform === "win32")(
     });
 
     it("admits an argument file that does not override the platform", async () => {
-      const root = await createTestTempDirectory("rea-ghidra-jdk-argfile-ok-");
+      const root = await createTestTempDirectory("nre-ghidra-jdk-argfile-ok-");
       const optionsFile = join(root, "platform.options");
       await writeFile(optionsFile, "-Dfile.encoding=UTF8\n");
       const { session, launcher, analysisArguments, resources } = await fixture(
@@ -625,7 +625,7 @@ describe.skipIf(process.platform === "win32")(
 
     it("rejects an unreadable argument file before starting analysis", async () => {
       const root = await createTestTempDirectory(
-        "rea-ghidra-jdk-argfile-missing-",
+        "nre-ghidra-jdk-argfile-missing-",
       );
       const optionsFile = join(root, "missing.options");
       const { session, launcher, analysisArguments, resources } = await fixture(
@@ -647,7 +647,7 @@ describe.skipIf(process.platform === "win32")(
 
     it("rejects nested argument-file references before starting analysis", async () => {
       const root = await createTestTempDirectory(
-        "rea-ghidra-jdk-argfile-nested-",
+        "nre-ghidra-jdk-argfile-nested-",
       );
       const nested = join(root, "nested.options");
       const optionsFile = join(root, "platform.options");
@@ -678,7 +678,7 @@ describe.skipIf(process.platform === "win32")(
       "keeps @ values literal after expansion was disabled by a file: %s",
       async (fromFile) => {
         const root = await createTestTempDirectory(
-          "rea-ghidra-options-disabled-",
+          "nre-ghidra-options-disabled-",
         );
         const path = join(root, "options.args"),
           missing = join(root, "literal-classpath");
@@ -692,7 +692,7 @@ describe.skipIf(process.platform === "win32")(
         if (!result.ok) throw result.error;
         expect(analysisEnvironments[0]?.JDK_JAVA_OPTIONS).toContain(missing);
         const snapshots = (await readdir(session.runtimeRoot)).filter((name) =>
-          name.startsWith("rea-jdk-options-"),
+          name.startsWith("nre-jdk-options-"),
         );
         expect(snapshots).toHaveLength(fromFile ? 1 : 0);
       },
@@ -702,7 +702,7 @@ describe.skipIf(process.platform === "win32")(
       "counts repeated references within the cumulative byte budget: %s",
       async (size) => {
         const root = await createTestTempDirectory(
-          "rea-ghidra-options-repeat-",
+          "nre-ghidra-options-repeat-",
         );
         const path = join(root, "options.args");
         await writeFile(path, " ".repeat(size));
@@ -714,7 +714,7 @@ describe.skipIf(process.platform === "win32")(
         expect(result.ok).toBe(size * 2 <= 65536);
         expect(analysisArguments).toHaveLength(result.ok ? 1 : 0);
         const snapshots = (await readdir(session.runtimeRoot)).filter((name) =>
-          name.startsWith("rea-jdk-options-"),
+          name.startsWith("nre-jdk-options-"),
         );
         expect(snapshots).toHaveLength(1);
       },
@@ -727,7 +727,7 @@ describe.skipIf(process.platform === "win32")(
       "refuses $label input without starting analysis",
       async ({ content }) => {
         const root = await createTestTempDirectory(
-          "rea-ghidra-options-admission-",
+          "nre-ghidra-options-admission-",
         );
         const path = join(root, "options.args");
         await writeFile(path, content);
@@ -743,7 +743,7 @@ describe.skipIf(process.platform === "win32")(
     );
 
     it("refuses a named pipe without blocking an owned file read", async () => {
-      const root = await createTestTempDirectory("rea-ghidra-options-pipe-");
+      const root = await createTestTempDirectory("nre-ghidra-options-pipe-");
       const path = join(root, "options.args");
       await execFileOutput("mkfifo", [path], { maxBuffer: 1024 });
       const { session, launcher, resources, analysisArguments } = await fixture(
@@ -764,7 +764,7 @@ describe.skipIf(process.platform === "win32")(
   () => {
     it("launches with admitted bytes rather than reopening a file changed by the next helper", async () => {
       const root = await createTestTempDirectory(
-        "rea-ghidra-options-snapshot-",
+        "nre-ghidra-options-snapshot-",
       );
       const path = join(root, "options.args");
       const content = '-Dnote="retained\\"#literal"\n';
@@ -778,7 +778,7 @@ describe.skipIf(process.platform === "win32")(
       expect(await readFile(path, "utf8")).toContain("changed_after_admission");
       expect(analysisEnvironments[0]?.JDK_JAVA_OPTIONS).not.toContain(path);
       const snapshots = (await readdir(session.runtimeRoot)).filter((name) =>
-        name.startsWith("rea-jdk-options-"),
+        name.startsWith("nre-jdk-options-"),
       );
       expect(snapshots).toHaveLength(1);
       expect(
@@ -789,7 +789,7 @@ describe.skipIf(process.platform === "win32")(
     it.each([false, true])(
       "retains the exact failed close owner alongside an invalid-read fact: %s",
       async (invalid) => {
-        const root = await createTestTempDirectory("rea-ghidra-options-close-");
+        const root = await createTestTempDirectory("nre-ghidra-options-close-");
         const path = join(root, "options.args");
         await writeFile(
           path,
@@ -846,7 +846,7 @@ describe.skipIf(process.platform === "win32")(
 
     it("preserves an abort observed during final descriptor close", async () => {
       const root = await createTestTempDirectory(
-        "rea-ghidra-options-late-abort-",
+        "nre-ghidra-options-late-abort-",
       );
       const path = join(root, "options.args");
       await writeFile(path, "-Dnote=valid\n");
@@ -903,7 +903,7 @@ describe.skipIf(process.platform === "win32")(
         };
         const config = parseConfig({
           GHIDRA_INSTALL_DIR: "/fixture/ghidra",
-          REA_GHIDRA_STARTUP_TIMEOUT_MS: "3000",
+          NRE_GHIDRA_STARTUP_TIMEOUT_MS: "3000",
         });
         if (!config.ok) throw config.error;
         const provider = new GhidraProvider(

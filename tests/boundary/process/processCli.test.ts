@@ -74,7 +74,7 @@ describe("documented process CLI workflow", () => {
   cliTest(
     "feeds the documented JSON capture into the comparison CLI",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-process-cli-");
+      const root = await createTestTempDirectory("nre-process-cli-");
       const guide = await readFile(
         new URL("../../../docs/process-capture.md", import.meta.url),
         "utf8",
@@ -125,7 +125,7 @@ describe("process CLI cleanup errors", () => {
   cliTest.skipIf(process.platform !== "darwin")(
     "reports the retained capture root with a controlled unavailable ownership reader",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-process-cli-cleanup-");
+      const root = await createTestTempDirectory("nre-process-cli-cleanup-");
       const compiler = await writeUnavailableOwnershipCompiler(root);
       const scenario = join(root, "scenario.json");
       const marker = join(root, "target.pid");
@@ -151,9 +151,9 @@ describe("process CLI cleanup errors", () => {
           arguments: ["capture-process", scenario, "--json"],
           environment: {
             TMPDIR: root,
-            REA_DARWIN_SWIFTC_PATH: compiler,
+            NRE_DARWIN_SWIFTC_PATH: compiler,
             SDKROOT: root,
-            REA_DARWIN_MODULE_CACHE_PATH: join(root, "modules"),
+            NRE_DARWIN_MODULE_CACHE_PATH: join(root, "modules"),
           },
         });
         const targetPid = Number(await readFile(marker, "utf8"));
@@ -163,7 +163,7 @@ describe("process CLI cleanup errors", () => {
         );
         expect(result.exitCode, result.stdout || result.stderr).toBe(1);
         const retained = (await readdir(root)).filter((name) =>
-          /^rea-process-(?!token-)/u.test(name),
+          /^nre-process-(?!token-)/u.test(name),
         );
         expect(retained).toHaveLength(1);
         const retainedRoot = retained[0];
@@ -216,7 +216,7 @@ describe("process CLI errors", () => {
   cliTest(
     "returns canonical JSON errors for missing and malformed process files",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-process-cli-errors-");
+      const root = await createTestTempDirectory("nre-process-cli-errors-");
       const malformed = join(root, "malformed.json");
       await writeFile(malformed, "not-json");
       const cases = [
@@ -284,7 +284,7 @@ describe("process CLI errors", () => {
       await expect(
         execFileAsync(
           process.execPath,
-          ["scripts/rea.mjs", "capture-process", "/missing/scenario.json"],
+          ["scripts/nre.mjs", "capture-process", "/missing/scenario.json"],
           { cwd: process.cwd() },
         ),
       ).rejects.toMatchObject({
@@ -296,7 +296,7 @@ describe("process CLI errors", () => {
   );
 
   it("rejects NUL arguments before process launch", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-");
+    const root = await createTestTempDirectory("nre-process-cli-");
     const scenario = join(root, "nul-argument.json");
     await writeFile(
       scenario,
@@ -325,13 +325,13 @@ describe("process CLI errors", () => {
 
 describe("process CLI environment key diagnostics", () => {
   it("reports the reserved process environment key constraint", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-");
+    const root = await createTestTempDirectory("nre-process-cli-");
     const scenario = join(root, "reserved-environment.json");
     await writeFile(
       scenario,
       JSON.stringify({
         executable: process.execPath,
-        environment: { REA_PROCESS_RUN_ID: "caller-value" },
+        environment: { NRE_PROCESS_RUN_ID: "caller-value" },
       }),
     );
 
@@ -343,10 +343,10 @@ describe("process CLI environment key diagnostics", () => {
         operation: "capture_process_scenario",
         issues: [
           {
-            path: ["environment", "REA_PROCESS_RUN_ID"],
+            path: ["environment", "NRE_PROCESS_RUN_ID"],
             reason: "invalid_format",
             expected: "regex",
-            message: "REA_PROCESS_RUN_ID is reserved by the process adapter",
+            message: "NRE_PROCESS_RUN_ID is reserved by the process adapter",
           },
         ],
       },
@@ -356,7 +356,7 @@ describe("process CLI environment key diagnostics", () => {
 
 describe("process CLI evidence validation", () => {
   it("captures the minimal executable-and-arguments scenario", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-");
+    const root = await createTestTempDirectory("nre-process-cli-");
     const scenario = join(root, "scenario.json");
     await writeFile(
       scenario,
@@ -367,21 +367,21 @@ describe("process CLI evidence validation", () => {
     );
     const evidence = await captureProcessScenarioFile(scenario);
     expect(evidence).toMatchObject({
-      predicate_type: "rea.process-capture",
+      predicate_type: "nre.process-capture",
       operation: "capture_process_scenario",
     });
     expect(JSON.stringify(evidence)).toContain("minimal-capture");
   });
 
   it("rejects unrelated capture evidence", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-");
+    const root = await createTestTempDirectory("nre-process-cli-");
     const invalidCapture = join(root, "invalid-capture.json");
     const unrelated = join(root, "unrelated.json");
     await writeFile(
       invalidCapture,
       JSON.stringify(
         createEvidence(undefined, PROCESS_PROVIDER, {
-          predicateType: "rea.process-capture/other",
+          predicateType: "nre.process-capture/other",
           operation: "capture_process_scenario",
           parameters: {},
           result: {},
@@ -425,7 +425,7 @@ describe("process CLI evidence validation", () => {
   });
 
   it("classifies malformed capture evidence as invalid input", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-");
+    const root = await createTestTempDirectory("nre-process-cli-");
     const malformed = join(root, "malformed-evidence.json");
     await writeFile(malformed, "{}");
 
@@ -451,14 +451,14 @@ describe("process CLI evidence validation", () => {
 it(
   "reports the JSON depth constraint through the compiled comparison CLI",
   async () => {
-    const root = await createTestTempDirectory("rea-process-cli-");
+    const root = await createTestTempDirectory("nre-process-cli-");
     const left = join(root, "left.json");
     const right = join(root, "right.json");
     const input = INVESTIGATION_EXAMPLES.compare_process_captures.input;
     await writeFile(left, JSON.stringify(input.left));
     await writeFile(right, JSON.stringify(input.right));
     const cli = fileURLToPath(
-      new URL("../../../scripts/rea.mjs", import.meta.url),
+      new URL("../../../scripts/nre.mjs", import.meta.url),
     );
     const cliArguments = [
       cli,

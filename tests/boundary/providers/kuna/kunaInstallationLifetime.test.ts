@@ -89,7 +89,7 @@ it
   .each(["hash-close", "identity-read"] as const)(
   "keeps installation cleanup waiting for its active phase when cancelled during %s",
   async (phase) => {
-    const root = await createTestTempDirectory("rea-kuna-inspection-lifetime-");
+    const root = await createTestTempDirectory("nre-kuna-inspection-lifetime-");
     const executable = await writeFakeKuna(root);
     const scope = new ArtifactResourceScope();
     const resourceScope: RetainedResourceScope = {
@@ -105,7 +105,7 @@ it
     gates.holdHashClose = phase === "hash-close";
     gates.holdIdentityRead = phase === "identity-read";
     const inspection = inspectKunaInstallation(
-      { REA_KUNA_COMMAND: executable },
+      { NRE_KUNA_COMMAND: executable },
       { resourceScope, signal: controller.signal },
     );
 
@@ -156,7 +156,7 @@ it
   async (phase) => {
     gates.hashClose.release();
     gates.identityRead.release();
-    const fixture = await session("rea-kuna-session-finalization-");
+    const fixture = await session("nre-kuna-session-finalization-");
     gates.opens = 0;
     gates.hashClose = gates.createGate();
     gates.identityRead = gates.createGate();

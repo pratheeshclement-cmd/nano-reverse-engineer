@@ -16,7 +16,7 @@ import type { BinaryTarget } from "../../../../src/domain/binaryTargetTypes.js";
 
 describe("artifact directory inventory", () => {
   it("inventories app trees deterministically without following symlinks", async () => {
-    const root = await createTestTempDirectory("rea-artifacts-");
+    const root = await createTestTempDirectory("nre-artifacts-");
     const app = join(root, "Fixture.app");
     await mkdir(join(app, "Contents", "Resources"), { recursive: true });
     await mkdir(join(app, "Contents", "MacOS"), { recursive: true });

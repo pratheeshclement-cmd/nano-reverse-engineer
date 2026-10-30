@@ -86,10 +86,10 @@ const connect = async (
       // These schema conformance cases exercise full nested constraints.
       environment: {
         ...process.env,
-        REA_MCP_INPUT_SCHEMA_PROFILE: "full",
+        NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
         ...(maximumInputElements === undefined
           ? {}
-          : { REA_MCP_MAX_INPUT_ELEMENTS: String(maximumInputElements) }),
+          : { NRE_MCP_MAX_INPUT_ELEMENTS: String(maximumInputElements) }),
       },
       ...(binaryLayout === undefined ? {} : { binaryLayout }),
       ...(webNetworkCapture === undefined ? {} : { webNetworkCapture }),
@@ -113,7 +113,7 @@ const connect = async (
 
 it("selects every IL2CPP native type reference by rendered name with stable row identity", async () => {
   const { client } = await connect();
-  const root = await createTestTempDirectory("rea-il2cpp-native-names-");
+  const root = await createTestTempDirectory("nre-il2cpp-native-names-");
   const path = join(root, "global-metadata.dat");
   const binaryPath = join(root, "GameAssembly.dylib");
   await writeFile(binaryPath, createIl2cppBinaryFixture());
@@ -464,7 +464,7 @@ it("discovers an oversized native dossier by exact metadata and reads its retain
     "get_evidence_bundle and detail: summary",
   );
   expect(broadError.remediation?.action).toContain(
-    "REA_MCP_MAX_RESPONSE_BYTES",
+    "NRE_MCP_MAX_RESPONSE_BYTES",
   );
   const response = await client.callTool({
     name: "get_evidence_bundle",
@@ -1287,7 +1287,7 @@ it("accepts a transport-constraint retained reference as the view source", async
 });
 
 it("projects an actual HAR capture retained by the public MCP workflow", async () => {
-  const root = await createTestTempDirectory("rea-surface-mcp-");
+  const root = await createTestTempDirectory("nre-surface-mcp-");
   const path = join(root, "surface.har");
   await writeFile(path, JSON.stringify(apiSurfaceHar()));
   const service = new WebNetworkCaptureService({
@@ -1686,7 +1686,7 @@ it("extracts an environment state identically from retained, portable and file M
   const parent = analysisViewCaptureEvidence(capture);
   expect(session.recordEvidence(parent).ok).toBe(true);
   const evidencePath = join(
-    await createTestTempDirectory("rea-state-file-mcp-"),
+    await createTestTempDirectory("nre-state-file-mcp-"),
     "capture.json",
   );
   await writeFile(evidencePath, JSON.stringify(parent));
@@ -1759,7 +1759,7 @@ it("reports environment coverage identically from retained, portable and file MC
   const parent = analysisViewCaptureEvidence(environmentStateCaptureFixture());
   expect(session.recordEvidence(parent).ok).toBe(true);
   const evidencePath = join(
-    await createTestTempDirectory("rea-coverage-file-mcp-"),
+    await createTestTempDirectory("nre-coverage-file-mcp-"),
     "capture.json",
   );
   await writeFile(evidencePath, JSON.stringify(parent));
@@ -1879,7 +1879,7 @@ it("projects an environment manifest identically from retained, portable and fil
   const parent = analysisViewCaptureEvidence(capture);
   expect(session.recordEvidence(parent).ok).toBe(true);
   const evidencePath = join(
-    await createTestTempDirectory("rea-evidence-file-mcp-"),
+    await createTestTempDirectory("nre-evidence-file-mcp-"),
     "capture.json",
   );
   await writeFile(evidencePath, JSON.stringify(parent));

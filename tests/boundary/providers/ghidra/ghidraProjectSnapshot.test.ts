@@ -28,7 +28,7 @@ afterEach(async () => {
   await resources.close();
 });
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-ghidra-selected-project-");
+  const root = await createTestTempDirectory("nre-ghidra-selected-project-");
   const source = join(root, "source");
   const destination = join(root, "runtime", "project");
   await mkdir(join(source, "selected.rep"), { recursive: true });
@@ -91,41 +91,41 @@ it("rejects a project whose copied content differs from the committed analysis p
 
 it("parses an opt-in project once for shared CLI/MCP configuration and rejects import overrides", () => {
   const environment = {
-    REA_GHIDRA_PROJECT_PATH: join(process.cwd(), "existing.gpr"),
-    REA_GHIDRA_PROGRAM_NAME: "program.elf",
+    NRE_GHIDRA_PROJECT_PATH: join(process.cwd(), "existing.gpr"),
+    NRE_GHIDRA_PROGRAM_NAME: "program.elf",
   };
   expect(parseConfig(environment)).toMatchObject({
     ok: true,
     value: {
       ghidraExistingProject: {
-        path: environment.REA_GHIDRA_PROJECT_PATH,
+        path: environment.NRE_GHIDRA_PROJECT_PATH,
         programName: "program.elf",
       },
     },
   });
   for (const extra of [
-    { REA_GHIDRA_LANGUAGE_ID: "x86:LE:64:default" },
-    { REA_GHIDRA_SEED_FILE: join(process.cwd(), "seeds") },
-    { REA_GHIDRA_PROGRAM_NAME: "*" },
+    { NRE_GHIDRA_LANGUAGE_ID: "x86:LE:64:default" },
+    { NRE_GHIDRA_SEED_FILE: join(process.cwd(), "seeds") },
+    { NRE_GHIDRA_PROGRAM_NAME: "*" },
   ])
     expect(parseConfig({ ...environment, ...extra }).ok).toBe(false);
-  expect(parseConfig({ REA_GHIDRA_PROGRAM_NAME: "program.elf" }).ok).toBe(
+  expect(parseConfig({ NRE_GHIDRA_PROGRAM_NAME: "program.elf" }).ok).toBe(
     false,
   );
 });
 
 it("accepts a blank analyzer override beside an existing project and rejects a named one", () => {
   const environment = {
-    REA_GHIDRA_PROJECT_PATH: join(process.cwd(), "existing.gpr"),
+    NRE_GHIDRA_PROJECT_PATH: join(process.cwd(), "existing.gpr"),
   };
   for (const blank of ["", " ", ", ,"])
     expect(
-      parseConfig({ ...environment, REA_GHIDRA_DISABLED_ANALYZERS: blank }).ok,
+      parseConfig({ ...environment, NRE_GHIDRA_DISABLED_ANALYZERS: blank }).ok,
     ).toBe(true);
   expect(
     parseConfig({
       ...environment,
-      REA_GHIDRA_DISABLED_ANALYZERS: "Decompiler Parameter ID",
+      NRE_GHIDRA_DISABLED_ANALYZERS: "Decompiler Parameter ID",
     }).ok,
   ).toBe(false);
 });
@@ -140,7 +140,7 @@ it("reports an invalid derived program name at its selection boundary", async ()
     ),
   ).rejects.toMatchObject({
     _tag: "ConfigurationError",
-    settings: [{ setting: "REA_GHIDRA_PROGRAM_NAME" }],
+    settings: [{ setting: "NRE_GHIDRA_PROGRAM_NAME" }],
   });
 });
 
@@ -200,7 +200,7 @@ it.each([null, "caller stopped", { kind: "stop-project-read" }])(
 it.skipIf(process.platform === "win32")(
   "rejects a selected marker with a non-directory traversal before canonicalizing its parent",
   async () => {
-    const root = await createTestTempDirectory("rea-ghidra-project-traversal-");
+    const root = await createTestTempDirectory("nre-ghidra-project-traversal-");
     await writeFile(join(root, "file"), "not a directory");
     await writeFile(join(root, "project.gpr"), "marker");
     await mkdir(join(root, "project.rep"));
@@ -212,8 +212,8 @@ it.skipIf(process.platform === "win32")(
   },
 );
 
-it("reports a missing project marker as an invalid REA_GHIDRA_PROJECT_PATH selection", async () => {
-  const root = await createTestTempDirectory("rea-ghidra-project-missing-");
+it("reports a missing project marker as an invalid NRE_GHIDRA_PROJECT_PATH selection", async () => {
+  const root = await createTestTempDirectory("nre-ghidra-project-missing-");
   await expect(
     resolveGhidraProject(
       { path: join(root, "missing", "app.gpr") },
@@ -222,7 +222,7 @@ it("reports a missing project marker as an invalid REA_GHIDRA_PROJECT_PATH selec
     ),
   ).rejects.toMatchObject({
     _tag: "ConfigurationError",
-    settings: [{ setting: "REA_GHIDRA_PROJECT_PATH" }],
+    settings: [{ setting: "NRE_GHIDRA_PROJECT_PATH" }],
     diagnostics: { system_code: "ENOENT" },
   });
 });
@@ -230,7 +230,7 @@ it("reports a missing project marker as an invalid REA_GHIDRA_PROJECT_PATH selec
 it.skipIf(process.platform === "win32")(
   "follows native parent symlinks and preserves missing marker failures",
   async () => {
-    const root = await createTestTempDirectory("rea-ghidra-project-selection-");
+    const root = await createTestTempDirectory("nre-ghidra-project-selection-");
     await mkdir(join(root, "actual", "nested"), { recursive: true });
     await symlink("actual/nested", join(root, "link"));
     await writeFile(join(root, "actual", "project.gpr"), "marker");

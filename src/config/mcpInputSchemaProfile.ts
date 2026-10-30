@@ -7,7 +7,7 @@ import { err, ok, type Result } from "../domain/result.js";
 // parameters schema exceeds its literal serialized size cap. Community
 // measurements bound the cap between ~13.7 KB (accepted) and ~15 KB
 // (rejected); 13 KiB leaves margin under the lower bound. See
-// https://github.com/morluto/rea/issues/1484 for the measured evidence.
+// https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/1484 for the measured evidence.
 export const COMPACT_INPUT_SCHEMA_BUDGET_BYTES = 13 * 1024;
 
 export const mcpInputSchemaProfileSchema = z.enum(["full", "compact"]);
@@ -26,7 +26,7 @@ export const compactPresentationForMcpInputSchemaProfile = (
     : { budgetBytes: COMPACT_INPUT_SCHEMA_BUDGET_BYTES };
 
 const profileConstraint =
-  'REA_MCP_INPUT_SCHEMA_PROFILE must be "compact" (default) or "full". The compact profile advertises bounded input schemas with fewer nested annotations; full preserves complete advertised input guidance.';
+  'NRE_MCP_INPUT_SCHEMA_PROFILE must be "compact" (default) or "full". The compact profile advertises bounded input schemas with fewer nested annotations; full preserves complete advertised input guidance.';
 
 export type McpInputSchemaProfile = z.infer<typeof mcpInputSchemaProfileSchema>;
 
@@ -42,7 +42,7 @@ export const parseMcpInputSchemaProfile = (
         new ConfigurationError(profileConstraint, {
           settings: [
             {
-              setting: "REA_MCP_INPUT_SCHEMA_PROFILE",
+              setting: "NRE_MCP_INPUT_SCHEMA_PROFILE",
               constraint: profileConstraint,
             },
           ],

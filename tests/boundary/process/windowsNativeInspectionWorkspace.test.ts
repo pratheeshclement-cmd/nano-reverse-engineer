@@ -13,7 +13,7 @@ processTest(
   "imports the isolated compiled Windows loader with its dependencies while keeping the injected addon separate",
   async ({ processes }) => {
     const scratch = await createTestTempDirectory(
-      "rea-native-inspection-layout-",
+      "nre-native-inspection-layout-",
     );
     const workspace = join(scratch, "runtime");
     const artifact = join(scratch, "injected");
@@ -21,7 +21,7 @@ processTest(
     await mkdir(artifact);
     // These inert bytes establish layout and import coverage, never native authority.
     const addon = "inert inspection fixture";
-    await writeFile(join(artifact, "rea-windows-x64.node"), addon);
+    await writeFile(join(artifact, "nre-windows-x64.node"), addon);
     await writeFile(join(artifact, "manifest.json"), "{}");
     const loader = await prepareWindowsNativeInspectionWorkspace({
       root: repository,
@@ -47,11 +47,11 @@ processTest(
     );
     const isolatedAddon = join(
       workspace,
-      "native/windows/build/rea-windows-x64.node",
+      "native/windows/build/nre-windows-x64.node",
     );
     expect(await readFile(isolatedAddon, "utf8")).toBe(addon);
     await writeFile(isolatedAddon, "changed isolated fixture");
-    expect(await readFile(join(artifact, "rea-windows-x64.node"), "utf8")).toBe(
+    expect(await readFile(join(artifact, "nre-windows-x64.node"), "utf8")).toBe(
       addon,
     );
   },

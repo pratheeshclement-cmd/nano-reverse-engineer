@@ -68,7 +68,7 @@ const capture = async (
   runAdbCapture(
     "inspect_adb_device",
     { device: "device" },
-    await resolveAdbBinary({ ...process.env, REA_ADB_PATH: process.execPath }),
+    await resolveAdbBinary({ ...process.env, NRE_ADB_PATH: process.execPath }),
     ["-e", script],
     limits,
     signal,
@@ -123,7 +123,7 @@ test("hands completed bytes to the consuming provider after a late abort", async
 });
 
 test("retains the command owner's exact cancellation reason after active process exit", async () => {
-  const root = await createTestTempDirectory("rea-adb-active-command-");
+  const root = await createTestTempDirectory("nre-adb-active-command-");
   const ready = join(root, "ready");
   const controller = new AbortController();
   const pending = capture(
@@ -150,12 +150,12 @@ test("retains the command owner's exact cancellation reason after active process
 });
 
 const clientScript = async (source: string) => {
-  const root = await createTestTempDirectory("rea-adb-client-command-");
+  const root = await createTestTempDirectory("nre-adb-client-command-");
   const binary = join(root, "adb");
   await writeFile(binary, `#!${process.execPath}\n${source}\n`, {
     mode: 0o755,
   });
-  return resolveAdbBinary({ ...process.env, REA_ADB_PATH: binary });
+  return resolveAdbBinary({ ...process.env, NRE_ADB_PATH: binary });
 };
 const nativeClientTest = test.skipIf(process.platform === "win32");
 
@@ -165,7 +165,7 @@ test.each([null, "caller stopped", new Error("caller stopped")] as const)(
     const controller = new AbortController();
     controller.abort(reason);
     const error: unknown = await inspectAdbClient(
-      await resolveAdbBinary({ REA_ADB_PATH: process.execPath }),
+      await resolveAdbBinary({ NRE_ADB_PATH: process.execPath }),
       controller.signal,
     ).catch((cause: unknown) => cause);
     expect(error).toMatchObject({
@@ -184,7 +184,7 @@ nativeClientTest(
       "process.stdout.write('x'.repeat(128 * 1024))",
     );
     const provider = new AdbProvider({
-      environment: { REA_ADB_PATH: selection.binary },
+      environment: { NRE_ADB_PATH: selection.binary },
     });
     onTestFinished(() => provider.close());
     const result = await provider.execute({
@@ -206,11 +206,11 @@ nativeClientTest(
 nativeClientTest(
   "preserves missing-binary identity despite later cancellation",
   async () => {
-    const root = await createTestTempDirectory("rea-adb-missing-command-");
+    const root = await createTestTempDirectory("nre-adb-missing-command-");
     const controller = new AbortController();
     hooks.afterCommand = () => controller.abort(null);
     const error: unknown = await inspectAdbClient(
-      await resolveAdbBinary({ REA_ADB_PATH: join(root, "missing") }),
+      await resolveAdbBinary({ NRE_ADB_PATH: join(root, "missing") }),
       controller.signal,
     ).catch((cause: unknown) => cause);
     expect(error).toMatchObject({
@@ -231,7 +231,7 @@ nativeClientTest.each([
       "console.log('Android Debug Bridge version 1.0.41\\nVersion 34.0.5-test')",
     );
     const provider = new AdbProvider({
-      environment: { REA_ADB_PATH: selection.binary },
+      environment: { NRE_ADB_PATH: selection.binary },
     });
     onTestFinished(() => provider.close());
     const controller = new AbortController();
@@ -277,7 +277,7 @@ nativeClientTest.each([false, true])(
   async (lateAbort) => {
     const selection = await clientScript("setInterval(()=>{},1000)");
     const provider = new AdbProvider({
-      environment: { REA_ADB_PATH: selection.binary },
+      environment: { NRE_ADB_PATH: selection.binary },
     });
     onTestFinished(() => provider.close());
     const controller = new AbortController();
@@ -327,13 +327,13 @@ nativeClientTest(
     const root = dirname(selection.binary);
     const completed = await execFileOutput(
       process.execPath,
-      ["scripts/rea.mjs", "inspect-adb-client", "--json"],
+      ["scripts/nre.mjs", "inspect-adb-client", "--json"],
       {
         env: {
           PATH: process.env.PATH,
           HOME: root,
           USERPROFILE: root,
-          REA_ADB_PATH: selection.binary,
+          NRE_ADB_PATH: selection.binary,
         },
         timeout: 20000,
         stopSignal: "SIGTERM",

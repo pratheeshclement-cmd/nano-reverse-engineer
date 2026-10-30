@@ -22,7 +22,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const mainBytes = "module.exports = 'packed member';\n";
 const createNestedAsar = async () => {
-  const root = await createTestTempDirectory("rea-asar-containment-");
+  const root = await createTestTempDirectory("nre-asar-containment-");
   const source = join(root, "source");
   const application = join(root, "application");
   await mkdir(join(source, "lib"), { recursive: true });
@@ -51,7 +51,7 @@ const expectedNestedParents = {
 
 describe("ASAR JSON signature boundaries", () => {
   it("expands a nested ASAR with a long legal JSON prefix and retains exact bytes", async () => {
-    const root = await createTestTempDirectory("rea-asar-json-whitespace-");
+    const root = await createTestTempDirectory("nre-asar-json-whitespace-");
     const application = join(root, "application");
     const archivePath = join(application, "resources", "app.asar");
     const archiveBytes = asarHeaderBytes(
@@ -99,7 +99,7 @@ describe("ASAR JSON signature boundaries", () => {
       padding: Buffer.from("{"),
     },
   ])("requires an object within jsonBytes for $label", async (fixture) => {
-    const root = await createTestTempDirectory("rea-asar-invalid-json-space-");
+    const root = await createTestTempDirectory("nre-asar-invalid-json-space-");
     const json =
       fixture.padding === undefined
         ? `${fixture.prefix}${JSON.stringify({
@@ -257,7 +257,7 @@ describe("unexpanded ASAR inventory controls", () => {
   });
 
   it("keeps ASAR-named directories as directory parents", async () => {
-    const root = await createTestTempDirectory("rea-asar-directory-");
+    const root = await createTestTempDirectory("nre-asar-directory-");
     const path = join(root, "directory.zip");
     await writeOrderedZip(path, ["assets.asar/main.js", "assets.asar/"]);
     const observed = await inventoryArtifact(path);
@@ -283,7 +283,7 @@ describe("unexpanded ASAR inventory controls", () => {
   ])(
     "rejects opaque file-prefix conflicts in either order: %j",
     async (...entries) => {
-      const root = await createTestTempDirectory("rea-asar-prefix-");
+      const root = await createTestTempDirectory("nre-asar-prefix-");
       const path = join(root, "conflict.zip");
       await writeOrderedZip(path, entries);
       await expect(inventoryArtifact(path)).rejects.toMatchObject({
@@ -293,7 +293,7 @@ describe("unexpanded ASAR inventory controls", () => {
   );
 
   it("records filesystem files without an ASAR header as ordinary bytes", async () => {
-    const root = await createTestTempDirectory("rea-ordinary-asar-");
+    const root = await createTestTempDirectory("nre-ordinary-asar-");
     await writeFile(join(root, "ordinary.asar"), "ordinary bytes");
     const observed = await inventoryArtifact(root);
     expect(artifactParentPaths(observed)).toEqual({
@@ -308,7 +308,7 @@ describe("unexpanded ASAR inventory controls", () => {
   });
 
   it("keeps filesystem archives with a malformed ASAR header rejected", async () => {
-    const root = await createTestTempDirectory("rea-malformed-asar-");
+    const root = await createTestTempDirectory("nre-malformed-asar-");
     await writeFile(
       join(root, "broken.asar"),
       asarHeaderBytes('{"files":{not-json}}'),

@@ -6,8 +6,8 @@ module contents through the existing safe output tree. Neither operation execute
 the executable or decompiles bytecode.
 
 ```sh
-rea inspect-artifact ./hello --json
-rea extract-artifact ./hello --json
+nre inspect-artifact ./hello --json
+nre extract-artifact ./hello --json
 ```
 
 In MCP, open the executable with `open_binary`, then call `inspect_artifact`.
@@ -53,7 +53,7 @@ See [limits and recovery](design/limits-and-recovery.md) for admission ceilings.
 Synthetic tests cover the carriers and malformed declarations. Run
 `node scripts/verify-bun-standalone.mjs` after `npm run build:cached` for local Bun
 verification, and add `--docker` to compile a Linux fixture with `oven/bun:1.4.0`.
-Bun and Docker are fixture producers only and are not installed by REA.
+Bun and Docker are fixture producers only and are not installed by NRE.
 
 Layout references: [Bun 1.3.3 serializer](https://github.com/oven-sh/bun/blob/bun-v1.3.3/src/StandaloneModuleGraph.zig)
 and [Bun 1.3.9 serializer](https://github.com/oven-sh/bun/blob/bun-v1.3.9/src/StandaloneModuleGraph.zig).

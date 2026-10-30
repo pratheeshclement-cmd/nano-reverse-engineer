@@ -107,7 +107,7 @@ const runScript = async (
 ) => {
   const { stdout } = await execFileAsync(
     "/bin/sh",
-    ["-c", script, "rea-list-directory", ...paths],
+    ["-c", script, "nre-list-directory", ...paths],
     { encoding: "buffer", env: environment, maxBuffer: 64 * 1024 },
   );
   return stdout;
@@ -116,7 +116,7 @@ const runScript = async (
 itPosix(
   "lists adversarial names through the complete adb provider command",
   async () => {
-    const root = await createTestTempDirectory("rea-adb-directory-listing-");
+    const root = await createTestTempDirectory("nre-adb-directory-listing-");
     const bin = join(root, "bin");
     const deviceDirectory = join(root, "device dir ' $");
     await mkdir(bin);
@@ -152,7 +152,7 @@ itPosix(
     const binary = await makeFakeAdb(root, bin, calls, linkCalls);
 
     const execution = await new AdbProvider({
-      environment: { REA_ADB_PATH: binary },
+      environment: { NRE_ADB_PATH: binary },
     }).execute({
       operation: "list_adb_directory",
       input: { serial: "test-device", device_path: deviceDirectory },
@@ -193,7 +193,7 @@ itPosix(
   "discards a failed stat batch instead of pairing shortened rows with later names",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-adb-directory-stat-failure-",
+      "nre-adb-directory-stat-failure-",
     );
     const bin = join(root, "bin");
     await mkdir(bin);
@@ -241,7 +241,7 @@ itPosix(
   "preserves distinct invalid UTF-8 filenames as partial evidence",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-adb-directory-invalid-utf8-",
+      "nre-adb-directory-invalid-utf8-",
     );
     const deviceDirectory = join(root, "device");
     await mkdir(deviceDirectory);
@@ -261,7 +261,7 @@ itPosix(
     const rawOutput = Buffer.concat(records);
     const binary = await makeRawOutputFakeAdb(root, rawOutput);
     const execution = await new AdbProvider({
-      environment: { REA_ADB_PATH: binary },
+      environment: { NRE_ADB_PATH: binary },
     }).execute({
       operation: "list_adb_directory",
       input: { serial: "test-device", device_path: deviceDirectory },

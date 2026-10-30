@@ -88,7 +88,7 @@ afterEach(() => {
 it.skipIf(process.platform === "win32")(
   "resolves a PATH launcher only when its real target is a complete installation",
   async () => {
-    const root = await createTestTempDirectory("rea-ghidra-path-");
+    const root = await createTestTempDirectory("nre-ghidra-path-");
     const installation = join(root, "installation");
     const pathDirectory = join(root, "bin");
     const launcher = join(installation, "ghidraRun");
@@ -170,7 +170,7 @@ it
     "discovered foreign opt",
     "discovered missing opt",
   ] as const)("keeps JDK registration identity for %s", async (scenario) => {
-  const temporaryRoot = await createTestTempDirectory("rea-java-home-");
+  const temporaryRoot = await createTestTempDirectory("nre-java-home-");
   const prefix = await realpath(temporaryRoot);
   const suffix = "libexec/openjdk.jdk/Contents/Home";
   const firstKeg = join(prefix, "Cellar", "openjdk@21", "21.0.12");
@@ -244,7 +244,7 @@ it
 it.skipIf(process.platform !== "darwin")(
   "uses a same-installation Homebrew opt alias for doctor registration and survives keg rotation",
   async () => {
-    const temporaryRoot = await createTestTempDirectory("rea-ghidra-homebrew-");
+    const temporaryRoot = await createTestTempDirectory("nre-ghidra-homebrew-");
     const prefix = join(temporaryRoot, "brew\n雪");
     await mkdir(prefix);
     const pathDirectory = join(prefix, "bin");
@@ -368,20 +368,20 @@ it("does not fall back to PATH when an explicit Ghidra installation path is malf
 });
 
 it("probes the selected Java environment without reading conflicting ambient settings", async () => {
-  vi.stubEnv("REA_GHIDRA_CONTEXT", "ambient");
-  vi.stubEnv("REA_GHIDRA_AMBIENT", "ambient-only");
+  vi.stubEnv("NRE_GHIDRA_CONTEXT", "ambient");
+  vi.stubEnv("NRE_GHIDRA_AMBIENT", "ambient-only");
   const inspection = await inspectGhidraInstallation(
     {
       resourceOwner: inspectionResources.owner,
-      environment: { REA_GHIDRA_CONTEXT: "selected", PATH: "/selected-bin" },
+      environment: { NRE_GHIDRA_CONTEXT: "selected", PATH: "/selected-bin" },
       installDir: INSTALL,
       platform: "linux",
       architecture: "x64",
     },
     host({
       probeJava: (_command, environment) =>
-        environment.REA_GHIDRA_CONTEXT === "selected" &&
-        environment.REA_GHIDRA_AMBIENT === undefined &&
+        environment.NRE_GHIDRA_CONTEXT === "selected" &&
+        environment.NRE_GHIDRA_AMBIENT === undefined &&
         environment.PATH === "/selected-bin"
           ? javaProbeOk<GhidraJavaObservation>(JAVA)
           : missingJavaProbe,
@@ -1101,7 +1101,7 @@ describe("Ghidra configuration paths", () => {
       "GHIDRA_INSTALL_DIR and JAVA_HOME must be absolute",
     ],
   ])(
-    "rejects relative paths that REA's configuration parser rejects (%o)",
+    "rejects relative paths that NRE's configuration parser rejects (%o)",
     async (paths, detail) => {
       const result = await inspectGhidraInstallation(
         {

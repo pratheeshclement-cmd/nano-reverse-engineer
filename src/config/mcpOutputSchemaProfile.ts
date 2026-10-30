@@ -31,7 +31,7 @@ export const compactPresentationForMcpOutputSchemaProfile = (
     : undefined;
 
 const profileConstraint =
-  'REA_MCP_OUTPUT_SCHEMA_PROFILE must be "full" (default), "compact", or "off". The compact profile advertises every output schema within a 4,096-byte budget; the off profile omits output schemas. Both keep canonical server-side validation and complete structured content.';
+  'NRE_MCP_OUTPUT_SCHEMA_PROFILE must be "full" (default), "compact", or "off". The compact profile advertises every output schema within a 4,096-byte budget; the off profile omits output schemas. Both keep canonical server-side validation and complete structured content.';
 
 /** Parse the output schema advertisement selection at server composition. */
 export const parseMcpOutputSchemaProfile = (
@@ -45,7 +45,7 @@ export const parseMcpOutputSchemaProfile = (
         new ConfigurationError(profileConstraint, {
           settings: [
             {
-              setting: "REA_MCP_OUTPUT_SCHEMA_PROFILE",
+              setting: "NRE_MCP_OUTPUT_SCHEMA_PROFILE",
               constraint: profileConstraint,
             },
           ],

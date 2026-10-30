@@ -35,9 +35,9 @@ describe("onboarding documentation product facts", () => {
     expect(jsonExamples(content)).toContainEqual(
       expect.objectContaining({
         mcpServers: expect.objectContaining({
-          rea: expect.objectContaining({
+          nre: expect.objectContaining({
             command: "/absolute/path/to/node",
-            args: ["/absolute/path/to/rea/scripts/rea.mjs", "mcp"],
+            args: ["/absolute/path/to/nre/scripts/nre.mjs", "mcp"],
           }),
         }),
       }),
@@ -69,11 +69,11 @@ describe("onboarding documentation product facts", () => {
     const persian = await readFile(resolve("docs/readme/README_fa.md"), "utf8");
     // Confirmed against GitHub's rendered README, which retains U+200C.
     for (const heading of [
-      "REA چگونه کار می‌کند",
+      "NRE چگونه کار می‌کند",
       "چه چیزهایی را می‌توان تحلیل کرد",
       "نمونه‌های عملی",
       "پرسش‌های متداول",
-      "به‌روزرسانی REA",
+      "به‌روزرسانی NRE",
     ]) {
       expect(persian).toContain(`## ${heading}`);
       expect(persian).toContain(
@@ -112,7 +112,7 @@ describe("published performance evidence", () => {
         );
         expect(stale).not.toBe(block);
         const path = resolve(
-          await createTestTempDirectory("rea-report-stale-"),
+          await createTestTempDirectory("nre-report-stale-"),
           "report.md",
         );
         const content = source.slice(0, start) + stale + source.slice(finish);
@@ -141,7 +141,7 @@ describe("published performance evidence", () => {
       );
       expect(content).not.toBe(source);
       const path = resolve(
-        await createTestTempDirectory("rea-report-marker-"),
+        await createTestTempDirectory("nre-report-marker-"),
         "report.md",
       );
       await writeFile(path, content);

@@ -26,7 +26,7 @@ describe.skipIf(process.platform !== "darwin")(
             "--json",
             "--full-output",
           ],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(inspected.exitCode, inspected.stdout + inspected.stderr).toBe(0);
         const manifest = expectArmSliceInventory(
@@ -40,7 +40,7 @@ describe.skipIf(process.platform !== "darwin")(
             "--json",
             "--full-output",
           ],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(result.exitCode, result.stdout + result.stderr).toBe(0);
         const extracted = artifactExtractionResultSchema.parse(

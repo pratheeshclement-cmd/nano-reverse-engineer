@@ -83,7 +83,7 @@ describe("Pi user configuration paths", () => {
   });
 
   it("reports malformed file URLs instead of silently choosing the default", async () => {
-    const home = await createTestTempDirectory("rea-pi-invalid-path-");
+    const home = await createTestTempDirectory("nre-pi-invalid-path-");
     const client = piPath(home, "linux", {
       PI_CODING_AGENT_DIR: "file:///agent%2fdir",
     });
@@ -108,7 +108,7 @@ describe("Pi user configuration paths", () => {
   });
 
   it("detects the normalized override marker without needing mcp.json", async () => {
-    const home = await createTestTempDirectory("rea-pi-detection-");
+    const home = await createTestTempDirectory("nre-pi-detection-");
     await mkdir(join(home, "custom-agent"));
     const detected = await detectClients(home, process.platform, {
       PI_CODING_AGENT_DIR: "~/custom-agent",
@@ -120,7 +120,7 @@ describe("Pi user configuration paths", () => {
 });
 
 const piClient = async () => {
-  const home = await createTestTempDirectory("rea-pi-config-");
+  const home = await createTestTempDirectory("nre-pi-config-");
   const client = piPath(home, process.platform, {});
   if (client?.markerPath === undefined) throw new Error("missing Pi client");
   await mkdir(client.markerPath, { recursive: true });
@@ -135,13 +135,13 @@ describe("Pi registration semantics", () => {
     const original = `{"autoEnableCodemode": false,
   "mcpServers": { "other": { "command": "other-server" } },
   "enabledServers": ["other"],
-  "disabledServers": ["rea", "other"]
+  "disabledServers": ["nre", "other"]
 }\n`;
     await writeFile(client.configPath, original);
     expect(
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({ status: "configured" });
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
       original,
     );
     const configured = await readFile(client.configPath, "utf8");
@@ -149,14 +149,14 @@ describe("Pi registration semantics", () => {
       autoEnableCodemode: false,
       mcpServers: {
         other: { command: "other-server" },
-        rea: {
+        nre: {
           type: "stdio",
           command: command[0],
           args: command.slice(1),
         },
       },
       enabledServers: ["other"],
-      disabledServers: ["rea", "other"],
+      disabledServers: ["nre", "other"],
     });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
@@ -175,7 +175,7 @@ describe("Pi registration semantics", () => {
     expect(JSON.parse(await readFile(client.configPath, "utf8"))).toEqual(
       JSON.parse(original),
     );
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
       original,
     );
   });
@@ -196,14 +196,14 @@ describe("Pi registration semantics", () => {
         client.configPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            nre: {
               command: command[0],
               args: command.slice(1),
               type,
               enabled,
             },
           },
-          enabledServers: ["rea"],
+          enabledServers: ["nre"],
         }),
       );
       const statuses = await readClientRegistrationStatuses(home, undefined, {
@@ -248,7 +248,7 @@ describe("Pi strict JSON parsing", () => {
       });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`),
+        readFile(`${client.configPath}.nre.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
       expect(
         (
@@ -266,7 +266,7 @@ describe("Pi strict JSON parsing", () => {
       });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`),
+        readFile(`${client.configPath}.nre.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
     },
   );
@@ -286,7 +286,7 @@ describe("Pi strict JSON parsing", () => {
     expect(() => JSON.parse(created)).not.toThrow();
     expect(JSON.parse(created)).toEqual({
       mcpServers: {
-        rea: {
+        nre: {
           type: "stdio",
           command: command[0],
           args: command.slice(1),
@@ -294,7 +294,7 @@ describe("Pi strict JSON parsing", () => {
       },
     });
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.nre.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",

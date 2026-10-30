@@ -29,7 +29,7 @@ afterEach(() => vi.resetAllMocks());
 it.each(["settled", "late"] as const)(
   "retains and releases the actual temporary directory through setup's Linux cleanup task: %s",
   async (timing) => {
-    const home = await createTestTempDirectory("rea-setup-linux-cleanup-");
+    const home = await createTestTempDirectory("nre-setup-linux-cleanup-");
     const temporary = join(home, "owned-installer-staging");
     await mkdir(temporary);
     let allowCleanup = false;

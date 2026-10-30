@@ -67,27 +67,20 @@ describe("Trae configuration paths", () => {
   it("resolves the personal skills directory under the home root", () => {
     expect(
       skillDestinations("/home/a", ["trae"]).map(({ path }) => path),
-    ).toEqual([
-      join("/home/a", ".trae", "skills", "reverse-engineer-anything"),
-    ]);
+    ).toEqual([join("/home/a", ".trae", "skills", "nano-reverse-engineer")]);
     expect(
       skillDestinations("C:\\Users\\a", ["trae"], {}, "win32").map(
         ({ path }) => path,
       ),
     ).toEqual([
-      win32.join(
-        "C:\\Users\\a",
-        ".trae",
-        "skills",
-        "reverse-engineer-anything",
-      ),
+      win32.join("C:\\Users\\a", ".trae", "skills", "nano-reverse-engineer"),
     ]);
   });
 });
 
 describe("Trae JSON registration", () => {
   const traeClient = async () => {
-    const home = await createTestTempDirectory("rea-trae-");
+    const home = await createTestTempDirectory("nre-trae-");
     const client = traePath(home, process.platform);
     if (client?.markerPath === undefined)
       throw new Error("missing Trae client");
@@ -95,7 +88,7 @@ describe("Trae JSON registration", () => {
     return { home, client };
   };
 
-  it("upserts rea into mcpServers while preserving unrelated settings", async () => {
+  it("upserts nre into mcpServers while preserving unrelated settings", async () => {
     const { home, client } = await traeClient();
     await writeFile(
       client.configPath,
@@ -111,7 +104,7 @@ describe("Trae JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -140,7 +133,7 @@ describe("Trae JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.unrelated).toEqual({ setting: true });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -153,13 +146,13 @@ describe("Trae JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the nre entry on uninstall", async () => {
     const { home, client } = await traeClient();
     await writeFile(
       client.configPath,
@@ -176,6 +169,6 @@ describe("Trae JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toBeUndefined();
+    expect(parsed.mcpServers.nre).toBeUndefined();
   });
 });

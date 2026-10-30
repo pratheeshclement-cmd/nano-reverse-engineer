@@ -46,10 +46,10 @@ describe("owned process-group cleanup discovery", () => {
   });
   it("preserves only named source entries in the Linux environment", () => {
     const environment = parseProcessEnvironment(
-      "=ignored\0REA_PROCESS_RUN_ID=earlier\0EMPTY=\0REA_PROCESS_RUN_ID=owned\0constructor=source\0__proto__=retained\0VALUE=a=b\0",
+      "=ignored\0NRE_PROCESS_RUN_ID=earlier\0EMPTY=\0NRE_PROCESS_RUN_ID=owned\0constructor=source\0__proto__=retained\0VALUE=a=b\0",
     );
     expect(environment).toEqual({
-      REA_PROCESS_RUN_ID: "owned",
+      NRE_PROCESS_RUN_ID: "owned",
       EMPTY: "",
       constructor: "source",
       ["__proto__"]: "retained",
@@ -88,8 +88,8 @@ describe("owned process-group cleanup discovery", () => {
   });
   it("signals only a group whose every member carries the run token", async () => {
     const { adapter, signalGroup } = host({
-      100: { REA_PROCESS_RUN_ID: "run-token" },
-      101: { REA_PROCESS_RUN_ID: "run-token" },
+      100: { NRE_PROCESS_RUN_ID: "run-token" },
+      101: { NRE_PROCESS_RUN_ID: "run-token" },
     });
     expect(await cleanupOwnedProcessGroup(ownership, adapter)).toEqual({
       cleaned: true,
@@ -99,10 +99,10 @@ describe("owned process-group cleanup discovery", () => {
   });
   it("does not signal a group when a member only inherits its matching token", async () => {
     const inherited: Record<string, string> = Object.create({
-      REA_PROCESS_RUN_ID: ownership.runId,
+      NRE_PROCESS_RUN_ID: ownership.runId,
     });
     const { adapter, signalGroup } = host({
-      100: { REA_PROCESS_RUN_ID: ownership.runId },
+      100: { NRE_PROCESS_RUN_ID: ownership.runId },
       101: inherited,
     });
     expect(await cleanupOwnedProcessGroup(ownership, adapter)).toMatchObject({
@@ -144,7 +144,7 @@ describe("opaque process neighbors during cleanup", () => {
         listProcesses: () => Promise.resolve(processes),
         environment: (pid) =>
           Promise.resolve({
-            REA_PROCESS_RUN_ID: pid === 900 ? "unowned" : "run-token",
+            NRE_PROCESS_RUN_ID: pid === 900 ? "unowned" : "run-token",
           }),
         processIdentities: (entries) =>
           Promise.resolve(
@@ -220,7 +220,7 @@ describe("opaque process neighbors during cleanup", () => {
       listProcesses: () => Promise.resolve(processes),
       environment: (pid) =>
         Promise.resolve({
-          REA_PROCESS_RUN_ID: pid === 900 ? "unowned" : "run-token",
+          NRE_PROCESS_RUN_ID: pid === 900 ? "unowned" : "run-token",
         }),
       processIdentities: () => Promise.resolve(identities),
       runTokens: (members) =>
@@ -470,7 +470,7 @@ describe("withheld process evidence during cleanup", () => {
       listProcesses: () => Promise.resolve(processes),
       environment: (pid) =>
         pid === 100
-          ? Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" })
+          ? Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" })
           : Promise.reject(new Error("EACCES: permission denied")),
       processIdentities: () => Promise.resolve(identities),
       runTokens: (members) =>
@@ -532,7 +532,7 @@ describe("sampled detached process groups during cleanup", () => {
     const adapter: ProcessOwnershipHost = {
       listProcesses: () => Promise.resolve(processes),
       environment: (pid) =>
-        Promise.resolve(pid === 100 ? { REA_PROCESS_RUN_ID: "run-token" } : {}),
+        Promise.resolve(pid === 100 ? { NRE_PROCESS_RUN_ID: "run-token" } : {}),
       processIdentities: () => Promise.resolve(identities),
       runTokens: (members) =>
         Promise.resolve(
@@ -621,7 +621,7 @@ describe("rooted process-group cleanup", () => {
     const signalGroup = vi.fn();
     const adapter: ProcessOwnershipHost = {
       listProcesses: () => Promise.resolve(processes),
-      environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+      environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
       signalGroup,
     };
     await expect(cleanupOwnedProcessGroup(ownership, adapter)).resolves.toEqual(
@@ -635,7 +635,7 @@ describe("rooted process-group cleanup", () => {
   });
   it("leaves an unrelated Hopper process group outside the rooted tree untouched", async () => {
     const processes = [
-      { pid: 100, parentPid: 1, processGroupId: 100, command: "rea-hopper" },
+      { pid: 100, parentPid: 1, processGroupId: 100, command: "nre-hopper" },
       { pid: 101, parentPid: 100, processGroupId: 101, command: "owned-child" },
       {
         pid: 900,
@@ -647,7 +647,7 @@ describe("rooted process-group cleanup", () => {
     ].map((process) => ({ ...process, state: "S" }));
     const environment = vi.fn((pid: number) =>
       Promise.resolve({
-        REA_PROCESS_RUN_ID: pid === 900 ? "unrelated-run" : "run-token",
+        NRE_PROCESS_RUN_ID: pid === 900 ? "unrelated-run" : "run-token",
       }),
     );
     const signalGroup = vi.fn();

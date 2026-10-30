@@ -31,16 +31,16 @@ const serve = async (
 
 describe("CLI selected environment", () => {
   it("retains the selected binary provider and launcher after caller and ambient environment changes", async () => {
-    vi.stubEnv("REA_ANALYSIS_PROVIDER", "ambient-provider");
+    vi.stubEnv("NRE_ANALYSIS_PROVIDER", "ambient-provider");
     vi.stubEnv("HOPPER_LAUNCHER_PATH", "/ambient/hopper");
     const environment = {
-      REA_ANALYSIS_PROVIDER: "selected-provider",
+      NRE_ANALYSIS_PROVIDER: "selected-provider",
       HOPPER_LAUNCHER_PATH: process.execPath,
     };
     const cli = createCli(environment);
-    environment.REA_ANALYSIS_PROVIDER = "changed-provider";
+    environment.NRE_ANALYSIS_PROVIDER = "changed-provider";
     environment.HOPPER_LAUNCHER_PATH = "/changed/hopper";
-    const root = await createTestTempDirectory("rea-cli-selected-env-");
+    const root = await createTestTempDirectory("nre-cli-selected-env-");
     const target = join(root, "fixture.hop");
     await writeFile(target, "fixture");
 
@@ -72,19 +72,19 @@ describe("CLI selected environment", () => {
   });
 
   it("does not borrow invalid ambient settings or capture inherited environment in artifact Evidence", async () => {
-    vi.stubEnv("REA_GHIDRA_STARTUP_TIMEOUT_MS", "ambient-invalid-setting");
+    vi.stubEnv("NRE_GHIDRA_STARTUP_TIMEOUT_MS", "ambient-invalid-setting");
     vi.stubEnv(
-      "REA_AMBIENT_CAPTURE_SENTINEL",
+      "NRE_AMBIENT_CAPTURE_SENTINEL",
       "ambient-value-must-not-be-captured",
     );
-    const root = await createTestTempDirectory("rea-cli-isolated-artifact-");
+    const root = await createTestTempDirectory("nre-cli-isolated-artifact-");
     const target = join(root, "empty.zip");
     await writeFile(
       target,
       Buffer.from("504b0506000000000000000000000000000000000000", "hex"),
     );
     const cli = createCli({
-      REA_SELECTED_CAPTURE_SENTINEL: "selected-value-must-not-be-captured",
+      NRE_SELECTED_CAPTURE_SENTINEL: "selected-value-must-not-be-captured",
     });
     const result = await serve(cli, ["inspect-artifact", target]);
     const evidence = parseEvidence(result);
@@ -103,19 +103,19 @@ it.skipIf(process.platform === "win32").each([
   { name: "missing", selected: {}, expected: "absent" },
   {
     name: "unset",
-    selected: { REA_PCAP_ENV_PROFILE: undefined },
+    selected: { NRE_PCAP_ENV_PROFILE: undefined },
     expected: "absent",
   },
-  { name: "empty", selected: { REA_PCAP_ENV_PROFILE: "" }, expected: "" },
+  { name: "empty", selected: { NRE_PCAP_ENV_PROFILE: "" }, expected: "" },
   {
     name: "selected",
-    selected: { REA_PCAP_ENV_PROFILE: "selected-profile" },
+    selected: { NRE_PCAP_ENV_PROFILE: "selected-profile" },
     expected: "selected-profile",
   },
 ])(
   "preserves $name PCAP settings after the ambient environment changes",
   async ({ selected, expected }) => {
-    const root = await createTestTempDirectory("rea-cli-pcap-environment-");
+    const root = await createTestTempDirectory("nre-cli-pcap-environment-");
     const tshark = join(root, "tshark"),
       capinfos = join(root, "capinfos");
     for (const [path, label] of [
@@ -125,16 +125,16 @@ it.skipIf(process.platform === "win32").each([
       await writeFile(
         path,
         `#!/bin/sh\nprintf '${label} (Wireshark) 4.6.6-%s\\n' "` +
-          "${REA_PCAP_ENV_PROFILE-absent}" +
+          "${NRE_PCAP_ENV_PROFILE-absent}" +
           '"\n',
         { mode: 0o755 },
       );
     const cli = createCli({
-      REA_TSHARK_COMMAND: tshark,
-      REA_CAPINFOS_COMMAND: capinfos,
+      NRE_TSHARK_COMMAND: tshark,
+      NRE_CAPINFOS_COMMAND: capinfos,
       ...selected,
     });
-    vi.stubEnv("REA_PCAP_ENV_PROFILE", "late-ambient-profile");
+    vi.stubEnv("NRE_PCAP_ENV_PROFILE", "late-ambient-profile");
     const evidence = parseEvidence(await serve(cli, ["inspect-pcap-client"]));
     expect(evidence.normalized_result).toMatchObject({
       client: {

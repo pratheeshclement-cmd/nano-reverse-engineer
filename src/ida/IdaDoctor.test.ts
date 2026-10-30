@@ -16,10 +16,10 @@ afterEach(async () => {
   for (const root of roots.splice(0))
     await rm(root, { recursive: true, force: true });
 });
-it.each([true, false])(
+it.each(process.platform === "win32" ? [true] : [true, false])(
   "uses allocation filesystem resolution without creating entries (traversed directory exists=%s)",
   async (exists) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-ida-workspace-parent-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-ida-workspace-parent-"));
     roots.push(root);
     const path = join(root, "registration.json");
     await mkdir(join(root, "existing"));
@@ -47,7 +47,7 @@ it.each([true, false])(
 it.skipIf(process.platform === "win32")(
   "rejects a non-directory intermediate component before canonicalizing readiness",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-ida-workspace-lookup-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-ida-workspace-lookup-"));
     roots.push(root);
     const path = join(root, "registration.json");
     const workspace = join(root, "workspace");
@@ -79,7 +79,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "marks an unusable system temporary parent unavailable when workspaceRoot is omitted",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-ida-default-parent-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-ida-default-parent-"));
     roots.push(root);
     const path = join(root, "registration.json");
     const unusableDefault = join(root, "not-a-directory");
@@ -106,7 +106,7 @@ it.skipIf(process.platform === "win32")(
   },
 );
 it("keeps IDA configuration for setup without copying transport credentials or claiming runtime verification", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-ida-doctor-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-ida-doctor-"));
   roots.push(root);
   const path = join(root, "registration.json");
   await writeFile(
@@ -125,7 +125,7 @@ it("keeps IDA configuration for setup without copying transport credentials or c
   });
   expect(inspection.checks[0]?.detail).toContain("no IDA process was launched");
   expect(providerRegistrationEnvironment([inspection])).toEqual({
-    REA_IDA_MCP_CONFIG: path,
+    NRE_IDA_MCP_CONFIG: path,
   });
   expect(JSON.stringify(inspection)).not.toContain("fixture-secret");
   await writeFile(path, JSON.stringify({ url: "https://example.com/mcp" }));

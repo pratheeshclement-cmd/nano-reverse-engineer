@@ -29,7 +29,7 @@ export const proofEvidence = (id: string) =>
     undefined,
     { id: `fixture-${id}`, name: "Fixture verifier", version: "1" },
     {
-      predicateType: "rea.fixture-verification",
+      predicateType: "nre.fixture-verification",
       operation: "run_fixture_verifier",
       parameters: { id },
       result: { passed: true },
@@ -43,7 +43,7 @@ export const processEvidence = (
   overrides: Partial<UnverifiedProcessCapture> = {},
 ) =>
   createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "nre.process-capture",
     operation: "capture_process_scenario",
     parameters: {},
     result: processCaptureSchema.parse({
@@ -64,7 +64,7 @@ export const boundProofEvidence = (
     undefined,
     { id: `proof-${id}`, name: "Reconstruction proof", version: "1" },
     {
-      predicateType: "rea.reconstruction-proof",
+      predicateType: "nre.reconstruction-proof",
       operation: "verify_reconstruction_obligations",
       parameters: {},
       result: reconstructionObligationProofSchema.parse(result),

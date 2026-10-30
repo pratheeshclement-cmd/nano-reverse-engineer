@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { cliTest } from "../support/cli/cliFixture.js";
 
 cliTest("inspects a relative DTB and preserves the source", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-dtb-cli-");
+  const root = await createTestTempDirectory("nre-dtb-cli-");
   const path = join(root, "board.dtb"),
     bytes = devicetreeFixture();
   await writeFile(path, bytes);
@@ -43,7 +43,7 @@ cliTest("inspects a relative DTB and preserves the source", async ({ cli }) => {
 cliTest(
   "does not resolve through a legacy phandle when the canonical value is malformed",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-dtb-cli-phandle-");
+    const root = await createTestTempDirectory("nre-dtb-cli-phandle-");
     const path = join(root, "board.dtb");
     await writeFile(
       path,
@@ -75,7 +75,7 @@ cliTest(
 cliTest(
   "retains complete DTB Evidence when delivering a summary",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-dtb-cli-summary-");
+    const root = await createTestTempDirectory("nre-dtb-cli-summary-");
     const path = join(root, "board.dtb"),
       output = join(root, "evidence.json");
     await writeFile(path, devicetreeFixture());
@@ -123,7 +123,7 @@ for (const [name, build, flags, code] of [
   ],
 ] as const) {
   cliTest(`reports ${name} DTB input`, async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-dtb-cli-errors-");
+    const root = await createTestTempDirectory("nre-dtb-cli-errors-");
     const path = join(root, "board.dtb");
     await writeFile(path, build());
     const result = await cli.run({

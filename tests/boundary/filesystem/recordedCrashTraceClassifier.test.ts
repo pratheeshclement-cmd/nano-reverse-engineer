@@ -4,7 +4,7 @@ import { collectOwnershipTraceFacts } from "../../../scripts/verify/recorded-cra
 import { assertHistoricalPidAccess } from "../../../scripts/verify/recorded-crash/trace-policy.mjs";
 
 const node = "/fixture/node";
-const nodeExec = 'execve("/fixture/node", ["node", "rea.mjs"], 0x7fff) = 0';
+const nodeExec = 'execve("/fixture/node", ["node", "nre.mjs"], 0x7fff) = 0';
 const psExec =
   'execve("/usr/bin/ps", ["ps", "-axo", "pid=,ppid=,pgid=,uid=,stat=,command="], 0x7fff) = 0';
 const parent = (...events: readonly string[]) => ({

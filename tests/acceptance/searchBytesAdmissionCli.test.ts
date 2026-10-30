@@ -12,7 +12,7 @@ cliTest.for([
 ])(
   "reports query correction before target refusal ($pattern/$mask)",
   async ({ pattern, mask, field }, { cli }) => {
-    const root = await createTestTempDirectory("rea-byte-admission-");
+    const root = await createTestTempDirectory("nre-byte-admission-");
     const text = join(root, "text.bin");
     await writeFile(text, "hello world");
     for (const path of [text, join(root, "missing")]) {
@@ -40,7 +40,7 @@ cliTest.for([
 );
 
 cliTest("keeps target admission for a valid byte query", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-byte-valid-");
+  const root = await createTestTempDirectory("nre-byte-valid-");
   const path = join(root, "text.bin");
   await writeFile(path, "hello world");
   const result = await cli.run({

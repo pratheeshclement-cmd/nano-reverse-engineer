@@ -66,7 +66,7 @@ const historicalInventory = (source: Evidence): Evidence => {
 };
 
 it("compares ASAR companion declarations from public MCP inventories and preserves historical unknowns", async () => {
-  const root = await createTestTempDirectory("rea-asar-unpacked-comparison-");
+  const root = await createTestTempDirectory("nre-asar-unpacked-comparison-");
   const input = join(root, "source");
   await mkdir(input);
   await writeFile(join(input, "member.bin"), "identical child bytes");

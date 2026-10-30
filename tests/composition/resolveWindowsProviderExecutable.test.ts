@@ -19,12 +19,12 @@ const windowsLookup = (cwd: string, files: readonly string[]) => {
 describe("resolveWindowsProviderExecutable", () => {
   it("resolves a bare name from quoted and relative Windows PATH entries", () => {
     const cwd = "C:\\work";
-    const expected = "C:\\work\\Program Files\\REA Tools\\objdump.EXE";
+    const expected = "C:\\work\\Program Files\\NRE Tools\\objdump.EXE";
     expect(
       resolveWindowsProviderExecutable(
         "objdump",
         {
-          PATH: `.;".\\Program Files\\REA Tools";D:\\unused`,
+          PATH: `.;".\\Program Files\\NRE Tools";D:\\unused`,
           PATHEXT: ".COM;.EXE;.BAT",
         },
         windowsLookup(cwd, [expected]),
@@ -84,7 +84,7 @@ describe("resolveWindowsProviderExecutable", () => {
 
   it("passes an absolute selected command through provider composition", () => {
     const commands = createReverseEngineeringCommandPort(
-      { REA_OBJDUMP_COMMAND: "C:\\tools\\objdump.exe" },
+      { NRE_OBJDUMP_COMMAND: "C:\\tools\\objdump.exe" },
       "win32",
     );
     expect(

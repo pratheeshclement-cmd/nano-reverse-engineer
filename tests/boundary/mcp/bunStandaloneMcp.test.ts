@@ -14,7 +14,7 @@ import {
 } from "../../../src/artifacts/bun/BunStandalone.fixture.js";
 
 it("exposes Bun graph metadata through the existing MCP artifact tool", async () => {
-  const root = await createTestTempDirectory("rea-bun-mcp-");
+  const root = await createTestTempDirectory("nre-bun-mcp-");
   const path = join(root, "app");
   await writeFile(
     path,

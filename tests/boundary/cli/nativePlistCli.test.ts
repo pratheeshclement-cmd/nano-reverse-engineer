@@ -28,7 +28,7 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "honors the $0 plist selection",
       async ([, target, selected, identifier], { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-cli-");
+        const directory = await createTestTempDirectory("nre-plist-cli-");
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -53,8 +53,8 @@ describe.skipIf(process.platform !== "darwin")(
             "--json",
           ],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         if (identifier === undefined) {
@@ -84,7 +84,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "retains non-finite values from original XML bytes",
       async ({ cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-reals-");
+        const directory = await createTestTempDirectory("nre-plist-reals-");
         const path = join(directory, "selected.plist");
         const source = Buffer.from(`<plist version="1.0"><dict>
 <key>positive</key><real>+infinity</real>
@@ -95,8 +95,8 @@ describe.skipIf(process.platform !== "darwin")(
         const result = await cli.run({
           arguments: ["inspect-plist", path, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(result.exitCode, result.stderr).toBe(0);
@@ -128,7 +128,7 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "reports the original $0 plist format through the compiled CLI",
       async ([encoding, format], { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-format-");
+        const directory = await createTestTempDirectory("nre-plist-format-");
         const target = join(directory, "target");
         const plist = join(directory, "selected.plist");
         const withData = encoding === "openstep-data";
@@ -180,8 +180,8 @@ describe.skipIf(process.platform !== "darwin")(
             "--json",
           ],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(result.exitCode, result.stderr).toBe(0);
@@ -212,7 +212,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest.for(["xml", "binary"] as const)(
       "decodes $0 plists that plutil cannot express as JSON",
       async (format, { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-types-");
+        const directory = await createTestTempDirectory("nre-plist-types-");
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -251,8 +251,8 @@ describe.skipIf(process.platform !== "darwin")(
         const result = await cli.run({
           arguments: ["inspect-plist", app, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(result.exitCode).toBe(0);
@@ -307,7 +307,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest.for([false, true])(
       "reports exact plist integers and integral reals beyond the JSON number range (data: %s)",
       async (withData, { cli }) => {
-        const directory = await createTestTempDirectory("rea-plist-integers-");
+        const directory = await createTestTempDirectory("nre-plist-integers-");
         const app = join(directory, "Example.app");
         const contents = join(app, "Contents");
         await mkdir(join(contents, "MacOS"), { recursive: true });
@@ -332,8 +332,8 @@ describe.skipIf(process.platform !== "darwin")(
         const result = await cli.run({
           arguments: ["inspect-plist", app, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(result.exitCode).toBe(0);

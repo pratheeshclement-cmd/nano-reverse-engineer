@@ -51,7 +51,7 @@ const runner: NativeCommandRunner = {
 };
 
 it("reports cancellation during .NET reader admission and releases the descriptor", async () => {
-  const root = await createTestTempDirectory("rea-bundle-admission-cancel-");
+  const root = await createTestTempDirectory("nre-bundle-admission-cancel-");
   const path = join(root, "source");
   await writeFile(path, "unread source");
   const controller = new AbortController();
@@ -122,7 +122,7 @@ const scenarios = [
 it.each(scenarios)(
   "retains $reader reader $stage owner",
   async ({ createReader, stage, failOnStat: initialFailOnStat }) => {
-    const root = await createTestTempDirectory("rea-owned-reader-cleanup-");
+    const root = await createTestTempDirectory("nre-owned-reader-cleanup-");
     const path = join(root, "source");
     await writeFile(path, "fixture source");
 
@@ -211,7 +211,7 @@ const causeChainContains = (cause: unknown, expected: unknown): boolean => {
 };
 
 it("joins late .NET descriptor admission before reporting reader shutdown", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-late-admission-");
+  const root = await createTestTempDirectory("nre-dotnet-late-admission-");
   const path = join(root, "source");
   await writeFile(path, "unread source");
   let reach = () => {};

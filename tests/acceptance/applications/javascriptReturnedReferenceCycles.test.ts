@@ -73,7 +73,7 @@ cliTest(
   "retains static facts and possible prototype effects across a recursive alias web in CLI and MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-returned-reference-cycles-",
+      "nre-returned-reference-cycles-",
     );
     await writeFile(
       join(root, "cycles.js"),

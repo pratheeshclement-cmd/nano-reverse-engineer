@@ -27,7 +27,7 @@ import { writeFixtureFiles } from "../../../support/javascriptApplicationFixture
 describe("JavaScript source selection cancellation boundary", () => {
   it("keeps unselected files outside scope when the real worker cancels after the last selected file", async () => {
     const root = await createTestTempDirectory(
-      "rea-js-selected-last-cancellation-",
+      "nre-js-selected-last-cancellation-",
     );
     await writeJavaScriptSourceSelectionFixture(root);
     const snapshot = await scanCanonicalArtifactInventory(root, {});
@@ -90,7 +90,7 @@ describe("JavaScript source selection cancellation boundary", () => {
 });
 
 it("resolves lazy package and JSON facts without completing their skipped observations", async () => {
-  const root = await createTestTempDirectory("rea-js-lazy-json-facts-");
+  const root = await createTestTempDirectory("nre-js-lazy-json-facts-");
   await writeFixtureFiles(root, {
     "app/first.cjs": 'require("late-pkg"); require("./config.json");\n',
     "app/second.cjs": "module.exports = 2;\n",
@@ -260,7 +260,7 @@ const expectSkippedStructuredSource = (
 
 describe("Selected JavaScript source failure diagnostics", () => {
   it("analyzes selected files in first-request order and reports only selected progress", async () => {
-    const root = await createTestTempDirectory("rea-js-selected-priority-");
+    const root = await createTestTempDirectory("nre-js-selected-priority-");
     await writeJavaScriptSourceSelectionFixture(root);
     await writeFile(join(root, "z-later.mjs"), "export const later = 1;\n");
     const progress: string[] = [];
@@ -294,7 +294,7 @@ describe("Selected JavaScript source failure diagnostics", () => {
   });
 
   it("verifies unselected bytes against the inventoried identity without decoding them", async () => {
-    const root = await createTestTempDirectory("rea-js-unselected-integrity-");
+    const root = await createTestTempDirectory("nre-js-unselected-integrity-");
     await writeJavaScriptSourceSelectionFixture(root);
     const result = await analyzeJavaScriptApplication(
       { input_path: root, source_paths: ["main.mjs"] },
@@ -321,7 +321,7 @@ describe("Selected JavaScript source failure diagnostics", () => {
   });
 
   it("retains selected facts and unselected scope after cancellation between selected sources", async () => {
-    const root = await createTestTempDirectory("rea-js-selected-cancellation-");
+    const root = await createTestTempDirectory("nre-js-selected-cancellation-");
     await writeJavaScriptSourceSelectionFixture(root);
     await writeFile(join(root, "z-later.mjs"), "export const later = 1;\n");
     const controller = new AbortController();
@@ -374,7 +374,7 @@ describe("Selected JavaScript source failure diagnostics", () => {
 
 describe("JavaScript application failure diagnostics", () => {
   it("identifies the rejected result field in caller-visible diagnostics", async () => {
-    const inputPath = await createTestTempDirectory("rea-js-schema-failure-");
+    const inputPath = await createTestTempDirectory("nre-js-schema-failure-");
     await writeFile(join(inputPath, "main.js"), "export const value = 1;\n");
     const cause = new z.ZodError([
       {
@@ -407,7 +407,7 @@ describe("JavaScript application failure diagnostics", () => {
   });
 
   it("retains unexpected failures and their input identity in caller-visible diagnostics", async () => {
-    const inputPath = await createTestTempDirectory("rea-js-failure-");
+    const inputPath = await createTestTempDirectory("nre-js-failure-");
     await writeFile(join(inputPath, "main.js"), "export const value = 1;\n");
     const cause = new RangeError("Invalid string length");
     // Retain the original failure locally, but never serialize its object graph.
@@ -427,7 +427,7 @@ describe("JavaScript application failure diagnostics", () => {
     expect(projectAnalysisError(result.error)).toMatchObject({
       code: "execution_failure",
       details: {
-        provider_id: "rea-javascript-application",
+        provider_id: "nre-javascript-application",
         operation: "analyze_javascript_application",
         diagnostics: {
           input_path: inputPath,
@@ -441,7 +441,7 @@ describe("JavaScript application failure diagnostics", () => {
   });
 
   it("reports a missing selection as invalid input, not an engine failure", async () => {
-    const root = await createTestTempDirectory("rea-js-missing-");
+    const root = await createTestTempDirectory("nre-js-missing-");
     const result = await analyzeJavaScriptApplication({
       input_path: join(root, "missing"),
       format: "directory",
@@ -459,7 +459,7 @@ describe("JavaScript application failure diagnostics", () => {
   it.each(["reported failure", null])(
     "retains non-Error failures (%s)",
     async (cause) => {
-      const inputPath = await createTestTempDirectory("rea-js-non-error-");
+      const inputPath = await createTestTempDirectory("nre-js-non-error-");
       await writeFile(join(inputPath, "main.js"), "export const value = 1;\n");
       const result = await analyzeJavaScriptApplication(
         { input_path: inputPath, format: "directory" },
@@ -490,7 +490,7 @@ describe("JavaScript application failure diagnostics", () => {
   it.each([new Error("x".repeat(10_000)), "y".repeat(10_000)])(
     "preserves long failure messages through JSON projection (%#)",
     async (cause) => {
-      const inputPath = await createTestTempDirectory("rea-js-oversized-");
+      const inputPath = await createTestTempDirectory("nre-js-oversized-");
       await writeFile(join(inputPath, "main.js"), "export const value = 1;\n");
       const message = cause instanceof Error ? cause.message : cause;
       const result = await analyzeJavaScriptApplication(
@@ -520,7 +520,7 @@ describe("JavaScript application failure diagnostics", () => {
 
 describe("JavaScript application cleanup diagnostics", () => {
   it("preserves cleanup and a complete inventory when translating reader failures", async () => {
-    const inputPath = await createTestTempDirectory("rea-js-cleanup-failure-");
+    const inputPath = await createTestTempDirectory("nre-js-cleanup-failure-");
     await writeFile(join(inputPath, "main.js"), "export const value = 1;\n");
     const inventory = await scanCanonicalArtifactInventory(inputPath);
     const cleanup = {

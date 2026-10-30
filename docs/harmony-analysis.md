@@ -1,6 +1,6 @@
 # Static HarmonyOS package inventory
 
-REA inventories HarmonyOS application packages through the shared hardened
+NRE inventories HarmonyOS application packages through the shared hardened
 ZIP artifact reader in `src/artifacts/`, then projects the authenticated
 inventory into an execution-free application graph. This is the first
 increment of the HarmonyOS roadmap (#1431): package identification and
@@ -26,9 +26,9 @@ project the graph; CLI and MCP use the same workflow and return
 artifact-bound Evidence inline:
 
 ```sh
-rea inspect-artifact /path/to/Example.hap --format json > inspection.json
+nre inspect-artifact /path/to/Example.hap --format json > inspection.json
 node --input-type=module -e 'import { readFileSync } from "node:fs"; console.log(JSON.stringify({ inventory_evidence: [JSON.parse(readFileSync("inspection.json", "utf8"))] }));' > projection-input.json
-rea project-harmony-application-graph projection-input.json --format json
+nre project-harmony-application-graph projection-input.json --format json
 ```
 
 The MCP tool `project_harmony_application_graph` takes the same
@@ -59,7 +59,7 @@ Every claim is path-presence only. Manifest semantics (module identity,
 abilities, entry points, permissions, dependencies), Ark bytecode contents and
 versions, resource resolution, signing verification, and observed native
 boundaries are out of scope for this increment and stay in the projection's
-`limitations` array until a dedicated HarmonyOS provider exists. REA fails
+`limitations` array until a dedicated HarmonyOS provider exists. NRE fails
 closed on packages whose inventory cannot be authenticated.
 
 ## Verification lane
@@ -72,7 +72,7 @@ redistributed; bundled component licenses have not been independently audited.
 
 ```sh
 npm run fixtures:harmony
-REA_HARMONY_TEST_HAP=_reference/harmony-integration/entry-default-unsigned.hap \
+NRE_HARMONY_TEST_HAP=_reference/harmony-integration/entry-default-unsigned.hap \
   npm run verify:harmony
 ```
 
@@ -85,7 +85,7 @@ no META-INF signing entries; that does not establish whether the package is sign
 The release artifact's compiler/SDK versions and reproducible source build have
 not been independently established. This lane does not complete the pinned
 toolchain acceptance in #1431 and does not verify Ark decoding or signatures.
-Set `REA_HARMONY_ENTRYPOINT` to an installed package's `scripts/rea.mjs` to run
+Set `NRE_HARMONY_ENTRYPOINT` to an installed package's `scripts/nre.mjs` to run
 the same checks against that package; the default lane uses the repository build.
 
 Packaging-model and App Pack child presence use inventoried file/slice paths even

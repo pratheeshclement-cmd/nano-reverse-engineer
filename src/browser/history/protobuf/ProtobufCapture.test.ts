@@ -317,7 +317,7 @@ it.each([
 ])(
   "attributes schema admission to $field while preserving selected capture facts",
   async ({ bytes, type, field, reason, message }) => {
-    const root = await createTestTempDirectory("rea-schema-admission-");
+    const root = await createTestTempDirectory("nre-schema-admission-");
     const descriptor = join(root, "schema.pb");
     await writeFile(descriptor, bytes);
     const report = captureWithBody("application/protobuf", Buffer.from([8, 1]));

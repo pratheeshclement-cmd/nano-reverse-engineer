@@ -16,7 +16,7 @@ ran on `043110b85bc5e1af9f3c7de2856733885c67046c`, before the subsequent recover
 wording and client deadline guidance changes.
 
 The generated Linux x86-64 ELF shared library has 3000 volatile-state branches,
-contains `rea_slow` and `rea_small`, and is 174,840 bytes.
+contains `nre_slow` and `nre_small`, and is 174,840 bytes.
 Source SHA-256: `f99074876faae8e18e45265dab007b6fcc396fe909d57efab72adc8925a960c7`.
 Binary SHA-256: `9c49d2eef9c2083f6f66f38de4ed0ee1bac17ca5b73dc8f3a90d9ba62a8d1d5d`.
 The benchmark regenerated the verifier's C recipe and checked both hashes
@@ -32,7 +32,7 @@ Both variants used existing Ghidra 12.1.4, Temurin JDK 21.0.12.1+1, Node
 ## Real behavior and identity
 
 The natural provider probe used the authenticated loopback TCP bridge. With
-`REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS=1`, `analyze_function` returned a live
+`NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS=1`, `analyze_function` returned a live
 partial dossier with 45,007 assembly lines and
 9,001 basic blocks. Pseudocode, native API and native value flow were
 unavailable. A separate pseudocode request returned `provider_timeout`, with
@@ -43,7 +43,7 @@ not accept a caller-fixed launch ID. Cleanup and unchanged target bytes were
 verified. The probe took 56.832 s elapsed, 86.017 s waited CPU and 1426.7 MiB
 sampled family RSS.
 
-The public CLI command `rea function slow-decompile.so --procedure 0x1010f9
+The public CLI command `nre function slow-decompile.so --procedure 0x1010f9
 --provider ghidra --format json` also exited zero with the same 45,007 assembly
 lines and 9,001 basic blocks, and explicit unavailable decompiler facets.
 It preserved the target digest and completed in 61.776 s elapsed, 89.656 s
@@ -51,7 +51,7 @@ waited CPU, with 2169.9 MiB sampled family RSS. The complete JSON was
 25,929,463 bytes; this is a full-evidence CLI output, without a compact-output
 claim. A standalone CLI invocation closes its own session when done.
 
-The public MCP benchmark used production `scripts/rea.mjs mcp` and the pinned
+The public MCP benchmark used production `scripts/nre.mjs mcp` and the pinned
 SDK. The baseline's caller deadline armed after the request was written. The
 native limit starts inside Ghidra's decompiler, so these are approximate,
 phase-specific one-second budgets rather than identical timer locations.
@@ -265,5 +265,5 @@ providers, universal performance and very large batch capacity remain
 unverified by these runs. The original author's macOS report is separate
 from this maintenance verification. Raw exchanges, complete error diagnostics,
 process observations, scripts and resource receipts remain in
-`/tmp/rea-maintenance-20261023/5662/`; generated binaries and provider projects
+`/tmp/nre-maintenance-20261023/5662/`; generated binaries and provider projects
 are not committed.

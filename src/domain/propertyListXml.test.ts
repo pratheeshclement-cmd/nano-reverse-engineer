@@ -7,17 +7,17 @@ import { parseXmlPropertyList } from "./propertyListKeys.js";
 it.each([
   [
     "plist",
-    "<plist><?dict ignored?><string>demo</string><?rea ignored?></plist>",
+    "<plist><?dict ignored?><string>demo</string><?nre ignored?></plist>",
     "demo",
   ],
   [
     "array",
-    "<plist><array><?rea ignored?><string>before</string><?integer 9007199254740993?><integer>42</integer><?rea ignored?></array></plist>",
+    "<plist><array><?nre ignored?><string>before</string><?integer 9007199254740993?><integer>42</integer><?nre ignored?></array></plist>",
     ["before", 42],
   ],
   [
     "dict",
-    "<plist><dict><?key ignored?><key>name</key><?string ignored?><string>demo</string><?rea ignored?><key>count</key><integer>42</integer><?rea ignored?></dict></plist>",
+    "<plist><dict><?key ignored?><key>name</key><?string ignored?><string>demo</string><?nre ignored?><key>count</key><integer>42</integer><?nre ignored?></dict></plist>",
     { name: "demo", count: 42 },
   ],
 ] as const)(
@@ -32,7 +32,7 @@ it.each([
 
 it("keeps document-level processing instructions outside plist members", () => {
   const parsed = parseXmlPropertyList(
-    '<?xml version="1.0"?><?rea before?><plist><string>demo</string></plist><?rea after?>',
+    '<?xml version="1.0"?><?nre before?><plist><string>demo</string></plist><?nre after?>',
   );
   expect(parsed.value).toBe("demo");
   expect(parsed.numberLiterals.incomplete).toBe(false);
@@ -50,19 +50,19 @@ it("rejects a dictionary key without a value and preserves an explicit empty str
 });
 
 it.each([
-  ["CDATA", "<![CDATA[before<?rea content?>after]]>"],
-  ["escaped text", "before&lt;?rea content?&gt;after"],
+  ["CDATA", "<![CDATA[before<?nre content?>after]]>"],
+  ["escaped text", "before&lt;?nre content?&gt;after"],
 ])(
   "preserves literal processing-instruction text from %s",
   (_kind, content) => {
     expect(
       parseXmlPropertyList(`<plist><string>${content}</string></plist>`).value,
-    ).toBe("before<?rea content?>after");
+    ).toBe("before<?nre content?>after");
   },
 );
 
 it("keeps processing instructions inside numeric content subject to scalar rules", () => {
-  for (const markup of ["<?rea ignored?>", "<!-- ignored -->"]) {
+  for (const markup of ["<?nre ignored?>", "<!-- ignored -->"]) {
     const parsed = parseXmlPropertyList(
       `<plist><integer>4${markup}2</integer></plist>`,
     );
@@ -75,13 +75,13 @@ it("keeps processing instructions inside numeric content subject to scalar rules
 
 it("still rejects an unterminated processing instruction", () => {
   expect(() =>
-    parseXmlPropertyList("<plist><?rea ignored<string>demo</string></plist>"),
+    parseXmlPropertyList("<plist><?nre ignored<string>demo</string></plist>"),
   ).toThrow();
 });
 
 it("still rejects an unsupported element beside a processing instruction", () => {
   expect(() =>
-    parseXmlPropertyList("<plist><?rea ignored?><unsupported/></plist>"),
+    parseXmlPropertyList("<plist><?nre ignored?><unsupported/></plist>"),
   ).toThrow("Invalid PLIST tag unsupported");
 });
 
@@ -272,7 +272,7 @@ it.each([
 
 it.each([
   "4<!-- </integer> -->2",
-  "4<?rea </integer> ?>2",
+  "4<?nre </integer> ?>2",
   "4<![CDATA[</integer>]]>2",
   '4<integer note=">">2<integer/></integer>3',
 ])(

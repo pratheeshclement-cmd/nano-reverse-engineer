@@ -26,9 +26,9 @@ export const parseActiveElectronCapture = (
     evidence,
     {
       operation: "capture_electron_scenario",
-      predicate: "rea.electron-active-scenario",
-      providerId: "rea-playwright-electron-active",
-      providerName: "REA Playwright active Electron observation provider",
+      predicate: "nre.electron-active-scenario",
+      providerId: "nre-playwright-electron-active",
+      providerName: "NRE Playwright active Electron observation provider",
       providerVersion: "1",
       authority: "controlled-replay",
       confidence: "observed",

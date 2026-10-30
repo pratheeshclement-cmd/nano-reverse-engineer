@@ -33,11 +33,11 @@ type NativeSessionOutcome =
 
 /** Expected refusal is distinct from acquisition, which always requires close. */
 const nativeSessionOutcome = ({
-  reaCalls,
+  nreCalls,
 }: CodexAgentMetrics): NativeSessionOutcome => {
-  if (reaCalls.some(({ tool, error }) => error && tool !== "open_binary"))
+  if (nreCalls.some(({ tool, error }) => error && tool !== "open_binary"))
     return "failed";
-  const lifecycle = reaCalls.filter(
+  const lifecycle = nreCalls.filter(
     ({ tool }) => tool === "open_binary" || tool === "close_binary",
   );
   const open = lifecycle[0];

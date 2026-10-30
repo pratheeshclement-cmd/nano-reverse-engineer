@@ -14,7 +14,7 @@ import { localPathStringSchema } from "../domain/localPath.js";
 import { absoluteCallerPath } from "../filesystem/callerPath.js";
 import type { JsonValue } from "../domain/jsonValue.js";
 
-/** Register `rea decompile-all`, the directory export of provider pseudocode. */
+/** Register `nre decompile-all`, the directory export of provider pseudocode. */
 export const registerDecompileDirectoryCommand = (
   cli: CliInstance,
   logger: Logger,

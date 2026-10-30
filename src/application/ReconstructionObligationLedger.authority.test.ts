@@ -287,7 +287,7 @@ describe("reconstruction obligation ledger fail-closed behavior", () => {
       undefined,
       { id: "external", name: "External protocol observer", version: "1" },
       {
-        predicateType: "rea.protocol-observation",
+        predicateType: "nre.protocol-observation",
         operation: "observe_protocol",
         parameters: {},
         result: { status: 200 },

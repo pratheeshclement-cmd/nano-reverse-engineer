@@ -54,7 +54,7 @@ const sliceImage = (
 };
 
 const makeFat = async (names: readonly SliceName[], filename = "universal") => {
-  const directory = await createTestTempDirectory("rea-selected-macho-");
+  const directory = await createTestTempDirectory("nre-selected-macho-");
   const path = join(directory, filename);
   const slices = names.map((name) => ({
     cpu: cpus[name],

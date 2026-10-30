@@ -8,7 +8,7 @@ import { MITMPROXY_CAPTURE_PROVIDER_IDENTITY } from "./CaptureRelease.js";
 import { snapshotEnvironment } from "../../process/snapshotEnvironment.js";
 const OPERATION = "inspect_web_network_capture";
 const MITMDUMP_REQUIREMENT =
-  "Native capture decoding requires Linux and an absolute REA_MITMDUMP_COMMAND path to caller-supplied mitmdump 12.2.3; HAR needs no external engine.";
+  "Native capture decoding requires Linux and an absolute NRE_MITMDUMP_COMMAND path to caller-supplied mitmdump 12.2.3; HAR needs no external engine.";
 
 /** Native mitmproxy decoding is offline and uses only an explicitly configured Linux tool. */
 export class MitmproxyCaptureAdapter implements HistoricalCaptureFormatAdapter {
@@ -22,7 +22,7 @@ export class MitmproxyCaptureAdapter implements HistoricalCaptureFormatAdapter {
     requestPath: string,
     runtimePath: string,
   ): Promise<{ command: string; arguments: readonly string[] }> {
-    const command = this.environment.REA_MITMDUMP_COMMAND;
+    const command = this.environment.NRE_MITMDUMP_COMMAND;
     if (
       process.platform !== "linux" ||
       command === undefined ||
@@ -55,7 +55,7 @@ export class MitmproxyCaptureAdapter implements HistoricalCaptureFormatAdapter {
         "--set",
         `confdir=${runtimePath}`,
         "--set",
-        `rea_request_path=${requestPath}`,
+        `nre_request_path=${requestPath}`,
         "-s",
         fileURLToPath(
           new URL("../../../bridge/mitmproxy/capture.py", import.meta.url),

@@ -113,7 +113,7 @@ it("retains nested facts in standalone Markdown table cells and mixed arrays", a
 workspaceCliTest(
   "preserves archive inventory facts through public Markdown and JSON output",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-markdown-archive-facts-");
+    const root = await createTestTempDirectory("nre-markdown-archive-facts-");
     const archive = join(root, "fixture.zip");
     await writeOrderedZip(archive, ["alpha.txt", "sub/beta.txt"]);
     const markdown = await cli.run({

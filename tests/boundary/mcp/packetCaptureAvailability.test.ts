@@ -22,7 +22,7 @@ const packetCaptureAvailability = async (
   const { client } = await createApplicationMcpHarness({
     session,
     serverOptions: {
-      environment: { ...environment, REA_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
+      environment: { ...environment, NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off" },
     },
     clientIdentity: { name: "packet-capture-availability", version: "1" },
   });
@@ -51,7 +51,7 @@ const executableTshark = async (prefix: string): Promise<string> => {
 it.runIf(linux)(
   "reports packet tools available for a PATH-only TShark install",
   async () => {
-    const bin = await executableTshark("rea-packet-path-only-");
+    const bin = await executableTshark("nre-packet-path-only-");
     expect(await packetCaptureAvailability({ PATH: bin })).toMatchObject({
       available: true,
       reason: "available",
@@ -60,26 +60,26 @@ it.runIf(linux)(
 );
 
 it.runIf(linux)(
-  "reports packet tools available for an absolute REA_TSHARK_COMMAND",
+  "reports packet tools available for an absolute NRE_TSHARK_COMMAND",
   async () => {
-    const bin = await executableTshark("rea-packet-absolute-");
+    const bin = await executableTshark("nre-packet-absolute-");
     expect(
       await packetCaptureAvailability({
         PATH: "",
-        REA_TSHARK_COMMAND: join(bin, "tshark"),
+        NRE_TSHARK_COMMAND: join(bin, "tshark"),
       }),
     ).toMatchObject({ available: true, reason: "available" });
   },
 );
 
 it.runIf(linux)(
-  "reports packet tools missing for a relative REA_TSHARK_COMMAND even when PATH holds TShark",
+  "reports packet tools missing for a relative NRE_TSHARK_COMMAND even when PATH holds TShark",
   async () => {
-    const bin = await executableTshark("rea-packet-relative-");
+    const bin = await executableTshark("nre-packet-relative-");
     expect(
       await packetCaptureAvailability({
         PATH: bin,
-        REA_TSHARK_COMMAND: "bin/tshark",
+        NRE_TSHARK_COMMAND: "bin/tshark",
       }),
     ).toMatchObject({ available: false, reason: "provider_missing" });
   },

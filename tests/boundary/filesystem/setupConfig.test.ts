@@ -33,17 +33,17 @@ it.skipIf(process.platform === "win32")(
   "preserves an aligned caller launcher alias without writes or a backup",
   async () => {
     const home = await createTestTempDirectory(
-      "rea-config-equivalent-launcher-",
+      "nre-config-equivalent-launcher-",
     );
     const real = CURRENT_ENTRYPOINT_PATH;
     if (real === undefined) throw new Error("missing current entrypoint");
-    const alias = join(home, "rea-alias");
+    const alias = join(home, "nre-alias");
     await symlink(real, alias);
     await mkdir(join(home, ".cursor"));
     const configPath = join(home, ".cursor", "mcp.json");
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: alias, args: ["mcp"], future_policy: { retain: true } },
+        nre: { command: alias, args: ["mcp"], future_policy: { retain: true } },
       },
     });
     await writeFile(configPath, original);
@@ -58,16 +58,16 @@ it.skipIf(process.platform === "win32")(
       await configureClientConfiguration(client, {}, [real, "mcp"]),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(readFile(`${configPath}.rea.backup`)).rejects.toThrow();
+    await expect(readFile(`${configPath}.nre.backup`)).rejects.toThrow();
     const other = join(home, "another-launcher");
     await writeFile(other, "different launcher\n");
     expect(
       await configureClientConfiguration(client, {}, [other, "mcp"]),
     ).toMatchObject({ status: "configured" });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
-      mcpServers: { rea: { command: other, future_policy: { retain: true } } },
+      mcpServers: { nre: { command: other, future_policy: { retain: true } } },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -75,23 +75,23 @@ it.skipIf(process.platform === "win32")(
   "repairs a Codex timeout without replacing an equivalent caller launcher alias",
   async () => {
     const home = await createTestTempDirectory(
-      "rea-config-timeout-launcher-alias-",
+      "nre-config-timeout-launcher-alias-",
     );
     const real = CURRENT_ENTRYPOINT_PATH;
     if (real === undefined) throw new Error("missing current entrypoint");
-    const alias = join(home, "rea-alias");
+    const alias = join(home, "nre-alias");
     await symlink(real, alias);
     await mkdir(join(home, ".codex"));
     const configPath = join(home, ".codex", "config.toml");
     const original = [
-      "[mcp_servers.rea]",
+      "[mcp_servers.nre]",
       `command = ${JSON.stringify(alias)}`,
       'args = ["mcp"]',
       "startup_timeout_sec = 0",
       "tool_timeout_sec = 450",
       "future_policy = { retain = true }",
       "",
-      "[mcp_servers.rea.env]",
+      "[mcp_servers.nre.env]",
       'CALLER_SETTING = "keep exactly"',
       "",
     ].join("\n");
@@ -103,7 +103,7 @@ it.skipIf(process.platform === "win32")(
     const configured = await readFile(configPath, "utf8");
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
-        rea: {
+        nre: {
           command: alias,
           args: ["mcp"],
           startup_timeout_sec: 30,
@@ -113,19 +113,19 @@ it.skipIf(process.platform === "win32")(
         },
       },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(
       await configureClientConfiguration(client, {}, [real, "mcp"]),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(configured);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
 it.skipIf(process.platform === "win32").each([false, true])(
   "preserves filesystem parent traversal when the configuration exists=%s",
   async (exists) => {
-    const root = await createTestTempDirectory("rea-config-parent-traversal-");
+    const root = await createTestTempDirectory("nre-config-parent-traversal-");
     const selectedDirectory = join(root, "selected");
     await mkdir(join(selectedDirectory, "child"), { recursive: true });
     await symlink(join(selectedDirectory, "child"), join(root, "link"), "dir");
@@ -144,14 +144,14 @@ it.skipIf(process.platform === "win32").each([false, true])(
       }),
     ).toMatchObject({ status: "configured" });
     expect(JSON.parse(await readFile(selected, "utf8"))).toMatchObject({
-      mcpServers: { rea: { command: registrationCommand[0] } },
+      mcpServers: { nre: { command: registrationCommand[0] } },
     });
     expect(await readFile(unrelated, "utf8")).toBe(original);
-    await expect(lstat(`${unrelated}.rea.backup`)).rejects.toMatchObject({
+    await expect(lstat(`${unrelated}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     if (exists)
-      expect(await readFile(`${selected}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${selected}.nre.backup`, "utf8")).toBe(original);
     expect(
       await resolveClientConfigTransactionPath(`${root}/absent/../config.json`),
     ).toBeUndefined();
@@ -167,7 +167,7 @@ it
   )(
   "rejects a missing configuration with directory suffix $suffix and relative=$relativePath",
   async ({ suffix, relativePath }) => {
-    const root = await createTestTempDirectory("rea-config-directory-suffix-");
+    const root = await createTestTempDirectory("nre-config-directory-suffix-");
     const path = join(root, "config.json");
     const requested = `${relativePath ? relative(process.cwd(), path) : path}${suffix}`;
     expect(await resolveClientConfigTransactionPath(requested)).toBe(
@@ -216,7 +216,7 @@ describe("JSON client configuration transaction: writing configuration through s
   it.skipIf(process.platform === "win32")(
     "resolves a directory symlink and its real directory to one transaction path",
     async () => {
-      const root = await createTestTempDirectory("rea-config-dir-alias-");
+      const root = await createTestTempDirectory("nre-config-dir-alias-");
       const realDirectory = join(root, "real");
       const alias = join(root, "alias");
       await mkdir(realDirectory);
@@ -246,7 +246,7 @@ describe("JSON client configuration transaction: writing configuration through s
   );
 
   it("preserves existing keys, creates a backup, and reads back the MCP entry", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     const original =
       '{"theme":"dark","mcpServers":{"other":{"command":"other"}}}\n';
@@ -257,12 +257,12 @@ describe("JSON client configuration transaction: writing configuration through s
       format: "json",
     });
     expect(result.status).toBe("configured");
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       theme: "dark",
       mcpServers: {
         other: { command: "other" },
-        rea: {
+        nre: {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
         },
@@ -271,7 +271,7 @@ describe("JSON client configuration transaction: writing configuration through s
   });
 
   it("updates a symlink target without replacing the JSON config symlink", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const targetPath = join(directory, "managed.json");
     const configPath = join(directory, "mcp.json");
     const original = '{"theme":"dark"}\n';
@@ -286,11 +286,11 @@ describe("JSON client configuration transaction: writing configuration through s
       }),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(JSON.parse(await readFile(targetPath, "utf8"))).toMatchObject({
       theme: "dark",
       mcpServers: {
-        rea: {
+        nre: {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
         },
@@ -308,7 +308,7 @@ describe("JSON client configuration transaction: writing configuration through s
   });
 
   it("fails before mutation when a JSON config symlink is dangling", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     await symlink(join(directory, "missing.json"), configPath);
 
@@ -324,18 +324,18 @@ describe("JSON client configuration transaction: writing configuration through s
     });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
 
 describe("JSON client configuration transaction: keeping matching configuration unchanged", () => {
   it("performs no write or second backup when configuration already matches", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(
       configPath,
-      `${JSON.stringify({ mcpServers: { rea: { command: registrationCommand[0], args: registrationCommand.slice(1) } } })}\n`,
+      `${JSON.stringify({ mcpServers: { nre: { command: registrationCommand[0], args: registrationCommand.slice(1) } } })}\n`,
     );
     expect(
       await configureClientConfiguration({
@@ -347,18 +347,18 @@ describe("JSON client configuration transaction: keeping matching configuration 
       status: "unchanged",
     });
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 
   it("does not rewrite an equivalent configuration with reordered environment keys", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(
       configPath,
       `${JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             env: {
               JAVA_HOME: "/usr/lib/jvm/jdk-21",
               GHIDRA_INSTALL_DIR: "/opt/ghidra",
@@ -380,17 +380,17 @@ describe("JSON client configuration transaction: keeping matching configuration 
       ),
     ).toEqual({ status: "unchanged" });
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
 
 describe("JSON client configuration migration and provider paths", () => {
   it("migrates an unversioned npx registration and preserves sibling configuration", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     const original =
-      '{"theme":"dark","mcpServers":{"rea":{"command":"npx","args":["-y","rea-agents","mcp"]},"other":{"command":"other"}}}\n';
+      '{"theme":"dark","mcpServers":{"nre":{"command":"npx","args":["-y","nano-reverse-engineer","mcp"]},"other":{"command":"other"}}}\n';
     await writeFile(configPath, original);
 
     expect(
@@ -404,18 +404,18 @@ describe("JSON client configuration migration and provider paths", () => {
     expect(JSON.parse(await readFile(configPath, "utf8"))).toEqual({
       theme: "dark",
       mcpServers: {
-        rea: {
+        nre: {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
         },
         other: { command: "other" },
       },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
   });
 
   it("persists a custom Hopper launcher and remains idempotent", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     const hopperPath = "/Applications/Hopper v6.app/Contents/MacOS/hopper";
     const client = { name: "cursor", configPath, format: "json" } as const;
@@ -430,7 +430,7 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: {
+        nre: {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
           env: { HOPPER_LAUNCHER_PATH: hopperPath },
@@ -449,11 +449,11 @@ describe("JSON client configuration migration and provider paths", () => {
         HOPPER_LAUNCHER_PATH: "/opt/hopper/bin/Hopper",
       }),
     ).toMatchObject({ status: "configured" });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
   });
 
   it("adds exact BYO Ghidra and Java paths without installing dependencies", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     const client = { name: "cursor", configPath, format: "json" } as const;
     const environment = {
@@ -468,7 +468,7 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: {
+        nre: {
           env: {
             GHIDRA_INSTALL_DIR: environment.GHIDRA_INSTALL_DIR,
             JAVA_HOME: environment.JAVA_HOME,
@@ -482,7 +482,7 @@ describe("JSON client configuration migration and provider paths", () => {
   });
 
   it("refuses malformed existing JSON without overwriting it", async () => {
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(configPath, "not-json");
     expect(
@@ -500,7 +500,7 @@ describe("JSON client configuration migration and provider paths", () => {
 
   it("refuses a non-object JSON root without overwriting it", async () => {
     const original = "null";
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     await writeFile(configPath, original);
     expect(
@@ -515,13 +515,13 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 
   it("preserves a non-object mcpServers value", async () => {
     const servers = "[]";
-    const directory = await createTestTempDirectory("rea-setup-");
+    const directory = await createTestTempDirectory("nre-setup-");
     const configPath = join(directory, "mcp.json");
     const original = `{"mcpServers":${servers}}`;
     await writeFile(configPath, original);
@@ -537,7 +537,7 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
@@ -547,19 +547,19 @@ describe("JSON client configuration shape diagnostics", () => {
     {
       format: "json" as const,
       original:
-        '{"__proto__":{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}}',
+        '{"__proto__":{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}}',
       serversKey: "mcpServers",
     },
     {
       format: "opencode" as const,
       original:
-        '{"mcp":{"__proto__":{"servers":{"rea":{"type":"local","command":["rea","mcp"]}}}}}',
+        '{"mcp":{"__proto__":{"servers":{"nre":{"type":"local","command":["nre","mcp"]}}}}}',
       serversKey: "mcp",
     },
   ])(
     "registers an own server instead of trusting inherited $format settings",
     async ({ format, original, serversKey }) => {
-      const directory = await createTestTempDirectory("rea-setup-prototype-");
+      const directory = await createTestTempDirectory("nre-setup-prototype-");
       const configPath = join(directory, "mcp.json");
       const client = {
         name: format === "json" ? "cursor" : "opencode",
@@ -568,16 +568,16 @@ describe("JSON client configuration shape diagnostics", () => {
       };
       await writeFile(configPath, original);
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toMatchObject({ status: "update" });
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toMatchObject({ status: "configured" });
       const document = JSON.parse(await readFile(configPath, "utf8"));
       expect(Object.hasOwn(document, serversKey)).toBe(true);
-      expect(Object.hasOwn(document[serversKey], "rea")).toBe(true);
-      expect(document[serversKey].rea.command).toEqual(
-        format === "json" ? "rea" : ["rea", "mcp"],
+      expect(Object.hasOwn(document[serversKey], "nre")).toBe(true);
+      expect(document[serversKey].nre.command).toEqual(
+        format === "json" ? "nre" : ["nre", "mcp"],
       );
       const originalDocument = JSON.parse(original);
       expect(
@@ -587,9 +587,9 @@ describe("JSON client configuration shape diagnostics", () => {
           ? originalDocument.__proto__
           : originalDocument[serversKey].__proto__,
       );
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toMatchObject({ status: "already_current" });
     },
   );
@@ -601,7 +601,7 @@ describe("JSON client configuration shape diagnostics", () => {
   ] as const)(
     "names structural shape problems in setup remediation: %s",
     async (original, problem) => {
-      const directory = await createTestTempDirectory("rea-setup-shape-");
+      const directory = await createTestTempDirectory("nre-setup-shape-");
       const configPath = join(directory, "mcp.json");
       const client = {
         name: "cursor",
@@ -616,7 +616,7 @@ describe("JSON client configuration shape diagnostics", () => {
         `Configuration ${configPath} is malformed: ${problem}`,
       );
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["nre", "mcp"]),
       ).toEqual({
         status: "invalid",
         remediation: `Configuration ${configPath} is malformed: ${problem}`,
@@ -629,7 +629,7 @@ describe("JSON client configuration shape diagnostics", () => {
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "preserves the private-path access diagnostic during the final MSIX target recheck",
   async () => {
-    const home = await createTestTempDirectory("rea-msix-recheck-denied-");
+    const home = await createTestTempDirectory("nre-msix-recheck-denied-");
     const configPath = join(home, "client.json");
     const locked = join(home, "private");
     const privateConfigPath = join(locked, "client.json");
@@ -676,7 +676,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 it.skipIf(process.platform === "win32")(
   "selects literal AppData directories with trailing spaces through native filesystem discovery",
   async () => {
-    const home = await createTestTempDirectory("rea-appdata-literal-root-");
+    const home = await createTestTempDirectory("nre-appdata-literal-root-");
     const environment = {
       APPDATA: join(home, "Roaming "),
       LOCALAPPDATA: join(home, "Local "),
@@ -705,7 +705,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("keeps setup and registration diagnostics blocked for an unrecognized Claude package deployment", async () => {
-  const home = await createTestTempDirectory("rea-claude-deployment-unknown-");
+  const home = await createTestTempDirectory("nre-claude-deployment-unknown-");
   const environment = {
     APPDATA: join(home, "Roaming"),
     LOCALAPPDATA: join(home, "Local"),
@@ -724,7 +724,7 @@ it("keeps setup and registration diagnostics blocked for an unrecognized Claude 
     "claude_desktop_config.json",
   );
   await mkdir(join(environment.APPDATA, "Claude"), { recursive: true });
-  const original = '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+  const original = '{"mcpServers":{"nre":{"command":"nre","args":["mcp"]}}}\n';
   await writeFile(config, original);
   const client = supportedClients(home, "win32", environment).find(
     (client) => client.name === "claude_desktop",
@@ -737,7 +737,7 @@ it("keeps setup and registration diagnostics blocked for an unrecognized Claude 
   });
   expect(
     (
-      await readClientRegistrationStatuses(home, "/current/rea", {
+      await readClientRegistrationStatuses(home, "/current/nre", {
         platform: "win32",
         environment,
       })

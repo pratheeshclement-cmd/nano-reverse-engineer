@@ -46,13 +46,13 @@ export async function connectLocalToolsMcp(
     ...transportOptions,
     command: process.execPath,
     args: [
-      fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url)),
+      fileURLToPath(new URL("../../scripts/nre.mjs", import.meta.url)),
       "mcp",
     ],
     env: {
       PATH: process.env.PATH ?? "/usr/bin:/bin",
-      REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+      NRE_LOG_LEVEL: "silent",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
       ...environment,
     },
     stderr: "pipe",

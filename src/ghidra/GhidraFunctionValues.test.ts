@@ -1104,9 +1104,9 @@ describe("Ghidra native instruction decoder context for ARM TMode and MIPS ISA_M
 });
 
 describe("Ghidra bridge script processor context contract", () => {
-  it("binds TMode to ARM and ISA_MODE to MIPS in ReaGhidraBridge.java", async () => {
+  it("binds TMode to ARM and ISA_MODE to MIPS in NreGhidraBridge.java", async () => {
     const bridgePath = new URL(
-      "../../bridge/ghidra/ReaGhidraBridge.java",
+      "../../bridge/ghidra/NreGhidraBridge.java",
       import.meta.url,
     );
     const content = await readFile(bridgePath, "utf8");

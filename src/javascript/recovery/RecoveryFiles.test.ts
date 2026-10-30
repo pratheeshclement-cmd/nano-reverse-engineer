@@ -58,7 +58,7 @@ const filesystemError = (code: string): NodeJS.ErrnoException =>
 const snapshotWithFault = async (
   fault: Partial<typeof snapshotFault>,
 ): Promise<unknown> => {
-  const root = await createTestTempDirectory("rea-recovery-fault-");
+  const root = await createTestTempDirectory("nre-recovery-fault-");
   const selected = join(root, "bundle.js");
   await writeFile(selected, "module.exports = 1;\n");
   const snapshots = join(root, "snapshots");
@@ -77,7 +77,7 @@ const snapshotWithFault = async (
 it.skipIf(process.platform === "win32")(
   "rejects a named pipe without waiting for a writer",
   async () => {
-    const root = await createTestTempDirectory("rea-recovery-fifo-");
+    const root = await createTestTempDirectory("nre-recovery-fifo-");
     const regular = join(root, "regular.js");
     await writeFile(regular, "module.exports = 1;\n");
     await expect(readRecoveryFile(regular, 1024)).resolves.toHaveLength(20);
@@ -124,7 +124,7 @@ it("keeps a failed admission close owned when cancellation is also requested", a
 it.each(["EACCES", "EPERM"] as const)(
   "preserves %s while acquiring a selected recovery input",
   async (code) => {
-    const root = await createTestTempDirectory("rea-recovery-access-");
+    const root = await createTestTempDirectory("nre-recovery-access-");
     const selected = join(root, "selected.js");
     const snapshots = join(root, "snapshots");
     await mkdir(snapshots);
@@ -144,7 +144,7 @@ it.each(["EACCES", "EPERM"] as const)(
 );
 
 it("reports one file selected under two letter cases as an input error", async (context) => {
-  const root = await createTestTempDirectory("rea-recovery-case-");
+  const root = await createTestTempDirectory("nre-recovery-case-");
   const lower = join(root, "bundle.js");
   const upper = join(root, "BUNDLE.js");
   await writeFile(lower, "module.exports = 1;\n");
@@ -174,7 +174,7 @@ it("reports one file selected under two letter cases as an input error", async (
 });
 
 it("reports one file selected twice as an input error", async () => {
-  const root = await createTestTempDirectory("rea-recovery-twice-");
+  const root = await createTestTempDirectory("nre-recovery-twice-");
   const selected = join(root, "bundle.js");
   await writeFile(selected, "module.exports = 1;\n");
   const snapshots = join(root, "snapshots");
@@ -202,7 +202,7 @@ it.skipIf(process.platform === "win32")(
   "keeps distinct filesystem selections whose lexical paths collapse together",
   async () => {
     const root = await realpath(
-      await createTestTempDirectory("rea-recovery-selected-layout-"),
+      await createTestTempDirectory("nre-recovery-selected-layout-"),
     );
     await mkdir(join(root, "target/child"), { recursive: true });
     await symlink("target/child", join(root, "link"));
@@ -242,7 +242,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "refuses a regular-file/.. traversal before deriving the snapshot layout",
   async () => {
-    const root = await createTestTempDirectory("rea-recovery-invalid-parent-");
+    const root = await createTestTempDirectory("nre-recovery-invalid-parent-");
     await writeFile(join(root, "file"), "not a directory");
     await writeFile(join(root, "input.js"), "export const sibling = 1;\n");
     const snapshots = join(root, "snapshots");

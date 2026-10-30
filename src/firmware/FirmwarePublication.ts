@@ -27,9 +27,9 @@ type ExtractionGap = z.infer<typeof extractionGap>;
 /** Static, truthful continuations that use already configured capabilities. */
 const GAP_CONTINUATIONS: Record<ExtractionGap["kind"], string> = {
   "missing-extractor-dependency":
-    "REA installs nothing. Add the named dependency to your own environment and rerun extract_firmware on the same immutable input with a fresh output_directory to re-evaluate the affected region; otherwise it stays unextracted.",
+    "NRE installs nothing. Add the named dependency to your own environment and rerun extract_firmware on the same immutable input with a fresh output_directory to re-evaluate the affected region; otherwise it stays unextracted.",
   "unknown-chunk-handler":
-    "If Binwalk is configured with REA_BINWALK_COMMAND, run inspect_firmware_regions on the same input for signature hypotheses. Without configured Binwalk that inspection is unavailable. Alternatively, select a materially narrower range with extract_firmware and a fresh output_directory; the region is not decoded content.",
+    "If Binwalk is configured with NRE_BINWALK_COMMAND, run inspect_firmware_regions on the same input for signature hypotheses. Without configured Binwalk that inspection is unavailable. Alternatively, select a materially narrower range with extract_firmware and a fresh output_directory; the region is not decoded content.",
   "unclassified-range":
     "The producer reported no chunk covering these bytes. Their format and extraction status remain unknown. If Binwalk is configured, inspect_firmware_regions can supply signature hypotheses; otherwise retain this range as unexamined.",
   "encrypted-chunk":
@@ -42,7 +42,7 @@ const GAP_CONTINUATIONS: Record<ExtractionGap["kind"], string> = {
 };
 
 const UNNAMED_DEPENDENCY_CONTINUATION =
-  "The producer reported a missing extractor dependency without naming it; its identity is unavailable in this evidence. No specific installation or rerun can be prescribed from this report. Retain the gap as unextracted unless additional provider evidence establishes the dependency. REA installs nothing.";
+  "The producer reported a missing extractor dependency without naming it; its identity is unavailable in this evidence. No specific installation or rerun can be prescribed from this report. Retain the gap as unextracted unless additional provider evidence establishes the dependency. NRE installs nothing.";
 
 import { FIRMWARE_LIMITS } from "./FirmwareRelease.js";
 import type { FirmwareDeadline } from "./FirmwareDeadline.js";
@@ -67,7 +67,7 @@ const nestedUnknownContinuation = (
   return publishedFile !== undefined &&
     publishedFile.size > 0 &&
     publishedFile.size <= FIRMWARE_LIMITS.inputBytes
-    ? `${base} Run inspect_firmware_regions with path set to that published child for signature hypotheses only if Binwalk is configured with REA_BINWALK_COMMAND. This inspection step is unavailable without configured Binwalk; retain the region as unexamined. Repeating the same whole-child extraction with unchanged handlers would not advance analysis.`
+    ? `${base} Run inspect_firmware_regions with path set to that published child for signature hypotheses only if Binwalk is configured with NRE_BINWALK_COMMAND. This inspection step is unavailable without configured Binwalk; retain the region as unexamined. Repeating the same whole-child extraction with unchanged handlers would not advance analysis.`
     : `${base} That published child is not a nonempty file within the ${FIRMWARE_LIMITS.inputBytes}-byte firmware input limit, so inspect_firmware_regions cannot accept it as a fresh input; treat the region as unexamined.`;
 };
 

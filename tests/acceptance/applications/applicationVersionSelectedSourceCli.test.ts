@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "keeps unexamined identical sources unknown in both comparison directions",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-version-selected-");
+    const root = await createTestTempDirectory("nre-version-selected-");
     await writeFile(join(root, "main.js"), "export const name = 'one';\n");
     await writeFile(
       join(root, "lib.js"),
@@ -19,7 +19,7 @@ cliTest(
     const run = async (args: string[]) => {
       const result = await cli.run({
         arguments: args,
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(result.exitCode, result.stderr).toBe(0);
       return parseEvidence(result.json);

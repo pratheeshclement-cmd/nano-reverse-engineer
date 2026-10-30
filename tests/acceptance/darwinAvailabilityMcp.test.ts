@@ -10,22 +10,22 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform !== "darwin")(
   "target-free MCP discovery survives an unavailable macOS compiler",
   async () => {
-    const root = await createTestTempDirectory("rea-darwin-unavailable-");
+    const root = await createTestTempDirectory("nre-darwin-unavailable-");
     const tmp = join(root, "tmp");
     await mkdir(tmp);
     const apktool = join(root, "apktool");
     await writeFile(apktool, "#!/bin/sh\necho 2.9.3\n", { mode: 0o755 });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: {
         PATH: process.env.PATH ?? "",
         HOME: root,
         TMPDIR: tmp,
         DEVELOPER_DIR: join(root, "missing-developer"),
-        REA_LOG_LEVEL: "silent",
-        REA_APKTOOL_COMMAND: apktool,
+        NRE_LOG_LEVEL: "silent",
+        NRE_APKTOOL_COMMAND: apktool,
       },
       stderr: "pipe",
     });

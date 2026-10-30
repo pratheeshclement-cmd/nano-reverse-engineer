@@ -20,7 +20,7 @@ import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 /** Verify capture → export → existing analysis through real CLI and stdio MCP. */
 export async function verifyBrowserScriptExport(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url)),
   attachment,
 ) {
   let site;
@@ -29,11 +29,11 @@ export async function verifyBrowserScriptExport(
   let client;
   return withVerifierCleanup(async () => {
     site = await startBrowserScriptSite();
-    root = await mkdtemp(join(tmpdir(), "rea-browser-script-export-"));
+    root = await mkdtemp(join(tmpdir(), "nre-browser-script-export-"));
     const env = {
       ...process.env,
-      REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      NRE_LOG_LEVEL: "silent",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-provider/hopper",
     };
     const cli = exportCli(entrypoint, env);
     const scenario = scriptCaptureScenario(executable, site.origin);

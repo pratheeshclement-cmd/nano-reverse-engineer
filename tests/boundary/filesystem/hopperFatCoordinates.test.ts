@@ -17,7 +17,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const sourceTarget = async (bytes: Uint8Array, sliceSize: number) => {
   const directory = await createTestTempDirectory(
-    "rea-hopper-fat-coordinates-",
+    "nre-hopper-fat-coordinates-",
   );
   const path = join(directory, "source.fat");
   await writeFile(path, bytes);

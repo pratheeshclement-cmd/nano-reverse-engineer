@@ -24,7 +24,7 @@ export const FUNCTION_COMPARISON_EVIDENCE = createEvidence(
   undefined,
   FUNCTION_COMPARISON_PROVIDER,
   {
-    predicateType: "rea.function-comparison",
+    predicateType: "nre.function-comparison",
     operation: "compare_functions",
     parameters: {
       left_evidence_id: left.value.evidence.evidence_id,
@@ -44,7 +44,7 @@ export const FUNCTION_COMPARISON_EVIDENCE = createEvidence(
 const capture = parseProcessCapture(EMPTY_PROCESS_CAPTURE_EXAMPLE);
 const captureEvidence = (scenario: string) =>
   createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "nre.process-capture",
     operation: "capture_process_scenario",
     parameters: { scenario },
     result: capture,

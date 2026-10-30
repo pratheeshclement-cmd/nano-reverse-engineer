@@ -16,7 +16,7 @@ import { webSourceLocationFixture } from "../../fixtures/webSourceLocation.js";
 
 const materialize = async () => {
   const root = join(
-    await createTestTempDirectory("rea-script-manifest-path-"),
+    await createTestTempDirectory("nre-script-manifest-path-"),
     "export with spaces",
   );
   const artifact = webModuleArtifactsFixture();
@@ -37,7 +37,7 @@ it.skipIf(process.platform === "win32").each([
 ] as const)(
   "loads the POSIX symlink-parent companion through $consumer with $sentinel lexical sibling bytes",
   async ({ consumer, sentinel }) => {
-    const base = await createTestTempDirectory("rea-manifest-physical-parent-");
+    const base = await createTestTempDirectory("nre-manifest-physical-parent-");
     const source = Buffer.from('export const selected = "physical export";\n');
     const sourceUrl = "https://app.test/modules/main.js";
     const capturePath = join(base, "capture.json");

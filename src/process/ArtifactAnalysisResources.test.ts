@@ -89,7 +89,7 @@ it("projects the specific reason and member evidence for retained cleanup", asyn
     process: producer,
     ownsProcessLifetime: true,
     ownership: {
-      runId: "rea-tshark-run-1",
+      runId: "nre-tshark-run-1",
       leaderPid: 4242,
       processGroupId: 4242,
     },
@@ -130,7 +130,7 @@ it("projects the specific reason and member evidence for retained cleanup", asyn
     code: "cleanup_incomplete",
     details: {
       resources: [
-        "rea-tshark-run-1",
+        "nre-tshark-run-1",
         "runtime-root",
         "pid:4242",
         "process-group:4242",
@@ -500,7 +500,7 @@ it.each([false, true])(
   "preserves artifact cancellation and independent failed cleanup (failed close: %s)",
   async (failedClose) => {
     const reason = { request: "artifact cancellation" };
-    const root = await createTestTempDirectory("rea-resource-cancel-");
+    const root = await createTestTempDirectory("nre-resource-cancel-");
     const path = join(root, "descriptor");
     await writeFile(path, "authored bytes");
     let mayClose = false;
@@ -578,14 +578,14 @@ it("names the fixed producer command deadline and says it has no override", asyn
       "this release has no runtime override",
     );
     expect(projected.remediation.action).not.toContain(
-      "REA_SWIFTC_COMPILE_TIMEOUT_MS",
+      "NRE_SWIFTC_COMPILE_TIMEOUT_MS",
     );
   } finally {
     await resources.close();
   }
 });
 
-it("says REA retains the tighter inherited limit when a producer signal fires", async () => {
+it("says NRE retains the tighter inherited limit when a producer signal fires", async () => {
   const resources = new ArtifactAnalysisResources(
     "fixture",
     "inspect_packet_fields",
@@ -612,7 +612,7 @@ it("says REA retains the tighter inherited limit when a producer signal fires", 
     );
     const projected = projectAnalysisError(error);
     expect(projected.remediation.action).toContain(
-      "REA retains the tighter inherited limit",
+      "NRE retains the tighter inherited limit",
     );
     expect(projected.remediation.action).toContain("1073741824 bytes");
     expect(projected.remediation.action).toContain("67108864 bytes");
@@ -999,7 +999,7 @@ it("joins mixed runtime cleanup and resolves each error only through its exact l
 });
 
 it("retains producer output when a completed read is cancelled during failed close", async () => {
-  const root = await createTestTempDirectory("rea-completed-read-cancel-");
+  const root = await createTestTempDirectory("nre-completed-read-cancel-");
   const path = join(root, "descriptor");
   await writeFile(path, "authored bytes");
   const caller = new AbortController();

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** Independent DEX inventory: no REA mapping parser, bridge or JADX display identities. */
+/** Independent DEX inventory: no NRE mapping parser, bridge or JADX display identities. */
 public final class PrintDexInventory {
   public static void main(String[] arguments) throws Exception {
     if (arguments.length != 1) throw new IllegalArgumentException("Expected one raw .dex path");

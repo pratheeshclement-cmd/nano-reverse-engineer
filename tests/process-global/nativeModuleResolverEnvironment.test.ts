@@ -14,39 +14,39 @@ it.skipIf(process.platform === "win32").each([
   { name: "missing", selected: {}, expected: "absent" },
   {
     name: "unset",
-    selected: { REA_MODULE_ENV_PROFILE: undefined },
+    selected: { NRE_MODULE_ENV_PROFILE: undefined },
     expected: "absent",
   },
-  { name: "empty", selected: { REA_MODULE_ENV_PROFILE: "" }, expected: "" },
+  { name: "empty", selected: { NRE_MODULE_ENV_PROFILE: "" }, expected: "" },
   {
     name: "selected",
-    selected: { REA_MODULE_ENV_PROFILE: "selected-profile" },
+    selected: { NRE_MODULE_ENV_PROFILE: "selected-profile" },
     expected: "selected-profile",
   },
 ])(
   "preserves $name module-resolver settings in the real Playwright child",
   async ({ selected, expected }) => {
     const root = await createTestTempDirectory(
-      "rea-module-resolver-environment-",
+      "nre-module-resolver-environment-",
     );
     const command = join(root, "browser"),
       receipt = join(root, "receipt");
     const quotedReceipt = `'${receipt.replaceAll("'", "'\\''")}'`;
     await writeFile(
       command,
-      '#!/bin/sh\nprintf "%s\\n%s" "$$" "${REA_MODULE_ENV_PROFILE-absent}" > ' +
+      '#!/bin/sh\nprintf "%s\\n%s" "$$" "${NRE_MODULE_ENV_PROFILE-absent}" > ' +
         quotedReceipt +
         "\nexit 0\n",
       { mode: 0o755 },
     );
-    const environment = { REA_BROWSER_EXECUTABLE: command, ...selected };
+    const environment = { NRE_BROWSER_EXECUTABLE: command, ...selected };
     const resolver = new NativeModuleResolver(environment);
     onTestFinished(() => resolver.close());
     // Constructor selection is immutable even when the original caller map changes.
     Object.assign(environment, {
-      REA_MODULE_ENV_PROFILE: "later-caller-profile",
+      NRE_MODULE_ENV_PROFILE: "later-caller-profile",
     });
-    vi.stubEnv("REA_MODULE_ENV_PROFILE", "late-ambient-profile");
+    vi.stubEnv("NRE_MODULE_ENV_PROFILE", "late-ambient-profile");
     const result = await resolver.resolve({
       importerUrl: "https://app.test/main.js",
       importMap: null,

@@ -51,8 +51,8 @@ const capinfosStub = isWindows
 const providerOver = (): PcapProvider => {
   const provider = new PcapProvider({
     environment: {
-      REA_TSHARK_COMMAND: tsharkStub,
-      REA_CAPINFOS_COMMAND: capinfosStub,
+      NRE_TSHARK_COMMAND: tsharkStub,
+      NRE_CAPINFOS_COMMAND: capinfosStub,
     },
   });
   onTestFinished(() => provider.close());
@@ -62,7 +62,7 @@ const providerOver = (): PcapProvider => {
 it.skipIf(isWindows).each(["path", "explicit"] as const)(
   "retains the selected %s environment after a successful Wireshark probe",
   async (selection) => {
-    const root = await createTestTempDirectory("rea-pcap-environment-");
+    const root = await createTestTempDirectory("nre-pcap-environment-");
     for (const [name, banner] of [
       ["tshark", "TShark"],
       ["capinfos", "Capinfos"],
@@ -83,11 +83,11 @@ printf '%s|%s|%s\\n' "$PCAP_TEST_PROFILE" "$PCAP_TEST_EMPTY" "\${PCAP_TEST_ABSEN
       PCAP_TEST_EMPTY: "",
     };
     delete environment.PCAP_TEST_ABSENT;
-    delete environment.REA_TSHARK_COMMAND;
-    delete environment.REA_CAPINFOS_COMMAND;
+    delete environment.NRE_TSHARK_COMMAND;
+    delete environment.NRE_CAPINFOS_COMMAND;
     if (selection === "explicit") {
-      environment.REA_TSHARK_COMMAND = join(root, "tshark");
-      environment.REA_CAPINFOS_COMMAND = join(root, "capinfos");
+      environment.NRE_TSHARK_COMMAND = join(root, "tshark");
+      environment.NRE_CAPINFOS_COMMAND = join(root, "capinfos");
     }
     const provider = new PcapProvider({ environment });
     onTestFinished(() => provider.close());
@@ -105,8 +105,8 @@ printf '%s|%s|%s\\n' "$PCAP_TEST_PROFILE" "$PCAP_TEST_EMPTY" "\${PCAP_TEST_ABSEN
     environment.PCAP_TEST_EMPTY = "later";
     environment.PCAP_TEST_ABSENT = "later";
     if (selection === "explicit") {
-      environment.REA_TSHARK_COMMAND = join(root, "missing-tshark");
-      environment.REA_CAPINFOS_COMMAND = join(root, "missing-capinfos");
+      environment.NRE_TSHARK_COMMAND = join(root, "missing-tshark");
+      environment.NRE_CAPINFOS_COMMAND = join(root, "missing-capinfos");
     }
     const repeated = await service.execute("inspect_pcap_client", {});
     if (!repeated.ok) throw repeated.error;
@@ -125,7 +125,7 @@ it.skipIf(isWindows)(
   "preserves selected Wireshark wrappers and re-admits changed symlink targets after success",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-pcap-selected-wrapper-",
+      "nre-pcap-selected-wrapper-",
     );
     const bin = join(directory, "bin"),
       libexec = join(directory, "libexec");
@@ -153,8 +153,8 @@ it.skipIf(isWindows)(
     ).toBe("TShark (Wireshark) 4.6.6-stub");
     const provider = new PcapProvider({
       environment: {
-        REA_TSHARK_COMMAND: tshark,
-        REA_CAPINFOS_COMMAND: capinfos,
+        NRE_TSHARK_COMMAND: tshark,
+        NRE_CAPINFOS_COMMAND: capinfos,
       },
     });
     onTestFinished(() => provider.close());
@@ -200,7 +200,7 @@ const evidenceResult = async (
 it.skipIf(isWindows)(
   "runs and reports the tools located on PATH rather than bare names",
   async () => {
-    const directory = await createTestTempDirectory("rea-pcap-path-");
+    const directory = await createTestTempDirectory("nre-pcap-path-");
     await symlink(tsharkStub, join(directory, "tshark"));
     await symlink(capinfosStub, join(directory, "capinfos"));
     const provider = new PcapProvider({
@@ -257,8 +257,8 @@ it("inspects both tools through cross-platform stubs", async () => {
 it("projects a missing configured tool as a capability gap", async () => {
   const provider = new PcapProvider({
     environment: {
-      REA_TSHARK_COMMAND: tsharkStub,
-      REA_CAPINFOS_COMMAND: join(import.meta.dirname, "missing-capinfos"),
+      NRE_TSHARK_COMMAND: tsharkStub,
+      NRE_CAPINFOS_COMMAND: join(import.meta.dirname, "missing-capinfos"),
     },
   });
   onTestFinished(() => provider.close());
@@ -284,7 +284,7 @@ it("projects a missing configured tool as a capability gap", async () => {
 it.skipIf(isWindows)(
   "rejects TShark that changes during its version probe",
   async () => {
-    const directory = await createTestTempDirectory("rea-pcap-mutated-tool-");
+    const directory = await createTestTempDirectory("nre-pcap-mutated-tool-");
     const tshark = join(directory, "tshark");
     const capinfos = join(directory, "capinfos");
     await writeFile(
@@ -302,8 +302,8 @@ exit 2
     await symlink(capinfosStub, capinfos);
     const provider = new PcapProvider({
       environment: {
-        REA_TSHARK_COMMAND: tshark,
-        REA_CAPINFOS_COMMAND: capinfos,
+        NRE_TSHARK_COMMAND: tshark,
+        NRE_CAPINFOS_COMMAND: capinfos,
       },
     });
     onTestFinished(() => provider.close());
@@ -350,8 +350,8 @@ it.each([0, 7])(
     };
     const provider = new PcapProvider({
       environment: {
-        REA_TSHARK_COMMAND: tsharkStub,
-        REA_CAPINFOS_COMMAND: capinfosStub,
+        NRE_TSHARK_COMMAND: tsharkStub,
+        NRE_CAPINFOS_COMMAND: capinfosStub,
       },
       launcher,
     });
@@ -403,7 +403,7 @@ it.each([0, 7])(
 it.runIf(hasNativeBound)(
   "inspects a capture with metadata, endpoints, DNS, and protocol facts",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-x-");
+    const root = await createTestTempDirectory("nre-pcap-x-");
     const capturePath = join(root, "capture.pcap");
     const captureBytes = "cross-platform-pcap-fixture";
     await writeFile(capturePath, captureBytes);
@@ -460,7 +460,7 @@ it.runIf(hasNativeBound)(
 
 it("reports a missing binary as a capability gap", async () => {
   const provider = new PcapProvider({
-    environment: { REA_TSHARK_COMMAND: "/nonexistent/tshark" },
+    environment: { NRE_TSHARK_COMMAND: "/nonexistent/tshark" },
   });
   expect(await provider.inspectAvailability()).toMatchObject({
     status: "unavailable",
@@ -519,7 +519,7 @@ it.runIf(!hasNativeBound)(
 );
 
 it("retains a verification admission owner before translating cancellation", async () => {
-  const root = await createTestTempDirectory("rea-pcap-verify-admission-");
+  const root = await createTestTempDirectory("nre-pcap-verify-admission-");
   const path = join(root, "held.bin");
   await writeFile(path, "held capture bytes");
   const handle = await open(path, "r");
@@ -555,11 +555,11 @@ it("retains a verification admission owner before translating cancellation", asy
 it.each(["tshark", "capinfos"] as const)(
   "classifies directory-selected %s as a configuration refusal with its path",
   async (tool) => {
-    const root = await createTestTempDirectory("rea-pcap-tool-directory-");
+    const root = await createTestTempDirectory("nre-pcap-tool-directory-");
     const provider = new PcapProvider({
       environment: {
-        REA_TSHARK_COMMAND: tool === "tshark" ? root : tsharkStub,
-        REA_CAPINFOS_COMMAND: tool === "capinfos" ? root : capinfosStub,
+        NRE_TSHARK_COMMAND: tool === "tshark" ? root : tsharkStub,
+        NRE_CAPINFOS_COMMAND: tool === "capinfos" ? root : capinfosStub,
       },
     });
     onTestFinished(() => provider.close());

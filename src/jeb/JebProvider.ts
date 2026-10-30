@@ -39,7 +39,7 @@ import {
   type JebMcpConnectionFactory,
 } from "./JebMcpConnection.js";
 
-const JEB_CONNECTION_REMEDIATION = `Start a JEB client serving MCP (default ${DEFAULT_JEB_MCP_ENDPOINT}) or set REA_JEB_MCP_URL to the running endpoint.`;
+const JEB_CONNECTION_REMEDIATION = `Start a JEB client serving MCP (default ${DEFAULT_JEB_MCP_ENDPOINT}) or set NRE_JEB_MCP_URL to the running endpoint.`;
 
 export const JEB_PROVIDER_IDENTITY: ProviderIdentity = {
   id: "jeb",
@@ -48,11 +48,11 @@ export const JEB_PROVIDER_IDENTITY: ProviderIdentity = {
 } as const;
 
 export interface JebProviderOptions {
-  /** Caller environment carrying REA_JEB_MCP_URL. */
+  /** Caller environment carrying NRE_JEB_MCP_URL. */
   readonly environment?: Readonly<Record<string, string | undefined>>;
-  /** Per-tools/call budget selected by REA_JEB_MCP_TIMEOUT_MS. */
+  /** Per-tools/call budget selected by NRE_JEB_MCP_TIMEOUT_MS. */
   readonly requestTimeoutMs?: number;
-  /** Catalog discovery budget. Production uses the same REA_JEB_MCP_TIMEOUT_MS value. */
+  /** Catalog discovery budget. Production uses the same NRE_JEB_MCP_TIMEOUT_MS value. */
   readonly discoveryTimeoutMs?: number;
   /** Injectable MCP boundary; defaults to the streamable HTTP client. */
   readonly connectionFactory?: JebMcpConnectionFactory;
@@ -155,7 +155,7 @@ const parseJebEnvelope = (
   );
 };
 
-/** Serve REA's JEB operations from a running engine client over MCP. */
+/** Serve NRE's JEB operations from a running engine client over MCP. */
 export class JebProvider implements JebAnalysisPort {
   readonly #connection: JebMcpConnection;
   readonly #endpoint: URL;
@@ -174,11 +174,11 @@ export class JebProvider implements JebAnalysisPort {
 
   constructor(options: JebProviderOptions = {}) {
     const environment = options.environment ?? {};
-    const endpoint = parseJebMcpEndpoint(environment.REA_JEB_MCP_URL);
+    const endpoint = parseJebMcpEndpoint(environment.NRE_JEB_MCP_URL);
     if (!endpoint.ok) throw endpoint.error;
     this.#endpoint = endpoint.value;
     this.#selectedEndpoint =
-      environment.REA_JEB_MCP_URL || DEFAULT_JEB_MCP_ENDPOINT;
+      environment.NRE_JEB_MCP_URL || DEFAULT_JEB_MCP_ENDPOINT;
     const createConnection =
       options.connectionFactory ?? createStreamableHttpJebMcpConnection;
     const timeouts = {
@@ -428,7 +428,7 @@ export class JebProvider implements JebAnalysisPort {
       createAnalysisExecution(result, this.#identity(engine.version), {
         rawResult: payload,
         limitations: [
-          "JEB resolves and analyzes the artifact on the engine host; REA did not open the target itself.",
+          "JEB resolves and analyzes the artifact on the engine host; NRE did not open the target itself.",
         ],
       }),
     );

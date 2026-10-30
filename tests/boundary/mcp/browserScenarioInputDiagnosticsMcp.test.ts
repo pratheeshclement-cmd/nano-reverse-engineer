@@ -81,7 +81,7 @@ cliTest.for(["full", "compact"] as const)(
   { timeout: 60_000 },
   async (profile, { cli }) => {
     const home = await createTestTempDirectory(
-      "rea-browser-scenario-mcp-home-",
+      "nre-browser-scenario-mcp-home-",
     );
     const client = new Client({
       name: "browser-scenario-input-diagnostics",
@@ -89,13 +89,13 @@ cliTest.for(["full", "compact"] as const)(
     });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: {
         PATH: process.env.PATH ?? "",
         HOME: home,
-        REA_LOG_LEVEL: "silent",
-        REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+        NRE_LOG_LEVEL: "silent",
+        NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
       },
       stderr: "pipe",
     });
@@ -133,7 +133,7 @@ cliTest.for(["full", "compact"] as const)(
             JSON.stringify(input),
             "--json",
           ],
-          environment: { HOME: home, REA_LOG_LEVEL: "silent" },
+          environment: { HOME: home, NRE_LOG_LEVEL: "silent" },
         });
         expect(cliResult.exitCode).toBe(1);
         const cliDiagnostic = z

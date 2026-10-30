@@ -80,12 +80,12 @@ test("preserves Harmony archive formats through the public CLI/MCP lifecycle", a
     XDG_CACHE_HOME: workspace.path("cache"),
     XDG_STATE_HOME: workspace.path("state"),
     NODE_OPTIONS: "--max-old-space-size=512",
-    REA_LOG_LEVEL: "silent",
+    NRE_LOG_LEVEL: "silent",
   };
-  const client = new Client({ name: "rea-harmony-acceptance", version: "1" });
+  const client = new Client({ name: "nre-harmony-acceptance", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     env: environment,
     stderr: "pipe",
   });

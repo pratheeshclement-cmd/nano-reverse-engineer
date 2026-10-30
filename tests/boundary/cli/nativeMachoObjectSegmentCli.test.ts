@@ -16,7 +16,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "reports an object file's unnamed segment by its observed empty name",
       async ({ cli, processes }) => {
-        const directory = await createTestTempDirectory("rea-object-segment-");
+        const directory = await createTestTempDirectory("nre-object-segment-");
         const source = join(directory, "qa.c");
         const object = join(directory, "qa.o");
         await writeFile(source, "int qa(void) { return 7; }\n");
@@ -28,7 +28,7 @@ describe.skipIf(process.platform !== "darwin")(
         expect(compiled.exitCode, compiled.stderr).toBe(0);
         const result = await cli.run({
           arguments: ["inspect-macho", object, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(result.exitCode, result.stdout + result.stderr).toBe(0);
         const inspected = evidenceSchema.parse(result.json).normalized_result;

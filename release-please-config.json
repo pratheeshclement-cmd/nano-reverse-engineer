@@ -15,7 +15,7 @@
   ],
   "packages": {
     ".": {
-      "package-name": "rea-agents",
+      "package-name": "nano-reverse-engineer",
       "extra-files": [
         { "type": "generic", "path": "docs/installation.md" },
         {
@@ -40,7 +40,7 @@
         {
           "type": "json",
           "path": ".claude-plugin/plugin.json",
-          "jsonpath": "$.mcpServers.rea.args[1]"
+          "jsonpath": "$.mcpServers.nre.args[1]"
         },
         {
           "type": "json",
@@ -50,7 +50,7 @@
         {
           "type": "json",
           "path": ".codex-plugin/mcp.json",
-          "jsonpath": "$.mcpServers.rea.args[1]"
+          "jsonpath": "$.mcpServers.nre.args[1]"
         },
         {
           "type": "json",

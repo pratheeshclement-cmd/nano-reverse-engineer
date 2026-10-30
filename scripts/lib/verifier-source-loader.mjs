@@ -114,7 +114,7 @@ export const importVerifierSource = async (url, parent) => {
     typeof nodeModule.stripTypeScriptTypes !== "function"
   )
     throw new Error(
-      "This REA source loader requires the Node.js version pinned in .nvmrc; run nvm use and invoke source build and verifier scripts with node and npm. Installed REA packages have separate runtime support.",
+      "This NRE source loader requires the Node.js version pinned in .nvmrc; run nvm use and invoke source build and verifier scripts with node and npm. Installed NRE packages have separate runtime support.",
     );
   hooks ??= nodeModule.registerHooks({
     resolve: resolveSource,

@@ -15,7 +15,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest, type TestCli } from "../../support/cli/cliFixture.js";
 
 const files = async (): Promise<EnvironmentServeFiles> => {
-  const directory = await createTestTempDirectory("rea-serve-remediation-");
+  const directory = await createTestTempDirectory("nre-serve-remediation-");
   return writeEnvironmentServeFiles(directory);
 };
 
@@ -49,7 +49,7 @@ cliTest(
   "reports host lookup failure with host-specific recovery and no listener startup",
   async ({ cli }) => {
     const input = await files();
-    const host = `rea-${randomUUID()}.invalid`;
+    const host = `nre-${randomUUID()}.invalid`;
     const result = await serve(cli, input, host, 0);
 
     expect(result.exitCode).toBe(1);

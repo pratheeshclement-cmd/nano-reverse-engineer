@@ -48,7 +48,7 @@ afterEach(() => {
 
 const bindFailure = (owner: ElectronCaptureCleanup) => {
   const error = new ProviderCleanupError(
-    "rea-playwright-electron-active",
+    "nre-playwright-electron-active",
     owner.pendingResources,
     {},
   );
@@ -107,7 +107,7 @@ it("shrinks mixed cleanup and aggregate errors without repeating a released peer
     await scope.close();
   } catch (cause) {
     aggregate = new ProviderCleanupError(
-      "rea-playwright-electron-active",
+      "nre-playwright-electron-active",
       [],
       {},
     );

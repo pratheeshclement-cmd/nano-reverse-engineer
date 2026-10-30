@@ -7,7 +7,7 @@ import { expect, it } from "vitest";
 import { TestReverseEngineeringService } from "../support/reverseEngineeringService.js";
 
 it("bounds concurrent reverse-engineering provider calls", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-capacity-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-reverse-capacity-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   let release!: () => void;
@@ -103,7 +103,7 @@ it("bounds concurrent reverse-engineering provider calls", async () => {
 });
 
 it("preserves the exact caller reason when objdump admission is already aborted", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-preabort-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-reverse-preabort-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const reason = Object.freeze({ requested: "stop" });
@@ -133,7 +133,7 @@ it("preserves the exact caller reason when objdump admission is already aborted"
 });
 
 it("preserves the caller reason when cancellation arrives after provider output", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-postabort-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-reverse-postabort-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const reason = Object.freeze({ requested: "stop-after-output" });
@@ -163,7 +163,7 @@ it("preserves the caller reason when cancellation arrives after provider output"
 });
 
 it("keeps a physical digest denial primary when the caller aborts during that failure", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-digest-deny-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-reverse-digest-deny-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const reason = Object.freeze({ requested: "stop-during-denial" });
@@ -201,7 +201,7 @@ it("keeps a physical digest denial primary when the caller aborts during that fa
 });
 
 it("keeps an unrelated digest ABORT_ERR as an adapter failure", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-reverse-digest-abort-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-reverse-digest-abort-"));
   const path = join(directory, "fixture.bin");
   await writeFile(path, "fixture");
   const denied = Object.assign(new Error("digest aborted elsewhere"), {
@@ -264,7 +264,7 @@ it.each([
   "classifies a $code command failure with captured output $captured while the caller is aborted",
   async ({ captured, code, tag }) => {
     const directory = await mkdtemp(
-      join(tmpdir(), "rea-reverse-command-abort-"),
+      join(tmpdir(), "nre-reverse-command-abort-"),
     );
     const path = join(directory, "fixture.bin");
     await writeFile(path, "fixture");

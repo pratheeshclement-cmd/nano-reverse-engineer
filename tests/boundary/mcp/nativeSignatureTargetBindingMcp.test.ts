@@ -18,7 +18,7 @@ import { NativeFixtureRunner } from "../../fixtures/nativeCommands.js";
 import { toolContract } from "../../../src/contracts/toolContracts.js";
 
 it("keeps a failed snapshot descriptor and root together through MCP close and recovery", async () => {
-  const root = await createTestTempDirectory("rea-signature-order-mcp-");
+  const root = await createTestTempDirectory("nre-signature-order-mcp-");
   const path = join(root, "program");
   await writeFile(path, machoImage({}));
   const runner = new NativeFixtureRunner();
@@ -127,7 +127,7 @@ it.each(["mach-o", "mach-o-universal"] as const)(
   "rejects changed %s signature targets through MCP and accepts reopening the new version",
   async (format) => {
     const path = join(
-      await createTestTempDirectory("rea-signature-binding-mcp-"),
+      await createTestTempDirectory("nre-signature-binding-mcp-"),
       "program",
     );
     const image = (commands: readonly Uint8Array[] = []) =>

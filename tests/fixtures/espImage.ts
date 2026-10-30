@@ -94,7 +94,7 @@ export const appDescriptor = (fields: AppDescriptorFields = {}): Buffer =>
     word(fields.secureVersion ?? 0),
     Buffer.alloc(8),
     fixed(fields.version ?? "1.2.3", 32),
-    fixed(fields.projectName ?? "rea_esp_fixture", 32),
+    fixed(fields.projectName ?? "nre_esp_fixture", 32),
     fixed(fields.time ?? "12:34:56", 16),
     fixed(fields.date ?? "Oct 27 2026", 16),
     fixed(fields.idfVer ?? "v6.1", 32),

@@ -216,7 +216,7 @@ const analyzeReturns = async (
   left: string,
   right: string,
 ): Promise<[Source, Source]> => {
-  const root = await createTestTempDirectory("rea-export-container-coverage-");
+  const root = await createTestTempDirectory("nre-export-container-coverage-");
   return Promise.all([
     analyzeReturn(join(root, "left"), left),
     analyzeReturn(join(root, "right"), right),
@@ -269,7 +269,7 @@ const compareEvidence = (left: Source, right: Source) => {
   const evidenceLinks = [left.evidence.evidence_id, right.evidence.evidence_id];
   expect(evidence).toMatchObject({
     operation: "compare_javascript_export_shapes",
-    predicate_type: "rea.javascript-export-shape-comparison",
+    predicate_type: "nre.javascript-export-shape-comparison",
     authority: "analyst-inference",
     confidence: "inferred",
     evidence_links: evidenceLinks,

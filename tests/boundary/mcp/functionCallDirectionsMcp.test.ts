@@ -40,7 +40,7 @@ it.each(profiles)("preserves directional gaps (%s)", async (profile) => {
   });
   const server = createServer(
     { kind: "session", session },
-    { environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: profile } },
+    { environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: profile } },
   );
   const client = new Client({ name: "function-call-directions", version: "1" });
   const [clientTransport, serverTransport] =

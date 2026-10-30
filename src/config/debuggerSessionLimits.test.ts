@@ -127,12 +127,12 @@ it("names the session setting on a Rizin capacity refusal", async () => {
     { platform: "linux" },
   );
   const first = manager.start({
-    path: "/tmp/rea-debugger-limit",
-    inferior_tty: "/no/such/rea-debugger-tty",
+    path: "/tmp/nre-debugger-limit",
+    inferior_tty: "/no/such/nre-debugger-tty",
   });
   const blocked = await manager.start({
-    path: "/tmp/rea-debugger-limit-2",
-    inferior_tty: "/no/such/rea-debugger-tty",
+    path: "/tmp/nre-debugger-limit-2",
+    inferior_tty: "/no/such/nre-debugger-tty",
   });
   if (blocked.ok) throw new Error("expected the session cap to refuse");
   expect(projectAnalysisError(blocked.error)).toMatchObject({
@@ -182,14 +182,14 @@ it("does not let one Rizin manager consume another manager's session cap", async
     { platform: "linux" },
   );
   const input = {
-    path: "/tmp/rea-debugger-limit",
-    inferior_tty: "/no/such/rea-debugger-tty",
+    path: "/tmp/nre-debugger-limit",
+    inferior_tty: "/no/such/nre-debugger-tty",
   };
   const held = first.start(input);
   const independent = second.start(input);
   const blocked = first.start({
     ...input,
-    path: "/tmp/rea-debugger-limit-2",
+    path: "/tmp/nre-debugger-limit-2",
   });
   try {
     const independentResult = await independent;

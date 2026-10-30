@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import { syncBuiltinESMExports } from "node:module";
-const selected = process.env.REA_FUSE_PROBE_INPUT;
-const trace = process.env.REA_FUSE_PROBE_TRACE;
-const mode = process.env.REA_FUSE_PROBE_MODE;
-const allow = process.env.REA_FUSE_PROBE_ALLOW;
+const selected = process.env.NRE_FUSE_PROBE_INPUT;
+const trace = process.env.NRE_FUSE_PROBE_TRACE;
+const mode = process.env.NRE_FUSE_PROBE_MODE;
+const allow = process.env.NRE_FUSE_PROBE_ALLOW;
 const record = (value) =>
   fs.appendFileSync(trace, JSON.stringify(value) + "\n");
 const open = fs.promises.open.bind(fs.promises);

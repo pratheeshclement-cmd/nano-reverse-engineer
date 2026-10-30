@@ -31,8 +31,8 @@ import {
 
 const root = process.argv[2];
 const inspectExisting = process.argv[3] === "--inspect-existing";
-const mitmdump = process.env.REA_MITMDUMP_COMMAND;
-const python = process.env.REA_HTTP3_PYTHON_COMMAND;
+const mitmdump = process.env.NRE_MITMDUMP_COMMAND;
+const python = process.env.NRE_HTTP3_PYTHON_COMMAND;
 assert.equal(
   process.platform,
   "linux",
@@ -53,7 +53,7 @@ if (!inspectExisting)
   );
 const run = createVerifierRun();
 const cwd = fileURLToPath(new URL("..", import.meta.url));
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );

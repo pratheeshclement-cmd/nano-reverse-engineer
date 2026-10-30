@@ -44,12 +44,12 @@ const cliError = (error: AnalysisError): JsonValue => ({
   ...projectAnalysisError(error),
 });
 
-/** The listener announces its URL, and a build its stages, at info like `rea mcp --http`; an explicit REA_LOG_LEVEL still wins. */
+/** The listener announces its URL, and a build its stages, at info like `nre mcp --http`; an explicit NRE_LOG_LEVEL still wins. */
 const infoLogger = (
   environment: Readonly<NodeJS.ProcessEnv>,
   logger: Logger,
 ): Logger =>
-  environment.REA_LOG_LEVEL === undefined
+  environment.NRE_LOG_LEVEL === undefined
     ? createLogger("cli", "info")
     : logger;
 
@@ -505,7 +505,7 @@ const registerBuildCommand = (
       packageTarball: localPathStringSchema
         .optional()
         .describe(
-          "Packed rea-agents tarball (npm pack) copied into the env folder and installed by the Dockerfile instead of the registry package pinned to this version",
+          "Packed nano-reverse-engineer tarball (npm pack) copied into the env folder and installed by the Dockerfile instead of the registry package pinned to this version",
         ),
       dryRun: z
         .boolean()
@@ -635,7 +635,7 @@ const registerExportCommand = (cli: CliInstance, logger: Logger): void => {
       packageTarball: localPathStringSchema
         .optional()
         .describe(
-          "Packed rea-agents tarball (npm pack) copied into the env folder and installed by the Dockerfile instead of the registry package pinned to this version",
+          "Packed nano-reverse-engineer tarball (npm pack) copied into the env folder and installed by the Dockerfile instead of the registry package pinned to this version",
         ),
       name: z
         .string()

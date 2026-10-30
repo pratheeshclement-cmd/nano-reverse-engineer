@@ -80,7 +80,7 @@ export const parseMcpHttpEndpoint = (
   if (authToken === undefined) {
     const rawToken =
       environment.NRE_HTTP_AUTH_TOKEN ??
-      environment.REA_HTTP_AUTH_TOKEN ??
+      environment.NRE_HTTP_AUTH_TOKEN ??
       environment.MCP_AUTH_TOKEN;
     if (rawToken !== undefined && rawToken.trim().length > 0) {
       authToken = rawToken.trim();
@@ -89,12 +89,12 @@ export const parseMcpHttpEndpoint = (
   const allowUnauthenticated =
     overrides.allowUnauthenticated ??
     (environment.NRE_ALLOW_UNAUTHENTICATED === "true" ||
-      environment.REA_ALLOW_UNAUTHENTICATED === "true");
+      environment.NRE_ALLOW_UNAUTHENTICATED === "true");
   let maxConcurrentSessions = overrides.maxConcurrentSessions;
   if (maxConcurrentSessions === undefined) {
     const rawMax =
       environment.NRE_MCP_MAX_SESSIONS ??
-      environment.REA_MCP_MAX_SESSIONS ??
+      environment.NRE_MCP_MAX_SESSIONS ??
       environment.MCP_MAX_SESSIONS;
     if (rawMax !== undefined && /^[1-9]\d*$/u.test(rawMax.trim())) {
       maxConcurrentSessions = Number.parseInt(rawMax.trim(), 10);

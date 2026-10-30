@@ -136,7 +136,7 @@ export default defineConfig({
     env: { TMPDIR: CANONICAL_TEMPORARY_DIRECTORY },
     maxWorkers: MAX_TEST_WORKERS,
     projects,
-    ...(process.env.REA_CI_TEST_HISTORY
+    ...(process.env.NRE_CI_TEST_HISTORY
       ? { sequence: { sequencer: CiTestSequencer } }
       : {}),
     retry: 0,
@@ -151,7 +151,7 @@ export default defineConfig({
       provider: "v8",
       reportsDirectory: join(
         tmpdir(),
-        `rea-vitest-coverage-${String(process.pid)}`,
+        `nre-vitest-coverage-${String(process.pid)}`,
       ),
       include: ["src/**"],
       thresholds: COVERAGE_SHARD

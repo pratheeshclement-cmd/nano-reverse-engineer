@@ -17,7 +17,7 @@ it.each([
 ] as const)(
   "preserves %s in file-backed Apple metadata identities",
   async (_, className, propertyName, selector) => {
-    const directory = await createTestTempDirectory("rea-dispatch-strings-");
+    const directory = await createTestTempDirectory("nre-dispatch-strings-");
     const path = join(directory, "fixture.bin");
     const bytes = machoWithPropertyAttributes("Tq,N", {
       firstName: propertyName,
@@ -81,7 +81,7 @@ it.each([
 ] as const)(
   "keeps %s partial beside a valid Apple metadata identity",
   async (_, name) => {
-    const directory = await createTestTempDirectory("rea-dispatch-strings-");
+    const directory = await createTestTempDirectory("nre-dispatch-strings-");
     const path = join(directory, "fixture.bin");
     const bytes = machoWithPropertyAttributes("Tq,N");
     // Invalid UTF-8 and a NUL-only name remain distinct from EF BB BF payload.

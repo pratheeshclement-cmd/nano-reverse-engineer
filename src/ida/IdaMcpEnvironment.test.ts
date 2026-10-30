@@ -13,7 +13,7 @@ afterEach(async () => {
 });
 
 it("launches the upstream SDK transport with the selected snapshot and suppresses ambient SDK defaults", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-ida-environment-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-ida-environment-"));
   roots.push(root);
   const script = join(root, "producer.mjs");
   await writeFile(
@@ -28,23 +28,23 @@ input.on('line', (line) => {
     ? { protocolVersion: request.params.protocolVersion, capabilities: { tools: {} }, serverInfo: { name: 'environment-producer', version: '1' } }
     : request.method === 'tools/list'
       ? { tools: [{ name: 'environment', inputSchema: { type: 'object' } }] }
-      : { content: [], structuredContent: { selected: process.env.REA_SELECTED_CONTEXT ?? null, registration: process.env.REA_REGISTRATION_CONTEXT ?? null, ambient: process.env.REA_AMBIENT_CONTEXT ?? null, home: process.env.HOME ?? null, path: process.env.PATH ?? null } };
+      : { content: [], structuredContent: { selected: process.env.NRE_SELECTED_CONTEXT ?? null, registration: process.env.NRE_REGISTRATION_CONTEXT ?? null, ambient: process.env.NRE_AMBIENT_CONTEXT ?? null, home: process.env.HOME ?? null, path: process.env.PATH ?? null } };
   process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id: request.id, result }) + '\\n');
 });
 `,
   );
-  vi.stubEnv("REA_SELECTED_CONTEXT", "ambient");
-  vi.stubEnv("REA_AMBIENT_CONTEXT", "ambient-only");
+  vi.stubEnv("NRE_SELECTED_CONTEXT", "ambient");
+  vi.stubEnv("NRE_AMBIENT_CONTEXT", "ambient-only");
   vi.stubEnv("HOME", "/ambient-home");
   vi.stubEnv("PATH", "/ambient-path");
   const environment = {
-    REA_SELECTED_CONTEXT: "selected",
-    REA_REGISTRATION_CONTEXT: "selected-base",
+    NRE_SELECTED_CONTEXT: "selected",
+    NRE_REGISTRATION_CONTEXT: "selected-base",
     HOME: "/selected-home",
     PATH: "/selected-path",
   };
   const registrationEnvironment: Record<string, string> = {
-    REA_REGISTRATION_CONTEXT: "registration",
+    NRE_REGISTRATION_CONTEXT: "registration",
   };
   if (process.platform === "win32") {
     const systemRoot = process.env.SYSTEMROOT;
@@ -65,7 +65,7 @@ input.on('line', (line) => {
       },
       selected,
     );
-    environment.REA_SELECTED_CONTEXT = "mutated-after-construction";
+    environment.NRE_SELECTED_CONTEXT = "mutated-after-construction";
     try {
       expect(await connection.connect()).toEqual(["environment"]);
       expect(await connection.call("environment", {})).toEqual({

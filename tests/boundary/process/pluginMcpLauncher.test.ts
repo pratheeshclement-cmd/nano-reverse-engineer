@@ -11,7 +11,7 @@ const launcher = fileURLToPath(
 );
 
 const pluginFixture = async (runtime: string) => {
-  const workspace = await createTestTempDirectory("rea-plugin-");
+  const workspace = await createTestTempDirectory("nre-plugin-");
   const root = join(workspace, "plugin with spaces");
   await mkdir(root);
   await mkdir(join(root, "scripts"));
@@ -20,10 +20,14 @@ const pluginFixture = async (runtime: string) => {
   await copyFile(launcher, entry);
   await writeFile(
     join(root, "package.json"),
-    JSON.stringify({ name: "rea-agents", version: "6.8.0", type: "module" }),
+    JSON.stringify({
+      name: "nano-reverse-engineer",
+      version: "6.8.0",
+      type: "module",
+    }),
   );
   await writeFile(join(root, "dist/mcp/main.js"), "");
-  await writeFile(join(root, "scripts/rea.mjs"), runtime);
+  await writeFile(join(root, "scripts/nre.mjs"), runtime);
   return { root, entry };
 };
 
@@ -62,7 +66,7 @@ it("runs the matching runtime in-process and preserves cwd, stdio, and exit stat
     process.stdin.pipe(process.stdout);
     process.stdin.on("end", () => { process.exitCode = 7; });
   `);
-  const caller = await createTestTempDirectory("rea-plugin-caller-");
+  const caller = await createTestTempDirectory("nre-plugin-caller-");
   const cwd = join(caller, "caller with spaces");
   await mkdir(cwd);
   // Built source plugins and npm artifacts use the same runtime owner.
@@ -92,7 +96,8 @@ it.each([["latest"], ["6.8.0&echo wrong"], ["6.8.0", "extra"], []])(
     expect(await closed).toEqual({
       code: 1,
       stdout: "",
-      stderr: "REA plugin requires one exact rea-agents@VERSION pin.\n",
+      stderr:
+        "NRE plugin requires one exact nano-reverse-engineer@VERSION pin.\n",
     });
   },
 );
@@ -107,7 +112,7 @@ it("rejects a mismatched runtime instead of downloading another package", async 
     code: 1,
     stdout: "",
     stderr:
-      "REA plugin version pin does not match its installed rea-agents package; reinstall the plugin.\n",
+      "NRE plugin version pin does not match its installed nano-reverse-engineer package; reinstall the plugin.\n",
   });
 });
 
@@ -122,7 +127,7 @@ it("reports how to repair an incomplete artifact or unbuilt source checkout", as
     code: 1,
     stdout: "",
     stderr:
-      "REA plugin runtime is missing; reinstall the plugin, or run npm ci && npm run build:cached in a source checkout.\n",
+      "NRE plugin runtime is missing; reinstall the plugin, or run npm ci && npm run build:cached in a source checkout.\n",
   });
 });
 
@@ -139,7 +144,7 @@ it("preserves runtime startup failures", async () => {
 });
 
 it.skipIf(process.platform === "win32")(
-  "leaves signal cleanup with the running REA runtime",
+  "leaves signal cleanup with the running NRE runtime",
   async () => {
     const { root, entry } = await pluginFixture(`
     process.on("SIGTERM", () => { process.stderr.write("cleaned"); process.exit(0); });

@@ -34,19 +34,19 @@ import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 import { createAnthropicModelFixture } from "./verify/clients/anthropic-model-fixture.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_CLAUDE_COMMAND ?? "claude";
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_CLAUDE_COMMAND ?? "claude";
 const mode = process.argv[2] ?? "call";
 assert(
   ["chat", "call"].includes(mode),
   "Usage: verify-claude-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-claude-client-"));
+const lab = await mkdtemp(join(tmpdir(), "nre-claude-client-"));
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
 const configPath = join(profile, ".claude.json");
-const skillDirectory = join(profile, "skills", "reverse-engineer-anything");
+const skillDirectory = join(profile, "skills", "nano-reverse-engineer");
 let clientVersion = null;
 let fixture;
 let passed = false;
@@ -74,7 +74,7 @@ await withVerifierCleanup(async () => {
       CLAUDE_CONFIG_DIR: profile,
       DISABLE_AUTOUPDATER: "1",
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     try {
       clientVersion = (
@@ -91,7 +91,7 @@ await withVerifierCleanup(async () => {
           ? " On Windows, select claude.exe; npm installs provide it under node_modules/@anthropic-ai/claude-code/bin."
           : "";
       throw new Error(
-        `Claude Code preflight failed for ${command}; install Claude Code or set REA_VERIFY_CLAUDE_COMMAND.${windowsHint} ${String(cause)}`,
+        `Claude Code preflight failed for ${command}; install Claude Code or set NRE_VERIFY_CLAUDE_COMMAND.${windowsHint} ${String(cause)}`,
         { cause },
       );
     }
@@ -122,7 +122,7 @@ await withVerifierCleanup(async () => {
       directory: lab,
       onRequest: async ({ body, tools, requestIndex }) => {
         if (tools.length === 0)
-          return [{ type: "text", text: "REA fixture title" }];
+          return [{ type: "text", text: "NRE fixture title" }];
         assert(
           requestIndex <= 8,
           "Local model workflow exceeded its turn budget",
@@ -138,10 +138,10 @@ await withVerifierCleanup(async () => {
           const wait = tools.find((t) => t.name === "WaitForMcpServers");
           assert(
             wait,
-            "Claude must expose REA tools or its native pending-server wait",
+            "Claude must expose NRE tools or its native pending-server wait",
           );
           pendingServerWaits++;
-          return call(wait.name, { servers: ["rea"] });
+          return call(wait.name, { servers: ["nre"] });
         }
         const prefix = analysis.name.slice(
           0,
@@ -150,15 +150,15 @@ await withVerifierCleanup(async () => {
         const expected = sortVerifierNames(
           TOOL_CONTRACTS.map((t) => prefix + t.name),
         );
-        const reaTools = tools.filter((t) => t.name.startsWith(prefix));
-        catalogSize = reaTools.length;
+        const nreTools = tools.filter((t) => t.name.startsWith(prefix));
+        catalogSize = nreTools.length;
         assert.deepEqual(
-          sortVerifierNames(reaTools.map((t) => t.name)),
+          sortVerifierNames(nreTools.map((t) => t.name)),
           expected,
-          "Claude must forward the complete REA catalog after connection",
+          "Claude must forward the complete NRE catalog after connection",
         );
         if (schemasChecked === 0) {
-          for (const tool of reaTools) {
+          for (const tool of nreTools) {
             assert(
               tool.input_schema,
               `${tool.name}: missing advertised input schema`,
@@ -186,10 +186,10 @@ await withVerifierCleanup(async () => {
               result: expandMcpSessionStatus(parsedStatus.result),
             };
             const inputProfile = parseMcpInputSchemaProfile(
-              environment.REA_MCP_INPUT_SCHEMA_PROFILE,
+              environment.NRE_MCP_INPUT_SCHEMA_PROFILE,
             );
             const outputProfile = parseMcpOutputSchemaProfile(
-              environment.REA_MCP_OUTPUT_SCHEMA_PROFILE,
+              environment.NRE_MCP_OUTPUT_SCHEMA_PROFILE,
             );
             assert.ok(inputProfile.ok);
             assert.ok(outputProfile.ok);
@@ -227,7 +227,7 @@ await withVerifierCleanup(async () => {
             const session = tools.find(
               (tool) => tool.name === `${prefix}binary_session`,
             );
-            assert(session, "Claude must expose the REA binary_session tool");
+            assert(session, "Claude must expose the NRE binary_session tool");
             sessionRequested = true;
             return call(session.name, {});
           }
@@ -253,17 +253,17 @@ await withVerifierCleanup(async () => {
         }
         if (mode === "chat" || (sessionStatusSeen && evidenceSeen)) {
           finalSeen = true;
-          return [{ type: "text", text: "REA_CLIENT_COMPATIBILITY_OK" }];
+          return [{ type: "text", text: "NRE_CLIENT_COMPATIBILITY_OK" }];
         }
         if (!skillRequested) {
           const skill = tools.find((t) => t.name === "Skill");
           assert(skill, "Claude must expose its native Skill tool");
           skillRequested = true;
-          return call(skill.name, { skill: "reverse-engineer-anything" });
+          return call(skill.name, { skill: "nano-reverse-engineer" });
         }
         assert(
           skillLoaded,
-          "Claude must load the complete installed personal REA skill",
+          "Claude must load the complete installed personal NRE skill",
         );
         return call(analysis.name, { input_path: target, format: "directory" });
       },
@@ -281,7 +281,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const result = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
       await writeFile(
@@ -312,13 +312,13 @@ await withVerifierCleanup(async () => {
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert.equal(JSON.parse(configured).theme, "light");
     const repeated = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/nre.mjs"),
         "setup",
         "--client",
         "claude_code",
@@ -329,12 +329,12 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const installedSkill = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",
     );
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: nano-reverse-engineer"));
     const lines = installedSkill.split("\n");
     const headerEnd = lines.indexOf("---", 1);
     assert(
@@ -376,7 +376,7 @@ await withVerifierCleanup(async () => {
             }),
             mode === "chat"
               ? "Say hello briefly."
-              : `Use the REA skill and tools to analyze the JavaScript directory ${target}. Report the result.`,
+              : `Use the NRE skill and tools to analyze the JavaScript directory ${target}. Report the result.`,
           ],
           {
             env: {
@@ -400,7 +400,7 @@ await withVerifierCleanup(async () => {
     const parsed = JSON.parse(response.stdout);
     assert.equal(parsed.is_error, false);
     assert.equal(parsed.subtype, "success");
-    assert.equal(parsed.result, "REA_CLIENT_COMPATIBILITY_OK");
+    assert.equal(parsed.result, "NRE_CLIENT_COMPATIBILITY_OK");
     assert.deepEqual(parsed.permission_denials, []);
     assert(finalSeen);
     if (mode === "call")

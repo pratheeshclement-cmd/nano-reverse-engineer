@@ -16,7 +16,7 @@ const formatterFailure = `
        value?.data?.operation === "inspect_managed_artifact" ||
        value?.code === "target_unavailable" ||
        value?.error?.code === "target_unavailable")) {
-    process.stderr.write("REA_AUTHORED_FORMAT_CAPACITY\\n");
+    process.stderr.write("NRE_AUTHORED_FORMAT_CAPACITY\\n");
     throw new RangeError("Invalid string length");
   }
 `;
@@ -34,7 +34,7 @@ registerHooks({
 });
 `)}`;
 
-// REA owns Markdown rendering. Fail one scalar's string materialization in the
+// NRE owns Markdown rendering. Fail one scalar's string materialization in the
 // CLI child, restoring String before the recovery document uses that formatter.
 // This does not depend on generated bundle names or compiled function text.
 const markdownCapacityHook = `data:text/javascript,${encodeURIComponent(`
@@ -42,7 +42,7 @@ globalThis.String = new Proxy(String, {
   apply(target, receiver, args) {
     if (["inspect_managed_artifact", "target_unavailable"].includes(args[0])) {
       globalThis.String = target;
-      process.stderr.write("REA_AUTHORED_FORMAT_CAPACITY\\n");
+      process.stderr.write("NRE_AUTHORED_FORMAT_CAPACITY\\n");
       throw new RangeError("Invalid string length");
     }
     return Reflect.apply(target, receiver, args);
@@ -108,7 +108,7 @@ for (const scenario of scenarios)
               : "data:text/javascript,",
             "--import",
             scenario.format === "md" ? markdownCapacityHook : incurCapacityHook,
-            resolve("scripts/rea.mjs"),
+            resolve("scripts/nre.mjs"),
             "inspect-managed-artifact",
             target,
             ...(scenario.format ? ["--format", scenario.format] : []),
@@ -117,7 +117,7 @@ for (const scenario of scenarios)
           { cwd: workspace.root, env: { PATH: process.env.PATH ?? "" } },
         );
         expect(result.exitCode, result.stderr).toBe(1);
-        expect(result.stderr.trim()).toBe("REA_AUTHORED_FORMAT_CAPACITY");
+        expect(result.stderr.trim()).toBe("NRE_AUTHORED_FORMAT_CAPACITY");
         expect(result.stdout).toContain("resource_constraint");
         expect(result.stdout).toContain("--format json");
         expect(result.stdout).toContain("formatted_characters");
@@ -162,7 +162,7 @@ workspaceCliTest.skipIf(process.platform === "win32")(
       [
         "--import",
         incurCapacityHook,
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/nre.mjs"),
         "inspect-managed-artifact",
         workspace.path("missing.dll"),
       ],
@@ -180,7 +180,7 @@ workspaceCliTest.skipIf(process.platform === "win32")(
     );
     expect({ code, stderr }).toEqual({
       code: 141,
-      stderr: "REA_AUTHORED_FORMAT_CAPACITY\n",
+      stderr: "NRE_AUTHORED_FORMAT_CAPACITY\n",
     });
   },
 );

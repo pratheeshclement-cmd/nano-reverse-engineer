@@ -452,7 +452,7 @@ cliTest.for(
 )(
   "preserves loader boundaries: $name through $surface",
   async (testCase, { cli }) => {
-    const root = await createTestTempDirectory("rea-loader-review-");
+    const root = await createTestTempDirectory("nre-loader-review-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs": 'require("../shared/window.cjs");',
@@ -536,7 +536,7 @@ cliTest.for(
 )(
   "preserves $direction ASAR ownership for $archive through $surface",
   async ({ surface, archive, direction }, { cli }) => {
-    const root = await createTestTempDirectory("rea-asar-case-");
+    const root = await createTestTempDirectory("nre-asar-case-");
     const source = join(root, "source");
     const application = join(root, "application");
     const inward = direction === "inward";

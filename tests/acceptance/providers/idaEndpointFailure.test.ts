@@ -43,7 +43,7 @@ for (const encodedCredential of [false, true])
       );
       const result = await cli.run({
         arguments: ["analyze", target, "--provider", "ida", "--json"],
-        environment: { REA_IDA_MCP_CONFIG: registration },
+        environment: { NRE_IDA_MCP_CONFIG: registration },
       });
       expect(result.exitCode, result.stderr).toBe(1);
       expect(result.json).toMatchObject({
@@ -54,7 +54,7 @@ for (const encodedCredential of [false, true])
       expect(JSON.stringify(result.json)).not.toContain("fixture-secret");
       expect(JSON.stringify(result.json)).not.toContain("fixture%2Dsecret");
       const { call } = await connectLocalToolsMcp({
-        REA_IDA_MCP_CONFIG: registration,
+        NRE_IDA_MCP_CONFIG: registration,
       });
       const opened = await call("open_binary", {
         path: target,
@@ -75,7 +75,7 @@ for (const encodedCredential of [false, true])
       closed = true;
       const stopped = await cli.run({
         arguments: ["analyze", target, "--provider", "ida", "--json"],
-        environment: { REA_IDA_MCP_CONFIG: registration },
+        environment: { NRE_IDA_MCP_CONFIG: registration },
       });
       expect(stopped.exitCode, stopped.stderr).toBe(1);
       expect(stopped.json).toMatchObject({

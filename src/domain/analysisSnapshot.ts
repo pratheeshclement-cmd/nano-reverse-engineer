@@ -662,7 +662,7 @@ const restoreSnapshot = (
   const matching = new Map<string, Evidence>();
   for (const evidence of bundle.records) {
     if (
-      evidence.predicate_type !== "rea.analysis" ||
+      evidence.predicate_type !== "nre.analysis" ||
       evidence.authority !== "shipped-artifact" ||
       evidence.subject?.digest.sha256 !== header.target.sha256 ||
       evidence.analysis_profile === null ||
@@ -792,7 +792,7 @@ const isCorrespondingEvidence = (
   evidence: Evidence,
   snapshot: Pick<AnalysisSnapshot, "target" | "binding">,
 ): boolean =>
-  evidence.predicate_type === "rea.analysis" &&
+  evidence.predicate_type === "nre.analysis" &&
   evidence.confidence === "observed" &&
   evidence.authority === "shipped-artifact" &&
   evidence.subject?.digest.sha256 === snapshot.target.sha256 &&
@@ -868,7 +868,7 @@ const isWorkflowEvidence = (
   snapshot: Pick<AnalysisSnapshot, "target">,
   entry: AnalysisSnapshotWorkflowEntry,
 ): boolean =>
-  evidence.predicate_type === "rea.analysis" &&
+  evidence.predicate_type === "nre.analysis" &&
   evidence.confidence === "derived" &&
   evidence.authority === "shipped-artifact" &&
   evidence.subject?.digest.sha256 === snapshot.target.sha256 &&

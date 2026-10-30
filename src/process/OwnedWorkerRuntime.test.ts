@@ -14,14 +14,14 @@ import { spawnOwnedProviderProcess } from "./ProviderProcess.js";
 const runtimeOptions = (
   overrides: Partial<OwnedWorkerRuntimeOptions> = {},
 ): OwnedWorkerRuntimeOptions => ({
-  rootPrefix: "rea-owned-worker-test-",
+  rootPrefix: "nre-owned-worker-test-",
   ...overrides,
 });
 
 const startOptions = () => ({
   command: process.execPath,
   arguments: ["-e", "process.stdin.resume(); setInterval(() => {}, 1000);"],
-  runId: `rea-owned-worker-test-${randomUUID()}`,
+  runId: `nre-owned-worker-test-${randomUUID()}`,
   stdin: "pipe" as const,
 });
 

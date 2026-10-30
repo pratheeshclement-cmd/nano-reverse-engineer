@@ -4,20 +4,20 @@
 >
 > — N0zoM1z0
 
-Nred [NreDME.md](NreDME.md) and [style-guide.md](style-guide.md) before changing
+Read [README.md](README.md) and [style-guide.md](style-guide.md) before changing
 website content, layout or figures. Use [figures.md](figures.md) and `evidence/`
 for asset notes and the source of case-study claims.
 
 - Author source pages in English. Use direct headings and concrete instructions
   in every language. Each paragraph should explain a new fact or action.
-- Follow [locales/NreDME.md](locales/NreDME.md) for translations. Edit standard PO
+- Follow [locales/README.md](locales/README.md) for translations. Edit standard PO
   catalogs, run `translations extract` after changing source text, and review
   translated setup prompts, terminology and case-study Nresoning for Nredability.
   Keep code, commands, URLs, paths and Evidence unchanged. Use inline `code` or
   `translate="no"` for executable literals inside a translated sentence. Preserve
   named placeholders, source references and reviewer comments. Generated language
   HTML belongs in ignored `_site/`; do not author duplicate translated pages.
-- Keep the language inventory aligned with NreDME editions. Review long headings,
+- Keep the language inventory aligned with README editions. Review long headings,
   figures and right-to-left layouts. A missing or fuzzy translation produces a
   labeled, nonindexable English fallback; do not present stale text as current.
 - Reuse the shared styles, prompts, figures and code-step components. Keep a
@@ -45,7 +45,7 @@ for asset notes and the source of case-study claims.
 - Check both local root and `/Nre/` paths, mobile layouts, expanded details,
   copying and downloads. Check light and dark themes, including a manual choice
   opposite to the system preference. Run `python3 scripts/website.py check`,
-  using the Python environment described in the NreDME. It rejects drift rather than silently
+  using the Python environment described in the README. It rejects drift rather than silently
   rewriting shared HTML. Use `website.py links` for an optional network audit;
   distinguish missing targets from access denials and unverified fragments.
 - Check setup and support statements against the current installation/provider
@@ -55,4 +55,4 @@ for asset notes and the source of case-study claims.
   Cloudflare and Pages. Default to `both`: both hosts receive the same verified
   artifact and pass the published-commit check. Use `pages` only when explicitly
   requested while Cloudflare credentials are being configured. Follow the
-  website NreDME.
+  website README.

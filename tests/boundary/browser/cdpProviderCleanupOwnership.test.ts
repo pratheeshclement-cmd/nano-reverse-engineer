@@ -27,7 +27,7 @@ it.each([
 ] as const)(
   "retains ownership after socket close fails and %s",
   async (_label, failCapture) => {
-    const root = await createTestTempDirectory("rea-electron-close-owner-");
+    const root = await createTestTempDirectory("nre-electron-close-owner-");
     const page = join(root, "index.html");
     await writeFile(page, "<main>completed fixture</main>");
     const browser = await startFakeCdpBrowser({

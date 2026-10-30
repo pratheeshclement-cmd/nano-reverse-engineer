@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 describe("resolveApktoolCommand", () => {
-  it("prefers an absolute REA_APKTOOL_COMMAND", async () => {
+  it("prefers an absolute NRE_APKTOOL_COMMAND", async () => {
     expect(
       await resolveApktoolCommand(
         {
@@ -218,7 +218,7 @@ describe("apktoolInvocation", () => {
           command: "C:\\ProgramData\\chocolatey\\bin\\apktool.BAT",
           commandSource: "environment",
         },
-        ["d", "-o", "C:\\Users\\Analyst\\AppData\\Local\\Temp\\rea out"],
+        ["d", "-o", "C:\\Users\\Analyst\\AppData\\Local\\Temp\\nre out"],
         windows,
         "win32",
       ),
@@ -230,7 +230,7 @@ describe("apktoolInvocation", () => {
         "/v:off",
         "/s",
         "/c",
-        '""C:\\ProgramData\\chocolatey\\bin\\apktool.BAT" "d" "-o" "C:\\Users\\Analyst\\AppData\\Local\\Temp\\rea out""',
+        '""C:\\ProgramData\\chocolatey\\bin\\apktool.BAT" "d" "-o" "C:\\Users\\Analyst\\AppData\\Local\\Temp\\nre out""',
       ],
       windowsVerbatimArguments: true,
     });

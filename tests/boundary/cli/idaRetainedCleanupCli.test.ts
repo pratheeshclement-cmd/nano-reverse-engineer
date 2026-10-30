@@ -7,7 +7,7 @@ import { elf } from "../../../src/domain/binaryTarget.fixture.js";
 /**
  * A headless IDA supervisor that completes the MCP handshake and then leaves
  * every tool call unanswered, as an `idb_open` still running auto-analysis
- * would. It exits when REA closes its input.
+ * would. It exits when NRE closes its input.
  */
 const UNRESPONSIVE_SUPERVISOR = `import { createInterface } from "node:readline";
 const tools = ["idb_open", "idb_list", "idb_close", "server_health", "list_funcs",
@@ -54,9 +54,9 @@ describe("headless IDA timeout through the one-shot CLI", () => {
         arguments: ["decompile", target, "main", "--json"],
         environment: {
           ...workspace.environment,
-          REA_ANALYSIS_PROVIDER: "ida",
-          REA_IDA_MCP_CONFIG: registration,
-          REA_LOG_LEVEL: "silent",
+          NRE_ANALYSIS_PROVIDER: "ida",
+          NRE_IDA_MCP_CONFIG: registration,
+          NRE_LOG_LEVEL: "silent",
         },
         timeoutMs: 30_000,
       });
@@ -83,7 +83,7 @@ describe("headless IDA timeout through the one-shot CLI", () => {
                   state: "unverified",
                   sessions: [
                     {
-                      session_id: expect.stringMatching(/^rea-/),
+                      session_id: expect.stringMatching(/^nre-/),
                       backend: "worker",
                       owned: null,
                       input_path: null,

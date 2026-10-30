@@ -24,7 +24,7 @@ const collect = async (stream: Readable): Promise<Buffer> => {
 };
 
 const writeCarrier = async (name: string, bytes: Buffer): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-uimage-");
+  const directory = await createTestTempDirectory("nre-uimage-");
   const path = join(directory, name);
   await writeFile(path, bytes);
   return path;

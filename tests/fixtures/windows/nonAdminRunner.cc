@@ -75,7 +75,7 @@ int wmain(int count, wchar_t** args) {
   if (!SetTokenInformation(primary, TokenDefaultDacl, &defaultDacl, sizeof(defaultDacl)) ||
       !SetTokenInformation(primary, TokenOwner, &owner, sizeof(owner))) return 79;
   SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES), descriptor, FALSE};
-  const auto stationName = L"rea-fixture-" + std::to_wstring(GetCurrentProcessId());
+  const auto stationName = L"nre-fixture-" + std::to_wstring(GetCurrentProcessId());
   const auto originalStation = GetProcessWindowStation();
   const auto station = CreateWindowStationW(stationName.c_str(), 0, WINSTA_ALL_ACCESS, &security);
   if (!station || !SetProcessWindowStation(station)) return 76;

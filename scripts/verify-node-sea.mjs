@@ -6,7 +6,7 @@ import { join, resolve } from "node:path";
 
 // Requires a running Docker daemon, network access for the pinned fixture
 // producer, and `npm run build:cached`. Never executes the injected application.
-const root = await mkdtemp(join(tmpdir(), "rea-node-sea-real-"));
+const root = await mkdtemp(join(tmpdir(), "nre-node-sea-real-"));
 const image = "node:24.10.0-bookworm";
 const script =
   'throw new Error("SEA verification must not execute this application");\n';
@@ -43,7 +43,7 @@ try {
     JSON.parse(
       execFileSync(
         process.execPath,
-        [resolve("scripts/rea.mjs"), ...args, "--json"],
+        [resolve("scripts/nre.mjs"), ...args, "--json"],
         {
           encoding: "utf8",
           timeout: 120_000,

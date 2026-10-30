@@ -34,7 +34,7 @@ const sliceTest = mcpTest.extend<{
     const session = createTestBinarySession(() => {
       throw new Error("Static metadata must not start a deep provider");
     });
-    const root = await createTestTempDirectory("rea-universal-slice-");
+    const root = await createTestTempDirectory("nre-universal-slice-");
     try {
       const client = await mcp.connect(
         createServer({ kind: "session", session }),

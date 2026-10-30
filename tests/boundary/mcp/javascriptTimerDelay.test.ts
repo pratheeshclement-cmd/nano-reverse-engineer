@@ -14,7 +14,7 @@ cliTest(
   "retains unknown timer delays and unrelated facts through public CLI and MCP",
   { timeout: 60_000 },
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-timer-delay-");
+    const root = await createTestTempDirectory("nre-timer-delay-");
     const source = [
       'export function greet() { return "hello"; }',
       "setTimeout(() => greet(), 1e999);",
@@ -69,7 +69,7 @@ cliTest(
     const client = new Client({ name: "timer-delay-boundary", version: "1" });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: { PATH: process.env.PATH ?? "" },
       stderr: "pipe",

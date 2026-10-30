@@ -53,7 +53,7 @@ import {
 
 export const MODEL_ARTIFACT_PROVIDER_IDENTITY = {
   id: "model-artifact",
-  name: "REA model header reader",
+  name: "NRE model header reader",
   version: "1",
 } as const;
 const OPERATION = "inspect_model_artifact";

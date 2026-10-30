@@ -46,7 +46,7 @@ const expectOwnedProcessExited = async (pidText: string): Promise<void> => {
 
 it("keeps persistent GDB sessions unavailable on Windows", async () => {
   const gdb = await createGdbManagerForInjectedPlatform({
-    environment: { REA_GDB_COMMAND: "/missing/gdb" },
+    environment: { NRE_GDB_COMMAND: "/missing/gdb" },
     platform: "win32",
   }).start();
 
@@ -60,7 +60,7 @@ it("keeps persistent GDB sessions unavailable on Windows", async () => {
 it.skipIf(process.platform === "win32")(
   "spawns GDB from the provider environment snapshot",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-environment-snapshot-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-environment-snapshot-"));
     const selectedDirectory = join(directory, "selected-bin");
     await import("node:fs/promises").then(({ mkdir }) =>
       mkdir(selectedDirectory),
@@ -107,7 +107,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "classifies an early GDB startup exit as a process failure with diagnostics",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-startup-early-exit-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-startup-early-exit-"));
     const provider = join(directory, "fake-gdb-exits-during-config.mjs");
     await writeFile(
       provider,
@@ -128,7 +128,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       startupTimeoutMs: 1_000,
     });
     managers.push(manager);
@@ -166,7 +166,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "verifies inferior state after an automatic-loading rejection before cleanup",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-autoload-reject-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-autoload-reject-"));
     const provider = join(directory, "fake-gdb-autoload-reject.mjs");
     let detachChecked = false;
     await writeFile(
@@ -185,7 +185,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       stopProcess: async (session) => {
         detachChecked = true;
         await session.detachInferior?.();
@@ -205,7 +205,7 @@ process.stdin.on("data", (chunk) => {
     });
     if (!started.ok)
       expect(started.error.partialObservation).toMatchObject({
-        predicate_type: "rea.debugger.startup-observation",
+        predicate_type: "nre.debugger.startup-observation",
         raw_result: {
           records: expect.arrayContaining([
             '~"automatic loading rejected',
@@ -222,7 +222,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "preserves invalid UTF-8 in startup Evidence when cleanup remains incomplete",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-startup-invalid-utf8-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-startup-invalid-utf8-"));
     const provider = join(directory, "fake-gdb-startup-invalid-utf8.mjs");
     await writeFile(
       provider,
@@ -247,7 +247,7 @@ process.stdin.on("data", (chunk) => {
     await chmod(provider, 0o700);
     let retainedSessionId: string | undefined;
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       stopProcess: async (session) => {
         retainedSessionId = session.id;
         return { status: "incomplete", reason: "startup cleanup is retained" };
@@ -278,7 +278,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "bounds persistent GDB sessions before spawning another process",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-session-limit-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-session-limit-"));
     const provider = join(directory, "fake-gdb.mjs");
     const countPath = join(directory, "spawn-count");
     await writeFile(
@@ -303,7 +303,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       maxSessions: 1,
     });
     managers.push(manager);
@@ -338,7 +338,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "counts established GDB sessions and in-flight reservations together",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-reservations-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-reservations-"));
     const provider = join(directory, "fake-gdb.mjs");
     await writeFile(
       provider,
@@ -364,7 +364,7 @@ process.stdin.on("data", (chunk) => {
       releaseSecondSpawn = resolve;
     });
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       maxSessions: 2,
       spawnProcess: async (options) => {
         spawnCalls += 1;
@@ -402,7 +402,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "cancels and drains GDB starts before closeAll resolves",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-start-shutdown-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-start-shutdown-"));
     const provider = join(directory, "fake-gdb-blocked.mjs");
     const pidPath = join(directory, "pid");
     const signalPath = join(directory, "signal");
@@ -437,7 +437,7 @@ process.stdin.resume();
       releaseStop = resolve;
     });
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       startupTimeoutMs: 30_000,
       stopProcess: async (session, name, options) => {
         enterStop();
@@ -504,7 +504,7 @@ afterEach(async () => {
 it.skipIf(process.platform === "win32")(
   "marks GDB status history truncated when old MI records are discarded",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-history-truncated-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-history-truncated-"));
     const provider = join(directory, "fake-gdb-history-truncated.mjs");
     await writeFile(
       provider,
@@ -522,7 +522,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
     const started = await manager.start();
@@ -538,7 +538,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "returns partial GDB observations with unknown completion on command timeout",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-command-timeout-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-command-timeout-"));
     const provider = join(directory, "fake-gdb-command-timeout.mjs");
     await writeFile(
       provider,
@@ -563,7 +563,7 @@ setTimeout(() => process.exit(0), 250).unref();
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       commandTimeoutMs: 40,
     });
     managers.push(manager);
@@ -599,7 +599,7 @@ it.skipIf(process.platform === "win32")(
   "retains timed-out GDB records and cleanup uncertainty when stopping is incomplete",
   async () => {
     directory = await mkdtemp(
-      join(tmpdir(), "rea-gdb-timeout-cleanup-incomplete-"),
+      join(tmpdir(), "nre-gdb-timeout-cleanup-incomplete-"),
     );
     const provider = join(directory, "fake-gdb-timeout-cleanup.mjs");
     await writeFile(
@@ -620,7 +620,7 @@ setTimeout(() => process.exit(0), 250);
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       commandTimeoutMs: 40,
       stopProcess: async () => ({
         status: "incomplete",
@@ -645,7 +645,7 @@ setTimeout(() => process.exit(0), 250);
           resources: [started.value.session_id],
         },
         partialObservation: {
-          predicate_type: "rea.debugger.console-observation",
+          predicate_type: "nre.debugger.console-observation",
           raw_result: {
             records: [
               '~"partial console record',
@@ -664,7 +664,7 @@ setTimeout(() => process.exit(0), 250);
 it.skipIf(process.platform === "win32")(
   "keeps queued GDB commands serialized when a waiting request is cancelled",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-queue-cancel-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-queue-cancel-"));
     const provider = join(directory, "fake-gdb-queue-cancel.mjs");
     const overlapPath = join(directory, "overlap");
     await writeFile(
@@ -694,7 +694,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
     const started = await manager.start();
@@ -720,7 +720,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "marks GDB exit-fallback output truncated when MI history was bounded",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-exit-truncated-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-exit-truncated-"));
     const provider = join(directory, "fake-gdb-exit-truncated.mjs");
     await writeFile(
       provider,
@@ -745,7 +745,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
     const started = await manager.start();
@@ -792,7 +792,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "cancels a running GDB command and retains its closed status",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-command-cancel-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-command-cancel-"));
     const provider = join(directory, "fake-gdb-command-cancel.mjs");
     await writeFile(
       provider,
@@ -815,7 +815,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
     const started = await manager.start();
@@ -834,7 +834,7 @@ process.stdin.on("data", (chunk) => {
     if (!result.ok) {
       expect(result.error._tag).toBe("AnalysisCancelledError");
       expect(result.error.partialObservation).toMatchObject({
-        predicate_type: "rea.debugger.console-observation",
+        predicate_type: "nre.debugger.console-observation",
         parameters: { command: "shell sleep 600" },
         raw_result: {
           command: "shell sleep 600",
@@ -854,7 +854,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "re-reads the configured inferior TTY before detaching after a console alias change",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-tty-readback-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-tty-readback-"));
     const provider = join(directory, "fake-gdb-tty-readback.mjs");
     const detachPath = join(directory, "detached");
     await writeFile(
@@ -879,7 +879,7 @@ setTimeout(() => process.exit(0), 500);
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       stopProcess: async () => ({
         status: "incomplete",
         reason: "test cleanup",
@@ -907,7 +907,7 @@ setTimeout(() => process.exit(0), 500);
 it.skipIf(process.platform === "win32")(
   "reports bounded GDB stderr retention in session status",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-diagnostic-limit-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-diagnostic-limit-"));
     const provider = join(directory, "fake-gdb-diagnostic-limit.mjs");
     await writeFile(
       provider,
@@ -930,7 +930,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
     const started = await manager.start();
@@ -946,7 +946,7 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "converts a GDB stdin pipe failure into a provider session error",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-stdin-error-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-stdin-error-"));
     const provider = join(directory, "fake-gdb-stdin-error.mjs");
     const stdinClosed = join(directory, "stdin-closed");
     await writeFile(
@@ -978,7 +978,7 @@ setInterval(() => {}, 1000);
       | undefined;
     let ownedProcessExit: Promise<void> | undefined;
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       spawnProcess: async (options) => {
         ownedLaunch = await spawnOwnedProviderProcess(options);
         ownedProcessExit = new Promise<void>((resolve) => {
@@ -1045,7 +1045,7 @@ setInterval(() => {}, 1000);
 it.skipIf(process.platform === "win32")(
   "keeps GDB exit-fallback Evidence scoped to the active command",
   async () => {
-    directory = await mkdtemp(join(tmpdir(), "rea-gdb-command-exit-scope-"));
+    directory = await mkdtemp(join(tmpdir(), "nre-gdb-command-exit-scope-"));
     const provider = join(directory, "fake-gdb-command-exit-scope.mjs");
     await writeFile(
       provider,
@@ -1069,7 +1069,7 @@ process.stdin.on("data", (chunk) => {
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
     });
     managers.push(manager);
     const started = await manager.start();
@@ -1148,7 +1148,7 @@ it.skipIf(process.platform === "win32")(
   "preserves the GDB cleanup failure when a running command is cancelled",
   async () => {
     directory = await mkdtemp(
-      join(tmpdir(), "rea-gdb-cancel-cleanup-failure-"),
+      join(tmpdir(), "nre-gdb-cancel-cleanup-failure-"),
     );
     const provider = join(directory, "fake-gdb-cancel-cleanup-failure.mjs");
     await writeFile(
@@ -1172,7 +1172,7 @@ setTimeout(() => process.exit(0), 250);
     );
     await chmod(provider, 0o700);
     const manager = createGdbManagerForInjectedPlatform({
-      environment: { REA_GDB_COMMAND: provider },
+      environment: { NRE_GDB_COMMAND: provider },
       stopProcess: async () => ({
         status: "incomplete",
         reason: "simulated debugger cleanup failure",

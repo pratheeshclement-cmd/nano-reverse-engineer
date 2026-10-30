@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "preserves template loop assignments in public semantic Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-iteration-cardinality-");
+    const root = await createTestTempDirectory("nre-js-iteration-cardinality-");
     await writeFile(
       join(root, "main.js"),
       `

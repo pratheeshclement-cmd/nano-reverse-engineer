@@ -59,7 +59,7 @@ const parseMetadataSummary = (value: unknown) =>
 cliTest(
   "rejects impossible imported metadata owners through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-owner-view-");
+    const root = await createTestTempDirectory("nre-il2cpp-owner-view-");
     const path = join(root, "metadata.dat");
     const report = createEmptyIl2cppMetadataFixture();
     const type = {
@@ -121,7 +121,7 @@ cliTest(
 cliTest(
   "validates generic-container extents before returning CLI or MCP metadata",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-container-extents-");
+    const root = await createTestTempDirectory("nre-il2cpp-container-extents-");
     const { call } = await connectLocalToolsMcp();
     for (const count of [0, 1, 300]) {
       const { bytes } = createIl2cppMetadataFixture({
@@ -195,7 +195,7 @@ cliTest(
 cliTest(
   "returns identical complete inventories through CLI and MCP and pages a retained summary after removal",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-metadata-");
+    const root = await createTestTempDirectory("nre-il2cpp-metadata-");
     const path = join(root, "global-metadata.dat");
     const { bytes } = createIl2cppMetadataFixture({
       typeIndexWidth: 2,
@@ -314,7 +314,7 @@ cliTest(
 cliTest(
   "distinguishes unsupported versions from corrupt metadata through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-metadata-fail-");
+    const root = await createTestTempDirectory("nre-il2cpp-metadata-fail-");
     const { client, call } = await connectLocalToolsMcp();
     const fixture = createIl2cppMetadataFixture();
     const unsupported = Buffer.from(fixture.bytes);
@@ -370,7 +370,7 @@ cliTest(
 cliTest(
   "reports a recognized IL2CPP magic with an incomplete version as corrupt truncation through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-prefix-fail-");
+    const root = await createTestTempDirectory("nre-il2cpp-prefix-fail-");
     const { client, call } = await connectLocalToolsMcp();
 
     for (const length of [4, 5, 6, 7]) {
@@ -499,7 +499,7 @@ const assertRetainedNativeSelections = async (
 };
 
 it("queries compact retained metadata through the real SDK with exact row identities and fields", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-sdk-selection-");
+  const root = await createTestTempDirectory("nre-il2cpp-sdk-selection-");
   const path = join(root, "global-metadata.dat");
   const fixture = createLinkedIl2cppMetadataFixture({ version: 31 });
   await writeFile(path, fixture.bytes);
@@ -630,7 +630,7 @@ it("queries compact retained metadata through the real SDK with exact row identi
 }, 30000);
 
 it("imports historical metadata Evidence with unavailable member collections without inventing empty results", async () => {
-  const root = await createTestTempDirectory("rea-il2cpp-history-"),
+  const root = await createTestTempDirectory("nre-il2cpp-history-"),
     path = join(root, "global-metadata.dat");
   await writeFile(path, createIl2cppMetadataFixture({ version: 29 }).bytes);
   const { call } = await connectLocalToolsMcp();
@@ -709,7 +709,7 @@ it("imports historical metadata Evidence with unavailable member collections wit
 cliTest(
   "exports complete metadata Evidence for compact CLI delivery and portable selected reads",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-cli-export-");
+    const root = await createTestTempDirectory("nre-il2cpp-cli-export-");
     const path = join(root, "global-metadata.dat");
     const bundle = join(root, "evidence.json");
     const refused = await runFileCli(cli, {
@@ -787,7 +787,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32")(
   "exports and reads Evidence at the filesystem-selected symlink-parent path",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-export-path-");
+    const root = await createTestTempDirectory("nre-il2cpp-export-path-");
     const path = join(root, "global-metadata.dat");
     await writeFile(path, createIl2cppMetadataFixture().bytes);
     const actual = join(root, "actual");
@@ -831,7 +831,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest(
   "links method addresses from a selected binary slice through CLI and MCP pages",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-binary-");
+    const root = await createTestTempDirectory("nre-il2cpp-binary-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "GameAssembly.dylib");
     await writeFile(path, createLinkedIl2cppMetadataFixture().bytes);
@@ -923,7 +923,7 @@ cliTest(
 cliTest(
   "keeps a dyld-bound method slot unresolved through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-dyld-bind-");
+    const root = await createTestTempDirectory("nre-il2cpp-dyld-bind-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "GameAssembly.dylib");
     await writeFile(path, createLinkedIl2cppMetadataFixture().bytes);
@@ -969,7 +969,7 @@ cliTest(
 cliTest(
   "retains unknown dyld-bound type names and source identity through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-type-bind-");
+    const root = await createTestTempDirectory("nre-il2cpp-type-bind-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "GameAssembly.dylib");
     await writeFile(path, createLinkedIl2cppMetadataFixture().bytes);
@@ -1039,7 +1039,7 @@ cliTest(
   "links ABI count padding and declared zero-fill registration tails through CLI and MCP",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-il2cpp-registration-layout-",
+      "nre-il2cpp-registration-layout-",
     );
     const path = join(root, "global-metadata.dat");
     await writeFile(path, createLinkedIl2cppMetadataFixture().bytes);
@@ -1099,7 +1099,7 @@ cliTest(
 cliTest(
   "keeps nested IL2CPP generic arguments on their declaring type components",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-nested-generics-");
+    const root = await createTestTempDirectory("nre-il2cpp-nested-generics-");
     const cases = [
       {
         name: "top-level",
@@ -1182,7 +1182,7 @@ cliTest(
 cliTest(
   "marks a module array found through an x86-64 instruction as derived",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-inlined-");
+    const root = await createTestTempDirectory("nre-il2cpp-inlined-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "GameAssembly.so");
     await writeFile(path, createLinkedIl2cppMetadataFixture().bytes);
@@ -1220,7 +1220,7 @@ cliTest(
 cliTest(
   "writes Ghidra function seeds for a linked ELF and refuses to overwrite them",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-seeds-");
+    const root = await createTestTempDirectory("nre-il2cpp-seeds-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "libil2cpp.so");
     const seeds = join(root, "seeds.tsv");
@@ -1310,7 +1310,7 @@ cliTest(
 cliTest(
   "seeds generic method instances with --generic-instances and refuses them without --binary",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-generic-");
+    const root = await createTestTempDirectory("nre-il2cpp-generic-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "libil2cpp.so");
     const seeds = join(root, "seeds.tsv");
@@ -1367,7 +1367,7 @@ cliTest(
 cliTest(
   "keeps IL2CPP rank-one arrays distinct from vectors in CLI type rows",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-array-kind-");
+    const root = await createTestTempDirectory("nre-il2cpp-array-kind-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "GameAssembly.dylib");
     await writeFile(
@@ -1434,7 +1434,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32")(
   "refuses a Ghidra seed path below a regular file as caller input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-seeds-parent-");
+    const root = await createTestTempDirectory("nre-il2cpp-seeds-parent-");
     const path = join(root, "global-metadata.dat");
     const binaryPath = join(root, "libil2cpp.so");
     const parent = join(root, "regular-file");
@@ -1472,7 +1472,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest(
   "preserves unreadable and recorded-invalid generic method identities through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-il2cpp-method-identity-");
+    const root = await createTestTempDirectory("nre-il2cpp-method-identity-");
     const path = join(root, "global-metadata.dat");
     await writeFile(
       path,

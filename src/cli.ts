@@ -116,11 +116,11 @@ export const createCli = (
   const environment = snapshotEnvironment(selectedEnvironment);
   const analysis = createDirectAnalysis(environment);
   // The executable reports an invalid level before every command except doctor.
-  // Doctor keeps going so its readiness report can name REA_LOG_LEVEL.
+  // Doctor keeps going so its readiness report can name NRE_LOG_LEVEL.
   const level =
-    environment.REA_LOG_LEVEL === undefined
+    environment.NRE_LOG_LEVEL === undefined
       ? undefined
-      : parseLogLevel(environment.REA_LOG_LEVEL);
+      : parseLogLevel(environment.NRE_LOG_LEVEL);
   const logger = createLogger(
     "cli",
     level?.ok === true ? level.value : "silent",
@@ -144,10 +144,10 @@ export const createCli = (
     sync: false,
     update: {
       // Incur's update:false only suppresses notices. Reject its explicit
-      // installer so ambiguous flags cannot bypass REA's verified workflow.
+      // installer so ambiguous flags cannot bypass NRE's verified workflow.
       install: () => {
         throw new Error(
-          "Use 'rea update' to update the identified installation. The '--update' alias accepts only global output flags.",
+          "Use 'nre update' to update the identified installation. The '--update' alias accepts only global output flags.",
         );
       },
     },
@@ -162,7 +162,7 @@ export const createCli = (
       // This interval covers CLI command dispatch, including result delivery.
       // It is not a provider-only or analysis-only measurement.
       process.stderr.write(
-        `${JSON.stringify({ rea_timings: { version: 1, command_ms: Math.round(performance.now() - started) } })}\n`,
+        `${JSON.stringify({ nre_timings: { version: 1, command_ms: Math.round(performance.now() - started) } })}\n`,
       );
     }
   });
@@ -289,7 +289,7 @@ export const createCli = (
               {
                 code: "SCHEMA_UNAVAILABLE",
                 message:
-                  "Schema discovery is not supported for mcp add. Use 'rea mcp add --help' for its options.",
+                  "Schema discovery is not supported for mcp add. Use 'nre mcp add --help' for its options.",
               },
               output.format,
               process.stdout.isTTY === true,
@@ -315,9 +315,9 @@ export const createCli = (
         }
         return [token];
       });
-      // Incur's Amp registration overwrites an existing rea entry (dropping its
+      // Incur's Amp registration overwrites an existing nre entry (dropping its
       // environment map) and reports success even when the settings file
-      // prevents a save. Guard that path: reject a settings file REA cannot
+      // prevents a save. Guard that path: reject a settings file NRE cannot
       // update, back up the file, preserve the caller's environment, and verify
       // the registration landed.
       const ampRequested =
@@ -367,7 +367,7 @@ export const createCli = (
           else {
             const entry =
               typeof servers === "object" && servers !== null
-                ? (servers as Record<string, unknown>)["rea"]
+                ? (servers as Record<string, unknown>)["nre"]
                 : undefined;
             if (typeof entry === "object" && entry !== null)
               priorEnv = (entry as Record<string, unknown>)["env"];
@@ -433,12 +433,12 @@ export const createCli = (
                   typeof servers !== "object" ||
                   servers === null ||
                   Array.isArray(servers) ||
-                  !("rea" in servers)
+                  !("nre" in servers)
                 )
                   failure =
-                    "Amp settings.json does not contain the rea registration after mcp add.";
+                    "Amp settings.json does not contain the nre registration after mcp add.";
                 else {
-                  const entry = (servers as Record<string, unknown>)["rea"];
+                  const entry = (servers as Record<string, unknown>)["nre"];
                   if (
                     priorEnv !== undefined &&
                     typeof entry === "object" &&

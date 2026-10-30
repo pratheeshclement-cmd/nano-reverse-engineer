@@ -29,7 +29,7 @@ import { scanCanonicalArtifactInventory } from "../../tests/fixtures/artifactInv
 const MIB = 1024 * 1024;
 
 const writeFit = async (name: string, bytes: Buffer): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-fit-");
+  const directory = await createTestTempDirectory("nre-fit-");
   const path = join(directory, name);
   await writeFile(path, bytes);
   return path;

@@ -17,7 +17,7 @@ import {
 cliTest.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "extracts readable inventoried files when a child directory is inaccessible",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-extraction-denied-");
+    const root = await createTestTempDirectory("nre-extraction-denied-");
     const source = join(root, "Fixture.app");
     const privateDir = join(source, "Contents", "private");
     await mkdir(join(source, "Contents", "MacOS"), { recursive: true });
@@ -106,7 +106,7 @@ cliTest.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 cliTest.skipIf(process.platform !== "linux").for([false, true])(
   "preserves extraction traversal uncertainty through CLI and stdio MCP (opaque name: %s)",
   async (withOpaqueName, { cli }) => {
-    const root = await createTestTempDirectory("rea-extraction-coverage-");
+    const root = await createTestTempDirectory("nre-extraction-coverage-");
     const source = join(root, "Fixture.app");
     await mkdir(join(source, "Contents", "MacOS"), { recursive: true });
     const macho = Buffer.alloc(32);
@@ -194,7 +194,7 @@ cliTest.skipIf(process.platform !== "linux").for([false, true])(
 cliTest.for([false, true])(
   "retains PYZ traversal coverage through CLI and stdio MCP extraction (opaque: %s)",
   async (opaque, { cli }) => {
-    const root = await createTestTempDirectory("rea-extraction-pyz-coverage-");
+    const root = await createTestTempDirectory("nre-extraction-pyz-coverage-");
     const source = join(root, "fixture.exe");
     const pyz = pyzArchive({
       magic: opaque ? Buffer.alloc(4) : PYTHON_39_MAGIC,

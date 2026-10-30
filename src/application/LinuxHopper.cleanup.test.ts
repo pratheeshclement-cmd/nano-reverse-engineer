@@ -17,7 +17,7 @@ import { createTestTempDirectory } from "../../tests/fixtures/temporaryDirectory
 for (const boundary of ["inspection", "installation-host"] as const)
   it(`retries every retained publisher after the ${boundary} publisher close fails`, async () => {
     const directory = await createTestTempDirectory(
-      "rea-publisher-mixed-cleanup-",
+      "nre-publisher-mixed-cleanup-",
     );
     const earlierPath = join(directory, "earlier");
     const currentPath = join(directory, "current");

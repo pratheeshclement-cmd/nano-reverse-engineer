@@ -3,15 +3,15 @@ import { expect } from "vitest";
 import { cliTest, runFileCli } from "../../support/cli/cliFixture.js";
 
 const invalidLogLevelMessage =
-  'REA configuration is invalid: REA_LOG_LEVEL: Invalid option: expected one of "trace"|"debug"|"info"|"warn"|"error"|"fatal"|"silent".\n';
+  'NRE configuration is invalid: NRE_LOG_LEVEL: Invalid option: expected one of "trace"|"debug"|"info"|"warn"|"error"|"fatal"|"silent".\n';
 
 for (const level of ["loud", "INFO"])
   cliTest(
-    `reports REA_LOG_LEVEL=${level} as invalid configuration`,
+    `reports NRE_LOG_LEVEL=${level} as invalid configuration`,
     async ({ cli }) => {
       const help = await cli.run({
         arguments: ["--help"],
-        environment: { REA_LOG_LEVEL: level },
+        environment: { NRE_LOG_LEVEL: level },
       });
       expect(help.exitCode).toBe(1);
       expect(help.stdout).toBe("");
@@ -19,7 +19,7 @@ for (const level of ["loud", "INFO"])
 
       const doctorInvocation = {
         arguments: ["--json", "doctor", "--provider", "hopper"],
-        environment: { REA_LOG_LEVEL: level },
+        environment: { NRE_LOG_LEVEL: level },
       };
       for (const doctor of [
         await cli.run(doctorInvocation),
@@ -31,10 +31,10 @@ for (const level of ["loud", "INFO"])
           healthy: false,
           scope_checks: expect.arrayContaining([
             expect.objectContaining({
-              name: "runtime-configuration:REA_LOG_LEVEL",
+              name: "runtime-configuration:NRE_LOG_LEVEL",
               ok: false,
               classification: "config_drift",
-              detail: expect.stringContaining("REA_LOG_LEVEL"),
+              detail: expect.stringContaining("NRE_LOG_LEVEL"),
             }),
           ]),
         });
@@ -42,7 +42,7 @@ for (const level of ["loud", "INFO"])
 
       const client = await cli.run({
         arguments: ["--json", "doctor", "--client", "codex"],
-        environment: { REA_LOG_LEVEL: level },
+        environment: { NRE_LOG_LEVEL: level },
       });
       expect(client.exitCode, client.stderr).toBe(1);
       expect(client.stderr).toBe("");
@@ -51,13 +51,13 @@ for (const level of ["loud", "INFO"])
         scope: { mode: "explicit", clients: ["codex"], providers: [] },
         scope_checks: expect.arrayContaining([
           expect.objectContaining({
-            name: "runtime-configuration:REA_LOG_LEVEL",
+            name: "runtime-configuration:NRE_LOG_LEVEL",
             ok: false,
           }),
         ]),
         informational_checks: expect.not.arrayContaining([
           expect.objectContaining({
-            name: "runtime-configuration:REA_LOG_LEVEL",
+            name: "runtime-configuration:NRE_LOG_LEVEL",
           }),
         ]),
       });
@@ -80,7 +80,7 @@ cliTest(
     ]) {
       const invocation = {
         arguments: arguments_,
-        environment: { REA_LOG_LEVEL: "loud" },
+        environment: { NRE_LOG_LEVEL: "loud" },
       };
       const fresh = await cli.run(invocation);
       const shared = await runFileCli(cli, invocation);
@@ -95,7 +95,7 @@ cliTest(
 
     const completion = {
       arguments: ["doctor"],
-      environment: { REA_LOG_LEVEL: "loud", COMPLETE: "bash" },
+      environment: { NRE_LOG_LEVEL: "loud", COMPLETE: "bash" },
     };
     const fresh = await cli.run(completion);
     const shared = await runFileCli(cli, completion);

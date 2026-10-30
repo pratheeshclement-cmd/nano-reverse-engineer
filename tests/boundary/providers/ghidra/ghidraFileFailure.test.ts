@@ -102,7 +102,7 @@ const retainForeignFailure = async (path: string) => {
 it.each(["opaque", "errno", "authored"] as const)(
   "keeps Ghidra file provenance and local cleanup for a marked %s primary",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-ghidra-file-primary-");
+    const root = await createTestTempDirectory("nre-ghidra-file-primary-");
     const path = join(root, "owned.txt");
     await writeFile(path, "owned bytes");
     const foreign = await retainForeignFailure(join(root, "foreign.txt"));

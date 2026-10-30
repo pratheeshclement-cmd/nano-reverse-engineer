@@ -10,7 +10,7 @@ const replaceProof = (
   result: unknown,
 ): void => {
   const original = input.evidence_bundle.records.find(
-    (record) => record.predicate_type === "rea.reconstruction-proof",
+    (record) => record.predicate_type === "nre.reconstruction-proof",
   )!;
   const replacement = createEvidence(undefined, original.provider, {
     predicateType: original.predicate_type,
@@ -154,7 +154,7 @@ export const reconstructionProofApplicabilityCases = () =>
     const input = readyReviewedLedgerRequest();
     const result = reconstructionObligationProofSchema.parse(
       input.evidence_bundle.records.find(
-        (record) => record.predicate_type === "rea.reconstruction-proof",
+        (record) => record.predicate_type === "nre.reconstruction-proof",
       )!.normalized_result,
     );
     const proof = result.bindings[0]!;
@@ -251,7 +251,7 @@ export const reconstructionProofApplicabilityCases = () =>
             version: "1",
           },
           {
-            predicateType: "rea.reconstruction-proof",
+            predicateType: "nre.reconstruction-proof",
             operation: "verify_reconstruction_obligations",
             parameters: {},
             result,

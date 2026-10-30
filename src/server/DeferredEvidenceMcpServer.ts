@@ -84,7 +84,7 @@ export class DeferredEvidenceMcpServer extends EvidenceMcpServerCore {
       const input: StandardSchemaWithJSON = {
         "~standard": {
           version: 1,
-          vendor: "rea",
+          vendor: "nre",
           jsonSchema: { input: () => inputSchema, output: () => inputSchema },
           validate: async (value) => {
             await this.ensureRuntime();
@@ -101,7 +101,7 @@ export class DeferredEvidenceMcpServer extends EvidenceMcpServerCore {
           : {
               "~standard": {
                 version: 1,
-                vendor: "rea",
+                vendor: "nre",
                 jsonSchema: {
                   input: () => outputSchema,
                   output: () => outputSchema,

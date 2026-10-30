@@ -13,7 +13,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 import { writeFixtureFiles } from "../../support/workspace/writeFixtureFiles.js";
 
 const createPackageSubpathFixture = async () => {
-  const root = await createTestTempDirectory("rea-package-subpaths-");
+  const root = await createTestTempDirectory("nre-package-subpaths-");
   const source = [
     'const {BrowserWindow} = require("electron"); const nearest = require("fixture/parser");',
     'const nested = require("nested/parser");',

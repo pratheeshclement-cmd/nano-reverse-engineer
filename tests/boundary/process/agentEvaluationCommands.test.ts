@@ -15,7 +15,7 @@ processTest.skipIf(process.platform === "win32")(
   "joins real evaluation command/output cleanup while retaining timeout diagnostics",
   { timeout: Math.min(2_147_483_647, preparationBudgetMs + 40_000) },
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-agent-command-");
+    const root = await createTestTempDirectory("nre-agent-command-");
     const fixture = join(root, "codex-fixture.mjs");
     await writeFile(
       fixture,
@@ -128,7 +128,7 @@ console.log(JSON.stringify({ passed: true, timeoutHelpers: 3, controls: 7, child
 processTest.for([false, true])(
   "retries retained process cleanup before removing evaluation files: %s",
   async (incomplete, { processes }) => {
-    const root = await createTestTempDirectory("rea-agent-command-retry-");
+    const root = await createTestTempDirectory("nre-agent-command-retry-");
     const parent = join(root, "evaluations");
     const loader = join(root, "loader.mjs");
     const receipt = join(root, "receipt.json");
@@ -175,7 +175,7 @@ registerHooks({ load(url, context, nextLoad) {
         ),
       ],
       {
-        env: { ...process.env, REA_AGENT_EVAL_ROOT: parent },
+        env: { ...process.env, NRE_AGENT_EVAL_ROOT: parent },
         timeoutMs: 10_000,
       },
     );
@@ -210,7 +210,7 @@ processTest.for([
 ])(
   "prepares before the command deadline and retains $phase preparation ownership (incomplete: $incomplete)",
   async ({ phase, incomplete }, { processes }) => {
-    const root = await createTestTempDirectory("rea-agent-preparation-");
+    const root = await createTestTempDirectory("nre-agent-preparation-");
     const parent = join(root, "evaluations");
     const loader = join(root, "loader.mjs");
     const receipt = join(root, "receipt.json");
@@ -274,7 +274,7 @@ registerHooks({ load(url, context, nextLoad) {
         ),
       ],
       {
-        env: { ...process.env, REA_AGENT_EVAL_ROOT: parent },
+        env: { ...process.env, NRE_AGENT_EVAL_ROOT: parent },
         timeoutMs: 10_000,
       },
     );

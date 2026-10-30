@@ -471,7 +471,7 @@ export class HopperClient {
     try {
       this.#resources.runtimeRoot = await PrivateRuntimeRoot.create({
         parent: SESSION_ROOT,
-        prefix: "rea-",
+        prefix: "nre-",
       });
     } catch (cause: unknown) {
       return err(new HopperStartError({ cause }));
@@ -1029,7 +1029,7 @@ export class HopperClient {
       this.#resources.shutdownConfirmed = true;
       return new HopperStartError({
         userMessage:
-          "macOS denied permission to send Apple Events to Hopper. Allow the application that starts REA under System Settings > Privacy & Security > Automation, then retry opening the target.",
+          "macOS denied permission to send Apple Events to Hopper. Allow the application that starts NRE under System Settings > Privacy & Security > Automation, then retry opening the target.",
         launcherFailure,
       });
     }

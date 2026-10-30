@@ -43,7 +43,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "captures one command's terminal output, selected files, and owned cleanup",
   async () => {
-    const root = await createTestTempDirectory("rea-process-capture-");
+    const root = await createTestTempDirectory("nre-process-capture-");
     const script = join(root, "task.mjs");
     await writeFile(
       script,
@@ -90,7 +90,7 @@ itWithCaptureCapability(
 itWithCaptureCapability(
   "executes and observes the selected symlink/.. directory without touching its lexical decoy",
   async () => {
-    const root = await createTestTempDirectory("rea-process-native-traversal-");
+    const root = await createTestTempDirectory("nre-process-native-traversal-");
     const intended = join(root, "intended");
     await mkdir(join(intended, "nested"), { recursive: true });
     await symlink(join(intended, "nested"), join(root, "alias"));

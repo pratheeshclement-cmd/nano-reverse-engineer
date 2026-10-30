@@ -52,6 +52,6 @@ in the preceding feature; these offline checks construct no browser provider.
 To reproduce with an existing scenario:
 
 ```bash
-rea validate-browser-scenario ./browser-scenario.json --json
-cat ./browser-scenario.json | rea validate-browser-scenario - --json
+nre validate-browser-scenario ./browser-scenario.json --json
+cat ./browser-scenario.json | nre validate-browser-scenario - --json
 ```

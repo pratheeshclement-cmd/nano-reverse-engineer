@@ -27,22 +27,22 @@ import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 import { TOOL_CONTRACTS } from "../dist/contracts/toolContracts.js";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const lab = await mkdtemp(join(tmpdir(), "rea-qwen-client-"));
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const lab = await mkdtemp(join(tmpdir(), "nre-qwen-client-"));
 const client = "qwen";
 const mode = process.argv[2] ?? "call";
 assert(
   ["chat", "call"].includes(mode),
   "Usage: node scripts/verify-qwen-client.mjs [chat|call]",
 );
-const command = process.env.REA_VERIFY_QWEN_COMMAND ?? "qwen";
+const command = process.env.NRE_VERIFY_QWEN_COMMAND ?? "qwen";
 // npm exposes only qwen.cmd on Windows. Resolve a selected JavaScript entry
 // before the verifier switches to its disposable workspace.
 const entryPoint = /\.(c|m)?js$/iu.test(command) ? resolve(command) : undefined;
-const reducedPath = process.env.REA_VERIFY_QWEN_REDUCED_PATH === "1";
+const reducedPath = process.env.NRE_VERIFY_QWEN_REDUCED_PATH === "1";
 assert(
   !reducedPath || (process.platform !== "win32" && entryPoint !== undefined),
-  "REA_VERIFY_QWEN_REDUCED_PATH=1 requires POSIX and a JavaScript REA_VERIFY_QWEN_COMMAND entry point",
+  "NRE_VERIFY_QWEN_REDUCED_PATH=1 requires POSIX and a JavaScript NRE_VERIFY_QWEN_COMMAND entry point",
 );
 const launch = (args) =>
   entryPoint === undefined
@@ -84,7 +84,7 @@ await withVerifierCleanup(async () => {
       USERPROFILE: account,
       QWEN_HOME: profile,
       QWEN_RUNTIME_DIR: runtime,
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     try {
       clientVersion = (
@@ -100,7 +100,7 @@ await withVerifierCleanup(async () => {
           ? " On Windows, select node_modules/@qwen-code/qwen-code/cli-entry.js."
           : "";
       throw new Error(
-        `Qwen client preflight failed for ${command}; install Qwen Code or set REA_VERIFY_QWEN_COMMAND.${windowsHint} ${String(cause)}`,
+        `Qwen client preflight failed for ${command}; install Qwen Code or set NRE_VERIFY_QWEN_COMMAND.${windowsHint} ${String(cause)}`,
         { cause },
       );
     }
@@ -111,7 +111,7 @@ await withVerifierCleanup(async () => {
           folderTrust: { enabled: false },
         },
         telemetry: { enabled: false },
-        model: { name: "rea-client-fixture" },
+        model: { name: "nre-client-fixture" },
         mcpServers: { other: { command: "unrelated-server", disabled: true } },
       },
       null,
@@ -125,7 +125,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const response = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...step, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...step, "--json"],
         { env: baseEnvironment, cwd: repo, timeout: 60_000, stdin: "pipe" },
       );
       const result = JSON.parse(response.stdout);
@@ -146,17 +146,17 @@ await withVerifierCleanup(async () => {
       );
     }
     assert.equal(
-      await readFile(join(profile, "settings.json.rea.backup"), "utf8"),
+      await readFile(join(profile, "settings.json.nre.backup"), "utf8"),
       original,
     );
     const configured = JSON.parse(
       await readFile(join(profile, "settings.json"), "utf8"),
     );
     registrationCommand = [
-      configured.mcpServers.rea.command,
-      ...configured.mcpServers.rea.args,
+      configured.mcpServers.nre.command,
+      ...configured.mcpServers.nre.args,
     ];
-    assert.deepEqual(configured.model, { name: "rea-client-fixture" });
+    assert.deepEqual(configured.model, { name: "nre-client-fixture" });
     assert.equal(configured.skills, undefined);
     assert.deepEqual(configured.mcpServers.other, {
       command: "unrelated-server",
@@ -165,7 +165,7 @@ await withVerifierCleanup(async () => {
     clientPath = baseEnvironment.PATH;
     if (reducedPath) {
       assert.equal(
-        configured.mcpServers.rea.env?.PATH,
+        configured.mcpServers.nre.env?.PATH,
         undefined,
         "Setup must not persist its ambient PATH into the registration",
       );
@@ -201,7 +201,7 @@ await withVerifierCleanup(async () => {
       prefix: `${client}-${mode}`,
       onRequest: async ({ body, tools, requestIndex }) => {
         skillSeen ||= JSON.stringify(body.messages ?? []).includes(
-          "reverse-engineer-anything",
+          "nano-reverse-engineer",
         );
         const messages = (body.messages ?? []).map((message) => ({
           role: message.role,
@@ -219,14 +219,14 @@ await withVerifierCleanup(async () => {
             (message) => message.role === "tool" && message.callId === callId,
           )?.text ?? "";
         selectedSkillLoaded ||= messageText.includes(
-          join(sharedSkills, "reverse-engineer-anything"),
+          join(sharedSkills, "nano-reverse-engineer"),
         );
         const toolText = JSON.stringify(
           (body.messages ?? []).filter((m) => m.role === "tool"),
         );
         if (
-          toolText.includes("REA_CLIENT_FIXTURE") &&
-          /(?:\\?"REA_CLIENT_FIXTURE\\?"\s*:\s*true)/u.test(toolText)
+          toolText.includes("NRE_CLIENT_FIXTURE") &&
+          /(?:\\?"NRE_CLIENT_FIXTURE\\?"\s*:\s*true)/u.test(toolText)
         ) {
           artifactReadByAgent = true;
           assert(artifactPath);
@@ -292,12 +292,12 @@ await withVerifierCleanup(async () => {
         if (mode === "chat" || evidenceSeen) {
           message = {
             role: "assistant",
-            content: "REA_CLIENT_COMPATIBILITY_OK",
+            content: "NRE_CLIENT_COMPATIBILITY_OK",
           };
           finalSeen = true;
         } else if (skill && !skillRequested) {
           skillRequested = true;
-          message = call(skill.name, { skill: "reverse-engineer-anything" });
+          message = call(skill.name, { skill: "nano-reverse-engineer" });
         } else if (persisted && shell) {
           artifactPath = persisted[1];
           assert(
@@ -305,7 +305,7 @@ await withVerifierCleanup(async () => {
               (await realpath(runtime)) + sep,
             ),
           );
-          const script = `const fs=require('node:fs');const e=JSON.parse(fs.readFileSync(${JSON.stringify(artifactPath)},'utf8'));console.log(JSON.stringify({REA_CLIENT_FIXTURE:JSON.stringify(e.normalized_result).includes('REA_CLIENT_FIXTURE'),evidence_id:e.evidence_id,graph_nodes:e.normalized_result.graph.nodes.length}));`;
+          const script = `const fs=require('node:fs');const e=JSON.parse(fs.readFileSync(${JSON.stringify(artifactPath)},'utf8'));console.log(JSON.stringify({NRE_CLIENT_FIXTURE:JSON.stringify(e.normalized_result).includes('NRE_CLIENT_FIXTURE'),evidence_id:e.evidence_id,graph_nodes:e.normalized_result.graph.nodes.length}));`;
           // Keep paths and JSON quotes out of shell syntax on Windows and POSIX.
           const encodedScript = Buffer.from(script).toString("base64");
           const nodeCommand =
@@ -315,7 +315,7 @@ await withVerifierCleanup(async () => {
           message = call(shell.name, {
             command: `${nodeCommand} -e "eval(Buffer.from('${encodedScript}','base64').toString('utf8'))"`,
             description:
-              "Read the complete saved REA Evidence and verify the fixture facts.",
+              "Read the complete saved NRE Evidence and verify the fixture facts.",
           });
         } else if (selected) {
           message = call(selected.name, {
@@ -336,7 +336,7 @@ await withVerifierCleanup(async () => {
           searchCallId = message.tool_calls[0].id;
         } else
           throw new Error(
-            `REA analysis tool not exposed; tools: ${tools.map((t) => t.name).join(", ")}`,
+            `NRE analysis tool not exposed; tools: ${tools.map((t) => t.name).join(", ")}`,
           );
         return message;
       },
@@ -345,7 +345,7 @@ await withVerifierCleanup(async () => {
     const prompt =
       mode === "chat"
         ? "Say hello briefly."
-        : `Use REA to analyze the JavaScript directory ${target}. Report the result.`;
+        : `Use NRE to analyze the JavaScript directory ${target}. Report the result.`;
     const env = {
       ...baseEnvironment,
       PATH: clientPath,
@@ -358,11 +358,11 @@ await withVerifierCleanup(async () => {
       "--openai-base-url",
       endpoint,
       "--model",
-      "rea-client-fixture",
+      "nre-client-fixture",
       "--approval-mode",
       mode === "chat" ? "default" : "yolo",
       "--allowed-mcp-server-names",
-      "rea",
+      "nre",
       "--output-format",
       "stream-json",
       "--max-session-turns",
@@ -397,7 +397,7 @@ await withVerifierCleanup(async () => {
     assert.deepEqual(
       observed,
       TOOL_CONTRACTS.map((c) => `mcp__rea__${c.name}`).sort(),
-      "Qwen must discover the complete REA catalog",
+      "Qwen must discover the complete NRE catalog",
     );
     assert.equal(fixture.failure, undefined);
     assert(finalSeen);

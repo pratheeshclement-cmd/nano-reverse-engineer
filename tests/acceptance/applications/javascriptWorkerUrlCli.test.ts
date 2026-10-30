@@ -65,7 +65,7 @@ const workerReferences = (graph: JavaScriptApplicationGraph) =>
 cliTest(
   "promotes Worker URLs only for known constructor bindings through the CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-worker-identity-");
+    const root = await createTestTempDirectory("nre-worker-identity-");
     const identityCases = [
       ...["globalThis", "window", "self"].map((namespace) => ({
         prefix: "",
@@ -206,7 +206,7 @@ cliTest(
 cliTest(
   "resolves module-relative Worker URL constructors through the compiled CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-worker-module-url-");
+    const root = await createTestTempDirectory("nre-worker-module-url-");
     const cases = [
       {
         source: "nested/relative.mjs",
@@ -350,7 +350,7 @@ cliTest(
 cliTest(
   "keeps unsupported Worker URL expressions and missing exact files unresolved through the CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-worker-url-unknown-");
+    const root = await createTestTempDirectory("nre-worker-url-unknown-");
     const malformedPercentPaths = [
       ["./worker%.js", "worker%.js"],
       ["./worker%2.js", "worker%2.js"],
@@ -502,7 +502,7 @@ cliTest(
 cliTest(
   "keeps string Worker paths unresolved because the document base is unknown",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-worker-document-base-");
+    const root = await createTestTempDirectory("nre-worker-document-base-");
     // A browser resolves these strings against the document base URL, not the
     // calling script; Node resolves them against the working directory.
     const expressions = {
@@ -553,7 +553,7 @@ cliTest(
 cliTest(
   "bounds repeated ambient alias branches through the compiled CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-worker-alias-branches-");
+    const root = await createTestTempDirectory("nre-worker-alias-branches-");
     const aliases = [
       "const alias0 = globalThis;",
       ...Array.from(
@@ -614,7 +614,7 @@ cliTest(
 cliTest(
   "keeps Node Worker filesystem strings unresolved through the compiled CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-node-worker-filesystem-");
+    const root = await createTestTempDirectory("nre-node-worker-filesystem-");
     const cases = [
       {
         prefix: 'import { Worker } from "node:worker_threads";',
@@ -670,7 +670,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32")(
   "keeps file-URL drive letters distinct from encoded POSIX paths through the compiled CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-worker-url-drive-");
+    const root = await createTestTempDirectory("nre-worker-url-drive-");
     await writeFixtureFiles(root, {
       "dist/drive.mjs": 'new Worker(new URL("c|/worker.js", import.meta.url));',
       "dist/encoded.mjs":

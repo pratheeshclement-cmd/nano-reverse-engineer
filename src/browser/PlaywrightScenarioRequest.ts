@@ -526,7 +526,7 @@ export const withSavedPlaceholders = (
 /** A `save_response` path's segments as a browser spells a URL path, percent-encoded as its URL parser would, `{*}` kept. */
 const pathPattern = (path: string): readonly string[] => {
   const pathname = path.split("?")[0]!;
-  let wildcard = "~rea-wildcard~";
+  let wildcard = "~nre-wildcard~";
   while (pathname.includes(wildcard)) wildcard += "~";
   const marked = pathname
     .split(/[\\/]/u)

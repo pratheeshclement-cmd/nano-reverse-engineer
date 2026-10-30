@@ -24,7 +24,7 @@ workspaceCliTest(
       processes.run(
         process.execPath,
         [
-          resolve("scripts/rea.mjs"),
+          resolve("scripts/nre.mjs"),
           "inspect-artifact",
           plist,
           "--format",
@@ -35,7 +35,7 @@ workspaceCliTest(
         ],
         {
           cwd: workspace.root,
-          env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+          env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
         },
       );
 

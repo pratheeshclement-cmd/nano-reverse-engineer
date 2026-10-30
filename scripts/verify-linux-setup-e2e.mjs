@@ -17,10 +17,10 @@ import { isUnsupportedHopperLaunchFailure } from "./verify-package-platform.mjs"
 
 const execFileAsync = promisify(execFile);
 const verifierRun = createVerifierRun();
-const command = process.env.REA_VERIFY_SERVER_COMMAND;
+const command = process.env.NRE_VERIFY_SERVER_COMMAND;
 if (process.platform !== "linux" || process.getuid?.() !== 0)
   throw new Error("Linux setup verification requires a root Linux runner");
-if (!command) throw new Error("REA_VERIFY_SERVER_COMMAND is required");
+if (!command) throw new Error("NRE_VERIFY_SERVER_COMMAND is required");
 await assertCleanLinuxHopperRuntime();
 try {
   await access("/opt/hopper/bin/Hopper");
@@ -80,10 +80,10 @@ await execFileAsync(command, ["analyze", "/usr/bin/true"], {
   timeout: 180_000,
   maxBuffer: 10 * 1024 * 1024,
 });
-process.env.REA_VERIFY_SERVER_ARGS_JSON = '["mcp"]';
+process.env.NRE_VERIFY_SERVER_ARGS_JSON = '["mcp"]';
 await import("./verify-real-hopper-linux.mjs");
 
-const modifiedDirectory = await mkdtemp(join(tmpdir(), "rea-modified-hopper-"));
+const modifiedDirectory = await mkdtemp(join(tmpdir(), "nre-modified-hopper-"));
 try {
   const modifiedHopper = join(modifiedDirectory, "Hopper");
   await copyFile("/opt/hopper/bin/Hopper", modifiedHopper);

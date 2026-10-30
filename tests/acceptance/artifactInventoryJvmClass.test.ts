@@ -19,7 +19,7 @@ import { javaClassFile } from "../fixtures/javaClassFile.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../scripts/nre.mjs", import.meta.url));
 
 const archive = async (
   entries: readonly (readonly [string, Uint8Array])[],
@@ -47,7 +47,7 @@ const inspectArchive = async (path: string) => {
 };
 
 it("keeps valid JVM classes from being classified as Mach-O while identifying FAT controls", async () => {
-  const directory = await createTestTempDirectory("rea-jvm-inventory-");
+  const directory = await createTestTempDirectory("nre-jvm-inventory-");
   const javaEntries = [
     ["Hello.class", javaClassFile()],
     ["pkg/Big.class", javaClassFile(4000)],

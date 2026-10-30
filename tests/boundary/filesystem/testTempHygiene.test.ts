@@ -12,8 +12,8 @@ import {
 } from "../../support/workspace/workspaceFixture.js";
 
 it("preserves caller labels and recognizable ownership in both shared factories", async () => {
-  for (const prefix of ["reference-unicode-", "rea-example-", "bb-session-"]) {
-    const expected = prefix === "reference-unicode-" ? `rea-${prefix}` : prefix;
+  for (const prefix of ["reference-unicode-", "nre-example-", "bb-session-"]) {
+    const expected = prefix === "reference-unicode-" ? `nre-${prefix}` : prefix;
     const directory = await createTestTempDirectory(prefix);
     expect(basename(directory).startsWith(expected)).toBe(true);
     const workspace = await createTestWorkspace(prefix);
@@ -28,7 +28,7 @@ it("preserves caller labels and recognizable ownership in both shared factories"
 it.each(["clean", "file", "directory", "cache", "symlink", "failed-test"])(
   "verifies shared fixture ownership with a %s producer",
   async (scenario) => {
-    const root = await createTestTempDirectory("rea-test-hygiene-boundary-");
+    const root = await createTestTempDirectory("nre-test-hygiene-boundary-");
     await mkdir(join(root, "scripts/lib"), { recursive: true });
     await mkdir(join(root, "node_modules/vitest"), { recursive: true });
     for (const path of [
@@ -81,11 +81,11 @@ if (scenario === "failed-test") process.exitCode = 7;
         code: 1,
         stderr:
           scenario === "failed-test"
-            ? expect.stringMatching(/status 7[\s\S]*rea-reference-unicode-/u)
-            : expect.stringContaining("rea-reference-unicode-"),
+            ? expect.stringMatching(/status 7[\s\S]*nre-reference-unicode-/u)
+            : expect.stringContaining("nre-reference-unicode-"),
       });
     const ownedRoot = await readFile(join(root, "owned-root.txt"), "utf8");
-    expect(basename(ownedRoot).startsWith("rea-reference-unicode-")).toBe(true);
+    expect(basename(ownedRoot).startsWith("nre-reference-unicode-")).toBe(true);
     const temporaryRoot = await readFile(
       join(root, "temporary-root.txt"),
       "utf8",

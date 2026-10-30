@@ -150,7 +150,7 @@ describe("canonical test-project ownership", () => {
   ])(
     "resolves worker resources from actual CLI options: $flags",
     async ({ flags, timeout, lines }) => {
-      const root = await createTestTempDirectory("rea-vitest-worker-policy-");
+      const root = await createTestTempDirectory("nre-vitest-worker-policy-");
       const script = join(root, "worker-policy.mjs");
       await writeFile(
         script,
@@ -207,7 +207,7 @@ describe("test module isolation", () => {
       .trim()
       .split("\n")
       .filter(Boolean);
-    const root = await createTestTempDirectory("rea-vitest-project-policy-");
+    const root = await createTestTempDirectory("nre-vitest-project-policy-");
     const script = join(root, "project-isolation.mjs");
     await writeFile(
       script,
@@ -241,13 +241,13 @@ describe("test module isolation", () => {
     expect(
       report.diagnostics?.filter(
         ({ code, severity }) =>
-          code === "rea(no-shared-module-mock)" && severity === "error",
+          code === "nre(no-shared-module-mock)" && severity === "error",
       ),
     ).toEqual([]);
   });
 
   it("rejects actual Vitest module-mock aliases only in shared projects", async () => {
-    const root = await createTestTempDirectory("rea-vitest-mock-probe-");
+    const root = await createTestTempDirectory("nre-vitest-mock-probe-");
     const sharedDirectory = join(root, "tests/evaluation");
     const isolatedDirectory = join(root, "tests/process-global");
     await mkdir(sharedDirectory, { recursive: true });
@@ -270,13 +270,13 @@ describe("test module isolation", () => {
     expect(
       shared.report.diagnostics?.filter(
         ({ code, severity }) =>
-          code === "rea(no-shared-module-mock)" && severity === "error",
+          code === "nre(no-shared-module-mock)" && severity === "error",
       ),
     ).toHaveLength(1);
     expect(isolated.exitCode).toBe(0);
     expect(
       isolated.report.diagnostics?.filter(
-        ({ code }) => code === "rea(no-shared-module-mock)",
+        ({ code }) => code === "nre(no-shared-module-mock)",
       ),
     ).toEqual([]);
   });

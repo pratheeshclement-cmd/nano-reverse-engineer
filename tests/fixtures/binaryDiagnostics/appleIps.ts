@@ -26,7 +26,7 @@ export const appleIpsMetadataLine = (
   options: Pick<AppleIpsFixtureOptions, "bugType" | "procName"> = {},
 ): string =>
   JSON.stringify({
-    app_name: options.procName ?? "rea-crash-fixture",
+    app_name: options.procName ?? "nre-crash-fixture",
     timestamp: "2026-01-01 00:00:00.000 +0000",
     app_version: "",
     slice_uuid: defaultUuid,
@@ -37,9 +37,9 @@ export const appleIpsMetadataLine = (
     bug_type: options.bugType ?? "309",
     os_version: "macOS 15.0 (24A335)",
     roots_installed: 0,
-    bundleID: "test.rea.fixture",
+    bundleID: "test.nre.fixture",
     incident_id: "AAAA-BBBB",
-    name: options.procName ?? "rea-crash-fixture",
+    name: options.procName ?? "nre-crash-fixture",
   });
 
 /**
@@ -80,8 +80,8 @@ export const appleIpsReport = (
   "pid": 4242,
   "translated": false,
   "cpuType": "ARM-64",
-  "procName": ${JSON.stringify(options.procName ?? "rea-crash-fixture")},
-  "procPath": "/tmp/rea-crash-fixture",
+  "procName": ${JSON.stringify(options.procName ?? "nre-crash-fixture")},
+  "procPath": "/tmp/nre-crash-fixture",
   "parentProc": "zsh",
   "parentPid": 100,
   "coalitionName": "com.apple.Terminal",
@@ -122,7 +122,7 @@ export const appleIpsReport = (
       },
       "queue": "com.apple.main-thread",
       "frames": [
-        { "imageOffset": ${String(imageOffset)}, "symbol": "rea_fixture_fault", "symbolLocation": 12, "imageIndex": 0 },
+        { "imageOffset": ${String(imageOffset)}, "symbol": "nre_fixture_fault", "symbolLocation": 12, "imageIndex": 0 },
         { "imageOffset": 900, "symbol": "main", "symbolLocation": 40, "imageIndex": 0 }
       ]
     },
@@ -130,9 +130,9 @@ export const appleIpsReport = (
       "id": 2,
       "name": "worker",
       "frames": [
-        { "imageOffset": 1000, "symbol": "rea_fixture_inlined", "symbolLocation": 0, "imageIndex": 0, "inline": true },
-        { "imageOffset": 1000, "symbol": "rea_fixture_wait", "symbolLocation": 8, "imageIndex": 0 },
-        { "imageOffset": 1100, "symbol": "rea_fixture_worker", "symbolLocation": 20, "imageIndex": 0 }
+        { "imageOffset": 1000, "symbol": "nre_fixture_inlined", "symbolLocation": 0, "imageIndex": 0, "inline": true },
+        { "imageOffset": 1000, "symbol": "nre_fixture_wait", "symbolLocation": 8, "imageIndex": 0 },
+        { "imageOffset": 1100, "symbol": "nre_fixture_worker", "symbolLocation": 20, "imageIndex": 0 }
       ]
     }
   ],
@@ -143,8 +143,8 @@ export const appleIpsReport = (
       "base": ${String(base)},
       "size": 16384,
       "uuid": ${JSON.stringify(uuid)},
-      "path": "/tmp/rea-crash-fixture",
-      "name": "rea-crash-fixture"
+      "path": "/tmp/nre-crash-fixture",
+      "name": "nre-crash-fixture"
     },
     {
       "source": "A",

@@ -56,7 +56,7 @@ afterEach(() => {
 
 /** Real native archives and cryptography; substitute only the test publisher identity. */
 const fixture = async (family: "deb" | "arch" = "deb") => {
-  const directory = await createTestTempDirectory("rea-linux-publisher-");
+  const directory = await createTestTempDirectory("nre-linux-publisher-");
   const packageRoot = join(directory, "package-root");
   const launcher = join(packageRoot, "opt/hopper/bin/Hopper");
   await mkdir(join(packageRoot, "opt/hopper/bin"), { recursive: true });
@@ -148,7 +148,7 @@ it.each([undefined, "", "/selected/cache", "relative/cache"])(
     else
       expect(selected).toEqual({
         ok: true,
-        value: join(setting || "/caller/home/.cache", "rea/hopper-releases"),
+        value: join(setting || "/caller/home/.cache", "nre/hopper-releases"),
       });
   },
 );
@@ -159,14 +159,14 @@ portableTar.each(["HOME", "XDG_CACHE_HOME"] as const)(
     const f = await fixture("arch");
     admitFixturePublisher(f.fingerprint);
     const directory = await createTestTempDirectory(
-      "rea-linux-selected-cache-",
+      "nre-linux-selected-cache-",
     );
     const physical = join(directory, "physical");
     await mkdir(join(physical, "child"), { recursive: true });
     await symlink(join(physical, "child"), join(directory, "alias"), "dir");
     const selected = `${directory}/alias/..`;
     const suffix =
-      setting === "HOME" ? ".cache/rea/hopper-releases" : "rea/hopper-releases";
+      setting === "HOME" ? ".cache/nre/hopper-releases" : "nre/hopper-releases";
     const expected = `${physical}/${suffix}/${f.release.main_exe_hash}`;
     const decoy = `${directory}/${suffix}/${f.release.main_exe_hash}`;
     await mkdir(decoy, { recursive: true });
@@ -223,7 +223,7 @@ const feedRelease = () => ({
 it.each([false, true])(
   "retains fetched vendor release JSON with initial BOM=%s",
   async (bom) => {
-    const root = await createTestTempDirectory("rea-linux-feed-json-");
+    const root = await createTestTempDirectory("nre-linux-feed-json-");
     const publisher = new LinuxHopperPublisher(
       { XDG_CACHE_HOME: root },
       async () => "deb",
@@ -253,7 +253,7 @@ it.each([false, true])(
 );
 
 it("rejects malformed UTF-8 fetched release metadata without repairing a vendor value", async () => {
-  const root = await createTestTempDirectory("rea-linux-feed-bytes-");
+  const root = await createTestTempDirectory("nre-linux-feed-bytes-");
   const publisher = new LinuxHopperPublisher(
     { XDG_CACHE_HOME: root },
     async () => "deb",
@@ -974,7 +974,7 @@ portableTar(
 
 it("retries a launcher hash descriptor after a transient close failure", async () => {
   const launcher = join(
-    await createTestTempDirectory("rea-linux-publisher-hash-"),
+    await createTestTempDirectory("nre-linux-publisher-hash-"),
     "Hopper",
   );
   const bytes = Buffer.from("fixture launcher bytes");
@@ -1099,7 +1099,7 @@ linux(
       expect(retryFailure).toBeInstanceOf(ArtifactReaderFailure);
       expect(retryFailure).toMatchObject({
         cleanup: {
-          resources: [expect.stringContaining("rea-hopper-publisher-")],
+          resources: [expect.stringContaining("nre-hopper-publisher-")],
         },
         cleanupLeases: [expect.objectContaining({ released: false })],
       });

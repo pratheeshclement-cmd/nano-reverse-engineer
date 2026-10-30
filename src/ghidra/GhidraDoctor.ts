@@ -66,7 +66,7 @@ export const projectGhidraDoctorInspection = (
   };
 };
 
-/** Inspect the process-configured BYO Ghidra installation for `rea doctor`. */
+/** Inspect the process-configured BYO Ghidra installation for `nre doctor`. */
 export const inspectSystemGhidraProvider = async (
   environment: Readonly<NodeJS.ProcessEnv>,
   resourceOwner: RetainedResourceScope,

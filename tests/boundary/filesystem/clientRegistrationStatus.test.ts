@@ -28,12 +28,12 @@ afterEach(() => {
 
 describe("client registration status", () => {
   it("discovers a stale legacy Claude Code registration without a marker directory", async () => {
-    const home = await createTestTempDirectory("rea-claude-config-only-");
+    const home = await createTestTempDirectory("nre-claude-config-only-");
     await writeFile(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           },
@@ -41,7 +41,7 @@ describe("client registration status", () => {
       }),
     );
 
-    const statuses = await readClientRegistrationStatuses(home, "/current/rea");
+    const statuses = await readClientRegistrationStatuses(home, "/current/nre");
 
     expect(statuses).toEqual([
       expect.objectContaining({
@@ -54,9 +54,9 @@ describe("client registration status", () => {
   });
 
   it("distinguishes aligned, stale, missing, and invalid registrations", async () => {
-    const home = await createTestTempDirectory("rea-registrations-");
-    const currentEntry = join(home, "current-rea.mjs");
-    const foreignEntry = join(home, "foreign-rea.mjs");
+    const home = await createTestTempDirectory("nre-registrations-");
+    const currentEntry = join(home, "current-nre.mjs");
+    const foreignEntry = join(home, "foreign-nre.mjs");
     await writeFile(currentEntry, "// current dispatcher\n");
     await writeFile(foreignEntry, "// different dispatcher\n");
     const currentCommand = currentClientRegistrationCommand({
@@ -71,13 +71,13 @@ describe("client registration status", () => {
     ]);
     await writeFile(
       join(home, ".codex/config.toml"),
-      `[mcp_servers.rea]\ncommand = ${JSON.stringify(currentCommand[0])}\nargs = ${JSON.stringify(currentCommand.slice(1))}\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n`,
+      `[mcp_servers.nre]\ncommand = ${JSON.stringify(currentCommand[0])}\nargs = ${JSON.stringify(currentCommand.slice(1))}\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n`,
     );
     await writeFile(
       join(home, ".cursor/mcp.json"),
       JSON.stringify({
         mcpServers: {
-          rea: { command: foreignEntry, args: ["mcp"], env: { SECRET: "x" } },
+          nre: { command: foreignEntry, args: ["mcp"], env: { SECRET: "x" } },
         },
       }),
     );
@@ -117,7 +117,7 @@ describe("client registration status", () => {
   it.each([null, [], "invalid"])(
     "reports a malformed server table %j as invalid",
     async (servers) => {
-      const home = await createTestTempDirectory("rea-registration-shape-");
+      const home = await createTestTempDirectory("nre-registration-shape-");
       await mkdir(join(home, ".cursor"));
       await writeFile(
         join(home, ".cursor/mcp.json"),
@@ -136,35 +136,35 @@ describe("client registration status", () => {
 
 describe("client registration environment validation", () => {
   it("reports an otherwise aligned registration invalid for a bad tool-family scope", async () => {
-    const home = await createTestTempDirectory("rea-registration-env-");
+    const home = await createTestTempDirectory("nre-registration-env-");
     await mkdir(join(home, ".cursor"));
     await writeFile(
       join(home, ".cursor/mcp.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
-            env: { REA_MCP_TOOL_FAMILIES: "session,typo" },
+            env: { NRE_MCP_TOOL_FAMILIES: "session,typo" },
           },
         },
       }),
     );
 
-    const statuses = await readClientRegistrationStatuses(home, "/current/rea");
+    const statuses = await readClientRegistrationStatuses(home, "/current/nre");
 
     expect(statuses).toEqual([
       expect.objectContaining({
         client: "cursor",
         state: "invalid",
         command: [],
-        remediation: expect.stringContaining("REA_MCP_TOOL_FAMILIES"),
+        remediation: expect.stringContaining("NRE_MCP_TOOL_FAMILIES"),
       }),
     ]);
   });
 
   it("resolves provider budgets only for Kimi/Codex registrations", async () => {
-    const home = await createTestTempDirectory("rea-registration-budget-");
+    const home = await createTestTempDirectory("nre-registration-budget-");
     await mkdir(join(home, ".cursor"));
     await mkdir(join(home, ".codex"));
     const entry = {
@@ -173,18 +173,18 @@ describe("client registration environment validation", () => {
     };
     await writeFile(
       join(home, ".cursor/mcp.json"),
-      JSON.stringify({ mcpServers: { rea: entry } }),
+      JSON.stringify({ mcpServers: { nre: entry } }),
     );
     await writeFile(
       join(home, ".codex/config.toml"),
-      `[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "${PRODUCT_IDENTITY.registrationPackageSpecifier}", "mcp"]\n`,
+      `[mcp_servers.nre]\ncommand = "npx"\nargs = ["-y", "${PRODUCT_IDENTITY.registrationPackageSpecifier}", "mcp"]\n`,
     );
     const resolveProviderRequestBudget = async () =>
       err(new ConfigurationError("budget unavailable"));
 
     const statuses = await readClientRegistrationStatuses(
       home,
-      "/current/rea",
+      "/current/nre",
       {
         resolveProviderRequestBudget,
       },
@@ -202,11 +202,11 @@ describe("client registration environment validation", () => {
 
 describe("client registration launcher identity", () => {
   it("reports an unversioned npx registration as stale", async () => {
-    const home = await createTestTempDirectory("rea-registrations-");
+    const home = await createTestTempDirectory("nre-registrations-");
     await mkdir(join(home, ".codex"));
     await writeFile(
       join(home, ".codex/config.toml"),
-      '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents", "mcp"]\n',
+      '[mcp_servers.nre]\ncommand = "npx"\nargs = ["-y", "nano-reverse-engineer", "mcp"]\n',
     );
 
     const statuses = await readClientRegistrationStatuses(home);
@@ -214,19 +214,19 @@ describe("client registration launcher identity", () => {
     expect(statuses).toEqual([
       expect.objectContaining({
         client: "codex",
-        command: ["npx", "-y", "rea-agents", "mcp"],
+        command: ["npx", "-y", "nano-reverse-engineer", "mcp"],
         state: "stale",
       }),
     ]);
   });
 
   it("reports an unpinned bunx registration as stale rather than aligned", async () => {
-    const home = await createTestTempDirectory("rea-bunx-unpinned-");
+    const home = await createTestTempDirectory("nre-bunx-unpinned-");
     await writeFile(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: { command: "bunx", args: ["rea-agents", "mcp"] },
+          nre: { command: "bunx", args: ["nano-reverse-engineer", "mcp"] },
         },
       }),
     );
@@ -235,18 +235,18 @@ describe("client registration launcher identity", () => {
 
     expect(status).toMatchObject({
       client: "claude_code",
-      command: ["bunx", "rea-agents", "mcp"],
+      command: ["bunx", "nano-reverse-engineer", "mcp"],
       state: "stale",
     });
   });
 
   it("preserves direct command identity as unknown when the current entrypoint is absent", async () => {
-    const home = await createTestTempDirectory("rea-registration-unknown-");
+    const home = await createTestTempDirectory("nre-registration-unknown-");
     await mkdir(join(home, ".cursor"));
-    const command = ["/opt/rea/bin/rea", "mcp"];
+    const command = ["/opt/nre/bin/nre", "mcp"];
     const config = join(home, ".cursor/mcp.json");
     const original = JSON.stringify({
-      mcpServers: { rea: { command: command[0], args: [command[1]] } },
+      mcpServers: { nre: { command: command[0], args: [command[1]] } },
     });
     await writeFile(config, original);
 
@@ -270,27 +270,27 @@ describe("client registration launcher identity", () => {
     expect(await readFile(config, "utf8")).toBe(original);
   });
 
-  it("does not use the REA process cwd to resolve a client's relative launcher path", async () => {
-    const home = await createTestTempDirectory("rea-registration-relative-");
+  it("does not use the NRE process cwd to resolve a client's relative launcher path", async () => {
+    const home = await createTestTempDirectory("nre-registration-relative-");
     await mkdir(join(home, ".cursor"));
-    const currentEntry = resolve("./rea.mjs");
+    const currentEntry = resolve("./nre.mjs");
     const configPath = join(home, ".cursor/mcp.json");
     const registration = (
       scriptPath: string,
       executable = process.execPath,
     ) => ({
       mcpServers: {
-        rea: { command: executable, args: [scriptPath, "mcp"] },
+        nre: { command: executable, args: [scriptPath, "mcp"] },
       },
     });
-    await writeFile(configPath, JSON.stringify(registration("./rea.mjs")));
+    await writeFile(configPath, JSON.stringify(registration("./nre.mjs")));
 
     const [relativeStatus] = await readClientRegistrationStatuses(
       home,
       currentEntry,
     );
     expect(relativeStatus).toMatchObject({
-      command: [process.execPath, "./rea.mjs", "mcp"],
+      command: [process.execPath, "./nre.mjs", "mcp"],
       state: "unknown",
     });
 
@@ -328,14 +328,14 @@ describe("client registration package version identity", () => {
     "preserves package version %s ownership with canonical-only drift reporting",
     async (version, reportsDrift) => {
       const home = await createTestTempDirectory(
-        "rea-registration-version-drift-",
+        "nre-registration-version-drift-",
       );
       await mkdir(join(home, ".codex"));
-      const reference = `rea-agents@${version}`;
+      const reference = `nano-reverse-engineer@${version}`;
       const command = ["npx", "-y", reference, "mcp"];
       await writeFile(
         join(home, ".codex/config.toml"),
-        `[mcp_servers.rea]\ncommand = "${command[0]}"\nargs = ["${command[1]}", "${command[2]}", "${command[3]}"]\n`,
+        `[mcp_servers.nre]\ncommand = "${command[0]}"\nargs = ["${command[1]}", "${command[2]}", "${command[3]}"]\n`,
       );
 
       const [status] = await readClientRegistrationStatuses(home);
@@ -351,19 +351,19 @@ describe("client registration package version identity", () => {
       });
       if (reportsDrift) {
         expect(status?.remediation).toContain(
-          `current REA CLI package is ${PRODUCT_IDENTITY.packageVersion}`,
+          `current NRE CLI package is ${PRODUCT_IDENTITY.packageVersion}`,
         );
         expect(status?.remediation).toContain(
           "does not resolve package-runner",
         );
-        expect(status?.remediation).toContain("rea setup --client codex");
+        expect(status?.remediation).toContain("nre setup --client codex");
       } else {
-        expect(status?.remediation).not.toContain("current REA CLI package");
+        expect(status?.remediation).not.toContain("current NRE CLI package");
         expect(status?.remediation).not.toContain(
           "does not resolve package-runner",
         );
       }
-      expect(status?.remediation).toContain("rea setup");
+      expect(status?.remediation).toContain("nre setup");
     },
   );
 });
@@ -376,7 +376,7 @@ describe("commandcode registration status", () => {
     await mkdir(join(home, ".commandcode"));
     await writeFile(
       join(home, ".commandcode/mcp.json"),
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { nre: registration } }),
     );
   };
 
@@ -389,7 +389,7 @@ describe("commandcode registration status", () => {
   it.each([undefined, "sse"])(
     "reports transport %j as invalid",
     async (transport) => {
-      const home = await createTestTempDirectory("rea-commandcode-transport-");
+      const home = await createTestTempDirectory("nre-commandcode-transport-");
       await writeCommandcodeRegistration(home, {
         ...(transport === undefined ? {} : { transport }),
         command: "npx",
@@ -407,7 +407,7 @@ describe("commandcode registration status", () => {
   );
 
   it("reports a disabled registration as stale", async () => {
-    const home = await createTestTempDirectory("rea-commandcode-disabled-");
+    const home = await createTestTempDirectory("nre-commandcode-disabled-");
     await writeCommandcodeRegistration(home, {
       transport: "stdio",
       enabled: false,
@@ -431,12 +431,12 @@ describe("client activation keys", () => {
   ] as const)(
     "reads only the activation key Codex honors (%s)",
     async (activation, state) => {
-      const home = await createTestTempDirectory("rea-codex-activation-");
+      const home = await createTestTempDirectory("nre-codex-activation-");
       await mkdir(join(home, ".codex"));
-      const entry = resolve("scripts/rea.mjs");
+      const entry = resolve("scripts/nre.mjs");
       await writeFile(
         join(home, ".codex/config.toml"),
-        `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n${activation}\n`,
+        `[mcp_servers.nre]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n${activation}\n`,
       );
       expect(
         await readClientRegistrationStatuses(home, entry, { environment: {} }),
@@ -444,7 +444,7 @@ describe("client activation keys", () => {
     },
   );
 
-  // Each JSON client loads rea under the key it ignores and skips it under the key it honors.
+  // Each JSON client loads nre under the key it ignores and skips it under the key it honors.
   it.each([
     ["kimi", { disabled: true }, "aligned"],
     ["kimi", { enabled: false }, "stale"],
@@ -453,14 +453,14 @@ describe("client activation keys", () => {
   ] as const)(
     "reads only the activation key %s honors (%j)",
     async (client, activation, state) => {
-      const home = await createTestTempDirectory("rea-json-activation-");
-      const entry = resolve("scripts/rea.mjs");
+      const home = await createTestTempDirectory("nre-json-activation-");
+      const entry = resolve("scripts/nre.mjs");
       const [config, fields] =
         client === "kimi"
           ? [
               join(home, ".kimi-code/mcp.json"),
               {
-                env: { REA_MCP_INPUT_SCHEMA_PROFILE: "compact" },
+                env: { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact" },
                 startupTimeoutMs: 30_000,
                 toolTimeoutMs: 450_000,
               },
@@ -479,7 +479,7 @@ describe("client activation keys", () => {
         config,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            nre: {
               command: process.execPath,
               args: [entry, "mcp"],
               ...fields,
@@ -505,14 +505,14 @@ describe("Ghidra multi-function deadline registration advice", () => {
   ])(
     "preserves a selected $timeout-second $provider deadline and describes its scope",
     async ({ provider, timeout, hasBatchScope }) => {
-      const home = await createTestTempDirectory("rea-codex-decompile-scope-");
+      const home = await createTestTempDirectory("nre-codex-decompile-scope-");
       await mkdir(join(home, ".codex"));
       const entry = CURRENT_ENTRYPOINT_PATH;
       if (entry === undefined) throw new Error("missing current entrypoint");
       const configPath = join(home, ".codex/config.toml");
       // Two 600-second Ghidra decompiles plus startup/headroom would need an
       // estimated 1650 seconds. A caller's shorter or longer choice stays theirs.
-      const original = `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = ${timeout}\n[mcp_servers.rea.env]\nREA_ANALYSIS_PROVIDER = "${provider}"\nREA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS = "600"\n`;
+      const original = `[mcp_servers.nre]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = ${timeout}\n[mcp_servers.nre.env]\nREA_ANALYSIS_PROVIDER = "${provider}"\nREA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS = "600"\n`;
       await writeFile(configPath, original);
       const [status] = await readClientRegistrationStatuses(home, entry, {
         environment: {},
@@ -531,7 +531,7 @@ describe("Ghidra multi-function deadline registration advice", () => {
       );
       expect(configured).toMatchObject({ status: "unchanged" });
       expect(await readFile(configPath, "utf8")).toBe(original);
-      await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${configPath}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -542,12 +542,12 @@ describe("Node-wrapped registration policy", () => {
   it.each([1, 30])(
     "accepts Codex caller-selected startup timeout %d independently of launcher",
     async (timeout) => {
-      const home = await createTestTempDirectory("rea-node-registration-");
+      const home = await createTestTempDirectory("nre-node-registration-");
       await mkdir(join(home, ".codex"));
-      const entry = resolve("scripts/rea.mjs");
+      const entry = resolve("scripts/nre.mjs");
       await writeFile(
         join(home, ".codex/config.toml"),
-        `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = ${String(timeout)}\ntool_timeout_sec = 450\n`,
+        `[mcp_servers.nre]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = ${String(timeout)}\ntool_timeout_sec = 450\n`,
       );
       const statuses = await readClientRegistrationStatuses(home, entry, {
         environment: {},
@@ -562,12 +562,12 @@ describe("Node-wrapped registration policy", () => {
   );
 
   it("keeps a short positive Codex tool timeout aligned and reports an advisory", async () => {
-    const home = await createTestTempDirectory("rea-codex-short-tool-timeout-");
+    const home = await createTestTempDirectory("nre-codex-short-tool-timeout-");
     await mkdir(join(home, ".codex"));
-    const entry = resolve("scripts/rea.mjs");
+    const entry = resolve("scripts/nre.mjs");
     await writeFile(
       join(home, ".codex/config.toml"),
-      `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 5\ntool_timeout_sec = 10\n`,
+      `[mcp_servers.nre]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 5\ntool_timeout_sec = 10\n`,
     );
     const [status] = await readClientRegistrationStatuses(home, entry, {
       environment: {},
@@ -582,12 +582,12 @@ describe("Node-wrapped registration policy", () => {
   it.each([1, 30, 90])(
     "accepts Grok Build caller-selected startup timeout %d independently of launcher",
     async (timeout) => {
-      const home = await createTestTempDirectory("rea-grok-registration-");
+      const home = await createTestTempDirectory("nre-grok-registration-");
       await mkdir(join(home, ".grok"));
-      const entry = resolve("scripts/rea.mjs");
+      const entry = resolve("scripts/nre.mjs");
       await writeFile(
         join(home, ".grok/config.toml"),
-        `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = ${String(timeout)}\n`,
+        `[mcp_servers.nre]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = ${String(timeout)}\n`,
       );
       const statuses = await readClientRegistrationStatuses(home, entry, {
         environment: {},
@@ -601,13 +601,13 @@ describe("Node-wrapped registration policy", () => {
     },
   );
 
-  it("reports Grok Build stale when rea is listed in disabled_mcp_servers", async () => {
-    const home = await createTestTempDirectory("rea-grok-disabled-status-");
+  it("reports Grok Build stale when nre is listed in disabled_mcp_servers", async () => {
+    const home = await createTestTempDirectory("nre-grok-disabled-status-");
     await mkdir(join(home, ".grok"));
-    const entry = resolve("scripts/rea.mjs");
+    const entry = resolve("scripts/nre.mjs");
     await writeFile(
       join(home, ".grok/config.toml"),
-      `disabled_mcp_servers = ["rea"]\n[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\n`,
+      `disabled_mcp_servers = ["nre"]\n[mcp_servers.nre]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\n`,
     );
     expect(
       await readClientRegistrationStatuses(home, entry, { environment: {} }),
@@ -617,15 +617,15 @@ describe("Node-wrapped registration policy", () => {
   });
 
   it("checks a direct-launcher Codex startup timeout without Node wrapping", async () => {
-    const home = await createTestTempDirectory("rea-direct-registration-");
+    const home = await createTestTempDirectory("nre-direct-registration-");
     await mkdir(join(home, ".codex"));
     await writeFile(
       join(home, ".codex/config.toml"),
-      '[mcp_servers.rea]\ncommand = "/current/rea"\nargs = ["mcp"]\nstartup_timeout_sec = 1\n',
+      '[mcp_servers.nre]\ncommand = "/current/nre"\nargs = ["mcp"]\nstartup_timeout_sec = 1\n',
     );
     const statuses = await readClientRegistrationStatuses(
       home,
-      "/current/rea",
+      "/current/nre",
       {
         environment: {},
       },
@@ -638,14 +638,14 @@ describe("Node-wrapped registration policy", () => {
   it.each([{ tools: ["binary_session"] }, { tools: ["*"] }, { tools: [] }])(
     "checks Copilot tool selection $tools independently of launcher",
     async ({ tools }) => {
-      const home = await createTestTempDirectory("rea-node-copilot-");
+      const home = await createTestTempDirectory("nre-node-copilot-");
       await mkdir(join(home, ".copilot"));
-      const entry = resolve("scripts/rea.mjs");
+      const entry = resolve("scripts/nre.mjs");
       await writeFile(
         join(home, ".copilot/mcp-config.json"),
         JSON.stringify({
           mcpServers: {
-            rea: {
+            nre: {
               type: "stdio",
               command: process.execPath,
               args: [entry, "mcp"],
@@ -672,7 +672,7 @@ describe("explicit client selection", () => {
   // probe (ENOTDIR on POSIX, ENOENT on Windows), which is the shape an ACL
   // failure takes for automatic discovery.
   const unreachableSharedParent = async (): Promise<string> => {
-    const home = await createTestTempDirectory("rea-selected-unreachable-");
+    const home = await createTestTempDirectory("nre-selected-unreachable-");
     await writeFile(join(home, ".agents"), "not a directory");
     return home;
   };
@@ -682,7 +682,7 @@ describe("explicit client selection", () => {
 
     const statuses = await readClientRegistrationStatuses(
       home,
-      "/current/rea",
+      "/current/nre",
       {
         environment: {},
         selectedClientIds: ["freebuff"],
@@ -707,7 +707,7 @@ describe("explicit client selection", () => {
 
       const statuses = await readClientRegistrationStatuses(
         home,
-        "/current/rea",
+        "/current/nre",
         {
           environment: {},
           selectedClientIds: ["freebuff"],
@@ -729,7 +729,7 @@ describe("explicit client selection", () => {
 
     const statuses = await readClientRegistrationStatuses(
       home,
-      "/current/rea",
+      "/current/nre",
       {
         environment: {},
       },
@@ -743,7 +743,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports an inaccessible configuration target instead of omitting its registration",
   async () => {
     const home = await createTestTempDirectory(
-      "rea-registration-denied-target-",
+      "nre-registration-denied-target-",
     );
     const locked = join(home, "owned-denied");
     await mkdir(locked);
@@ -751,7 +751,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     await writeFile(
       target,
       JSON.stringify({
-        mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+        mcpServers: { nre: { command: "nre", args: ["mcp"] } },
       }),
     );
     const path = join(home, ".claude.json");
@@ -760,7 +760,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     try {
       const statuses = await readClientRegistrationStatuses(
         home,
-        "/current/rea",
+        "/current/nre",
       );
       expect(
         statuses.find((status) => status.client === "claude_code"),
@@ -771,7 +771,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         remediation: expect.stringMatching(/\S/u),
       });
       expect(
-        (await existingMaintenanceScope(home, "/current/rea", process.env))
+        (await existingMaintenanceScope(home, "/current/nre", process.env))
           .clients,
       ).not.toContain("claude_code");
     } finally {
@@ -784,7 +784,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports an unresolved configuration location when metadata lookup is denied",
   async () => {
     const home = await createTestTempDirectory(
-      "rea-registration-denied-metadata-",
+      "nre-registration-denied-metadata-",
     );
     const locked = join(home, "owned-denied");
     const directory = join(locked, "claude");
@@ -794,7 +794,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     try {
       const statuses = await readClientRegistrationStatuses(
         home,
-        "/current/rea",
+        "/current/nre",
       );
       expect(
         statuses.find((status) => status.client === "claude_code"),
@@ -811,7 +811,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 
 it("reports a dangling configuration entry as missing without losing the detected client", async () => {
   const home = await createTestTempDirectory(
-    "rea-registration-dangling-config-",
+    "nre-registration-dangling-config-",
   );
   const path = join(home, ".claude.json");
   await symlink(join(home, "absent.json"), path);

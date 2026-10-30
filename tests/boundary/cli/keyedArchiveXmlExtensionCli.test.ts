@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "compiled CLI inspects an XML keyed archive with a non-plist suffix",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-keyed-xml-extension-cli-");
+    const root = await createTestTempDirectory("nre-keyed-xml-extension-cli-");
     const path = join(root, "Model.archive");
     await writeFile(
       path,
@@ -24,7 +24,7 @@ cliTest(
     );
     const output = await cli.run({
       arguments: ["inspect-keyed-archive", path, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     expect(parseEvidence(output.json).normalized_result).toMatchObject({

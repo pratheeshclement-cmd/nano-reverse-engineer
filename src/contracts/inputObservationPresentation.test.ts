@@ -9,7 +9,7 @@ it.each(["draft-2020-12", "draft-07"] as const)(
   (target) => {
     const literal = {
       type: "object",
-      "x-rea-complete-observation": true,
+      "x-nre-complete-observation": true,
       properties: { producer_data: { type: "string" } },
     };
     const controls = {
@@ -28,7 +28,7 @@ it.each(["draft-2020-12", "draft-07"] as const)(
         observation: {
           type: "object",
           description: "Complete result from the producer.",
-          "x-rea-complete-observation": true,
+          "x-nre-complete-observation": true,
           properties: { id: { type: "string" } },
           required: ["id"],
         },

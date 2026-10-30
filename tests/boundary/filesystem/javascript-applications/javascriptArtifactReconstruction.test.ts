@@ -55,7 +55,7 @@ import { writeJavaScriptArtifactFixture } from "../../../fixtures/javascriptArti
 import { writeFixtureFiles } from "../../../support/javascriptApplicationFixture.js";
 
 it("does not let a known-absent optional import erase another application's page", async () => {
-  const root = await createTestTempDirectory("rea-absent-optional-owner-");
+  const root = await createTestTempDirectory("nre-absent-optional-owner-");
   await writeFixtureFiles(root, {
     "a/package.json": JSON.stringify({ main: "main.cjs" }),
     "b/package.json": JSON.stringify({ main: "main.cjs" }),
@@ -110,7 +110,7 @@ it.each([
 ] as const)(
   "distinguishes hidden imports from inert data through %s",
   async (omission) => {
-    const root = await createTestTempDirectory("rea-competing-gap-");
+    const root = await createTestTempDirectory("nre-competing-gap-");
     const targetPaths: Partial<Record<typeof omission, string>> = {
       "unavailable-default-main": "b/index.js",
       "unavailable-json-main": "b/config.json",
@@ -244,7 +244,7 @@ it.each([
 it.each(["unselected", "unavailable"] as const)(
   "keeps imported loadFile ownership unknown across an %s module",
   async (omission) => {
-    const root = await createTestTempDirectory("rea-missing-module-owner-");
+    const root = await createTestTempDirectory("nre-missing-module-owner-");
     await writeFixtureFiles(root, {
       "app/package.json": JSON.stringify({ main: "../shared/main.cjs" }),
       "shared/main.cjs": 'require("./window.cjs");',
@@ -320,7 +320,7 @@ it.each(["unselected", "unavailable"] as const)(
 );
 
 it("keeps imported loadFile ownership unknown across an application projection omission", async () => {
-  const root = await createTestTempDirectory("rea-omitted-app-owner-");
+  const root = await createTestTempDirectory("nre-omitted-app-owner-");
   await writeFixtureFiles(root, {
     "app/package.json": JSON.stringify({ main: "../shared/main.cjs" }),
     "shared/main.cjs": 'require("./window.cjs");',
@@ -386,13 +386,13 @@ it("keeps imported loadFile ownership unknown across an application projection o
 });
 
 it("keeps known IPC pairings when a different Electron value is dynamic", async () => {
-  const root = await createTestTempDirectory("rea-partial-ipc-");
+  const root = await createTestTempDirectory("nre-partial-ipc-");
   await writeFixtureFiles(root, {
     "package.json": JSON.stringify({ main: "main.js" }),
     "main.js":
-      'const { BrowserWindow, ipcMain } = require("electron"); new BrowserWindow({ webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true } }); ipcMain.handle("rea:ping", () => true);',
+      'const { BrowserWindow, ipcMain } = require("electron"); new BrowserWindow({ webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true } }); ipcMain.handle("nre:ping", () => true);',
     "preload.js":
-      'const { contextBridge, ipcRenderer } = require("electron"); contextBridge.exposeInMainWorld("rea", { ping: () => ipcRenderer.invoke("rea:ping") });',
+      'const { contextBridge, ipcRenderer } = require("electron"); contextBridge.exposeInMainWorld("nre", { ping: () => ipcRenderer.invoke("nre:ping") });',
     "hidden.js": "export const hidden = true;",
     "unrelated.js.map": JSON.stringify({
       version: 3,
@@ -498,15 +498,15 @@ it("keeps known IPC pairings when a different Electron value is dynamic", async 
 });
 
 it("keeps IPC pairings uncertain when inline HTML scripts are not examined", async () => {
-  const root = await createTestTempDirectory("rea-inline-ipc-");
+  const root = await createTestTempDirectory("nre-inline-ipc-");
   await writeFixtureFiles(root, {
     "package.json": JSON.stringify({ main: "main.js" }),
     "main.js":
-      'const { ipcMain } = require("electron"); ipcMain.handle("rea:ping", () => true);',
+      'const { ipcMain } = require("electron"); ipcMain.handle("nre:ping", () => true);',
     "preload.js":
-      'const { ipcRenderer } = require("electron"); ipcRenderer.invoke("rea:ping");',
+      'const { ipcRenderer } = require("electron"); ipcRenderer.invoke("nre:ping");',
     "index.html":
-      '<script>require("electron").ipcMain.handle("rea:ping", () => false)</script>',
+      '<script>require("electron").ipcMain.handle("nre:ping", () => false)</script>',
   });
   const snapshot = await scanCanonicalArtifactInventory(root, {});
   const reader = createJavaScriptArtifactReader(root, "directory");
@@ -546,13 +546,13 @@ it("keeps IPC pairings uncertain when inline HTML scripts are not examined", asy
 });
 
 it("keeps IPC pairings uncertain when source examination is incomplete", async () => {
-  const root = await createTestTempDirectory("rea-partial-ipc-examination-");
+  const root = await createTestTempDirectory("nre-partial-ipc-examination-");
   await writeFixtureFiles(root, {
     "package.json": JSON.stringify({ main: "main.js" }),
     "main.js":
-      'const { ipcMain } = require("electron"); ipcMain.handle("rea:ping", () => true);',
+      'const { ipcMain } = require("electron"); ipcMain.handle("nre:ping", () => true);',
     "preload.js":
-      'const { ipcRenderer } = require("electron"); ipcRenderer.invoke("rea:ping");',
+      'const { ipcRenderer } = require("electron"); ipcRenderer.invoke("nre:ping");',
     "hidden.js": "export const hidden = true;",
   });
   const snapshot = await scanCanonicalArtifactInventory(root, {});
@@ -686,11 +686,11 @@ it("keeps IPC pairings uncertain when source examination is incomplete", async (
 });
 
 it("does not pair IPC when the Electron wrapper walk hits its depth limit", async () => {
-  const root = await createTestTempDirectory("rea-limited-electron-ipc-");
+  const root = await createTestTempDirectory("nre-limited-electron-ipc-");
   const source = (depth: number) => {
     const nested =
       Array.from({ length: depth }, (_, index) => `level${index}:{`).join("") +
-      'deep:()=>{const register=(ipc)=>ipc.handle("rea:ping",()=>false);register(e.ipcMain)}' +
+      'deep:()=>{const register=(ipc)=>ipc.handle("nre:ping",()=>false);register(e.ipcMain)}' +
       "}".repeat(depth);
     return `const e=require("electron");e.contextBridge.exposeInMainWorld("desktop",{${nested}});`;
   };
@@ -701,16 +701,16 @@ it("does not pair IPC when the Electron wrapper walk hits its depth limit", asyn
       expect.objectContaining({
         side: "main",
         operation: "handle",
-        channel: "rea:ping",
+        channel: "nre:ping",
       }),
     ]),
   );
   await writeFixtureFiles(root, {
     "package.json": JSON.stringify({ main: "main.js" }),
     "main.js":
-      'const { ipcMain } = require("electron"); ipcMain.handle("rea:ping", () => true);',
+      'const { ipcMain } = require("electron"); ipcMain.handle("nre:ping", () => true);',
     "preload.js":
-      'const { ipcRenderer } = require("electron"); ipcRenderer.invoke("rea:ping");',
+      'const { ipcRenderer } = require("electron"); ipcRenderer.invoke("nre:ping");',
     "limited.js": source(130),
   });
   const snapshot = await scanCanonicalArtifactInventory(root, {});
@@ -727,7 +727,7 @@ it("does not pair IPC when the Electron wrapper walk hits its depth limit", asyn
     });
     expect(limited?.javascript?.electron.ipc).not.toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ channel: "rea:ping" }),
+        expect.objectContaining({ channel: "nre:ping" }),
       ]),
     );
     const { electronSummary } = await completeJavaScriptAnalysisSteps(
@@ -745,7 +745,7 @@ it("does not pair IPC when the Electron wrapper walk hits its depth limit", asyn
 });
 
 it("does not expand or pair IPC from a revoked application projection", async () => {
-  const root = await createTestTempDirectory("rea-revoked-ipc-");
+  const root = await createTestTempDirectory("nre-revoked-ipc-");
   await writeFixtureFiles(root, {
     "package.json": JSON.stringify({ main: "main.cjs" }),
     "main.cjs":
@@ -801,7 +801,7 @@ it("does not expand or pair IPC from a revoked application projection", async ()
 });
 
 it("keeps a loadFile owner unknown when a sibling manifest is unavailable in the inventory projection", async () => {
-  const root = await createTestTempDirectory("rea-unavailable-app-owner-");
+  const root = await createTestTempDirectory("nre-unavailable-app-owner-");
   await writeFixtureFiles(root, {
     "app/package.json": JSON.stringify({ main: "../shared/main.cjs" }),
     "shared/main.cjs":
@@ -867,7 +867,7 @@ it("keeps a loadFile owner unknown when a sibling manifest is unavailable in the
 });
 
 it("keeps excluded non-JavaScript files out of the semantic graph", async () => {
-  const root = await createTestTempDirectory("rea-js-semantic-applicability-");
+  const root = await createTestTempDirectory("nre-js-semantic-applicability-");
   await Promise.all(
     (
       [
@@ -1024,7 +1024,7 @@ it("preserves graph commitments and export shapes through worker adoption", asyn
     expectWorkerExportFacts(graph, semantic, exported.file);
     expect(javaScriptSemanticGraphSchema.parse(semantic)).toEqual(semantic);
     const transferred = createJavaScriptSemanticGraphProjection();
-    const wireRoot = await createTestTempDirectory("rea-javascript-transfer-");
+    const wireRoot = await createTestTempDirectory("nre-javascript-transfer-");
     const decodedModules = new Map<string, JavaScriptModuleSemanticIr>();
     const decodedStatic = new Map<string, JavaScriptStaticAnalysis>();
     let rejectedInvalidTransfer = false;
@@ -1214,7 +1214,7 @@ const rejectInvalidTransfer = async (
 };
 
 it("reports semantic value resource limits in application graph coverage", async () => {
-  const root = await createTestTempDirectory("rea-javascript-semantic-limit-");
+  const root = await createTestTempDirectory("nre-javascript-semantic-limit-");
   await writeFile(
     join(root, "app.js"),
     `const answer = { nested: ${primitiveCandidateExpansionExpression()} };`,
@@ -1362,7 +1362,7 @@ it("reconstructs package, Electron roles, Webpack/Rspack modules, and cross-laye
 });
 
 it("produces deterministic ASAR graphs with unpacked native linkage and complete paths/digests", async () => {
-  const root = await createTestTempDirectory("rea-javascript-asar-");
+  const root = await createTestTempDirectory("nre-javascript-asar-");
   const source = join(root, "source");
   await mkdir(source);
   await writeJavaScriptArtifactFixture(source);
@@ -1419,7 +1419,7 @@ it("produces deterministic ASAR graphs with unpacked native linkage and complete
 
 it("keeps suffix-named ASAR directories in the graph and analyzes their files", async () => {
   const root = await createTestTempDirectory(
-    "rea-javascript-asar-suffix-directory-",
+    "nre-javascript-asar-suffix-directory-",
   );
   const source = join(root, "source");
   const zipDirectory = join(source, "node_modules", "@zip.js");
@@ -1461,7 +1461,7 @@ it("keeps suffix-named ASAR directories in the graph and analyzes their files", 
 });
 
 it("keeps ASAR analysis usable when unpacked native companion bytes are absent", async () => {
-  const root = await createTestTempDirectory("rea-javascript-asar-missing-");
+  const root = await createTestTempDirectory("nre-javascript-asar-missing-");
   const source = join(root, "source");
   await mkdir(source);
   await writeJavaScriptArtifactFixture(source);
@@ -1550,7 +1550,7 @@ it("keeps ASAR analysis usable when unpacked native companion bytes are absent",
 });
 
 it("recurses into filesystem-backed ASAR containers without losing container-relative paths", async () => {
-  const root = await createTestTempDirectory("rea-javascript-nested-asar-");
+  const root = await createTestTempDirectory("nre-javascript-nested-asar-");
   const source = await fixtureDirectory();
   const outer = join(root, "outer");
   const resources = join(outer, "resources");
@@ -1684,7 +1684,7 @@ const reconstructAsarArchive = async (
 };
 
 const fixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-javascript-artifact-");
+  const root = await createTestTempDirectory("nre-javascript-artifact-");
   await writeJavaScriptArtifactFixture(root);
   return root;
 };
@@ -1693,7 +1693,7 @@ for (const extension of ["ts", "tsx", "mts", "cts", "js", "mjs", "cjs"]) {
   it.each(["directory", "asar"] as const)(
     `retains ${extension} source facts from a real %s artifact`,
     async (format) => {
-      const root = await createTestTempDirectory("rea-nodenext-artifacts-");
+      const root = await createTestTempDirectory("nre-nodenext-artifacts-");
       const directory = join(root, "source");
       await mkdir(directory);
       const path = `selected.${extension}`;

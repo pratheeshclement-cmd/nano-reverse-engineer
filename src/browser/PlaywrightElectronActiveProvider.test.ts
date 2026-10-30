@@ -37,7 +37,7 @@ it("passes the selected environment and ownership token to Electron launch", asy
       DISPLAY: ":selected-display",
       XAUTHORITY: "/selected/display-authorization",
       WAYLAND_DISPLAY: "selected-wayland",
-      REA_PRIVATE_VALUE: "not-a-launch-setting",
+      NRE_PRIVATE_VALUE: "not-a-launch-setting",
     },
     async (options) => {
       launchedEnvironment = options?.env;
@@ -59,7 +59,7 @@ it("passes the selected environment and ownership token to Electron launch", asy
     DISPLAY: ":selected-display",
     XAUTHORITY: "/selected/display-authorization",
     WAYLAND_DISPLAY: "selected-wayland",
-    REA_PROCESS_RUN_ID: expect.any(String),
+    NRE_PROCESS_RUN_ID: expect.any(String),
   });
 });
 
@@ -79,7 +79,7 @@ it("passes required Windows runtime variables without inheriting unrelated value
     SYSTEMROOT: "C:\\Windows",
     LOCALAPPDATA: "C:\\Users\\analyst\\AppData\\Local",
     USERPROFILE: "C:\\Users\\analyst",
-    REA_PROCESS_RUN_ID: "run-id",
+    NRE_PROCESS_RUN_ID: "run-id",
   });
 });
 
@@ -367,7 +367,7 @@ it("retains the initial snapshot when the final state read fails", async () => {
 });
 
 it("rejects active capture before launch when EnableNodeCliInspectArguments fuse is disabled", async () => {
-  const root = await createTestTempDirectory("rea-active-provider-fuse-");
+  const root = await createTestTempDirectory("nre-active-provider-fuse-");
   const disabledBinary = join(root, "disabled-electron");
   await writeFile(disabledBinary, thinFuseImage(OBSIDIAN_FUSE_BYTES).bytes);
 
@@ -536,7 +536,7 @@ it("records actions after a failed action as not executed and keeps the capture"
         step_id: "link",
         kind: "deep-link",
         delivery: "open-url",
-        url: "rea-test://open",
+        url: "nre-test://open",
       },
     ],
   );

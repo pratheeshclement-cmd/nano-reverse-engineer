@@ -21,11 +21,11 @@ assert.equal(
   "This lane requires native macOS Hopper",
 );
 const fixtures = await loadRealHopperFixtureTargets(
-  process.env.REA_HOPPER_CONFORMANCE_MANIFEST_PATH ??
+  process.env.NRE_HOPPER_CONFORMANCE_MANIFEST_PATH ??
     "build/conformance/manifest.json",
 );
 const root = await realpath(
-  await mkdtemp(join(tmpdir(), "rea-hopper-deadlines-")),
+  await mkdtemp(join(tmpdir(), "nre-hopper-deadlines-")),
 );
 const target = join(root, "deadline-fixture");
 const profileResources = new ArtifactResourceScope();

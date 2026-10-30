@@ -25,7 +25,7 @@ const { BROWSER_DEVTOOLS_STARTUP_TIMEOUT_MS, waitForBrowserDevtoolsPort } =
 /** Launch the verifier browser and await CDP in its own verified process group. */
 export async function startRuntimeFixtureBrowser(executable, initialUrl) {
   await requireOrdinaryWindowsVerifierCaller();
-  const profile = await mkdtemp(join(tmpdir(), "rea-real-web-runtime-"));
+  const profile = await mkdtemp(join(tmpdir(), "nre-real-web-runtime-"));
   let supervisor;
   let stopOwnedBrowser;
   const resources = new ArtifactResourceScope();
@@ -50,7 +50,7 @@ export async function startRuntimeFixtureBrowser(executable, initialUrl) {
       arguments: [
         "--headless=new",
         "--password-store=basic",
-        ...(process.env.REA_BROWSER_NO_SANDBOX === "true"
+        ...(process.env.NRE_BROWSER_NO_SANDBOX === "true"
           ? ["--no-sandbox"]
           : []),
         "--remote-debugging-address=127.0.0.1",

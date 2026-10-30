@@ -18,7 +18,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform)).for([
 ] as const)(
   "preserves the %s Java prerequisite result through doctor",
   async ([failure, classification, code], { cli }) => {
-    const root = await createTestTempDirectory("rea-java-doctor-");
+    const root = await createTestTempDirectory("nre-java-doctor-");
     const jdk = join(root, "jdk");
     const install = join(root, "ghidra");
     const platform = process.platform === "darwin" ? "mac" : "linux";
@@ -71,7 +71,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform)).for([
       environment: {
         JAVA_HOME: jdk,
         GHIDRA_INSTALL_DIR: install,
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
     });
     expect(result.exitCode, `${result.stdout}\n${result.stderr}`).toBe(1);
@@ -125,7 +125,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform)).for([
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "doctor returns its own deadline result for a SIGTERM-resistant selected Java command",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-java-doctor-deadline-");
+    const root = await createTestTempDirectory("nre-java-doctor-deadline-");
     const jdk = join(root, "jdk");
     const install = join(root, "ghidra");
     const started = join(root, "java-started.json");
@@ -141,7 +141,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
       `#!${process.execPath}
 const fs = require("node:fs");
 process.on("SIGTERM", () => {});
-fs.writeFileSync(${JSON.stringify(`${started}.tmp`)}, JSON.stringify({ pid: process.pid, runId: process.env.REA_PROCESS_RUN_ID }));
+fs.writeFileSync(${JSON.stringify(`${started}.tmp`)}, JSON.stringify({ pid: process.pid, runId: process.env.NRE_PROCESS_RUN_ID }));
 fs.renameSync(${JSON.stringify(`${started}.tmp`)}, ${JSON.stringify(started)});
 setInterval(() => { if (fs.existsSync(${JSON.stringify(release)})) process.exit(0); }, 50);
 setTimeout(() => process.exit(92), 12000);
@@ -153,7 +153,7 @@ setTimeout(() => process.exit(92), 12000);
       environment: {
         JAVA_HOME: jdk,
         GHIDRA_INSTALL_DIR: install,
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
       timeoutMs: 15000,
     });
@@ -235,7 +235,7 @@ setTimeout(() => process.exit(92), 12000);
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "doctor discovers Ghidra through an empty PATH component without executing its launchers",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ghidra-cwd-doctor-");
+    const root = await createTestTempDirectory("nre-ghidra-cwd-doctor-");
     const install = join(root, "installation");
     const marker = join(root, "launcher-execution");
     const bin = join(root, "bin");
@@ -266,7 +266,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
         // Keep CWD discovery first while admitting only the ownership prerequisite.
         PATH: ["", bin].join(delimiter),
         JAVA_HOME: join(root, "missing-jdk"),
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
     });
     // The fixture deliberately has no JDK or native decompiler. Discovery must

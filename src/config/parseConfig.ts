@@ -49,8 +49,8 @@ const nativeAnalysisEnvironment = (
   environment: Readonly<Record<string, string | undefined>>,
 ): Readonly<Record<string, string | undefined>> => {
   const {
-    REA_JEB_MCP_TIMEOUT_MS: _jebTimeout,
-    REA_JEB_MCP_URL: _jebUrl,
+    NRE_JEB_MCP_TIMEOUT_MS: _jebTimeout,
+    NRE_JEB_MCP_URL: _jebUrl,
     ...appEnvironment
   } = environment;
   return appEnvironment;
@@ -68,13 +68,13 @@ export const inspectNativeAnalysisConfiguration = (
 ): NativeAnalysisConfigurationInspection => {
   const parsed = parseEnvironment(nativeAnalysisEnvironment(environment));
   const issues = parsed.ok ? [] : parsed.error.settings;
-  const configuredTimeout = environment.REA_HOPPER_STARTUP_TIMEOUT_MS;
+  const configuredTimeout = environment.NRE_HOPPER_STARTUP_TIMEOUT_MS;
   if (configuredTimeout === undefined) return { issues };
   if (parsed.ok)
     return {
       issues,
       configuredHopperStartupTimeout: ok(
-        parsed.value.REA_HOPPER_STARTUP_TIMEOUT_MS,
+        parsed.value.NRE_HOPPER_STARTUP_TIMEOUT_MS,
       ),
     };
   // Another setting may reject the aggregate before this supplied timeout's
@@ -85,10 +85,10 @@ export const inspectNativeAnalysisConfiguration = (
     configuredHopperStartupTimeout: timeout.success
       ? ok(timeout.data)
       : err(
-          new ConfigurationError("Invalid REA environment configuration", {
+          new ConfigurationError("Invalid NRE environment configuration", {
             cause: timeout.error,
             settings: timeout.error.issues.map(({ message }) => ({
-              setting: "REA_HOPPER_STARTUP_TIMEOUT_MS",
+              setting: "NRE_HOPPER_STARTUP_TIMEOUT_MS",
               constraint: message,
             })),
           }),
@@ -104,101 +104,101 @@ export const parseConfig = (
   if (!parsed.ok) return parsed;
   const env = parsed.value;
   return ok({
-    ...(env.REA_MCP_TOOL_FAMILIES === undefined
+    ...(env.NRE_MCP_TOOL_FAMILIES === undefined
       ? {}
-      : { mcpToolFamilies: env.REA_MCP_TOOL_FAMILIES }),
-    ...(env.REA_MCP_MAX_RESPONSE_BYTES === undefined
+      : { mcpToolFamilies: env.NRE_MCP_TOOL_FAMILIES }),
+    ...(env.NRE_MCP_MAX_RESPONSE_BYTES === undefined
       ? {}
-      : { mcpMaxResponseBytes: env.REA_MCP_MAX_RESPONSE_BYTES }),
-    ...(env.REA_MCP_MAX_INPUT_ELEMENTS === undefined
+      : { mcpMaxResponseBytes: env.NRE_MCP_MAX_RESPONSE_BYTES }),
+    ...(env.NRE_MCP_MAX_INPUT_ELEMENTS === undefined
       ? {}
-      : { mcpMaxInputElements: env.REA_MCP_MAX_INPUT_ELEMENTS }),
-    ...(env.REA_MCP_INPUT_SCHEMA_PROFILE === undefined
+      : { mcpMaxInputElements: env.NRE_MCP_MAX_INPUT_ELEMENTS }),
+    ...(env.NRE_MCP_INPUT_SCHEMA_PROFILE === undefined
       ? {}
-      : { mcpInputSchemaProfile: env.REA_MCP_INPUT_SCHEMA_PROFILE }),
-    ...(env.REA_MCP_OUTPUT_SCHEMA_PROFILE === undefined
+      : { mcpInputSchemaProfile: env.NRE_MCP_INPUT_SCHEMA_PROFILE }),
+    ...(env.NRE_MCP_OUTPUT_SCHEMA_PROFILE === undefined
       ? {}
-      : { mcpOutputSchemaProfile: env.REA_MCP_OUTPUT_SCHEMA_PROFILE }),
-    analysisProvider: env.REA_ANALYSIS_PROVIDER,
-    ...(env.REA_IDA_MCP_CONFIG === undefined
+      : { mcpOutputSchemaProfile: env.NRE_MCP_OUTPUT_SCHEMA_PROFILE }),
+    analysisProvider: env.NRE_ANALYSIS_PROVIDER,
+    ...(env.NRE_IDA_MCP_CONFIG === undefined
       ? {}
-      : { idaMcpConfigPath: env.REA_IDA_MCP_CONFIG }),
-    ...(env.REA_GHIDRA_PROJECT_PATH === undefined
+      : { idaMcpConfigPath: env.NRE_IDA_MCP_CONFIG }),
+    ...(env.NRE_GHIDRA_PROJECT_PATH === undefined
       ? {}
       : {
           ghidraExistingProject: {
-            path: env.REA_GHIDRA_PROJECT_PATH,
-            ...(env.REA_GHIDRA_PROGRAM_NAME === undefined
+            path: env.NRE_GHIDRA_PROJECT_PATH,
+            ...(env.NRE_GHIDRA_PROGRAM_NAME === undefined
               ? {}
-              : { programName: env.REA_GHIDRA_PROGRAM_NAME }),
+              : { programName: env.NRE_GHIDRA_PROGRAM_NAME }),
           },
         }),
     ghidraInstallDir: env.GHIDRA_INSTALL_DIR,
     ghidraJavaHome: env.JAVA_HOME,
-    ghidraStartupTimeoutMs: env.REA_GHIDRA_STARTUP_TIMEOUT_MS,
-    ...(env.REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS === undefined
+    ghidraStartupTimeoutMs: env.NRE_GHIDRA_STARTUP_TIMEOUT_MS,
+    ...(env.NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS === undefined
       ? {}
       : {
           ghidraDecompileTimeoutSeconds:
-            env.REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS,
+            env.NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS,
         }),
-    ...(env.REA_GHIDRA_LANGUAGE_ID === undefined
+    ...(env.NRE_GHIDRA_LANGUAGE_ID === undefined
       ? {}
       : {
           ghidraLanguageOverride: {
-            languageId: env.REA_GHIDRA_LANGUAGE_ID,
-            ...(env.REA_GHIDRA_COMPILER_SPEC_ID === undefined
+            languageId: env.NRE_GHIDRA_LANGUAGE_ID,
+            ...(env.NRE_GHIDRA_COMPILER_SPEC_ID === undefined
               ? {}
-              : { compilerSpecId: env.REA_GHIDRA_COMPILER_SPEC_ID }),
+              : { compilerSpecId: env.NRE_GHIDRA_COMPILER_SPEC_ID }),
           },
         }),
-    ...(env.REA_GHIDRA_SEED_FILE === undefined
+    ...(env.NRE_GHIDRA_SEED_FILE === undefined
       ? {}
-      : { ghidraSeedFile: env.REA_GHIDRA_SEED_FILE }),
-    ...(env.REA_GHIDRA_DISABLED_ANALYZERS === undefined
+      : { ghidraSeedFile: env.NRE_GHIDRA_SEED_FILE }),
+    ...(env.NRE_GHIDRA_DISABLED_ANALYZERS === undefined
       ? {}
-      : { ghidraDisabledAnalyzers: env.REA_GHIDRA_DISABLED_ANALYZERS }),
-    ...(env.REA_GHIDRA_NATIVEAOT_JAR === undefined
+      : { ghidraDisabledAnalyzers: env.NRE_GHIDRA_DISABLED_ANALYZERS }),
+    ...(env.NRE_GHIDRA_NATIVEAOT_JAR === undefined
       ? {}
-      : { ghidraNativeAotJar: env.REA_GHIDRA_NATIVEAOT_JAR }),
-    ilspyCmdPath: env.REA_ILSPY_CMD_PATH,
+      : { ghidraNativeAotJar: env.NRE_GHIDRA_NATIVEAOT_JAR }),
+    ilspyCmdPath: env.NRE_ILSPY_CMD_PATH,
     hopperLauncherPath:
       env.HOPPER_LAUNCHER_PATH ??
       defaultHopperLauncherPath(
         process.platform,
         homeDirectoryFromEnvironment(environment, process.platform),
       ),
-    hopperStartupTimeoutMs: env.REA_HOPPER_STARTUP_TIMEOUT_MS,
+    hopperStartupTimeoutMs: env.NRE_HOPPER_STARTUP_TIMEOUT_MS,
     hopperCallerScanBudget: hopperCallerScanBudgetFromEnvironment(
-      environment.REA_HOPPER_CALLER_SCAN_BUDGET_MS,
-      env.REA_HOPPER_CALLER_SCAN_BUDGET_MS,
+      environment.NRE_HOPPER_CALLER_SCAN_BUDGET_MS,
+      env.NRE_HOPPER_CALLER_SCAN_BUDGET_MS,
     ),
     hopperTargetPath: env.HOPPER_TARGET_PATH,
     hopperTargetKind: env.HOPPER_TARGET_KIND,
     hopperLoaderArgs: env.loaderArgs,
-    logLevel: env.REA_LOG_LEVEL,
+    logLevel: env.NRE_LOG_LEVEL,
     referenceSourcePolicy: {
       secretPatterns: env.referenceSecretPatterns,
     },
     bridgeMaxRequestBytes:
-      env.REA_BRIDGE_MAX_REQUEST_BYTES === undefined
+      env.NRE_BRIDGE_MAX_REQUEST_BYTES === undefined
         ? DEFAULT_BRIDGE_MAX_REQUEST
         : {
-            maximumBytes: env.REA_BRIDGE_MAX_REQUEST_BYTES,
+            maximumBytes: env.NRE_BRIDGE_MAX_REQUEST_BYTES,
             source: "setting",
           },
     regexMatchingDeadline:
-      env.REA_REGEX_MATCHING_DEADLINE_MS === undefined
+      env.NRE_REGEX_MATCHING_DEADLINE_MS === undefined
         ? DEFAULT_REGEX_MATCHING_DEADLINE
         : {
-            deadlineMs: env.REA_REGEX_MATCHING_DEADLINE_MS,
+            deadlineMs: env.NRE_REGEX_MATCHING_DEADLINE_MS,
             source: "setting",
           },
     regexWorkerHeapRequest:
-      env.REA_REGEX_WORKER_HEAP_REQUEST_MIB === undefined
+      env.NRE_REGEX_WORKER_HEAP_REQUEST_MIB === undefined
         ? DEFAULT_REGEX_WORKER_HEAP_REQUEST
         : {
-            heapMiB: env.REA_REGEX_WORKER_HEAP_REQUEST_MIB,
+            heapMiB: env.NRE_REGEX_WORKER_HEAP_REQUEST_MIB,
             source: "setting",
           },
   });

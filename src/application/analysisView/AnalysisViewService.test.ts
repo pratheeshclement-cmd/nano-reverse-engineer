@@ -442,7 +442,7 @@ it("projects inline layout Evidence and retains a derived view record", async ()
   if (!result.ok) throw result.error;
   const evidence = parseEvidence(result.value);
   expect(evidence.operation).toBe("inspect_analysis_view");
-  expect(evidence.predicate_type).toBe("rea.analysis-view");
+  expect(evidence.predicate_type).toBe("nre.analysis-view");
   expect(evidence.confidence).toBe("derived");
   expect(evidence.evidence_links).toEqual([parent.evidence_id]);
   expect(evidence.normalized_result).toMatchObject({
@@ -1231,7 +1231,7 @@ it("admits raw_result and parameters before authenticating a portable capture", 
 
 const manifestView = { kind: "environment-manifest" } as const;
 const writeEvidenceFile = async (value: unknown): Promise<string> => {
-  const root = await createTestTempDirectory("rea-analysis-view-file-");
+  const root = await createTestTempDirectory("nre-analysis-view-file-");
   const path = join(root, "capture.json");
   await writeFile(path, JSON.stringify(value));
   return path;
@@ -1297,7 +1297,7 @@ describe("inspectAnalysisView", () => {
       }),
     ).toMatchObject({ ok: false, error: { _tag: "AnalysisInputError" } });
     const missing = join(
-      await createTestTempDirectory("rea-analysis-view-missing-"),
+      await createTestTempDirectory("nre-analysis-view-missing-"),
       "absent.json",
     );
     expect(
@@ -1421,7 +1421,7 @@ it("prioritizes queued cancellation over a file authentication failure", async (
 it("retries the owned descriptor when queued cancellation supersedes file cleanup failure", async () => {
   const controller = new AbortController();
   const path = join(
-    await createTestTempDirectory("rea-view-cleanup-"),
+    await createTestTempDirectory("nre-view-cleanup-"),
     "evidence.json",
   );
   await writeFile(path, JSON.stringify(analysisViewCaptureEvidence()));
@@ -1485,7 +1485,7 @@ it.each(["file", "bundle"] as const)(
   "preserves the %s source authentication cancellation precedence",
   async (kind) => {
     const path = join(
-      await createTestTempDirectory("rea-view-invalid-"),
+      await createTestTempDirectory("nre-view-invalid-"),
       "invalid.json",
     );
     await writeFile(path, "{}");
@@ -1533,7 +1533,7 @@ it.each(["file", "bundle"] as const)(
   async (kind) => {
     const parent = analysisViewCaptureEvidence();
     const path = join(
-      await createTestTempDirectory("rea-view-admission-"),
+      await createTestTempDirectory("nre-view-admission-"),
       "source.json",
     );
     await writeFile(
@@ -1580,7 +1580,7 @@ it.each(["file", "bundle"] as const)(
   async (kind) => {
     const parent = analysisViewCaptureEvidence();
     const path = join(
-      await createTestTempDirectory("rea-view-completion-"),
+      await createTestTempDirectory("nre-view-completion-"),
       "source.json",
     );
     await writeFile(
@@ -1639,7 +1639,7 @@ it.each(["file", "bundle"] as const)(
       },
     );
     const path = join(
-      await createTestTempDirectory("rea-view-failure-"),
+      await createTestTempDirectory("nre-view-failure-"),
       "source.json",
     );
     await writeFile(

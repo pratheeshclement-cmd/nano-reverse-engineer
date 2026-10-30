@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "reopens ASAR clients for another selected companion but reuses the same selection",
   async () => {
-    const root = await createTestTempDirectory("rea-session-asar-alias-");
+    const root = await createTestTempDirectory("nre-session-asar-alias-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "payload.bin"), "first");

@@ -113,7 +113,7 @@ cliTest("rejects an unjoined extended boundary-test assertion", ({ label }) => {
 processTest(
   "runs typed promise and exhaustiveness rules on an isolated real TypeScript project",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-typed-lint-");
+    const root = await createTestTempDirectory("nre-typed-lint-");
     await symlink(
       dependencies,
       join(root, "node_modules"),

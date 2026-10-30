@@ -12,7 +12,7 @@ cliTest.for(
 )(
   "separates an absent default main from malformed package JSON through $surface (invalidJson=$invalidJson)",
   async ({ surface, invalidJson }, { cli }) => {
-    const root = await createTestTempDirectory("rea-nonstring-main-controls-");
+    const root = await createTestTempDirectory("nre-nonstring-main-controls-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs": [

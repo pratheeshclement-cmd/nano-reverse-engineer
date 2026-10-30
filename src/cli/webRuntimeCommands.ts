@@ -17,7 +17,7 @@ import { finishAnalysisCommand } from "./finishAnalysisCommand.js";
 /** CLI progress exposes the actual armed point on stderr without corrupting JSON results. */
 const runtimeProgress: ProgressReporter = {
   report: async (update) => {
-    process.stderr.write(`${JSON.stringify({ rea_progress: update })}\n`);
+    process.stderr.write(`${JSON.stringify({ nre_progress: update })}\n`);
   },
 };
 

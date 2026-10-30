@@ -100,7 +100,7 @@ const structured = (result: CallToolResult): Record<string, unknown> => {
 };
 
 it("rejects divergent imported histories without suggesting an unchanged retry", async () => {
-  const root = await createTestTempDirectory("rea-unknown-divergent-");
+  const root = await createTestTempDirectory("nre-unknown-divergent-");
   const provider = { id: "fixture", name: "Fixture", version: "1" };
   const records = ["create", "left", "right"].map((operation) =>
     createEvidence(undefined, provider, {
@@ -265,7 +265,7 @@ it("records capture disagreement as a contradicted unknown", async () => {
   });
   const captureEvidence = (capture: typeof left) =>
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: capture,
@@ -702,7 +702,7 @@ it("returns exact committed unknown receipts when creation and update replies ov
   expect(parseMcpToolError(singlePage).error.remediation.action).toContain(
     "export_evidence_bundle",
   );
-  const directory = await createTestTempDirectory("rea-unknown-overflow-");
+  const directory = await createTestTempDirectory("nre-unknown-overflow-");
   const path = join(directory, "bundle.json");
   const exported = await client.callTool({
     name: "export_evidence_bundle",

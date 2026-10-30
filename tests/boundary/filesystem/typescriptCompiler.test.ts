@@ -83,7 +83,7 @@ it("runs the selected installed compiler", () => {
 });
 
 it("forwards build arguments and preserves real type errors and exit status", async () => {
-  const root = await createTestTempDirectory("rea-typescript-compiler-");
+  const root = await createTestTempDirectory("nre-typescript-compiler-");
   const input = join(root, "input.ts");
   await writeFile(
     join(root, "tsconfig.json"),
@@ -140,7 +140,7 @@ it("forwards build arguments and preserves real type errors and exit status", as
 it.skipIf(process.platform === "win32")(
   "does not retry failed supported compilers with the official compiler",
   async () => {
-    const root = await createTestTempDirectory("rea-typescript-failure-");
+    const root = await createTestTempDirectory("nre-typescript-failure-");
     const script = join(root, "run-typescript.mjs");
     await copyFile(launcher, script);
     for (const name of ["tsrs", "typescript"]) {
@@ -196,7 +196,7 @@ it.each([undefined, "typescript@stale"])(
       env: {
         ...process.env,
         TURBO_HASH: "compiler-task",
-        REA_TYPESCRIPT_COMPILER: identity,
+        NRE_TYPESCRIPT_COMPILER: identity,
       },
     });
     expect(result.error).toBeUndefined();

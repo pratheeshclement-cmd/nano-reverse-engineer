@@ -18,7 +18,7 @@ processTest
   ])(
   "preserves the compiler failure and respects $outcome cleanup ownership",
   async ({ outcome, retained }, { processes }) => {
-    const root = await createTestTempDirectory("rea-decompiler-cleanup-test-");
+    const root = await createTestTempDirectory("nre-decompiler-cleanup-test-");
     const temporary = join(root, "temporary");
     await mkdir(temporary);
     const commandUrl = new URL(
@@ -94,7 +94,7 @@ processTest
     const workspaces = await readdir(temporary);
     expect(workspaces).toHaveLength(retained ? 1 : 0);
     if (retained) {
-      expect(workspaces[0]).toMatch(/^rea-ghidra-decompiler-/u);
+      expect(workspaces[0]).toMatch(/^nre-ghidra-decompiler-/u);
       expect(
         await readFile(
           join(

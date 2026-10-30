@@ -30,7 +30,7 @@ it.each([
 ])(
   "rejects complete JSON containing %s without repairing producer bytes",
   async (_name, bytes) => {
-    const root = await createTestTempDirectory("rea-firmware-report-");
+    const root = await createTestTempDirectory("nre-firmware-report-");
     const path = join(root, "report.json");
     await writeFile(
       path,
@@ -71,7 +71,7 @@ it.each([
 ] as const)(
   "keeps report state %s after a successful exit distinct from an empty scan",
   async (state, reason, prepare) => {
-    const root = await createTestTempDirectory("rea-firmware-report-");
+    const root = await createTestTempDirectory("nre-firmware-report-");
     const path = join(root, "report.json");
     await prepare(path);
     const failure: unknown = await readFirmwareCommandReport({
@@ -112,7 +112,7 @@ it.each([
       },
     });
     // Generic doctor advice is not presented as a repair for a missing report.
-    expect(projected.message).not.toContain("rea doctor");
+    expect(projected.message).not.toContain("nre doctor");
     // Recorded arguments name a removed private workspace; recovery must not
     // present them as a replayable command.
     expect(projected.remediation.action).toContain("diagnostics.report_state");
@@ -123,16 +123,16 @@ it.each([
         "Repeating the unchanged request fails the same way",
       );
       expect(projected.remediation.action).not.toContain(
-        "Rerun the same REA request",
+        "Rerun the same NRE request",
       );
       expect(projected.message).toContain("no runtime override");
-      expect(projected.message).not.toContain("Rerun the same REA request");
+      expect(projected.message).not.toContain("Rerun the same NRE request");
     } else {
       expect(projected.remediation.action).toContain(
         "replacing every private path",
       );
       expect(projected.remediation.action).toContain(
-        "Rerun the same REA request",
+        "Rerun the same NRE request",
       );
       expect(projected.remediation.action).not.toContain(
         "Repeating the unchanged request fails the same way",
@@ -142,7 +142,7 @@ it.each([
 );
 
 it("preserves valid Unicode and a literal replacement character in producer JSON", async () => {
-  const root = await createTestTempDirectory("rea-firmware-report-");
+  const root = await createTestTempDirectory("nre-firmware-report-");
   const path = join(root, "report.json");
   const report = { description: "固件 🧩 \ufffd", path: "/输入/firmware.bin" };
   await writeFile(path, JSON.stringify(report));
@@ -152,7 +152,7 @@ it("preserves valid Unicode and a literal replacement character in producer JSON
 });
 
 it("orders extracted firmware paths by code point independently of host locale", async () => {
-  const root = await createTestTempDirectory("rea-firmware-inventory-");
+  const root = await createTestTempDirectory("nre-firmware-inventory-");
   await mkdir(join(root, "Lib"));
   for (const path of ["a.bin", "z.bin", "\u00e4.bin", "B.bin", "Lib/x.bin"])
     await writeFile(join(root, path), "");
@@ -175,7 +175,7 @@ it("orders extracted firmware paths by code point independently of host locale",
 it.skipIf(process.platform !== "linux")(
   "refuses raw filenames that cannot round-trip through UTF-8 instead of omitting their bytes",
   async () => {
-    const root = await createTestTempDirectory("rea-firmware-raw-name-");
+    const root = await createTestTempDirectory("nre-firmware-raw-name-");
     await writeFile(
       Buffer.concat([
         Buffer.from(`${root}/bad`),
@@ -200,7 +200,7 @@ it.each([
 ])(
   "reports the selected $expected staging budget as a deterministic resource refusal",
   async ({ bytes, files, expected }) => {
-    const root = await createTestTempDirectory("rea-firmware-staging-");
+    const root = await createTestTempDirectory("nre-firmware-staging-");
     await writeFile(join(root, "a"), "1");
     await writeFile(join(root, "b"), "2");
     await expect(
@@ -216,7 +216,7 @@ it.each([
 );
 
 it("attributes missing sources to the selected path without relabeling snapshot destination failure", async () => {
-  const root = await createTestTempDirectory("rea-firmware-source-");
+  const root = await createTestTempDirectory("nre-firmware-source-");
   const files = new FirmwareFileAccess();
   const request = (path: string) =>
     firmwareRequestSchema.parse({
@@ -246,7 +246,7 @@ it("attributes missing sources to the selected path without relabeling snapshot 
 });
 
 it("does not activate an abort-bound source during awaited destination setup", async () => {
-  const root = await createTestTempDirectory("rea-firmware-publish-abort-");
+  const root = await createTestTempDirectory("nre-firmware-publish-abort-");
   const source = join(root, "source");
   const bytes = Buffer.from("firmware");
   await writeFile(source, bytes);
@@ -290,7 +290,7 @@ it("does not activate an abort-bound source during awaited destination setup", a
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "keeps denied source access distinct from invalid paths and producer failures",
   async () => {
-    const root = await createTestTempDirectory("rea-firmware-source-denial-");
+    const root = await createTestTempDirectory("nre-firmware-source-denial-");
     const source = join(root, "input");
     await writeFile(source, "firmware", { mode: 0o000 });
     const files = new FirmwareFileAccess();
@@ -317,7 +317,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
 );
 
 it("retains unfamiliar Unblob report members from JSON files through public diagnostics", async () => {
-  const root = await createTestTempDirectory("rea-firmware-report-metadata-");
+  const root = await createTestTempDirectory("nre-firmware-report-metadata-");
   const inputPath = join(root, "input.bin");
   const reportPath = join(root, "report.json");
   const sha256 = "a".repeat(64);
@@ -383,7 +383,7 @@ it("retains unfamiliar Unblob report members from JSON files through public diag
 
 it("rejects Binwalk extraction activity under every own JSON member", async () => {
   const root = await createTestTempDirectory(
-    "rea-firmware-report-extractions-",
+    "nre-firmware-report-extractions-",
   );
   const reportPath = join(root, "report.json");
   const inputPath = join(root, "input.bin");

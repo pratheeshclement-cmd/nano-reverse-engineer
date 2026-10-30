@@ -413,12 +413,12 @@ const expectPeEmptyBranchesAcrossAdapters = async (
 cliTest(
   "inspects PE32/PE32+ resources through compiled CLI and real stdio MCP without an active target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-resource-acceptance-");
+    const root = await createTestTempDirectory("nre-pe-resource-acceptance-");
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
-      env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+      env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
       stderr: "pipe",
     });
     const client = new Client({ name: "pe-resource-acceptance", version: "1" });

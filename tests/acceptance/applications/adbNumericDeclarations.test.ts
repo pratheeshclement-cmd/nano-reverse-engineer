@@ -18,7 +18,7 @@ const OVERFLOW = "9".repeat(400);
 const VERSION_NAME = "  caller version\t  ";
 
 const createNumericAdbFixture = async () => {
-  const root = await createTestTempDirectory("rea-adb-numeric-declarations-");
+  const root = await createTestTempDirectory("nre-adb-numeric-declarations-");
   const binary = join(root, "adb");
   const size = join(root, "size.txt");
   const density = join(root, "density.txt");
@@ -45,8 +45,8 @@ process.stdout.write(require('node:fs').readFileSync(path));
   const environment = {
     HOME: root,
     USERPROFILE: root,
-    REA_ADB_PATH: binary,
-    REA_LOG_LEVEL: "silent",
+    NRE_ADB_PATH: binary,
+    NRE_LOG_LEVEL: "silent",
   };
   const { call } = await connectLocalToolsMcp(environment);
   return { environment, size, density, packageDetails, call };

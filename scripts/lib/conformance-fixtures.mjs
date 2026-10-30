@@ -6,12 +6,12 @@ export const LARGE_FIXTURE_COUNT = 1_205;
 
 export const HOPPER_C_ORACLE = Object.freeze({
   mainProcedure: "main",
-  entryProcedure: "rea_entry",
-  branchProcedure: "rea_branch",
-  leafProcedure: "rea_leaf",
-  entryString: "REA_C_ENTRY",
-  leafString: "REA_C_LEAF",
-  globalName: "rea_c_global",
+  entryProcedure: "nre_entry",
+  branchProcedure: "nre_branch",
+  leafProcedure: "nre_leaf",
+  entryString: "NRE_C_ENTRY",
+  leafString: "NRE_C_LEAF",
+  globalName: "nre_c_global",
 });
 
 export const sha256 = (value) =>
@@ -21,12 +21,12 @@ export const generateLargeFixture = () => {
   const declarations = Array.from(
     { length: LARGE_FIXTURE_COUNT },
     (_, index) =>
-      `__attribute__((noinline, used)) int rea_inventory_${String(index).padStart(4, "0")}(void) { puts("REA_INVENTORY_${String(index).padStart(4, "0")}"); return ${index}; }`,
+      `__attribute__((noinline, used)) int nre_inventory_${String(index).padStart(4, "0")}(void) { puts("NRE_INVENTORY_${String(index).padStart(4, "0")}"); return ${index}; }`,
   );
   return [
     "#include <stdio.h>",
     ...declarations,
-    "int main(void) { return rea_inventory_0000(); }",
+    "int main(void) { return nre_inventory_0000(); }",
     "",
   ].join("\n");
 };

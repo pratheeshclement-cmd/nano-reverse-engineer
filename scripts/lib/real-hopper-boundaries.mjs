@@ -22,7 +22,7 @@ import {
   verifyHopperRegexIsolation,
 } from "./real-hopper-search.mjs";
 
-const dispatcher = fileURLToPath(new URL("../rea.mjs", import.meta.url));
+const dispatcher = fileURLToPath(new URL("../nre.mjs", import.meta.url));
 
 /** Exercise real Hopper annotation and malformed-input boundaries over MCP. */
 export async function verifyHopperBoundaryContracts(
@@ -112,7 +112,7 @@ export async function verifyHopperBoundaryContracts(
       );
       assert.equal(await call("current_document"), activeDocument);
     }
-    for (const label of [undefined, "", "REA boundary bookmark 测试"]) {
+    for (const label of [undefined, "", "NRE boundary bookmark 测试"]) {
       assert.equal(
         await call("set_bookmark", {
           address,
@@ -138,7 +138,7 @@ export async function verifyHopperBoundaryContracts(
     assert.equal(
       await call("set_bookmark", {
         address,
-        name: "REA boundary bookmark before clear",
+        name: "NRE boundary bookmark before clear",
       }),
       true,
     );
@@ -147,7 +147,7 @@ export async function verifyHopperBoundaryContracts(
     );
     assert.deepEqual(beforeClear, {
       address,
-      name: "REA boundary bookmark before clear",
+      name: "NRE boundary bookmark before clear",
     });
     assert.equal(await call("set_bookmark", { address, name: "" }), true);
     const afterClear = (await call("list_bookmarks")).find(
@@ -155,7 +155,7 @@ export async function verifyHopperBoundaryContracts(
     );
     assert.deepEqual(afterClear, { address, name: null });
 
-    const replacementName = "REA boundary bookmark replacement";
+    const replacementName = "NRE boundary bookmark replacement";
     assert.equal(
       await call("set_bookmark", { address, name: replacementName }),
       true,
@@ -182,13 +182,13 @@ export async function verifyHopperBoundaryContracts(
       ["set_comment", "comment"],
       ["set_inline_comment", "inline_comment"],
     ]) {
-      const comment = "REA boundary comment 测试";
+      const comment = "NRE boundary comment 测试";
       assert.equal(await call(setter, { address, comment }), true);
       assert.equal(await call(getter, { address }), comment);
       assert.equal(await call(setter, { address, comment: "" }), true);
       assert.equal(await call(getter, { address }), null);
     }
-    const inline = "REA inline\nsecond line";
+    const inline = "NRE inline\nsecond line";
     const exact = await call("set_inline_comment", {
       address,
       comment: inline,
@@ -204,7 +204,7 @@ export async function verifyHopperBoundaryContracts(
       "set_addresses_names",
       {
         names: {
-          [address]: "rea_boundary_should_not_be_applied",
+          [address]: "nre_boundary_should_not_be_applied",
           __rea_missing_batch_address__: "missing",
         },
       },
@@ -216,7 +216,7 @@ export async function verifyHopperBoundaryContracts(
       originalName,
     );
 
-    const renamed = "rea_boundary_renamed";
+    const renamed = "nre_boundary_renamed";
     assert.equal(
       await call("set_addresses_names", { names: { [address]: renamed } }).then(
         (value) => value[address],
@@ -426,7 +426,7 @@ export async function verifyHopperLifecycleAndCli(client, options, targets) {
     await call("open_binary", { path: primary });
     const primaryProcedures = await call("list_procedures");
     const entry = primaryProcedures.find((item) =>
-      item.value.endsWith("rea_entry"),
+      item.value.endsWith("nre_entry"),
     );
     assert.ok(entry, "primary fixture omitted its entry procedure");
     const expectedFunction = await call("analyze_function", {
@@ -460,7 +460,7 @@ export async function verifyHopperLifecycleAndCli(client, options, targets) {
       document: secondDocument,
     });
     await call("open_binary", { path: primary });
-    const query = "REA_C_LEAF __rea_missing_phrase__";
+    const query = "NRE_C_LEAF __rea_missing_phrase__";
     const expectedTrace = await call("trace_feature", { query });
     assert.deepEqual(expectedTrace.matches, []);
     await call("close_binary");

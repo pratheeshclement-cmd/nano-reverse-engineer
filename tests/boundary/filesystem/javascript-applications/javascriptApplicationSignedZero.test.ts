@@ -24,7 +24,7 @@ it.each([
 ])(
   "keeps negative-zero value unknown in an exported query (%#)",
   async ({ source, target }) => {
-    const root = await createTestTempDirectory("rea-signed-zero-");
+    const root = await createTestTempDirectory("nre-signed-zero-");
     await writeFile(join(root, "app.js"), source);
     const result = await analyzeJavaScriptApplication({
       input_path: root,

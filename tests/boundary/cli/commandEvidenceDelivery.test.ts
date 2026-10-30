@@ -20,7 +20,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const kinds = ["objdump", "architectures", "gdb"] as const;
 const fixture = async (kind: (typeof kinds)[number]) => {
-  const directory = await createTestTempDirectory("rea-command-delivery-");
+  const directory = await createTestTempDirectory("nre-command-delivery-");
   const path = join(directory, "input.bin");
   await writeFile(path, "local CLI publication fixture");
   const runProvider = vi.fn(async () => ({
@@ -65,7 +65,7 @@ const fixture = async (kind: (typeof kinds)[number]) => {
     .mockResolvedValue(ok({ target_state: "none_observed" }));
   const closeAll = vi.spyOn(manager, "closeAll").mockResolvedValue(undefined);
   const createManager = vi.fn(() => manager);
-  const cli = Cli.create("rea-cli-delivery-test", {
+  const cli = Cli.create("nre-cli-delivery-test", {
     version: "1",
     sync: false,
   });
@@ -256,7 +256,7 @@ it.each(kinds)(
       },
     });
     expect(await readdir(f.directory)).not.toContainEqual(
-      expect.stringMatching(/^\.rea-write-/u),
+      expect.stringMatching(/^\.nre-write-/u),
     );
   },
 );

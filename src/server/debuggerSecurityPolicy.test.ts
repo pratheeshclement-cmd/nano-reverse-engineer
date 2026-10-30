@@ -49,7 +49,7 @@ describe("debuggerSecurityPolicy", () => {
     ).toBeUndefined();
     expect(
       isDisallowedGdbCommand("shell whoami", {
-        REA_ALLOW_UNSAFE_DEBUGGING: "true",
+        NRE_ALLOW_UNSAFE_DEBUGGING: "true",
       }),
     ).toBeUndefined();
   });
@@ -85,4 +85,3 @@ describe("debuggerSecurityPolicy", () => {
     ).toBeUndefined();
   });
 });
-

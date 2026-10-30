@@ -13,9 +13,9 @@ from zipfile import BadZipFile, ZipFile
 from website import NOTES_FIXTURES, SITE_ORIGIN, authored_markdown, page_url, sync_pages
 from website_i18n import is_language_code
 
-LEGACY_ORIGIN = "morluto.github.io"
+LEGACY_ORIGIN = "pratheeshclement-cmd.github.io"
 SITE_TEXT_URL = re.compile(
-    r"https?://(?:rea\.tools|morluto\.github\.io)/[^\s<>\"'`]+", re.IGNORECASE
+    r"https?://(?:nre\.tools|pratheeshclement-cmd\.github\.io)/[^\s<>\"'`]+", re.IGNORECASE
 )
 
 
@@ -63,11 +63,11 @@ def check_repository_links(root):
             except ValueError as error:
                 errors.append(f"{path.relative_to(root)}: invalid URL {reference!r}: {error}")
                 continue
-            if url.hostname == LEGACY_ORIGIN and (url.path == "/rea" or url.path.startswith("/rea/")):
+            if url.hostname == LEGACY_ORIGIN and (url.path == "/nre" or url.path.startswith("/nre/")):
                 errors.append(f"{path.relative_to(root)}: obsolete website URL: {reference}")
                 continue
             if url.hostname == "github.com":
-                match = re.match(r"^/morluto/rea/(?:blob|tree)/main/(.+)$", url.path)
+                match = re.match(r"^/pratheeshclement-cmd/nano-reverse-engineer/(?:blob|tree)/main/(.+)$", url.path)
                 if not match:
                     continue
                 target = (root / unquote(match[1])).resolve()
@@ -210,7 +210,7 @@ def check_search_metadata(site, pages):
             errors.append(f"{label}: needs exactly one nonempty head description")
         expected_og = {
             "og:type": "website",
-            "og:site_name": "REA",
+            "og:site_name": "NRE",
             "og:title": title,
             "og:description": description,
             "og:url": url,
@@ -246,8 +246,8 @@ def check_search_metadata(site, pages):
                 errors.append(f"{label}: hreflang must include its own canonical")
             for language, target in page.alternates.items():
                 parsed = urlsplit(target)
-                if parsed.scheme != "https" or parsed.netloc != "rea.tools":
-                    errors.append(f"{label}: hreflang needs absolute rea.tools URLs")
+                if parsed.scheme != "https" or parsed.netloc != "nano-reverse-engineer":
+                    errors.append(f"{label}: hreflang needs absolute nano-reverse-engineer URLs")
                     continue
                 target_path = (site / unquote(parsed.path).lstrip("/")).resolve()
                 if target_path.is_dir():
@@ -269,7 +269,7 @@ def check_search_metadata(site, pages):
             errors.append("sitemap.xml: needs a sitemap-protocol urlset")
         if len(urls) != len(set(urls)) or set(urls) != indexable:
             errors.append(
-                "sitemap.xml: must contain each indexable page once, using its rea.tools URL"
+                "sitemap.xml: must contain each indexable page once, using its nano-reverse-engineer URL"
             )
         if any(
             len(entry) != 1 or entry[0].tag != f"{namespace}loc" for entry in sitemap
@@ -301,7 +301,7 @@ def check_search_metadata(site, pages):
         ]
         if directives != expected:
             errors.append(
-                "robots.txt: expected crawl access and one absolute rea.tools sitemap directive"
+                "robots.txt: expected crawl access and one absolute nano-reverse-engineer sitemap directive"
             )
 
     image = site / "assets/social-card.png"
@@ -345,11 +345,11 @@ def check_site(site):
             except ValueError as error:
                 errors.append(f"{label}: invalid URL {reference!r}: {error}")
                 continue
-            if url.hostname == LEGACY_ORIGIN and (url.path == "/rea" or url.path.startswith("/rea/")):
-                errors.append(f"{label}: obsolete website URL: {reference}; use rea.tools")
+            if url.hostname == LEGACY_ORIGIN and (url.path == "/nre" or url.path.startswith("/nre/")):
+                errors.append(f"{label}: obsolete website URL: {reference}; use nano-reverse-engineer")
                 continue
-            if url.hostname == "rea.tools":
-                if url.scheme != "https" or url.netloc != "rea.tools":
+            if url.hostname == "nano-reverse-engineer":
+                if url.scheme != "https" or url.netloc != "nano-reverse-engineer":
                     errors.append(f"{label}: website URL must use {SITE_ORIGIN}: {reference}")
                     continue
                 target = (site / unquote(url.path).lstrip("/")).resolve()

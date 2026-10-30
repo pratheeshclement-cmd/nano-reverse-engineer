@@ -1,14 +1,14 @@
 # Flattened devicetree inspection
 
-`inspect_devicetree` / `rea inspect-devicetree` reads a local DTB without an
+`inspect_devicetree` / `nre inspect-devicetree` reads a local DTB without an
 engine, target execution or external tools. It supports FDT versions 16 and 17;
 other versions return `unsupported_target`. Corrupt recognized blobs return
 `invalid_request`, and exhausted budgets return `resource_constraint` without
 partial success.
 
 ```bash
-rea inspect-devicetree /artifacts/board.dtb --json
-rea inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
+nre inspect-devicetree /artifacts/board.dtb --json
+nre inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
 ```
 
 The complete Evidence includes the artifact SHA-256, validated header fields,
@@ -84,11 +84,11 @@ node scripts/verify/firmware/devicetree.mjs
 ```
 
 It compiles a DTS with reserved-memory, chosen, aliases and phandles, compares
-REA's node paths against `dtc -I dtb -O dts`, and checks the derived report.
-`REA_DTC_PATH` selects the verification executable; it is not runtime setup.
+NRE's node paths against `dtc -I dtb -O dts`, and checks the derived report.
+`NRE_DTC_PATH` selects the verification executable; it is not runtime setup.
 
 The dtc 1.8.1 lane ran on macOS arm64 with Node 26.5.0. Its seven node paths
-matched the decompiled tree. The report included `model: "REA DTB verification"`,
+matched the decompiled tree. The report included `model: "NRE DTB verification"`,
 `bootargs: "console=ttyS0"`, alias `serial0 -> /serial@1000`, reservation
 `0x80000000 + 0x1000`, and a resolved reference from `/consumer` to
 `/serial@1000`. The deliberately minimal remote-endpoint fixture produces dtc
@@ -100,6 +100,6 @@ elapsed, 1.52 s user CPU and 0.27 s system CPU under `/usr/bin/time -l`. This is
 small fixture with warm filesystem caches, not a cold-start or large-board
 benchmark. Peak process-family memory and whole-workflow token usage were not
 measured; the sandbox denied the memory-reporting system query. No pre-feature
-equivalent REA workflow exists for comparison. The pinned Node 24.22.1/npm
+equivalent NRE workflow exists for comparison. The pinned Node 24.22.1/npm
 11.16.0 toolchain was unavailable; dependency installation used the local cache
 with Node 26.5.0/npm 12.2.0 instead.

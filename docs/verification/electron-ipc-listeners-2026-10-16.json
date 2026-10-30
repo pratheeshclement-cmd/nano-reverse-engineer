@@ -50,13 +50,13 @@
         "log_sha256": "b714327508e02b26bb1e19b1945f55eeb6106564bc0265d38b2a1b8092c75679",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-12610f9d4bb047378ca331968d955759.scope",
+          "scope": "nre-efficiency-12610f9d4bb047378ca331968d955759.scope",
           "elapsed_seconds": 3.482,
           "abort": null,
           "sampled_peak_cgroup_bytes": 319447040,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-12610f9d4bb047378ca331968d955759.scope",
+            "ownership_token": "nre-efficiency-12610f9d4bb047378ca331968d955759.scope",
             "payload_exit_code": 1,
             "observer_pid": 3701997,
             "remaining_processes": [3701997],
@@ -72,7 +72,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 341299200,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-12610f9d4bb047378ca331968d955759.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-12610f9d4bb047378ca331968d955759.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -107,13 +107,13 @@
         "log_sha256": "e33f2c10506a705d6d3f5e254d990b9039ed3a8db37473bf0ff75a8a7617b645",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-4f9680a23af948e7b3be561ca17121ee.scope",
+          "scope": "nre-efficiency-4f9680a23af948e7b3be561ca17121ee.scope",
           "elapsed_seconds": 3.386,
           "abort": null,
           "sampled_peak_cgroup_bytes": 316997632,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-4f9680a23af948e7b3be561ca17121ee.scope",
+            "ownership_token": "nre-efficiency-4f9680a23af948e7b3be561ca17121ee.scope",
             "payload_exit_code": 0,
             "observer_pid": 3702279,
             "remaining_processes": [3702279],
@@ -129,7 +129,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 343248896,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-4f9680a23af948e7b3be561ca17121ee.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-4f9680a23af948e7b3be561ca17121ee.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -165,13 +165,13 @@
         "log_sha256": "ca121412215db02ae6ea62f5c5b06d94c4681381b784601b2a4a9335b9a1e8ce",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-e58967e1ae514824900541e8c0226fab.scope",
+          "scope": "nre-efficiency-e58967e1ae514824900541e8c0226fab.scope",
           "elapsed_seconds": 6.438,
           "abort": null,
           "sampled_peak_cgroup_bytes": 324837376,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-e58967e1ae514824900541e8c0226fab.scope",
+            "ownership_token": "nre-efficiency-e58967e1ae514824900541e8c0226fab.scope",
             "payload_exit_code": 1,
             "observer_pid": 3706175,
             "remaining_processes": [3706175],
@@ -187,7 +187,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 340758528,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e58967e1ae514824900541e8c0226fab.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e58967e1ae514824900541e8c0226fab.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -223,13 +223,13 @@
         "log_sha256": "5a7f01e795d62f6f7fef4e12ad17b655b61e8b5a14fd19c3f2c123be908f6dd2",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-1610d79f372a4991966a9ce9bd36af0f.scope",
+          "scope": "nre-efficiency-1610d79f372a4991966a9ce9bd36af0f.scope",
           "elapsed_seconds": 6.345,
           "abort": null,
           "sampled_peak_cgroup_bytes": 343515136,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-1610d79f372a4991966a9ce9bd36af0f.scope",
+            "ownership_token": "nre-efficiency-1610d79f372a4991966a9ce9bd36af0f.scope",
             "payload_exit_code": 0,
             "observer_pid": 3706487,
             "remaining_processes": [3706487],
@@ -245,7 +245,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 344432640,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-1610d79f372a4991966a9ce9bd36af0f.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-1610d79f372a4991966a9ce9bd36af0f.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -281,13 +281,13 @@
         "log_sha256": "b81bad8a32aa34a725ddc73e994724081016a825efc17b277f6bb08d9f56cd18",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-6c54ef0d4b5d4064848d1d5205612966.scope",
+          "scope": "nre-efficiency-6c54ef0d4b5d4064848d1d5205612966.scope",
           "elapsed_seconds": 89.441,
           "abort": null,
           "sampled_peak_cgroup_bytes": 4321443840,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-6c54ef0d4b5d4064848d1d5205612966.scope",
+            "ownership_token": "nre-efficiency-6c54ef0d4b5d4064848d1d5205612966.scope",
             "payload_exit_code": 0,
             "observer_pid": 3715753,
             "remaining_processes": [3715753],
@@ -303,7 +303,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 4337172480,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-6c54ef0d4b5d4064848d1d5205612966.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-6c54ef0d4b5d4064848d1d5205612966.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -335,7 +335,7 @@
       "log_sha256": "bb9efe251fca7d694947e2ef7474c939c2ba4b16406c82f78298650e646b705f",
       "payload_exit": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-313ac8927257445e9ff18c774177304e.scope",
+        "ownership_token": "nre-efficiency-313ac8927257445e9ff18c774177304e.scope",
         "payload_exit_code": 0,
         "observer_pid": 3719376,
         "remaining_processes": [3719376],
@@ -351,7 +351,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 518815744,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-313ac8927257445e9ff18c774177304e.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-313ac8927257445e9ff18c774177304e.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -377,8 +377,8 @@
       "log_sha256": "4e50247f744a2f1a620494ec959c43e79e4d4aa1588e704ef0bcb6cf9c771773",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-vUvPks",
-          "runtime": "/home/yann/yann/rea-electron-cancellation-main-control-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-vUvPks",
+          "runtime": "/home/yann/yann/nre-electron-cancellation-main-control-20261016",
           "elapsed_ms": 10006.81695,
           "deadline_triggered": false,
           "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
@@ -647,13 +647,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-bb9be4d57d7b48448c0aa72c272306b0.scope",
+        "scope": "nre-efficiency-bb9be4d57d7b48448c0aa72c272306b0.scope",
         "elapsed_seconds": 11.084,
         "abort": null,
         "sampled_peak_cgroup_bytes": 560349184,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-bb9be4d57d7b48448c0aa72c272306b0.scope",
+          "ownership_token": "nre-efficiency-bb9be4d57d7b48448c0aa72c272306b0.scope",
           "payload_exit_code": 1,
           "observer_pid": 3713982,
           "remaining_processes": [3713982],
@@ -669,7 +669,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 560615424,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-bb9be4d57d7b48448c0aa72c272306b0.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-bb9be4d57d7b48448c0aa72c272306b0.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -703,8 +703,8 @@
       "log_sha256": "e62a085d6c6a829070eb048ba2488df34f15f6d0f8e861604efc98b18ebafed5",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-KcFwvc",
-          "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-KcFwvc",
+          "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
           "elapsed_ms": 10029.79165,
           "deadline_triggered": false,
           "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
@@ -952,13 +952,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-20cceec5ea874911ab2ec88cacbc08a3.scope",
+        "scope": "nre-efficiency-20cceec5ea874911ab2ec88cacbc08a3.scope",
         "elapsed_seconds": 11.135,
         "abort": null,
         "sampled_peak_cgroup_bytes": 550121472,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-20cceec5ea874911ab2ec88cacbc08a3.scope",
+          "ownership_token": "nre-efficiency-20cceec5ea874911ab2ec88cacbc08a3.scope",
           "payload_exit_code": 1,
           "observer_pid": 3714132,
           "remaining_processes": [3714132, 3714144, 3714365, 3714367],
@@ -974,7 +974,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 550383616,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-20cceec5ea874911ab2ec88cacbc08a3.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-20cceec5ea874911ab2ec88cacbc08a3.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -1008,8 +1008,8 @@
       "log_sha256": "d2c14556672ca26758e7fd0228ded03caa9aead39b9974756962bff40322b162",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-KBvynV",
-          "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-KBvynV",
+          "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
           "elapsed_ms": 10714.616337,
           "deadline_triggered": false,
           "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
@@ -1257,13 +1257,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-654c4187b2b94ef4a396905c99986817.scope",
+        "scope": "nre-efficiency-654c4187b2b94ef4a396905c99986817.scope",
         "elapsed_seconds": 11.898,
         "abort": null,
         "sampled_peak_cgroup_bytes": 525230080,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-654c4187b2b94ef4a396905c99986817.scope",
+          "ownership_token": "nre-efficiency-654c4187b2b94ef4a396905c99986817.scope",
           "payload_exit_code": 1,
           "observer_pid": 3714370,
           "remaining_processes": [3714370, 3714384],
@@ -1279,7 +1279,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 525631488,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-654c4187b2b94ef4a396905c99986817.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-654c4187b2b94ef4a396905c99986817.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -1313,8 +1313,8 @@
       "log_sha256": "42363adf845571718b3abec7977f30c0abba3698b2f02da13a5b894f7521f676",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-FdWSLl",
-          "runtime": "/home/yann/yann/rea-electron-cancellation-main-control-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-FdWSLl",
+          "runtime": "/home/yann/yann/nre-electron-cancellation-main-control-20261016",
           "elapsed_ms": 10293.676588,
           "deadline_triggered": false,
           "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
@@ -1583,13 +1583,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-d6f65716ca5743ee98a9efc4591dd55c.scope",
+        "scope": "nre-efficiency-d6f65716ca5743ee98a9efc4591dd55c.scope",
         "elapsed_seconds": 11.469,
         "abort": null,
         "sampled_peak_cgroup_bytes": 558194688,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-d6f65716ca5743ee98a9efc4591dd55c.scope",
+          "ownership_token": "nre-efficiency-d6f65716ca5743ee98a9efc4591dd55c.scope",
           "payload_exit_code": 5,
           "observer_pid": 3715059,
           "remaining_processes": [3715059, 3715089],
@@ -1605,7 +1605,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 558456832,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-d6f65716ca5743ee98a9efc4591dd55c.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-d6f65716ca5743ee98a9efc4591dd55c.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -1642,12 +1642,12 @@
       "observations": [
         {
           "request": {
-            "executable_path": "/tmp/rea-docs-audit-20261012/runtime/electron-fixture-tools/node_modules/electron/dist/electron",
-            "application_path": "/tmp/rea-4390-realapps-20261016/drawio/resources/app.asar",
+            "executable_path": "/tmp/nre-docs-audit-20261012/runtime/electron-fixture-tools/node_modules/electron/dist/electron",
+            "application_path": "/tmp/nre-4390-realapps-20261016/drawio/resources/app.asar",
             "args": [
               "--no-sandbox",
               "--disable-gpu",
-              "--user-data-dir=/tmp/rea-4390-realapps-20261016/profiles/drawio-smoke-1fd15m_o"
+              "--user-data-dir=/tmp/nre-4390-realapps-20261016/profiles/drawio-smoke-1fd15m_o"
             ],
             "actions": [
               {
@@ -1657,7 +1657,7 @@
               }
             ]
           },
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-smoke-1fd15m_o",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-smoke-1fd15m_o",
           "exit_code": 1,
           "timed_out": false,
           "elapsed_seconds": 8.421080463100225,
@@ -1665,8 +1665,8 @@
           "reply_message": "Electron cleanup could not be verified: process lineage contains an unowned or PID-reused process; helper cleanup was not proven. Collected observations are retained in partial_observation. Inspect the reported process resources before launching another capture.",
           "capture": {
             "application": {
-              "executable_path": "/tmp/rea-docs-audit-20261012/runtime/electron-fixture-tools/node_modules/electron/dist/electron",
-              "application_path": "/tmp/rea-4390-realapps-20261016/drawio/resources/app.asar",
+              "executable_path": "/tmp/nre-docs-audit-20261012/runtime/electron-fixture-tools/node_modules/electron/dist/electron",
+              "application_path": "/tmp/nre-4390-realapps-20261016/drawio/resources/app.asar",
               "electron_version": "44.7.0",
               "process_ownership": "provider-owned",
               "cleanup": "unverified"
@@ -1686,7 +1686,7 @@
               {
                 "window_id": "window:1",
                 "web_contents_id": "webContents:1",
-                "url": "file:///tmp/rea-4390-realapps-20261016/drawio/resources/app.asar/drawio/src/main/webapp/index.html?dev=0&test=0&gapi=0&db=0&od=0&gh=0&gl=0&tr=0&browser=0&picker=0&mode=device&export=https%3A%2F%2Fconvert.diagrams.net%2Fnode%2Fexport&disableUpdate=1&enableSpellCheck=0&enableStoreBkp=1&isGoogleFontsEnabled=0&appLang=en-US&autoUpdate=1",
+                "url": "file:///tmp/nre-4390-realapps-20261016/drawio/resources/app.asar/drawio/src/main/webapp/index.html?dev=0&test=0&gapi=0&db=0&od=0&gh=0&gl=0&tr=0&browser=0&picker=0&mode=device&export=https%3A%2F%2Fconvert.diagrams.net%2Fnode%2Fexport&disableUpdate=1&enableSpellCheck=0&enableStoreBkp=1&isGoogleFontsEnabled=0&appLang=en-US&autoUpdate=1",
                 "title": "Untitled Diagram - draw.io",
                 "visible": true,
                 "destroyed": false
@@ -1897,13 +1897,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-4f1fdbaca8dd4bb98565ac60c02f7fce.scope",
+        "scope": "nre-efficiency-4f1fdbaca8dd4bb98565ac60c02f7fce.scope",
         "elapsed_seconds": 8.811,
         "abort": null,
         "sampled_peak_cgroup_bytes": 700981248,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-4f1fdbaca8dd4bb98565ac60c02f7fce.scope",
+          "ownership_token": "nre-efficiency-4f1fdbaca8dd4bb98565ac60c02f7fce.scope",
           "payload_exit_code": 1,
           "observer_pid": 3705541,
           "remaining_processes": [3705541],
@@ -1919,7 +1919,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 703377408,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-4f1fdbaca8dd4bb98565ac60c02f7fce.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-4f1fdbaca8dd4bb98565ac60c02f7fce.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -1951,8 +1951,8 @@
       "log_sha256": "fda20a90e50147f59c67538ff6a58aca797e57a417f1445055251e783ebd9272",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-QF9lE2",
-          "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-QF9lE2",
+          "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
           "elapsed_ms": 5001.670024,
           "selected_shape": null,
           "before": {
@@ -2177,13 +2177,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-662d209969474cb982f6faaaa7290ddb.scope",
+        "scope": "nre-efficiency-662d209969474cb982f6faaaa7290ddb.scope",
         "elapsed_seconds": 6.012,
         "abort": null,
         "sampled_peak_cgroup_bytes": 483291136,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-662d209969474cb982f6faaaa7290ddb.scope",
+          "ownership_token": "nre-efficiency-662d209969474cb982f6faaaa7290ddb.scope",
           "payload_exit_code": 1,
           "observer_pid": 3707466,
           "remaining_processes": [3707466, 3707478],
@@ -2199,7 +2199,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 486182912,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-662d209969474cb982f6faaaa7290ddb.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-662d209969474cb982f6faaaa7290ddb.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -2231,8 +2231,8 @@
       "log_sha256": "ba22d945858a56fe53b9b2438eab5d066af2899b6c53c3b0e1d79477b44bfa6f",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-9r2HQd",
-          "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-9r2HQd",
+          "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
           "elapsed_ms": 40738.874155,
           "selected_shape": ".geSidebar a.geItem >> nth=0",
           "before": {
@@ -2457,13 +2457,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-8ed23b8e39f240fb9a5b729042d10dd2.scope",
+        "scope": "nre-efficiency-8ed23b8e39f240fb9a5b729042d10dd2.scope",
         "elapsed_seconds": 41.806,
         "abort": null,
         "sampled_peak_cgroup_bytes": 530280448,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-8ed23b8e39f240fb9a5b729042d10dd2.scope",
+          "ownership_token": "nre-efficiency-8ed23b8e39f240fb9a5b729042d10dd2.scope",
           "payload_exit_code": 1,
           "observer_pid": 3707963,
           "remaining_processes": [3707963],
@@ -2479,7 +2479,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 536735744,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-8ed23b8e39f240fb9a5b729042d10dd2.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-8ed23b8e39f240fb9a5b729042d10dd2.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -2511,8 +2511,8 @@
       "log_sha256": "4e95793afdc13831677bc00df09ee29269637b73f5aea66a945afb315d2d62b1",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-uFneVi",
-          "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-uFneVi",
+          "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
           "elapsed_ms": 40862.040049999996,
           "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
           "before": {
@@ -2739,13 +2739,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-b1883a8592a5466baae309560b287bc7.scope",
+        "scope": "nre-efficiency-b1883a8592a5466baae309560b287bc7.scope",
         "elapsed_seconds": 41.849,
         "abort": null,
         "sampled_peak_cgroup_bytes": 534786048,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-b1883a8592a5466baae309560b287bc7.scope",
+          "ownership_token": "nre-efficiency-b1883a8592a5466baae309560b287bc7.scope",
           "payload_exit_code": 1,
           "observer_pid": 3709805,
           "remaining_processes": [3709805],
@@ -2761,7 +2761,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 539242496,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b1883a8592a5466baae309560b287bc7.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b1883a8592a5466baae309560b287bc7.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -2793,8 +2793,8 @@
       "log_sha256": "b3da509c2c1d5e374b0947a01cc6f432ebbd8b98394a1cc03333bbe6052ec9ad",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-9iII3M",
-          "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-9iII3M",
+          "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
           "elapsed_ms": 10202.265695999999,
           "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
           "before": {
@@ -2803,15 +2803,15 @@
             "cells": 0,
             "main_process": {
               "argv": [
-                "/tmp/rea-docs-audit-20261012/runtime/electron-fixture-tools/node_modules/electron/dist/electron",
+                "/tmp/nre-docs-audit-20261012/runtime/electron-fixture-tools/node_modules/electron/dist/electron",
                 "--inspect=0",
                 "--remote-debugging-port=0",
                 "-r",
-                "/home/yann/yann/rea-electron-ipc-listener-4390-20261016/scripts/electron-active-hook.cjs",
-                "/tmp/rea-4390-realapps-20261016/drawio/resources/app.asar",
+                "/home/yann/yann/nre-electron-ipc-listener-4390-20261016/scripts/electron-active-hook.cjs",
+                "/tmp/nre-4390-realapps-20261016/drawio/resources/app.asar",
                 "--no-sandbox",
                 "--disable-gpu",
-                "--user-data-dir=/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-9iII3M"
+                "--user-data-dir=/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-9iII3M"
               ],
               "default_app": true
             },
@@ -3053,13 +3053,13 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-a5a61de8bca74116922c6c4d60f6e498.scope",
+        "scope": "nre-efficiency-a5a61de8bca74116922c6c4d60f6e498.scope",
         "elapsed_seconds": 11.259,
         "abort": null,
         "sampled_peak_cgroup_bytes": 528416768,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-a5a61de8bca74116922c6c4d60f6e498.scope",
+          "ownership_token": "nre-efficiency-a5a61de8bca74116922c6c4d60f6e498.scope",
           "payload_exit_code": 1,
           "observer_pid": 3711672,
           "remaining_processes": [3711672, 3711684, 3711801, 3711803],
@@ -3075,7 +3075,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 529313792,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-a5a61de8bca74116922c6c4d60f6e498.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-a5a61de8bca74116922c6c4d60f6e498.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -3131,12 +3131,12 @@
         "execution_status": "executed",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-d6ad36626706407b8b78f90836d83542.scope",
+          "scope": "nre-efficiency-d6ad36626706407b8b78f90836d83542.scope",
           "elapsed_seconds": 3.588,
           "abort": null,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-d6ad36626706407b8b78f90836d83542.scope",
+            "ownership_token": "nre-efficiency-d6ad36626706407b8b78f90836d83542.scope",
             "payload_exit_code": 1,
             "observer_pid": 3728302,
             "remaining_processes": [3728302],
@@ -3152,7 +3152,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 341663744,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-d6ad36626706407b8b78f90836d83542.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-d6ad36626706407b8b78f90836d83542.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -3183,12 +3183,12 @@
         "execution_status": "executed",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-fc3a1632b0da47d598557d98455eb25e.scope",
+          "scope": "nre-efficiency-fc3a1632b0da47d598557d98455eb25e.scope",
           "elapsed_seconds": 4.028,
           "abort": null,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-fc3a1632b0da47d598557d98455eb25e.scope",
+            "ownership_token": "nre-efficiency-fc3a1632b0da47d598557d98455eb25e.scope",
             "payload_exit_code": 1,
             "observer_pid": 3743076,
             "remaining_processes": [3743076],
@@ -3204,7 +3204,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 347525120,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-fc3a1632b0da47d598557d98455eb25e.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-fc3a1632b0da47d598557d98455eb25e.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -3234,12 +3234,12 @@
         "execution_status": "executed",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-3915d88b7ccc47e582431c2ce598c6c4.scope",
+          "scope": "nre-efficiency-3915d88b7ccc47e582431c2ce598c6c4.scope",
           "elapsed_seconds": 3.658,
           "abort": null,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-3915d88b7ccc47e582431c2ce598c6c4.scope",
+            "ownership_token": "nre-efficiency-3915d88b7ccc47e582431c2ce598c6c4.scope",
             "payload_exit_code": 0,
             "observer_pid": 3744278,
             "remaining_processes": [3744278],
@@ -3255,7 +3255,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 310366208,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-3915d88b7ccc47e582431c2ce598c6c4.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-3915d88b7ccc47e582431c2ce598c6c4.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -3293,8 +3293,8 @@
         "execution_status": "executed",
         "observations": [
           {
-            "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-lhshti",
-            "runtime": "/home/yann/yann/rea-electron-cancellation-main-control-20261016",
+            "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-lhshti",
+            "runtime": "/home/yann/yann/nre-electron-cancellation-main-control-20261016",
             "elapsed_ms": 15030.539359,
             "deadline_triggered": false,
             "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
@@ -3579,12 +3579,12 @@
           }
         ],
         "resource_observation": {
-          "scope": "rea-efficiency-15cacfddc00e4458aa785198a0ce3d9a.scope",
+          "scope": "nre-efficiency-15cacfddc00e4458aa785198a0ce3d9a.scope",
           "elapsed_seconds": 17.014,
           "abort": null,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-15cacfddc00e4458aa785198a0ce3d9a.scope",
+            "ownership_token": "nre-efficiency-15cacfddc00e4458aa785198a0ce3d9a.scope",
             "payload_exit_code": 1,
             "observer_pid": 3737995,
             "remaining_processes": [3737995, 3738007, 3738245, 3738247],
@@ -3600,7 +3600,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 519233536,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-15cacfddc00e4458aa785198a0ce3d9a.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-15cacfddc00e4458aa785198a0ce3d9a.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -3669,8 +3669,8 @@
       "execution_status": "executed",
       "observations": [
         {
-          "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-4WKSqs",
-          "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+          "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-4WKSqs",
+          "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
           "elapsed_ms": 11172.099482,
           "deadline_triggered": false,
           "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
@@ -3934,12 +3934,12 @@
         }
       ],
       "resource_observation": {
-        "scope": "rea-efficiency-1b1d76dffc5d402385b9b164a1fd774d.scope",
+        "scope": "nre-efficiency-1b1d76dffc5d402385b9b164a1fd774d.scope",
         "elapsed_seconds": 12.3,
         "abort": null,
         "payload_exit": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-1b1d76dffc5d402385b9b164a1fd774d.scope",
+          "ownership_token": "nre-efficiency-1b1d76dffc5d402385b9b164a1fd774d.scope",
           "payload_exit_code": 5,
           "observer_pid": 3749467,
           "remaining_processes": [3749467, 3749479],
@@ -3955,7 +3955,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 546140160,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-1b1d76dffc5d402385b9b164a1fd774d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-1b1d76dffc5d402385b9b164a1fd774d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -3986,12 +3986,12 @@
         "execution_status": "executed",
         "observations": [],
         "resource_observation": {
-          "scope": "rea-efficiency-b393f8ccbb774849979e1c349bf943c4.scope",
+          "scope": "nre-efficiency-b393f8ccbb774849979e1c349bf943c4.scope",
           "elapsed_seconds": 135.173,
           "abort": null,
           "payload_exit": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-b393f8ccbb774849979e1c349bf943c4.scope",
+            "ownership_token": "nre-efficiency-b393f8ccbb774849979e1c349bf943c4.scope",
             "payload_exit_code": 0,
             "observer_pid": 3753488,
             "remaining_processes": [3753488],
@@ -4007,7 +4007,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 4274634752,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b393f8ccbb774849979e1c349bf943c4.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b393f8ccbb774849979e1c349bf943c4.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -4035,7 +4035,7 @@
       "log_sha256": "d19d6e8a8631f9d4dbae7fea66f90ea17225326758b67d183ddea850ade1d182",
       "payload_exit": {
         "phase": "payload-exited-observer-alive",
-        "ownership_token": "rea-efficiency-36aa218a8d5c49e8964f53b3fd14ad74.scope",
+        "ownership_token": "nre-efficiency-36aa218a8d5c49e8964f53b3fd14ad74.scope",
         "payload_exit_code": 0,
         "observer_pid": 3757012,
         "remaining_processes": [3757012],
@@ -4051,7 +4051,7 @@
           "burst_usec": 0
         },
         "memory_peak_bytes": 474152960,
-        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-36aa218a8d5c49e8964f53b3fd14ad74.scope",
+        "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-36aa218a8d5c49e8964f53b3fd14ad74.scope",
         "resource_events": {
           "memory.events": {
             "low": 0,
@@ -4088,10 +4088,10 @@
     },
     "root_cause": "The IPC handle wrapper reads the application callback .call property; ordinary invocation does not. Captured Reflect.apply preserves the actual receiver/argument list without reading callable method properties. EventEmitter callbacks retain native invocation behavior.",
     "initial_three_case_attempt": {
-      "log_name": "rea-4390-callable-red.log",
+      "log_name": "nre-4390-callable-red.log",
       "log_sha256": "8a8b2043dd785e86740be1c4a57a43c566a5e924a620c01e57f23b21d647af35",
       "resource": {
-        "resource_scope": "rea-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope",
+        "resource_scope": "nre-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope",
         "peak_cgroup_bytes_sampled": 302551040,
         "elapsed_seconds": 7.411,
         "abort": null,
@@ -4128,7 +4128,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope",
+          "ownership_token": "nre-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope",
           "payload_exit_code": 1,
           "observer_pid": 3781963,
           "remaining_processes": [3781963],
@@ -4144,7 +4144,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 317837312,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4169,10 +4169,10 @@
       "status": "3 failed / 23 passed; only the handle case has a valid successful unhooked oracle. on/once controls fail themselves and are not evidence of a hook regression."
     },
     "rejected_event_invocation_change": {
-      "log_name": "rea-4390-callable-green.log",
+      "log_name": "nre-4390-callable-green.log",
       "log_sha256": "af5ff795a9247c058c4452ed2406c9f056e2e84a251c80eb0feeb605bef051c8",
       "resource": {
-        "resource_scope": "rea-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope",
+        "resource_scope": "nre-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope",
         "peak_cgroup_bytes_sampled": 310726656,
         "elapsed_seconds": 4.533,
         "abort": null,
@@ -4209,7 +4209,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope",
+          "ownership_token": "nre-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope",
           "payload_exit_code": 1,
           "observer_pid": 3788886,
           "remaining_processes": [3788886],
@@ -4225,7 +4225,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 326103040,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4250,10 +4250,10 @@
       "status": "2 failed / 24 passed; on/once expected-oracle assertions fail. Intrinsic event invocation change reverted, invalid cases removed."
     },
     "final_focused": {
-      "log_name": "rea-4390-handle-callable-green.log",
+      "log_name": "nre-4390-handle-callable-green.log",
       "log_sha256": "65cb8446eafc682c6add0096c42b9c35b3f76f94599d8eef7024546092c4d2a7",
       "resource": {
-        "resource_scope": "rea-efficiency-4387af52466849d88fc028de64ac1c80.scope",
+        "resource_scope": "nre-efficiency-4387af52466849d88fc028de64ac1c80.scope",
         "peak_cgroup_bytes_sampled": 298799104,
         "elapsed_seconds": 3.661,
         "abort": null,
@@ -4290,7 +4290,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-4387af52466849d88fc028de64ac1c80.scope",
+          "ownership_token": "nre-efficiency-4387af52466849d88fc028de64ac1c80.scope",
           "payload_exit_code": 0,
           "observer_pid": 3791618,
           "remaining_processes": [3791618],
@@ -4306,7 +4306,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 318291968,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-4387af52466849d88fc028de64ac1c80.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-4387af52466849d88fc028de64ac1c80.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4331,10 +4331,10 @@
       "status": "24 passed / 24; one added direct-call handle oracle, other 23 existing regressions retained."
     },
     "real_app": {
-      "log_name": "rea-4390-drawio-callable-final.log",
+      "log_name": "nre-4390-drawio-callable-final.log",
       "log_sha256": "f963c64489dc5906e2dd2ac1eafd5c919816184dd901f2255829ce587555a819",
       "resource": {
-        "resource_scope": "rea-efficiency-633ec4a438494d319c34a86df57cf709.scope",
+        "resource_scope": "nre-efficiency-633ec4a438494d319c34a86df57cf709.scope",
         "peak_cgroup_bytes_sampled": 632668160,
         "elapsed_seconds": 12.61,
         "abort": null,
@@ -4371,7 +4371,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-633ec4a438494d319c34a86df57cf709.scope",
+          "ownership_token": "nre-efficiency-633ec4a438494d319c34a86df57cf709.scope",
           "payload_exit_code": 1,
           "observer_pid": 3796320,
           "remaining_processes": [3796320, 3796340],
@@ -4387,7 +4387,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 634187776,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-633ec4a438494d319c34a86df57cf709.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-633ec4a438494d319c34a86df57cf709.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4505,10 +4505,10 @@
       }
     },
     "remaining_raw_mutation": {
-      "log_name": "rea-4390-raw-mutation-probe.log",
+      "log_name": "nre-4390-raw-mutation-probe.log",
       "log_sha256": "30371d915b05ca91b1f15b026a70ed81b255a4c20b4d2e3aae068e87cac85d15",
       "resource": {
-        "resource_scope": "rea-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope",
+        "resource_scope": "nre-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope",
         "peak_cgroup_bytes_sampled": 6070272,
         "elapsed_seconds": 0.265,
         "abort": null,
@@ -4545,7 +4545,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope",
+          "ownership_token": "nre-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope",
           "payload_exit_code": 0,
           "observer_pid": 3797331,
           "remaining_processes": [3797331],
@@ -4561,7 +4561,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 20475904,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4601,23 +4601,23 @@
       "scope_decision": "Retain and explicitly document this unsupported raw recording-wrapper mutation rather than temporarily rewriting app metadata or adding a copied native removal algorithm. Original-function removal, ordinary decorators, and once fixes do not establish full metaprogramming transparency."
     },
     "scope_poststates": {
-      "rea-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope": {
+      "nre-efficiency-92e8cb18931e47b99a6d5968dea058c2.scope": {
         "properties": "ActiveState=inactive\nSubState=dead",
         "exit": 0
       },
-      "rea-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope": {
+      "nre-efficiency-bd12b8c433344feea79aa6f4c989c66d.scope": {
         "properties": "ActiveState=inactive\nSubState=dead",
         "exit": 0
       },
-      "rea-efficiency-4387af52466849d88fc028de64ac1c80.scope": {
+      "nre-efficiency-4387af52466849d88fc028de64ac1c80.scope": {
         "properties": "ActiveState=inactive\nSubState=dead",
         "exit": 0
       },
-      "rea-efficiency-633ec4a438494d319c34a86df57cf709.scope": {
+      "nre-efficiency-633ec4a438494d319c34a86df57cf709.scope": {
         "properties": "ActiveState=inactive\nSubState=dead",
         "exit": 0
       },
-      "rea-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope": {
+      "nre-efficiency-d075b8f5c15c46079a0c78deffc7f3fc.scope": {
         "properties": "ActiveState=inactive\nSubState=dead",
         "exit": 0
       }
@@ -4633,7 +4633,7 @@
       "status": "passed; two uncached tasks",
       "log_sha256": "e1be38c634884e4f6e9127d8f37dbeaf7b188d585c93b2390bcf0fe6125ceffc",
       "resource": {
-        "resource_scope": "rea-efficiency-7bd6cb7b41624ffe863453ab2dc07c44.scope",
+        "resource_scope": "nre-efficiency-7bd6cb7b41624ffe863453ab2dc07c44.scope",
         "peak_cgroup_bytes_sampled": 4337991680,
         "elapsed_seconds": 92.912,
         "abort": null,
@@ -4670,7 +4670,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-7bd6cb7b41624ffe863453ab2dc07c44.scope",
+          "ownership_token": "nre-efficiency-7bd6cb7b41624ffe863453ab2dc07c44.scope",
           "payload_exit_code": 0,
           "observer_pid": 3797574,
           "remaining_processes": [3797574],
@@ -4686,7 +4686,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4340375552,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-7bd6cb7b41624ffe863453ab2dc07c44.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-7bd6cb7b41624ffe863453ab2dc07c44.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4715,7 +4715,7 @@
       "status": "passed; six tasks and five README consistency cases",
       "log_sha256": "df2b7983d89102cd6035ea80b27f4702a207601cbb5f7417d3cf010ecaa51ca7",
       "resource": {
-        "resource_scope": "rea-efficiency-ce2db4df0beb429283c73b0ce0dcf6d9.scope",
+        "resource_scope": "nre-efficiency-ce2db4df0beb429283c73b0ce0dcf6d9.scope",
         "peak_cgroup_bytes_sampled": 458072064,
         "elapsed_seconds": 9.56,
         "abort": null,
@@ -4752,7 +4752,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-ce2db4df0beb429283c73b0ce0dcf6d9.scope",
+          "ownership_token": "nre-efficiency-ce2db4df0beb429283c73b0ce0dcf6d9.scope",
           "payload_exit_code": 0,
           "observer_pid": 3805877,
           "remaining_processes": [3805877],
@@ -4768,7 +4768,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 470388736,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-ce2db4df0beb429283c73b0ce0dcf6d9.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-ce2db4df0beb429283c73b0ce0dcf6d9.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4809,10 +4809,10 @@
     "root_cause": "The earlier controls covered a single listener. Native EventEmitter single dispatch reads .apply, but array dispatch invokes each function intrinsically. once uses .call for zero arguments and .apply otherwise. Unconditional callback .apply changes array dispatch and zero-argument once behavior.",
     "structural_fix": "Keep one observed invocation boundary. The on recording wrapper delegates direct function calls intrinsically and owns an .apply forwarding method for native method-based dispatch. Node selects which route executes; the hook neither reads nor copies listener storage. once selects native call/apply semantics by its actual argument count. handle remains intrinsic.",
     "red": {
-      "log_name": "rea-4390-native-dispatch-red.log",
+      "log_name": "nre-4390-native-dispatch-red.log",
       "log_sha256": "ced90d3b485894c9ed864ac0e1da473894ed0ffdcb9a511fc5ea1fa311c74e27",
       "resource": {
-        "resource_scope": "rea-efficiency-f8de6051a7854c479e2a5602f4ebe04d.scope",
+        "resource_scope": "nre-efficiency-f8de6051a7854c479e2a5602f4ebe04d.scope",
         "peak_cgroup_bytes_sampled": 246337536,
         "elapsed_seconds": 5.549,
         "abort": null,
@@ -4849,7 +4849,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-f8de6051a7854c479e2a5602f4ebe04d.scope",
+          "ownership_token": "nre-efficiency-f8de6051a7854c479e2a5602f4ebe04d.scope",
           "payload_exit_code": 1,
           "observer_pid": 3826550,
           "remaining_processes": [3826550],
@@ -4865,7 +4865,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 271044608,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-f8de6051a7854c479e2a5602f4ebe04d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-f8de6051a7854c479e2a5602f4ebe04d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4891,10 +4891,10 @@
       "status": "26 passed / 2 failed; multiple-on callback execution and empty-once metadata reads differ from successful native controls."
     },
     "green": {
-      "log_name": "rea-4390-native-dispatch-green.log",
+      "log_name": "nre-4390-native-dispatch-green.log",
       "log_sha256": "11926067de5159f5d949669ed568c55b34ff1746ed0170a2a111fd95df2d9239",
       "resource": {
-        "resource_scope": "rea-efficiency-21d304c2fc64460daa07729bfe6a2ea2.scope",
+        "resource_scope": "nre-efficiency-21d304c2fc64460daa07729bfe6a2ea2.scope",
         "peak_cgroup_bytes_sampled": 239734784,
         "elapsed_seconds": 5.742,
         "abort": null,
@@ -4931,7 +4931,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-21d304c2fc64460daa07729bfe6a2ea2.scope",
+          "ownership_token": "nre-efficiency-21d304c2fc64460daa07729bfe6a2ea2.scope",
           "payload_exit_code": 0,
           "observer_pid": 3827208,
           "remaining_processes": [3827208],
@@ -4947,7 +4947,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 250449920,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-21d304c2fc64460daa07729bfe6a2ea2.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-21d304c2fc64460daa07729bfe6a2ea2.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -4973,10 +4973,10 @@
       "status": "28 passed / 28; single-on, multiple-on, empty-once and event-once each match native control; prior24 remain covered."
     },
     "real_app": {
-      "log_name": "rea-4390-drawio-native-dispatch-final.log",
+      "log_name": "nre-4390-drawio-native-dispatch-final.log",
       "log_sha256": "523ae674f24eab0378844f0ca5907389f067d18d4780654ab8c1a999fd2fa4c7",
       "resource": {
-        "resource_scope": "rea-efficiency-faa3330353fc41a8b326af556917c1a3.scope",
+        "resource_scope": "nre-efficiency-faa3330353fc41a8b326af556917c1a3.scope",
         "peak_cgroup_bytes_sampled": 547475456,
         "elapsed_seconds": 12.29,
         "abort": null,
@@ -5013,7 +5013,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-faa3330353fc41a8b326af556917c1a3.scope",
+          "ownership_token": "nre-efficiency-faa3330353fc41a8b326af556917c1a3.scope",
           "payload_exit_code": 1,
           "observer_pid": 3828459,
           "remaining_processes": [3828459, 3828471, 3828701, 3828702],
@@ -5029,7 +5029,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 548757504,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-faa3330353fc41a8b326af556917c1a3.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-faa3330353fc41a8b326af556917c1a3.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5159,7 +5159,7 @@
       "status": "passed; two uncached tasks",
       "log_sha256": "ec36dde4920f159355a266f09523c7a2bc5883f298b316e18d551db1278803aa",
       "resource": {
-        "resource_scope": "rea-efficiency-9956bb7437dc4fd39bc8af4dc5728c22.scope",
+        "resource_scope": "nre-efficiency-9956bb7437dc4fd39bc8af4dc5728c22.scope",
         "peak_cgroup_bytes_sampled": 4090605568,
         "elapsed_seconds": 171.43,
         "abort": null,
@@ -5196,7 +5196,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-9956bb7437dc4fd39bc8af4dc5728c22.scope",
+          "ownership_token": "nre-efficiency-9956bb7437dc4fd39bc8af4dc5728c22.scope",
           "payload_exit_code": 0,
           "observer_pid": 3828820,
           "remaining_processes": [3828820],
@@ -5212,7 +5212,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4091392000,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-9956bb7437dc4fd39bc8af4dc5728c22.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-9956bb7437dc4fd39bc8af4dc5728c22.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5241,7 +5241,7 @@
       "status": "passed; six tasks and five README consistency cases",
       "log_sha256": "09d4de4e097b20efd1eb644940260cf62666063250ca7e8713c6863431b773a9",
       "resource": {
-        "resource_scope": "rea-efficiency-36035cd8603d46b5bab5cb9356c1eb54.scope",
+        "resource_scope": "nre-efficiency-36035cd8603d46b5bab5cb9356c1eb54.scope",
         "peak_cgroup_bytes_sampled": 467345408,
         "elapsed_seconds": 10.452,
         "abort": null,
@@ -5278,7 +5278,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-36035cd8603d46b5bab5cb9356c1eb54.scope",
+          "ownership_token": "nre-efficiency-36035cd8603d46b5bab5cb9356c1eb54.scope",
           "payload_exit_code": 0,
           "observer_pid": 3832051,
           "remaining_processes": [3832051],
@@ -5294,7 +5294,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 477044736,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-36035cd8603d46b5bab5cb9356c1eb54.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-36035cd8603d46b5bab5cb9356c1eb54.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5334,10 +5334,10 @@
     "root_cause": "The native apply forwarding path assumed an Array although Function.apply accepts other array-like inputs and null/undefined; once also passed a rest Array instead of its native Arguments object. Invocation inputs and recording projections shared an incorrect representation.",
     "structural_fix": "Bind the captured native Function.apply to the forwarding function, delegating array-like conversion, missing/null lists and invalid primitive rejection to JavaScript itself before recording. once keeps its actual Arguments object for callback invocation; only recording takes a slice through a captured, uncurried native helper. No arbitrary array-like converter or exception repair is introduced.",
     "red": {
-      "log_name": "rea-4390-argument-list-red.log",
+      "log_name": "nre-4390-argument-list-red.log",
       "log_sha256": "94c4dc9bc0f868ea7cc6a4c5ee5186751655a23aae8db60a978996c1567baa11",
       "resource": {
-        "resource_scope": "rea-efficiency-532b9d94428a494981d788ffaaede85f.scope",
+        "resource_scope": "nre-efficiency-532b9d94428a494981d788ffaaede85f.scope",
         "peak_cgroup_bytes_sampled": 325742592,
         "elapsed_seconds": 4.516,
         "abort": null,
@@ -5374,7 +5374,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-532b9d94428a494981d788ffaaede85f.scope",
+          "ownership_token": "nre-efficiency-532b9d94428a494981d788ffaaede85f.scope",
           "payload_exit_code": 1,
           "observer_pid": 3844622,
           "remaining_processes": [3844622],
@@ -5390,7 +5390,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 344989696,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-532b9d94428a494981d788ffaaede85f.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-532b9d94428a494981d788ffaaede85f.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5416,10 +5416,10 @@
       "status": "29 passed /6 failed of35: five valid raw apply argument-list forms and the once custom-apply Arguments identity case fail against native controls."
     },
     "intermediate_green": {
-      "log_name": "rea-4390-argument-list-green.log",
+      "log_name": "nre-4390-argument-list-green.log",
       "log_sha256": "79dfcb0bedd5ff4dd28df6320be903fb8d260f25876beecec7366bd36e006cd1",
       "resource": {
-        "resource_scope": "rea-efficiency-6f48cc640409442baeb6f59cf0d658d7.scope",
+        "resource_scope": "nre-efficiency-6f48cc640409442baeb6f59cf0d658d7.scope",
         "peak_cgroup_bytes_sampled": 273240064,
         "elapsed_seconds": 4.28,
         "abort": null,
@@ -5456,7 +5456,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-6f48cc640409442baeb6f59cf0d658d7.scope",
+          "ownership_token": "nre-efficiency-6f48cc640409442baeb6f59cf0d658d7.scope",
           "payload_exit_code": 0,
           "observer_pid": 3845753,
           "remaining_processes": [3845753],
@@ -5472,7 +5472,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 294686720,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-6f48cc640409442baeb6f59cf0d658d7.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-6f48cc640409442baeb6f59cf0d658d7.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5498,10 +5498,10 @@
       "status": "35 passed; before the final captured slice helper change. No final-source hash is assigned retrospectively to this intermediate run."
     },
     "final_focused": {
-      "log_name": "rea-4390-argument-list-final-green.log",
+      "log_name": "nre-4390-argument-list-final-green.log",
       "log_sha256": "2383cd2ce9a25beaf0cf1ea77cbb57d1beba652809545f1649279a49e28d22e7",
       "resource": {
-        "resource_scope": "rea-efficiency-b8f02509e9f546d983b451aabe52ac0d.scope",
+        "resource_scope": "nre-efficiency-b8f02509e9f546d983b451aabe52ac0d.scope",
         "peak_cgroup_bytes_sampled": 247308288,
         "elapsed_seconds": 5.437,
         "abort": null,
@@ -5538,7 +5538,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-b8f02509e9f546d983b451aabe52ac0d.scope",
+          "ownership_token": "nre-efficiency-b8f02509e9f546d983b451aabe52ac0d.scope",
           "payload_exit_code": 0,
           "observer_pid": 3848239,
           "remaining_processes": [3848239],
@@ -5554,7 +5554,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 258252800,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b8f02509e9f546d983b451aabe52ac0d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b8f02509e9f546d983b451aabe52ac0d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5580,10 +5580,10 @@
       "status": "35 passed /35, including array-like getter read exactly once, null/undefined/missing lists, primitive rejection and native once Arguments identity."
     },
     "real_app": {
-      "log_name": "rea-4390-drawio-argument-list-final.log",
+      "log_name": "nre-4390-drawio-argument-list-final.log",
       "log_sha256": "0a5ab8fd34c41dfb6bd40f189f18273d3df25efe95829c18167511241fd70d3a",
       "resource": {
-        "resource_scope": "rea-efficiency-b3e7bbcff7bb40c790c5f61b71726fcc.scope",
+        "resource_scope": "nre-efficiency-b3e7bbcff7bb40c790c5f61b71726fcc.scope",
         "peak_cgroup_bytes_sampled": 675737600,
         "elapsed_seconds": 12.45,
         "abort": null,
@@ -5620,7 +5620,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-b3e7bbcff7bb40c790c5f61b71726fcc.scope",
+          "ownership_token": "nre-efficiency-b3e7bbcff7bb40c790c5f61b71726fcc.scope",
           "payload_exit_code": 1,
           "observer_pid": 3850682,
           "remaining_processes": [3850682, 3850694],
@@ -5636,7 +5636,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 675999744,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b3e7bbcff7bb40c790c5f61b71726fcc.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b3e7bbcff7bb40c790c5f61b71726fcc.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5765,7 +5765,7 @@
       "status": "passed; two uncached tasks",
       "log_sha256": "4c64e683c88df2acee34b0c9072b25b41d677cbb3413c180ccece7b64d214bbd",
       "resource": {
-        "resource_scope": "rea-efficiency-f79dcd50a74340cfb5fc04ec52345d77.scope",
+        "resource_scope": "nre-efficiency-f79dcd50a74340cfb5fc04ec52345d77.scope",
         "peak_cgroup_bytes_sampled": 4184866816,
         "elapsed_seconds": 122.454,
         "abort": null,
@@ -5802,7 +5802,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-f79dcd50a74340cfb5fc04ec52345d77.scope",
+          "ownership_token": "nre-efficiency-f79dcd50a74340cfb5fc04ec52345d77.scope",
           "payload_exit_code": 0,
           "observer_pid": 3851133,
           "remaining_processes": [3851133],
@@ -5818,7 +5818,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4185915392,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-f79dcd50a74340cfb5fc04ec52345d77.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-f79dcd50a74340cfb5fc04ec52345d77.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5848,7 +5848,7 @@
       "status": "passed; six tasks and five README consistency cases",
       "log_sha256": "ac93468286df1215d7d4cf830dd5026b68fc2e7f7ee6f7e6cc0fb36bea8e6e5c",
       "resource": {
-        "resource_scope": "rea-efficiency-fd52636d5ac94d008bc1991c597e2fda.scope",
+        "resource_scope": "nre-efficiency-fd52636d5ac94d008bc1991c597e2fda.scope",
         "peak_cgroup_bytes_sampled": 408018944,
         "elapsed_seconds": 11.136,
         "abort": null,
@@ -5885,7 +5885,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-fd52636d5ac94d008bc1991c597e2fda.scope",
+          "ownership_token": "nre-efficiency-fd52636d5ac94d008bc1991c597e2fda.scope",
           "payload_exit_code": 0,
           "observer_pid": 3853280,
           "remaining_processes": [3853280],
@@ -5901,7 +5901,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 417841152,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-fd52636d5ac94d008bc1991c597e2fda.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-fd52636d5ac94d008bc1991c597e2fda.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -5948,10 +5948,10 @@
       "4a9a01f7a reads success.value.normalized_result, retaining error.partialObservation.capture on failure. New standalone controlled oracles exercise the actual verifier in an isolated stub runtime."
     ],
     "native_red": {
-      "log_name": "rea-4390-inherited-metadata-red.log",
+      "log_name": "nre-4390-inherited-metadata-red.log",
       "log_sha256": "afd919f233c239f6393362cf64ce519a93e5d7ac0fb5876e18d21e3a4a187919",
       "resource": {
-        "resource_scope": "rea-efficiency-fa6ca7cff41e4b009c73d38899ce9e6e.scope",
+        "resource_scope": "nre-efficiency-fa6ca7cff41e4b009c73d38899ce9e6e.scope",
         "elapsed_seconds": 4.919,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -5961,7 +5961,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-fa6ca7cff41e4b009c73d38899ce9e6e.scope",
+          "ownership_token": "nre-efficiency-fa6ca7cff41e4b009c73d38899ce9e6e.scope",
           "payload_exit_code": 1,
           "observer_pid": 3870349,
           "remaining_processes": [3870349],
@@ -5977,7 +5977,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 353755136,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-fa6ca7cff41e4b009c73d38899ce9e6e.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-fa6ca7cff41e4b009c73d38899ce9e6e.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6003,10 +6003,10 @@
       "status": "35 passed /4 failed of39: Function/Object prototype setters and readonly fields."
     },
     "native_green": {
-      "log_name": "rea-4390-inherited-metadata-green.log",
+      "log_name": "nre-4390-inherited-metadata-green.log",
       "log_sha256": "614e5d0bae651dce139f510946d5c2fd51047240310fe87e9a58aa4606369375",
       "resource": {
-        "resource_scope": "rea-efficiency-59821aae0a8747358570563c08f02964.scope",
+        "resource_scope": "nre-efficiency-59821aae0a8747358570563c08f02964.scope",
         "elapsed_seconds": 6.156,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6016,7 +6016,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-59821aae0a8747358570563c08f02964.scope",
+          "ownership_token": "nre-efficiency-59821aae0a8747358570563c08f02964.scope",
           "payload_exit_code": 0,
           "observer_pid": 3872909,
           "remaining_processes": [3872909],
@@ -6032,7 +6032,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 248344576,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-59821aae0a8747358570563c08f02964.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-59821aae0a8747358570563c08f02964.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6058,10 +6058,10 @@
       "status": "39 passed /39."
     },
     "verifier_red": {
-      "log_name": "rea-4390-verifier-evidence-red.log",
+      "log_name": "nre-4390-verifier-evidence-red.log",
       "log_sha256": "aad53929f64adc37adaee7bd557afaa119519bfd74cefb426267526ce730209e",
       "resource": {
-        "resource_scope": "rea-efficiency-ead3f8109c8446f191bd50029f7a6591.scope",
+        "resource_scope": "nre-efficiency-ead3f8109c8446f191bd50029f7a6591.scope",
         "elapsed_seconds": 0.488,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6071,7 +6071,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-ead3f8109c8446f191bd50029f7a6591.scope",
+          "ownership_token": "nre-efficiency-ead3f8109c8446f191bd50029f7a6591.scope",
           "payload_exit_code": 1,
           "observer_pid": 3872641,
           "remaining_processes": [3872641],
@@ -6087,7 +6087,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 25305088,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-ead3f8109c8446f191bd50029f7a6591.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-ead3f8109c8446f191bd50029f7a6591.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6153,10 +6153,10 @@
       "status": "Old verifier rejected valid successful Evidence without a summary; success-envelope action/insertion failures also crashed before producing their diagnostic summary. Partial and no-capture controls already matched."
     },
     "verifier_green": {
-      "log_name": "rea-4390-verifier-evidence-green.log",
+      "log_name": "nre-4390-verifier-evidence-green.log",
       "log_sha256": "d63ab9d48a0e91019460bf16734839ff6b513a21ec64709b0d5ff5b1dd368a36",
       "resource": {
-        "resource_scope": "rea-efficiency-0a9fd24c169c430cbc86df5d9cfc1e84.scope",
+        "resource_scope": "nre-efficiency-0a9fd24c169c430cbc86df5d9cfc1e84.scope",
         "elapsed_seconds": 0.921,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6166,7 +6166,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-0a9fd24c169c430cbc86df5d9cfc1e84.scope",
+          "ownership_token": "nre-efficiency-0a9fd24c169c430cbc86df5d9cfc1e84.scope",
           "payload_exit_code": 0,
           "observer_pid": 3872995,
           "remaining_processes": [3872995],
@@ -6182,7 +6182,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 25276416,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-0a9fd24c169c430cbc86df5d9cfc1e84.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-0a9fd24c169c430cbc86df5d9cfc1e84.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6248,10 +6248,10 @@
       "status": "All5 controlled exit/summary oracles match expected results; NOT real-provider verification."
     },
     "real_app": {
-      "log_name": "rea-4390-drawio-owned-metadata-final.log",
+      "log_name": "nre-4390-drawio-owned-metadata-final.log",
       "log_sha256": "016646c990c3442ac3c983114a218e302ff9ca3701666260bb1961794aa1a0f0",
       "resource": {
-        "resource_scope": "rea-efficiency-f6fd5130f25b449da0370394a2595fb9.scope",
+        "resource_scope": "nre-efficiency-f6fd5130f25b449da0370394a2595fb9.scope",
         "elapsed_seconds": 12.777,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6261,7 +6261,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-f6fd5130f25b449da0370394a2595fb9.scope",
+          "ownership_token": "nre-efficiency-f6fd5130f25b449da0370394a2595fb9.scope",
           "payload_exit_code": 1,
           "observer_pid": 3877417,
           "remaining_processes": [3877417, 3877429, 3877689, 3877690],
@@ -6277,7 +6277,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 698638336,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-f6fd5130f25b449da0370394a2595fb9.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-f6fd5130f25b449da0370394a2595fb9.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6406,7 +6406,7 @@
       "status": "passed; two uncached tasks",
       "log_sha256": "3ac9479dc4abb1205f6dc3c5ea3519cb7bb648c6a51cc142188c147e0c26e868",
       "resource": {
-        "resource_scope": "rea-efficiency-b67d2b674f00447095cf3003ae4d15f0.scope",
+        "resource_scope": "nre-efficiency-b67d2b674f00447095cf3003ae4d15f0.scope",
         "elapsed_seconds": 99.992,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6416,7 +6416,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-b67d2b674f00447095cf3003ae4d15f0.scope",
+          "ownership_token": "nre-efficiency-b67d2b674f00447095cf3003ae4d15f0.scope",
           "payload_exit_code": 0,
           "observer_pid": 3878266,
           "remaining_processes": [3878266],
@@ -6432,7 +6432,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4237795328,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b67d2b674f00447095cf3003ae4d15f0.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b67d2b674f00447095cf3003ae4d15f0.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6461,7 +6461,7 @@
       "status": "passed; six tasks and five README consistency cases",
       "log_sha256": "bf720204a1a83d664efbb51b83dda4cc62a65223f2f89c861d4772e8117d53ef",
       "resource": {
-        "resource_scope": "rea-efficiency-9993431bac424a8194845b1ebae5ed80.scope",
+        "resource_scope": "nre-efficiency-9993431bac424a8194845b1ebae5ed80.scope",
         "elapsed_seconds": 10.855,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6471,7 +6471,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-9993431bac424a8194845b1ebae5ed80.scope",
+          "ownership_token": "nre-efficiency-9993431bac424a8194845b1ebae5ed80.scope",
           "payload_exit_code": 0,
           "observer_pid": 3880317,
           "remaining_processes": [3880317],
@@ -6487,7 +6487,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 429584384,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-9993431bac424a8194845b1ebae5ed80.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-9993431bac424a8194845b1ebae5ed80.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6529,10 +6529,10 @@
     "root_cause": "Slicing a rest Array invokes target Array species before dispatch; snapshots and grouped recording also used species-aware map/filter operations at the same evidence owner.",
     "structural_fix": "3141ac3f4 records from real invocation Arguments frames while preserving native callback Array/Arguments input types. Group validation happens during existing loops without allocating a filtered Array. Snapshot mapping uses captured Array.from, including direct Map iteration without intermediate spread Arrays. No application species constructor is consulted by these owner paths.",
     "dispatch_red": {
-      "log_name": "rea-4390-array-species-red.log",
+      "log_name": "nre-4390-array-species-red.log",
       "log_sha256": "0016d3a6c20e2622ffd836077ab70d78f935011b20f9b147e220f69f3fdfd53c",
       "resource": {
-        "resource_scope": "rea-efficiency-066e45c2da3248169298bc3ddd15db79.scope",
+        "resource_scope": "nre-efficiency-066e45c2da3248169298bc3ddd15db79.scope",
         "elapsed_seconds": 4.595,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6542,7 +6542,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-066e45c2da3248169298bc3ddd15db79.scope",
+          "ownership_token": "nre-efficiency-066e45c2da3248169298bc3ddd15db79.scope",
           "payload_exit_code": 1,
           "observer_pid": 3899293,
           "remaining_processes": [3899293],
@@ -6558,7 +6558,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 322740224,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-066e45c2da3248169298bc3ddd15db79.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-066e45c2da3248169298bc3ddd15db79.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6584,10 +6584,10 @@
       "status": "40 passed /1 failed of41: on dispatch fails; once dispatch itself already succeeds."
     },
     "dispatch_and_snapshot_red": {
-      "log_name": "rea-4390-array-species-snapshot-red.log",
+      "log_name": "nre-4390-array-species-snapshot-red.log",
       "log_sha256": "ffd19d94ba2a3837d27a897aae0f18b30622776e9558dfb606dacc774a6e4aaf",
       "resource": {
-        "resource_scope": "rea-efficiency-c9461402f1b849ef9e63260dfdee7b2e.scope",
+        "resource_scope": "nre-efficiency-c9461402f1b849ef9e63260dfdee7b2e.scope",
         "elapsed_seconds": 4.888,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6597,7 +6597,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-c9461402f1b849ef9e63260dfdee7b2e.scope",
+          "ownership_token": "nre-efficiency-c9461402f1b849ef9e63260dfdee7b2e.scope",
           "payload_exit_code": 1,
           "observer_pid": 3901352,
           "remaining_processes": [3901352],
@@ -6613,7 +6613,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 334934016,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-c9461402f1b849ef9e63260dfdee7b2e.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-c9461402f1b849ef9e63260dfdee7b2e.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6639,10 +6639,10 @@
       "status": "39 passed /2 failed of41: on dispatch and once live snapshot expose the two owner stages."
     },
     "green": {
-      "log_name": "rea-4390-array-species-green.log",
+      "log_name": "nre-4390-array-species-green.log",
       "log_sha256": "11103ab3054b0d3c1182d8bd58a562c0688386fa66c4b73c9080151df3d96466",
       "resource": {
-        "resource_scope": "rea-efficiency-4f4deba4282e4f1a83f9a4789ff55f76.scope",
+        "resource_scope": "nre-efficiency-4f4deba4282e4f1a83f9a4789ff55f76.scope",
         "elapsed_seconds": 4.324,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6652,7 +6652,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-4f4deba4282e4f1a83f9a4789ff55f76.scope",
+          "ownership_token": "nre-efficiency-4f4deba4282e4f1a83f9a4789ff55f76.scope",
           "payload_exit_code": 0,
           "observer_pid": 3902047,
           "remaining_processes": [3902047],
@@ -6668,7 +6668,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 310116352,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-4f4deba4282e4f1a83f9a4789ff55f76.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-4f4deba4282e4f1a83f9a4789ff55f76.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6694,10 +6694,10 @@
       "status": "All41 pass. Both on/once callbacks execute and their evidence is readable while the target throwing species getter remains installed, with zero getter reads."
     },
     "real_app": {
-      "log_name": "rea-4390-drawio-array-species-final.log",
+      "log_name": "nre-4390-drawio-array-species-final.log",
       "log_sha256": "42f64550c5b2a3c4c6fdb4f949a12db65b71fd1100324359dfbd5ef37d2df571",
       "resource": {
-        "resource_scope": "rea-efficiency-a833c8522488469c8a4e92019ef9f44f.scope",
+        "resource_scope": "nre-efficiency-a833c8522488469c8a4e92019ef9f44f.scope",
         "elapsed_seconds": 12.779,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6707,7 +6707,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-a833c8522488469c8a4e92019ef9f44f.scope",
+          "ownership_token": "nre-efficiency-a833c8522488469c8a4e92019ef9f44f.scope",
           "payload_exit_code": 1,
           "observer_pid": 3904044,
           "remaining_processes": [3904044, 3904056, 3904230, 3904232],
@@ -6723,7 +6723,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 671703040,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-a833c8522488469c8a4e92019ef9f44f.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-a833c8522488469c8a4e92019ef9f44f.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6863,7 +6863,7 @@
       },
       "log_sha256": "4c8e0e2663deda24bd3999b78770b81bb61da45539cb16f1320d59c076c28641",
       "resource": {
-        "resource_scope": "rea-efficiency-266423bf25464f9ca6df7df66406cf6c.scope",
+        "resource_scope": "nre-efficiency-266423bf25464f9ca6df7df66406cf6c.scope",
         "elapsed_seconds": 8.043,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6873,7 +6873,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-266423bf25464f9ca6df7df66406cf6c.scope",
+          "ownership_token": "nre-efficiency-266423bf25464f9ca6df7df66406cf6c.scope",
           "payload_exit_code": 0,
           "observer_pid": 3910989,
           "remaining_processes": [3910989],
@@ -6889,7 +6889,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 319320064,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-266423bf25464f9ca6df7df66406cf6c.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-266423bf25464f9ca6df7df66406cf6c.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -6976,7 +6976,7 @@
       "limits": "Operation-phase contrast only; task differs and both provider cleanups fail. Not a paired performance trial or proof of the mxGraph model cell count.",
       "log_sha256": "3c8bf2dc9c0ab357d02b5f21b4bc9d220c52b636f96e8e529f1849342250ffc0",
       "resource": {
-        "resource_scope": "rea-efficiency-72608ec90eab4733813396a0ce8bb6ec.scope",
+        "resource_scope": "nre-efficiency-72608ec90eab4733813396a0ce8bb6ec.scope",
         "elapsed_seconds": 7.597,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -6986,7 +6986,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-72608ec90eab4733813396a0ce8bb6ec.scope",
+          "ownership_token": "nre-efficiency-72608ec90eab4733813396a0ce8bb6ec.scope",
           "payload_exit_code": 1,
           "observer_pid": 3912639,
           "remaining_processes": [3912639, 3912661],
@@ -7002,7 +7002,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 605532160,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-72608ec90eab4733813396a0ce8bb6ec.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-72608ec90eab4733813396a0ce8bb6ec.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7031,7 +7031,7 @@
       "status": "passed; two uncached tasks after all42 native cases",
       "log_sha256": "4d054110e38de7456fb654e9e2cd21b252d8cb01e345dade264d2609d1538c43",
       "resource": {
-        "resource_scope": "rea-efficiency-7723ecfbda554e388c116b46c3573c67.scope",
+        "resource_scope": "nre-efficiency-7723ecfbda554e388c116b46c3573c67.scope",
         "elapsed_seconds": 94.234,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -7041,7 +7041,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-7723ecfbda554e388c116b46c3573c67.scope",
+          "ownership_token": "nre-efficiency-7723ecfbda554e388c116b46c3573c67.scope",
           "payload_exit_code": 0,
           "observer_pid": 3913373,
           "remaining_processes": [3913373],
@@ -7057,7 +7057,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4406538240,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-7723ecfbda554e388c116b46c3573c67.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-7723ecfbda554e388c116b46c3573c67.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7086,7 +7086,7 @@
       "status": "passed; six tasks and five README consistency cases",
       "log_sha256": "b8800391f1b2cddfcc20d0333f076b0af16689cf5dcdbf073ca8a4582f56b0d9",
       "resource": {
-        "resource_scope": "rea-efficiency-e8c3f9d9768744abbecf9c2f362e9c35.scope",
+        "resource_scope": "nre-efficiency-e8c3f9d9768744abbecf9c2f362e9c35.scope",
         "elapsed_seconds": 9.671,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -7096,7 +7096,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-e8c3f9d9768744abbecf9c2f362e9c35.scope",
+          "ownership_token": "nre-efficiency-e8c3f9d9768744abbecf9c2f362e9c35.scope",
           "payload_exit_code": 0,
           "observer_pid": 3916338,
           "remaining_processes": [3916338],
@@ -7112,7 +7112,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 475615232,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e8c3f9d9768744abbecf9c2f362e9c35.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e8c3f9d9768744abbecf9c2f362e9c35.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7152,7 +7152,7 @@
         "experiments/analysis-efficiency/drawio-electron-lifecycle-oracles.py": "c98dd2abf16703744aa32edc5dd12b0f4eec121d40a4aaa387ef580b046032e2"
       },
       "verifier_and_five_oracle_sources_unchanged": true,
-      "compiled_runtime_root": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+      "compiled_runtime_root": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
       "artifact_sha256": {
         "app.asar": "e64b9650c0b8241ca9a7d33b56386a385bceee63270cec701d3a467347b697e6"
       },
@@ -7162,7 +7162,7 @@
         "dist/domain/javascript/electronActiveObservation.js": "21d8401adde0eacfd018c834b8e0bcc0ce7cb907b288a02ff7712a4b0e94d13d"
       },
       "selected_electron_runtime": {
-        "executable": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "executable": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "executable_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "version": "44.7.0",
         "archive_sha256": "3ae7d5bdad61c664486c6ab61361dd084d064c8c08af8d13a687096e18ce555a"
@@ -7176,7 +7176,7 @@
       "controlled_native_regressions_not_real_app_proof": true,
       "log_sha256": "28a496681c9c4372cf2a50810d3e9e67229ca07d291ad3f194d2b06b4e9f9fc7",
       "resource": {
-        "resource_scope": "rea-efficiency-1b2b7f60a41b4fc5829c2ca272bfb81d.scope",
+        "resource_scope": "nre-efficiency-1b2b7f60a41b4fc5829c2ca272bfb81d.scope",
         "elapsed_seconds": 9.404,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -7186,7 +7186,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-1b2b7f60a41b4fc5829c2ca272bfb81d.scope",
+          "ownership_token": "nre-efficiency-1b2b7f60a41b4fc5829c2ca272bfb81d.scope",
           "payload_exit_code": 1,
           "observer_pid": 3951696,
           "remaining_processes": [3951696],
@@ -7202,7 +7202,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 355504128,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-1b2b7f60a41b4fc5829c2ca272bfb81d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-1b2b7f60a41b4fc5829c2ca272bfb81d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7230,7 +7230,7 @@
       "hook_projection_actions": {
         "log_sha256": "1579f86122acc6661a369f138950f3ac256e2231eaae531b27522536d463afa5",
         "resource": {
-          "resource_scope": "rea-efficiency-03988332ea504d72a8298258610fc385.scope",
+          "resource_scope": "nre-efficiency-03988332ea504d72a8298258610fc385.scope",
           "elapsed_seconds": 44.198,
           "abort": null,
           "hard_memory_bytes": 8589934592,
@@ -7240,7 +7240,7 @@
           "task_ceiling": 192,
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-03988332ea504d72a8298258610fc385.scope",
+            "ownership_token": "nre-efficiency-03988332ea504d72a8298258610fc385.scope",
             "payload_exit_code": 0,
             "observer_pid": 3958710,
             "remaining_processes": [3958710],
@@ -7256,7 +7256,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 3355848704,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-03988332ea504d72a8298258610fc385.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-03988332ea504d72a8298258610fc385.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -7284,7 +7284,7 @@
       "mcp_and_converted_catalog_schemas": {
         "log_sha256": "e267a532413380ff7aee3a0985aef624c4016bdb0ee673a62f95e59485008bc0",
         "resource": {
-          "resource_scope": "rea-efficiency-1c4e9d148c464818b1370a421a5a3b9f.scope",
+          "resource_scope": "nre-efficiency-1c4e9d148c464818b1370a421a5a3b9f.scope",
           "elapsed_seconds": 57.074,
           "abort": null,
           "hard_memory_bytes": 8589934592,
@@ -7294,7 +7294,7 @@
           "task_ceiling": 192,
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-1c4e9d148c464818b1370a421a5a3b9f.scope",
+            "ownership_token": "nre-efficiency-1c4e9d148c464818b1370a421a5a3b9f.scope",
             "payload_exit_code": 0,
             "observer_pid": 3967182,
             "remaining_processes": [3967182],
@@ -7310,7 +7310,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 2009497600,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-1c4e9d148c464818b1370a421a5a3b9f.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-1c4e9d148c464818b1370a421a5a3b9f.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -7338,7 +7338,7 @@
       "intermediate_static_failure": {
         "log_sha256": "8d1bd59b6581b266bb3a989a9f11af1a14c62020016a869dd96d3cc1df745fab",
         "resource": {
-          "resource_scope": "rea-efficiency-fdd2d21857bf4ee48a1e3f47f92c3b77.scope",
+          "resource_scope": "nre-efficiency-fdd2d21857bf4ee48a1e3f47f92c3b77.scope",
           "elapsed_seconds": 94.57,
           "abort": null,
           "hard_memory_bytes": 8589934592,
@@ -7348,7 +7348,7 @@
           "task_ceiling": 192,
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-fdd2d21857bf4ee48a1e3f47f92c3b77.scope",
+            "ownership_token": "nre-efficiency-fdd2d21857bf4ee48a1e3f47f92c3b77.scope",
             "payload_exit_code": 1,
             "observer_pid": 3968050,
             "remaining_processes": [3968050],
@@ -7364,7 +7364,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 4284182528,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-fdd2d21857bf4ee48a1e3f47f92c3b77.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-fdd2d21857bf4ee48a1e3f47f92c3b77.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -7392,7 +7392,7 @@
       "final_client_projection": {
         "log_sha256": "42545b84a77c5f8795e4bc71d0c87bf2c2288e771e29de51caa1e38c65caee0a",
         "resource": {
-          "resource_scope": "rea-efficiency-eebee3db38534f458b53bc9fb0535ac5.scope",
+          "resource_scope": "nre-efficiency-eebee3db38534f458b53bc9fb0535ac5.scope",
           "elapsed_seconds": 23.984,
           "abort": null,
           "hard_memory_bytes": 8589934592,
@@ -7402,7 +7402,7 @@
           "task_ceiling": 192,
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-eebee3db38534f458b53bc9fb0535ac5.scope",
+            "ownership_token": "nre-efficiency-eebee3db38534f458b53bc9fb0535ac5.scope",
             "payload_exit_code": 0,
             "observer_pid": 3969628,
             "remaining_processes": [3969628],
@@ -7418,7 +7418,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 1281675264,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-eebee3db38534f458b53bc9fb0535ac5.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-eebee3db38534f458b53bc9fb0535ac5.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -7446,7 +7446,7 @@
       "final_static": {
         "log_sha256": "e3c132d97aaa2804c4d4fb161cc427688e017805b97662cdab8538c93b2d5766",
         "resource": {
-          "resource_scope": "rea-efficiency-1413bb27eec44d0bbe35a75ebed50a1e.scope",
+          "resource_scope": "nre-efficiency-1413bb27eec44d0bbe35a75ebed50a1e.scope",
           "elapsed_seconds": 94.646,
           "abort": null,
           "hard_memory_bytes": 8589934592,
@@ -7456,7 +7456,7 @@
           "task_ceiling": 192,
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-1413bb27eec44d0bbe35a75ebed50a1e.scope",
+            "ownership_token": "nre-efficiency-1413bb27eec44d0bbe35a75ebed50a1e.scope",
             "payload_exit_code": 0,
             "observer_pid": 3970405,
             "remaining_processes": [3970405],
@@ -7472,7 +7472,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 4300570624,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-1413bb27eec44d0bbe35a75ebed50a1e.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-1413bb27eec44d0bbe35a75ebed50a1e.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -7501,7 +7501,7 @@
         "result": "six tasks and five README consistency cases passed",
         "log_sha256": "097314d7bba99e2d2ff14934ebe25603759d4e4e1ae012d91b2bae6dae91e09a",
         "resource": {
-          "resource_scope": "rea-efficiency-da6dcbda85694ac9b19ce66aa3f3d4ad.scope",
+          "resource_scope": "nre-efficiency-da6dcbda85694ac9b19ce66aa3f3d4ad.scope",
           "elapsed_seconds": 13.145,
           "abort": null,
           "hard_memory_bytes": 8589934592,
@@ -7511,7 +7511,7 @@
           "task_ceiling": 192,
           "payload_resource_observation": {
             "phase": "payload-exited-observer-alive",
-            "ownership_token": "rea-efficiency-da6dcbda85694ac9b19ce66aa3f3d4ad.scope",
+            "ownership_token": "nre-efficiency-da6dcbda85694ac9b19ce66aa3f3d4ad.scope",
             "payload_exit_code": 0,
             "observer_pid": 3972085,
             "remaining_processes": [3972085],
@@ -7527,7 +7527,7 @@
               "burst_usec": 0
             },
             "memory_peak_bytes": 473522176,
-            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-da6dcbda85694ac9b19ce66aa3f3d4ad.scope",
+            "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-da6dcbda85694ac9b19ce66aa3f3d4ad.scope",
             "resource_events": {
               "memory.events": {
                 "low": 0,
@@ -7561,7 +7561,7 @@
     "missing_runtime_attempt": {
       "log_sha256": "d5138b00f0ec24f4b20bcf56c5d7c67725bd0c7e2fa74c639c0b231e514bd63c",
       "resource": {
-        "resource_scope": "rea-efficiency-48bf71dfcf5c4b1a8e983526196ae435.scope",
+        "resource_scope": "nre-efficiency-48bf71dfcf5c4b1a8e983526196ae435.scope",
         "elapsed_seconds": 1.275,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -7571,7 +7571,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-48bf71dfcf5c4b1a8e983526196ae435.scope",
+          "ownership_token": "nre-efficiency-48bf71dfcf5c4b1a8e983526196ae435.scope",
           "payload_exit_code": 1,
           "observer_pid": 3970342,
           "remaining_processes": [3970342, 3970354],
@@ -7587,7 +7587,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 126021632,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-48bf71dfcf5c4b1a8e983526196ae435.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-48bf71dfcf5c4b1a8e983526196ae435.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7612,8 +7612,8 @@
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "result": "failed before application launch: selected runtime ENOENT; not a provider performance observation",
       "summary": {
-        "profile": "/tmp/rea-4390-realapps-20261016/profiles/drawio-ui-TbNbZp",
-        "runtime": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+        "profile": "/tmp/nre-4390-realapps-20261016/profiles/drawio-ui-TbNbZp",
+        "runtime": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
         "elapsed_ms": 2.696429999999964,
         "deadline_triggered": false,
         "selected_shape": ".geSidebar a.geItem:visible >> nth=0",
@@ -7628,7 +7628,7 @@
     "runtime_recovery": {
       "log_sha256": "3e21b14313f6e890bc170a8bd9d71b1173d44267dd996dbbb5ab62acbac45c9d",
       "resource": {
-        "resource_scope": "rea-efficiency-bf98e60db03642c79868f78a5a015bbb.scope",
+        "resource_scope": "nre-efficiency-bf98e60db03642c79868f78a5a015bbb.scope",
         "elapsed_seconds": 2.283,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -7638,7 +7638,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-bf98e60db03642c79868f78a5a015bbb.scope",
+          "ownership_token": "nre-efficiency-bf98e60db03642c79868f78a5a015bbb.scope",
           "payload_exit_code": 0,
           "observer_pid": 3971556,
           "remaining_processes": [3971556],
@@ -7654,7 +7654,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 319066112,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-bf98e60db03642c79868f78a5a015bbb.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-bf98e60db03642c79868f78a5a015bbb.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7685,7 +7685,7 @@
         "status": "archive verified against official checksum; extracted into new owned task directory"
       },
       "runtime": {
-        "executable": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "executable": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "executable_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "version": "44.7.0",
         "archive_sha256": "3ae7d5bdad61c664486c6ab61361dd084d064c8c08af8d13a687096e18ce555a"
@@ -7694,7 +7694,7 @@
     "real_app": {
       "log_sha256": "d7290cc6eeb4ac6e3c2f77e0d7e4fe6400a712611e9200ff571d3737467c4316",
       "resource": {
-        "resource_scope": "rea-efficiency-c38b019b38a2442b92350f5f8759b445.scope",
+        "resource_scope": "nre-efficiency-c38b019b38a2442b92350f5f8759b445.scope",
         "elapsed_seconds": 11.574,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -7704,7 +7704,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-c38b019b38a2442b92350f5f8759b445.scope",
+          "ownership_token": "nre-efficiency-c38b019b38a2442b92350f5f8759b445.scope",
           "payload_exit_code": 1,
           "observer_pid": 3971656,
           "remaining_processes": [3971656, 3971669],
@@ -7720,7 +7720,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 574693376,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-c38b019b38a2442b92350f5f8759b445.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-c38b019b38a2442b92350f5f8759b445.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7858,7 +7858,7 @@
       ],
       "scope": "CI test reproduction only, fake extractor fixtures; not real-provider behavior. No firmware source/test modification.",
       "resource": {
-        "resource_scope": "rea-efficiency-3aca1cd2a4d444e6863ccc0a801161f0.scope",
+        "resource_scope": "nre-efficiency-3aca1cd2a4d444e6863ccc0a801161f0.scope",
         "peak_cgroup_bytes_sampled": 3338067968,
         "elapsed_seconds": 82.054,
         "abort": null,
@@ -7895,7 +7895,7 @@
         },
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-3aca1cd2a4d444e6863ccc0a801161f0.scope",
+          "ownership_token": "nre-efficiency-3aca1cd2a4d444e6863ccc0a801161f0.scope",
           "payload_exit_code": 1,
           "observer_pid": 3934376,
           "remaining_processes": [3934376],
@@ -7911,7 +7911,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 3340832768,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-3aca1cd2a4d444e6863ccc0a801161f0.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-3aca1cd2a4d444e6863ccc0a801161f0.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -7952,7 +7952,7 @@
         "experiments/analysis-efficiency/drawio-electron-lifecycle-oracles.py": "c98dd2abf16703744aa32edc5dd12b0f4eec121d40a4aaa387ef580b046032e2"
       },
       "verifier_and_five_oracle_sources_unchanged": true,
-      "compiled_runtime_root": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+      "compiled_runtime_root": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
       "artifact_sha256": {
         "app.asar": "e64b9650c0b8241ca9a7d33b56386a385bceee63270cec701d3a467347b697e6"
       },
@@ -7962,7 +7962,7 @@
         "dist/domain/javascript/electronActiveObservation.js": "21d8401adde0eacfd018c834b8e0bcc0ce7cb907b288a02ff7712a4b0e94d13d"
       },
       "selected_electron_runtime": {
-        "executable": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "executable": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "executable_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "version": "44.7.0",
         "archive_sha256": "3ae7d5bdad61c664486c6ab61361dd084d064c8c08af8d13a687096e18ce555a"
@@ -7981,7 +7981,7 @@
     "negative_control": {
       "log_sha256": "ca61973b85cf83aa9828c7df4077ed01c579305b3927bb2456c50af7ccee923f",
       "resource": {
-        "resource_scope": "rea-efficiency-086094f79a214a7c9fb00839e159e818.scope",
+        "resource_scope": "nre-efficiency-086094f79a214a7c9fb00839e159e818.scope",
         "elapsed_seconds": 9.803,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -7991,7 +7991,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-086094f79a214a7c9fb00839e159e818.scope",
+          "ownership_token": "nre-efficiency-086094f79a214a7c9fb00839e159e818.scope",
           "payload_exit_code": 1,
           "observer_pid": 3982924,
           "remaining_processes": [3982924],
@@ -8007,7 +8007,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 321433600,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-086094f79a214a7c9fb00839e159e818.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-086094f79a214a7c9fb00839e159e818.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8035,7 +8035,7 @@
     "hook_projection_actions": {
       "log_sha256": "42aae2b11faf2484c2eded2443a9b1f83c4ff6182f1a7edfe50e95f75c8d6b8d",
       "resource": {
-        "resource_scope": "rea-efficiency-3bef698e14bf437d984d0b79ed52d859.scope",
+        "resource_scope": "nre-efficiency-3bef698e14bf437d984d0b79ed52d859.scope",
         "elapsed_seconds": 10.321,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8045,7 +8045,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-3bef698e14bf437d984d0b79ed52d859.scope",
+          "ownership_token": "nre-efficiency-3bef698e14bf437d984d0b79ed52d859.scope",
           "payload_exit_code": 0,
           "observer_pid": 3983650,
           "remaining_processes": [3983650],
@@ -8061,7 +8061,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 324165632,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-3bef698e14bf437d984d0b79ed52d859.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-3bef698e14bf437d984d0b79ed52d859.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8089,7 +8089,7 @@
     "static_check": {
       "log_sha256": "75f890b386500fa2a7807548e8602bdf19c54af8d98c0a634b86726767797bb6",
       "resource": {
-        "resource_scope": "rea-efficiency-5cd81cf0c9dc49be88bcbe1b5fb80b1d.scope",
+        "resource_scope": "nre-efficiency-5cd81cf0c9dc49be88bcbe1b5fb80b1d.scope",
         "elapsed_seconds": 108.067,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8099,7 +8099,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-5cd81cf0c9dc49be88bcbe1b5fb80b1d.scope",
+          "ownership_token": "nre-efficiency-5cd81cf0c9dc49be88bcbe1b5fb80b1d.scope",
           "payload_exit_code": 0,
           "observer_pid": 3984534,
           "remaining_processes": [3984534],
@@ -8115,7 +8115,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4430647296,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-5cd81cf0c9dc49be88bcbe1b5fb80b1d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-5cd81cf0c9dc49be88bcbe1b5fb80b1d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8143,7 +8143,7 @@
     "real_app": {
       "log_sha256": "25feea536a89dd755140eaa42b0ff49e26e6e024282bc9eb83761d580774f425",
       "resource": {
-        "resource_scope": "rea-efficiency-77924cbdee4646aca1c163597e0ce14d.scope",
+        "resource_scope": "nre-efficiency-77924cbdee4646aca1c163597e0ce14d.scope",
         "elapsed_seconds": 12.038,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8153,7 +8153,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-77924cbdee4646aca1c163597e0ce14d.scope",
+          "ownership_token": "nre-efficiency-77924cbdee4646aca1c163597e0ce14d.scope",
           "payload_exit_code": 1,
           "observer_pid": 3985599,
           "remaining_processes": [3985599, 3985611, 3985731, 3985733],
@@ -8169,7 +8169,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 598835200,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-77924cbdee4646aca1c163597e0ce14d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-77924cbdee4646aca1c163597e0ce14d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8340,17 +8340,17 @@
         ],
         "failed": [
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38943919946/job/117119626359",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38943919946/job/117119626359",
             "id": 117119626359,
             "name": "Test shard (5/5)"
           },
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38943919946/job/117123527867",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38943919946/job/117123527867",
             "id": 117123527867,
             "name": "Portable tests"
           },
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38943919946/job/117124523233",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38943919946/job/117124523233",
             "id": 117124523233,
             "name": "CI required"
           }
@@ -8366,7 +8366,7 @@
       "result": "six tasks and five README consistency cases passed",
       "log_sha256": "750e9828efe43a73ce6788200551fde868ebaf79b1816d6948bff8f9efcc905e",
       "resource": {
-        "resource_scope": "rea-efficiency-b2c223529ddd4d5eac5d335199e9e01e.scope",
+        "resource_scope": "nre-efficiency-b2c223529ddd4d5eac5d335199e9e01e.scope",
         "elapsed_seconds": 10.339,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8376,7 +8376,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-b2c223529ddd4d5eac5d335199e9e01e.scope",
+          "ownership_token": "nre-efficiency-b2c223529ddd4d5eac5d335199e9e01e.scope",
           "payload_exit_code": 0,
           "observer_pid": 3985902,
           "remaining_processes": [3985902],
@@ -8392,7 +8392,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 490909696,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b2c223529ddd4d5eac5d335199e9e01e.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b2c223529ddd4d5eac5d335199e9e01e.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8432,7 +8432,7 @@
         "experiments/analysis-efficiency/drawio-electron-lifecycle-oracles.py": "c98dd2abf16703744aa32edc5dd12b0f4eec121d40a4aaa387ef580b046032e2"
       },
       "verifier_and_five_oracle_sources_unchanged": true,
-      "compiled_runtime_root": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+      "compiled_runtime_root": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
       "artifact_sha256": {
         "app.asar": "e64b9650c0b8241ca9a7d33b56386a385bceee63270cec701d3a467347b697e6"
       },
@@ -8442,7 +8442,7 @@
         "dist/domain/javascript/electronActiveObservation.js": "21d8401adde0eacfd018c834b8e0bcc0ce7cb907b288a02ff7712a4b0e94d13d"
       },
       "selected_electron_runtime": {
-        "executable": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "executable": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "executable_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "version": "44.7.0",
         "archive_sha256": "3ae7d5bdad61c664486c6ab61361dd084d064c8c08af8d13a687096e18ce555a"
@@ -8461,7 +8461,7 @@
     "negative_controls": {
       "log_sha256": "5aa0d0a6243f5e62b80a73fb91eca6da05dd3a2ab03a5e76faba5c81cc29c946",
       "resource": {
-        "resource_scope": "rea-efficiency-769365f48a5243549f37e5069bb2c3e6.scope",
+        "resource_scope": "nre-efficiency-769365f48a5243549f37e5069bb2c3e6.scope",
         "elapsed_seconds": 5.454,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8471,7 +8471,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-769365f48a5243549f37e5069bb2c3e6.scope",
+          "ownership_token": "nre-efficiency-769365f48a5243549f37e5069bb2c3e6.scope",
           "payload_exit_code": 1,
           "observer_pid": 3992264,
           "remaining_processes": [3992264],
@@ -8487,7 +8487,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 330100736,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-769365f48a5243549f37e5069bb2c3e6.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-769365f48a5243549f37e5069bb2c3e6.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8515,7 +8515,7 @@
     "hook_projection_actions": {
       "log_sha256": "ff864f561aaadd709f382eb9a6376455868c693ea55013c6b8d8578331ed39a0",
       "resource": {
-        "resource_scope": "rea-efficiency-40264373233c4800a490dada8b16441a.scope",
+        "resource_scope": "nre-efficiency-40264373233c4800a490dada8b16441a.scope",
         "elapsed_seconds": 5.937,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8525,7 +8525,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-40264373233c4800a490dada8b16441a.scope",
+          "ownership_token": "nre-efficiency-40264373233c4800a490dada8b16441a.scope",
           "payload_exit_code": 0,
           "observer_pid": 3992877,
           "remaining_processes": [3992877],
@@ -8541,7 +8541,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 319033344,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-40264373233c4800a490dada8b16441a.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-40264373233c4800a490dada8b16441a.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8569,7 +8569,7 @@
     "static_check": {
       "log_sha256": "c2561658f19975edcdb574111712a4f8f5700f21261aa3c3e21090a9c85276d7",
       "resource": {
-        "resource_scope": "rea-efficiency-e612145b95224b31bb80942c95ba6831.scope",
+        "resource_scope": "nre-efficiency-e612145b95224b31bb80942c95ba6831.scope",
         "elapsed_seconds": 90.98,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8579,7 +8579,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-e612145b95224b31bb80942c95ba6831.scope",
+          "ownership_token": "nre-efficiency-e612145b95224b31bb80942c95ba6831.scope",
           "payload_exit_code": 0,
           "observer_pid": 3994088,
           "remaining_processes": [3994088],
@@ -8595,7 +8595,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4338749440,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e612145b95224b31bb80942c95ba6831.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e612145b95224b31bb80942c95ba6831.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8623,7 +8623,7 @@
     "real_app": {
       "log_sha256": "ee92174216436fb75fdd19a53ff500413b65d61bc93d2c73d31f790b28b22cc2",
       "resource": {
-        "resource_scope": "rea-efficiency-0a56278ea20d4f8fb0c53c699ee884ea.scope",
+        "resource_scope": "nre-efficiency-0a56278ea20d4f8fb0c53c699ee884ea.scope",
         "elapsed_seconds": 11.429,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8633,7 +8633,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-0a56278ea20d4f8fb0c53c699ee884ea.scope",
+          "ownership_token": "nre-efficiency-0a56278ea20d4f8fb0c53c699ee884ea.scope",
           "payload_exit_code": 1,
           "observer_pid": 3994642,
           "remaining_processes": [3994642, 3994654],
@@ -8649,7 +8649,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 550363136,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-0a56278ea20d4f8fb0c53c699ee884ea.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-0a56278ea20d4f8fb0c53c699ee884ea.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8812,17 +8812,17 @@
         ],
         "failed": [
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38946503183/job/117127335056",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38946503183/job/117127335056",
             "id": 117127335056,
             "name": "Test shard (5/5)"
           },
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38946503183/job/117131309826",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38946503183/job/117131309826",
             "id": 117131309826,
             "name": "Portable tests"
           },
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38946503183/job/117132060598",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38946503183/job/117132060598",
             "id": 117132060598,
             "name": "CI required"
           }
@@ -8838,7 +8838,7 @@
       "result": "six tasks and five README consistency cases passed",
       "log_sha256": "c1a3d522c6381d476e8eea5d9dcf9a14bc5b20764f25223a4fa2c850d0029523",
       "resource": {
-        "resource_scope": "rea-efficiency-76746f0388384633864a60251d2534da.scope",
+        "resource_scope": "nre-efficiency-76746f0388384633864a60251d2534da.scope",
         "elapsed_seconds": 9.316,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8848,7 +8848,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-76746f0388384633864a60251d2534da.scope",
+          "ownership_token": "nre-efficiency-76746f0388384633864a60251d2534da.scope",
           "payload_exit_code": 0,
           "observer_pid": 3995121,
           "remaining_processes": [3995121],
@@ -8864,7 +8864,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 467570688,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-76746f0388384633864a60251d2534da.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-76746f0388384633864a60251d2534da.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8904,7 +8904,7 @@
         "experiments/analysis-efficiency/drawio-electron-lifecycle-oracles.py": "c98dd2abf16703744aa32edc5dd12b0f4eec121d40a4aaa387ef580b046032e2"
       },
       "verifier_and_five_oracle_sources_unchanged": true,
-      "compiled_runtime_root": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+      "compiled_runtime_root": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
       "artifact_sha256": {
         "app.asar": "e64b9650c0b8241ca9a7d33b56386a385bceee63270cec701d3a467347b697e6"
       },
@@ -8914,7 +8914,7 @@
         "dist/domain/javascript/electronActiveObservation.js": "21d8401adde0eacfd018c834b8e0bcc0ce7cb907b288a02ff7712a4b0e94d13d"
       },
       "selected_electron_runtime": {
-        "executable": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "executable": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "executable_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "version": "44.7.0",
         "archive_sha256": "3ae7d5bdad61c664486c6ab61361dd084d064c8c08af8d13a687096e18ce555a"
@@ -8933,7 +8933,7 @@
     "negative_controls": {
       "log_sha256": "9849d3cdabe94b35172e7bc0292bf260c67831f9af607faed7363621ed1520a0",
       "resource": {
-        "resource_scope": "rea-efficiency-413708baf99d46b5ad282f727848d1fc.scope",
+        "resource_scope": "nre-efficiency-413708baf99d46b5ad282f727848d1fc.scope",
         "elapsed_seconds": 5.729,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8943,7 +8943,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-413708baf99d46b5ad282f727848d1fc.scope",
+          "ownership_token": "nre-efficiency-413708baf99d46b5ad282f727848d1fc.scope",
           "payload_exit_code": 1,
           "observer_pid": 3999900,
           "remaining_processes": [3999900],
@@ -8959,7 +8959,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 322379776,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-413708baf99d46b5ad282f727848d1fc.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-413708baf99d46b5ad282f727848d1fc.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -8987,7 +8987,7 @@
     "hook_projection_actions": {
       "log_sha256": "9cbf78d4178c0b36033fe31a6bc288a6b590689aa72b5b8ead5660f975bd579b",
       "resource": {
-        "resource_scope": "rea-efficiency-de52195527f445a7865d27372c55826e.scope",
+        "resource_scope": "nre-efficiency-de52195527f445a7865d27372c55826e.scope",
         "elapsed_seconds": 6.218,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -8997,7 +8997,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-de52195527f445a7865d27372c55826e.scope",
+          "ownership_token": "nre-efficiency-de52195527f445a7865d27372c55826e.scope",
           "payload_exit_code": 0,
           "observer_pid": 4000668,
           "remaining_processes": [4000668],
@@ -9013,7 +9013,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 315863040,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-de52195527f445a7865d27372c55826e.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-de52195527f445a7865d27372c55826e.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9041,7 +9041,7 @@
     "static_check": {
       "log_sha256": "a8ba34177614fefd012924f38b8be201275b5fc47f66240f7bfa8951c83f5cbc",
       "resource": {
-        "resource_scope": "rea-efficiency-c5c997e501044f45a2d624a8aa0c6aa8.scope",
+        "resource_scope": "nre-efficiency-c5c997e501044f45a2d624a8aa0c6aa8.scope",
         "elapsed_seconds": 92.999,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9051,7 +9051,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-c5c997e501044f45a2d624a8aa0c6aa8.scope",
+          "ownership_token": "nre-efficiency-c5c997e501044f45a2d624a8aa0c6aa8.scope",
           "payload_exit_code": 0,
           "observer_pid": 4001991,
           "remaining_processes": [4001991],
@@ -9067,7 +9067,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4371951616,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-c5c997e501044f45a2d624a8aa0c6aa8.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-c5c997e501044f45a2d624a8aa0c6aa8.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9095,7 +9095,7 @@
     "real_app": {
       "log_sha256": "6272fdaf8806a3608af035480a55a3f2ef7e6cd596e0275a00bf5d19833d332b",
       "resource": {
-        "resource_scope": "rea-efficiency-7a55ecbb06694e0e95b1a84ac387f44f.scope",
+        "resource_scope": "nre-efficiency-7a55ecbb06694e0e95b1a84ac387f44f.scope",
         "elapsed_seconds": 11.238,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9105,7 +9105,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-7a55ecbb06694e0e95b1a84ac387f44f.scope",
+          "ownership_token": "nre-efficiency-7a55ecbb06694e0e95b1a84ac387f44f.scope",
           "payload_exit_code": 1,
           "observer_pid": 4002524,
           "remaining_processes": [4002524, 4002536],
@@ -9121,7 +9121,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 556285952,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-7a55ecbb06694e0e95b1a84ac387f44f.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-7a55ecbb06694e0e95b1a84ac387f44f.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9276,17 +9276,17 @@
         ],
         "failed": [
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38949129899/job/117136988800",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38949129899/job/117136988800",
             "id": 117136988800,
             "name": "Test shard (5/5)"
           },
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38949129899/job/117141889043",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38949129899/job/117141889043",
             "id": 117141889043,
             "name": "Portable tests"
           },
           {
-            "html_url": "https://github.com/morluto/rea/actions/runs/38949129899/job/117142144521",
+            "html_url": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/actions/runs/38949129899/job/117142144521",
             "id": 117142144521,
             "name": "CI required"
           }
@@ -9302,7 +9302,7 @@
       "result": "six tasks and five README consistency cases passed",
       "log_sha256": "5fced3abcff52abba960449ccfa015606399e0bcff8e9e17afda3c35ad8d53cc",
       "resource": {
-        "resource_scope": "rea-efficiency-27ed682e360f43249002323ccbac16c0.scope",
+        "resource_scope": "nre-efficiency-27ed682e360f43249002323ccbac16c0.scope",
         "elapsed_seconds": 9.33,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9312,7 +9312,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-27ed682e360f43249002323ccbac16c0.scope",
+          "ownership_token": "nre-efficiency-27ed682e360f43249002323ccbac16c0.scope",
           "payload_exit_code": 0,
           "observer_pid": 4002935,
           "remaining_processes": [4002935],
@@ -9328,7 +9328,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 466321408,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-27ed682e360f43249002323ccbac16c0.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-27ed682e360f43249002323ccbac16c0.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9368,7 +9368,7 @@
         "experiments/analysis-efficiency/drawio-electron-lifecycle-oracles.py": "c98dd2abf16703744aa32edc5dd12b0f4eec121d40a4aaa387ef580b046032e2"
       },
       "verifier_and_five_oracle_sources_unchanged": true,
-      "compiled_runtime_root": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+      "compiled_runtime_root": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
       "artifact_sha256": {
         "app.asar": "e64b9650c0b8241ca9a7d33b56386a385bceee63270cec701d3a467347b697e6"
       },
@@ -9378,7 +9378,7 @@
         "dist/domain/javascript/electronActiveObservation.js": "21d8401adde0eacfd018c834b8e0bcc0ce7cb907b288a02ff7712a4b0e94d13d"
       },
       "selected_electron_runtime": {
-        "executable": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "executable": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "executable_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "version": "44.7.0",
         "archive_sha256": "3ae7d5bdad61c664486c6ab61361dd084d064c8c08af8d13a687096e18ce555a"
@@ -9395,7 +9395,7 @@
     "negative_controls": {
       "log_sha256": "81a57a6ad1dd3bca183b5623523587dfc13a3f7048e8b3eb6d766535bfde1399",
       "resource": {
-        "resource_scope": "rea-efficiency-02ff5047e3ad47a78101fc3ebfba8599.scope",
+        "resource_scope": "nre-efficiency-02ff5047e3ad47a78101fc3ebfba8599.scope",
         "elapsed_seconds": 6.026,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9405,7 +9405,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-02ff5047e3ad47a78101fc3ebfba8599.scope",
+          "ownership_token": "nre-efficiency-02ff5047e3ad47a78101fc3ebfba8599.scope",
           "payload_exit_code": 1,
           "observer_pid": 4008711,
           "remaining_processes": [4008711],
@@ -9421,7 +9421,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 327770112,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-02ff5047e3ad47a78101fc3ebfba8599.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-02ff5047e3ad47a78101fc3ebfba8599.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9449,7 +9449,7 @@
     "hook_projection_actions_mcp": {
       "log_sha256": "30c75aacbd584659ff01ad7c48cfeba5793e32e82e723e5d07e7a719ddb0258a",
       "resource": {
-        "resource_scope": "rea-efficiency-e5981c433c1d4002800886305f86cf1e.scope",
+        "resource_scope": "nre-efficiency-e5981c433c1d4002800886305f86cf1e.scope",
         "elapsed_seconds": 66.803,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9459,7 +9459,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-e5981c433c1d4002800886305f86cf1e.scope",
+          "ownership_token": "nre-efficiency-e5981c433c1d4002800886305f86cf1e.scope",
           "payload_exit_code": 0,
           "observer_pid": 4009751,
           "remaining_processes": [4009751],
@@ -9475,7 +9475,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 3159363584,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-e5981c433c1d4002800886305f86cf1e.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-e5981c433c1d4002800886305f86cf1e.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9503,7 +9503,7 @@
     "fixture_lint_failure": {
       "log_sha256": "184672514f56f6472d7e68d8c99235b5596764f6046ed177de90e7e875229346",
       "resource": {
-        "resource_scope": "rea-efficiency-a3caf3f16365400faadf8ad78474bf1d.scope",
+        "resource_scope": "nre-efficiency-a3caf3f16365400faadf8ad78474bf1d.scope",
         "elapsed_seconds": 1.879,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9513,7 +9513,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-a3caf3f16365400faadf8ad78474bf1d.scope",
+          "ownership_token": "nre-efficiency-a3caf3f16365400faadf8ad78474bf1d.scope",
           "payload_exit_code": 1,
           "observer_pid": 4010947,
           "remaining_processes": [4010947],
@@ -9529,7 +9529,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 138440704,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-a3caf3f16365400faadf8ad78474bf1d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-a3caf3f16365400faadf8ad78474bf1d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9557,7 +9557,7 @@
     "intermediate_static_failure": {
       "log_sha256": "4443af47fc462803c7c689da44e284dcf11bacf759d7b82ea4fd640672815ba8",
       "resource": {
-        "resource_scope": "rea-efficiency-976f6d2b3b334c18800e3cc36439959d.scope",
+        "resource_scope": "nre-efficiency-976f6d2b3b334c18800e3cc36439959d.scope",
         "elapsed_seconds": 7.027,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9567,7 +9567,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-976f6d2b3b334c18800e3cc36439959d.scope",
+          "ownership_token": "nre-efficiency-976f6d2b3b334c18800e3cc36439959d.scope",
           "payload_exit_code": 1,
           "observer_pid": 4011442,
           "remaining_processes": [4011442],
@@ -9583,7 +9583,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1758814208,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-976f6d2b3b334c18800e3cc36439959d.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-976f6d2b3b334c18800e3cc36439959d.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9611,7 +9611,7 @@
     "final_client_projection": {
       "log_sha256": "0c9dcee7f136cf987f680fddccd6efad11b818c05b587587dfbe2eba2cf76db2",
       "resource": {
-        "resource_scope": "rea-efficiency-81736705b08042b891c80d2e91ec5473.scope",
+        "resource_scope": "nre-efficiency-81736705b08042b891c80d2e91ec5473.scope",
         "elapsed_seconds": 24.75,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9621,7 +9621,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-81736705b08042b891c80d2e91ec5473.scope",
+          "ownership_token": "nre-efficiency-81736705b08042b891c80d2e91ec5473.scope",
           "payload_exit_code": 0,
           "observer_pid": 4012739,
           "remaining_processes": [4012739],
@@ -9637,7 +9637,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1299320832,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-81736705b08042b891c80d2e91ec5473.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-81736705b08042b891c80d2e91ec5473.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9665,7 +9665,7 @@
     "final_static": {
       "log_sha256": "d54dd95627805366a3e83e3b29422f965760cf566e4799249fa64392df0e4c6b",
       "resource": {
-        "resource_scope": "rea-efficiency-63d2c4e4e435412ba9be4fe8136cdf73.scope",
+        "resource_scope": "nre-efficiency-63d2c4e4e435412ba9be4fe8136cdf73.scope",
         "elapsed_seconds": 88.383,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9675,7 +9675,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-63d2c4e4e435412ba9be4fe8136cdf73.scope",
+          "ownership_token": "nre-efficiency-63d2c4e4e435412ba9be4fe8136cdf73.scope",
           "payload_exit_code": 0,
           "observer_pid": 4013148,
           "remaining_processes": [4013148],
@@ -9691,7 +9691,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4399632384,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-63d2c4e4e435412ba9be4fe8136cdf73.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-63d2c4e4e435412ba9be4fe8136cdf73.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9719,7 +9719,7 @@
     "real_app": {
       "log_sha256": "b3282e35514ef0658947cd004a991106145a7da1d1902c3a11b041bb719ed330",
       "resource": {
-        "resource_scope": "rea-efficiency-03ecd4d051de4f8f86c936c653801662.scope",
+        "resource_scope": "nre-efficiency-03ecd4d051de4f8f86c936c653801662.scope",
         "elapsed_seconds": 11.163,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9729,7 +9729,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-03ecd4d051de4f8f86c936c653801662.scope",
+          "ownership_token": "nre-efficiency-03ecd4d051de4f8f86c936c653801662.scope",
           "payload_exit_code": 1,
           "observer_pid": 4013918,
           "remaining_processes": [4013918, 4013930, 4014047, 4014049],
@@ -9745,7 +9745,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 547418112,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-03ecd4d051de4f8f86c936c653801662.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-03ecd4d051de4f8f86c936c653801662.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9892,7 +9892,7 @@
       "result": "six tasks and five README consistency cases passed",
       "log_sha256": "080713205f0ebd296726efab159c0a312921c16481bc271c73064d6ff7f63f01",
       "resource": {
-        "resource_scope": "rea-efficiency-3bec9678bbbc45acad439822712ead0e.scope",
+        "resource_scope": "nre-efficiency-3bec9678bbbc45acad439822712ead0e.scope",
         "elapsed_seconds": 27.017,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9902,7 +9902,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-3bec9678bbbc45acad439822712ead0e.scope",
+          "ownership_token": "nre-efficiency-3bec9678bbbc45acad439822712ead0e.scope",
           "payload_exit_code": 0,
           "observer_pid": 4014191,
           "remaining_processes": [4014191],
@@ -9918,7 +9918,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 465231872,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-3bec9678bbbc45acad439822712ead0e.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-3bec9678bbbc45acad439822712ead0e.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -9958,7 +9958,7 @@
         "experiments/analysis-efficiency/drawio-electron-lifecycle-oracles.py": "c98dd2abf16703744aa32edc5dd12b0f4eec121d40a4aaa387ef580b046032e2"
       },
       "verifier_and_five_oracle_sources_unchanged": true,
-      "compiled_runtime_root": "/home/yann/yann/rea-electron-ipc-listener-4390-20261016",
+      "compiled_runtime_root": "/home/yann/yann/nre-electron-ipc-listener-4390-20261016",
       "artifact_sha256": {
         "app.asar": "e64b9650c0b8241ca9a7d33b56386a385bceee63270cec701d3a467347b697e6"
       },
@@ -9968,7 +9968,7 @@
         "dist/domain/javascript/electronActiveObservation.js": "21d8401adde0eacfd018c834b8e0bcc0ce7cb907b288a02ff7712a4b0e94d13d"
       },
       "selected_electron_runtime": {
-        "executable": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "executable": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "executable_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "version": "44.7.0",
         "archive_sha256": "3ae7d5bdad61c664486c6ab61361dd084d064c8c08af8d13a687096e18ce555a"
@@ -9988,7 +9988,7 @@
     "negative_controls": {
       "log_sha256": "c62e95da0d12211bd025142f8c60cc953a72b8f50e666aea1c87cc27175c49ed",
       "resource": {
-        "resource_scope": "rea-efficiency-dbe0855338f44073874ba60211284433.scope",
+        "resource_scope": "nre-efficiency-dbe0855338f44073874ba60211284433.scope",
         "elapsed_seconds": 5.903,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -9998,7 +9998,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-dbe0855338f44073874ba60211284433.scope",
+          "ownership_token": "nre-efficiency-dbe0855338f44073874ba60211284433.scope",
           "payload_exit_code": 1,
           "observer_pid": 4020537,
           "remaining_processes": [4020537],
@@ -10014,7 +10014,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 317288448,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-dbe0855338f44073874ba60211284433.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-dbe0855338f44073874ba60211284433.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -10042,7 +10042,7 @@
     "hook_projection_actions_mcp": {
       "log_sha256": "49c26f54b8b9b7d9461cb717e8466fbdf5a0d703d40110c86bd62f4afcf2702f",
       "resource": {
-        "resource_scope": "rea-efficiency-fef54e71542341fab51db7205d154887.scope",
+        "resource_scope": "nre-efficiency-fef54e71542341fab51db7205d154887.scope",
         "elapsed_seconds": 28.972,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -10052,7 +10052,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-fef54e71542341fab51db7205d154887.scope",
+          "ownership_token": "nre-efficiency-fef54e71542341fab51db7205d154887.scope",
           "payload_exit_code": 0,
           "observer_pid": 4021328,
           "remaining_processes": [4021328],
@@ -10068,7 +10068,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 1281515520,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-fef54e71542341fab51db7205d154887.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-fef54e71542341fab51db7205d154887.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -10096,7 +10096,7 @@
     "static_check": {
       "log_sha256": "d8a713e443b0a55c4353fa3b6fbfe17102b1d12b04d492d44ea0072b5055dcd9",
       "resource": {
-        "resource_scope": "rea-efficiency-674970f09cce463cafef1e8971994d10.scope",
+        "resource_scope": "nre-efficiency-674970f09cce463cafef1e8971994d10.scope",
         "elapsed_seconds": 90.797,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -10106,7 +10106,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-674970f09cce463cafef1e8971994d10.scope",
+          "ownership_token": "nre-efficiency-674970f09cce463cafef1e8971994d10.scope",
           "payload_exit_code": 0,
           "observer_pid": 4023158,
           "remaining_processes": [4023158],
@@ -10122,7 +10122,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 4335267840,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-674970f09cce463cafef1e8971994d10.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-674970f09cce463cafef1e8971994d10.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -10150,7 +10150,7 @@
     "real_app": {
       "log_sha256": "f0ce484413739e70111ccb4f853caf8fd0535287675827ac743c43f4af2e8d19",
       "resource": {
-        "resource_scope": "rea-efficiency-b4372d0355fe425ca3c9046656d99506.scope",
+        "resource_scope": "nre-efficiency-b4372d0355fe425ca3c9046656d99506.scope",
         "elapsed_seconds": 11.264,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -10160,7 +10160,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-b4372d0355fe425ca3c9046656d99506.scope",
+          "ownership_token": "nre-efficiency-b4372d0355fe425ca3c9046656d99506.scope",
           "payload_exit_code": 1,
           "observer_pid": 4023705,
           "remaining_processes": [4023705],
@@ -10176,7 +10176,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 557068288,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-b4372d0355fe425ca3c9046656d99506.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-b4372d0355fe425ca3c9046656d99506.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,
@@ -10323,7 +10323,7 @@
       "result": "six tasks and five README consistency cases passed",
       "log_sha256": "664dded0a383d163e598091a64e5a1c5b21e0beb3ca18b1b02944a981762df0c",
       "resource": {
-        "resource_scope": "rea-efficiency-80ab85b3e7f3490a8b33d0c1d20533c0.scope",
+        "resource_scope": "nre-efficiency-80ab85b3e7f3490a8b33d0c1d20533c0.scope",
         "elapsed_seconds": 9.416,
         "abort": null,
         "hard_memory_bytes": 8589934592,
@@ -10333,7 +10333,7 @@
         "task_ceiling": 192,
         "payload_resource_observation": {
           "phase": "payload-exited-observer-alive",
-          "ownership_token": "rea-efficiency-80ab85b3e7f3490a8b33d0c1d20533c0.scope",
+          "ownership_token": "nre-efficiency-80ab85b3e7f3490a8b33d0c1d20533c0.scope",
           "payload_exit_code": 0,
           "observer_pid": 4024170,
           "remaining_processes": [4024170],
@@ -10349,7 +10349,7 @@
             "burst_usec": 0
           },
           "memory_peak_bytes": 468070400,
-          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/rea-efficiency-80ab85b3e7f3490a8b33d0c1d20533c0.scope",
+          "control_group": "user.slice/user-1004.slice/user@1004.service/app.slice/nre-efficiency-80ab85b3e7f3490a8b33d0c1d20533c0.scope",
           "resource_events": {
             "memory.events": {
               "low": 0,

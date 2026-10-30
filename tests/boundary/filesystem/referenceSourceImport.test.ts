@@ -64,7 +64,7 @@ describe("reference source import projections", () => {
   it.skipIf(process.platform === "win32")(
     "imports the physical source selected through a symlink and ..",
     async () => {
-      const root = await createTestTempDirectory("rea-reference-parent-");
+      const root = await createTestTempDirectory("nre-reference-parent-");
       await mkdir(join(root, "physical", "inner"), { recursive: true });
       await mkdir(join(root, "physical", "source"));
       await mkdir(join(root, "source"));
@@ -133,7 +133,7 @@ describe("reference source import projections", () => {
 
 describe("reference source ignore policy read failures", () => {
   it("preserves a late-aborted physical admission failure identical to the reason", async () => {
-    const root = await createTestTempDirectory("rea-reference-admission-read-");
+    const root = await createTestTempDirectory("nre-reference-admission-read-");
     const path = join(root, "input.txt");
     await writeFile(path, "source\n");
     const controller = new AbortController();
@@ -185,7 +185,7 @@ describe("reference source ignore policy read failures", () => {
   ])(
     "preserves $name when the signal is aborted",
     async ({ physical, sameAsAbortReason, expected }) => {
-      const root = await createTestTempDirectory("rea-reference-ignore-read-");
+      const root = await createTestTempDirectory("nre-reference-ignore-read-");
       const path = join(root, ".gitignore");
       await writeFile(path, "ignored/\n");
       const controller = new AbortController();
@@ -249,7 +249,7 @@ describe("reference source ignore policy read failures", () => {
 
 describe("reference source ignore policy cleanup ownership", () => {
   it("keeps a physical read primary when ignore-file cleanup remains pending", async () => {
-    const root = await createTestTempDirectory("rea-reference-ignore-cleanup-");
+    const root = await createTestTempDirectory("nre-reference-ignore-cleanup-");
     const path = join(root, ".gitignore");
     await writeFile(path, "ignored/\n");
     const controller = new AbortController();
@@ -325,7 +325,7 @@ describe("reference source ignore policy cleanup ownership", () => {
   });
 
   it("does not transfer cleanup ownership for a physical read shaped like a foreign cleanup failure", async () => {
-    const root = await createTestTempDirectory("rea-reference-ignore-opaque-");
+    const root = await createTestTempDirectory("nre-reference-ignore-opaque-");
     const path = join(root, ".gitignore");
     const foreignPath = join(root, "foreign.txt");
     await writeFile(path, "ignored/\n");
@@ -394,7 +394,7 @@ describe("reference source symlink import", () => {
     "retains links into a $reason directory without importing it",
     async ({ target, reason, pattern }) => {
       const root = await createTestTempDirectory(
-        "rea-reference-excluded-links-",
+        "nre-reference-excluded-links-",
       );
       await mkdir(join(root, target, "nested"), { recursive: true });
       await writeFile(
@@ -452,7 +452,7 @@ describe("reference source symlink import", () => {
 
   it("does not treat an excluded file as an excluded directory for a child link", async () => {
     const root = await createTestTempDirectory(
-      "rea-reference-excluded-file-link-",
+      "nre-reference-excluded-file-link-",
     );
     await writeFile(join(root, "secret.txt"), "secret\n");
     await writeFile(join(root, "source.ts"), "export const value = 1;\n");
@@ -509,8 +509,8 @@ describe("reference source symlink import", () => {
   });
 
   it("retains external symlink targets as local graph diagnostics", async () => {
-    const root = await createTestTempDirectory("rea-reference-links-");
-    const outside = await createTestTempDirectory("rea-reference-outside-");
+    const root = await createTestTempDirectory("nre-reference-links-");
+    const outside = await createTestTempDirectory("nre-reference-outside-");
     const target = join(outside, "target.js");
     await writeFile(target, "export {};");
     await symlink(target, join(root, "external.js"));
@@ -535,7 +535,7 @@ describe("reference source symlink import", () => {
 
 describe("reference source manifest inventory", () => {
   it("retains manifest, test, generated and language classifications through import", async () => {
-    const root = await createTestTempDirectory("rea-reference-classification-");
+    const root = await createTestTempDirectory("nre-reference-classification-");
     const files = [
       ["CMakeLists.txt", "Text", ["documentation", "manifest"]],
       ["src/CMAKELISTS.TXT", "Text", ["documentation", "manifest", "source"]],
@@ -604,7 +604,7 @@ describe("reference source manifest inventory", () => {
 
 const registerReferenceRelocationTests = (): void => {
   it("is relocation-stable, resolves imports, and excludes secrets before capture", async () => {
-    const parent = await createTestTempDirectory("rea-reference-import-");
+    const parent = await createTestTempDirectory("nre-reference-import-");
     try {
       const leftRoot = await fixture(parent, "left");
       const rightRoot = await fixture(parent, "right");
@@ -643,7 +643,7 @@ const registerReferenceRelocationTests = (): void => {
     "commits equivalent unreadable %s inventories independently of relocation and retains exact local diagnostics",
     async (kind) => {
       const parent = await createTestTempDirectory(
-        "rea-reference-failure-relocation-",
+        "nre-reference-failure-relocation-",
       );
       const roots = [join(parent, "left"), join(parent, "right")];
       const denied: string[] = [];
@@ -703,7 +703,7 @@ describe("reference source import behavior", () => {
   // members, which is nearly 4 GiB of fixture and cannot fit a runner's disk.
   // Entry count is crossed by volume, byte size by a single large member.
   it("returns every written entry with complete coverage at any scale", async () => {
-    const root = await createTestTempDirectory("rea-reference-scale-");
+    const root = await createTestTempDirectory("nre-reference-scale-");
     const sizes = [0, 1, 4_097, 65_536, 4_194_304];
     const written = Array.from(
       { length: 5_000 },
@@ -788,7 +788,7 @@ describe("reference source import behavior", () => {
   registerReferenceRelocationTests();
 
   it("imports the caller-selected directory and honors cancellation", async () => {
-    const outside = await createTestTempDirectory("rea-reference-outside-");
+    const outside = await createTestTempDirectory("nre-reference-outside-");
     try {
       const root = await fixture(outside, "tree");
       expect(await importTree(root)).toMatchObject({ ok: true });
@@ -805,7 +805,7 @@ describe("reference source import behavior", () => {
   });
 
   it("records bounded local Git state without invoking Git", async () => {
-    const parent = await createTestTempDirectory("rea-reference-git-");
+    const parent = await createTestTempDirectory("nre-reference-git-");
     try {
       const root = await fixture(parent, "repo");
       await init({ fs, dir: root, defaultBranch: "main" });
@@ -814,7 +814,7 @@ describe("reference source import behavior", () => {
       const oid = await commit({
         fs,
         dir: root,
-        author: { name: "REA Test", email: "rea@example.invalid" },
+        author: { name: "NRE Test", email: "nre@example.invalid" },
         message: "fixture",
       });
       const result = await importTree(root);
@@ -828,7 +828,7 @@ describe("reference source import behavior", () => {
 
 describe("reference source path selection", () => {
   it("does not omit selected files by secret-like path or filename", async () => {
-    const parent = await createTestTempDirectory("rea-reference-selected-");
+    const parent = await createTestTempDirectory("nre-reference-selected-");
     try {
       const root = await fixture(parent, "tree");
       const result = await importTree(root, undefined, []);
@@ -851,7 +851,7 @@ describe("reference source path selection", () => {
 
 describe("reference source rooted module specifiers", () => {
   it("keeps dot-prefixed bare specifiers external while resolving explicit relative paths", async () => {
-    const root = await createTestTempDirectory("rea-reference-dot-prefix-");
+    const root = await createTestTempDirectory("nre-reference-dot-prefix-");
     await Promise.all([
       writeFile(
         join(root, "main.js"),
@@ -890,7 +890,7 @@ describe("reference source rooted module specifiers", () => {
   });
 
   it("does not rebase an absolute import onto a coincidentally matching source member", async () => {
-    const root = await createTestTempDirectory("rea-reference-rooted-");
+    const root = await createTestTempDirectory("nre-reference-rooted-");
     await mkdir(join(root, "src", "outside"), { recursive: true });
     await writeFile(
       join(root, "src", "main.js"),
@@ -924,7 +924,7 @@ describe.skipIf(process.platform === "win32")(
   () => {
     it("preserves ordered ignore rules and reports each winning rule origin", async () => {
       const root = await createTestTempDirectory(
-        "rea-reference-ignore-origin-",
+        "nre-reference-ignore-origin-",
       );
       const directories = [
         "dist",

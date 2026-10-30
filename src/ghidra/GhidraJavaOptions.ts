@@ -237,7 +237,7 @@ export const prepareJdkJavaOptions = async (
         );
         bytes += content.bytes;
         snapshot = {
-          path: join(directory, `rea-jdk-options-${randomUUID()}.args`),
+          path: join(directory, `nre-jdk-options-${randomUUID()}.args`),
           bytes: content.bytes,
           disablesExpansion: content.disablesExpansion,
         };

@@ -39,7 +39,7 @@ const createManagedApplicationGraphEvidence = (
   result: ManagedApplicationGraphResult,
 ): Evidence =>
   createEvidence(subjectTarget(input), MANAGED_WORKFLOW_PROVIDER, {
-    predicateType: "rea.managed-application-graph",
+    predicateType: "nre.managed-application-graph",
     operation: OPERATION,
     parameters: {
       managed_artifact_evidence_id:

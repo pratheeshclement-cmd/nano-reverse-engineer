@@ -22,7 +22,7 @@ const missingHopperAndGhidraEnvironment = (home: string) => ({
 cliTest(
   "retains selected MCP settings and unavailable provider paths in a new registration",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-selected-registration-");
+    const home = await createTestTempDirectory("nre-selected-registration-");
     const config = join(home, ".qwen/settings.json");
     const selected = {
       HOPPER_LAUNCHER_PATH: join(home, "missing-hopper"),
@@ -31,50 +31,50 @@ cliTest(
       GHIDRA_HEADLESS_MAXMEM: "512M",
       GHIDRA_MAXMEM: "3G",
       JAVA_HOME: join(home, "offline-jdk"),
-      REA_IDA_MCP_CONFIG: join(home, "offline-ida.json"),
-      REA_JADX_MCP_JAR: join(home, "offline-jadx.jar"),
-      REA_KUNA_COMMAND: join(home, "offline-kuna"),
-      REA_ADB_PATH: join(home, "offline-adb"),
-      REA_APKTOOL_COMMAND: join(home, "offline-apktool"),
-      REA_TSHARK_COMMAND: join(home, "offline-tshark"),
-      REA_CAPINFOS_COMMAND: join(home, "offline-capinfos"),
-      REA_TSHARK_PRLIMIT_COMMAND: join(home, "offline-prlimit"),
-      REA_OBJDUMP_COMMAND: join(home, "offline-objdump"),
-      REA_GDB_COMMAND: join(home, "offline-gdb"),
-      REA_RIZIN_COMMAND: join(home, "offline-rizin"),
-      REA_CUTTER_BRIDGE_DIR: join(home, "cutter-bridge"),
-      REA_WABT_BIN_DIRECTORY: join(home, "wabt"),
-      REA_WAKARU_COMMAND: join(home, "offline-wakaru"),
-      REA_JAVASCRIPT_PRLIMIT_COMMAND: join(home, "javascript-prlimit"),
-      REA_BINWALK_COMMAND: join(home, "offline-binwalk"),
-      REA_UNBLOB_COMMAND: join(home, "offline-unblob"),
-      REA_FIRMWARE_PRLIMIT_COMMAND: join(home, "firmware-prlimit"),
-      REA_EVM_PRLIMIT_COMMAND: join(home, "evm-prlimit"),
-      REA_SIGROK_COMMAND: join(home, "offline-sigrok"),
-      REA_SIGROK_PRLIMIT_COMMAND: join(home, "sigrok-prlimit"),
-      REA_MITMDUMP_COMMAND: join(home, "offline-mitmdump"),
-      REA_BROWSER_EXECUTABLE: join(home, "offline-chromium"),
-      REA_BROWSER_NO_SANDBOX: "false",
-      REA_PWNTOOLS_PYTHON: join(home, "offline-python"),
-      REA_PWNTOOLS_MAX_INPUT_BYTES: "67108864",
-      REA_PWNDBG_GDB: join(home, "pwndbg-gdb"),
-      REA_PWNDBG_GDBINIT: join(home, "pwndbg-gdbinit"),
-      REA_PWNDBG_VENV_PATH: join(home, "pwndbg-venv"),
+      NRE_IDA_MCP_CONFIG: join(home, "offline-ida.json"),
+      NRE_JADX_MCP_JAR: join(home, "offline-jadx.jar"),
+      NRE_KUNA_COMMAND: join(home, "offline-kuna"),
+      NRE_ADB_PATH: join(home, "offline-adb"),
+      NRE_APKTOOL_COMMAND: join(home, "offline-apktool"),
+      NRE_TSHARK_COMMAND: join(home, "offline-tshark"),
+      NRE_CAPINFOS_COMMAND: join(home, "offline-capinfos"),
+      NRE_TSHARK_PRLIMIT_COMMAND: join(home, "offline-prlimit"),
+      NRE_OBJDUMP_COMMAND: join(home, "offline-objdump"),
+      NRE_GDB_COMMAND: join(home, "offline-gdb"),
+      NRE_RIZIN_COMMAND: join(home, "offline-rizin"),
+      NRE_CUTTER_BRIDGE_DIR: join(home, "cutter-bridge"),
+      NRE_WABT_BIN_DIRECTORY: join(home, "wabt"),
+      NRE_WAKARU_COMMAND: join(home, "offline-wakaru"),
+      NRE_JAVASCRIPT_PRLIMIT_COMMAND: join(home, "javascript-prlimit"),
+      NRE_BINWALK_COMMAND: join(home, "offline-binwalk"),
+      NRE_UNBLOB_COMMAND: join(home, "offline-unblob"),
+      NRE_FIRMWARE_PRLIMIT_COMMAND: join(home, "firmware-prlimit"),
+      NRE_EVM_PRLIMIT_COMMAND: join(home, "evm-prlimit"),
+      NRE_SIGROK_COMMAND: join(home, "offline-sigrok"),
+      NRE_SIGROK_PRLIMIT_COMMAND: join(home, "sigrok-prlimit"),
+      NRE_MITMDUMP_COMMAND: join(home, "offline-mitmdump"),
+      NRE_BROWSER_EXECUTABLE: join(home, "offline-chromium"),
+      NRE_BROWSER_NO_SANDBOX: "false",
+      NRE_PWNTOOLS_PYTHON: join(home, "offline-python"),
+      NRE_PWNTOOLS_MAX_INPUT_BYTES: "67108864",
+      NRE_PWNDBG_GDB: join(home, "pwndbg-gdb"),
+      NRE_PWNDBG_GDBINIT: join(home, "pwndbg-gdbinit"),
+      NRE_PWNDBG_VENV_PATH: join(home, "pwndbg-venv"),
       ...(process.platform === "darwin"
         ? {}
         : {
-            REA_DARWIN_SWIFTC_PATH: join(home, "offline-swiftc"),
-            REA_DARWIN_MODULE_CACHE_PATH: join(home, "swift-module-cache"),
+            NRE_DARWIN_SWIFTC_PATH: join(home, "offline-swiftc"),
+            NRE_DARWIN_MODULE_CACHE_PATH: join(home, "swift-module-cache"),
             SDKROOT: join(home, "macos-sdk"),
           }),
-      REA_SWIFTC_COMPILE_TIMEOUT_MS: "180000",
-      REA_LOG_LEVEL: "warn",
-      REA_REFERENCE_SECRET_PATTERNS_JSON: '["explicit-private-value"]',
-      REA_ANALYSIS_PROVIDER: "ghidra",
-      REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
-      REA_MCP_MAX_RESPONSE_BYTES: "20971520",
-      REA_MCP_TOOL_FAMILIES: "session",
+      NRE_SWIFTC_COMPILE_TIMEOUT_MS: "180000",
+      NRE_LOG_LEVEL: "warn",
+      NRE_REFERENCE_SECRET_PATTERNS_JSON: '["explicit-private-value"]',
+      NRE_ANALYSIS_PROVIDER: "ghidra",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+      NRE_MCP_MAX_RESPONSE_BYTES: "20971520",
+      NRE_MCP_TOOL_FAMILIES: "session",
     };
     const environment = {
       HOME: home,
@@ -82,9 +82,9 @@ cliTest(
       QWEN_HOME: join(home, ".qwen"),
       ...selected,
       CALLER_UNRELATED_SETTING: "do not copy",
-      REA_UNKNOWN_SETTING: "do not copy",
-      REA_PROCESS_RUN_ID: "do not copy",
-      REA_TOKEN: "do not copy",
+      NRE_UNKNOWN_SETTING: "do not copy",
+      NRE_PROCESS_RUN_ID: "do not copy",
+      NRE_TOKEN: "do not copy",
       HOPPER_TARGET_PATH: "do not copy",
     };
     const run = () =>
@@ -104,14 +104,14 @@ cliTest(
     expect(setup.exitCode, setup.stdout).toBe(0);
     const configured = await readFile(config, "utf8");
     expect(JSON.parse(configured)).toMatchObject({
-      mcpServers: { rea: { env: selected } },
+      mcpServers: { nre: { env: selected } },
     });
     expect(configured).not.toContain("do not copy");
     // A later setup must update a selection rather than retaining the first value.
-    selected.REA_MCP_TOOL_FAMILIES = "session,application";
-    environment.REA_MCP_TOOL_FAMILIES = selected.REA_MCP_TOOL_FAMILIES;
-    selected.REA_OBJDUMP_COMMAND = join(home, "replacement-objdump");
-    environment.REA_OBJDUMP_COMMAND = selected.REA_OBJDUMP_COMMAND;
+    selected.NRE_MCP_TOOL_FAMILIES = "session,application";
+    environment.NRE_MCP_TOOL_FAMILIES = selected.NRE_MCP_TOOL_FAMILIES;
+    selected.NRE_OBJDUMP_COMMAND = join(home, "replacement-objdump");
+    environment.NRE_OBJDUMP_COMMAND = selected.NRE_OBJDUMP_COMMAND;
     selected.HOPPER_LOADER_ARGS_JSON = "[]";
     environment.HOPPER_LOADER_ARGS_JSON = selected.HOPPER_LOADER_ARGS_JSON;
     // Empty headless heap explicitly selects the lower-priority caller value.
@@ -123,7 +123,7 @@ cliTest(
     expect(updated.exitCode, updated.stdout).toBe(0);
     const updatedConfiguration = await readFile(config, "utf8");
     expect(JSON.parse(updatedConfiguration)).toMatchObject({
-      mcpServers: { rea: { env: selected } },
+      mcpServers: { nre: { env: selected } },
     });
     expect(updatedConfiguration).not.toContain("do not copy");
     const repeated = await run();
@@ -139,7 +139,7 @@ cliTest(
 cliTest(
   "persists, updates and validates tool-family scopes without losing client configuration",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-family-registration-");
+    const home = await createTestTempDirectory("nre-family-registration-");
     const config = join(home, ".qwen/settings.json");
     const foreign = { command: "foreign-tool", args: ["keep"] };
     const original = JSON.stringify({ mcpServers: { foreign } });
@@ -150,8 +150,8 @@ cliTest(
       USERPROFILE: home,
       QWEN_HOME: join(home, ".qwen"),
       ...missingHopperAndGhidraEnvironment(home),
-      REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
     };
     const run = (families: string) =>
       cli.run({
@@ -170,7 +170,7 @@ cliTest(
       });
     const first = await run("session");
     expect(first.exitCode, first.stdout).toBe(0);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     const scope = "native,application,session";
     const updated = await run(scope);
     expect(updated.exitCode, updated.stdout).toBe(0);
@@ -178,16 +178,16 @@ cliTest(
     expect(JSON.parse(selected)).toMatchObject({
       mcpServers: {
         foreign,
-        rea: {
+        nre: {
           env: {
-            REA_MCP_TOOL_FAMILIES: scope,
-            REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-            REA_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
+            NRE_MCP_TOOL_FAMILIES: scope,
+            NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+            NRE_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
           },
         },
       },
     });
-    const backup = await readFile(`${config}.rea.backup`, "utf8");
+    const backup = await readFile(`${config}.nre.backup`, "utf8");
     const repeated = await run(scope);
     expect(repeated.exitCode, repeated.stdout).toBe(0);
     expect(repeated.json).toMatchObject({
@@ -197,25 +197,25 @@ cliTest(
     const rejected = await run("session,typo");
     expect(rejected.exitCode).not.toBe(0);
     expect(rejected.stdout + rejected.stderr).toContain(
-      "REA_MCP_TOOL_FAMILIES",
+      "NRE_MCP_TOOL_FAMILIES",
     );
     expect(await readFile(config, "utf8")).toBe(selected);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(backup);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(backup);
   },
 );
 
 cliTest.skipIf(process.platform !== "win32")(
   "rejects lowercase Windows provider settings in doctor and setup without writing",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-registration-case-");
+    const home = await createTestTempDirectory("nre-registration-case-");
     const config = join(home, ".cursor/mcp.json");
     await mkdir(dirname(config), { recursive: true });
     const original = JSON.stringify({
       mcpServers: {
-        rea: clientRegistrationEntry(
+        nre: clientRegistrationEntry(
           "json",
-          [process.execPath, resolve("scripts/rea.mjs"), "mcp"],
-          { rea_analysis_provider: "invalid provider" },
+          [process.execPath, resolve("scripts/nre.mjs"), "mcp"],
+          { nre_analysis_provider: "invalid provider" },
         ),
       },
     });
@@ -238,7 +238,7 @@ cliTest.skipIf(process.platform !== "win32")(
           name: "registration:cursor",
           ok: false,
           classification: "config_drift",
-          remediation: expect.stringContaining("REA_ANALYSIS_PROVIDER"),
+          remediation: expect.stringContaining("NRE_ANALYSIS_PROVIDER"),
         }),
       ]),
     });
@@ -259,10 +259,10 @@ cliTest.skipIf(process.platform !== "win32")(
       status: "needs_human",
       plannedActions: [],
       appliedActions: [],
-      remediation: expect.stringContaining("REA_ANALYSIS_PROVIDER"),
+      remediation: expect.stringContaining("NRE_ANALYSIS_PROVIDER"),
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -281,11 +281,11 @@ const scenarios = [
     client: "dsh",
     format: "dsh",
     path: ".dsh/cordis.patch.yml",
-    setting: "REA_GHIDRA_COMPILER_SPEC_ID",
-    invalid: { REA_GHIDRA_COMPILER_SPEC_ID: "borlandcpp" },
+    setting: "NRE_GHIDRA_COMPILER_SPEC_ID",
+    invalid: { NRE_GHIDRA_COMPILER_SPEC_ID: "borlandcpp" },
     repaired: {
-      REA_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
-      REA_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
+      NRE_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
+      NRE_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
     },
   },
 ] as const;
@@ -324,7 +324,7 @@ cliTest.for([
 ] as const)(
   "refuses a NUL environment $position in $client before setup writes",
   async (scenario, { cli }) => {
-    const home = await createTestTempDirectory("rea-registration-nul-");
+    const home = await createTestTempDirectory("nre-registration-nul-");
     const config = join(home, scenario.path);
     await mkdir(dirname(config), { recursive: true });
     const environment = {
@@ -337,7 +337,7 @@ cliTest.for([
     const registration = (env: Readonly<Record<string, string>>) => {
       const entry = clientRegistrationEntry(
         scenario.format,
-        [process.execPath, resolve("scripts/rea.mjs"), "mcp"],
+        [process.execPath, resolve("scripts/nre.mjs"), "mcp"],
         env,
       );
       if (scenario.position === "expression name")
@@ -354,14 +354,14 @@ cliTest.for([
             {
               insert: [
                 {
-                  id: "rea-mcp",
+                  id: "nre-mcp",
                   name: "@deepseek-ai/dsh-mcp-client",
                   config: entry,
                 },
               ],
             },
           ])
-        : JSON.stringify({ mcpServers: { rea: entry } });
+        : JSON.stringify({ mcpServers: { nre: entry } });
     };
     const valueMarker = "reaNulFixtureValue_6c04e2";
     const original = registration(
@@ -413,7 +413,7 @@ cliTest.for([
     });
     expect(setup.stdout + doctor.stdout).not.toContain(valueMarker);
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
@@ -443,7 +443,7 @@ for (const scenario of scenarios)
   cliTest(
     `setup and doctor reject ${scenario.client} overrides rejected by MCP startup`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-registration-runtime-");
+      const home = await createTestTempDirectory("nre-registration-runtime-");
       const config = join(home, scenario.path);
       await mkdir(dirname(config), { recursive: true });
       const environment = {
@@ -456,7 +456,7 @@ for (const scenario of scenarios)
       const registration = (env: Readonly<Record<string, string>>) => {
         const server = {
           command: "npx",
-          args: ["-y", "rea-agents@6.6.0", "mcp"],
+          args: ["-y", "nano-reverse-engineer@6.6.0", "mcp"],
           env: {
             CALLER_SETTING: "keep exactly",
             ["__proto__"]: "retain caller key",
@@ -468,10 +468,10 @@ for (const scenario of scenarios)
               {
                 insert: [
                   {
-                    id: "rea-mcp",
+                    id: "nre-mcp",
                     name: "@deepseek-ai/dsh-mcp-client",
                     config: {
-                      serverName: "rea",
+                      serverName: "nre",
                       transport: "stdio",
                       ...server,
                     },
@@ -479,7 +479,7 @@ for (const scenario of scenarios)
                 ],
               },
             ])
-          : JSON.stringify({ mcpServers: { rea: server } });
+          : JSON.stringify({ mcpServers: { nre: server } });
       };
       const original = registration(scenario.invalid);
       await writeFile(config, original);
@@ -521,7 +521,7 @@ for (const scenario of scenarios)
         },
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
 
@@ -538,14 +538,14 @@ for (const scenario of scenarios)
       expect(configured.exitCode, configured.stdout).toBe(0);
       const text = await readFile(config, "utf8");
       const parsed = parseClientConfiguration(text, scenario.format);
-      expect(effectiveClientServer(parsed, "rea")).toMatchObject({
+      expect(effectiveClientServer(parsed, "nre")).toMatchObject({
         env: {
           CALLER_SETTING: "keep exactly",
           ["__proto__"]: "retain caller key",
           ...scenario.repaired,
         },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(repaired);
+      expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(repaired);
       const repeated = await run([
         "setup",
         "--client",
@@ -565,7 +565,7 @@ for (const scenario of scenarios)
 cliTest(
   "OpenCode CLI validates dependent settings after merging JSON and JSONC",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-layered-runtime-cli-");
+    const home = await createTestTempDirectory("nre-layered-runtime-cli-");
     const directory = join(home, ".config/opencode");
     await mkdir(directory, { recursive: true });
     const lower = join(directory, "opencode.json");
@@ -573,19 +573,19 @@ cliTest(
     const content = (env: Record<string, string>) =>
       JSON.stringify({
         mcp: {
-          rea: clientRegistrationEntry(
+          nre: clientRegistrationEntry(
             "opencode",
-            [process.execPath, resolve("scripts/rea.mjs"), "mcp"],
+            [process.execPath, resolve("scripts/nre.mjs"), "mcp"],
             env,
           ),
         },
       });
     const lowerContent = content({
-      REA_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
+      NRE_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
     });
     const upperContent = content({
       ...missingHopperAndGhidraEnvironment(home),
-      REA_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
+      NRE_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
     });
     await writeFile(lower, lowerContent);
     await writeFile(upper, upperContent);
@@ -634,7 +634,7 @@ cliTest(
       status: "needs_human",
       plannedActions: [],
       appliedActions: [],
-      remediation: expect.stringContaining("REA_GHIDRA_COMPILER_SPEC_ID"),
+      remediation: expect.stringContaining("NRE_GHIDRA_COMPILER_SPEC_ID"),
     });
     const invalidDoctor = await run(["doctor", "--client", "opencode"]);
     expect(invalidDoctor.exitCode).toBe(1);
@@ -647,7 +647,7 @@ cliTest(
     });
     expect(await readFile(upper, "utf8")).toBe(upperContent);
     for (const path of [lower, upper])
-      await expect(access(`${path}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${path}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
   },
@@ -657,7 +657,7 @@ cliTest(
   "public setup propagates selected provider deadlines and input profile to Codex and Kimi",
   async ({ cli }) => {
     const home = await createTestTempDirectory(
-      "rea-selected-registration-env-",
+      "nre-selected-registration-env-",
     );
     const codexHome = join(home, "codex");
     const kimiHome = join(home, "kimi");
@@ -671,20 +671,20 @@ cliTest(
       CODEX_HOME: codexHome,
       KIMI_CODE_HOME: kimiHome,
       ...missingHopperAndGhidraEnvironment(home),
-      REA_ANALYSIS_PROVIDER: "auto",
-      REA_BRIDGE_MAX_REQUEST_BYTES: "33554432",
-      REA_GHIDRA_STARTUP_TIMEOUT_MS: "2700001",
-      REA_HOPPER_STARTUP_TIMEOUT_MS: "2800002",
-      REA_JEB_MCP_TIMEOUT_MS: "2900003",
-      REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-      REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
-      REA_REGEX_MATCHING_DEADLINE_MS: "10000",
-      REA_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
-      REA_MCP_INITIALIZE_BUDGET_MS: "16000",
-      REA_MCP_TOOLS_LIST_BUDGET_MS: "6000",
-      REA_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
-      REA_MCP_DOCTOR_DEADLINE_MS: "31000",
-      REA_UNRELATED_MARKER: "do-not-persist",
+      NRE_ANALYSIS_PROVIDER: "auto",
+      NRE_BRIDGE_MAX_REQUEST_BYTES: "33554432",
+      NRE_GHIDRA_STARTUP_TIMEOUT_MS: "2700001",
+      NRE_HOPPER_STARTUP_TIMEOUT_MS: "2800002",
+      NRE_JEB_MCP_TIMEOUT_MS: "2900003",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+      NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
+      NRE_REGEX_MATCHING_DEADLINE_MS: "10000",
+      NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
+      NRE_MCP_INITIALIZE_BUDGET_MS: "16000",
+      NRE_MCP_TOOLS_LIST_BUDGET_MS: "6000",
+      NRE_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
+      NRE_MCP_DOCTOR_DEADLINE_MS: "31000",
+      NRE_UNRELATED_MARKER: "do-not-persist",
     };
     const run = (arguments_: readonly string[]) =>
       cli.run({
@@ -708,47 +708,47 @@ cliTest(
     const codexConfig = await readFile(join(codexHome, "config.toml"), "utf8");
     const codexRegistration = effectiveClientServer(
       parseClientConfiguration(codexConfig, "toml"),
-      "rea",
+      "nre",
     );
     expect(codexRegistration).toMatchObject({ tool_timeout_sec: 3021 });
-    expect(codexConfig).toContain('REA_BRIDGE_MAX_REQUEST_BYTES = "33554432"');
-    expect(codexConfig).toContain('REA_JEB_MCP_TIMEOUT_MS = "2900003"');
+    expect(codexConfig).toContain('NRE_BRIDGE_MAX_REQUEST_BYTES = "33554432"');
+    expect(codexConfig).toContain('NRE_JEB_MCP_TIMEOUT_MS = "2900003"');
     expect(codexConfig).toContain(
-      'REA_CAPTURE_DECODER_OLD_GENERATION_MIB = "256"',
+      'NRE_CAPTURE_DECODER_OLD_GENERATION_MIB = "256"',
     );
-    expect(codexConfig).toContain('REA_REGEX_MATCHING_DEADLINE_MS = "10000"');
-    expect(codexConfig).toContain('REA_REGEX_WORKER_HEAP_REQUEST_MIB = "256"');
-    expect(codexConfig).toContain('REA_MCP_INITIALIZE_BUDGET_MS = "16000"');
-    expect(codexConfig).toContain('REA_MCP_TOOLS_LIST_BUDGET_MS = "6000"');
-    expect(codexConfig).toContain('REA_MCP_FIRST_CATALOG_BUDGET_MS = "21000"');
-    expect(codexConfig).toContain('REA_MCP_DOCTOR_DEADLINE_MS = "31000"');
-    expect(codexConfig).not.toContain("REA_UNRELATED_MARKER");
+    expect(codexConfig).toContain('NRE_REGEX_MATCHING_DEADLINE_MS = "10000"');
+    expect(codexConfig).toContain('NRE_REGEX_WORKER_HEAP_REQUEST_MIB = "256"');
+    expect(codexConfig).toContain('NRE_MCP_INITIALIZE_BUDGET_MS = "16000"');
+    expect(codexConfig).toContain('NRE_MCP_TOOLS_LIST_BUDGET_MS = "6000"');
+    expect(codexConfig).toContain('NRE_MCP_FIRST_CATALOG_BUDGET_MS = "21000"');
+    expect(codexConfig).toContain('NRE_MCP_DOCTOR_DEADLINE_MS = "31000"');
+    expect(codexConfig).not.toContain("NRE_UNRELATED_MARKER");
 
     const kimiPath = join(kimiHome, "mcp.json");
     const kimiRegistration = effectiveClientServer(
       parseClientConfiguration(await readFile(kimiPath, "utf8"), "kimi"),
-      "rea",
+      "nre",
     );
     expect(kimiRegistration).toMatchObject({
       toolTimeoutMs: 3_020_003,
       env: {
-        REA_ANALYSIS_PROVIDER: "auto",
-        REA_BRIDGE_MAX_REQUEST_BYTES: "33554432",
-        REA_GHIDRA_STARTUP_TIMEOUT_MS: "2700001",
-        REA_HOPPER_STARTUP_TIMEOUT_MS: "2800002",
-        REA_JEB_MCP_TIMEOUT_MS: "2900003",
-        REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-        REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
-        REA_REGEX_MATCHING_DEADLINE_MS: "10000",
-        REA_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
-        REA_MCP_INITIALIZE_BUDGET_MS: "16000",
-        REA_MCP_TOOLS_LIST_BUDGET_MS: "6000",
-        REA_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
-        REA_MCP_DOCTOR_DEADLINE_MS: "31000",
+        NRE_ANALYSIS_PROVIDER: "auto",
+        NRE_BRIDGE_MAX_REQUEST_BYTES: "33554432",
+        NRE_GHIDRA_STARTUP_TIMEOUT_MS: "2700001",
+        NRE_HOPPER_STARTUP_TIMEOUT_MS: "2800002",
+        NRE_JEB_MCP_TIMEOUT_MS: "2900003",
+        NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+        NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
+        NRE_REGEX_MATCHING_DEADLINE_MS: "10000",
+        NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
+        NRE_MCP_INITIALIZE_BUDGET_MS: "16000",
+        NRE_MCP_TOOLS_LIST_BUDGET_MS: "6000",
+        NRE_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
+        NRE_MCP_DOCTOR_DEADLINE_MS: "31000",
       },
     });
     expect(await readFile(kimiPath, "utf8")).not.toContain(
-      "REA_UNRELATED_MARKER",
+      "NRE_UNRELATED_MARKER",
     );
 
     const doctor = await run(["doctor", "--client", "kimi"]);
@@ -773,7 +773,7 @@ for (const [client, provider] of [
     `public ${client} setup and doctor use the effective IDA registration request budget with ${provider} selection`,
     async ({ cli }) => {
       const home = await createTestTempDirectory(
-        "rea-ida-registration-budget-",
+        "nre-ida-registration-budget-",
       );
       const clientHome = join(home, client);
       await mkdir(clientHome, { recursive: true });
@@ -809,8 +809,8 @@ for (const [client, provider] of [
         cwd: home,
         environment: {
           ...environment,
-          REA_ANALYSIS_PROVIDER: provider,
-          REA_IDA_MCP_CONFIG: idaConfig,
+          NRE_ANALYSIS_PROVIDER: provider,
+          NRE_IDA_MCP_CONFIG: idaConfig,
         },
       });
       expect(configured.exitCode, configured.stdout).toBe(0);
@@ -822,13 +822,13 @@ for (const [client, provider] of [
       expect(
         effectiveClientServer(
           parseClientConfiguration(text, client === "codex" ? "toml" : "kimi"),
-          "rea",
+          "nre",
         ),
       ).toMatchObject({
         ...(client === "codex"
           ? { tool_timeout_sec: 1921 }
           : { toolTimeoutMs: 1_920_001 }),
-        env: { REA_ANALYSIS_PROVIDER: provider, REA_IDA_MCP_CONFIG: idaConfig },
+        env: { NRE_ANALYSIS_PROVIDER: provider, NRE_IDA_MCP_CONFIG: idaConfig },
       });
       expect(text).not.toContain("fixture-credential");
       const run = (arguments_: readonly string[]) =>
@@ -865,7 +865,7 @@ for (const [client, provider] of [
         appliedActions: [],
       });
       expect(await readFile(config, "utf8")).toBe(text);
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
       if (provider === "ida") {
@@ -883,16 +883,16 @@ for (const [client, provider] of [
               expect.objectContaining({
                 client,
                 state: "invalid",
-                remediation: expect.stringContaining("REA_IDA_MCP_CONFIG"),
+                remediation: expect.stringContaining("NRE_IDA_MCP_CONFIG"),
               }),
             ]),
           },
         });
         const invalidSetup = await run(setupArguments);
         expect(invalidSetup.exitCode).toBe(1);
-        expect(invalidSetup.stdout).toContain("REA_IDA_MCP_CONFIG");
+        expect(invalidSetup.stdout).toContain("NRE_IDA_MCP_CONFIG");
         expect(await readFile(config, "utf8")).toBe(text);
-        await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+        await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
           code: "ENOENT",
         });
       }
@@ -901,15 +901,15 @@ for (const [client, provider] of [
   );
 
 for (const invalidSetting of [
-  { setting: "REA_MCP_INPUT_SCHEMA_PROFILE", value: "unknown" },
-  { setting: "REA_GHIDRA_STARTUP_TIMEOUT_MS", value: "0" },
-  { setting: "REA_JEB_MCP_TIMEOUT_MS", value: "1.5" },
+  { setting: "NRE_MCP_INPUT_SCHEMA_PROFILE", value: "unknown" },
+  { setting: "NRE_GHIDRA_STARTUP_TIMEOUT_MS", value: "0" },
+  { setting: "NRE_JEB_MCP_TIMEOUT_MS", value: "1.5" },
 ] as const)
   cliTest(
     `setup rejects malformed selected ${invalidSetting.setting} before writing`,
     async ({ cli }) => {
       const home = await createTestTempDirectory(
-        "rea-invalid-selected-registration-env-",
+        "nre-invalid-selected-registration-env-",
       );
       const kimiHome = join(home, "kimi");
       await mkdir(kimiHome, { recursive: true });
@@ -945,7 +945,7 @@ for (const invalidSetting of [
         invalidSetting.setting,
       );
       await expect(access(config)).rejects.toMatchObject({ code: "ENOENT" });
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.nre.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -955,7 +955,7 @@ for (const invalidSetting of [
 cliTest(
   "public VS Code setup registers in VSCODE_APPDATA without changing the default configuration",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-vscode-appdata-cli-");
+    const home = await createTestTempDirectory("nre-vscode-appdata-cli-");
     const selectedData = join(home, "selected data");
     const config = join(selectedData, "Code", "User", "mcp.json");
     const defaultData =
@@ -1000,15 +1000,15 @@ cliTest(
     expect(JSON.parse(await readFile(config, "utf8"))).toMatchObject({
       servers: {
         foreign: { command: "keep" },
-        rea: {
+        nre: {
           command: process.execPath,
-          args: [resolve("scripts/rea.mjs"), "mcp"],
+          args: [resolve("scripts/nre.mjs"), "mcp"],
         },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     expect(await readFile(defaultConfig, "utf8")).toBe(defaultOriginal);
-    await expect(access(`${defaultConfig}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${defaultConfig}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },

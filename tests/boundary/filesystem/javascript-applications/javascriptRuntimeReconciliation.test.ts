@@ -436,8 +436,8 @@ it.each(["historical", "selected-paths"] as const)(
       selectedInput,
       capture,
       {
-        id: "rea-playwright-electron-active",
-        name: "REA Playwright active Electron observation provider",
+        id: "nre-playwright-electron-active",
+        name: "NRE Playwright active Electron observation provider",
         version: "1",
       },
       resolvedInput,
@@ -480,15 +480,15 @@ it("commits complete Electron actions independently from selected arguments", as
           step_id: "open",
           kind: "deep-link",
           delivery: "second-instance",
-          url: "rea-fixture://open/item?token=selected",
+          url: "nre-fixture://open/item?token=selected",
         },
       ],
     }),
     application_root: fixture,
   });
   const provider = {
-    id: "rea-playwright-electron-active",
-    name: "REA Playwright active Electron observation provider",
+    id: "nre-playwright-electron-active",
+    name: "NRE Playwright active Electron observation provider",
     version: "1",
   };
   const first = createElectronActiveEvidence(
@@ -518,7 +518,7 @@ it("commits complete Electron actions independently from selected arguments", as
       step_id: "open",
       kind: "deep-link",
       delivery: "second-instance",
-      url: "rea-fixture://open/item?token=selected",
+      url: "nre-fixture://open/item?token=selected",
     },
   ]);
   expect(first.parameters.args).toEqual(["--token", "first-secret"]);
@@ -526,8 +526,8 @@ it("commits complete Electron actions independently from selected arguments", as
 
 it("imports an operator-provided cache layer through an explicit file mapping", async () => {
   const application = await applicationFixture();
-  const cache = await createTestTempDirectory("rea-runtime-cache-static-");
-  const runtimeCache = await createTestTempDirectory("rea-runtime-cache-live-");
+  const cache = await createTestTempDirectory("nre-runtime-cache-static-");
+  const runtimeCache = await createTestTempDirectory("nre-runtime-cache-live-");
   const cacheSource = SOURCE;
   await mkdir(join(cache, "mapped"));
   await Promise.all([
@@ -640,13 +640,13 @@ const reconcileScriptLocation = (
 };
 
 it("matches a source-free bundled script to its containing asset without suppressing independent layers", async () => {
-  const root = await createTestTempDirectory("rea-runtime-bundler-location-");
+  const root = await createTestTempDirectory("nre-runtime-bundler-location-");
   const source =
     '(globalThis["webpackChunkfixture"] = globalThis["webpackChunkfixture"] || []).push([["main"],{1:(module)=>{module.exports=1;}},(__webpack_require__)=>{__webpack_require__(1);}]);\n';
   await writeFile(join(root, "runtime.js"), source);
   const application = await analyzeFixture(root);
   const secondRoot = await createTestTempDirectory(
-    "rea-runtime-bundler-other-",
+    "nre-runtime-bundler-other-",
   );
   await writeFile(join(secondRoot, "runtime.js"), source);
   const secondApplication = await analyzeFixture(secondRoot);
@@ -738,7 +738,7 @@ it("matches a source-free bundled script to its containing asset without suppres
 it.skipIf(process.platform === "win32")(
   "keeps distinct POSIX backslash and slash script locations separate",
   async () => {
-    const root = await createTestTempDirectory("rea-backslash-runtime-");
+    const root = await createTestTempDirectory("nre-backslash-runtime-");
     const literal = "literal\\name.js";
     await writeFile(join(root, literal), "export const marker = 'literal';\n");
     const application = await analyzeFixture(root);
@@ -755,7 +755,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "does not make POSIX literal and slash paths ambiguous, including Windows runtime mappings",
   async () => {
-    const root = await createTestTempDirectory("rea-backslash-runtime-pair-");
+    const root = await createTestTempDirectory("nre-backslash-runtime-pair-");
     const literal = "literal\\name.js";
     await mkdir(join(root, "literal"));
     await writeFile(join(root, literal), "export const marker = 'literal';\n");
@@ -790,7 +790,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "preserves URL-prefix path semantics separately from logical artifact names",
   async () => {
-    const root = await createTestTempDirectory("rea-backslash-runtime-url-");
+    const root = await createTestTempDirectory("nre-backslash-runtime-url-");
     await writeFile(
       join(root, "literal\\name.js"),
       "export const marker = 42;\n",
@@ -860,7 +860,7 @@ it.skipIf(process.platform === "win32")(
   "interprets raw loadFile declarations using the captured native path format",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-native-loadfile-declaration-",
+      "nre-native-loadfile-declaration-",
     );
     await mkdir(join(root, "dist"));
     await writeFile(join(root, "dist", "index.html"), "slash file");
@@ -899,7 +899,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32").each(["literal\\dir", "literal%5Cdir"])(
   "maps a runtime root to the exact logical artifact prefix %j",
   async (prefix) => {
-    const root = await createTestTempDirectory("rea-literal-artifact-prefix-");
+    const root = await createTestTempDirectory("nre-literal-artifact-prefix-");
     await mkdir(join(root, prefix));
     await writeFile(
       join(root, prefix, "app.js"),
@@ -929,7 +929,7 @@ it.skipIf(process.platform === "win32").each(["literal\\dir", "literal%5Cdir"])(
 it.skipIf(process.platform === "win32")(
   "uses resolved artifact paths instead of a raw declaration alias",
   async () => {
-    const root = await createTestTempDirectory("rea-resolved-loadfile-alias-");
+    const root = await createTestTempDirectory("nre-resolved-loadfile-alias-");
     const directory = "literal\\dir";
     await mkdir(join(root, directory));
     await writeFile(join(root, directory, "index.html"), "owned target");
@@ -958,7 +958,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("rejects unsafe logical artifact prefixes without decoding literal names", async () => {
-  const root = await createTestTempDirectory("rea-prefix-admission-");
+  const root = await createTestTempDirectory("nre-prefix-admission-");
   await writeFile(join(root, "app.js"), "export const marker = 42;\n");
   const analysis = await analyzeFixture(root);
   const accepts = (artifact_prefix: string) =>
@@ -992,7 +992,7 @@ it("rejects unsafe logical artifact prefixes without decoding literal names", as
 it.skipIf(process.platform === "win32")(
   "keeps a leading backslash declaration literal only for POSIX captures",
   async () => {
-    const root = await createTestTempDirectory("rea-leading-loadfile-");
+    const root = await createTestTempDirectory("nre-leading-loadfile-");
     await writeFile(join(root, "\\index.html"), "literal target");
     await writeFile(
       join(root, "main.cjs"),
@@ -1024,7 +1024,7 @@ it.skipIf(process.platform === "win32")(
 it.each([false, true])(
   "merges equivalent owned page declarations when target presence is %s",
   async (present) => {
-    const root = await createTestTempDirectory("rea-generated-page-runtime-");
+    const root = await createTestTempDirectory("nre-generated-page-runtime-");
     await mkdir(join(root, "app"), { recursive: true });
     await writeFile(
       join(root, "app", "package.json"),
@@ -1065,7 +1065,7 @@ it.each([false, true])(
 );
 
 it("matches a resolved nested application path without an operator mapping", async () => {
-  const root = await createTestTempDirectory("rea-owned-loadfile-runtime-");
+  const root = await createTestTempDirectory("nre-owned-loadfile-runtime-");
   await mkdir(join(root, "app", "dist"), { recursive: true });
   await mkdir(join(root, "dist"), { recursive: true });
   await writeFile(
@@ -1096,7 +1096,7 @@ it("matches a resolved nested application path without an operator mapping", asy
 });
 
 it("keeps a raw nested loadFile target application-relative when the producer also resolves a nested decoy", async () => {
-  const root = await createTestTempDirectory("rea-raw-loadfile-ownership-");
+  const root = await createTestTempDirectory("nre-raw-loadfile-ownership-");
   await mkdir(join(root, "dist"));
   await mkdir(join(root, "sub", "dist"), { recursive: true });
   await writeFile(join(root, "dist", "index.html"), "application target");
@@ -1124,7 +1124,7 @@ it
   .each(["app", "literal\\app", "café", "cafe\u0301"])(
   "maps raw renderer declarations through the logical application prefix %j",
   async (prefix) => {
-    const root = await createTestTempDirectory("rea-prefixed-native-renderer-");
+    const root = await createTestTempDirectory("nre-prefixed-native-renderer-");
     await mkdir(join(root, prefix, "dist"), { recursive: true });
     await writeFile(
       join(root, prefix, "dist", "index.html"),
@@ -1161,7 +1161,7 @@ it
 );
 
 it("confines raw renderer declarations to the operator-selected artifact prefix", async () => {
-  const root = await createTestTempDirectory("rea-native-prefix-isolation-");
+  const root = await createTestTempDirectory("nre-native-prefix-isolation-");
   for (const app of ["appA", "appB"]) {
     await mkdir(join(root, app, "dist"), { recursive: true });
     await writeFile(join(root, app, "dist", "index.html"), app);
@@ -1206,7 +1206,7 @@ it("confines raw renderer declarations to the operator-selected artifact prefix"
 });
 
 it("retains uncertainty for overlapping file mappings with distinct application interpretations", async () => {
-  const root = await createTestTempDirectory("rea-overlapping-native-prefix-");
+  const root = await createTestTempDirectory("nre-overlapping-native-prefix-");
   await mkdir(join(root, "app", "dist"), { recursive: true });
   await writeFile(join(root, "app", "dist", "index.html"), "shared target");
   for (const [path, declaration] of [

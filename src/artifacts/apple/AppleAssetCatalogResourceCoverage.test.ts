@@ -20,7 +20,7 @@ for (const symlinks of [0, 1, 65])
   it.skipIf(process.platform === "win32" && symlinks > 0)(
     `retains exact UID and mixed omission diagnoses with ${symlinks} symlinks`,
     async () => {
-      const bundle = await createTestTempDirectory("rea-resource-uid-range-");
+      const bundle = await createTestTempDirectory("nre-resource-uid-range-");
       await writeFile(join(bundle, "Unsupported.nib"), unsupportedUidArchive());
       await writeFile(
         join(bundle, "Valid.nib"),
@@ -89,7 +89,7 @@ it.each([
 ] as const)(
   "qualifies resource-key coverage by object inventory rather than %s graph state",
   async (mode) => {
-    const bundle = await createTestTempDirectory("rea-resource-coverage-");
+    const bundle = await createTestTempDirectory("nre-resource-coverage-");
     const archive = encodeNibArchiveFixture({
       classes: [
         "NSIBObjectData",
@@ -191,7 +191,7 @@ it.each([
 
 it("keeps resource coverage complete when only synthetic hierarchy nodes exceed graph capacity", async () => {
   const bundle = await createTestTempDirectory(
-    "rea-resource-hierarchy-capacity-",
+    "nre-resource-hierarchy-capacity-",
   );
   await writeFile(
     join(bundle, "Panel.nib"),

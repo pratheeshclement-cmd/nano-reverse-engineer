@@ -37,14 +37,14 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "retains depth-129 data and depth-200 integers through CLI and MCP",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-plist-nesting-");
+        const root = await createTestTempDirectory("nre-plist-nesting-");
         const target = join(root, "target");
         await writeFile(target, thinMach(0xfeedfacf, 0x0100000c));
         const environment = {
           HOME: root,
           USERPROFILE: root,
-          REA_LOG_LEVEL: "silent",
-          REA_ANALYSIS_PROVIDER: "auto",
+          NRE_LOG_LEVEL: "silent",
+          NRE_ANALYSIS_PROVIDER: "auto",
         };
         const { call } = await connectLocalToolsMcp(environment);
         expect((await call("open_binary", { path: target })).isError).not.toBe(

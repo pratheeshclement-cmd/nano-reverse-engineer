@@ -263,7 +263,7 @@ type CompetingLoaderGraph = Awaited<
 
 /** Write one competing-loader application and return its directory. */
 const writeCompetingLoaderFixture = async (loader: string): Promise<string> => {
-  const root = await createTestTempDirectory("rea-loader-owner-");
+  const root = await createTestTempDirectory("nre-loader-owner-");
   const single = loader === "single percent main";
   const absolute = loader === "absolute main";
   const main = fixtureMainPath(loader);

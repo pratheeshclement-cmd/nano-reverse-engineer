@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-/** Source-owned case/target labels; no REA or Ghidra result defines this oracle. */
+/** Source-owned case/target labels; no NRE or Ghidra result defines this oracle. */
 export const SWITCH_FIXTURES = [
   {
     name: "dense",
@@ -44,14 +44,14 @@ export function buildSwitchSource() {
     blocks.push(
       `default:\n${block(fixture.name, "default", 0x3900 + fixtureIndex)}`,
     );
-    return `__attribute__((noinline, used)) int rea_switch_${fixture.name}(${fixture.selector_type ?? "int"} selector) {\nswitch (selector) {\n${blocks.join("\n")}\n}\n}`;
+    return `__attribute__((noinline, used)) int nre_switch_${fixture.name}(${fixture.selector_type ?? "int"} selector) {\nswitch (selector) {\n${blocks.join("\n")}\n}\n}`;
   });
-  // Constant calls preserve every function without executing imported targets in REA.
-  return `${functions.join("\n\n")}\nint main(int argc, char **argv) { (void)argv; return ${SWITCH_FIXTURES.map(({ name }) => `rea_switch_${name}(argc)`).join(" ^ ")}; }\n`;
+  // Constant calls preserve every function without executing imported targets in NRE.
+  return `${functions.join("\n\n")}\nint main(int argc, char **argv) { (void)argv; return ${SWITCH_FIXTURES.map(({ name }) => `nre_switch_${name}(argc)`).join(" ^ ")}; }\n`;
 }
 
 function block(name, suffix, marker) {
-  return `{ int result; __asm__ volatile (".globl rea_oracle_${name}_${suffix}\\nrea_oracle_${name}_${suffix}:\\nmovl $${marker}, %%eax" : "=a"(result)); return result; }`;
+  return `{ int result; __asm__ volatile (".globl nre_oracle_${name}_${suffix}\\nrea_oracle_${name}_${suffix}:\\nmovl $${marker}, %%eax" : "=a"(result)); return result; }`;
 }
 
 /** Match nm's independent pre-strip symbols to public source labels. */
@@ -73,14 +73,14 @@ export function switchSymbolOracle(nmOutput) {
     };
     const blocks = fixture.groups.map((values, groupIndex) => ({
       values,
-      address: get(`rea_oracle_${fixture.name}_case_${groupIndex}`),
+      address: get(`nre_oracle_${fixture.name}_case_${groupIndex}`),
       marker: 0x3100 + fixtureIndex * 0x100 + groupIndex,
     }));
     return {
       ...fixture,
-      address: get(`rea_switch_${fixture.name}`),
+      address: get(`nre_switch_${fixture.name}`),
       blocks,
-      default_address: get(`rea_oracle_${fixture.name}_default`),
+      default_address: get(`nre_oracle_${fixture.name}_default`),
       default_marker: 0x3900 + fixtureIndex,
     };
   });
@@ -135,11 +135,11 @@ export function assertSwitchMarkerBytes(bytes, fixtures) {
 export function assertCompiledSwitchOracle(bytes, fixtures, disassembly) {
   assertSwitchMarkerBytes(bytes, fixtures);
   return fixtures.map((fixture) => {
-    const start = disassembly.indexOf(`<rea_switch_${fixture.name}>:`);
+    const start = disassembly.indexOf(`<nre_switch_${fixture.name}>:`);
     assert.ok(start >= 0, `objdump omitted ${fixture.name}`);
     const nextFunction = disassembly
       .slice(start + 1)
-      .search(/<rea_switch_[a-z_]+>:/u);
+      .search(/<nre_switch_[a-z_]+>:/u);
     const code =
       nextFunction < 0
         ? disassembly.slice(start)

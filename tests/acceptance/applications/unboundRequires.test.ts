@@ -68,7 +68,7 @@ const typedPackageFiles = {
 };
 
 const expectNativeModuleControls = async (root: string): Promise<void> => {
-  const emitted = await createTestTempDirectory("rea-import-equals-output-");
+  const emitted = await createTestTempDirectory("nre-import-equals-output-");
   await writeFixtureFiles(emitted, typedPackageFiles);
   await execute(
     process.execPath,
@@ -328,7 +328,7 @@ const expectImportEqualsRelationships = (
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains unbound CommonJS semantic relationships through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-unbound-requires-");
+    const root = await createTestTempDirectory("nre-unbound-requires-");
     const lines = [
       'require("./dependency.cjs");',
       'void require("./dependency.cjs");',
@@ -363,7 +363,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
     if (surface === "CLI") {
       const response = await cli.run({
         arguments: ["analyze-javascript-application", root, "--format", "json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       document = response.json;

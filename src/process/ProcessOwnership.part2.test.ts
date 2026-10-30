@@ -47,7 +47,7 @@ describe("owned process-group cleanup discovery", () => {
     });
     const adapter: ProcessOwnershipHost = {
       listProcesses: () => Promise.resolve(processes),
-      environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+      environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
       signalGroup,
     };
 
@@ -74,7 +74,7 @@ describe("owned process-group cleanup discovery", () => {
             command: "detached-helper",
           },
         ]),
-      environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+      environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
       signalGroup: vi.fn(),
     };
 
@@ -117,7 +117,7 @@ describe("owned process-group cleanup discovery", () => {
         ]),
       environment: (pid) =>
         Promise.resolve({
-          REA_PROCESS_RUN_ID: pid === 104 ? "other-run" : "run-token",
+          NRE_PROCESS_RUN_ID: pid === 104 ? "other-run" : "run-token",
         }),
       signalGroup,
     };
@@ -157,7 +157,7 @@ describe("owned process-group cleanup discovery", () => {
             command: "unrelated-group-leader",
           },
         ]),
-      environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+      environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
       signalGroup,
     };
     await expect(cleanupOwnedProcessGroup(ownership, adapter)).resolves.toEqual(
@@ -171,9 +171,9 @@ describe("owned process-group cleanup discovery", () => {
   });
   it("records sorted launcher and descendant lineage after token checks", async () => {
     const { adapter } = host({
-      102: { REA_PROCESS_RUN_ID: "run-token" },
-      100: { REA_PROCESS_RUN_ID: "run-token" },
-      101: { REA_PROCESS_RUN_ID: "run-token" },
+      102: { NRE_PROCESS_RUN_ID: "run-token" },
+      100: { NRE_PROCESS_RUN_ID: "run-token" },
+      101: { NRE_PROCESS_RUN_ID: "run-token" },
     });
     await expect(
       observeOwnedProcessLineage(ownership, adapter),

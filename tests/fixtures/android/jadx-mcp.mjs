@@ -5,9 +5,9 @@ import { JADX_BRIDGE_IDENTITY } from "../../../src/android/JadxRelease.ts";
 
 // An actual child MCP server exercising the production stdio/process seam.
 // It is a protocol fixture, not evidence of JADX decompiler support.
-const mode = process.env.REA_FAKE_JADX_MODE ?? "normal";
+const mode = process.env.NRE_FAKE_JADX_MODE ?? "normal";
 const server = new McpServer({
-  name: mode === "empty-server-identity" ? "" : "rea-jadx-bridge",
+  name: mode === "empty-server-identity" ? "" : "nre-jadx-bridge",
   version:
     mode === "empty-server-identity"
       ? ""
@@ -16,7 +16,7 @@ const server = new McpServer({
         : JADX_BRIDGE_IDENTITY.version,
 });
 const requestedCount = Number.parseInt(
-  process.env.REA_FAKE_JADX_CLASS_COUNT ?? "",
+  process.env.NRE_FAKE_JADX_CLASS_COUNT ?? "",
   10,
 );
 const generatedCount =
@@ -63,7 +63,7 @@ const text = (value) => ({ content: [{ type: "text", text: value }] });
 const json = (value) => text(JSON.stringify(value));
 const register = (name, handler) =>
   server.registerTool(name, { inputSchema: z.looseObject({}) }, handler);
-register("rea_jvm_status", () =>
+register("nre_jvm_status", () =>
   json({
     engine_reported_version: mode === "engine-version" ? "0.7.0" : "0.7.1",
     max_heap_bytes:
@@ -102,7 +102,7 @@ register("load_apk", async ({ path }) => {
     resources: "full",
   });
 });
-register("rea_native_declarations", ({ path }) => {
+register("nre_native_declarations", ({ path }) => {
   if (typeof path !== "string")
     return { ...text("path must be a string"), isError: true };
   const methods = [

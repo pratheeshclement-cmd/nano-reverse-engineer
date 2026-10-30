@@ -19,8 +19,8 @@ cliTest.for([
         "--json",
       ],
       environment: {
-        REA_JADX_MCP_JAR: "/nonexistent/engine.jar",
-        REA_LOG_LEVEL: "silent",
+        NRE_JADX_MCP_JAR: "/nonexistent/engine.jar",
+        NRE_LOG_LEVEL: "silent",
       },
     });
     expect(result.exitCode).toBe(1);
@@ -58,8 +58,8 @@ cliTest.for([
         "--json",
       ],
       environment: {
-        REA_JADX_MCP_JAR: "/nonexistent/selected-engine.jar",
-        REA_LOG_LEVEL: "silent",
+        NRE_JADX_MCP_JAR: "/nonexistent/selected-engine.jar",
+        NRE_LOG_LEVEL: "silent",
       },
     });
     expect(result.exitCode).toBe(1);

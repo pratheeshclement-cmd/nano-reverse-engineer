@@ -28,14 +28,14 @@ if (
 )
   throw new Error(".nvmrc must pin an exact major.minor.patch Node.js version");
 const skill = await readFile(
-  join(root, ".agents/skills/reverse-engineer-anything/SKILL.md"),
+  join(root, ".agents/skills/nano-reverse-engineer/SKILL.md"),
   "utf8",
 );
 const skillMetadata = parseSkillManifestMetadata(skill);
 if (!skillMetadata.ok) throw skillMetadata.error;
 const skillVersion = skillMetadata.value.version;
 if (skillVersion === null)
-  throw new Error("Missing reverse-engineer-anything skill metadata version");
+  throw new Error("Missing nano-reverse-engineer skill metadata version");
 const versionOf = (name) => {
   const value = lock.packages?.[`node_modules/${name}`]?.version;
   if (typeof value !== "string")

@@ -33,7 +33,7 @@ export async function verifyHopperWorkflows(call, invalid, procedure) {
   );
   const procedures = await call("list_procedures");
   const cycle = procedures.filter((item) =>
-    /rea_cycle_[ab]$/u.test(item.value),
+    /nre_cycle_[ab]$/u.test(item.value),
   );
   assert.equal(cycle.length, 2, "fixture omitted its source-owned call cycle");
   const cycleGraph = await call("get_call_graph", { address: cycle[0].value });
@@ -59,11 +59,11 @@ export async function verifyHopperWorkflows(call, invalid, procedure) {
     "procedure_address",
   );
   const missingPhrase = await call("trace_feature", {
-    query: "REA_C_LEAF __rea_missing_phrase__",
+    query: "NRE_C_LEAF __rea_missing_phrase__",
   });
   assert.deepEqual(missingPhrase.matches, []);
   assert.deepEqual(missingPhrase.references, []);
-  const phrase = "REA boundary phrase";
+  const phrase = "NRE boundary phrase";
   try {
     await call("set_address_name", { address, name: phrase });
     const traced = await call("trace_feature", { query: phrase });

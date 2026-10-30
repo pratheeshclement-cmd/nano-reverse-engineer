@@ -12,7 +12,7 @@ import { UnityFsArtifactReader } from "./UnityFsArtifactReader.js";
 
 const fixture = async (bytes: Buffer): Promise<string> => {
   const path = join(
-    await createTestTempDirectory("rea-unity-boundary-"),
+    await createTestTempDirectory("nre-unity-boundary-"),
     "bundle",
   );
   await writeFile(path, bytes);

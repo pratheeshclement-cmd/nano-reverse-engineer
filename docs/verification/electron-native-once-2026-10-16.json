@@ -19,12 +19,12 @@
   },
   "inputs": {
     "joplin_asar": {
-      "path": "/tmp/rea-4388-runtime-20261016/resources/app.asar",
+      "path": "/tmp/nre-4388-runtime-20261016/resources/app.asar",
       "bytes": 233575014,
       "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
     },
     "generic_electron": {
-      "path": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+      "path": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
       "bytes": 228605256,
       "sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564"
     }
@@ -41,7 +41,7 @@
     "scope": "Controlled canonical hook/minimal Electron module; actual embedded Node engine, not a real app natural bug reproduction. Same oracle/inputs, identical native controls in each pair.",
     "engines": [
       {
-        "selected_binary": "/home/yann/.cache/rea-2459/node-v24.18.0-linux-x64/bin/node",
+        "selected_binary": "/home/yann/.cache/nre-2459/node-v24.18.0-linux-x64/bin/node",
         "binary_sha256": "41a74efb34cbde5c7632cdac0cf8bd1a14d0b8d73dc1e82755014d9a9ce70f5c",
         "electron_run_as_node": false,
         "node": "24.18.0",
@@ -51,7 +51,7 @@
         "candidate_disagreements": 0
       },
       {
-        "selected_binary": "/tmp/rea-4593-native-once-20261016-y_540lpi/node-v24.21.0-linux-x64/bin/node",
+        "selected_binary": "/tmp/nre-4593-native-once-20261016-y_540lpi/node-v24.21.0-linux-x64/bin/node",
         "binary_sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
         "electron_run_as_node": false,
         "node": "24.21.0",
@@ -61,7 +61,7 @@
         "candidate_disagreements": 0
       },
       {
-        "selected_binary": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+        "selected_binary": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
         "binary_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
         "electron_run_as_node": true,
         "node": "24.21.0",
@@ -102,7 +102,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-2f8746ac60cd440d982935e8901a03e2.scope",
+      "scope": "nre-efficiency-2f8746ac60cd440d982935e8901a03e2.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -125,7 +125,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-8aa5a516d61946e894ff6ba9c8db8c29.scope",
+      "scope": "nre-efficiency-8aa5a516d61946e894ff6ba9c8db8c29.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -150,7 +150,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-7c4592b58e5e45e2b18a849d93c188ca.scope",
+      "scope": "nre-efficiency-7c4592b58e5e45e2b18a849d93c188ca.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -174,7 +174,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-81bb56f7d82c42af877e926613a1a24e.scope",
+      "scope": "nre-efficiency-81bb56f7d82c42af877e926613a1a24e.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -198,7 +198,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-8b50227dd214474b9e5f9a4a12a78c71.scope",
+      "scope": "nre-efficiency-8b50227dd214474b9e5f9a4a12a78c71.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -221,7 +221,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-431fa65be8324104a4a38f7edd5f53d5.scope",
+      "scope": "nre-efficiency-431fa65be8324104a4a38f7edd5f53d5.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -248,7 +248,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-5c90dc12aeea48b1896ee076eee9b36f.scope",
+      "scope": "nre-efficiency-5c90dc12aeea48b1896ee076eee9b36f.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -273,7 +273,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-b0eff6ec82054593b2b73ed7188c6936.scope",
+      "scope": "nre-efficiency-b0eff6ec82054593b2b73ed7188c6936.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -281,8 +281,8 @@
       }
     },
     "summary": {
-      "profile": "/tmp/rea-4593-native-once-20261016-y_540lpi/trials/joplin-review-gaps-xvfb/profiles/joplin-shell-9S4XHt",
-      "runtime": "/home/yann/yann/rea-electron-native-once-4593-20261016",
+      "profile": "/tmp/nre-4593-native-once-20261016-y_540lpi/trials/joplin-review-gaps-xvfb/profiles/joplin-shell-9S4XHt",
+      "runtime": "/home/yann/yann/nre-electron-native-once-4593-20261016",
       "staged_hook_sha256": {
         "electron-active-hook.cjs": "c18dd3a3fb374d75d0fe545ac425e86d177c11753c10c188ba844e81e4857fa6",
         "electron-active-hook-boundaries.cjs": "dae5ac52856a30566ec027cb15ddd46c2920c8defdec11512b6c1f189314d45c"
@@ -384,7 +384,7 @@
       "workflow_status": "partial-or-failed"
     },
     "scope": "Unchanged Joplin shipped welcome PNG/reveal through actual menu and bridge; staged source hashes checked. Explicit test argv shim; overall provider cleanup failed. No synthetic app IPC channels.",
-    "baseline_reference": "PR4562 postmerge709b5cbd receipt /tmp/rea-4562-postmerge-identity.json; operation passed, cleanup failed, family observation unverified. Not an equivalent completed-task performance baseline."
+    "baseline_reference": "PR4562 postmerge709b5cbd receipt /tmp/nre-4562-postmerge-identity.json; operation passed, cleanup failed, family observation unverified. Not an equivalent completed-task performance baseline."
   },
   "initial_frozen_cohort": {
     "source_pins": {
@@ -406,7 +406,7 @@
       "scope": "Controlled canonical hook/minimal Electron module; actual embedded Node engine, not a real app natural bug reproduction. Same oracle/inputs, identical native controls in each pair.",
       "engines": [
         {
-          "selected_binary": "/home/yann/.cache/rea-2459/node-v24.18.0-linux-x64/bin/node",
+          "selected_binary": "/home/yann/.cache/nre-2459/node-v24.18.0-linux-x64/bin/node",
           "binary_sha256": "41a74efb34cbde5c7632cdac0cf8bd1a14d0b8d73dc1e82755014d9a9ce70f5c",
           "electron_run_as_node": false,
           "node": "24.18.0",
@@ -416,7 +416,7 @@
           "candidate_disagreements": 0
         },
         {
-          "selected_binary": "/tmp/rea-4593-native-once-20261016-y_540lpi/node-v24.21.0-linux-x64/bin/node",
+          "selected_binary": "/tmp/nre-4593-native-once-20261016-y_540lpi/node-v24.21.0-linux-x64/bin/node",
           "binary_sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
           "electron_run_as_node": false,
           "node": "24.21.0",
@@ -426,7 +426,7 @@
           "candidate_disagreements": 0
         },
         {
-          "selected_binary": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+          "selected_binary": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
           "binary_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
           "electron_run_as_node": true,
           "node": "24.21.0",
@@ -464,7 +464,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-90576d97ccf34cf09d63c1a12baa2345.scope",
+        "scope": "nre-efficiency-90576d97ccf34cf09d63c1a12baa2345.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -487,7 +487,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-9a5cb7174725437690c1ab60386458ca.scope",
+        "scope": "nre-efficiency-9a5cb7174725437690c1ab60386458ca.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -517,7 +517,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-455c51b768b04dc6b90159072d1fd0ee.scope",
+        "scope": "nre-efficiency-455c51b768b04dc6b90159072d1fd0ee.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -540,7 +540,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-b07c35f24b544074a6e2303d6feddd8a.scope",
+        "scope": "nre-efficiency-b07c35f24b544074a6e2303d6feddd8a.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -563,7 +563,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-5c90dc12aeea48b1896ee076eee9b36f.scope",
+        "scope": "nre-efficiency-5c90dc12aeea48b1896ee076eee9b36f.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -586,7 +586,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-08045280341044fd96b4316352d5b8c1.scope",
+        "scope": "nre-efficiency-08045280341044fd96b4316352d5b8c1.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -611,7 +611,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-93a5268db7374b338976c7eca7e2ade4.scope",
+        "scope": "nre-efficiency-93a5268db7374b338976c7eca7e2ade4.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -619,8 +619,8 @@
         }
       },
       "summary": {
-        "profile": "/tmp/rea-4593-native-once-20261016-y_540lpi/trials/joplin-frozen/profiles/joplin-shell-7Kc9ed",
-        "runtime": "/home/yann/yann/rea-electron-native-once-4593-20261016",
+        "profile": "/tmp/nre-4593-native-once-20261016-y_540lpi/trials/joplin-frozen/profiles/joplin-shell-7Kc9ed",
+        "runtime": "/home/yann/yann/nre-electron-native-once-4593-20261016",
         "staged_hook_sha256": {
           "electron-active-hook.cjs": "b0a7d4a05ac3602cd8c00b3288b5e88845cef4d26ebb0fe538d01e4d57fde911",
           "electron-active-hook-boundaries.cjs": "dae5ac52856a30566ec027cb15ddd46c2920c8defdec11512b6c1f189314d45c"
@@ -722,7 +722,7 @@
         "workflow_status": "partial-or-failed"
       },
       "scope": "Unchanged Joplin shipped welcome PNG/reveal through actual menu and bridge; staged source hashes checked. Explicit test argv shim; overall provider cleanup failed. No synthetic app IPC channels.",
-      "baseline_reference": "PR4562 postmerge709b5cbd receipt /tmp/rea-4562-postmerge-identity.json; operation passed, cleanup failed, family observation unverified. Not an equivalent completed-task performance baseline."
+      "baseline_reference": "PR4562 postmerge709b5cbd receipt /tmp/nre-4562-postmerge-identity.json; operation passed, cleanup failed, family observation unverified. Not an equivalent completed-task performance baseline."
     }
   },
   "cleanup_cohort": {
@@ -758,7 +758,7 @@
         "oom_kill": 0,
         "oom_group_kill": 0
       },
-      "scope": "rea-efficiency-c93b2523e1c740de9b81820e68fab5e6.scope",
+      "scope": "nre-efficiency-c93b2523e1c740de9b81820e68fab5e6.scope",
       "scope_poststate": "ActiveState=inactive\nSubState=dead",
       "observer_sources_sha256": {
         "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -782,7 +782,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-7cab769254a74ee59acfd21ad079b254.scope",
+        "scope": "nre-efficiency-7cab769254a74ee59acfd21ad079b254.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -805,7 +805,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-8101cfe97d434a8f80d13d1cbba070f1.scope",
+        "scope": "nre-efficiency-8101cfe97d434a8f80d13d1cbba070f1.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -828,7 +828,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-6e4bb16253ac44d2bef40dc803a7b978.scope",
+        "scope": "nre-efficiency-6e4bb16253ac44d2bef40dc803a7b978.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -853,7 +853,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-86a605c8eb8243e7b7f136962ec6d7e5.scope",
+        "scope": "nre-efficiency-86a605c8eb8243e7b7f136962ec6d7e5.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -861,8 +861,8 @@
         }
       },
       "summary": {
-        "profile": "/tmp/rea-4593-native-once-20261016-y_540lpi/trials/joplin-postcleanup/profiles/joplin-shell-JD5Fex",
-        "runtime": "/home/yann/yann/rea-electron-native-once-4593-20261016",
+        "profile": "/tmp/nre-4593-native-once-20261016-y_540lpi/trials/joplin-postcleanup/profiles/joplin-shell-JD5Fex",
+        "runtime": "/home/yann/yann/nre-electron-native-once-4593-20261016",
         "staged_hook_sha256": {
           "electron-active-hook.cjs": "146e7e6b08e51a7a73cd0d5a5f3512ffdfa507ffaf4f70b49e3a3979f1582cc4",
           "electron-active-hook-boundaries.cjs": "dae5ac52856a30566ec027cb15ddd46c2920c8defdec11512b6c1f189314d45c"
@@ -985,7 +985,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-f255d93c8b744720a7239a605c40c958.scope",
+        "scope": "nre-efficiency-f255d93c8b744720a7239a605c40c958.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1012,7 +1012,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-82e4413956e74c7381cd3c6e00889e78.scope",
+        "scope": "nre-efficiency-82e4413956e74c7381cd3c6e00889e78.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1039,7 +1039,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-8e170107c2434dcb9201473cef7d2e7b.scope",
+        "scope": "nre-efficiency-8e170107c2434dcb9201473cef7d2e7b.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1066,7 +1066,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-bd3be0af4020432ea26c6bd566077e62.scope",
+        "scope": "nre-efficiency-bd3be0af4020432ea26c6bd566077e62.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1093,7 +1093,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-286f120b15f84487bf1a38f63c3213b2.scope",
+        "scope": "nre-efficiency-286f120b15f84487bf1a38f63c3213b2.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1120,7 +1120,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-83b7d1de0a3a4c84be5c2253862ca7c4.scope",
+        "scope": "nre-efficiency-83b7d1de0a3a4c84be5c2253862ca7c4.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1147,7 +1147,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-2462ebd367634f3dbf7febf54480db49.scope",
+        "scope": "nre-efficiency-2462ebd367634f3dbf7febf54480db49.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1174,7 +1174,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-867285e4131442bc92ad883f7abfd0ca.scope",
+        "scope": "nre-efficiency-867285e4131442bc92ad883f7abfd0ca.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1201,7 +1201,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-be01865eee9e429c965f7e582bc5cae6.scope",
+        "scope": "nre-efficiency-be01865eee9e429c965f7e582bc5cae6.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1228,7 +1228,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-515a84afc181411d9c4e8b5b83b12743.scope",
+        "scope": "nre-efficiency-515a84afc181411d9c4e8b5b83b12743.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1255,7 +1255,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-cab90aa328344477bd4d9348f3435892.scope",
+        "scope": "nre-efficiency-cab90aa328344477bd4d9348f3435892.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1282,7 +1282,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-3db884621dd546d2bed1fe8e065f984c.scope",
+        "scope": "nre-efficiency-3db884621dd546d2bed1fe8e065f984c.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1309,7 +1309,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-9c9ed60c3ea74be88843f8271a6dd67b.scope",
+        "scope": "nre-efficiency-9c9ed60c3ea74be88843f8271a6dd67b.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1336,7 +1336,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-c42b29041a68494383e3f368cad9a117.scope",
+        "scope": "nre-efficiency-c42b29041a68494383e3f368cad9a117.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1363,7 +1363,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-2e2cb007a3cd40dba7cbcc6e4ecf182d.scope",
+        "scope": "nre-efficiency-2e2cb007a3cd40dba7cbcc6e4ecf182d.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1390,7 +1390,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-1d27da6164454c97a4e51ec0115d079e.scope",
+        "scope": "nre-efficiency-1d27da6164454c97a4e51ec0115d079e.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1417,7 +1417,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-27250ff8d4534d2ebc94e91edbf22a29.scope",
+        "scope": "nre-efficiency-27250ff8d4534d2ebc94e91edbf22a29.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1444,7 +1444,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-59c3e4ccf8ff4778b2ee5d359c3f4bbf.scope",
+        "scope": "nre-efficiency-59c3e4ccf8ff4778b2ee5d359c3f4bbf.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1471,7 +1471,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-7fe6563edae74f908b4a90482d56d9fd.scope",
+        "scope": "nre-efficiency-7fe6563edae74f908b4a90482d56d9fd.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1498,7 +1498,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-2001c9020a924454ac7f3b3bf1639135.scope",
+        "scope": "nre-efficiency-2001c9020a924454ac7f3b3bf1639135.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1525,7 +1525,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-c611888e704c475397d189aa19738300.scope",
+        "scope": "nre-efficiency-c611888e704c475397d189aa19738300.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1552,7 +1552,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-0454da0dfd9145459041580198f94969.scope",
+        "scope": "nre-efficiency-0454da0dfd9145459041580198f94969.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1591,7 +1591,7 @@
       "scope": "Controlled canonical hook/minimal Electron module; actual embedded Node engine, not a real app natural bug reproduction. Same oracle/inputs, identical native controls in each pair.",
       "engines": [
         {
-          "selected_binary": "/home/yann/.cache/rea-2459/node-v24.18.0-linux-x64/bin/node",
+          "selected_binary": "/home/yann/.cache/nre-2459/node-v24.18.0-linux-x64/bin/node",
           "binary_sha256": "41a74efb34cbde5c7632cdac0cf8bd1a14d0b8d73dc1e82755014d9a9ce70f5c",
           "electron_run_as_node": false,
           "node": "24.18.0",
@@ -1601,7 +1601,7 @@
           "candidate_disagreements": 0
         },
         {
-          "selected_binary": "/tmp/rea-4593-native-once-20261016-y_540lpi/node-v24.21.0-linux-x64/bin/node",
+          "selected_binary": "/tmp/nre-4593-native-once-20261016-y_540lpi/node-v24.21.0-linux-x64/bin/node",
           "binary_sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
           "electron_run_as_node": false,
           "node": "24.21.0",
@@ -1611,7 +1611,7 @@
           "candidate_disagreements": 0
         },
         {
-          "selected_binary": "/tmp/rea-4390-realapps-20261016/electron-44.7.0/electron",
+          "selected_binary": "/tmp/nre-4390-realapps-20261016/electron-44.7.0/electron",
           "binary_sha256": "10a14d05c6ff4f94075cfb3eeb6ed6571be33ebcc08cbd675b5ce9ff84706564",
           "electron_run_as_node": true,
           "node": "24.21.0",
@@ -1653,7 +1653,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-9cc039a7f3ec4e1988938996b2ebf29f.scope",
+        "scope": "nre-efficiency-9cc039a7f3ec4e1988938996b2ebf29f.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1676,7 +1676,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-4f44b580349f4987b2507341298d16c3.scope",
+        "scope": "nre-efficiency-4f44b580349f4987b2507341298d16c3.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1701,7 +1701,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-24c3cfa3395e4587b441729985bd4798.scope",
+        "scope": "nre-efficiency-24c3cfa3395e4587b441729985bd4798.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1724,7 +1724,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-ec8d5e8c02114bfb8a36aaa0733596ce.scope",
+        "scope": "nre-efficiency-ec8d5e8c02114bfb8a36aaa0733596ce.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1747,7 +1747,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-260bf0572cf743b6b18b1aa8a8c1b621.scope",
+        "scope": "nre-efficiency-260bf0572cf743b6b18b1aa8a8c1b621.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1771,7 +1771,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-b1f4056f9bae4bbfaa04cd1e58e2890d.scope",
+        "scope": "nre-efficiency-b1f4056f9bae4bbfaa04cd1e58e2890d.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1796,7 +1796,7 @@
           "oom_kill": 0,
           "oom_group_kill": 0
         },
-        "scope": "rea-efficiency-453f90f1ed1a4105ba56515f94b2d1a3.scope",
+        "scope": "nre-efficiency-453f90f1ed1a4105ba56515f94b2d1a3.scope",
         "scope_poststate": "ActiveState=inactive\nSubState=dead",
         "observer_sources_sha256": {
           "resource-run.py": "7728862171415e7dee2c11af2ead2b9a54265fccaf82a7113956d36b29065e33",
@@ -1804,8 +1804,8 @@
         }
       },
       "summary": {
-        "profile": "/tmp/rea-4593-native-once-20261016-y_540lpi/trials/joplin-final32/profiles/joplin-shell-p2SQVa",
-        "runtime": "/home/yann/yann/rea-electron-native-once-4593-20261016",
+        "profile": "/tmp/nre-4593-native-once-20261016-y_540lpi/trials/joplin-final32/profiles/joplin-shell-p2SQVa",
+        "runtime": "/home/yann/yann/nre-electron-native-once-4593-20261016",
         "staged_hook_sha256": {
           "electron-active-hook.cjs": "ea47aad9f9f80aaf46d25a8e7689986613e7c6b83d1d3bcf1af010f077397418",
           "electron-active-hook-boundaries.cjs": "dae5ac52856a30566ec027cb15ddd46c2920c8defdec11512b6c1f189314d45c"
@@ -1907,14 +1907,14 @@
         "workflow_status": "partial-or-failed"
       },
       "scope": "Unchanged Joplin shipped welcome PNG/reveal through actual menu and bridge; staged source hashes checked. Explicit test argv shim; overall provider cleanup failed. No synthetic app IPC channels.",
-      "baseline_reference": "PR4562 postmerge709b5cbd receipt /tmp/rea-4562-postmerge-identity.json; operation passed, cleanup failed, family observation unverified. Not an equivalent completed-task performance baseline."
+      "baseline_reference": "PR4562 postmerge709b5cbd receipt /tmp/nre-4562-postmerge-identity.json; operation passed, cleanup failed, family observation unverified. Not an equivalent completed-task performance baseline."
     }
   },
   "review_followup": {
     "source": "4ebd0f60e860daa57a7033c6e77ea7f5f4b8ac97",
     "findings": [
-      "https://github.com/morluto/rea/pull/4605#discussion_r4299895070",
-      "https://github.com/morluto/rea/pull/4605#discussion_r4299895076"
+      "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/4605#discussion_r4299895070",
+      "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/4605#discussion_r4299895076"
     ],
     "root_cause": "Success-only gap finalization and silent non-callable call/apply forwarding.",
     "fix": "The once owner finalizes its missing gap in finally, after restoring scope; the callable metadata owner records failed non-callable dispatch reads without changing the returned value.",

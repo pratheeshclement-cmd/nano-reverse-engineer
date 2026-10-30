@@ -43,7 +43,7 @@ if (process.argv.length > 3 || (mode !== undefined && !psp))
   throw new Error(
     "Usage: node scripts/verify-real-ghidra-mips.mjs [--psp|--psp-missing-extension]",
   );
-const prefix = psp ? "rea_psp" : "rea_mips";
+const prefix = psp ? "nre_psp" : "nre_mips";
 if (!["linux", "darwin"].includes(process.platform))
   throw new Error(
     "MIPS verification requires a supported Linux/macOS Ghidra host",
@@ -62,20 +62,20 @@ if (installation.status !== "available")
     `Ghidra prerequisite unavailable: ${JSON.stringify(installation)}`,
   );
 const execute = promisify(execFile);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-mips-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-mips-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
 };
 for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
   if (process.env[setting] !== undefined) env[setting] = process.env[setting];
@@ -88,10 +88,10 @@ for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
 async function verifySoftFloat(call, symbols, byteOrder) {
   const boundaries = {};
   for (const name of [
-    "rea_mips_soft_pick",
-    "rea_mips_soft_wide",
-    "rea_mips_soft_mixed",
-    "rea_mips_soft_struct",
+    "nre_mips_soft_pick",
+    "nre_mips_soft_wide",
+    "nre_mips_soft_mixed",
+    "nre_mips_soft_struct",
   ]) {
     const api = await call("inspect_native_api", { procedure: symbols[name] });
     boundaries[name] = api.boundary;
@@ -99,7 +99,7 @@ async function verifySoftFloat(call, symbols, byteOrder) {
   assertMipsSoftFloatStorage(boundaries, byteOrder);
   const caller = functionDossierSchema.parse(
     await call("analyze_function", {
-      procedure: symbols.rea_mips_soft_caller,
+      procedure: symbols.nre_mips_soft_caller,
       detail: "complete",
     }),
   );
@@ -151,7 +151,7 @@ try {
       assert.deepEqual(
         resolved.value.mips.limitations ?? [],
         legacy.limitations,
-        "REA legacy ABI-record absence interpretation disagrees with GNU readelf",
+        "NRE legacy ABI-record absence interpretation disagrees with GNU readelf",
       );
       assert.equal(resolved.value.sha256, fixture.sha256);
       const snapshotPath = join(workspace, `${byteOrder}-legacy.snapshot.json`);
@@ -162,7 +162,7 @@ try {
         stderr: "pipe",
       });
       const client = new Client({
-        name: "rea-real-mips-legacy-proof",
+        name: "nre-real-mips-legacy-proof",
         version: "1",
       });
       let stderr = "";
@@ -193,23 +193,23 @@ try {
           `MIPS:${byteOrder === "little" ? "LE" : "BE"}:32:default`,
         );
         const procedures = await call("list_procedures");
-        const entry = procedures.find((p) => p.value === "rea_mips_entry");
+        const entry = procedures.find((p) => p.value === "nre_mips_entry");
         assert.ok(entry, "Entry function missing from legacy inventory");
         assert.equal(
           BigInt(entry.address),
-          BigInt(legacy.symbols.rea_mips_entry),
+          BigInt(legacy.symbols.nre_mips_entry),
         );
         const probe = await call("inspect_native_instruction", {
-          address: legacy.symbols.rea_mips_probe,
+          address: legacy.symbols.nre_mips_probe,
         });
         const probeBranch = await call("inspect_native_instruction", {
-          address: `0x${(BigInt(legacy.symbols.rea_mips_probe) + 4n).toString(16)}`,
+          address: `0x${(BigInt(legacy.symbols.nre_mips_probe) + 4n).toString(16)}`,
         });
         assertMipsProbe(
           probe,
           probeBranch,
           byteOrder,
-          legacy.symbols.rea_mips_probe,
+          legacy.symbols.nre_mips_probe,
         );
         const dossier = functionDossierSchema.parse(
           await call("analyze_function", {
@@ -311,13 +311,13 @@ try {
       assert.deepEqual(
         resolved.value.mips,
         independent.mips,
-        "REA PSP ELF/ABI interpretation disagrees with GNU readelf and raw ABI bytes",
+        "NRE PSP ELF/ABI interpretation disagrees with GNU readelf and raw ABI bytes",
       );
     } else {
       assert.deepEqual(
         resolved.value.mips,
         independent.mips,
-        "REA ELF/ABI interpretation disagrees with GNU readelf",
+        "NRE ELF/ABI interpretation disagrees with GNU readelf",
       );
     }
     assert.equal(resolved.value.sha256, fixture.sha256);
@@ -331,7 +331,7 @@ try {
       env,
       stderr: "pipe",
     });
-    const client = new Client({ name: "rea-real-mips-proof", version: "1" });
+    const client = new Client({ name: "nre-real-mips-proof", version: "1" });
     let stderr = "";
     transport.stderr?.on("data", (chunk) => {
       stderr = (stderr + chunk.toString()).slice(-65536);
@@ -437,16 +437,16 @@ try {
         address: independent.symbols[`${prefix}_marker`],
         length: Buffer.byteLength(
           psp
-            ? "rea-psp-source-owned-fixture\0"
-            : "rea-mips-source-owned-fixture\0",
+            ? "nre-psp-source-owned-fixture\0"
+            : "nre-mips-source-owned-fixture\0",
         ),
       });
       assert.equal(
         marker.bytes_hex,
         Buffer.from(
           psp
-            ? "rea-psp-source-owned-fixture\0"
-            : "rea-mips-source-owned-fixture\0",
+            ? "nre-psp-source-owned-fixture\0"
+            : "nre-mips-source-owned-fixture\0",
         ).toString("hex"),
       );
       const callees = await call("procedure_callees", {
@@ -545,8 +545,8 @@ try {
         const other = await buildPspFixture(alternate, 11);
         assert.notEqual(other.sha256, fixture.sha256);
         assert.equal(
-          other.symbols.rea_psp_global,
-          fixture.symbols.rea_psp_global,
+          other.symbols.nre_psp_global,
+          fixture.symbols.nre_psp_global,
           "Target-switch control must reuse the same global address",
         );
         for (const item of [fixture, other, fixture]) {
@@ -556,7 +556,7 @@ try {
           });
           assert.equal(selected.sha256, item.sha256);
           const word = await call("read_bytes", {
-            address: item.symbols.rea_psp_global,
+            address: item.symbols.nre_psp_global,
             length: 4,
           });
           const expected = Buffer.alloc(4);
@@ -674,7 +674,7 @@ try {
               entrypoint,
               "function",
               carvedPath,
-              independent.symbols.rea_mips_entry,
+              independent.symbols.nre_mips_entry,
               "--provider",
               "ghidra",
               "--json",

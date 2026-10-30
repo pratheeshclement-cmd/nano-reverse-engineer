@@ -21,16 +21,16 @@ import { artifactExtractionResultSchema } from "../../../src/domain/artifactGrap
 it.each(["full", "compact"] as const)(
   "exposes ESP image facts and segment extraction through MCP (%s)",
   async (profile) => {
-    const root = await createTestTempDirectory("rea-esp-mcp-");
+    const root = await createTestTempDirectory("nre-esp-mcp-");
     const path = join(root, "firmware.bin");
     const image = signedEspImage(espImage({ segments: ESP32C3_APP_SEGMENTS }), [
       "ecdsa-p256",
     ]);
     await writeFile(path, image);
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_TOOL_FAMILIES: "session,artifact,application",
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_TOOL_FAMILIES: "session,artifact,application",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: profile,
     });
     let outputRoot: string | undefined;
     try {
@@ -51,7 +51,7 @@ it.each(["full", "compact"] as const)(
         appended_sha256: { status: "valid" },
         undescribed_trailing: [],
         signature_sector_offset: 4096,
-        descriptor: { kind: "app", project_name: "rea_esp_fixture" },
+        descriptor: { kind: "app", project_name: "nre_esp_fixture" },
       });
       const retained = await call("inspect_analysis_view", {
         source: {

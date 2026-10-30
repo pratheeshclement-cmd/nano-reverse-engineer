@@ -70,9 +70,9 @@ jobs:
           command -v gcc
           command -v gdb
           command -v strace
-          core_decoder_root="${RUNNER_TEMP}/rea-core-decoder"
-          core_pwndbg_root="${RUNNER_TEMP}/rea-core-pwndbg"
-          core_pwndbg_venv="${RUNNER_TEMP}/rea-core-pwndbg-venv"
+          core_decoder_root="${RUNNER_TEMP}/nre-core-decoder"
+          core_pwndbg_root="${RUNNER_TEMP}/nre-core-pwndbg"
+          core_pwndbg_venv="${RUNNER_TEMP}/nre-core-pwndbg-venv"
           python3 -m venv "${core_decoder_root}"
           "${core_decoder_root}/bin/python" -m pip install --disable-pip-version-check \
             'pwntools==4.15.0' 'pyelftools==0.33' 'unicorn==2.1.2' 'uv==0.12.0'
@@ -85,18 +85,18 @@ jobs:
             "${core_decoder_root}/bin/uv" sync --project "${core_pwndbg_root}" \
             --frozen --no-editable --no-default-groups --python /usr/bin/python3 --no-managed-python
           test -z "$(git -C "${core_pwndbg_root}" status --porcelain --untracked-files=no)"
-          echo "REA_PWNTOOLS_PYTHON=${core_decoder_root}/bin/python" >> "${GITHUB_ENV}"
-          echo "REA_PWNDBG_GDB=$(command -v gdb)" >> "${GITHUB_ENV}"
-          echo "REA_PWNDBG_GDBINIT=${core_pwndbg_root}/gdbinit.py" >> "${GITHUB_ENV}"
-          echo "REA_PWNDBG_VENV_PATH=${core_pwndbg_venv}" >> "${GITHUB_ENV}"
-          echo "REA_VERIFY_STRACE_COMMAND=$(command -v strace)" >> "${GITHUB_ENV}"
+          echo "NRE_PWNTOOLS_PYTHON=${core_decoder_root}/bin/python" >> "${GITHUB_ENV}"
+          echo "NRE_PWNDBG_GDB=$(command -v gdb)" >> "${GITHUB_ENV}"
+          echo "NRE_PWNDBG_GDBINIT=${core_pwndbg_root}/gdbinit.py" >> "${GITHUB_ENV}"
+          echo "NRE_PWNDBG_VENV_PATH=${core_pwndbg_venv}" >> "${GITHUB_ENV}"
+          echo "NRE_VERIFY_STRACE_COMMAND=$(command -v strace)" >> "${GITHUB_ENV}"
       - name: Build and install the exact package in isolated runner storage
         shell: bash
         run: |
           npm run build:cached
-          npm pack --ignore-scripts --json --pack-destination "${RUNNER_TEMP}" > "${RUNNER_TEMP}/rea-core-pack.json"
-          core_package_name=$(node -p 'JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"))[0].filename' "${RUNNER_TEMP}/rea-core-pack.json")
-          npm install --prefix "${RUNNER_TEMP}/rea-core-installed" --ignore-scripts --no-fund --no-audit "${RUNNER_TEMP}/${core_package_name}"
+          npm pack --ignore-scripts --json --pack-destination "${RUNNER_TEMP}" > "${RUNNER_TEMP}/nre-core-pack.json"
+          core_package_name=$(node -p 'JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"))[0].filename' "${RUNNER_TEMP}/nre-core-pack.json")
+          npm install --prefix "${RUNNER_TEMP}/nre-core-installed" --ignore-scripts --no-fund --no-audit "${RUNNER_TEMP}/${core_package_name}"
       - name: Verify installed CLI and MCP against the source-owned recording
         shell: bash
-        run: node scripts/verify-recorded-crash.mjs "${RUNNER_TEMP}/rea-core-installed/node_modules/rea-agents/scripts/rea.mjs"
+        run: node scripts/verify-recorded-crash.mjs "${RUNNER_TEMP}/nre-core-installed/node_modules/nano-reverse-engineer/scripts/nre.mjs"

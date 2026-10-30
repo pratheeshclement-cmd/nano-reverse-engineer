@@ -42,7 +42,7 @@ export async function buildMipsFixture(
     "-static",
     "-O0",
     "-g",
-    "-Wl,-e,rea_mips_entry",
+    "-Wl,-e,nre_mips_entry",
     "-Wl,--build-id=none",
     source,
     ...(soft ? [softSource] : []),
@@ -112,7 +112,7 @@ export async function buildMipsFixture(
           );
     if (named === -1)
       throw new Error("Legacy fixture lacks the expected ABI section name");
-    raw.write("x.rea.no.flags", named, "ascii");
+    raw.write("x.nre.no.flags", named, "ascii");
     await writeFile(path, raw);
     const patched = await readFile(path);
     const patchedFlags =
@@ -200,7 +200,7 @@ async function compileMipsFixture(
   args,
   options = {},
 ) {
-  const compiler = process.env.REA_MIPS_CLANG ?? "clang";
+  const compiler = process.env.NRE_MIPS_CLANG ?? "clang";
   const version = await execute(compiler, ["--version"], { timeout: 10000 });
   await execute(compiler, args, { timeout: 60000 });
   const bytes = await readFile(path);

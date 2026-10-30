@@ -122,7 +122,7 @@ it.each(["analyze_function", "decompile_all"] as const)(
     const { client, ledger } = await connect(true, dossier, undefined, [
       source,
     ]);
-    const parent = await createTestTempDirectory("rea-plain-source-");
+    const parent = await createTestTempDirectory("nre-plain-source-");
     const reply = await client.callTool({
       name: operation,
       arguments:

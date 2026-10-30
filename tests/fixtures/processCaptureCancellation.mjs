@@ -26,7 +26,7 @@ if (mode === "settlement") {
     await publishReadyMarker({
       rootPid: process.pid,
       childPid: child.pid,
-      runId: process.env.REA_PROCESS_RUN_ID,
+      runId: process.env.NRE_PROCESS_RUN_ID,
     });
     child.disconnect();
     child.unref();
@@ -56,7 +56,7 @@ if (mode === "settlement") {
   else {
     await publishReadyMarker({
       rootPid: process.pid,
-      runId: process.env.REA_PROCESS_RUN_ID,
+      runId: process.env.NRE_PROCESS_RUN_ID,
     });
     process.stdout.write("owned workload ready\n");
   }

@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Initial-Translation: Machine-assisted baseline; see website/locales/NreDME.md for review workflow\n"
+"X-Initial-Translation: Machine-assisted baseline; see website/locales/README.md for review workflow\n"
 
 #: website/public/blog/index.html:111
 msgctxt "page:blog/index.html"
@@ -55,7 +55,7 @@ msgstr ""
 
 #: website/public/blog/index.html:214 website/public/blog/index.html:229
 msgctxt "page:blog/index.html"
-msgid "Nred the article"
+msgid "Read the article"
 msgstr "Baca artikelnya"
 
 #: website/public/blog/index.html:232
@@ -835,11 +835,11 @@ msgstr "Dua gagasan rekonstruksi yang berbeda"
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"GensokyoClub's {ph0}public NreDME{ph1} makes its disagreement with this kind"
+"GensokyoClub's {ph0}public README{ph1} makes its disagreement with this kind"
 " of work explicit. The notice announces that further development will happen"
 " privately until completion. One passage Nreds:"
 msgstr ""
-"GensokyoClub {ph0}NreDME publik{ph1} membuat ketidaksetujuannya dengan jenis"
+"GensokyoClub {ph0}README publik{ph1} membuat ketidaksetujuannya dengan jenis"
 " pekerjaan ini menjadi eksplisit. Pemberitahuan tersebut mengumumkan bahwa "
 "pengembangan lebih lanjut akan dilakukan secara pribadi hingga selesai. Satu"
 " bagian berbunyi:"
@@ -957,7 +957,7 @@ msgstr ""
 "jalan."
 
 #. {ph0}: <a
-#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/NreDME.md#important-
+#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/README.md#important-
 #. notice" >
 #. {ph1}: </a >
 #. {ph2}: <a
@@ -965,18 +965,18 @@ msgstr ""
 #. >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/NreDME.md#credits-
+#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/README.md#credits-
 #. and-provenance" >
 #. {ph5}: </a >
 #: website/public/blog/touhou-reconstruction/index.html:608
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"Source: GensokyoClub's {ph0}NreDME notice{ph1}, checked on 10 October 2026, "
+"Source: GensokyoClub's {ph0}README notice{ph1}, checked on 10 October 2026, "
 "and its {ph2}contribution policy{ph3}. The quotation is a shortened excerpt."
 " TH08's {ph4}credits and provenance{ph5} record the continuation boundary."
 msgstr ""
-"Sumber: GensokyoClub {ph0}Pemberitahuan NreDME{ph1}, diperiksa pada 10 "
+"Sumber: GensokyoClub {ph0}Pemberitahuan README{ph1}, diperiksa pada 10 "
 "Oktober 2026, dan {ph2}kebijakan kontribusi{ph3}. Kutipannya adalah kutipan "
 "singkat.  TH08 {ph4}kredit dan asalnya{ph5} catat batas kelanjutannya."
 
@@ -1478,7 +1478,7 @@ msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
 "The TH08 bug shows why those checks deserve engineering attention of their "
 "own. When the same comparison is used across hundreds of functions, a gap in"
-" it can spNred much further than a mistake in one implementation. Testing "
+" it can spRead much further than a mistake in one implementation. Testing "
 "the checker improves the feedback available to all that later work."
 msgstr ""
 "Bug TH08 menunjukkan mengapa pemeriksaan tersebut layak mendapat perhatian "
@@ -1918,7 +1918,7 @@ msgstr "{ph0}Mainkan dan ubah kecepatannya{ph1}"
 #: website/public/examples/dino-lab/index.html:219
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Nred the recovered rule{ph1}"
+msgid "{ph0}Read the recovered rule{ph1}"
 msgstr "{ph0}Baca aturan yang dipulihkan{ph1}"
 
 #. {ph0}: <a href="#check">
@@ -2007,7 +2007,7 @@ msgstr ""
 
 #: website/public/examples/dino-lab/index.html:302
 msgctxt "page:examples/dino-lab/index.html"
-msgid "Nred the script Nre returned"
+msgid "Read the script Nre returned"
 msgstr "Baca script Nre kembali"
 
 #. {ph0}: <a href="https://wayou.github.io/t-rex-runner/" >
@@ -2069,7 +2069,7 @@ msgstr ""
 #: website/public/examples/dino-lab/index.html:349
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Download the speed rule{ph1} · {ph2}Nred the game code{ph3}"
+msgid "{ph0}Download the speed rule{ph1} · {ph2}Read the game code{ph3}"
 msgstr "{ph0}Unduh aturan kecepatan{ph1} · {ph2}Baca kode permainannya{ph3}"
 
 #: website/public/examples/dino-lab/index.html:357
@@ -2220,7 +2220,7 @@ msgstr "Game Dinosaurus Chrome: Bangun Kembali Aturan Kecepatannya-Nre"
 #: website/public/examples/dino-lab/index.html:7
 msgctxt "page:examples/dino-lab/index.html"
 msgid ""
-"Nred the dinosaur game’s speed rule with Nre, rebuild it, then change the "
+"Read the dinosaur game’s speed rule with Nre, rebuild it, then change the "
 "speed and play."
 msgstr ""
 "Baca aturan kecepatan permainan dinosaurus dengan Nre, bangun kembali, lalu "
@@ -2741,7 +2741,7 @@ msgstr ""
 "{ph0}Perbarui Nre {ph1}, mulai ulang agen Anda dan coba lagi tugas yang "
 "sama. Rilis terbaru mungkin sudah memperbaiki masalah."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/faq/index.html:517
 #, python-brace-format
@@ -2780,9 +2780,9 @@ msgctxt "page:faq/index.html"
 msgid "How can I share an example or contribute?"
 msgstr "Bagaimana saya bisa membagikan contoh atau berkontribusi?"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/pulls">
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls">
 #. {ph3}: </a >
 #: website/public/faq/index.html:543
 #, python-brace-format
@@ -3077,7 +3077,7 @@ msgstr "Dari tombol ke penulis file"
 msgctxt "page:first-investigation/index.html"
 msgid ""
 "Nre’s static analysis pairs the message with its handler. The destination is"
-" Nred from code."
+" Read from code."
 msgstr ""
 "Analisis statis Nre memasangkan pesan dengan penangannya. Tujuan dibaca dari"
 " kode."
@@ -3175,7 +3175,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:first-investigation/index.html"
 msgid ""
-"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Nred the original "
+"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Read the original "
 "instructions and the reconstruction’s checks.{ph3}"
 msgstr ""
 "{ph0}Bagaimana DX-Ball menghitung pemosisian suara stereo{ph1}{ph2}Baca "
@@ -3771,7 +3771,7 @@ msgstr ""
 "{ph0}Pilih panduan investigasi{ph1}{ph2}Contoh yang berfungsi untuk biner, "
 "aplikasi Electron, dan browser.{ph3}"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues">
 #. {ph1}: </a >
 #. {ph2}: <span>
 #. {ph3}: </span>
@@ -3948,7 +3948,7 @@ msgstr "{ph0}Tangkap dari CLI {ph1}"
 #: website/public/guides/browser/index.html:219
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
-msgid "{ph0}Nred the request and script{ph1}"
+msgid "{ph0}Read the request and script{ph1}"
 msgstr "{ph0}Baca permintaan dan skrip{ph1}"
 
 #: website/public/guides/browser/index.html:224
@@ -4022,7 +4022,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
 msgid ""
-"{ph0}03 · Your agent{ph1}{ph2}Nred the export code{ph3}{ph4}Connect the "
+"{ph0}03 · Your agent{ph1}{ph2}Read the export code{ph3}{ph4}Connect the "
 "observed request to {ph5} in {ph6}.{ph7}"
 msgstr ""
 "{ph0}03 * Agen Anda{ph1}{ph2}Baca kode ekspor{ph3}{ph4}Hubungkan permintaan "
@@ -4193,7 +4193,7 @@ msgstr ""
 
 #: website/public/guides/browser/index.html:390
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the request and export script"
+msgid "Read the request and export script"
 msgstr "Baca skrip permintaan dan ekspor"
 
 #: website/public/guides/browser/index.html:393
@@ -4249,7 +4249,7 @@ msgstr "{ph0} dengan {ph1} dan {ph2} bidang"
 
 #: website/public/guides/browser/index.html:427
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the loaded scripts"
+msgid "Read the loaded scripts"
 msgstr "Baca skrip yang dimuat"
 
 #. {ph0}: <code>export.js</code>
@@ -4258,7 +4258,7 @@ msgstr "Baca skrip yang dimuat"
 msgctxt "page:guides/browser/index.html"
 msgid ""
 "The request identifies the data source, and Nre records {ph0} as its "
-"initiator. Nred the captured script source to see how the data is used:"
+"initiator. Read the captured script source to see how the data is used:"
 msgstr ""
 "Permintaan mengidentifikasi sumber data, dan catatan Nre {ph0} sebagai "
 "inisiatornya. Baca sumber skrip yang diambil untuk melihat bagaimana data "
@@ -4346,7 +4346,7 @@ msgstr "Salin tangkap sepuluh detik berikutnya"
 
 #: website/public/guides/browser/index.html:428
 msgctxt "page:guides/browser/index.html"
-msgid "Copy Nred the loaded scripts"
+msgid "Copy Read the loaded scripts"
 msgstr "Salin baca skrip yang dimuat"
 
 #: website/public/guides/browser/index.html:516
@@ -4415,7 +4415,7 @@ msgstr "Pulihkan perhitungan posisi suara kiri / kanan"
 msgctxt "page:guides/index.html"
 msgid ""
 "Start with a Windows game executable. Inspect instructions, follow a caller,"
-" Nred numeric constants and check the recovered C."
+" Read numeric constants and check the recovered C."
 msgstr ""
 "Mulailah dengan game Windows yang dapat dieksekusi. Periksa instruksi, ikuti"
 " fungsi pemanggil, baca konstanta numerik, dan periksa C yang dipulihkan."
@@ -4592,7 +4592,7 @@ msgctxt "page:guides/javascript/index.html"
 msgid ""
 "This guide uses a small Electron app. Clicking {ph0}Export notes{ph1} calls "
 "an API in the page, crosses into the main process, and writes a CSV. The "
-"behavior is spNred across several files."
+"behavior is spRead across several files."
 msgstr ""
 "Panduan ini menggunakan aplikasi Electron kecil. Mengklik {ph0}Ekspor "
 "catatan{ph1} memanggil API di halaman, masuk ke proses utama, dan menulis "
@@ -5007,7 +5007,7 @@ msgstr "{ph0}Tanyakan pada agen Anda{ph1}"
 #: website/public/guides/native/index.html:216
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
-msgid "{ph0}Nred the Nre results{ph1}"
+msgid "{ph0}Read the Nre results{ph1}"
 msgstr "{ph0}Baca hasil Nre{ph1}"
 
 #. {ph0}: <a href="#result">
@@ -5117,7 +5117,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}Constants:{ph1} fixed numbers stored in the program, Nred as raw bytes "
+"{ph0}Constants:{ph1} fixed numbers stored in the program, Read as raw bytes "
 "and decoded."
 msgstr ""
 "{ph0}Konstanta:{ph1} nomor tetap yang disimpan dalam program, dibaca sebagai"
@@ -5138,7 +5138,7 @@ msgstr "Tiga bukti, satu perhitungan"
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Nred "
+"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Read "
 "supplies the value used by the floating-point instructions.{ph5}"
 msgstr ""
 "{ph0}01 * Instruksi{ph1}{ph2}Masukan bilangan bulat{ph3}{ph4}Pembacaan "
@@ -5214,7 +5214,7 @@ msgstr "Alat analisis mana yang harus saya gunakan?"
 
 #: website/public/guides/native/index.html:314
 msgctxt "page:guides/native/index.html"
-msgid "Nre needs one of these to Nred native programs:"
+msgid "Nre needs one of these to Read native programs:"
 msgstr "Nre membutuhkan salah satunya untuk membaca program asli:"
 
 #. {ph0}: <strong>
@@ -5337,12 +5337,12 @@ msgstr ""
 
 #: website/public/guides/native/index.html:390
 msgctxt "page:guides/native/index.html"
-msgid "Nred the Nre results"
+msgid "Read the Nre results"
 msgstr "Baca hasil Nre"
 
 #: website/public/guides/native/index.html:391
 msgctxt "page:guides/native/index.html"
-msgid "Nred the input"
+msgid "Read the input"
 msgstr "Baca inputnya"
 
 #: website/public/guides/native/index.html:400
@@ -5374,7 +5374,7 @@ msgstr ""
 
 #: website/public/guides/native/index.html:419
 msgctxt "page:guides/native/index.html"
-msgid "Nred the referenced constants"
+msgid "Read the referenced constants"
 msgstr "Baca konstanta yang dirujuk"
 
 #: website/public/guides/native/index.html:430
@@ -5474,7 +5474,7 @@ msgstr ""
 #: website/public/guides/native/index.html:496
 msgctxt "page:guides/native/index.html"
 msgid ""
-"Nred the pseudocode alongside instructions and references. When a result "
+"Read the pseudocode alongside instructions and references. When a result "
 "leaves a call or value unresolved, use that location as the next question."
 msgstr ""
 "Baca pseudocode di samping instruksi dan referensi. Saat hasil membuat "
@@ -5490,7 +5490,7 @@ msgstr "Analisis Biner Asli-Nre"
 msgctxt "page:guides/native/index.html"
 msgid ""
 "Recover a native calculation with Nre: inspect instructions, follow a "
-"caller, Nred constants and check reconstructed C."
+"caller, Read constants and check reconstructed C."
 msgstr ""
 "Pulihkan perhitungan asli dengan Nre : periksa instruksi, ikuti fungsi "
 "pemanggil, baca konstanta, dan periksa C yang direkonstruksi."
@@ -5901,7 +5901,7 @@ msgstr "Apa yang dilakukan setiap bagian"
 #, python-brace-format
 msgctxt "page:index.html"
 msgid ""
-"{ph0}01 · Nre{ph1}{ph2}Nred the running game’s script{ph3}{ph4}Return its "
+"{ph0}01 · Nre{ph1}{ph2}Read the running game’s script{ph3}{ph4}Return its "
 "actual code and settings to the agent.{ph5}"
 msgstr ""
 "{ph0}01 * Nre {ph1}{ph2}Baca skrip game yang sedang "
@@ -6387,7 +6387,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
 msgid ""
-"{ph0}02 · Nred the calculation{ph1}{ph2}Time + account key → six "
+"{ph0}02 · Read the calculation{ph1}{ph2}Time + account key → six "
 "digits{ph3}{ph4}Nre returns the methods and defaults. The agent explains how"
 " they fit together.{ph5}"
 msgstr ""
@@ -6447,7 +6447,7 @@ msgstr "{ph0}Temukan kodenya dengan Nre {ph1}"
 #: website/public/showcase/aegis/index.html:258
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
-msgid "{ph0}Nred the calculation{ph1}"
+msgid "{ph0}Read the calculation{ph1}"
 msgstr "{ph0}Baca perhitungannya{ph1}"
 
 #. {ph0}: <a href="#verify">
@@ -6688,7 +6688,7 @@ msgstr ""
 
 #: website/public/showcase/aegis/index.html:478
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the calculation"
+msgid "Read the calculation"
 msgstr "Baca perhitungannya"
 
 #. {ph0}: <strong >
@@ -6885,7 +6885,7 @@ msgstr "Jalankan pemeriksaan referensi"
 
 #: website/public/showcase/aegis/index.html:693
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the demo's calculation"
+msgid "Read the demo's calculation"
 msgstr "Baca perhitungan demo"
 
 #: website/public/showcase/aegis/index.html:697
@@ -7180,7 +7180,7 @@ msgstr "{ph0}Temukan kode pemeriksaan{ph1}"
 #: website/public/showcase/ctf/index.html:260
 #, python-brace-format
 msgctxt "page:showcase/ctf/index.html"
-msgid "{ph0}Nred one mask{ph1}"
+msgid "{ph0}Read one mask{ph1}"
 msgstr "{ph0}Baca satu topeng{ph1}"
 
 #. {ph0}: <a href="#code">
@@ -7298,7 +7298,7 @@ msgstr ""
 
 #: website/public/showcase/ctf/index.html:342
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the checker and its two helpers"
+msgid "Read the checker and its two helpers"
 msgstr "Baca pemeriksa dan dua pembantunya"
 
 #. {ph0}: <code>0x18</code>
@@ -7352,7 +7352,7 @@ msgstr ""
 
 #: website/public/showcase/ctf/index.html:414
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the mask and its target from the binary"
+msgid "Read the mask and its target from the binary"
 msgstr "Baca topeng dan targetnya dari biner"
 
 #. {ph0}: <code>MOVSX</code>
@@ -7651,7 +7651,7 @@ msgstr ""
 #. squares-flag-checker/ctfcli.yaml" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/ctf-masked-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/ctf-masked-
 #. squares.md" >
 #. {ph5}: </a >
 #: website/public/showcase/ctf/index.html:704
@@ -7999,7 +7999,7 @@ msgstr ""
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "The agent used Nre to inspect the function, follow its brick-hit caller and "
-"Nred the constants from the executable. Those results supplied the input and"
+"Read the constants from the executable. Those results supplied the input and"
 " arithmetic needed to write the C function below."
 msgstr ""
 "Agen menggunakan Nre untuk memeriksa fungsi, mengikuti fungsi pemanggilnya "
@@ -8079,7 +8079,7 @@ msgstr ""
 
 #: website/public/showcase/dx-ball/index.html:403
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "Nred the values behind the memory addresses"
+msgid "Read the values behind the memory addresses"
 msgstr "Baca nilai di balik alamat memori"
 
 #: website/public/showcase/dx-ball/index.html:424
@@ -8164,7 +8164,7 @@ msgstr "Direkonstruksi C"
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
-"{ph0}01 · Nred the input.{ph1} The instruction view in Nre's function result"
+"{ph0}01 · Read the input.{ph1} The instruction view in Nre's function result"
 " Nreds {ph2} and uses {ph3} to load the integer. Following its caller "
 "through Nre establishes the screen-coordinate meaning of the C parameter "
 "{ph4}."
@@ -8220,7 +8220,7 @@ msgstr ""
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "{ph0}04 · Apply the stored scale.{ph1} The second {ph2} Nreds {ph3}. That "
-"global is named {ph4} in the maintained source. Nre's second byte Nred "
+"global is named {ph4} in the maintained source. Nre's second byte Read "
 "establishes its initial value of {ph5}."
 msgstr ""
 "{ph0}04 * Terapkan skala yang disimpan.{ph1} Yang kedua {ph2} membaca {ph3}."
@@ -8419,7 +8419,7 @@ msgstr ""
 #: website/public/showcase/dx-ball/index.html:710
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "{ph0}Nred the compiler replay details{ph1}"
+msgid "{ph0}Read the compiler replay details{ph1}"
 msgstr "{ph0}Baca detail pemutaran ulang kompiler{ph1}"
 
 #: website/public/showcase/dx-ball/index.html:719
@@ -8630,7 +8630,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:224
 msgctxt "page:showcase/index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "Baca studi kasus Android"
 
 #: website/public/showcase/index.html:228
@@ -8656,7 +8656,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:242
 msgctxt "page:showcase/index.html"
-msgid "Nred the CTF case study"
+msgid "Read the CTF case study"
 msgstr "Baca studi kasus KKP"
 
 #: website/public/showcase/index.html:246
@@ -8683,7 +8683,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:261
 msgctxt "page:showcase/index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "Baca studi kasus DX-Ball"
 
 #: website/public/showcase/index.html:265
@@ -8709,7 +8709,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:279
 msgctxt "page:showcase/index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "Baca studi kasus Notion"
 
 #: website/public/showcase/index.html:283
@@ -8735,7 +8735,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:297
 msgctxt "page:showcase/index.html"
-msgid "Nred the TH04 case study"
+msgid "Read the TH04 case study"
 msgstr "Baca studi kasus TH04"
 
 #: website/public/showcase/index.html:322
@@ -8754,7 +8754,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:327
 msgctxt "page:showcase/index.html"
-msgid "Nred the guides"
+msgid "Read the guides"
 msgstr "Baca panduannya"
 
 #: website/public/showcase/index.html:6
@@ -9156,7 +9156,7 @@ msgstr "Tautan HTML ke data blok yang disimpan"
 
 #: website/public/showcase/notion/index.html:499
 msgctxt "page:showcase/notion/index.html"
-msgid "Nred the HTML ID"
+msgid "Read the HTML ID"
 msgstr "Baca ID HTML-nya"
 
 #: website/public/showcase/notion/index.html:500
@@ -9258,7 +9258,7 @@ msgstr ""
 
 #: website/public/showcase/notion/index.html:569
 msgctxt "page:showcase/notion/index.html"
-msgid "Sources and how to Nred the excerpts"
+msgid "Sources and how to Read the excerpts"
 msgstr "Sumber dan cara membaca kutipannya"
 
 #. {ph0}: <code>app.asar</code>
@@ -9494,7 +9494,7 @@ msgstr ""
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0}02 · Inspect with Nre{ph1}{ph2}Instructions + "
-"references{ph3}{ph4}Verify the loaded DOS code and Nred the angle "
+"references{ph3}{ph4}Verify the loaded DOS code and Read the angle "
 "calculation from the executable.{ph5}"
 msgstr ""
 "{ph0}02 * Periksa dengan Nre {ph1}{ph2}Instruksi + "
@@ -9511,7 +9511,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}03 · Nred the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
+"{ph0}03 · Read the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
 "operation to the maintained reconstruction.{ph5}"
 msgstr ""
 "{ph0}03 * Baca C++{ph1}{ph2}Ruang → {ph3}{ph4}Hubungkan setiap operasi ke "
@@ -9697,7 +9697,7 @@ msgstr "Serangan cincin Elly * kutipan sumber"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "These lines select the pattern before difficulty and performance tuning. "
-"{ph0}Nred the attack's source{ph1}."
+"{ph0}Read the attack's source{ph1}."
 msgstr ""
 "Garis-garis ini memilih pola sebelum tingkat kesulitan dan penyetelan "
 "kinerja. {ph0}Baca sumber serangan itu{ph1}."
@@ -9736,7 +9736,7 @@ msgstr ""
 
 #: website/public/showcase/th04/index.html:400
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the ring's multiply and divide"
+msgid "Read the ring's multiply and divide"
 msgstr "Baca perkalian dan pembagian cincin"
 
 #. {ph0}: <code>SI</code>
@@ -9747,7 +9747,7 @@ msgstr "Baca perkalian dan pembagian cincin"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0} holds the bullet index. The shift multiplies it by 256, then the "
-"division uses the count Nred from {ph1}. The maintained source names that "
+"division uses the count Read from {ph1}. The maintained source names that "
 "field {ph2}. The complete sequence appears below."
 msgstr ""
 "{ph0} memegang indeks peluru. Pergeseran mengalikannya dengan 256, kemudian "
@@ -9845,7 +9845,7 @@ msgstr "C++ yang dapat dibaca * ringkasan aimed-ring"
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}01 · Nred the bullet index.{ph1} The stack argument is loaded into "
+"{ph0}01 · Read the bullet index.{ph1} The stack argument is loaded into "
 "{ph2}. In a 16-bullet ring, this member index runs from 0 through 15."
 msgstr ""
 "{ph0}01 * Baca indeks poin.{ph1} Argumen tumpukan dimuat ke dalam {ph2}. "
@@ -9928,7 +9928,7 @@ msgstr ""
 
 #: website/public/showcase/th04/index.html:617
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the maintained ring and aim source"
+msgid "Read the maintained ring and aim source"
 msgstr "Baca sumber ring dan aim yang dipelihara"
 
 #. {ph0}: <a
@@ -10002,7 +10002,7 @@ msgstr ""
 #: website/public/showcase/th04/index.html:688
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
-msgid "Recorded on 3 October 2026. {ph0}Nred the compiler checks{ph1}."
+msgid "Recorded on 3 October 2026. {ph0}Read the compiler checks{ph1}."
 msgstr "Direkam pada 3 Oktober 2026. {ph0}Baca pemeriksaan kompilator{ph1}."
 
 #: website/public/showcase/th04/index.html:696
@@ -10492,7 +10492,7 @@ msgstr "Investigasi panci suara DX-Ball"
 #: website/public/assets/figures/dx-ball-sound-pan-investigation.svg:3
 msgctxt "figure:dx-ball-sound-pan-investigation.svg"
 msgid ""
-"Nre provides the instruction, caller and byte-Nred evidence for one DX-Ball "
+"Nre provides the instruction, caller and byte-Read evidence for one DX-Ball "
 "function. A stack input is multiplied by 1.5625, offset by 500, scaled, and "
 "converted to an integer. Maintained C is checked in 3,205 original-x86 cases"
 " and a separate 63-byte compiler replay."
@@ -10629,7 +10629,7 @@ msgstr "CLI / MCP"
 # Reviewed for technical meaning and concise diagram labels.
 #: website/public/assets/figures/Nre-investigation-flow.svg:37
 msgctxt "figure:Nre-investigation-flow.svg"
-msgid "3. Nred the evidence"
+msgid "3. Read the evidence"
 msgstr "3. Baca bukti"
 
 # Reviewed for technical meaning and concise diagram labels.
@@ -11355,7 +11355,7 @@ msgstr "Untuk perkalian, 10 menjadi 0,1. Tekan = untuk mengalikan."
 
 #: scripts/website_i18n.py
 msgctxt "runtime"
-msgid "Translation is being updated. Nred this page in English for now."
+msgid "Translation is being updated. Read this page in English for now."
 msgstr ""
 "Terjemahan sedang diperbarui. Baca halaman ini dalam bahasa Inggris untuk "
 "saat ini."
@@ -11781,7 +11781,7 @@ msgctxt "runtime"
 msgid "Switch to dark mode"
 msgstr "Beralih ke mode gelap"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/web-network-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/web-network-
 #. captures.md" >
 #. {ph1}: </a >
 #: website/public/guides/browser/index.html:487
@@ -12732,8 +12732,8 @@ msgctxt "page:blog/reverse-engineering-models/index.html"
 msgid ""
 "A functional test can have a similar blind spot. {ph0}Differential-fuzzing "
 "research on LLM decompilers{ph1} has found behavior differences beyond the "
-"supplied tests. Passing those tests therefore needs to be Nred in terms of "
-"the cases they exercise, just as an instruction match needs to be Nred in "
+"supplied tests. Passing those tests therefore needs to be Read in terms of "
+"the cases they exercise, just as an instruction match needs to be Read in "
 "terms of the bytes and data it checks."
 msgstr ""
 "Tes fungsional dapat memiliki titik buta serupa. {ph0}Penelitian yang "
@@ -13167,7 +13167,7 @@ msgid "Back to top"
 msgstr "Kembali ke atas"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/reverse-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/reverse-
 #. engineering-models.md" >
 #. {ph1}: </a >
 #: website/public/blog/reverse-engineering-models/index.html:783
@@ -13205,7 +13205,7 @@ msgstr "Cara autentikator membuat kode masuk"
 
 #: website/public/index.html:1064
 msgctxt "page:index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "Baca studi kasus Android"
 
 #: website/public/index.html:1069
@@ -13220,7 +13220,7 @@ msgstr "Bagaimana Notion menyalin teks dan HTML"
 
 #: website/public/index.html:1075
 msgctxt "page:index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "Baca studi kasus Notion"
 
 #: website/public/index.html:1080
@@ -13235,7 +13235,7 @@ msgstr "Perhitungan posisi suara kiri/kanan DX-Ball"
 
 #: website/public/index.html:1086
 msgctxt "page:index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "Baca studi kasus DX-Ball"
 
 #: website/public/index.html:265 website/public/index.html:266
@@ -13313,7 +13313,7 @@ msgstr "1. Siapkan komputermu"
 msgctxt "page:get-started/index.html"
 msgid ""
 "Use the computer where your target files are stored. A local coding agent "
-"can Nred those files and run tools for you."
+"can Read those files and run tools for you."
 msgstr ""
 "Gunakan komputer tempat berkas target disimpan. Agen pemrograman lokal bisa "
 "membaca berkas itu dan menjalankan alat untukmu."
@@ -13460,7 +13460,7 @@ msgstr "Claude Desktop · gunakan aplikasi percakapan desktop"
 
 #. {ph0}: <a href="https://claude.ai/download">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#claude-desktop" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:597
@@ -13507,11 +13507,11 @@ msgctxt "page:get-started/index.html"
 msgid "Setup ID"
 msgstr "ID penyiapan"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#released-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#released-
 #. package-and-main" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:757
@@ -13540,7 +13540,7 @@ msgstr ""
 "Dalam percakapan Grok Bot, minta Bot menambahkan server MCP khusus bernama "
 "{ph0} menggunakan perintah ini di komputernya:"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#other-client-settings" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:788
@@ -13811,7 +13811,7 @@ msgstr ""
 " System Settings → Privacy & Security → Automation, lalu coba lagi."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#hopper"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#hopper"
 #. >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1099
@@ -13894,10 +13894,10 @@ msgstr ""
 "diperbarui, lalu mulai ulang agenmu."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#ghidra"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#ghidra"
 #. >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/windows-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/windows-
 #. ghidra-p0.md" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:1258
@@ -13947,7 +13947,7 @@ msgstr ""
 "Gunakan berkas registrasi JSON yang kamu siapkan dengan panduan penyedia, "
 "lalu jalankan kembali penyiapan dan mulai ulang agenmu."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/ida-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/ida-
 #. provider.md" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1376
@@ -14097,13 +14097,13 @@ msgctxt "page:get-started/index.html"
 msgid "Process behavior"
 msgstr "Perilaku proses"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/flutter-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/flutter-
 #. analysis.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/javascript-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/javascript-
 #. artifact-reconstruction.md" >
 #. {ph3}: </a >
-#. {ph4}: <a href="https://github.com/morluto/Nre/blob/main/docs/evm-
+#. {ph4}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/evm-
 #. bytecode.md" >
 #. {ph5}: </a >
 #. {ph6}: <a href="../guides/">
@@ -14207,7 +14207,7 @@ msgstr ""
 "menghapus konfigurasi aplikasi dan skill Nre."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#diagnose-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#diagnose-
 #. update-and-remove" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1812
@@ -14438,7 +14438,7 @@ msgstr ""
 " Gunakan panduan untuk komputermu:"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#missing-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#missing-
 #. macos-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1216
@@ -14448,7 +14448,7 @@ msgid "{ph0}macOS · Intel{ph1}"
 msgstr "{ph0}macOS · Intel{ph1}"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#macos-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#macos-
 #. arm64-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1222
@@ -14771,7 +14771,7 @@ msgstr "2. Temukan aturan kecepatannya"
 #: website/public/index.html:639
 msgctxt "page:index.html"
 msgid ""
-"Nre lets the agent Nred the game’s running code. The speed starts at 6 and "
+"Nre lets the agent Read the game’s running code. The speed starts at 6 and "
 "incNreses a little each update while it is below 13."
 msgstr ""
 "Nre memungkinkan agen membaca kode permainan yang sedang berjalan. Kecepatan"
@@ -14794,7 +14794,7 @@ msgstr ""
 #: website/public/index.html:712
 msgctxt "page:index.html"
 msgid ""
-"Enable JavaScript to play. You can still Nred the rule and open the source "
+"Enable JavaScript to play. You can still Read the rule and open the source "
 "code below."
 msgstr ""
 "Aktifkan JavaScript untuk bermain. Kamu tetap bisa membaca aturan dan "
@@ -14837,7 +14837,7 @@ msgstr "2. Temukan kedua aturan"
 #: website/public/index.html:863
 msgctxt "page:index.html"
 msgid ""
-"Nre helps the agent Nred the code behind the % button. It applies two "
+"Nre helps the agent Read the code behind the % button. It applies two "
 "different rules:"
 msgstr ""
 "Nre membantu agen membaca kode di balik tombol %. Kode ini menerapkan dua "
@@ -14881,7 +14881,7 @@ msgstr ""
 "muncul, jalankan {ph0}."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/CONTRIBUTING.md#development-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/CONTRIBUTING.md#development-
 #. setup" >
 #. {ph1}: </a >
 #. {ph2}: <code>6.4.0</code>
@@ -15010,7 +15010,7 @@ msgctxt "page:contributors/index.html"
 msgid "Find a contributor"
 msgstr "Cari kontributor"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/graphs/contributors">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/graphs/contributors">
 #. {ph1}: </a>
 #. {ph2}: <time datetime="2026-10-15" translate="no">2026-10-15</time>
 #: website/public/contributors/index.html:1114
@@ -15354,7 +15354,7 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:366
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"The report lists Nred operations, supported changes, and operations withheld"
+"The report lists Read operations, supported changes, and operations withheld"
 " because the recording did not establish their effects. Each withheld "
 "operation has a Nreson and a hint about what to record next."
 msgstr ""
@@ -15382,7 +15382,7 @@ msgstr ""
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
 "The included smoke task is a basic test. It checks the tool count and, when "
-"a suitable Nred tool exists, calls it and checks its response status. "
+"a suitable Read tool exists, calls it and checks its response status. "
 "Passing it shows the environment starts and responds in that setup."
 msgstr ""
 
@@ -15438,8 +15438,8 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:456
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"For changes to be supported, record the results as well as the action: Nred "
-"an item, change it, then Nred the item and its list again before the next "
+"For changes to be supported, record the results as well as the action: Read "
+"an item, change it, then Read the item and its list again before the next "
 "change. Repeat with different values. For deletes, record the missing-item "
 "response and the updated list."
 msgstr ""
@@ -15463,10 +15463,10 @@ msgid ""
 "name warnings identify places to review; they do not remove those values."
 msgstr ""
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments-quickstart.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments.md" >
 #. {ph3}: </a >
 #: website/public/guides/rl-environments/index.html:474
@@ -15624,7 +15624,7 @@ msgstr ""
 #: website/public/showcase/index.html:309
 #, python-brace-format
 msgctxt "page:showcase/index.html"
-msgid "{ph0}Nred the guide{ph1} · {ph2}Watch the video{ph3}"
+msgid "{ph0}Read the guide{ph1} · {ph2}Watch the video{ph3}"
 msgstr "{ph0}Panduan membangun lingkungan{ph1} · {ph2}Tonton demo di X{ph3}"
 
 #: website/public/index.html:1124
@@ -15739,7 +15739,7 @@ msgstr ""
 #: website/public/index.html:357
 msgctxt "page:index.html"
 msgid ""
-"Nre helps your agent Nred the code and see what the program does while it "
+"Nre helps your agent Read the code and see what the program does while it "
 "runs."
 msgstr ""
 "Nre membantu agen Anda membaca kode dan melihat apa yang dilakukan program "
@@ -15775,7 +15775,7 @@ msgstr "Telusuri kode di dalam aplikasi desktop JavaScript."
 #: website/public/index.html:1277
 #, python-brace-format
 msgctxt "page:index.html"
-msgid "{ph0}Nred the FAQ{ph1} for setup help and common questions."
+msgid "{ph0}Read the FAQ{ph1} for setup help and common questions."
 msgstr ""
 "{ph0}Baca FAQ{ph1} untuk bantuan penyiapan dan jawaban atas pertanyaan umum."
 
@@ -15789,7 +15789,7 @@ msgstr ""
 "{ph0}Bergabunglah di Discord{ph1} untuk mendapatkan bantuan dan "
 "mendiskusikan analisis Anda."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/index.html:1285
 #, python-brace-format
@@ -15858,7 +15858,7 @@ msgstr ""
 
 #. {ph0}: <a href="../../get-started/">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/android-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/android-
 #. analysis.md" >
 #. {ph3}: </a >
 #: website/public/showcase/aegis/index.html:714
@@ -16013,7 +16013,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "{ph0}Nred the FAQ{ph1} — setup and common questions."
+#~ msgid "{ph0}Read the FAQ{ph1} — setup and common questions."
 #~ msgstr "{ph0}Baca FAQ{ph1} — penyiapan dan pertanyaan umum."
 
 #, python-brace-format
@@ -16136,7 +16136,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}Nred the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
+#~ "{ph0}Read the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
 #~ "GitHub issue{ph5} for bugs and feature requests."
 #~ msgstr ""
 #~ "{ph0}Baca FAQ{ph1}, {ph2}ngobrol dengan kami di Discord {ph3}, atau "
@@ -16226,7 +16226,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid "With Nre · You ask {ph0}your agent{ph1}"
-#~ msgstr "Dengan REA · Anda bertanya kepada {ph0}agen Anda{ph1}"
+#~ msgstr "Dengan NRE · Anda bertanya kepada {ph0}agen Anda{ph1}"
 
 #~ msgctxt "page:index.html"
 #~ msgid "One prompt."
@@ -16321,11 +16321,11 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "Tell your agent what you want to understand or build. With REA, you can work"
+#~ "Tell your agent what you want to understand or build. With NRE, you can work"
 #~ " together on anything from {ph0}cloning this website{ph1} to "
 #~ "{ph2}reconstructing a game from its executable.{ph3}"
 #~ msgstr ""
-#~ "Beri tahu agen Anda apa yang ingin Anda pahami atau bangun. Dengan REA, Anda"
+#~ "Beri tahu agen Anda apa yang ingin Anda pahami atau bangun. Dengan NRE, Anda"
 #~ " dapat bekerja sama dalam segala hal mulai dari {ph0}mengkloning situs web "
 #~ "ini{ph1} untuk {ph2}merekonstruksi game dari executable-nya.{ph3}"
 
@@ -16339,15 +16339,15 @@ msgstr ""
 
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "Share investigations and get help from other REA users on Discord. Follow "
-#~ "REA on X for project updates."
+#~ "Share investigations and get help from other NRE users on Discord. Follow "
+#~ "NRE on X for project updates."
 #~ msgstr ""
-#~ "Bagikan investigasi dan dapatkan bantuan dari pengguna REA lainnya di "
-#~ "Discord . Ikuti REA di X untuk pembaruan proyek."
+#~ "Bagikan investigasi dan dapatkan bantuan dari pengguna NRE lainnya di "
+#~ "Discord . Ikuti NRE di X untuk pembaruan proyek."
 
 #~ msgctxt "page:index.html"
-#~ msgid "See how REA works ↓"
-#~ msgstr "Lihat cara kerja REA ↓"
+#~ msgid "See how NRE works ↓"
+#~ msgstr "Lihat cara kerja NRE ↓"
 
 #~ msgctxt "page:index.html"
 #~ msgid "Follow @reatools on X"
@@ -16389,11 +16389,11 @@ msgstr ""
 #~ msgctxt "page:index.html"
 #~ msgid ""
 #~ "Find Aegis's six-digit code calculation in its released APK. Trace the "
-#~ "generating methods with REA, then move a demo clock to see why the code "
+#~ "generating methods with NRE, then move a demo clock to see why the code "
 #~ "changes every 30 seconds."
 #~ msgstr ""
 #~ "Temukan perhitungan kode enam digit Aegis dalam APK yang dirilis . Lacak "
-#~ "metode pembuatan dengan REA, lalu pindahkan jam demo untuk melihat mengapa "
+#~ "metode pembuatan dengan NRE, lalu pindahkan jam demo untuk melihat mengapa "
 #~ "kode berubah setiap 30 detik."
 
 #~ msgctxt "page:index.html"
@@ -16408,25 +16408,25 @@ msgstr ""
 
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "Recover a sound-pan calculation from a 1996 Windows game. REA's "
+#~ "Recover a sound-pan calculation from a 1996 Windows game. NRE's "
 #~ "instructions, caller references and numeric constants lead to a small C "
 #~ "function, checked against the original behavior and all 63 compiled bytes."
 #~ msgstr ""
 #~ "Pulihkan perhitungan posisi suara kiri / kanan dari game Windows 1996.  "
-#~ "Instruksi REA, referensi pemanggil, dan konstanta numerik mengarah ke fungsi"
+#~ "Instruksi NRE, referensi pemanggil, dan konstanta numerik mengarah ke fungsi"
 #~ " C kecil, diperiksa terhadap perilaku asli dan semua 63 byte yang "
 #~ "dikompilasi."
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "Before REA · You investigate it {ph0}yourself{ph1}"
-#~ msgstr "Sebelum REA · Anda menyelidikinya {ph0}sendiri{ph1}"
+#~ msgid "Before NRE · You investigate it {ph0}yourself{ph1}"
+#~ msgstr "Sebelum NRE · Anda menyelidikinya {ph0}sendiri{ph1}"
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "Use REA to inspect Windows Calculator. Why does {ph0} give 220?"
+#~ msgid "Use NRE to inspect Windows Calculator. Why does {ph0} give 220?"
 #~ msgstr ""
-#~ "Gunakan REA untuk memeriksa Windows Kalkulator. Mengapa {ph0} menghasilkan "
+#~ "Gunakan NRE untuk memeriksa Windows Kalkulator. Mengapa {ph0} menghasilkan "
 #~ "220?"
 
 #~ msgctxt "page:first-investigation/index.html"
@@ -16484,7 +16484,7 @@ msgstr ""
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
 #~ "Install Claude Desktop on Windows or macOS and sign in. Quit it completely "
-#~ "before running REA setup in your terminal. Choose {ph0}, approve the plan, "
+#~ "before running NRE setup in your terminal. Choose {ph0}, approve the plan, "
 #~ "then reopen Claude and start a chat."
 #~ msgstr ""
 
@@ -16524,9 +16524,9 @@ msgstr ""
 
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
-#~ "Connect REA to your coding agent, or inspect a local app from your terminal."
+#~ "Connect NRE to your coding agent, or inspect a local app from your terminal."
 #~ msgstr ""
-#~ "Hubungkan REA ke agen pengkodean Anda, atau periksa aplikasi lokal dari "
+#~ "Hubungkan NRE ke agen pengkodean Anda, atau periksa aplikasi lokal dari "
 #~ "terminal Anda."
 
 #, python-brace-format
@@ -16564,11 +16564,11 @@ msgstr ""
 
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
-#~ "Run setup to connect REA to your coding agent. Client choices include Claude"
+#~ "Run setup to connect NRE to your coding agent. Client choices include Claude"
 #~ " Code, Codex, Cursor, Gemini CLI, Windsurf, Grok Build, and other supported "
 #~ "MCP clients. Grok Bot's connector is added from its chat."
 #~ msgstr ""
-#~ "Jalankan pengaturan untuk menghubungkan REA ke agen pengkodean Anda. Pilihan"
+#~ "Jalankan pengaturan untuk menghubungkan NRE ke agen pengkodean Anda. Pilihan"
 #~ " klien termasuk Claude Code, Codex , Cursor , Gemini CLI , Windsurf , Grok "
 #~ "Build, dan klien MCP lain yang didukung. Konektor Grok Bot ditambahkan dari "
 #~ "obrolannya."
@@ -16581,11 +16581,11 @@ msgstr ""
 #~ msgid ""
 #~ "A coding agent is an AI assistant that works on your computer instead of in "
 #~ "a browser tab. It can read files and run commands, and it asks before making"
-#~ " changes. REA gives it reverse-engineering tools."
+#~ " changes. NRE gives it reverse-engineering tools."
 #~ msgstr ""
 #~ "Agen pengkodean adalah asisten AI yang berfungsi di komputer Anda, bukan di "
 #~ "tab browser. Itu dapat membaca file dan menjalankan perintah, dan bertanya "
-#~ "sebelum membuat perubahan.  REA memberikan alat rekayasa balik."
+#~ "sebelum membuat perubahan.  NRE memberikan alat rekayasa balik."
 
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
@@ -16620,11 +16620,11 @@ msgstr ""
 
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
-#~ "Then open it and copy the prompt below into it. The agent runs REA's setup "
+#~ "Then open it and copy the prompt below into it. The agent runs NRE's setup "
 #~ "and shows you the plan before changing anything."
 #~ msgstr ""
 #~ "Kemudian buka dan salin prompt di bawah ini ke dalamnya. Agen menjalankan "
-#~ "pengaturan REA dan menunjukkan kepada Anda rencananya sebelum mengubah apa "
+#~ "pengaturan NRE dan menunjukkan kepada Anda rencananya sebelum mengubah apa "
 #~ "pun."
 
 #~ msgctxt "page:get-started/index.html"
@@ -16664,10 +16664,10 @@ msgstr ""
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
 #~ "Native binaries need a local analysis tool. Choose and configure one below, "
-#~ "then give REA your executable or library."
+#~ "then give NRE your executable or library."
 #~ msgstr ""
 #~ "Program kode mesin memerlukan alat analisis lokal. Pilih dan konfigurasikan "
-#~ "salah satu di bawah ini, lalu berikan REA executable atau pustaka Anda."
+#~ "salah satu di bawah ini, lalu berikan NRE executable atau pustaka Anda."
 
 #~ msgctxt "page:get-started/index.html"
 #~ msgid "Choose a tool: Ghidra, Hopper or IDA"
@@ -16719,11 +16719,11 @@ msgstr ""
 #~ msgid ""
 #~ "Keep the upstream server's working {ph0}, {ph1} and optional {ph2} in a JSON"
 #~ " file. An existing {ph3} object with an {ph4} entry is also accepted. Point "
-#~ "REA at that file before setup:"
+#~ "NRE at that file before setup:"
 #~ msgstr ""
 #~ "Jaga agar server upstream tetap berfungsi {ph0}, {ph1} dan opsional {ph2} "
 #~ "dalam file JSON. Yang sudah ada {ph3} objek dengan sebuah {ph4} entri juga "
-#~ "diterima. Arahkan REA ke file itu sebelum pengaturan:"
+#~ "diterima. Arahkan NRE ke file itu sebelum pengaturan:"
 
 #~ msgctxt "page:get-started/index.html"
 #~ msgid "IDA connection · Windows PowerShell"
@@ -16747,12 +16747,12 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
-#~ "Give REA the original executable path, with {ph0} in a CLI query. For an "
-#~ "agent, include {ph1} in the REA registration's environment and select IDA "
+#~ "Give NRE the original executable path, with {ph0} in a CLI query. For an "
+#~ "agent, include {ph1} in the NRE registration's environment and select IDA "
 #~ "when opening the binary."
 #~ msgstr ""
-#~ "Berikan REA jalur asli yang dapat dieksekusi, dengan {ph0} dalam kueri CLI. "
-#~ "Untuk agen, sertakan {ph1} di lingkungan pendaftaran REA dan pilih IDA saat "
+#~ "Berikan NRE jalur asli yang dapat dieksekusi, dengan {ph0} dalam kueri CLI. "
+#~ "Untuk agen, sertakan {ph1} di lingkungan pendaftaran NRE dan pilih IDA saat "
 #~ "membuka biner."
 
 #~ msgctxt "page:get-started/index.html"
@@ -16829,7 +16829,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "{ph0}REA supplies"
+#~ msgid "{ph0}NRE supplies"
 #~ msgstr ""
 
 #, python-brace-format
@@ -16850,7 +16850,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}{ph1}REA supplies{ph2} {ph3}The handler’s instructions, decompiled code"
+#~ "{ph0}{ph1}NRE supplies{ph2} {ph3}The handler’s instructions, decompiled code"
 #~ " and calls.{ph4}"
 #~ msgstr ""
 
@@ -16870,7 +16870,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "Before REA · You investigate it {ph0}yourself{ph1} {ph2}{ph3}"
+#~ msgid "Before NRE · You investigate it {ph0}yourself{ph1} {ph2}{ph3}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -16973,11 +16973,11 @@ msgstr ""
 #~ msgctxt "page:first-investigation/index.html"
 #~ msgid ""
 #~ "{ph0}›{ph1}{ph2}Predict the CSV for a note with id 1 and title Hello, "
-#~ "\"REA\". Then run the example’s toCsv formatter with Node.js to check it. "
+#~ "\"NRE\". Then run the example’s toCsv formatter with Node.js to check it. "
 #~ "Show the prediction and actual output.{ph3}{ph4}{ph5}"
 #~ msgstr ""
 #~ "{ph0}›{ph1}{ph2}Memprediksi CSV untuk catatan dengan id 1 dan judul "
-#~ "Halo,\"REA\". Kemudian jalankan formatter toCsv contoh dengan Node.js untuk "
+#~ "Halo,\"NRE\". Kemudian jalankan formatter toCsv contoh dengan Node.js untuk "
 #~ "memeriksanya. Tampilkan prediksi dan keluaran aktual.{ph3}{ph4}{ph5}"
 
 #~ msgctxt "page:first-investigation/index.html"
@@ -17051,10 +17051,10 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Use REA to inspect Windows Calculator. Why does 200 + 10% "
+#~ "{ph0}›{ph1}{ph2}Use NRE to inspect Windows Calculator. Why does 200 + 10% "
 #~ "give 220?{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Gunakan REA untuk memeriksa Windows Kalkulator. Mengapa 200 "
+#~ "{ph0}›{ph1}{ph2}Gunakan NRE untuk memeriksa Windows Kalkulator. Mengapa 200 "
 #~ "+ 10% menghasilkan 220?{ph3}{ph4}{ph5}"
 
 #, python-brace-format
@@ -17069,22 +17069,22 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}01 · REA reads calc.exe{ph1}{ph2}It launches the Calculator "
+#~ "{ph0}01 · NRE reads calc.exe{ph1}{ph2}It launches the Calculator "
 #~ "app{ph3}{ph4}The code opens {ph5}. The agent then selects the installed "
 #~ "app’s library.{ph6}"
 #~ msgstr ""
-#~ "{ph0}01 · REA membaca calc.exe{ph1}{ph2}Ini meluncurkan aplikasi "
+#~ "{ph0}01 · NRE membaca calc.exe{ph1}{ph2}Ini meluncurkan aplikasi "
 #~ "Kalkulator{ph3}{ph4}Kode terbuka {ph5}. Agen kemudian memilih pustaka "
 #~ "aplikasi yang diinstal.{ph6}"
 
 #, python-brace-format
 #~ msgctxt "page:showcase/aegis/index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Use REA to inspect aegis-v3.4.3.apk. Find how it generates "
+#~ "{ph0}›{ph1}{ph2}Use NRE to inspect aegis-v3.4.3.apk. Find how it generates "
 #~ "the six-digit login code, explain why it changes every 30 seconds, and "
 #~ "rebuild a small demo where I can change the time.{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Gunakan REA untuk memeriksa aegis-v3. 4. 3.apk. Temukan cara"
+#~ "{ph0}›{ph1}{ph2}Gunakan NRE untuk memeriksa aegis-v3. 4. 3.apk. Temukan cara"
 #~ " menghasilkan kode login enam digit, jelaskan mengapa kode tersebut berubah "
 #~ "setiap 30 detik, dan buat ulang demo kecil di mana saya dapat mengubah "
 #~ "waktu.{ph3}{ph4}{ph5}"
@@ -17126,40 +17126,40 @@ msgstr ""
 #~ msgstr "utama.js * contoh sumber"
 
 #~ msgctxt "page:index.html"
-#~ msgid "REA · loaded index.js · selected lines"
-#~ msgstr "REA * indeks yang dimuat.js * baris yang dipilih"
+#~ msgid "NRE · loaded index.js · selected lines"
+#~ msgstr "NRE * indeks yang dimuat.js * baris yang dipilih"
 
 #, python-brace-format
 #~ msgctxt "page:faq/index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Use REA to analyze /absolute/path/to/app and explain how it "
+#~ "{ph0}›{ph1}{ph2}Use NRE to analyze /absolute/path/to/app and explain how it "
 #~ "exports data. Show the relevant code and source locations.{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Gunakan REA untuk menganalisis / absolute / path/to / app "
+#~ "{ph0}›{ph1}{ph2}Gunakan NRE untuk menganalisis / absolute / path/to / app "
 #~ "dan menjelaskan cara mengekspor data. Tampilkan kode dan lokasi sumber yang "
 #~ "relevan.{ph3}{ph4}{ph5}"
 
 #, python-brace-format
 #~ msgctxt "page:first-investigation/index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Install REA and connect it to this coding agent using npx "
-#~ "rea-agents@latest setup. Show me the setup plan for approval, then verify "
+#~ "{ph0}›{ph1}{ph2}Install NRE and connect it to this coding agent using npx "
+#~ "nano-reverse-engineer@latest setup. Show me the setup plan for approval, then verify "
 #~ "the installation.{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Instal REA dan hubungkan ke agen pengkodean ini menggunakan "
-#~ "npx agen rea@pengaturan terbaru. Tunjukkan rencana penyiapan untuk "
+#~ "{ph0}›{ph1}{ph2}Instal NRE dan hubungkan ke agen pengkodean ini menggunakan "
+#~ "npx agen nre@pengaturan terbaru. Tunjukkan rencana penyiapan untuk "
 #~ "persetujuan, lalu verifikasi penginstalan.{ph3}{ph4}{ph5}"
 
 #, python-brace-format
 #~ msgctxt "page:first-investigation/index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Download https://rea.tools/examples/notes-example.zip into a"
-#~ " new example folder and unpack it. Use REA to find what happens when I click"
+#~ "{ph0}›{ph1}{ph2}Download https://github.com/pratheeshclement-cmd/nano-reverse-engineer/examples/notes-example.zip into a"
+#~ " new example folder and unpack it. Use NRE to find what happens when I click"
 #~ " Export notes. Show where notes.csv is written, which fields it contains, "
 #~ "and the relevant files and lines.{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Unduh https://rea.tools/examples/notes-example.zip ke dalam "
-#~ "folder contoh baru dan buka kemasannya. Gunakan REA untuk menemukan apa yang"
+#~ "{ph0}›{ph1}{ph2}Unduh https://github.com/pratheeshclement-cmd/nano-reverse-engineer/examples/notes-example.zip ke dalam "
+#~ "folder contoh baru dan buka kemasannya. Gunakan NRE untuk menemukan apa yang"
 #~ " terjadi ketika saya mengklik Ekspor catatan. Tunjukkan di mana catatan.csv "
 #~ "ditulis, bidang mana yang dikandungnya, dan file serta baris yang "
 #~ "relevan.{ph3}{ph4}{ph5}"
@@ -17167,23 +17167,23 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Install REA and connect it to this coding agent using npx "
-#~ "rea-agents@latest setup. Show me the setup plan for approval, then verify "
+#~ "{ph0}›{ph1}{ph2}Install NRE and connect it to this coding agent using npx "
+#~ "nano-reverse-engineer@latest setup. Show me the setup plan for approval, then verify "
 #~ "the installation.{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Instal REA dan hubungkan ke agen pengkodean ini menggunakan "
-#~ "npx agen rea@pengaturan terbaru. Tunjukkan rencana penyiapan untuk "
+#~ "{ph0}›{ph1}{ph2}Instal NRE dan hubungkan ke agen pengkodean ini menggunakan "
+#~ "npx agen nre@pengaturan terbaru. Tunjukkan rencana penyiapan untuk "
 #~ "persetujuan, lalu verifikasi penginstalan.{ph3}{ph4}{ph5}"
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Install REA and connect it to this coding agent using npx "
-#~ "rea-agents@latest setup. Show me the setup plan for approval, then verify "
+#~ "{ph0}›{ph1}{ph2}Install NRE and connect it to this coding agent using npx "
+#~ "nano-reverse-engineer@latest setup. Show me the setup plan for approval, then verify "
 #~ "the installation.{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Instal REA dan hubungkan ke agen pengkodean ini menggunakan "
-#~ "npx agen rea@pengaturan terbaru. Tunjukkan rencana penyiapan untuk "
+#~ "{ph0}›{ph1}{ph2}Instal NRE dan hubungkan ke agen pengkodean ini menggunakan "
+#~ "npx agen nre@pengaturan terbaru. Tunjukkan rencana penyiapan untuk "
 #~ "persetujuan, lalu verifikasi penginstalan.{ph3}{ph4}{ph5}"
 
 #~ msgctxt "page:index.html"
@@ -17201,10 +17201,10 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}›{ph1}{ph2}Use REA to inspect https://rea.tools/. Clone this website "
+#~ "{ph0}›{ph1}{ph2}Use NRE to inspect https://github.com/pratheeshclement-cmd/nano-reverse-engineer/. Clone this website "
 #~ "for me.{ph3}{ph4}{ph5}"
 #~ msgstr ""
-#~ "{ph0}›{ph1}{ph2}Gunakan REA untuk memeriksa https://rea.tools/. Mengkloning "
+#~ "{ph0}›{ph1}{ph2}Gunakan NRE untuk memeriksa https://github.com/pratheeshclement-cmd/nano-reverse-engineer/. Mengkloning "
 #~ "situs web ini untuk saya.{ph3}{ph4}{ph5}"
 
 #~ msgctxt "figure:ctf-mask-equation.svg"
@@ -17221,8 +17221,8 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "shared"
-#~ msgid "{ph0}REA{ph1}{ph2}Nano Reverse Engineer{ph3}"
-#~ msgstr "{ph0} REA{ph1}{ph2}Merekayasa Balik Apa Pun{ph3}"
+#~ msgid "{ph0}NRE{ph1}{ph2}Nano Reverse Engineer{ph3}"
+#~ msgstr "{ph0} NRE{ph1}{ph2}Merekayasa Balik Apa Pun{ph3}"
 
 #, python-brace-format
 #~ msgctxt "shared"
@@ -17245,7 +17245,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:examples/dino-lab/index.html"
-#~ msgid "{ph0}REA · selected script source{ph1}"
+#~ msgid "{ph0}NRE · selected script source{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17301,22 +17301,22 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:guides/javascript/index.html"
-#~ msgid "{ph0}REA result · summary.ipc excerpt{ph1}"
+#~ msgid "{ph0}NRE result · summary.ipc excerpt{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:guides/native/index.html"
-#~ msgid "{ph0}REA instruction excerpt · 0x406409{ph1}"
+#~ msgid "{ph0}NRE instruction excerpt · 0x406409{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:guides/native/index.html"
-#~ msgid "{ph0}REA caller excerpt · 0x411f5b{ph1}"
+#~ msgid "{ph0}NRE caller excerpt · 0x411f5b{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:guides/native/index.html"
-#~ msgid "{ph0}REA byte results · interpreted as little-endian doubles{ph1}"
+#~ msgid "{ph0}NRE byte results · interpreted as little-endian doubles{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17327,12 +17327,12 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}See how REA works ↓{ph1} {ph2}Setup guide{ph3} {ph4}Showcases →{ph5}"
+#~ "{ph0}See how NRE works ↓{ph1} {ph2}Setup guide{ph3} {ph4}Showcases →{ph5}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "{ph0}REA · loaded index.js · selected lines{ph1}"
+#~ msgid "{ph0}NRE · loaded index.js · selected lines{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17347,7 +17347,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "{ph0}REA · selected original instructions{ph1}"
+#~ msgid "{ph0}NRE · selected original instructions{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17362,22 +17362,22 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/aegis/index.html"
-#~ msgid "{ph0}Agent → REA{ph1}"
+#~ msgid "{ph0}Agent → NRE{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/aegis/index.html"
-#~ msgid "{ph0}REA → agent · selected results{ph1}"
+#~ msgid "{ph0}NRE → agent · selected results{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/aegis/index.html"
-#~ msgid "{ph0}REA → agent · methods and callers{ph1}"
+#~ msgid "{ph0}NRE → agent · methods and callers{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/aegis/index.html"
-#~ msgid "{ph0}REA · selected decompiled Java{ph1}"
+#~ msgid "{ph0}NRE · selected decompiled Java{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17387,7 +17387,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/aegis/index.html"
-#~ msgid "{ph0}REA · generateOTP, complete body{ph1}"
+#~ msgid "{ph0}NRE · generateOTP, complete body{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17398,27 +17398,27 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/ctf/index.html"
-#~ msgid "{ph0}Agent → REA{ph1}"
+#~ msgid "{ph0}Agent → NRE{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/ctf/index.html"
-#~ msgid "{ph0}REA → agent · selected results{ph1}"
+#~ msgid "{ph0}NRE → agent · selected results{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/ctf/index.html"
-#~ msgid "{ph0}REA → agent · selected instructions{ph1}"
+#~ msgid "{ph0}NRE → agent · selected instructions{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/ctf/index.html"
-#~ msgid "{ph0}Agent → REA · read_bytes{ph1}"
+#~ msgid "{ph0}Agent → NRE · read_bytes{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/ctf/index.html"
-#~ msgid "{ph0}REA → agent · seventh entries{ph1}"
+#~ msgid "{ph0}NRE → agent · seventh entries{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17433,32 +17433,32 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/dx-ball/index.html"
-#~ msgid "{ph0}REA result · pseudocode excerpt{ph1}"
+#~ msgid "{ph0}NRE result · pseudocode excerpt{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/dx-ball/index.html"
-#~ msgid "{ph0}Agent → REA · {ph1}{ph2}"
+#~ msgid "{ph0}Agent → NRE · {ph1}{ph2}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/dx-ball/index.html"
-#~ msgid "{ph0}REA → agent · instruction excerpt{ph1}"
+#~ msgid "{ph0}NRE → agent · instruction excerpt{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/dx-ball/index.html"
-#~ msgid "{ph0}REA → agent · caller excerpt{ph1}"
+#~ msgid "{ph0}NRE → agent · caller excerpt{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/dx-ball/index.html"
-#~ msgid "{ph0}Agent → REA · two {ph1} requests{ph2}"
+#~ msgid "{ph0}Agent → NRE · two {ph1} requests{ph2}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/dx-ball/index.html"
-#~ msgid "{ph0}REA byte results · decoded as doubles{ph1}"
+#~ msgid "{ph0}NRE byte results · decoded as doubles{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
@@ -17483,7 +17483,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:showcase/index.html"
 #~ msgid ""
-#~ "{ph0}Executable{ph1} {ph2}→{ph3} {ph4}REA findings{ph5} {ph6}→{ph7} "
+#~ "{ph0}Executable{ph1} {ph2}→{ph3} {ph4}NRE findings{ph5} {ph6}→{ph7} "
 #~ "{ph8}Recovered C{ph9} {ph10}→{ph11} {ph12}Validation{ph13}"
 #~ msgstr ""
 
@@ -17497,7 +17497,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:showcase/index.html"
 #~ msgid ""
-#~ "{ph0}Original DOS code{ph1} {ph2}→{ph3} {ph4}REA instructions{ph5} "
+#~ "{ph0}Original DOS code{ph1} {ph2}→{ph3} {ph4}NRE instructions{ph5} "
 #~ "{ph6}→{ph7} {ph8}Angle calculation{ph9} {ph10}→{ph11} {ph12}Bullet "
 #~ "ring{ph13}"
 #~ msgstr ""
@@ -17539,22 +17539,22 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/th04/index.html"
-#~ msgid "{ph0}Agent → REA{ph1}"
+#~ msgid "{ph0}Agent → NRE{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/th04/index.html"
-#~ msgid "{ph0}REA → agent · selected fields{ph1}"
+#~ msgid "{ph0}NRE → agent · selected fields{ph1}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/th04/index.html"
-#~ msgid "{ph0}Agent → REA · {ph1}{ph2}"
+#~ msgid "{ph0}Agent → NRE · {ph1}{ph2}"
 #~ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:showcase/th04/index.html"
-#~ msgid "{ph0}REA → agent · instruction excerpt{ph1}"
+#~ msgid "{ph0}NRE → agent · instruction excerpt{ph1}"
 #~ msgstr ""
 
 #, python-brace-format

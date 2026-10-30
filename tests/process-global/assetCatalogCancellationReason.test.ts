@@ -50,7 +50,7 @@ const withDarwinPlatform = async <T>(run: () => Promise<T>): Promise<T> => {
 
 const createBundle = async (): Promise<string> => {
   const bundle = await createTestTempDirectory(
-    "rea-asset-catalog-cancellation-",
+    "nre-asset-catalog-cancellation-",
   );
   await mkdir(join(bundle, "Contents", "Resources"), { recursive: true });
   await writeFile(

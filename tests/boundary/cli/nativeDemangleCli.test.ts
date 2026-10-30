@@ -7,13 +7,13 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const environment = {
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "auto",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "auto",
 } as const;
 
 /** Copy a host program to serve as the evidence-identity artifact. */
 const evidenceTarget = async () => {
-  const path = join(await createTestTempDirectory("rea-demangle-"), "tool");
+  const path = join(await createTestTempDirectory("nre-demangle-"), "tool");
   await copyFile("/usr/bin/true", path);
   return path;
 };
@@ -46,7 +46,7 @@ describe("Swift demangling CLI with line-terminator characters", () => {
 
   cliTest("rejects a symbol spanning lines as input", async ({ cli }) => {
     const missingTarget = join(
-      await createTestTempDirectory("rea-demangle-invalid-input-"),
+      await createTestTempDirectory("nre-demangle-invalid-input-"),
       "absent",
     );
     const result = await cli.run({

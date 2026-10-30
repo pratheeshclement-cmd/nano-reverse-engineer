@@ -79,7 +79,7 @@ describe("row-oriented CLI JSON Lines", () => {
       expect(lines(stream.text())).toEqual([
         ...records,
         {
-          $rea: "jsonl/v1",
+          $nre: "jsonl/v1",
           type: "metadata",
           records: { path: ["normalized_result", key], emitted: 2, source: 2 },
           context: { ...context, normalized_result: viewContext },
@@ -101,7 +101,7 @@ describe("row-oriented CLI JSON Lines", () => {
       expect(lines(stream.text())).toEqual([
         ...rows,
         {
-          $rea: "jsonl/v1",
+          $nre: "jsonl/v1",
           type: "metadata",
           records: {
             path: ["data", "page", "rows"],
@@ -180,10 +180,10 @@ describe("JSON Lines selection refusals", () => {
     ],
     [Object.create({ rows: [{ inherited: true }] }), [at("object")]],
     [
-      { rows: [{ id: 1 }, { $rea: "collision" }] },
-      [at("string", "rows", 1, "$rea")],
+      { rows: [{ id: 1 }, { $nre: "collision" }] },
+      [at("string", "rows", 1, "$nre")],
     ],
-    [[{ $rea: { nested: true } }], [at("object", 0, "$rea")]],
+    [[{ $nre: { nested: true } }], [at("object", 0, "$nre")]],
   ])(
     "refuses an unclear or reserved boundary as a caller selection before writing rows: %j",
     async (value, observed) => {
@@ -282,7 +282,7 @@ describe("JSON Lines admission and selection", () => {
     );
     expect(lines(wrapped.text())).toEqual([
       {
-        $rea: "jsonl/v1",
+        $nre: "jsonl/v1",
         type: "metadata",
         records: { path: ["items"], emitted: 0, source: 0 },
         context: { coverage: { examined: 0 } },
@@ -311,7 +311,7 @@ describe("JSON Lines admission and selection", () => {
       { id: "b" },
       { id: "c" },
       {
-        $rea: "jsonl/v1",
+        $nre: "jsonl/v1",
         type: "metadata",
         records: {
           path: ["normalized_result", "rows"],
@@ -350,7 +350,7 @@ describe("JSON Lines admission and selection", () => {
     expect(lines(stream.text())).toEqual([
       { id: 1 },
       {
-        $rea: "jsonl/v1",
+        $nre: "jsonl/v1",
         type: "metadata",
         records: {
           path: ["normalized_result", "rows"],
@@ -518,7 +518,7 @@ describe("SDK-owned JSON Lines parser diagnostics", () => {
         };
         expect(lines(stream.text())).toEqual([
           expect.objectContaining({
-            $rea: "jsonl/v1",
+            $nre: "jsonl/v1",
             type: "error",
             ok: false,
             result: full
@@ -560,7 +560,7 @@ describe("SDK-owned JSON Lines outcomes", () => {
     };
     expect(await serve(["rows", "--format", "jsonl"])).toBe(1);
     expect(lines(stream.text())[0]).toMatchObject({
-      $rea: "jsonl/v1",
+      $nre: "jsonl/v1",
       type: "error",
       result: { code: "VALIDATION_ERROR" },
     });

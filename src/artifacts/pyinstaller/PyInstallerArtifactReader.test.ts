@@ -76,7 +76,7 @@ const pyzWithInternedModuleName = (name: string, body: Buffer): Buffer => {
 };
 
 const writeArchive = async (name: string, bytes: Buffer): Promise<string> => {
-  const directory = await createTestTempDirectory("rea-pyinstaller-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-");
   const path = join(directory, name);
   await writeFile(path, bytes);
   return path;
@@ -362,7 +362,7 @@ it("extracts derived members into the safe output tree", async () => {
     }),
   );
   const snapshot = await scanCanonicalArtifactInventory(path);
-  const directory = await createTestTempDirectory("rea-pyinstaller-out-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-out-");
   const output = join(directory, "extracted");
   const extracted = await materializeArtifactInventory(
     {
@@ -427,7 +427,7 @@ it("reports encrypted PYZ entries and refuses to extract them", async () => {
     encrypted: true,
     hash_status: "unavailable",
   });
-  const directory = await createTestTempDirectory("rea-pyinstaller-out-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-out-");
   await expect(
     materializeArtifactInventory(
       {
@@ -502,7 +502,7 @@ it.each([false, true])(
       ),
     ).toBe(false);
     const outputRoot = join(
-      await createTestTempDirectory("rea-opaque-out-"),
+      await createTestTempDirectory("nre-opaque-out-"),
       "extracted",
     );
     await materializeArtifactInventory(
@@ -801,7 +801,7 @@ it("projects CArchive type n entries as symlinks", async () => {
   expect(
     snapshot.nodes.find((node) => node.sha256 === sha256(target)),
   ).toBeUndefined();
-  const directory = await createTestTempDirectory("rea-pyinstaller-out-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-out-");
   const output = join(directory, "extracted");
   await materializeArtifactInventory(
     {
@@ -873,7 +873,7 @@ it.each([false, true])(
 );
 
 it("retains the descriptor owner when admission cleanup fails", async () => {
-  const directory = await createTestTempDirectory("rea-pyinstaller-admission-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-admission-");
   const reader = new PyInstallerArtifactReader(directory);
   const originalClose = OwnedFileHandle.prototype.close;
   const owners: OwnedFileHandle[] = [];
@@ -946,7 +946,7 @@ it("inventories and extracts a Windows member name under its canonical path", as
   expect(resource?.format_metadata).toMatchObject({ source_name: pyzName });
   expect(member?.source_path).toBe(storedName);
   expect(resource?.source_path).toBe(pyzName);
-  const directory = await createTestTempDirectory("rea-pyinstaller-out-");
+  const directory = await createTestTempDirectory("nre-pyinstaller-out-");
   const output = join(directory, "extracted");
   await materializeArtifactInventory(
     {
@@ -1060,7 +1060,7 @@ it.skipIf(process.platform === "win32")(
       slashPayload,
     } = await posixPathFixture();
     const directory = await createTestTempDirectory(
-      "rea-pyinstaller-posix-out-",
+      "nre-pyinstaller-posix-out-",
     );
     const output = join(directory, "extracted");
     await materializeArtifactInventory(
@@ -1371,7 +1371,7 @@ it("uses known PYZ magic for separate CArchive scripts when the marshal table st
     snapshot.nodes.find((node) => node.sha256 === sha256(derived(script))),
   ).toBeDefined();
   const output = join(
-    await createTestTempDirectory("rea-opaque-script-"),
+    await createTestTempDirectory("nre-opaque-script-"),
     "extracted",
   );
   await materializeArtifactInventory(
@@ -1461,7 +1461,7 @@ it("retains colliding CArchive rows and PYZ children but refuses extraction", as
   ).toMatchObject({ artifact_id: expect.any(String) });
 
   const root = await createTestTempDirectory(
-    "rea-pyinstaller-colliding-extract-",
+    "nre-pyinstaller-colliding-extract-",
   );
   const output = join(root, "extracted");
   await expect(

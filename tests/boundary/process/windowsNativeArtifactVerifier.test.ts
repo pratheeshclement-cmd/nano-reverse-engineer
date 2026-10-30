@@ -57,7 +57,7 @@ for (const mode of ["preinstall source", "packed source-free"]) {
     `verifies native artifact identity from ${mode} without installed dependencies`,
     async ({ processes }) => {
       const root = await createTestTempDirectory(
-        "rea-native-artifact-verifier-",
+        "nre-native-artifact-verifier-",
       );
       await mkdir(join(root, "scripts"), { recursive: true });
       await copyFile(

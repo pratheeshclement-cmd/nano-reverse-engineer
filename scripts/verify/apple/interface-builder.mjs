@@ -18,7 +18,7 @@ import {
 } from "../../lib/artifact-e2e.mjs";
 
 const exec = promisify(execFile);
-const fixtureRoot = await mkdtemp(join(tmpdir(), "rea-interface-builder-"));
+const fixtureRoot = await mkdtemp(join(tmpdir(), "nre-interface-builder-"));
 const appPath = join(fixtureRoot, "Fixture.app");
 const resourcesPath = join(appPath, "Contents", "Resources");
 const executablePath = join(appPath, "Contents", "MacOS", "Fixture");
@@ -85,7 +85,7 @@ try {
     join(appPath, "Contents", "Info.plist"),
     `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict><key>CFBundleExecutable</key><string>Fixture</string><key>CFBundleIdentifier</key><string>dev.rea.interface-builder-fixture</string></dict></plist>\n`,
+<plist version="1.0"><dict><key>CFBundleExecutable</key><string>Fixture</string><key>CFBundleIdentifier</key><string>dev.nre.interface-builder-fixture</string></dict></plist>\n`,
   );
   await compileNib(mainSource);
   await exec("cc", [join(sourceRoot, "fixture.c"), "-o", executablePath]);

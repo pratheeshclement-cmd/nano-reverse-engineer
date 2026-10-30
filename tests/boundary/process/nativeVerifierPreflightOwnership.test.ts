@@ -22,7 +22,7 @@ const repository = fileURLToPath(new URL("../../../", import.meta.url));
 // Select the same actual entrypoints from an owned original-source checkout for
 // the regression's RED run. This changes no production imports or behavior.
 const verifierSourceRoot = resolve(
-  process.env.REA_NATIVE_VERIFIER_SOURCE_ROOT ?? repository,
+  process.env.NRE_NATIVE_VERIFIER_SOURCE_ROOT ?? repository,
 );
 const retainedBytes = Buffer.from("native preflight retained evidence α\0\n");
 const versionStdout = "authored native version output\n";
@@ -76,7 +76,7 @@ const finish = (reason) => {
 };
 // The ready message is an acquisition barrier, independent of process-table
 // scheduling. Ignored stdio lets the version leader and verifier finish first.
-process.send({ pid: process.pid, runId: process.env.REA_PROCESS_RUN_ID });
+process.send({ pid: process.pid, runId: process.env.NRE_PROCESS_RUN_ID });
 process.disconnect();
 setInterval(() => {
   if (existsSync(release)) finish("external-release");
@@ -114,7 +114,7 @@ const stdout = ${JSON.stringify(versionStdout)};
 const stderr = ${JSON.stringify(versionStderr)};
 writeFileSync(fileURLToPath(new URL("./ready.json", import.meta.url)), JSON.stringify({
   pids: [process.pid, acknowledged.pid],
-  runId: process.env.REA_PROCESS_RUN_ID, descendantRunId: acknowledged.runId,
+  runId: process.env.NRE_PROCESS_RUN_ID, descendantRunId: acknowledged.runId,
   argv: process.argv.slice(2), cwd: process.cwd(), lab, artifact, stdin, stdout, stderr,
 }));
 await Promise.all([
@@ -160,7 +160,7 @@ it.skipIf(process.platform === "win32").each(clients)(
   "$client actual verifier reclaims a failed preflight descendant and retains its lab",
   async ({ client, profile, javascript }) => {
     const workspace = await createTestWorkspace(
-      `rea-native-${client}-preflight-`,
+      `nre-native-${client}-preflight-`,
     );
     const readyPath = workspace.path("ready.json");
     const releasePath = workspace.path("release-descendant");
@@ -189,7 +189,7 @@ it.skipIf(process.platform === "win32").each(clients)(
           "call",
         ],
         cwd: repository,
-        runId: `rea-native-preflight-test-${randomUUID()}`,
+        runId: `nre-native-preflight-test-${randomUUID()}`,
         sweepTokenOwnedProcesses: true,
         hostEnvironment: {
           ...process.env,
@@ -197,8 +197,8 @@ it.skipIf(process.platform === "win32").each(clients)(
           TMPDIR: temporaryRoot,
           TMP: temporaryRoot,
           TEMP: temporaryRoot,
-          REA_VERIFY_RUNTIME_ROOT: repository,
-          [`REA_VERIFY_${client.toUpperCase()}_COMMAND`]: command,
+          NRE_VERIFY_RUNTIME_ROOT: repository,
+          [`NRE_VERIFY_${client.toUpperCase()}_COMMAND`]: command,
         },
       });
       const owned = acquired;

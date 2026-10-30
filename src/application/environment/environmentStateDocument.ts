@@ -31,7 +31,7 @@ import { err, ok, type Result } from "../../domain/result.js";
 import { compositeKey } from "../../domain/unicodeCodePointOrder.js";
 import type { EnvironmentState } from "./environmentState.js";
 import { ENVIRONMENT_SERVE_OPERATION } from "./environmentSource.js";
-import { REA_STATE_FORMAT } from "./environmentTools.js";
+import { NRE_STATE_FORMAT } from "./environmentTools.js";
 
 /** A loaded state document is at most this large, whether it arrives as bytes, a file or a download. */
 export const STATE_INTAKE_LIMIT_BYTES = 32 * 1024 * 1024;
@@ -78,7 +78,7 @@ const stateDocumentSchemaFor = (
   const ordinalSchema = z.number().int().nonnegative();
 
   return strictStateObject({
-    rea_state: strictStateObject({
+    nre_state: strictStateObject({
       version: z.literal(1),
       // `data/get` reports these; accepting them back lets its output be loaded unchanged.
       state_evidence_id: z.string().optional(),
@@ -118,7 +118,7 @@ const ownedStateDocumentSchema = stateDocumentSchemaFor(
   ownedJsonObjectSchema,
 );
 
-type ParsedDocument = z.output<typeof stateDocumentSchema>["rea_state"];
+type ParsedDocument = z.output<typeof stateDocumentSchema>["nre_state"];
 type ParsedEntity = ParsedDocument["entities"][number];
 type Path = readonly (string | number)[];
 
@@ -148,7 +148,7 @@ const memberProblem = (path: Path): AnalysisInputIssue => {
       )
     : problem(
         path.slice(0, -1),
-        `has a member ${REA_STATE_FORMAT} does not define`,
+        `has a member ${NRE_STATE_FORMAT} does not define`,
       );
 };
 
@@ -168,7 +168,7 @@ const schemaProblem = (
 ): AnalysisInputIssue => {
   const first = projectInputIssues(issues, value)[0];
   if (first === undefined)
-    return problem([], `is not a ${REA_STATE_FORMAT} document`);
+    return problem([], `is not a ${NRE_STATE_FORMAT} document`);
   const content = contentIndex(first.path);
   if (
     (content >= 0 && content < first.path.length - 1) ||
@@ -191,7 +191,7 @@ const schemaProblem = (
     message:
       content >= 0 && first.reason !== "invalid_type"
         ? "is not exactly representable JSON"
-        : `is not a valid ${REA_STATE_FORMAT} value for this member`,
+        : `is not a valid ${NRE_STATE_FORMAT} value for this member`,
   };
 };
 
@@ -301,13 +301,13 @@ const documentsProblem = (
       tools.has(document.tool)
     )
       return problem(
-        ["rea_state", "documents", index, "tool"],
+        ["nre_state", "documents", index, "tool"],
         "is not a document view of the served state, or repeats one",
       );
     tools.add(document.tool);
     if (document.path !== initial.path)
       return problem(
-        ["rea_state", "documents", index, "path"],
+        ["nre_state", "documents", index, "path"],
         `differs from the initial document's path ${initial.path}`,
       );
     if (
@@ -315,7 +315,7 @@ const documentsProblem = (
       document.record_ordinal !== initial.record_ordinal
     )
       return problem(
-        ["rea_state", "documents", index, "record_ordinal"],
+        ["nre_state", "documents", index, "record_ordinal"],
         `is not the initial document's record ${String(initial.record_ordinal)}`,
       );
   }
@@ -340,15 +340,15 @@ const contentProblem = (
     document.state_evidence_id !== state.evidenceId
   )
     return problem(
-      ["rea_state", "state_evidence_id"],
+      ["nre_state", "state_evidence_id"],
       `is not the served state's Evidence ${state.evidenceId}`,
     );
   if (document.types !== undefined && !sameTypes(document.types, state.types))
-    return problem(["rea_state", "types"], "differs from the served types");
+    return problem(["nre_state", "types"], "differs from the served types");
   const check: EntityCheck = { state, initial, seen: new Set<string>() };
   for (const [index, entity] of document.entities.entries()) {
     const found = entityProblem(check, entity, [
-      "rea_state",
+      "nre_state",
       "entities",
       index,
     ]);
@@ -395,7 +395,7 @@ const heldContent = (
 });
 
 /**
- * Validate a `rea-state/v1` document against the served state's types and
+ * Validate a `nre-state/v1` document against the served state's types and
  * views; a refusal carries one issue naming the first problem by path.
  */
 export const parseStateDocument = (
@@ -410,17 +410,17 @@ export const parseStateDocument = (
     state.entities.map((entity) => [entityKey(entity), entity]),
   );
   const issue = parsed.success
-    ? contentProblem(state, parsed.data.rea_state, initial)
+    ? contentProblem(state, parsed.data.nre_state, initial)
     : schemaProblem(parsed.error.issues, value);
   if (issue !== undefined || !parsed.success)
     return err(
       new AnalysisInputError(
         ENVIRONMENT_SERVE_OPERATION,
         {
-          userMessage: `The document is not a valid ${REA_STATE_FORMAT} state.`,
+          userMessage: `The document is not a valid ${NRE_STATE_FORMAT} state.`,
         },
         issue === undefined ? [] : [issue],
       ),
     );
-  return ok(heldContent(state, parsed.data.rea_state, initial));
+  return ok(heldContent(state, parsed.data.nre_state, initial));
 };

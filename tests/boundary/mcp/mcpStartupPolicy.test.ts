@@ -50,7 +50,7 @@ const expectThrownBudget = async (
 };
 
 describe("MCP startup policy", () => {
-  it("names phase budget settings without turning Codex's 30s into a REA knob", () => {
+  it("names phase budget settings without turning Codex's 30s into a NRE knob", () => {
     const budgets = resolveMcpStartupBudgets({});
     expect(MCP_STARTUP_POLICY.codexStartupTimeoutSeconds).toBe(30);
     expect(budgets.initialize.milliseconds).toBe(15_000);
@@ -71,7 +71,7 @@ describe("MCP startup policy", () => {
     const doctor = mcpDoctorDeadlineRecovery(budgets.doctor);
     expectPhaseText(doctor, budgets.doctor);
     const selected = resolveMcpStartupBudgets({
-      REA_MCP_INITIALIZE_BUDGET_MS: "16000",
+      NRE_MCP_INITIALIZE_BUDGET_MS: "16000",
     });
     expect(selected.initialize.milliseconds).toBe(16_000);
     expect(selected.initialize.source).toBe("setting");
@@ -89,9 +89,9 @@ describe("MCP startup policy", () => {
   it("profiles unique file-backed ESM modules without retaining paths", () => {
     const collector = createEsmModuleProfileCollector();
     collector.append(
-      "ESM 1: Storing file:///opt/rea/dist/main.js\n" +
-        "ESM 1: Translating StandardModule file:///opt/rea/dist/main.js\n" +
-        "ESM 1: Storing file:///opt/rea/node_modules/zod/index.js",
+      "ESM 1: Storing file:///opt/nre/dist/main.js\n" +
+        "ESM 1: Translating StandardModule file:///opt/nre/dist/main.js\n" +
+        "ESM 1: Storing file:///opt/nre/node_modules/zod/index.js",
     );
 
     expect(collector.result()).toEqual({
@@ -118,16 +118,16 @@ const probePolicy = (
 ) => {
   const generous = 30_000;
   return resolveMcpStartupBudgets({
-    REA_MCP_INITIALIZE_BUDGET_MS: String(
+    NRE_MCP_INITIALIZE_BUDGET_MS: String(
       overrides.initializeBudgetMs ?? generous,
     ),
-    REA_MCP_TOOLS_LIST_BUDGET_MS: String(
+    NRE_MCP_TOOLS_LIST_BUDGET_MS: String(
       overrides.toolsListBudgetMs ?? generous,
     ),
-    REA_MCP_FIRST_CATALOG_BUDGET_MS: String(
+    NRE_MCP_FIRST_CATALOG_BUDGET_MS: String(
       overrides.firstCatalogBudgetMs ?? generous,
     ),
-    REA_MCP_DOCTOR_DEADLINE_MS: String(overrides.doctorDeadlineMs ?? generous),
+    NRE_MCP_DOCTOR_DEADLINE_MS: String(overrides.doctorDeadlineMs ?? generous),
   });
 };
 
@@ -139,7 +139,7 @@ describe("packaged MCP startup probe failures", () => {
       measureMcpStartup({
         command: process.execPath,
         args: [probeChild],
-        environment: { ...process.env, REA_MCP_PROBE_MODE: "hang" },
+        environment: { ...process.env, NRE_MCP_PROBE_MODE: "hang" },
         policy,
       }),
       policy.initialize,
@@ -155,7 +155,7 @@ describe("packaged MCP startup probe failures", () => {
         args: [probeChild],
         environment: {
           ...process.env,
-          REA_MCP_PROBE_MODE: "initialize-then-hang",
+          NRE_MCP_PROBE_MODE: "initialize-then-hang",
         },
         policy,
       }),
@@ -170,7 +170,7 @@ describe("packaged MCP startup probe failures", () => {
       measureMcpStartup({
         command: process.execPath,
         args: [probeChild],
-        environment: { ...process.env, REA_MCP_PROBE_MODE: "serve" },
+        environment: { ...process.env, NRE_MCP_PROBE_MODE: "serve" },
         policy,
       }),
       policy.firstCatalog,
@@ -182,7 +182,7 @@ describe("packaged MCP startup probe failures", () => {
       await measureMcpStartup({
         command: process.execPath,
         args: [probeChild],
-        environment: { ...process.env, REA_MCP_PROBE_MODE: "fail" },
+        environment: { ...process.env, NRE_MCP_PROBE_MODE: "fail" },
         policy: probePolicy(),
       });
       throw new Error("expected the unrelated probe failure");
@@ -202,9 +202,9 @@ describe("packaged MCP startup probe failures", () => {
       profileMcpModuleLoading({
         command: process.execPath,
         args: [probeChild],
-        environment: { ...process.env, REA_MCP_PROBE_MODE: "hang" },
+        environment: { ...process.env, NRE_MCP_PROBE_MODE: "hang" },
         policy,
-        packageName: "rea-agents",
+        packageName: "nano-reverse-engineer",
       }),
       policy.doctor,
     );
@@ -219,10 +219,10 @@ describe("packaged MCP startup probe failures", () => {
         args: [probeChild],
         environment: {
           ...process.env,
-          REA_MCP_PROBE_MODE: "initialize-then-hang",
+          NRE_MCP_PROBE_MODE: "initialize-then-hang",
         },
         policy,
-        packageName: "rea-agents",
+        packageName: "nano-reverse-engineer",
       }),
       policy.toolsList,
     );
@@ -233,9 +233,9 @@ describe("packaged MCP startup probe failures", () => {
       await profileMcpModuleLoading({
         command: process.execPath,
         args: [probeChild],
-        environment: { ...process.env, REA_MCP_PROBE_MODE: "fail" },
+        environment: { ...process.env, NRE_MCP_PROBE_MODE: "fail" },
         policy: probePolicy(),
-        packageName: "rea-agents",
+        packageName: "nano-reverse-engineer",
       });
       throw new Error("expected the unrelated probe failure");
     } catch (cause) {
@@ -261,7 +261,7 @@ describe("packaged MCP first-catalog budget while a phase is pending", () => {
       await measureMcpStartup({
         command: process.execPath,
         args: [probeChild],
-        environment: { ...process.env, REA_MCP_PROBE_MODE: "hang" },
+        environment: { ...process.env, NRE_MCP_PROBE_MODE: "hang" },
         policy,
       });
     } catch (cause) {
@@ -270,7 +270,7 @@ describe("packaged MCP first-catalog budget while a phase is pending", () => {
     expect(caught).toBeInstanceOf(Error);
     const message = errorMessage(caught);
     expectPhaseText(message, policy.firstCatalog);
-    expect(message).not.toContain("REA_MCP_INITIALIZE_BUDGET_MS");
+    expect(message).not.toContain("NRE_MCP_INITIALIZE_BUDGET_MS");
     const elapsedMs = performance.now() - started;
     expect(elapsedMs).toBeLessThan(initializeMs);
     expect(elapsedMs).toBeLessThan(firstCatalogMs + 2_000);
@@ -279,7 +279,7 @@ describe("packaged MCP first-catalog budget while a phase is pending", () => {
   it("stops a pending tools/list at the remaining first-catalog budget", async () => {
     const firstCatalogMs = 800;
     const toolsListMs = 8_000;
-    const root = await createTestTempDirectory("rea-mcp-startup-");
+    const root = await createTestTempDirectory("nre-mcp-startup-");
     const initializedPath = join(root, "initialized");
     const policy = probePolicy({
       toolsListBudgetMs: toolsListMs,
@@ -293,8 +293,8 @@ describe("packaged MCP first-catalog budget while a phase is pending", () => {
         args: [probeChild],
         environment: {
           ...process.env,
-          REA_MCP_PROBE_MODE: "initialize-then-hang",
-          REA_MCP_PROBE_INITIALIZED_PATH: initializedPath,
+          NRE_MCP_PROBE_MODE: "initialize-then-hang",
+          NRE_MCP_PROBE_INITIALIZED_PATH: initializedPath,
         },
         policy,
       });
@@ -304,7 +304,7 @@ describe("packaged MCP first-catalog budget while a phase is pending", () => {
     expect(caught).toBeInstanceOf(Error);
     const message = errorMessage(caught);
     expectPhaseText(message, policy.firstCatalog);
-    expect(message).not.toContain("REA_MCP_TOOLS_LIST_BUDGET_MS");
+    expect(message).not.toContain("NRE_MCP_TOOLS_LIST_BUDGET_MS");
     const elapsedMs = performance.now() - started;
     expect(elapsedMs).toBeLessThan(toolsListMs);
     expect(elapsedMs).toBeLessThan(firstCatalogMs + 2_000);
@@ -315,7 +315,7 @@ describe("packaged MCP first-catalog budget while a phase is pending", () => {
     const measurement = await measureMcpStartup({
       command: process.execPath,
       args: [probeChild],
-      environment: { ...process.env, REA_MCP_PROBE_MODE: "serve" },
+      environment: { ...process.env, NRE_MCP_PROBE_MODE: "serve" },
       policy: probePolicy(),
     });
     expect(measurement.listed_tool_count).toBe(0);

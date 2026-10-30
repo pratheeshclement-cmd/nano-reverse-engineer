@@ -96,13 +96,13 @@ export const run = async (
     return 1;
   }
   const fullOutputCatalog =
-    environment.REA_MCP_OUTPUT_SCHEMA_PROFILE === undefined ||
-    environment.REA_MCP_OUTPUT_SCHEMA_PROFILE === "full";
+    environment.NRE_MCP_OUTPUT_SCHEMA_PROFILE === undefined ||
+    environment.NRE_MCP_OUTPUT_SCHEMA_PROFILE === "full";
   // The recorded catalog holds the complete inventory and its full-catalog
   // identity, so only an unscoped registration can be served from it. A
   // scoped one composes the canonical scope itself instead of advertising
   // tools whose identity the runtime cannot verify.
-  const scopedToolFamilies = environment.REA_MCP_TOOL_FAMILIES !== undefined;
+  const scopedToolFamilies = environment.NRE_MCP_TOOL_FAMILIES !== undefined;
   if (
     RECORDED_MCP_CATALOG_SHA256 !== undefined &&
     dependencies.transport !== "http" &&
@@ -154,7 +154,7 @@ const processIo: EntrypointIo = {
   },
 };
 
-/** Run `rea mcp --http`: parse its flags, resolve MCP_HOST/MCP_PORT, then serve over HTTP. */
+/** Run `nre mcp --http`: parse its flags, resolve MCP_HOST/MCP_PORT, then serve over HTTP. */
 export const runMcpHttpEntrypoint = async (
   arguments_: readonly string[],
   io: EntrypointIo = processIo,

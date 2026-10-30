@@ -1,5 +1,5 @@
 /* Keep the configured launcher identity alive while its resource-limited
- * Python child runs. Both remain in REA's owned process group. */
+ * Python child runs. Both remain in NRE's owned process group. */
 #define _POSIX_C_SOURCE 200809L
 #include <errno.h>
 #include <signal.h>
@@ -11,8 +11,8 @@
 #include <unistd.h>
 
 int main(int argc, char **argv) {
-  char *python = getenv("REA_VERIFY_LIMITED_PYTHON");
-  char *limit = getenv("REA_VERIFY_LIMIT_OPTION");
+  char *python = getenv("NRE_VERIFY_LIMITED_PYTHON");
+  char *limit = getenv("NRE_VERIFY_LIMIT_OPTION");
   if (python == NULL || python[0] != '/' || limit == NULL) {
     fputs("limited Python fixture requires an absolute Python and limit\n", stderr);
     return 127;

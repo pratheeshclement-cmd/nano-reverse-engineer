@@ -188,8 +188,8 @@ it.each(["initialize", "transport"])(
         maximum: 1000,
         applies_at: "next_operation",
         agent_editable: true,
-        scope: "rea-runtime",
-        rea_restart_required: false,
+        scope: "nre-runtime",
+        nre_restart_required: false,
       },
       diagnostics: { producer_fact: "retained" },
     });
@@ -1333,7 +1333,7 @@ describe("headless IDA session ownership and cleanup", () => {
     expect(closed.ok).toBe(false);
     if (!closed.ok) expect(closed.error.cleanupIncomplete).toBe(true);
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
     expect(producer.closes).toBe(0);
   });
@@ -1386,7 +1386,7 @@ describe("headless IDA session ownership and cleanup", () => {
       }),
     );
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
   });
 });
@@ -1427,7 +1427,7 @@ describe("headless IDA blanked-identity inventory rows", () => {
     producer.beforeCall = async (name) => {
       if (name === "idb_close") released = true;
     };
-    // A gui binding belongs to an IDA instance REA does not control, so the
+    // A gui binding belongs to an IDA instance NRE does not control, so the
     // blanked-identity exception must not reach it.
     producer.overrideCall = (name) =>
       name === "idb_list" && released
@@ -1449,7 +1449,7 @@ describe("headless IDA blanked-identity inventory rows", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error.cleanupIncomplete).toBe(true);
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
   });
 
@@ -1480,7 +1480,7 @@ describe("headless IDA blanked-identity inventory rows", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error.cleanupIncomplete).toBe(true);
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
   });
 });
@@ -1530,7 +1530,7 @@ describe("headless IDA reaped worker cleanup", () => {
     expect(result).toMatchObject(reportsSessions(LIVE_PEER));
     expect(producer.closes).toBe(0);
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
 
     // A retry whose inventory is unavailable keeps the observed blocker.
@@ -1587,7 +1587,7 @@ describe("headless IDA reaped worker cleanup", () => {
     ).toHaveLength(1);
     expect(producer.closes).toBe(0);
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
   });
 });
@@ -1836,7 +1836,7 @@ describe("headless IDA unresolved successful-open ownership", () => {
       expect(producer.closes).toBe(0);
       expect(producer.database).toBe(ownedId);
       expect(
-        (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+        (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
       ).toBe(true);
       expect(producer.calls.some(({ name }) => name === "idb_close")).toBe(
         false,
@@ -1900,7 +1900,7 @@ describe("headless IDA cleanup verification", () => {
     expect((await client.close()).ok).toBe(false);
     expect(producer.closes).toBe(0);
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
     producer.failClose = false;
     expect((await client.close()).ok).toBe(true);
@@ -1927,7 +1927,7 @@ describe("headless IDA cleanup verification", () => {
     expect((await client.close()).ok).toBe(false);
     expect(producer.closes).toBe(0);
     expect(
-      (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+      (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
     ).toBe(true);
     inventoryFails = false;
     expect((await client.close()).ok).toBe(true);
@@ -1955,7 +1955,7 @@ describe("headless IDA cleanup verification", () => {
     expect((await client.close()).ok).toBe(true);
     expect(
       producer.calls.find(({ name }) => name === "idb_close")?.args.database,
-    ).toMatch(/^rea-/u);
+    ).toMatch(/^nre-/u);
     expect(await readdir(root)).toEqual(["target.elf"]);
   });
 });
@@ -1990,7 +1990,7 @@ it("retains a conflicting requested session ID during pre-close recovery", async
   );
   expect(producer.calls.some(({ name }) => name === "idb_close")).toBe(false);
   expect(
-    (await readdir(root)).some((name) => name.startsWith("rea-ida-")),
+    (await readdir(root)).some((name) => name.startsWith("nre-ida-")),
   ).toBe(true);
 });
 

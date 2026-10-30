@@ -36,10 +36,10 @@ describe("parseClientConfiguration shape diagnostics", () => {
   });
 
   it("reports only duplicates in the effective server object", () => {
-    const owned = '{"command":"rea","args":["mcp"]}';
-    const activeTable = `{"mcpServers":{"rea":null,"rea":${owned}}}`;
+    const owned = '{"command":"nre","args":["mcp"]}';
+    const activeTable = `{"mcpServers":{"nre":null,"nre":${owned}}}`;
     const active = parseClientConfiguration(activeTable, "json");
-    expect(shadowedClientServers(activeTable, active, "rea")).toEqual({
+    expect(shadowedClientServers(activeTable, active, "nre")).toEqual({
       servers: [null],
       legacyServers: [],
     });
@@ -47,10 +47,10 @@ describe("parseClientConfiguration shape diagnostics", () => {
     // Removing from the effective parent leaves an earlier repeated parent
     // inactive. Its members are not registrations the client would reveal.
     const inactiveParent =
-      `{"mcpServers":{"rea":{"command":"/usr/bin/false"}},` +
-      `"mcpServers":{"rea":${owned}}}`;
+      `{"mcpServers":{"nre":{"command":"/usr/bin/false"}},` +
+      `"mcpServers":{"nre":${owned}}}`;
     const parsed = parseClientConfiguration(inactiveParent, "json");
-    expect(shadowedClientServers(inactiveParent, parsed, "rea")).toEqual({
+    expect(shadowedClientServers(inactiveParent, parsed, "nre")).toEqual({
       servers: [],
       legacyServers: [],
     });

@@ -280,7 +280,7 @@ export class KunaTargetCommands {
   async #createWorkspace(): Promise<Result<Workspace, AnalysisError>> {
     let owned: WorkspaceRoot | undefined;
     try {
-      const root = await PrivateRuntimeRoot.create({ prefix: "rea-kuna-" });
+      const root = await PrivateRuntimeRoot.create({ prefix: "nre-kuna-" });
       owned = {
         root,
         cleanup: new AnalysisCleanupLease(() => root.close(), [root.path]),

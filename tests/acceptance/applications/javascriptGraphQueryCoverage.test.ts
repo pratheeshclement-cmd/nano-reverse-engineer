@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "preserves exact empty events and unresolved property queries through public Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-graph-query-coverage-");
+    const root = await createTestTempDirectory("nre-graph-query-coverage-");
     await writeFile(
       join(root, "main.cjs"),
       'const { EventEmitter } = require("node:events"); const bus = new EventEmitter(); bus.on("", function emptyListener() {}); function read() { return this.speed; }',
@@ -64,7 +64,7 @@ cliTest(
 cliTest(
   "traces a coercion boundary through its assigned result",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-graph-boundary-result-");
+    const root = await createTestTempDirectory("nre-graph-boundary-result-");
     await writeFile(
       join(root, "main.js"),
       "function parse(raw) { const n = Number(raw); return n; } module.exports = parse;",

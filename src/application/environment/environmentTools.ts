@@ -527,7 +527,7 @@ export const environmentToolDefinitions = (
 };
 
 /** The document format a state-served data plane loads and reports. */
-export const REA_STATE_FORMAT = "rea-state/v1";
+export const NRE_STATE_FORMAT = "nre-state/v1";
 
 /** The data-plane methods an environment served from a state answers. */
 export const STATE_OPERATIONS = ["data/reset", "data/add", "data/get"] as const;
@@ -535,18 +535,18 @@ export const STATE_OPERATIONS = ["data/reset", "data/add", "data/get"] as const;
 /** The intake declaration a state-served card carries: what `data/add` loads and `data/get` returns. */
 export const STATE_INTAKE_EXTENSION = {
   uri: "urn:agentenv:intake/v1",
-  description: `data/add replaces the whole environment state with one ${REA_STATE_FORMAT} document; data/get returns the current state in the same format.`,
+  description: `data/add replaces the whole environment state with one ${NRE_STATE_FORMAT} document; data/get returns the current state in the same format.`,
   params: {
     add: [
-      { part: "data", format: REA_STATE_FORMAT, load: "replace" },
+      { part: "data", format: NRE_STATE_FORMAT, load: "replace" },
       {
         part: "file",
-        format: REA_STATE_FORMAT,
+        format: NRE_STATE_FORMAT,
         mimeTypes: ["application/json"],
         load: "replace",
       },
     ],
-    get: [{ part: "data", format: REA_STATE_FORMAT }],
+    get: [{ part: "data", format: NRE_STATE_FORMAT }],
   },
 } as const;
 

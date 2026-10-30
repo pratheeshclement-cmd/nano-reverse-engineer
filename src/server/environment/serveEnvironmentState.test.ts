@@ -62,13 +62,13 @@ import { DEFAULT_STATE_INTAKE, type StateIntake } from "./stateIntake.js";
 
 const { source, state } = environmentStateServeInputs();
 
-/** The initial state as a rea-state/v1 document with user 2 renamed. */
+/** The initial state as a nre-state/v1 document with user 2 renamed. */
 const renamedDocument = () => {
   const document = structuredClone(new EnvironmentStateStore(state).snapshot());
   return {
-    rea_state: {
-      ...document.rea_state,
-      entities: document.rea_state.entities.map((entity) =>
+    nre_state: {
+      ...document.nre_state,
+      entities: document.nre_state.entities.map((entity) =>
         entity.type === "/api/users" && entity.id === "2"
           ? { ...entity, fields: { ...entity.fields, login: "renamed" } }
           : entity,
@@ -119,7 +119,7 @@ const loginOf = (store: EnvironmentStateStore) =>
 
 /** The `file://` uri of a fresh file holding the renamed document. */
 const renamedStateUri = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-environment-state-close-");
+  const root = await createTestTempDirectory("nre-environment-state-close-");
   const path = join(root, "state.json");
   await writeFile(path, JSON.stringify(renamedDocument()));
   return pathToFileURL(path).href;
@@ -230,18 +230,18 @@ describe("state data plane", () => {
   it("names the first invalid member by JSON pointer and changes nothing", async () => {
     const plane = dataPlane();
     const document = renamedDocument();
-    const entities = document.rea_state.entities.map((entity, index) =>
+    const entities = document.nre_state.entities.map((entity, index) =>
       index === 3 ? { ...entity, collection: "/api/elsewhere" } : entity,
     );
     const reply = await plane.add({
       kind: "data",
-      data: { rea_state: { ...document.rea_state, entities } },
+      data: { nre_state: { ...document.nre_state, entities } },
     });
     expect(reply).toMatchObject({
       error: {
         code: -32602,
-        message: expect.stringContaining("/rea_state/entities/3/collection"),
-        data: { path: "/rea_state/entities/3/collection" },
+        message: expect.stringContaining("/nre_state/entities/3/collection"),
+        data: { path: "/nre_state/entities/3/collection" },
       },
     });
     expect(loginOf(plane.store)).toBe("probe");
@@ -274,15 +274,15 @@ describe("state data plane", () => {
 it("preserves arbitrary own data keys in inline and encoded file parts", async () => {
   const plane = dataPlane();
   const initial = renamedDocument();
-  const original = initial.rea_state.entities[0]!;
+  const original = initial.nre_state.entities[0]!;
   const members = JSON.parse(
     '{"__proto__":{"constructor":0},"toString":false}',
   );
   const entity = { ...original, fields: { ...original.fields, ...members } };
   const document = {
-    rea_state: {
-      ...initial.rea_state,
-      entities: [entity, ...initial.rea_state.entities.slice(1)],
+    nre_state: {
+      ...initial.nre_state,
+      entities: [entity, ...initial.nre_state.entities.slice(1)],
     },
   };
   for (const part of [
@@ -320,7 +320,7 @@ describe("state data plane intake", () => {
     ).resolves.toMatchObject({ result: {} });
     expect(loginOf(plane.store)).toBe("renamed");
     plane.store.reset();
-    const root = await createTestTempDirectory("rea-environment-state-file-");
+    const root = await createTestTempDirectory("nre-environment-state-file-");
     const path = join(root, "state.json");
     await writeFile(path, text);
     await expect(
@@ -406,7 +406,7 @@ describe("state data plane intake", () => {
         },
       });
     }
-    const root = await createTestTempDirectory("rea-environment-state-host-");
+    const root = await createTestTempDirectory("nre-environment-state-host-");
     const path = join(root, "state.json");
     await writeFile(path, JSON.stringify(renamedDocument()));
     await expect(
@@ -625,9 +625,9 @@ describe("state data plane response budget", () => {
   it("answers replies past the response budget with an error stating it instead of building the body", async () => {
     const document = renamedDocument();
     const large = {
-      rea_state: {
-        ...document.rea_state,
-        entities: document.rea_state.entities.map((entity) =>
+      nre_state: {
+        ...document.nre_state,
+        entities: document.nre_state.entities.map((entity) =>
           entity.type === "/api/users" && entity.id === "2"
             ? {
                 ...entity,
@@ -640,7 +640,7 @@ describe("state data plane response budget", () => {
         ),
       },
     };
-    const root = await createTestTempDirectory("rea-environment-state-budget-");
+    const root = await createTestTempDirectory("nre-environment-state-budget-");
     const path = join(root, "large.json");
     await writeFile(path, JSON.stringify(large));
     const plane = dataPlane();
@@ -682,9 +682,9 @@ describe("state data plane response budget", () => {
     const document = renamedDocument();
     const login = "x".repeat(Math.ceil(MAX_RPC_RESPONSE_BYTES / 3));
     const large = {
-      rea_state: {
-        ...document.rea_state,
-        entities: document.rea_state.entities.map((entity) =>
+      nre_state: {
+        ...document.nre_state,
+        entities: document.nre_state.entities.map((entity) =>
           entity.type === "/api/users" && entity.id === "2"
             ? { ...entity, fields: { ...entity.fields, login } }
             : entity,
@@ -692,7 +692,7 @@ describe("state data plane response budget", () => {
       },
     };
     const root = await createTestTempDirectory(
-      "rea-environment-state-measure-",
+      "nre-environment-state-measure-",
     );
     const path = join(root, "large.json");
     await writeFile(path, JSON.stringify(large));
@@ -742,9 +742,9 @@ describe("repeated state reads", () => {
     const plane = dataPlane();
     const document = renamedDocument();
     const large = {
-      rea_state: {
-        ...document.rea_state,
-        entities: document.rea_state.entities.map((entity) =>
+      nre_state: {
+        ...document.nre_state,
+        entities: document.nre_state.entities.map((entity) =>
           entity.type === "/api/users" && entity.id === "2"
             ? {
                 ...entity,
@@ -757,7 +757,7 @@ describe("repeated state reads", () => {
     await plane.add({ kind: "data", data: large });
     const fields = plane.store
       .snapshot()
-      .rea_state.entities.find((entity) => entity.id === "2")?.fields;
+      .nre_state.entities.find((entity) => entity.id === "2")?.fields;
     if (fields === undefined) throw new Error("Expected the loaded entity");
 
     const originalKeys = Object.keys;
@@ -791,9 +791,9 @@ describe("state data plane response budget reserve", () => {
   it("keeps room for every later refusal and the batch's framing, so the body never passes the budget", async () => {
     const document = renamedDocument();
     const withLogin = (login: string) => ({
-      rea_state: {
-        ...document.rea_state,
-        entities: document.rea_state.entities.map((entity) =>
+      nre_state: {
+        ...document.nre_state,
+        entities: document.nre_state.entities.map((entity) =>
           entity.type === "/api/users" && entity.id === "2"
             ? { ...entity, fields: { ...entity.fields, login } }
             : entity,
@@ -814,7 +814,7 @@ describe("state data plane response budget reserve", () => {
       Math.floor((MAX_RPC_RESPONSE_BYTES - 100) / 3) - base,
     );
     const root = await createTestTempDirectory(
-      "rea-environment-state-reserve-",
+      "nre-environment-state-reserve-",
     );
     const path = join(root, "large.json");
     await writeFile(path, JSON.stringify(withLogin(login)));

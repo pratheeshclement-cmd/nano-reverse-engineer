@@ -7,11 +7,11 @@ import {
 
 const hostEnvironment = {
   PATH: "host-search-path",
-  REA_CASE_TEST: "host-case",
-  REA_EMPTY_TEST: "host-empty",
-  REA_UNSET_TEST: "host-unset",
-  REA_EXACT_UNSET_TEST: "host-exact-unset",
-  REA_PROCESS_RUN_ID: "host-run-id",
+  NRE_CASE_TEST: "host-case",
+  NRE_EMPTY_TEST: "host-empty",
+  NRE_UNSET_TEST: "host-unset",
+  NRE_EXACT_UNSET_TEST: "host-exact-unset",
+  NRE_PROCESS_RUN_ID: "host-run-id",
 };
 
 const observeEnvironment = async (
@@ -27,12 +27,12 @@ const observeEnvironment = async (
     hostEnvironment,
     env: {
       Path: path,
-      rea_case_test: "caller-case",
-      rea_empty_test: "",
-      rea_unset_test: undefined,
-      REA_EXACT_UNSET_TEST: undefined,
-      REA_PROCESS_RUN_ID: "caller-uppercase-run-id",
-      rea_process_run_id: "caller-lowercase-run-id",
+      nre_case_test: "caller-case",
+      nre_empty_test: "",
+      nre_unset_test: undefined,
+      NRE_EXACT_UNSET_TEST: undefined,
+      NRE_PROCESS_RUN_ID: "caller-uppercase-run-id",
+      nre_process_run_id: "caller-lowercase-run-id",
     },
     platform,
     runId: "owned-run-id",
@@ -64,9 +64,9 @@ it.each([undefined, ""])(
     );
     expect(canonical).toEqual({
       ...(path === undefined ? {} : { PATH: "" }),
-      REA_CASE_TEST: "caller-case",
-      REA_EMPTY_TEST: "",
-      REA_PROCESS_RUN_ID: "owned-run-id",
+      NRE_CASE_TEST: "caller-case",
+      NRE_EMPTY_TEST: "",
+      NRE_PROCESS_RUN_ID: "owned-run-id",
     });
     expect(entries).toHaveLength(Object.keys(canonical).length);
   },
@@ -77,13 +77,13 @@ it.skipIf(process.platform === "win32")(
   async () => {
     expect(await observeEnvironment(process.platform, undefined)).toEqual({
       PATH: "host-search-path",
-      REA_CASE_TEST: "host-case",
-      REA_EMPTY_TEST: "host-empty",
-      REA_UNSET_TEST: "host-unset",
-      REA_PROCESS_RUN_ID: "owned-run-id",
-      rea_case_test: "caller-case",
-      rea_empty_test: "",
-      rea_process_run_id: "caller-lowercase-run-id",
+      NRE_CASE_TEST: "host-case",
+      NRE_EMPTY_TEST: "host-empty",
+      NRE_UNSET_TEST: "host-unset",
+      NRE_PROCESS_RUN_ID: "owned-run-id",
+      nre_case_test: "caller-case",
+      nre_empty_test: "",
+      nre_process_run_id: "caller-lowercase-run-id",
     });
   },
 );

@@ -16,7 +16,7 @@ export async function verifyGhidraSnapshotLifecycle(
   edited,
   cli,
 ) {
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-snapshot-proof-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-ghidra-snapshot-proof-"));
   let successfulCalls = 0;
   let rejectedCalls = 0;
   const call = async (name, args = {}) => {
@@ -162,7 +162,7 @@ async function verifyConcurrentSnapshotClose({
   const destination = join(workspace, "concurrent.json");
   const annotation = call("annotate_native_function", {
     procedure: entry,
-    name: "rea_concurrent_snapshot_edit",
+    name: "nre_concurrent_snapshot_edit",
     comment:
       "A successful edit must invalidate a concurrently requested snapshot.",
   });

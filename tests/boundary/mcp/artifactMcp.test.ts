@@ -59,7 +59,7 @@ const integrityMessage = (unpacked: boolean): string =>
 
 it("refuses an artifact parent and summary when its actual inventory source cannot be recorded", async () => {
   const root = await createTestTempDirectory(
-    "rea-artifact-source-refusal-mcp-",
+    "nre-artifact-source-refusal-mcp-",
   );
   const archive = join(root, "fixture.zip");
   const zip = new ZipWriter(new Uint8ArrayWriter());
@@ -137,7 +137,7 @@ it.each([
 ])(
   "returns actionable local details for an $label ASAR integrity error",
   async ({ unpacked }) => {
-    const root = await createTestTempDirectory("rea-asar-integrity-mcp-");
+    const root = await createTestTempDirectory("nre-asar-integrity-mcp-");
     const source = join(root, "source");
     const original = "console.log('ok');\n";
     const changed = "console.log('no');\n";
@@ -205,7 +205,7 @@ it.each([
 );
 
 it("extracts an active archive through MCP when requested", async () => {
-  const root = await createTestTempDirectory("rea-artifact-extract-mcp-");
+  const root = await createTestTempDirectory("nre-artifact-extract-mcp-");
   const archive = join(root, "fixture.zip");
   const zip = new ZipWriter(new Uint8ArrayWriter());
   await zip.add("main.js", new TextReader("console.log('extract');\n"));
@@ -247,7 +247,7 @@ it("extracts an active archive through MCP when requested", async () => {
 });
 
 it("preserves raw legacy ZIP name bytes and CP437 path interpretation through MCP", async () => {
-  const root = await createTestTempDirectory("rea-legacy-zip-name-mcp-");
+  const root = await createTestTempDirectory("nre-legacy-zip-name-mcp-");
   const archive = join(root, "legacy-name.zip");
   const rawName = Buffer.from([0xc7, 0xd1, 0xb1, 0xdb, 0x2e, 0x74, 0x78, 0x74]);
   await writeFile(
@@ -299,7 +299,7 @@ it("preserves raw legacy ZIP name bytes and CP437 path interpretation through MC
 });
 
 it("extracts a macOS app bundle through MCP", async () => {
-  const root = await createTestTempDirectory("rea-artifact-extract-app-mcp-");
+  const root = await createTestTempDirectory("nre-artifact-extract-app-mcp-");
   const contents = join(root, "Fixture.app", "Contents");
   await mkdir(join(contents, "MacOS"), { recursive: true });
   const plist =
@@ -350,7 +350,7 @@ it("extracts a macOS app bundle through MCP", async () => {
 });
 
 it("records an explicitly continued mismatch, preserves verified siblings, and never reports equivalence", async () => {
-  const root = await createTestTempDirectory("rea-asar-continue-mcp-");
+  const root = await createTestTempDirectory("nre-asar-continue-mcp-");
   const source = join(root, "source");
   await mkdir(source);
   const original = "console.log('ok');\n",
@@ -562,7 +562,7 @@ it("compares inline inventory Evidence without prior session calls", async () =>
 });
 
 it("returns full artifact graphs inline and compares changed inventories", async () => {
-  const directory = await createTestTempDirectory("rea-artifact-mcp-");
+  const directory = await createTestTempDirectory("nre-artifact-mcp-");
   const archive = join(directory, "fixture.ipa");
   const changedArchive = join(directory, "changed.ipa");
   const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -628,7 +628,7 @@ it("returns full artifact graphs inline and compares changed inventories", async
     const evidence = session.evidenceById(inventoryResult.evidence_id);
     if (evidence === undefined) throw new Error("missing inventory Evidence");
     expect(evidence).toMatchObject({
-      provider: { id: "rea-artifact-graph" },
+      provider: { id: "nre-artifact-graph" },
       subject: { format: "ipa" },
     });
     const inventoryInspection = z
@@ -697,7 +697,7 @@ it("returns full artifact graphs inline and compares changed inventories", async
 });
 
 it("compares summary Evidence through retained complete inspection parents", async () => {
-  const directory = await createTestTempDirectory("rea-artifact-summary-mcp-");
+  const directory = await createTestTempDirectory("nre-artifact-summary-mcp-");
   const archive = join(directory, "one.zip");
   const changedArchive = join(directory, "two.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -931,7 +931,7 @@ const withForeignMetadataAndNestedZipMember = (
 };
 
 it("does not apply PyInstaller declaration unknowns to foreign metadata or nested ZIP members", async () => {
-  const root = await createTestTempDirectory("rea-pyinstaller-scope-mcp-");
+  const root = await createTestTempDirectory("nre-pyinstaller-scope-mcp-");
   const archive = join(root, "sample");
   await writeFile(archive, pyInstallerComparisonArchive("m", false));
   const session = createTestBinarySession(new ArtifactProvider(process.env));
@@ -963,7 +963,7 @@ it("does not apply PyInstaller declaration unknowns to foreign metadata or neste
 });
 
 it("compares PyInstaller declaration facts without inventing payload identity", async () => {
-  const root = await createTestTempDirectory("rea-pyinstaller-compare-mcp-");
+  const root = await createTestTempDirectory("nre-pyinstaller-compare-mcp-");
   const leftPath = join(root, "module");
   const rightPath = join(root, "script");
   const declarationsPath = join(root, "declarations");
@@ -1108,7 +1108,7 @@ it("compares PyInstaller declaration facts without inventing payload identity", 
 });
 
 it("discovers artifact target prerequisites and preserves typed MCP refusals", async () => {
-  const root = await createTestTempDirectory("rea-artifact-availability-mcp-");
+  const root = await createTestTempDirectory("nre-artifact-availability-mcp-");
   const zip = new ZipWriter(new Uint8ArrayWriter());
   await zip.add("a.txt", new TextReader("hello"));
   await writeFile(join(root, "sample.zip"), await zip.close());
@@ -1256,7 +1256,7 @@ it("discovers artifact target prerequisites and preserves typed MCP refusals", a
 });
 
 it("attributes ASAR integrity contradictions to their actual inputs and withholds correlation support", async () => {
-  const root = await createTestTempDirectory("rea-asar-attribution-");
+  const root = await createTestTempDirectory("nre-asar-attribution-");
   const source = join(root, "source");
   await mkdir(source);
   await writeFile(join(source, "keep.txt"), "unchanged sibling\n");

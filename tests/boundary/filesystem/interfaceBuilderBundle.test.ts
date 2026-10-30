@@ -194,7 +194,7 @@ const encodeNibArchiveWithSharedDataValue = (input: {
 it.each([16, 17])(
   "reports the bounded sample of %i malformed archive diagnostics",
   async (count) => {
-    const bundle = await createTestTempDirectory("rea-ib-invalid-bound-");
+    const bundle = await createTestTempDirectory("nre-ib-invalid-bound-");
     for (let index = 0; index < count; index += 1)
       await writeFile(
         join(bundle, `bad-${String(index).padStart(2, "0")}.nib`),
@@ -232,7 +232,7 @@ describe("compiled Interface Builder traversal coverage", () => {
     "shares the 64-path omission budget between regular-document capacity and symlink source notices",
     async () => {
       const bundle = await createTestTempDirectory(
-        "rea-ib-mixed-omission-bound-",
+        "nre-ib-mixed-omission-bound-",
       );
       const bytes = encodeNibArchiveFixture({
         classes: ["NSView"],
@@ -301,7 +301,7 @@ describe("compiled Interface Builder traversal coverage", () => {
   );
 
   it("preserves unknown traversal after a later complete callback without inventing archive omissions", async () => {
-    const bundle = await createTestTempDirectory("rea-ib-traversal-callback-");
+    const bundle = await createTestTempDirectory("nre-ib-traversal-callback-");
     const bytes = encodeNibArchiveFixture({
       classes: ["NSView"],
       objects: [{ classIndex: 0, values: { title: "Retained view" } }],
@@ -361,7 +361,7 @@ describe("compiled Interface Builder traversal coverage", () => {
 
 describe("compiled Interface Builder bundle reader", () => {
   it("reads nib plist archives and reports provenance", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const nib = join(
       bundle,
@@ -419,7 +419,7 @@ describe("compiled Interface Builder bundle reader", () => {
   });
 
   it("projects compiled AppKit actions from the control to their target", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -499,7 +499,7 @@ describe("compiled Interface Builder bundle reader", () => {
 
 describe("NIBArchive real projection", () => {
   it("projects NIBArchive special reals as typed values with per-document counts", async () => {
-    const root = await createTestTempDirectory("rea-nib-real-projection-");
+    const root = await createTestTempDirectory("nre-nib-real-projection-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -550,7 +550,7 @@ describe("NIBArchive real projection", () => {
 
 describe("keyed archive hierarchy coverage", () => {
   it("projects a deep keyed-archive hierarchy through NSArray wrappers", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -580,7 +580,7 @@ describe("keyed archive hierarchy coverage", () => {
   });
 
   it("preserves source order for children in an archived collection", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -617,7 +617,7 @@ describe("keyed archive hierarchy coverage", () => {
   it.skipIf(process.platform !== "darwin")(
     "projects a deep NSView archive produced by Foundation NSKeyedArchiver",
     async () => {
-      const root = await createTestTempDirectory("rea-ib-test-");
+      const root = await createTestTempDirectory("nre-ib-test-");
       const bundle = join(root, "Example.app");
       const resources = join(bundle, "Contents", "Resources");
       await mkdir(resources, { recursive: true });
@@ -655,7 +655,7 @@ describe("keyed archive hierarchy coverage", () => {
 
 describe("compiled Interface Builder bundle reader cancellation", () => {
   it("honors cancellation during directory traversal", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const controller = new AbortController();
     controller.abort();
     await expect(
@@ -670,7 +670,7 @@ describe("compiled Interface Builder bundle reader cancellation", () => {
 
 describe("flat Interface Builder plist values", () => {
   it("decodes flat nib archives that hold data and date values", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources", "English.lproj");
     await mkdir(resources, { recursive: true });
@@ -722,7 +722,7 @@ describe("bounded Interface Builder archive decoding", () => {
   ])("preserves discovery coverage for %s", async (kind, context) => {
     if (kind === "invalid-byte-name" && process.platform !== "linux")
       context.skip();
-    const bundle = await createTestTempDirectory("rea-ib-traversal-");
+    const bundle = await createTestTempDirectory("nre-ib-traversal-");
     if (kind === "invalid-byte-name")
       await writeFile(
         Buffer.concat([
@@ -766,7 +766,7 @@ describe("bounded Interface Builder archive decoding", () => {
   it.each(["io", "integrity"] as const)(
     "preserves typed %s acquisition failures instead of calling the archive invalid",
     async (reason) => {
-      const bundle = await createTestTempDirectory("rea-ib-source-failure-");
+      const bundle = await createTestTempDirectory("nre-ib-source-failure-");
       await writeFile(join(bundle, "Panel.nib"), "unread");
       const failure = new ArtifactReaderFailure(
         reason,
@@ -791,7 +791,7 @@ describe("bounded Interface Builder archive decoding", () => {
 
 describe("bounded Interface Builder hierarchy and value expansion", () => {
   it("deduplicates repeated NIB links while reporting the unavailable owner registry", async () => {
-    const root = await createTestTempDirectory("rea-ib-repeated-hierarchy-");
+    const root = await createTestTempDirectory("nre-ib-repeated-hierarchy-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     const depth = 8;
@@ -844,7 +844,7 @@ describe("bounded Interface Builder hierarchy and value expansion", () => {
   });
 
   it("rejects a binary plist expansion before recursively materializing repeated references", async () => {
-    const root = await createTestTempDirectory("rea-ib-expansion-test-");
+    const root = await createTestTempDirectory("nre-ib-expansion-test-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     await writeFile(
@@ -875,7 +875,7 @@ describe("bounded Interface Builder hierarchy and value expansion", () => {
 
 describe("binary plist data expansion budget", () => {
   it("reserves copied binary plist data for every expanded reference", async () => {
-    const root = await createTestTempDirectory("rea-ib-binary-data-budget-");
+    const root = await createTestTempDirectory("nre-ib-binary-data-budget-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     await writeFile(
@@ -936,7 +936,7 @@ describe("NIB projection byte amplification", () => {
     ];
 
     for (const { name, archive } of cases) {
-      const root = await createTestTempDirectory(`rea-ib-${name}-budget-`);
+      const root = await createTestTempDirectory(`nre-ib-${name}-budget-`);
       const bundle = join(root, "Example.app");
       await mkdir(bundle, { recursive: true });
       await writeFile(join(bundle, `${name}.nib`), archive);
@@ -962,7 +962,7 @@ describe("NIB projection byte amplification", () => {
   });
 
   it("retains a single large base64 data field within the representation budget", async () => {
-    const root = await createTestTempDirectory("rea-ib-large-data-positive-");
+    const root = await createTestTempDirectory("nre-ib-large-data-positive-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     const archive = encodeNibArchiveFixture({
@@ -996,7 +996,7 @@ describe("NIB projection byte amplification", () => {
 cliTest(
   "compiled CLI preserves distinct NIB keys and class identity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-nib-name-identity-");
+    const root = await createTestTempDirectory("nre-nib-name-identity-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1018,7 +1018,7 @@ cliTest(
     );
     const output = await cli.run({
       arguments: ["decode-interface-builder", bundle, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = interfaceBuilderAnalysisSchema.parse(
@@ -1039,7 +1039,7 @@ cliTest(
 cliTest(
   "compiled CLI reports unsupported keyed archive bindings in connection coverage",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ib-binding-coverage-");
+    const root = await createTestTempDirectory("nre-ib-binding-coverage-");
     const bundle = join(root, "Example.app");
     const contents = join(bundle, "Contents");
     const resources = join(contents, "Resources");
@@ -1100,7 +1100,7 @@ cliTest(
 
     const output = await cli.run({
       arguments: ["decode-interface-builder", bundle, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = interfaceBuilderAnalysisSchema.parse(
@@ -1128,7 +1128,7 @@ cliTest(
 cliTest(
   "compiled CLI omits only source-less keyed archive annotation connectors",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ib-keyed-annotations-");
+    const root = await createTestTempDirectory("nre-ib-keyed-annotations-");
     const bundle = join(root, "Example.app");
     const contents = join(bundle, "Contents");
     const resources = join(contents, "Resources");
@@ -1194,7 +1194,7 @@ cliTest(
 
     const output = await cli.run({
       arguments: ["decode-interface-builder", bundle, "--json"],
-      environment: { REA_LOG_LEVEL: "silent", REA_ANALYSIS_PROVIDER: "auto" },
+      environment: { NRE_LOG_LEVEL: "silent", NRE_ANALYSIS_PROVIDER: "auto" },
     });
     expect(output.exitCode, output.stderr).toBe(0);
     const result = interfaceBuilderAnalysisSchema.parse(
@@ -1214,7 +1214,7 @@ cliTest(
 );
 
 it("projects an NIBArchive binding as an unsupported partial connection", async () => {
-  const root = await createTestTempDirectory("rea-ib-nibarchive-binding-");
+  const root = await createTestTempDirectory("nre-ib-nibarchive-binding-");
   const bundle = join(root, "Example.app");
   const resources = join(bundle, "Contents", "Resources");
   await mkdir(resources, { recursive: true });
@@ -1276,7 +1276,7 @@ it("projects an NIBArchive binding as an unsupported partial connection", async 
 cliTest(
   "compiled CLI preserves a good archive and reports repeated key and data omissions",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ib-cli-amplification-");
+    const root = await createTestTempDirectory("nre-ib-cli-amplification-");
     const bundle = join(root, "Example.app");
     const contents = join(bundle, "Contents");
     const resources = join(bundle, "Contents", "Resources");
@@ -1321,8 +1321,8 @@ cliTest(
     const output = await cli.run({
       arguments: ["decode-interface-builder", bundle, "--json"],
       environment: {
-        REA_LOG_LEVEL: "silent",
-        REA_ANALYSIS_PROVIDER: "auto",
+        NRE_LOG_LEVEL: "silent",
+        NRE_ANALYSIS_PROVIDER: "auto",
       },
     });
 
@@ -1368,7 +1368,7 @@ describe("binary Interface Builder dictionary keys", () => {
     expect(encoded.indexOf(placeholder, start + placeholder.length)).toBe(-1);
     Buffer.from("__proto__").copy(encoded, start);
 
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1394,7 +1394,7 @@ describe("binary Interface Builder dictionary keys", () => {
 describe("aggregate Interface Builder archive retention budget", () => {
   it("releases the rejected representation of malformed XML before decoding a healthy sibling", async () => {
     const bundle = await createTestTempDirectory(
-      "rea-ib-rejected-reservation-",
+      "nre-ib-rejected-reservation-",
     );
     await writeFile(
       join(bundle, "A.nib"),
@@ -1430,7 +1430,7 @@ describe("aggregate Interface Builder archive retention budget", () => {
     }
   });
   it("keeps earlier documents when the aggregate decode reservation is exhausted", async () => {
-    const root = await createTestTempDirectory("rea-ib-budget-test-");
+    const root = await createTestTempDirectory("nre-ib-budget-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1475,7 +1475,7 @@ describe("aggregate Interface Builder archive retention budget", () => {
 
 describe("Interface Builder XML plist depth", () => {
   it("bounds XML archives by plist value depth, not element depth", async () => {
-    const root = await createTestTempDirectory("rea-ib-depth-test-");
+    const root = await createTestTempDirectory("nre-ib-depth-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1526,7 +1526,7 @@ describe("Interface Builder XML plist depth", () => {
 
 describe("bounded Interface Builder archive decoding", () => {
   it("counts malformed archives against the document limit", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1551,7 +1551,7 @@ describe("bounded Interface Builder archive decoding", () => {
   });
 
   it("does not mark XML archive decoding partial for __proto__ entries", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1578,7 +1578,7 @@ describe("bounded Interface Builder archive decoding", () => {
   });
 
   it("decodes an archive with a date year beyond four digits", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
@@ -1612,7 +1612,7 @@ describe("Xcode-compiled Interface Builder archives", () => {
   it.skipIf(!xcodeIbtoolAvailable)(
     "decodes an Xcode-compiled storyboard NIB and recovers its UI routes",
     async () => {
-      const root = await createTestTempDirectory("rea-ib-compiled-test-");
+      const root = await createTestTempDirectory("nre-ib-compiled-test-");
       const bundle = join(root, "Example.app");
       const resources = join(bundle, "Contents", "Resources");
       const source = join(
@@ -1690,7 +1690,7 @@ describe("Xcode-compiled Interface Builder archives", () => {
 
 describe("NIBArchive UIKit event connections", () => {
   it("projects a runtime event connection and its event mask", async () => {
-    const root = await createTestTempDirectory("rea-ib-test-");
+    const root = await createTestTempDirectory("nre-ib-test-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     await writeFile(
@@ -1758,7 +1758,7 @@ describe("NIBArchive UIKit event connections", () => {
   });
 
   it("reports a runtime connection with no resolvable owner as an omission", async () => {
-    const root = await createTestTempDirectory("rea-ib-ownerless-");
+    const root = await createTestTempDirectory("nre-ib-ownerless-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     // The connector is recognized by class, but carries no UISource reference,
@@ -1820,7 +1820,7 @@ describe("NIBArchive UIKit event connections", () => {
 
 describe("NIBArchive ownerless connector accounting", () => {
   it("keeps a connection dropped by the limit reported as a limit", async () => {
-    const root = await createTestTempDirectory("rea-ib-ownerless-limit-");
+    const root = await createTestTempDirectory("nre-ib-ownerless-limit-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     // Two resolvable connectors and one ownerless connector with the limit
@@ -1896,7 +1896,7 @@ describe("NIBArchive ownerless connector accounting", () => {
 
 describe("NIBArchive single-object connectors", () => {
   it("does not count tooltip, accessibility or runtime attribute connectors as ownerless", async () => {
-    const root = await createTestTempDirectory("rea-ib-annotation-");
+    const root = await createTestTempDirectory("nre-ib-annotation-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     // Xcode encodes a tooltip, an accessibility description and user-defined
@@ -2007,7 +2007,7 @@ describe("NIBArchive single-object connectors", () => {
 // still a connection whose owner cannot be resolved.
 describe("NIBArchive connectors with unusable sources", () => {
   it("keeps an unknown AppKit connector without NSSource unresolved", async () => {
-    const root = await createTestTempDirectory("rea-ib-unknown-connector-");
+    const root = await createTestTempDirectory("nre-ib-unknown-connector-");
     const bundle = join(root, "Example.app");
     await mkdir(bundle, { recursive: true });
     await writeFile(
@@ -2048,7 +2048,7 @@ describe("NIBArchive connectors with unusable sources", () => {
   ] as const)(
     "still counts %s whose NSSource is %s as ownerless",
     async (className, _label, source) => {
-      const root = await createTestTempDirectory("rea-ib-unusable-source-");
+      const root = await createTestTempDirectory("nre-ib-unusable-source-");
       const bundle = join(root, "Example.app");
       await mkdir(bundle, { recursive: true });
       await writeFile(
@@ -2126,8 +2126,8 @@ describe.skipIf(process.platform !== "darwin")(
         const output = await cli.run({
           arguments: ["decode-interface-builder", fixture.app, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(output.exitCode).toBe(0);
@@ -2162,8 +2162,8 @@ describe.skipIf(process.platform !== "darwin")(
         const output = await cli.run({
           arguments: ["decode-interface-builder", fixture.app, "--json"],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: "auto",
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: "auto",
           },
         });
         expect(output.exitCode).toBe(0);
@@ -2177,7 +2177,7 @@ describe.skipIf(process.platform !== "darwin")(
 );
 
 it("reports a plain plist named nib as undecoded while retaining a valid empty archive", async () => {
-  const bundle = await createTestTempDirectory("rea-ib-archive-recognition-");
+  const bundle = await createTestTempDirectory("nre-ib-archive-recognition-");
   await writeFile(
     join(bundle, "Plain.nib"),
     buildBinary({ CFBundleIdentifier: "sample" }),
@@ -2203,7 +2203,7 @@ it("reports a plain plist named nib as undecoded while retaining a valid empty a
 });
 
 it("preserves authored binary UID-shaped dictionaries through UI archive decoding", async () => {
-  const bundle = await createTestTempDirectory("rea-ui-uid-shapes-");
+  const bundle = await createTestTempDirectory("nre-ui-uid-shapes-");
   await writeFile(join(bundle, "Main.nib"), binaryKeyedArchiveUidShapes());
   const result = await analyzeInterfaceBuilderBundle({
     bundlePath: bundle,
@@ -2223,7 +2223,7 @@ it("preserves authored binary UID-shaped dictionaries through UI archive decodin
 it.each(["embedded", "segue", "neither"] as const)(
   "reports recognized unexamined nib source coverage: %s",
   async (source) => {
-    const bundle = await createTestTempDirectory("rea-ui-unexamined-sources-");
+    const bundle = await createTestTempDirectory("nre-ui-unexamined-sources-");
     await writeFile(
       join(bundle, "Main.nib"),
       encodeNibArchiveFixture({
@@ -2271,7 +2271,7 @@ it.each(["embedded", "segue", "neither"] as const)(
 it.each([1, 2])(
   "projects every serialized outlet collection member in source order: %i",
   async (count) => {
-    const bundle = await createTestTempDirectory("rea-ui-outlet-collection-");
+    const bundle = await createTestTempDirectory("nre-ui-outlet-collection-");
     await writeFile(
       join(bundle, "Main.nib"),
       encodeNibArchiveFixture({
@@ -2339,7 +2339,7 @@ it.each([1, 2])(
 );
 
 it("uses paired AppKit registry parents without promoting nested objects to roots", async () => {
-  const bundle = await createTestTempDirectory("rea-ui-parent-registry-");
+  const bundle = await createTestTempDirectory("nre-ui-parent-registry-");
   await writeFile(
     join(bundle, "Main.nib"),
     encodeNibArchiveFixture({

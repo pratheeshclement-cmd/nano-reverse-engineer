@@ -22,7 +22,7 @@ export const composedWorkflowFixture = async (
     readonly beforeSummary?: () => Promise<void>;
   } = {},
 ) => {
-  const directory = await createTestTempDirectory("rea-workflow-links-");
+  const directory = await createTestTempDirectory("nre-workflow-links-");
   const path = join(directory, "fixture.hop");
   await writeFile(path, "synthetic analysis database");
   const identity = { id: "fixture", name: "Fixture", version: "1" };

@@ -59,7 +59,7 @@ it.each(
     if (sourceKind === "inline") {
       source = { kind: "inline", evidence: parent };
     } else {
-      const root = await createTestTempDirectory("rea-view-auth-failure-");
+      const root = await createTestTempDirectory("nre-view-auth-failure-");
       const path = join(root, "parent.json");
       await writeFile(path, JSON.stringify(parent));
       source = { kind: "evidence-file", path };

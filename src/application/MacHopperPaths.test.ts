@@ -52,7 +52,7 @@ describe("macOS Hopper launcher paths", () => {
   it.skipIf(process.platform === "win32")(
     "preserves a selected home through symlink parent traversal",
     async () => {
-      const temporary = await mkdtemp(join(tmpdir(), "rea-hopper-home-"));
+      const temporary = await mkdtemp(join(tmpdir(), "nre-hopper-home-"));
       try {
         await mkdir(join(temporary, "actual", "nested"), { recursive: true });
         await symlink(
@@ -85,7 +85,7 @@ describe("macOS Hopper launcher paths", () => {
           `${home}/Applications/Hopper Disassembler.app/Contents/MacOS/hopper`,
         );
         expect(linuxHopperLauncherPath(home)).toBe(
-          `${home}/.local/share/rea/hopper/bin/Hopper`,
+          `${home}/.local/share/nre/hopper/bin/Hopper`,
         );
         const source = join(temporary, "source.app");
         await mkdir(join(source, "Contents/MacOS"), { recursive: true });
@@ -99,7 +99,7 @@ describe("macOS Hopper launcher paths", () => {
           false,
           {
             createStagingRoot: (parent) =>
-              mkdtemp(`${parent}/.rea-hopper-stage-`),
+              mkdtemp(`${parent}/.nre-hopper-stage-`),
             copyBundle: async (from, to) => {
               await mkdir(`${to}/Contents/MacOS`, { recursive: true });
               await writeFile(
@@ -143,7 +143,7 @@ describe("macOS Hopper launcher paths", () => {
     const root =
       process.platform === "win32" ? join(process.cwd(), "build") : tmpdir();
     await mkdir(root, { recursive: true });
-    const temporary = await mkdtemp(join(root, "rea-hopper-paths-"));
+    const temporary = await mkdtemp(join(root, "nre-hopper-paths-"));
     const home =
       process.platform === "win32"
         ? relative(process.cwd(), temporary).replaceAll("\\", "/")

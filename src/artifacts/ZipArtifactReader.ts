@@ -74,7 +74,7 @@ class ZipZstandardDecompressionStream {
 // this decoder once; no codecURI means the native Node stream stays in-process.
 registerCodec({
   compressionMethod: 93,
-  format: "rea-zip-zstd",
+  format: "nre-zip-zstd",
   DecompressionStream: ZipZstandardDecompressionStream,
 });
 
@@ -175,7 +175,7 @@ export class ZipArtifactReader implements ArtifactReader {
       // Unflagged names use the ZIP legacy encoding (CP437); the UTF-8 flag
       // and validated Unicode Path extra fields remain authoritative.
       filenameEncoding: "cp437",
-      // REA applies its own provider-neutral path validation in scanReader and
+      // NRE applies its own provider-neutral path validation in scanReader and
       // must preserve that typed failure instead of zip.js rejecting first.
       filenameValidation: "tolerant",
     });
@@ -423,6 +423,14 @@ const extractStream = (
   const output = new PassThrough();
   // Reader retirement can precede a caller attaching its own error listener.
   output.on("error", () => undefined);
+  if (entry.compressionMethod === 93 && (entry.compressedSize ?? 0) < 9) {
+    const error = new ArtifactReaderFailure(
+      "format",
+      `ZIP archive is malformed: ${ERR_INVALID_COMPRESSED_DATA}`,
+    );
+    queueMicrotask(() => output.destroy(error));
+    return { output, completion: Promise.reject(error).catch(() => {}) };
+  }
   const controller = new AbortController();
   const onAbort = (): void => {
     controller.abort(signal?.reason);

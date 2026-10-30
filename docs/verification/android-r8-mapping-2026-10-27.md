@@ -22,12 +22,12 @@ Both controls use main `4e67bc399951768737eeaf539f7bc9fa8373b244`:
 - The original #7137 author is 555aaditya; integration retains their co-author
   credit and preserves #7379's shared manifest contracts/default-package tests.
 
-The [source fixture](https://github.com/morluto/rea/blob/main/tests/fixtures/android/r8-mapping/README.md) has four classes,
+The [source fixture](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/tests/fixtures/android/r8-mapping/README.md) has four classes,
 eight fields and fifteen methods, including constructors, overloads, Unicode
 names, nested/default-package classes, arrays and renamed types in prototypes.
 The same actual R8 invocation emits DEX and mapping. Handwritten source
 expectations are checked against pre-minification `javap -s -p`; an independently
-compiled dexlib2 reader inventories raw DEX identities without REA's parser,
+compiled dexlib2 reader inventories raw DEX identities without NRE's parser,
 bridge or JADX aliases. All four classes and fifteen selected bodies are checked
 on each investigation. Seventeen valid method mapping records include three
 line ranges for one constructor; they are not seventeen distinct DEX methods.
@@ -107,7 +107,7 @@ server and children were restricted to CPUs 0/1; Node heap was 3 GiB. Expensive
 checks ran serially under an 8 GiB sampled family-RSS stop and a 4 GiB host-free
 memory guard. No guard stopped a completed task and no OOM occurred.
 
-The [public stdio MCP harness](https://github.com/morluto/rea/blob/main/tests/support/analysis-efficiency/android-mapping.mjs) uses named live tool
+The [public stdio MCP harness](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/tests/support/analysis-efficiency/android-mapping.mjs) uses named live tool
 contracts and Ajv 2020 validation of SDK-converted advertised outputs. All
 correctness comparisons, hash reads, discovery and cleanup are included in the
 whole-harness cost. First-provider calls use fresh processes/JVMs; OS file caches
@@ -150,7 +150,7 @@ are not substituted for the completed proof-export task above.
 
 ## Whole-task token estimates
 
-[android-mapping-costs.py](https://github.com/morluto/rea/blob/main/tests/support/analysis-efficiency/android-mapping-costs.py) executed with tiktoken
+[android-mapping-costs.py](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/tests/support/analysis-efficiency/android-mapping-costs.py) executed with tiktoken
 0.14.0/o200k_base. Text projection counts a fixed task question, all discovered
 name/description/input schemas once per investigation, every RPC argument and
 all text replies, including proof export. SDK transport additionally counts
@@ -206,7 +206,7 @@ copies names per lookup. The identical post-fix ledger experiment retained
 zero extra external bytes; its RSS delta was 151,552 bytes, versus 62,898,176
 before. These are engine-specific observations, not portable heap guarantees.
 The unchanged Evidence/ledger modules and changed parser are fingerprinted by
-[the diagnostic](https://github.com/morluto/rea/blob/main/tests/support/analysis-efficiency/android-mapping-retention.mjs).
+[the diagnostic](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/tests/support/analysis-efficiency/android-mapping-retention.mjs).
 Before/after whole diagnostic costs were 2.995/2.582 seconds, CPU 4.976/4.382
 seconds and peak sampled family RSS 145,903,616/113,287,168 bytes, with explicit
 256 MiB old-space selection and a 1 GiB family guard.
@@ -243,7 +243,7 @@ transition. Superseded alias arrays and candidate searches were removed.
 The representation allowance includes the new index containers/entries.
 
 The reproducible
-[complexity diagnostic](https://github.com/morluto/rea/blob/main/tests/support/analysis-efficiency/android-mapping-complexity.mjs)
+[complexity diagnostic](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/tests/support/analysis-efficiency/android-mapping-complexity.mjs)
 compares the built parser from `160573cb3` with the follow-up parser SHA-256
 `9c4c24f7a10a17b8ec08e74b2588b9ba87bc30f3e3d16690c3e07c03fbce233b`.
 The copied before module only rewrites its three unchanged dependency imports

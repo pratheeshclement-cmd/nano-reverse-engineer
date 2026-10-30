@@ -6,7 +6,7 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 import { reconstructJavaScriptArtifact } from "../../../support/javascriptApplicationScope.js";
 
 it("retains completed route Evidence when cancellation arrives during inventory finalization", async () => {
-  const root = await createTestTempDirectory("rea-route-finalization-");
+  const root = await createTestTempDirectory("nre-route-finalization-");
   await writeFile(join(root, "routes.js"), "route('/reports');");
   const controller = new AbortController();
   const original = routeInventory.buildJavaScriptRouteInventorySteps;

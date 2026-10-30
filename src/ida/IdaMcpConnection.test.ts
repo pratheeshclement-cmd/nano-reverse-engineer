@@ -255,7 +255,7 @@ it("preserves the SDK request timeout as a typed IDA timeout", async () => {
       operation: "decompile",
       timeoutMs: requestTimeoutMs,
       userMessage: expect.stringContaining("40 ms"),
-      remediationAction: expect.stringContaining("REA_IDA_MCP_CONFIG"),
+      remediationAction: expect.stringContaining("NRE_IDA_MCP_CONFIG"),
     });
     expect(
       failure instanceof AnalysisTimeoutError ? failure.userMessage : "",

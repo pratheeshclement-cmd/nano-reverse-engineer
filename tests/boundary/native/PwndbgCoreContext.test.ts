@@ -21,7 +21,7 @@ const diagnostics = { stdout: "", stderr: "", truncated: false };
 it.each(["pre-aborted", "aborted-during-probe"] as const)(
   "observes cancellation at the debugger admission checkpoint: %s",
   async (scenario) => {
-    const workspace = await createTestWorkspace("rea-pwndbg-cancel-");
+    const workspace = await createTestWorkspace("nre-pwndbg-cancel-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const controller = new AbortController();
     const reason = { cancelled: scenario };
@@ -43,9 +43,9 @@ it.each(["pre-aborted", "aborted-during-probe"] as const)(
     if (scenario === "pre-aborted") controller.abort(reason);
     const inspection = inspectPwndbgCore({
       environment: {
-        REA_PWNDBG_GDB: gdb,
-        REA_PWNDBG_GDBINIT: join(workspace.root, "missing-init"),
-        REA_PWNDBG_VENV_PATH: join(workspace.root, "missing-venv"),
+        NRE_PWNDBG_GDB: gdb,
+        NRE_PWNDBG_GDBINIT: join(workspace.root, "missing-init"),
+        NRE_PWNDBG_VENV_PATH: join(workspace.root, "missing-venv"),
       },
       architecture: "x86_64-little-endian",
       rootPath: workspace.root,
@@ -89,16 +89,16 @@ it("establishes core-only debugger state before querying recorded mappings", asy
 it.each(["x86_64-little-endian", "aarch64-little-endian"] as const)(
   "passes the validated %s profile to the debugger without reinterpreting core bytes",
   async (architecture) => {
-    const workspace = await createTestWorkspace("rea-pwndbg-profile-");
+    const workspace = await createTestWorkspace("nre-pwndbg-profile-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     let requested = false;
     await expect(
       inspectPwndbgCore({
         architecture,
         environment: {
-          REA_PWNDBG_GDB: join(workspace.root, "gdb"),
-          REA_PWNDBG_GDBINIT: join(workspace.root, "gdbinit.py"),
-          REA_PWNDBG_VENV_PATH: join(workspace.root, "venv"),
+          NRE_PWNDBG_GDB: join(workspace.root, "gdb"),
+          NRE_PWNDBG_GDBINIT: join(workspace.root, "gdbinit.py"),
+          NRE_PWNDBG_VENV_PATH: join(workspace.root, "venv"),
         },
         rootPath: workspace.root,
         resources: new ArtifactResourceScope(),
@@ -129,7 +129,7 @@ it.each(["x86_64-little-endian", "aarch64-little-endian"] as const)(
 it.each(["cancelled", "physical-name", "physical-identity"])(
   "uses the debugger command owner's outcome despite a late signal: %s",
   async (outcome) => {
-    const workspace = await createTestWorkspace("rea-pwndbg-command-outcome-");
+    const workspace = await createTestWorkspace("nre-pwndbg-command-outcome-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     const controller = new AbortController();
     const reason = { stage: "command handoff" };
@@ -143,9 +143,9 @@ it.each(["cancelled", "physical-name", "physical-identity"])(
     if (outcome === "physical-name") failure.name = "AbortError";
     const inspection = inspectPwndbgCore({
       environment: {
-        REA_PWNDBG_GDB: workspace.path("gdb"),
-        REA_PWNDBG_GDBINIT: workspace.path("gdbinit.py"),
-        REA_PWNDBG_VENV_PATH: workspace.path("venv"),
+        NRE_PWNDBG_GDB: workspace.path("gdb"),
+        NRE_PWNDBG_GDBINIT: workspace.path("gdbinit.py"),
+        NRE_PWNDBG_VENV_PATH: workspace.path("venv"),
       },
       architecture: "x86_64-little-endian",
       rootPath: workspace.root,
@@ -173,13 +173,13 @@ it.each(["cancelled", "physical-name", "physical-identity"])(
 );
 
 it("reports a non-default debugger deadline instead of 30000 ms", async () => {
-  const workspace = await createTestWorkspace("rea-pwndbg-deadline-");
+  const workspace = await createTestWorkspace("nre-pwndbg-deadline-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const failure = await inspectPwndbgCore({
     environment: {
-      REA_PWNDBG_GDB: workspace.path("gdb"),
-      REA_PWNDBG_GDBINIT: workspace.path("gdbinit.py"),
-      REA_PWNDBG_VENV_PATH: workspace.path("venv"),
+      NRE_PWNDBG_GDB: workspace.path("gdb"),
+      NRE_PWNDBG_GDBINIT: workspace.path("gdbinit.py"),
+      NRE_PWNDBG_VENV_PATH: workspace.path("venv"),
     },
     architecture: "x86_64-little-endian",
     rootPath: workspace.root,
@@ -202,15 +202,15 @@ it("reports a non-default debugger deadline instead of 30000 ms", async () => {
 });
 
 it("retains a physical debugger path failure when cancellation arrives in the probe", async () => {
-  const workspace = await createTestWorkspace("rea-pwndbg-probe-failure-");
+  const workspace = await createTestWorkspace("nre-pwndbg-probe-failure-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const controller = new AbortController();
   const physical = Object.assign(new Error("path denied"), { code: "EACCES" });
   const inspection = inspectPwndbgCore({
     environment: {
-      REA_PWNDBG_GDB: workspace.path("gdb"),
-      REA_PWNDBG_GDBINIT: workspace.path("gdbinit.py"),
-      REA_PWNDBG_VENV_PATH: workspace.path("venv"),
+      NRE_PWNDBG_GDB: workspace.path("gdb"),
+      NRE_PWNDBG_GDBINIT: workspace.path("gdbinit.py"),
+      NRE_PWNDBG_VENV_PATH: workspace.path("venv"),
     },
     architecture: "x86_64-little-endian",
     rootPath: workspace.root,

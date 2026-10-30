@@ -32,7 +32,7 @@ it.each([
 ] as const)(
   "observes real CommonJS Module loading for %s",
   async (_name, source, loads) => {
-    const root = await createTestTempDirectory("rea-main-module-source-");
+    const root = await createTestTempDirectory("nre-main-module-source-");
     const entry = join(root, "entry.cjs");
     await writeFile(
       entry,

@@ -33,7 +33,7 @@ const archive = build({
 const selectedPath = "Contents/Resources/Model.plist";
 
 const bundle = async () => {
-  const root = await createTestTempDirectory("rea-keyed-raw-denial-");
+  const root = await createTestTempDirectory("nre-keyed-raw-denial-");
   await mkdir(join(root, "Contents", "Resources"), { recursive: true });
   const path = join(root, "Contents", "Resources", "Model.plist");
   await writeFile(path, Buffer.from(archive));

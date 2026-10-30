@@ -3,13 +3,13 @@
 The homepage section, showcase-index entry, and
 `public/guides/rl-environments/index.html` explain the existing capture, build,
 export, and verification workflow. The short showcase entry links the guide
-and announcement video; the standalone NreDME section retains the setup steps.
+and announcement video; the standalone README section retains the setup steps.
 They introduce no new provider or application-support claim.
 
 The behavior and commands come from the Nre
-[quickstart](https://github.com/morluto/Nre/blob/447907f2808877d3a7de62c382e256f55d08e5ac/docs/agent-environments-quickstart.md),
-[environment reference](https://github.com/morluto/Nre/blob/447907f2808877d3a7de62c382e256f55d08e5ac/docs/agent-environments.md),
-and [implementation index](https://github.com/morluto/Nre/blob/447907f2808877d3a7de62c382e256f55d08e5ac/docs/specs/agent-environments/NreDME.md).
+[quickstart](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/447907f2808877d3a7de62c382e256f55d08e5ac/docs/agent-environments-quickstart.md),
+[environment reference](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/447907f2808877d3a7de62c382e256f55d08e5ac/docs/agent-environments.md),
+and [implementation index](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/447907f2808877d3a7de62c382e256f55d08e5ac/docs/specs/agent-environments/README.md).
 The compatibility version is the repository's pinned AgentEnv `0.9.1334` lane,
 not a claim about other framework versions. AgentEnv's
 [installation instructions](https://github.com/scaleapi/agentenv-framework#install)
@@ -17,7 +17,7 @@ were checked when preparing the page.
 
 The folder examples and agent prompts are illustrative. Supported mutations
 require confirmation in the recording. The exported smoke task verifies tool
-count and, when available, a suitable Nred call's response status. The suggested
+count and, when available, a suitable Read call's response status. The suggested
 folder task and reward check are instructions for authoring a separate task;
 the page does not claim that task has been executed or graded.
 
@@ -33,7 +33,7 @@ implementation records retain the scope and limits of their original checks.
 
 ## Website validation on 26 October 2026
 
-- Documentation consistency checks and all nine NreDME consistency tests passed.
+- Documentation consistency checks and all nine README consistency tests passed.
 - The site check verified 462 HTML pages, local links, sharing metadata, the
   sitemap, and generated assets. All 25 website regressions passed with
   `TMPDIR=/private/tmp` on macOS.

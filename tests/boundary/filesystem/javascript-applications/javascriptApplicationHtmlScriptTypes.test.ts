@@ -9,7 +9,7 @@ import { analyzeArtifactFiles } from "../../../fixtures/javascriptArtifactAnalys
 import { javascriptApplicationAnalysisResultSchema } from "../../../../src/domain/javascript/javascriptApplicationAnalysis.js";
 
 it("does not infer renderer loads from external data blocks or import maps", async () => {
-  const root = await createTestTempDirectory("rea-html-script-types-");
+  const root = await createTestTempDirectory("nre-html-script-types-");
   const declarations = [
     ["classic.js", 'type=" Text/JavaScript "'],
     ["module.js", 'type="module"'],

@@ -57,7 +57,7 @@ const verifyPackagedArtifact = async ({
       ?.normalized_result;
   if (
     artifactInspection.operation !== "inspect_artifact" ||
-    artifactInspection.provider?.id !== "rea-artifact-graph" ||
+    artifactInspection.provider?.id !== "nre-artifact-graph" ||
     artifactInventory?.manifest?.root_format !== "zip" ||
     !sameArtifactIdentity(artifactInventory, repeatedArtifactInventory)
   )
@@ -87,11 +87,11 @@ const verifyPackagedElectronApplication = async ({
   );
   await writeFile(
     join(applicationRoot, "main.js"),
-    'const { BrowserWindow, ipcMain } = require("electron");\nnew BrowserWindow({ webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true } });\nipcMain.handle("rea:ping", () => true);\n',
+    'const { BrowserWindow, ipcMain } = require("electron");\nnew BrowserWindow({ webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true } });\nipcMain.handle("nre:ping", () => true);\n',
   );
   await writeFile(
     join(applicationRoot, "preload.js"),
-    'const { contextBridge, ipcRenderer } = require("electron");\ncontextBridge.exposeInMainWorld("rea", { ping: () => ipcRenderer.invoke("rea:ping") });\n',
+    'const { contextBridge, ipcRenderer } = require("electron");\ncontextBridge.exposeInMainWorld("nre", { ping: () => ipcRenderer.invoke("nre:ping") });\n',
   );
   const applicationAnalysis = JSON.parse(
     await commands.run(
@@ -102,7 +102,7 @@ const verifyPackagedElectronApplication = async ({
   );
   if (
     applicationAnalysis.operation !== "analyze_javascript_application" ||
-    applicationAnalysis.provider?.id !== "rea-javascript-application" ||
+    applicationAnalysis.provider?.id !== "nre-javascript-application" ||
     applicationAnalysis.normalized_result?.summary?.browser_windows !== 1 ||
     applicationAnalysis.normalized_result?.summary?.ipc
       ?.paired_renderer_transmissions !== 1
@@ -147,7 +147,7 @@ const verifyPackagedArtifactExtraction = async ({
   try {
     if (
       extraction.operation !== "extract_artifact" ||
-      extraction.provider?.id !== "rea-artifact-graph" ||
+      extraction.provider?.id !== "nre-artifact-graph" ||
       extraction.normalized_result?.containment_verified !== true ||
       extraction.normalized_result?.artifacts?.some(
         ({ relative_path: path }) => path === occurrence.logical_path,
@@ -165,7 +165,7 @@ const verifyPackagedArtifactExtraction = async ({
 const assertRoutedApplicationAnalysis = (analysis) => {
   if (
     analysis.operation !== "analyze_javascript_application" ||
-    analysis.provider?.id !== "rea-javascript-application" ||
+    analysis.provider?.id !== "nre-javascript-application" ||
     analysis.normalized_result?.format !== "directory" ||
     analysis.normalized_result?.summary?.ipc?.paired_renderer_transmissions !==
       1

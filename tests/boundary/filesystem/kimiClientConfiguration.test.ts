@@ -43,7 +43,7 @@ const expectedRegistration = (
 ) => ({
   command: launcher[0],
   args: launcher.slice(1),
-  env: { REA_MCP_INPUT_SCHEMA_PROFILE: profile },
+  env: { NRE_MCP_INPUT_SCHEMA_PROFILE: profile },
   startupTimeoutMs: MCP_STARTUP_POLICY.kimiStartupTimeoutMs,
   toolTimeoutMs,
 });
@@ -77,7 +77,7 @@ describe("Kimi Code configuration paths and skills", () => {
 
 describe("Kimi Code registration lifecycle", () => {
   const kimiClient = async () => {
-    const home = await createTestTempDirectory("rea-kimi-");
+    const home = await createTestTempDirectory("nre-kimi-");
     const client = kimiPath(home, process.platform, {});
     if (client?.markerPath === undefined)
       throw new Error("missing Kimi Code client");
@@ -92,7 +92,7 @@ describe("Kimi Code registration lifecycle", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: { command: "rea", args: ["mcp"], enabledTools },
+          nre: { command: "nre", args: ["mcp"], enabledTools },
         },
       }),
     );
@@ -100,7 +100,7 @@ describe("Kimi Code registration lifecycle", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
     ).toEqual({
       ...expectedRegistration(command),
       enabledTools,
@@ -114,8 +114,8 @@ describe("Kimi Code registration lifecycle", () => {
     const { home, client } = await kimiClient();
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
-          ...expectedRegistration(["rea", "mcp"]),
+        nre: {
+          ...expectedRegistration(["nre", "mcp"]),
           startupTimeoutMs: 90_000,
           toolTimeoutMs: 300_000,
         },
@@ -127,16 +127,16 @@ describe("Kimi Code registration lifecycle", () => {
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.nre.backup`,
     });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
     ).toEqual({
       ...expectedRegistration(command),
       startupTimeoutMs: 90_000,
       toolTimeoutMs: 300_000,
     });
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
       original,
     );
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -160,14 +160,14 @@ describe("Kimi Code registration lifecycle", () => {
       await configureClientConfiguration(
         client,
         {
-          REA_ANALYSIS_PROVIDER: "ida",
-          REA_GHIDRA_STARTUP_TIMEOUT_MS: "2147483647",
+          NRE_ANALYSIS_PROVIDER: "ida",
+          NRE_GHIDRA_STARTUP_TIMEOUT_MS: "2147483647",
         },
         command,
       ),
     ).toMatchObject({ status: "configured" });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre
         .toolTimeoutMs,
     ).toBe(2_147_603_647);
   });
@@ -185,19 +185,19 @@ describe("Kimi Code registration lifecycle", () => {
 
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.nre.backup`,
     });
     const text = await readFile(client.configPath, "utf8");
     expect(JSON.parse(text)).toEqual({
       customSetting: { enabled: true },
       mcpServers: {
         other: { command: "other-server", startupTimeoutMs: 5000 },
-        rea: expectedRegistration(command),
+        nre: expectedRegistration(command),
       },
     });
     expect(text).not.toContain('"type"');
     expect(text).not.toContain('"transport"');
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
       original,
     );
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -226,7 +226,7 @@ describe("Kimi Code registration lifecycle", () => {
 
 describe("Kimi Code input-schema profile selection", () => {
   const kimiClient = async () => {
-    const home = await createTestTempDirectory("rea-kimi-schema-profile-");
+    const home = await createTestTempDirectory("nre-kimi-schema-profile-");
     const client = kimiPath(home, process.platform, {});
     if (client?.markerPath === undefined)
       throw new Error("missing Kimi Code client");
@@ -240,10 +240,10 @@ describe("Kimi Code input-schema profile selection", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
-            command: "rea",
+          nre: {
+            command: "nre",
             args: ["mcp"],
-            env: { REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
+            env: { NRE_MCP_INPUT_SCHEMA_PROFILE: "full" },
           },
         },
       }),
@@ -253,7 +253,7 @@ describe("Kimi Code input-schema profile selection", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
     ).toEqual(expectedRegistration(command, "full"));
     expect(
       (
@@ -272,13 +272,13 @@ describe("Kimi Code input-schema profile selection", () => {
         (
           await configureClientConfiguration(
             client,
-            { REA_MCP_INPUT_SCHEMA_PROFILE: profile },
+            { NRE_MCP_INPUT_SCHEMA_PROFILE: profile },
             command,
           )
         ).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
       ).toEqual(expectedRegistration(command, profile));
     },
   );
@@ -294,10 +294,10 @@ describe("Kimi Code input-schema profile selection", () => {
         client.configPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
-              command: "rea",
+            nre: {
+              command: "nre",
               args: ["mcp"],
-              env: { REA_MCP_INPUT_SCHEMA_PROFILE: storedProfile },
+              env: { NRE_MCP_INPUT_SCHEMA_PROFILE: storedProfile },
             },
           },
         }),
@@ -307,13 +307,13 @@ describe("Kimi Code input-schema profile selection", () => {
         (
           await configureClientConfiguration(
             client,
-            { REA_MCP_INPUT_SCHEMA_PROFILE: overrideProfile },
+            { NRE_MCP_INPUT_SCHEMA_PROFILE: overrideProfile },
             command,
           )
         ).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
       ).toEqual(expectedRegistration(command, overrideProfile));
     },
   );
@@ -324,7 +324,7 @@ describe("Kimi Code input-schema profile selection", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             command: command[0],
             args: command.slice(1),
             startupTimeoutMs: MCP_STARTUP_POLICY.kimiStartupTimeoutMs,
@@ -345,14 +345,14 @@ describe("Kimi Code input-schema profile selection", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
     ).toEqual(expectedRegistration(command, "compact", 120_000));
   });
 });
 
 describe("Kimi Code package launchers", () => {
   const kimiClient = async () => {
-    const home = await createTestTempDirectory("rea-kimi-launcher-");
+    const home = await createTestTempDirectory("nre-kimi-launcher-");
     const client = kimiPath(home, process.platform, {});
     if (client?.markerPath === undefined)
       throw new Error("missing Kimi Code client");
@@ -392,7 +392,7 @@ describe("Kimi Code package launchers", () => {
         (await configureClientConfiguration(client, {}, launcher)).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
       ).toEqual(expectedRegistration(launcher));
       expect(
         (
@@ -411,7 +411,7 @@ describe("Kimi Code package launchers", () => {
 
 describe("Kimi Code transport validation", () => {
   const kimiClient = async () => {
-    const home = await createTestTempDirectory("rea-kimi-validation-");
+    const home = await createTestTempDirectory("nre-kimi-validation-");
     const client = kimiPath(home, process.platform, {});
     if (client?.markerPath === undefined)
       throw new Error("missing Kimi Code client");
@@ -427,7 +427,7 @@ describe("Kimi Code transport validation", () => {
         (await configureClientConfiguration(client, {}, command)).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.nre,
       ).toEqual(expectedRegistration(command));
       expect(await configureClientConfiguration(client, {}, command)).toEqual({
         status: "unchanged",
@@ -451,7 +451,7 @@ describe("Kimi Code transport validation", () => {
       reason: "readback",
     });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
-    expect(await exists(`${client.configPath}.rea.backup`)).toBe(false);
+    expect(await exists(`${client.configPath}.nre.backup`)).toBe(false);
   });
 
   it("accepts explicit stdio transport without causing repeated rewrites", async () => {
@@ -460,7 +460,7 @@ describe("Kimi Code transport validation", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             transport: "stdio",
             ...expectedRegistration(command),
           },
@@ -500,7 +500,7 @@ describe("Kimi Code transport validation", () => {
         client.configPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            nre: {
               transport,
               ...expectedRegistration(command),
             },
@@ -520,7 +520,7 @@ describe("Kimi Code transport validation", () => {
 
 describe("Kimi Code timeout alignment", () => {
   const kimiClient = async () => {
-    const home = await createTestTempDirectory("rea-kimi-timeout-");
+    const home = await createTestTempDirectory("nre-kimi-timeout-");
     const client = kimiPath(home, process.platform, {});
     if (client?.markerPath === undefined)
       throw new Error("missing Kimi Code client");
@@ -541,7 +541,7 @@ describe("Kimi Code timeout alignment", () => {
     };
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { nre: registration } }),
     );
     expect(
       (
@@ -552,9 +552,9 @@ describe("Kimi Code timeout alignment", () => {
     ).toMatchObject({ state });
   });
 
-  it("uses a direct installed REA command without requiring a package runner", async () => {
+  it("uses a direct installed NRE command without requiring a package runner", async () => {
     const { home, client } = await kimiClient();
-    const entry = join(home, "scripts", "rea.mjs");
+    const entry = join(home, "scripts", "nre.mjs");
     const launcher = [process.execPath, entry, "mcp"];
     expect(
       (await configureClientConfiguration(client, {}, launcher)).status,
@@ -568,13 +568,13 @@ describe("Kimi Code timeout alignment", () => {
     ).toMatchObject({ state: "aligned", command: launcher });
   });
 
-  it("leaves a foreign rea-key registration out of aligned state", async () => {
+  it("leaves a foreign nre-key registration out of aligned state", async () => {
     const { home, client } = await kimiClient();
     await writeFile(
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          nre: {
             ...expectedRegistration(command),
             command: "another-package",
             args: ["mcp"],

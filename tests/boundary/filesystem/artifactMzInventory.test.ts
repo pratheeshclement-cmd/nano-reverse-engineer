@@ -62,7 +62,7 @@ describe("MZ artifact classification", () => {
   });
 
   it("keeps standalone and embedded DOS identities through inventory", async () => {
-    const directory = await createTestTempDirectory("rea-mz-inventory-");
+    const directory = await createTestTempDirectory("nre-mz-inventory-");
     const dosPath = join(directory, "LEGACY.EXE");
     const pePath = join(directory, "NATIVE.EXE");
     await writeFile(dosPath, dosFixture());
@@ -88,7 +88,7 @@ describe("MZ artifact classification", () => {
   });
 
   it("retains a PE signature straddling the bounded prefix in ZIP member evidence", async () => {
-    const root = await createTestTempDirectory("rea-mz-far-pe-");
+    const root = await createTestTempDirectory("nre-mz-far-pe-");
     const bytes = peFixture(ARTIFACT_CLASSIFICATION_PREFIX_BYTES - 2);
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("native.exe", new Uint8ArrayReader(bytes), { level: 0 });

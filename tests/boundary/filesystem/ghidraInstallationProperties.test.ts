@@ -44,7 +44,7 @@ const properties = "application.version=12.1.4\napplication.java.min=21\n";
 
 it("preserves a descriptor read failure instead of reporting absent metadata", async () => {
   const root = await createTestTempDirectory(
-    "rea-install-properties-read-missing-",
+    "nre-install-properties-read-missing-",
   );
   const path = join(root, "application.properties");
   await writeFile(path, properties);
@@ -79,7 +79,7 @@ it("preserves a descriptor read failure instead of reporting absent metadata", a
 it.skipIf(process.platform === "win32")(
   "preserves Latin-1 bytes and a caller-selected properties symlink",
   async () => {
-    const root = await createTestTempDirectory("rea-install-properties-");
+    const root = await createTestTempDirectory("nre-install-properties-");
     const path = join(root, "actual.properties");
     const selected = join(root, "selected.properties");
     const bytes = Buffer.concat([
@@ -109,7 +109,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "refuses a pipe without waiting for a writer",
   async () => {
-    const root = await createTestTempDirectory("rea-install-properties-pipe-");
+    const root = await createTestTempDirectory("nre-install-properties-pipe-");
     const path = join(root, "application.properties");
     await promisify(execFile)("mkfifo", [path]);
     const resources = createInspectionResources();
@@ -134,7 +134,7 @@ it.skipIf(process.platform === "win32")(
 
 it("refuses an oversized descriptor before reading file bytes", async () => {
   const root = await createTestTempDirectory(
-    "rea-install-properties-capacity-",
+    "nre-install-properties-capacity-",
   );
   const path = join(root, "application.properties");
   await writeFile(path, properties);
@@ -217,7 +217,7 @@ it("does not open or adopt resources named by a pre-aborted opaque caller error"
 it.each(["read", "capacity", "completed"] as const)(
   "retains the exact descriptor and primary outcome across refused cleanup (%s)",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-install-properties-retry-");
+    const root = await createTestTempDirectory("nre-install-properties-retry-");
     const path = join(root, "application.properties");
     await writeFile(path, properties);
     if (outcome === "capacity")
@@ -298,7 +298,7 @@ it.each(["replace", "grow", "shrink", "disappear"] as const)(
   "rejects metadata that changes during a descriptor read (%s)",
   async (change) => {
     const root = await createTestTempDirectory(
-      "rea-install-properties-replace-",
+      "nre-install-properties-replace-",
     );
     const path = join(root, "application.properties");
     const replacement = join(root, "replacement");
@@ -337,7 +337,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "reports a real metadata permission failure instead of missing installation",
   async () => {
     const root = await createTestTempDirectory(
-      "rea-install-properties-permission-",
+      "nre-install-properties-permission-",
     );
     const path = join(root, "application.properties");
     await writeFile(path, properties);

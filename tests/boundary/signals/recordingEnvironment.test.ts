@@ -11,13 +11,13 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "keeps command, limiter and child environment together for each request while accepting later configuration",
   async () => {
-    const directory = await createTestTempDirectory("rea-sigrok-environment-");
+    const directory = await createTestTempDirectory("nre-sigrok-environment-");
     const command = join(directory, "sigrok");
     const limiter = join(directory, "limiter");
     const nextCommand = join(directory, "next-sigrok");
     const nextLimiter = join(directory, "next-limiter");
     const script = (generation: string) => `#!/bin/sh
-if [ "$REA_SIGROK_TEST_GENERATION" != ${generation} ]; then echo 'mixed environment' >&2; exit 27; fi
+if [ "$NRE_SIGROK_TEST_GENERATION" != ${generation} ]; then echo 'mixed environment' >&2; exit 27; fi
 if [ "$1" = --version ]; then
   printf 'sigrok-cli 0.7.2\\nlibsigrokdecode 0.5.3\\n'
 else
@@ -29,19 +29,19 @@ fi
       [nextCommand, script("second")],
       [
         limiter,
-        '#!/bin/sh\n[ "$REA_SIGROK_TEST_GENERATION" = first ] || exit 29\nwhile [ "$1" != -- ]; do shift; done\nshift\nexec "$@"\n',
+        '#!/bin/sh\n[ "$NRE_SIGROK_TEST_GENERATION" = first ] || exit 29\nwhile [ "$1" != -- ]; do shift; done\nshift\nexec "$@"\n',
       ],
       [
         nextLimiter,
-        '#!/bin/sh\n[ "$REA_SIGROK_TEST_GENERATION" = second ] || exit 31\nwhile [ "$1" != -- ]; do shift; done\nshift\nexec "$@"\n',
+        '#!/bin/sh\n[ "$NRE_SIGROK_TEST_GENERATION" = second ] || exit 31\nwhile [ "$1" != -- ]; do shift; done\nshift\nexec "$@"\n',
       ],
     ] as const)
       await writeFile(path, source, { mode: 0o700 });
     const environment = {
       ...process.env,
-      REA_SIGROK_COMMAND: command,
-      REA_SIGROK_PRLIMIT_COMMAND: limiter,
-      REA_SIGROK_TEST_GENERATION: "first",
+      NRE_SIGROK_COMMAND: command,
+      NRE_SIGROK_PRLIMIT_COMMAND: limiter,
+      NRE_SIGROK_TEST_GENERATION: "first",
     };
     let reconfigure = true;
     const provider = new SigrokRecordingProvider(
@@ -54,9 +54,9 @@ fi
         const selected = await readStableArtifact(...args);
         if (args[0] === command && reconfigure) {
           reconfigure = false;
-          environment.REA_SIGROK_COMMAND = nextCommand;
-          environment.REA_SIGROK_PRLIMIT_COMMAND = nextLimiter;
-          environment.REA_SIGROK_TEST_GENERATION = "second";
+          environment.NRE_SIGROK_COMMAND = nextCommand;
+          environment.NRE_SIGROK_PRLIMIT_COMMAND = nextLimiter;
+          environment.NRE_SIGROK_TEST_GENERATION = "second";
         }
         return selected;
       },
@@ -79,7 +79,7 @@ fi
         decoders: [{ id: "uart", name: description }],
       });
       expect(JSON.stringify(result.value)).not.toContain(
-        "REA_SIGROK_TEST_GENERATION",
+        "NRE_SIGROK_TEST_GENERATION",
       );
       expect(
         (await readdir(directory)).filter((name) =>

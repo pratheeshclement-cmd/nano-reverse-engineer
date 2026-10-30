@@ -144,6 +144,6 @@ export type ElectronPageInspection = z.infer<
 export interface ElectronPagePartialObservation {
   readonly kind: "electron-page-observation";
   readonly inspection: ElectronPageInspection;
-  /** REA's CDP transport closed; target shutdown is never implied. */
+  /** NRE's CDP transport closed; target shutdown is never implied. */
   readonly cleanup: "transport-closed" | "incomplete";
 }

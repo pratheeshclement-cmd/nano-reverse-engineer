@@ -154,7 +154,7 @@ const hostCheck = async (host: DoctorHost): Promise<DoctorCheck> => {
       ? `${host.platform} ${host.architecture}`
       : `${linuxDistribution.id} ${linuxDistribution.versionId ?? "unknown"}`);
   return check("host", supported, detail, {
-    remediation: `REA supports macOS 12+, Linux distributions with a recognized apt, dnf, or pacman package family, and the experimental Windows x64 Ghidra P0 boundary; automated Hopper setup on Linux additionally requires ${LINUX_HOPPER_SETUP_HOSTS}.`,
+    remediation: `NRE supports macOS 12+, Linux distributions with a recognized apt, dnf, or pacman package family, and the experimental Windows x64 Ghidra P0 boundary; automated Hopper setup on Linux additionally requires ${LINUX_HOPPER_SETUP_HOSTS}.`,
     classification: "unsupported_host",
   });
 };
@@ -195,7 +195,7 @@ const hopperCheck = (
     {
       remediation:
         host.configuredHopperPath === undefined
-          ? "Run rea setup to install Hopper, or set HOPPER_LAUNCHER_PATH."
+          ? "Run nre setup to install Hopper, or set HOPPER_LAUNCHER_PATH."
           : "Unset or update HOPPER_LAUNCHER_PATH to an executable Hopper launcher.",
       classification:
         host.configuredHopperPath === undefined
@@ -213,12 +213,12 @@ const optionalHopperStartupTimeoutCheck = (
     "hopper-startup-timeout",
     parsed.ok,
     parsed.ok
-      ? `REA_HOPPER_STARTUP_TIMEOUT_MS=${String(parsed.value)}`
-      : `REA_HOPPER_STARTUP_TIMEOUT_MS: ${parsed.error.settings.map(({ constraint }) => constraint).join("; ")}`,
+      ? `NRE_HOPPER_STARTUP_TIMEOUT_MS=${String(parsed.value)}`
+      : `NRE_HOPPER_STARTUP_TIMEOUT_MS: ${parsed.error.settings.map(({ constraint }) => constraint).join("; ")}`,
     {
       classification: "config_drift",
       remediation:
-        "Unset REA_HOPPER_STARTUP_TIMEOUT_MS to use the default, or set it to a positive decimal integer from 1 to 2147483647 milliseconds.",
+        "Unset NRE_HOPPER_STARTUP_TIMEOUT_MS to use the default, or set it to a positive decimal integer from 1 to 2147483647 milliseconds.",
     },
   );
 };
@@ -235,7 +235,7 @@ const runtimeConfigurationChecks = (
   if (issues === undefined || issues.length === 0) return [];
   const grouped: { setting: string; constraints: string[] }[] = [];
   for (const issue of issues) {
-    if (issue.setting === "REA_HOPPER_STARTUP_TIMEOUT_MS") continue;
+    if (issue.setting === "NRE_HOPPER_STARTUP_TIMEOUT_MS") continue;
     const existing = grouped.find((item) => item.setting === issue.setting);
     if (existing === undefined)
       grouped.push({ setting: issue.setting, constraints: [issue.constraint] });
@@ -254,7 +254,7 @@ const runtimeConfigurationChecks = (
         .join("; "),
       {
         classification: "config_drift",
-        remediation: `Correct ${setting} in the environment that starts REA (your shell or the MCP client's registration), then rerun.`,
+        remediation: `Correct ${setting} in the environment that starts NRE (your shell or the MCP client's registration), then rerun.`,
       },
     ),
     details: { setting },
@@ -317,7 +317,7 @@ const optionalIlspyCheck = async (
       : `${host.configuredIlspyCmdPath} (${version})`,
     {
       remediation:
-        "Unset REA_ILSPY_CMD_PATH or point it at a runnable ilspycmd executable.",
+        "Unset NRE_ILSPY_CMD_PATH or point it at a runnable ilspycmd executable.",
       classification: "config_drift",
     },
   );
@@ -371,8 +371,8 @@ const providerDoctorChecks = (
 
 const unsupportedHopperRemediation = (configured: boolean): string =>
   configured
-    ? "Check HOPPER_LAUNCHER_PATH and its publisher verification evidence. Run rea setup to install and retain an authenticated official Hopper package for offline use."
-    : "Run rea setup to install and retain an authenticated official Hopper package for offline use.";
+    ? "Check HOPPER_LAUNCHER_PATH and its publisher verification evidence. Run nre setup to install and retain an authenticated official Hopper package for offline use."
+    : "Run nre setup to install and retain an authenticated official Hopper package for offline use.";
 
 const providerCheckName = (providerId: string, name: string): boolean =>
   name === providerId || name.startsWith(`${providerId}-`);

@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { expect, it } from "vitest";
 
 const entrypoint = fileURLToPath(
-  new URL("../../../scripts/rea.mjs", import.meta.url),
+  new URL("../../../scripts/nre.mjs", import.meta.url),
 );
 const run = (arguments_: string[]) =>
   new Promise<{ exitCode: number; stdout: string }>((resolve, reject) => {
@@ -11,7 +11,7 @@ const run = (arguments_: string[]) =>
       process.execPath,
       [entrypoint, ...arguments_, "--json"],
       {
-        env: { PATH: process.env.PATH, REA_LOG_LEVEL: "silent" },
+        env: { PATH: process.env.PATH, NRE_LOG_LEVEL: "silent" },
         timeout: 15_000,
         maxBuffer: 1024 * 1024,
       },

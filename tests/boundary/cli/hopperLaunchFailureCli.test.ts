@@ -53,7 +53,7 @@ describe("Hopper launcher failure through the one-shot CLI", () => {
               ...workspace.environment,
               HOPPER_LAUNCHER_PATH: launcherPath,
               HOPPER_LOADER_ARGS_JSON: JSON.stringify(loaderArgs),
-              REA_LOG_LEVEL: "silent",
+              NRE_LOG_LEVEL: "silent",
             },
             timeoutMs: 45_000,
           });

@@ -29,7 +29,7 @@ const digest = (bytes: string | Buffer) =>
 it.each(["path", "explicit"] as const)(
   "uses the captured %s launcher environment for both ADB probing and device queries",
   async (source) => {
-    const root = await createTestTempDirectory("rea-adb-selected-environment-");
+    const root = await createTestTempDirectory("nre-adb-selected-environment-");
     const selectedDirectory = join(root, "selected");
     const ambientDirectory = join(root, "ambient");
     const sourceCode = `#!/bin/sh
@@ -51,11 +51,11 @@ else exit 1; fi
       ANDROID_SERIAL: "selected-device",
       CALLER_EMPTY: "",
       ...(source === "explicit"
-        ? { REA_ADB_PATH: join(selectedDirectory, "adb") }
+        ? { NRE_ADB_PATH: join(selectedDirectory, "adb") }
         : {}),
     };
     delete selected.CALLER_ABSENT;
-    if (source === "path") delete selected.REA_ADB_PATH;
+    if (source === "path") delete selected.NRE_ADB_PATH;
     const provider = new AdbProvider({ environment: selected });
     onTestFinished(async () => {
       try {
@@ -92,7 +92,7 @@ else exit 1; fi
 // All ADB commands run a selected local script. No device, server or real adb
 // executable participates; file snapshots, publication and Evidence are real.
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-adb-selected-path-");
+  const root = await createTestTempDirectory("nre-adb-selected-path-");
   const physical = join(root, "physical");
   await mkdir(join(physical, "nested"), { recursive: true });
   await symlink(join(physical, "nested"), join(root, "alias"));
@@ -122,7 +122,7 @@ exit 1
   );
   const runtimePaths: string[] = [];
   const provider = new AdbProvider({
-    environment: { REA_ADB_PATH: binary },
+    environment: { NRE_ADB_PATH: binary },
     createRuntimeRoot: async (options) => {
       const runtime = await PrivateRuntimeRoot.create(options);
       runtimePaths.push(runtime.path);
@@ -236,7 +236,7 @@ it.each([
     });
     expect(
       (await readdir(join(f.physical, "out"))).filter((name) =>
-        name.startsWith(".rea-"),
+        name.startsWith(".nre-"),
       ),
     ).toEqual([]);
     for (const path of f.runtimePaths) {

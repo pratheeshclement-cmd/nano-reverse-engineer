@@ -37,7 +37,7 @@ const graphFrom = (reply: unknown) => {
 cliTest.for([1, 2, 3, 4] as const)(
   "inspects and safely extracts format %s PCK through the compiled CLI",
   async (version, { cli }) => {
-    const root = await createTestTempDirectory("rea-pck-cli-");
+    const root = await createTestTempDirectory("nre-pck-cli-");
     const source = join(root, "game.pck");
     await writeFile(
       source,
@@ -93,7 +93,7 @@ cliTest.for([1, 2, 3, 4] as const)(
 cliTest.for([1, 4] as const)(
   "reads an embedded format %s pack while preserving the native carrier's content classification",
   async (version, { cli }) => {
-    const root = await createTestTempDirectory("rea-pck-embedded-cli-");
+    const root = await createTestTempDirectory("nre-pck-embedded-cli-");
     const source = join(root, "game.x86_64");
     const carrier = elf(2, 1, 62);
     const pack =
@@ -134,7 +134,7 @@ cliTest.for([1, 4] as const)(
 cliTest(
   "keeps native inventory when an incidental GDPC trailer does not point at a pack header",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pck-marker-candidate-");
+    const root = await createTestTempDirectory("nre-pck-marker-candidate-");
     const carrier = elf(2, 1, 62);
     const candidates = [
       Buffer.concat([carrier, Buffer.from("12345678ABCD", "ascii")]),
@@ -169,7 +169,7 @@ cliTest(
 cliTest(
   "refuses an unsupported version after an embedded trailer points at a PCK header",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pck-confirmed-malformed-");
+    const root = await createTestTempDirectory("nre-pck-confirmed-malformed-");
     const source = join(root, "unsupported.x86_64");
     const pack = buildGodotPck(4, members);
     pack.writeUInt32LE(5, 4);
@@ -200,7 +200,7 @@ cliTest(
 cliTest(
   "applies strict and record-and-continue MD5 integrity to inspection and extraction",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pck-integrity-cli-");
+    const root = await createTestTempDirectory("nre-pck-integrity-cli-");
     const source = join(root, "contradiction.pck");
     await writeFile(
       source,
@@ -269,7 +269,7 @@ cliTest(
 cliTest(
   "retains encrypted-directory declarations without claiming an empty package",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pck-encrypted-cli-");
+    const root = await createTestTempDirectory("nre-pck-encrypted-cli-");
     const source = join(root, "encrypted.pck");
     const bytes = buildGodotPck(4, members, { packFlags: 3 });
     const directory = Number(bytes.readBigUInt64LE(32));
@@ -303,7 +303,7 @@ cliTest(
 cliTest(
   "exports compact CLI delivery and queries its retained complete Evidence after unlink",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pck-export-");
+    const root = await createTestTempDirectory("nre-pck-export-");
     const source = join(root, "game.pck");
     const bundle = join(root, "evidence.json");
     const refused = await cli.run({
@@ -389,7 +389,7 @@ cliTest(
 cliTest(
   "rejects repeated-range expansion before hashing members or creating extraction output",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pck-expansion-");
+    const root = await createTestTempDirectory("nre-pck-expansion-");
     const source = join(root, "aliased.pck");
     await writeFile(source, buildAliasedGodotPck(4, 1100));
     for (const operation of ["inspect-artifact", "extract-artifact"]) {

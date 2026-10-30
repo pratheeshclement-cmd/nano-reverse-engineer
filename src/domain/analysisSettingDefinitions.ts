@@ -49,17 +49,17 @@ const timer = {
 /** Metadata aggregates existing owner definitions; no environment mutation or engine discovery. */
 export const ANALYSIS_SETTINGS = {
   "asar.max_header_bytes": {
-    environment: "REA_ASAR_MAX_HEADER_BYTES",
+    environment: "NRE_ASAR_MAX_HEADER_BYTES",
     defaultValue: DEFAULT_ASAR_MAX_HEADER_BYTES,
     minimum: 1,
     maximum: MAXIMUM_ASAR_MAX_HEADER_BYTES,
     unit: "bytes",
     appliesAt: "next_operation",
-    provider: "rea-artifact-graph",
+    provider: "nre-artifact-graph",
     relatedProviders: [
-      "rea-javascript-application",
-      "rea-cdp-electron",
-      "rea-v8-inspector",
+      "nre-javascript-application",
+      "nre-cdp-electron",
+      "nre-v8-inspector",
     ],
     operations: [
       "open_binary",
@@ -73,7 +73,7 @@ export const ANALYSIS_SETTINGS = {
   },
   "ghidra.startup_timeout_ms": {
     ...timer,
-    environment: "REA_GHIDRA_STARTUP_TIMEOUT_MS",
+    environment: "NRE_GHIDRA_STARTUP_TIMEOUT_MS",
     defaultValue: DEFAULT_GHIDRA_STARTUP_TIMEOUT_MS,
     appliesAt: "next_startup",
     provider: "ghidra",
@@ -93,7 +93,7 @@ export const ANALYSIS_SETTINGS = {
   },
   "hopper.startup_timeout_ms": {
     ...timer,
-    environment: "REA_HOPPER_STARTUP_TIMEOUT_MS",
+    environment: "NRE_HOPPER_STARTUP_TIMEOUT_MS",
     defaultValue: DEFAULT_HOPPER_STARTUP_TIMEOUT_MS,
     appliesAt: "next_startup",
     provider: "hopper",
@@ -112,7 +112,7 @@ export const ANALYSIS_SETTINGS = {
     ],
   },
   "ghidra.decompile_timeout_seconds": {
-    environment: "REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
+    environment: "NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
     defaultValue: null,
     minimum: 1,
     maximum: MAX_GHIDRA_DECOMPILE_TIMEOUT_SECONDS,
@@ -128,7 +128,7 @@ export const ANALYSIS_SETTINGS = {
   },
   "jadx.operation_timeout_ms": {
     ...timer,
-    environment: "REA_JADX_OPERATION_TIMEOUT_MS",
+    environment: "NRE_JADX_OPERATION_TIMEOUT_MS",
     defaultValue: DEFAULT_JADX_OPERATION_TIMEOUT_MS,
     provider: "jadx",
     operations: [
@@ -141,7 +141,7 @@ export const ANALYSIS_SETTINGS = {
   },
   "regex.matching_deadline_ms": {
     ...timer,
-    environment: "REA_REGEX_MATCHING_DEADLINE_MS",
+    environment: "NRE_REGEX_MATCHING_DEADLINE_MS",
     defaultValue: DEFAULT_REGEX_MATCHING_DEADLINE_MS,
     maximum: MAXIMUM_REGEX_MATCHING_DEADLINE_MS,
     provider: "regex",
@@ -149,7 +149,7 @@ export const ANALYSIS_SETTINGS = {
     operations: ["search_strings", "search_procedures"],
   },
   "regex.worker_heap_request_mib": {
-    environment: "REA_REGEX_WORKER_HEAP_REQUEST_MIB",
+    environment: "NRE_REGEX_WORKER_HEAP_REQUEST_MIB",
     defaultValue: DEFAULT_REGEX_WORKER_HEAP_REQUEST_MIB,
     minimum: MINIMUM_REGEX_WORKER_HEAP_REQUEST_MIB,
     maximum: MAXIMUM_REGEX_WORKER_HEAP_REQUEST_MIB,
@@ -160,7 +160,7 @@ export const ANALYSIS_SETTINGS = {
     operations: ["search_strings", "search_procedures"],
   },
   "capture.decoder_old_generation_mib": {
-    environment: "REA_CAPTURE_DECODER_OLD_GENERATION_MIB",
+    environment: "NRE_CAPTURE_DECODER_OLD_GENERATION_MIB",
     defaultValue: DEFAULT_CAPTURE_DECODER_OLD_GENERATION_MIB,
     minimum: CAPTURE_DECODER_SEMI_SPACE_MIB,
     maximum: MAXIMUM_CAPTURE_DECODER_OLD_GENERATION_MIB,
@@ -172,7 +172,7 @@ export const ANALYSIS_SETTINGS = {
   "javascript.analysis_timeout_ms": {
     ...timer,
     defaultValue: JAVASCRIPT_ANALYSIS_RESOURCE_DEFAULTS.timeoutMs,
-    provider: "rea-javascript-application",
+    provider: "nre-javascript-application",
     operations: ["analyze_javascript_application"],
     parameter: "analysis_timeout_ms",
   },
@@ -182,7 +182,7 @@ export const ANALYSIS_SETTINGS = {
     maximum: JAVASCRIPT_WORKER_HEAP_MIB_MAXIMUM,
     unit: "MiB",
     appliesAt: "next_worker",
-    provider: "rea-javascript-application",
+    provider: "nre-javascript-application",
     operations: ["analyze_javascript_application"],
     parameter: "max_heap_mb",
   },
@@ -195,13 +195,13 @@ export const ANALYSIS_SETTINGS = {
     parameter: "command_timeout_ms",
   },
   "native.matching_representation_bytes": {
-    environment: "REA_NATIVE_MATCHING_REPRESENTATION_BYTES",
+    environment: "NRE_NATIVE_MATCHING_REPRESENTATION_BYTES",
     defaultValue: DEFAULT_NATIVE_MATCHING_REPRESENTATION_BYTES,
     minimum: 1,
     maximum: MAXIMUM_NATIVE_MATCHING_REPRESENTATION_BYTES,
     unit: "bytes",
     appliesAt: "next_operation",
-    provider: "rea-function-comparison",
+    provider: "nre-function-comparison",
     operations: ["match_native_functions"],
   },
 } as const satisfies Record<AnalysisSettingId, SettingDefinition>;
@@ -237,8 +237,8 @@ export const analysisSettingLimit = (
     maximum: definition.maximum,
     applies_at: definition.appliesAt,
     agent_editable: true,
-    scope: "rea-runtime",
-    rea_restart_required: false,
+    scope: "nre-runtime",
+    nre_restart_required: false,
     ...(definition.parameter === undefined
       ? {}
       : { parameter: definition.parameter }),

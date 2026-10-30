@@ -86,7 +86,7 @@ const createRizinCommandEvidence = ({
   limitations,
 }: RizinCommandEvidenceInput): Evidence =>
   createEvidence(undefined, RIZIN_DEBUGGER_PROVIDER_IDENTITY, {
-    predicateType: "rea.debugger.command-observation",
+    predicateType: "nre.debugger.command-observation",
     operation: "rizin_debug_command",
     parameters: {
       session_id: sessionId,
@@ -275,15 +275,15 @@ export class RizinDebugSessionManager {
   constructor(
     environment: Readonly<NodeJS.ProcessEnv> = process.env,
     options: {
-      /** @internal Test seam. Production uses REA_DEBUGGER_COMMAND_DEADLINE_MS. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_COMMAND_DEADLINE_MS. */
       readonly frameTimeoutMs?: number;
       /** @internal Test seam; production callers should use the 30 s default. */
       readonly startupTimeoutMs?: number;
-      /** @internal Test seam. Production uses REA_DEBUGGER_MAX_SESSIONS. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_MAX_SESSIONS. */
       readonly maxSessions?: number;
-      /** @internal Test seam. Production uses REA_DEBUGGER_MAX_PENDING_COMMANDS. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_MAX_PENDING_COMMANDS. */
       readonly maxPendingCommands?: number;
-      /** @internal Test seam. Production uses REA_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES. */
       readonly maxCommandOutputBytes?: number;
       readonly platform?: NodeJS.Platform;
       readonly stopProcess?: typeof stopOwnedDebuggerProcess;
@@ -291,7 +291,7 @@ export class RizinDebugSessionManager {
     } = {},
   ) {
     this.#environment = { ...environment };
-    this.#command = environment.REA_RIZIN_COMMAND ?? "rizin";
+    this.#command = environment.NRE_RIZIN_COMMAND ?? "rizin";
     const limits = resolveDebuggerSessionLimits(this.#environment);
     this.#commandDeadline = applyDebuggerAdmissionOverride(
       limits.commandDeadline,
@@ -1810,7 +1810,7 @@ const waitForCommandFrames = async (
       if (outputLimit === "command_output_bytes")
         session.protocolError ??=
           commandOutput === debuggerControlReplyOutput
-            ? `Rizin control readback exceeded the ${String(maxCommandOutputBytes)} byte control-reply budget. That budget is separate from REA_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES and has no runtime override.`
+            ? `Rizin control readback exceeded the ${String(maxCommandOutputBytes)} byte control-reply budget. That budget is separate from NRE_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES and has no runtime override.`
             : `Rizin command output exceeded the ${String(maxCommandOutputBytes)} byte command limit. ${debuggerAdmissionRecovery(commandOutput)}`;
       else if (outputLimit === "frame_bytes")
         session.protocolError ??= `Rizin emitted a NUL frame exceeding the ${String(MAX_FRAME_BYTES)} byte (16 MiB) protocol limit. This release has no runtime override.`;

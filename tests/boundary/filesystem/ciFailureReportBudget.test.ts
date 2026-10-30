@@ -11,7 +11,7 @@ import {
   type FailureReportApi,
 } from "../../../scripts/ci/failure-report.mjs";
 
-const repository = "owner/rea";
+const repository = "owner/nre";
 const mainSha = "c".repeat(40);
 const prSha = "a".repeat(40);
 const diagnostic: StaticDiagnostic = {
@@ -113,7 +113,7 @@ async function report(input: ReturnType<typeof fixture>) {
     defaultBranch: "main",
     batchManifest: { repository, runs: input.runs },
     api: input.api,
-    outputDirectory: await createTestTempDirectory("rea-ci-budget-"),
+    outputDirectory: await createTestTempDirectory("nre-ci-budget-"),
   });
 }
 

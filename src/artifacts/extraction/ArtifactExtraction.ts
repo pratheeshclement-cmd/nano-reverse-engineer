@@ -229,13 +229,13 @@ export const materializeArtifactInventoryInScope = async (
   for (const node of snapshot.nodes)
     if (neededNodes.has(node.artifact_id)) nodes.set(node.artifact_id, node);
   const selected = activeOccurrences.map((occurrence) => {
-    // REA never decrypts archive entries, so an encrypted entry makes the
+    // NRE never decrypts archive entries, so an encrypted entry makes the
     // complete extraction unsupported rather than the archive invalid.
     if (occurrence.encrypted)
       throw new AnalysisUnsupportedTargetError(
         "extract_artifact",
         input.selectedPath ?? input.inputPath,
-        `Archive entry ${occurrence.logical_path} is encrypted; REA does not decrypt archive entries, so the archive cannot be extracted completely`,
+        `Archive entry ${occurrence.logical_path} is encrypted; NRE does not decrypt archive entries, so the archive cannot be extracted completely`,
       );
     // Inventory retains unavailable source occurrences, but extraction cannot
     // materialize bytes it never observed.

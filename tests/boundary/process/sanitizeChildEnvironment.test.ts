@@ -7,7 +7,7 @@ describe("sanitizeChildEnvironment", () => {
       PATH: "/usr/bin:/bin",
       HOME: "/home/user",
       NRE_HTTP_AUTH_TOKEN: "super-secret-123",
-      REA_HTTP_AUTH_TOKEN: "legacy-secret-456",
+      NRE_API_KEY: "legacy-secret-456",
       MCP_AUTH_TOKEN: "secret-789",
       CUSTOM_AUTH_TOKEN: "custom-secret",
       API_SECRET_KEY: "secret-key",
@@ -25,7 +25,7 @@ describe("sanitizeChildEnvironment", () => {
     expect(sanitized.SAFE_CONFIG_FLAG).toBe("true");
 
     expect(sanitized.NRE_HTTP_AUTH_TOKEN).toBeUndefined();
-    expect(sanitized.REA_HTTP_AUTH_TOKEN).toBeUndefined();
+    expect(sanitized.NRE_API_KEY).toBeUndefined();
     expect(sanitized.MCP_AUTH_TOKEN).toBeUndefined();
     expect(sanitized.CUSTOM_AUTH_TOKEN).toBeUndefined();
     expect(sanitized.API_SECRET_KEY).toBeUndefined();
@@ -35,4 +35,3 @@ describe("sanitizeChildEnvironment", () => {
     expect(sanitized.GH_TOKEN).toBeUndefined();
   });
 });
-

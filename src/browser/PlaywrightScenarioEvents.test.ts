@@ -22,12 +22,12 @@ describe("declared secrets in scenario events", () => {
         { step_id: "wait", action: "wait_for_timeout", duration_ms: 1 },
       ],
       secrets: [
-        { secret_id: "login_input", environment_variable: "REA_TEST_TOKEN" },
+        { secret_id: "login_input", environment_variable: "NRE_TEST_TOKEN" },
       ],
       capture: { events: ["console", "page-errors", "websockets"] },
     });
     const secrets = resolveScenarioSecrets(scenario, {
-      REA_TEST_TOKEN: secret,
+      NRE_TEST_TOKEN: secret,
     });
     const events = new PlaywrightScenarioEvents({
       page,

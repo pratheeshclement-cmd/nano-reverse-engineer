@@ -274,7 +274,7 @@ async function assertProviderCacheCallers(
       TURBO_TOKEN: "${{ secrets.TURBO_TOKEN }}",
     });
     expect(caller?.with).toEqual({
-      build_cache_artifact: "rea-build-cache",
+      build_cache_artifact: "nre-build-cache",
       remote_cache_write: trustedRemoteCacheWrite,
     });
     const path = z.string().parse(caller?.uses);
@@ -355,7 +355,7 @@ it("binds provider build reuse to the current run while keeping standalone dispa
     step.run?.includes("portable-build-cache.mjs snapshot"),
   );
   const upload = buildSteps.findIndex(
-    (step) => step.with?.name === "rea-build-cache",
+    (step) => step.with?.name === "nre-build-cache",
   );
   expect(prepare).toBeGreaterThanOrEqual(0);
   expect(stage).toBeGreaterThan(prepare);

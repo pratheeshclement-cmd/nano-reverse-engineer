@@ -235,7 +235,7 @@ class VerifierTerminalOwner implements VerifierCleanupOwner {
     signal.throwIfAborted();
     const terminal = spawn(this.options.command, [...this.options.args], {
       cwd: this.options.cwd,
-      env: { ...this.options.environment, REA_PROCESS_RUN_ID: this.#runId },
+      env: { ...this.options.environment, NRE_PROCESS_RUN_ID: this.#runId },
       name: "xterm-256color",
       cols: 120,
       rows: 40,

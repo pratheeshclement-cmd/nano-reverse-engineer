@@ -27,7 +27,7 @@ describe("projection and omission coverage across writes", () => {
     expect(
       books.store
         .snapshot()
-        .rea_state.entities.find((entity) => entity.id === "1")?.fields.name,
+        .nre_state.entities.find((entity) => entity.id === "1")?.fields.name,
     ).toBe("First");
     books.answer("patch_books_by_id", { id: "1", body: { name: "Changed" } });
     expect(

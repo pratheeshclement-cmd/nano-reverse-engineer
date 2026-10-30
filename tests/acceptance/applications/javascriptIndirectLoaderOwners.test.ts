@@ -337,7 +337,7 @@ cliTest.for(
   async (testCase, { cli }) => {
     const { surface, load, possible } = testCase;
     const mainFile = "mainFile" in testCase ? testCase.mainFile : "main.cjs";
-    const root = await createTestTempDirectory("rea-sequence-loader-");
+    const root = await createTestTempDirectory("nre-sequence-loader-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: mainFile }),
       [`a/${mainFile}`]: `throw new Error('Static fixture must never execute');${load}`,

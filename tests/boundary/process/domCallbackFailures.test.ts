@@ -83,8 +83,8 @@ for (const scenario of ${JSON.stringify(cases)}) {
   assert.equal(text, scenario.success);
   assert.equal(errors.length, 1);
   if (deepLink) {
-    deepLink({}, "rea://selected/link");
-    assert.equal(text, "rea://selected/link");
+    deepLink({}, "nre://selected/link");
+    assert.equal(text, "nre://selected/link");
   }
 }
 `;
@@ -106,8 +106,8 @@ for (const scenario of ${JSON.stringify(cases)}) {
 processTest(
   "theme translation failure preserves the applied base theme and hides the toggle",
   async ({ processes }) => {
-    const failureRoot = await createTestTempDirectory("rea-theme-failure-");
-    const successRoot = await createTestTempDirectory("rea-theme-success-");
+    const failureRoot = await createTestTempDirectory("nre-theme-failure-");
+    const successRoot = await createTestTempDirectory("nre-theme-success-");
     const theme = fileURLToPath(
       new URL("../../../website/public/assets/theme.js", import.meta.url),
     );
@@ -189,7 +189,7 @@ for (const [directory, fails] of ${JSON.stringify([
     assert.equal(root.dataset.theme, "light");
     assert.equal(meta.content, "#ffffff");
     assert.equal(button["aria-label"], "translated:Switch to dark mode");
-    assert.deepEqual(writes, [["rea-theme", "light"]]);
+    assert.deepEqual(writes, [["nre-theme", "light"]]);
   }
 }
 `;

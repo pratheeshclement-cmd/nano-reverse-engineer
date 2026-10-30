@@ -21,7 +21,7 @@ import { PrivateRuntimeRoot } from "../../../src/process/PrivateRuntimeRoot.js";
 import type { VerifiedLinuxHopperPackage } from "../../../src/application/LinuxHopperPublisher.js";
 
 it("rejects a real extent change after admission instead of replacing its baseline", async () => {
-  const root = await createTestTempDirectory("rea-stable-admitted-extent-");
+  const root = await createTestTempDirectory("nre-stable-admitted-extent-");
   const path = join(root, "input.bin");
   const original = Buffer.from("admitted extent");
   await writeFile(path, original);
@@ -53,7 +53,7 @@ it("rejects a real extent change after admission instead of replacing its baseli
 });
 
 it("classifies a selected name removed at final validation as a changed file and closes its descriptor", async () => {
-  const root = await createTestTempDirectory("rea-stable-name-removed-");
+  const root = await createTestTempDirectory("nre-stable-name-removed-");
   const path = join(root, "input.bin");
   await writeFile(path, "admitted bytes");
   const nativeOpen = regularFile.openRegularFile;
@@ -93,7 +93,7 @@ it("classifies a selected name removed at final validation as a changed file and
 });
 
 it("captures a two-byte prefix across short reads and buffer reuse", async () => {
-  const root = await createTestTempDirectory("rea-stable-observation-prefix-");
+  const root = await createTestTempDirectory("nre-stable-observation-prefix-");
   const path = join(root, "script");
   const bytes = Buffer.from("#!rest-of-file");
   await writeFile(path, bytes);
@@ -140,7 +140,7 @@ it("captures a two-byte prefix across short reads and buffer reuse", async () =>
 });
 
 it("adopts and retries the descriptor when hashing succeeded but close failed", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-close-");
+  const root = await createTestTempDirectory("nre-stable-hash-close-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const closeCause = new Error("injected descriptor close failure");
@@ -183,7 +183,7 @@ it("adopts and retries the descriptor when hashing succeeded but close failed", 
 });
 
 it("preserves a read cancellation cause when close also fails", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-primary-");
+  const root = await createTestTempDirectory("nre-stable-hash-primary-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const primary = new Error("injected cancellation after read");
@@ -241,7 +241,7 @@ it("preserves a read cancellation cause when close also fails", async () => {
 });
 
 it("closes a normally hashed file without adopting an owner", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-control-");
+  const root = await createTestTempDirectory("nre-stable-hash-control-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const retainFailedClose = vi.fn();
@@ -252,7 +252,7 @@ it("closes a normally hashed file without adopting an owner", async () => {
 });
 
 it("retains a completed digest when cancellation follows successful close", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-cancel-");
+  const root = await createTestTempDirectory("nre-stable-hash-cancel-");
   const path = join(root, "input.bin");
   const bytes = Buffer.from("owned bytes");
   await writeFile(path, bytes);
@@ -297,7 +297,7 @@ it("retains a completed digest when cancellation follows successful close", asyn
 });
 
 it("adopts a descriptor from an admission failure and preserves both causes", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-admission-");
+  const root = await createTestTempDirectory("nre-stable-hash-admission-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const owner = new OwnedFileHandle(await openFile(path, "r"));
@@ -336,7 +336,7 @@ it("adopts a descriptor from an admission failure and preserves both causes", as
 });
 
 it("distinguishes a thrown undefined primary failure from a clean hash", async () => {
-  const root = await createTestTempDirectory("rea-stable-hash-undefined-");
+  const root = await createTestTempDirectory("nre-stable-hash-undefined-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const openFileAtBoundary = regularFile.openRegularFile;
@@ -380,7 +380,7 @@ it("distinguishes a thrown undefined primary failure from a clean hash", async (
 });
 
 it("retries a publisher-owned launcher hash close before returning its digest", async () => {
-  const root = await createTestTempDirectory("rea-publisher-hash-owner-");
+  const root = await createTestTempDirectory("nre-publisher-hash-owner-");
   const path = join(root, "launcher");
   await writeFile(path, "fixture launcher bytes");
   const publisher = new LinuxHopperPublisher({}, async () => undefined);
@@ -401,7 +401,7 @@ it("retries a publisher-owned launcher hash close before returning its digest", 
 });
 
 it("retries pending cleanup before acquiring a publisher temporary root", async () => {
-  const root = await createTestTempDirectory("rea-publisher-admission-");
+  const root = await createTestTempDirectory("nre-publisher-admission-");
   const path = join(root, "launcher");
   const launcherBytes = "fixture launcher bytes";
   await writeFile(path, launcherBytes);
@@ -469,7 +469,7 @@ it.each([
 ] as const)(
   "records completion cancellation at $stage before owner handoff",
   async ({ stage, reason }) => {
-    const root = await createTestTempDirectory("rea-hash-close-provenance-");
+    const root = await createTestTempDirectory("nre-hash-close-provenance-");
     const path = join(root, "input.bin");
     await writeFile(path, "owned bytes");
     const controller = new AbortController();
@@ -511,7 +511,7 @@ it.each([
 );
 
 it("tags a physical hash failure without inferring cancellation from a later signal", async () => {
-  const root = await createTestTempDirectory("rea-hash-physical-provenance-");
+  const root = await createTestTempDirectory("nre-hash-physical-provenance-");
   const path = join(root, "input.bin");
   await writeFile(path, "owned bytes");
   const controller = new AbortController();
@@ -557,7 +557,7 @@ it("tags a physical hash failure without inferring cancellation from a later sig
 it.each([false, true])(
   "preserves premature EOF with same-read cancellation and failed close=%s",
   async (failClose) => {
-    const root = await createTestTempDirectory("rea-hash-eof-cancel-");
+    const root = await createTestTempDirectory("nre-hash-eof-cancel-");
     const path = join(root, "input.bin");
     await writeFile(path, "admitted extent");
     const controller = new AbortController();
@@ -612,7 +612,7 @@ it.each(
 )(
   "retains the exact read checkpoint reason with failed close=$failClose ($reason)",
   async ({ reason, failClose }) => {
-    const root = await createTestTempDirectory("rea-hash-read-checkpoint-");
+    const root = await createTestTempDirectory("nre-hash-read-checkpoint-");
     const path = join(root, "input.bin");
     await writeFile(path, "admitted bytes");
     const controller = new AbortController();
@@ -667,7 +667,7 @@ it.each(["physical", "completed"] as const)(
   "preserves the publisher's %s hash outcome after cancellation and a successful close retry",
   async (outcome) => {
     const root = await createTestTempDirectory(
-      "rea-publisher-hash-retry-cancel-",
+      "nre-publisher-hash-retry-cancel-",
     );
     const path = join(root, "launcher");
     await writeFile(path, "launcher bytes");

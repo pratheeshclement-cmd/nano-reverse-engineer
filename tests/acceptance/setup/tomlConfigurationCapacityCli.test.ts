@@ -13,7 +13,7 @@ for (const scenario of [
   cliTest(
     `${scenario.client} setup and uninstall preserve large valid TOML documents`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-toml-capacity-");
+      const home = await createTestTempDirectory("nre-toml-capacity-");
       const config = join(home, scenario.path);
       const original =
         'model = "local-control"\n' +
@@ -50,11 +50,11 @@ for (const scenario of [
         status: "ready",
         clients: { [scenario.client]: { status: "configured" } },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
       const configured = await readFile(config, "utf8");
       expect(configured.startsWith(original.trimEnd())).toBe(true);
       expect(parseToml(configured)).toMatchObject({
-        mcp_servers: { other: { command: "other-local-control" }, rea: {} },
+        mcp_servers: { other: { command: "other-local-control" }, nre: {} },
       });
 
       const repeated = await run([...setupArguments, "--yes"]);
@@ -71,6 +71,6 @@ for (const scenario of [
       const remaining = await readFile(config, "utf8");
       expect(remaining.startsWith(original.trimEnd())).toBe(true);
       expect(parseToml(remaining)).toEqual(parseToml(original));
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     },
   );

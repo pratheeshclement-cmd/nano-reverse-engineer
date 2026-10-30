@@ -7,6 +7,7 @@ import {
   open,
   realpath,
   rmdir,
+  truncate,
   type FileHandle,
 } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
@@ -342,6 +343,24 @@ const openResumedJournal = async (
   if (!opened.ok) return opened;
   const functions = await prepareFunctionsDirectory(root, resources);
   if (!functions.ok) return functions;
+  // Drop a torn final line left by a crash so the next append starts a line.
+  if (opened.value.committedBytes !== opened.value.journalBytes) {
+    const repaired = await truncate(
+      join(root, DECOMPILE_DIRECTORY_JOURNAL_NAME),
+      opened.value.committedBytes,
+    ).then(
+      () => true,
+      () => false,
+    );
+    if (!repaired) {
+      return err(
+        decompileInputError(
+          "output_directory",
+          "The decompile journal could not be repaired after an interrupted write.",
+        ),
+      );
+    }
+  }
   const handle = await openJournal(root, "a");
   if (!handle.ok) return handle;
   resources.ownFile(
@@ -349,21 +368,6 @@ const openResumedJournal = async (
     join(root, DECOMPILE_DIRECTORY_JOURNAL_NAME),
     true,
   );
-  // Drop a torn final line left by a crash so the next append starts a line.
-  const repaired =
-    opened.value.committedBytes === opened.value.journalBytes ||
-    (await handle.value.truncate(opened.value.committedBytes).then(
-      () => true,
-      () => false,
-    ));
-  if (!repaired) {
-    return err(
-      decompileInputError(
-        "output_directory",
-        "The decompile journal could not be repaired after an interrupted write.",
-      ),
-    );
-  }
   return ok({ handle: handle.value, journal: opened.value });
 };
 
@@ -822,7 +826,7 @@ const sanitizeAddress = (address: string): string => {
 /** Private per-user parent of export lease sockets; it outlives individual runs. */
 const DECOMPILE_EXPORT_LEASE_DIRECTORY = join(
   "/tmp",
-  `rea-decompile-${(process.getuid?.() ?? 0).toString()}`,
+  `nre-decompile-${(process.getuid?.() ?? 0).toString()}`,
 );
 
 /**
@@ -939,23 +943,23 @@ const exportLeaseMessage = (failure: LeaseFailure): string => {
     case "owner_unverified":
       return `Another process holds this output directory's lease but did not identify itself (${failure.reason}). Retry after it finishes.`;
     case "recovery_busy":
-      return `Another run is recovering this output directory's lease at ${JSON.stringify(failure.path)}. Retry shortly. If no REA process is running, remove that directory.`;
+      return `Another run is recovering this output directory's lease at ${JSON.stringify(failure.path)}. Retry shortly. If no NRE process is running, remove that directory.`;
     case "recovery_remove":
-      return `REA could not remove its lease recovery directory at ${JSON.stringify(failure.path)}. Check its write access before retrying.`;
+      return `NRE could not remove its lease recovery directory at ${JSON.stringify(failure.path)}. Check its write access before retrying.`;
     case "unrecoverable":
-      return "REA could not take this output directory's lease. Retry after other decompile_all runs finish.";
+      return "NRE could not take this output directory's lease. Retry after other decompile_all runs finish.";
     case "socket_permissions":
-      return "REA could not secure its lease socket permissions.";
+      return "NRE could not secure its lease socket permissions.";
     case "directory_close":
-      return "REA could not confirm closure of its output lease directory handle.";
+      return "NRE could not confirm closure of its output lease directory handle.";
     case "directory_access_denied":
-      return `REA could not access its lease directory at ${JSON.stringify(failure.directory)}. Restore owner-only permissions (0700) on a directory you own, then retry.`;
+      return `NRE could not access its lease directory at ${JSON.stringify(failure.directory)}. Restore owner-only permissions (0700) on a directory you own, then retry.`;
     case "directory_create":
     case "directory_not_private":
     case "directory_permissions":
     case "directory_inspect":
     case "recovery_create":
-      return `REA could not use its private lease directory ${JSON.stringify(DECOMPILE_EXPORT_LEASE_DIRECTORY)}. Check that it is a directory owned by this user with permissions 0700.`;
+      return `NRE could not use its private lease directory ${JSON.stringify(DECOMPILE_EXPORT_LEASE_DIRECTORY)}. Check that it is a directory owned by this user with permissions 0700.`;
   }
 };
 

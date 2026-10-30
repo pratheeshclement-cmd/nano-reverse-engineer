@@ -10,7 +10,7 @@ import { writeFakeKuna } from "../providers/kuna/fakeKuna.js";
 cliTest.skipIf(process.platform === "win32").for(["blocked", "ready"] as const)(
   "setup dry-run reports Kuna readiness for a %s cache",
   async (cache, { cli }) => {
-    const root = await createTestTempDirectory("rea-setup-provider-readiness-");
+    const root = await createTestTempDirectory("nre-setup-provider-readiness-");
     const home = join(root, "home");
     await mkdir(home);
     const command = await writeFakeKuna(root);
@@ -25,8 +25,8 @@ cliTest.skipIf(process.platform === "win32").for(["blocked", "ready"] as const)(
         USERPROFILE: home,
         HOPPER_LAUNCHER_PATH: join(root, "missing-hopper"),
         GHIDRA_INSTALL_DIR: join(root, "missing-ghidra"),
-        REA_KUNA_COMMAND: command,
-        REA_KUNA_CACHE_DIR: cachePath,
+        NRE_KUNA_COMMAND: command,
+        NRE_KUNA_CACHE_DIR: cachePath,
       },
       timeoutMs: 20_000,
     });
@@ -65,7 +65,7 @@ cliTest.skipIf(process.platform === "win32").for(["blocked", "ready"] as const)(
 cliTest.skipIf(process.platform === "win32")(
   "setup and doctor do not execute host Java while Ghidra is unconfigured",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-setup-unconfigured-java-");
+    const root = await createTestTempDirectory("nre-setup-unconfigured-java-");
     const home = join(root, "home");
     const bin = join(root, "bin");
     const marker = join(root, "java-executed");

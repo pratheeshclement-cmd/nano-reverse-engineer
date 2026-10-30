@@ -228,12 +228,12 @@ const writeValueContextFiles = async (
   return originals;
 };
 
-describe("rea environment-compare value context", () => {
+describe("nre environment-compare value context", () => {
   cliTest(
     "keeps business values and numeric measurements literal while normalizing confirmed generation and clocks",
     async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-environment-value-context-",
+        "nre-environment-value-context-",
       );
       const originals = await writeValueContextFiles(root);
       const result = await cli.run({
@@ -353,7 +353,7 @@ describe("rea environment-compare value context", () => {
   );
 });
 
-describe("rea environment-compare recorded clock spelling", () => {
+describe("nre environment-compare recorded clock spelling", () => {
   for (const scenario of [
     {
       name: "variable fractional widths under a confirmed trimmed write plan",
@@ -396,7 +396,7 @@ describe("rea environment-compare recorded clock spelling", () => {
   ]) {
     cliTest(`accepts ${scenario.name}`, async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-environment-derived-compare-",
+        "nre-environment-derived-compare-",
       );
       const capture = timedCaptureEvidence(scenario.rows);
       const fixture = environmentStateServeFixture(capture);
@@ -443,7 +443,7 @@ describe("rea environment-compare recorded clock spelling", () => {
     "replays compact-offset submillisecond probe timestamps in exact order",
     async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-environment-legacy-chronology-",
+        "nre-environment-legacy-chronology-",
       );
       const originals = await writeExactClockFiles(root);
       const result = await cli.run({
@@ -490,12 +490,12 @@ describe("rea environment-compare recorded clock spelling", () => {
   );
 });
 
-describe("rea environment-compare replay and chronology", () => {
+describe("nre environment-compare replay and chronology", () => {
   cliTest(
     "preserves exact probe chronology and first-century clock-format differences",
     async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-environment-exact-clock-",
+        "nre-environment-exact-clock-",
       );
       const originals = await writeExactClockFiles(root);
       const result = await cli.run({
@@ -562,7 +562,7 @@ describe("rea environment-compare replay and chronology", () => {
     "compares the served environment with a probe of the re-seeded application and prints the report",
     async ({ cli }) => {
       const files = await writeCompareFiles(
-        await createTestTempDirectory("rea-environment-compare-cli-"),
+        await createTestTempDirectory("nre-environment-compare-cli-"),
       );
       const result = await cli.run({
         arguments: [
@@ -590,7 +590,7 @@ describe("rea environment-compare replay and chronology", () => {
     "refuses a probe that is not capture Evidence and names it",
     async ({ cli }) => {
       const files = await writeCompareFiles(
-        await createTestTempDirectory("rea-environment-compare-refusal-cli-"),
+        await createTestTempDirectory("nre-environment-compare-refusal-cli-"),
       );
       const result = await cli.run({
         arguments: [

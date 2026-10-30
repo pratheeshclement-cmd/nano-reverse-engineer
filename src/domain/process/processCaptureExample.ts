@@ -14,7 +14,7 @@ const comparisonContract = {};
 /** Minimal valid process capture retained as a public contract example. */
 export const EMPTY_PROCESS_CAPTURE_EXAMPLE = {
   manifest: {
-    rea_version: "1.1.0",
+    nre_version: "1.1.0",
     provider_version: "3",
     platform: "fixture",
     architecture: "fixture",

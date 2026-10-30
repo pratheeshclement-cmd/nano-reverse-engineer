@@ -16,7 +16,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliCompileCacheEnvironment } from "../../support/cli/cliFixture.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../../scripts/nre.mjs", import.meta.url));
 const nul = "/tmp/selected\0filename";
 const electron = {
   executable_path: "/tmp/Electron",
@@ -36,7 +36,7 @@ it("keeps overall replay verification unknown when capture divergence is unknown
     } = {},
   ) =>
     createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: { side },
       result: {
@@ -352,7 +352,7 @@ const ignoredOptions = [
 captureTest(
   "rejects malformed process choices through CLI and MCP before launching the command",
   async () => {
-    const root = await createTestTempDirectory("rea-local-contracts-");
+    const root = await createTestTempDirectory("nre-local-contracts-");
     const environment = cliCompileCacheEnvironment(
       process.env,
       join(root, "node-compile-cache"),
@@ -369,7 +369,7 @@ captureTest(
     const { call } = await connectLocalToolsMcp();
     const invalid = [
       ...ignoredOptions,
-      ...["", "KEY=VALUE", "KEY\0VALUE", "REA_PROCESS_RUN_ID"].map((key) => ({
+      ...["", "KEY=VALUE", "KEY\0VALUE", "NRE_PROCESS_RUN_ID"].map((key) => ({
         environment: { [key]: "value" },
       })),
       { executable: `node\0` },
@@ -511,20 +511,20 @@ captureTest(
 captureTest.each(["untruncated", "truncated"] as const)(
   "captures real process choices and composes a %s self-comparison",
   async (captureState) => {
-    const root = await createTestTempDirectory("rea-local-capture-");
+    const root = await createTestTempDirectory("nre-local-capture-");
     const { call } = await connectLocalToolsMcp();
     const captured = await call("capture_process_scenario", {
       executable: process.execPath,
       arguments: [
         "-e",
-        `require('node:fs').writeFileSync('state','selected');console.log(process.env['app.setting'],process.env.MY_PASSWORD,process.env['REA_PROCESS_RUN_ID'+String.fromCharCode(10)]);${captureState === "truncated" ? "console.log('x'.repeat(5000))" : ""}`,
+        `require('node:fs').writeFileSync('state','selected');console.log(process.env['app.setting'],process.env.MY_PASSWORD,process.env['NRE_PROCESS_RUN_ID'+String.fromCharCode(10)]);${captureState === "truncated" ? "console.log('x'.repeat(5000))" : ""}`,
       ],
       working_directory: root,
       environment: {
         "app.setting": "value",
         "1": "numbered",
         MY_PASSWORD: "ordinary-evidence",
-        "REA_PROCESS_RUN_ID\n": "caller-value",
+        "NRE_PROCESS_RUN_ID\n": "caller-value",
       },
       filesystem_observation_paths: [root],
       limits: captureState === "truncated" ? { output_bytes: 128 } : {},

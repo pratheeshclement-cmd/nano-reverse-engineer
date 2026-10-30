@@ -9,7 +9,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest(
   "preserves literal percent bytes in Next route source segments",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-next-route-segment-");
+    const root = await createTestTempDirectory("nre-next-route-segment-");
     const page = (name: string) =>
       `export default function Page${name}(){return null;}`;
     await writeFixtureFiles(root, {

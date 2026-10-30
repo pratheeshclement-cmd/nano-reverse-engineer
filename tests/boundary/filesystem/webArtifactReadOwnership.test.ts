@@ -66,7 +66,7 @@ import { webModuleArtifactsFixture } from "../../fixtures/webModuleTrace.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const sourceFixture = async (source: string) => {
-  const root = await createTestTempDirectory("rea-web-artifact-read-owner-");
+  const root = await createTestTempDirectory("nre-web-artifact-read-owner-");
   const fixture = webModuleArtifactsFixture(source);
   const manifestPath = join(root, "manifest.json");
   const sourcePath = join(root, "files", "modules", "main.js");

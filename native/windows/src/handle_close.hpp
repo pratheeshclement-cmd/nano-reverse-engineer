@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <utility>
 
-namespace rea {
+namespace nre {
 
 // A failed CloseHandle and a later liveness probe are not one atomic fact.
 // Another thread can reuse the numeric value before GetHandleInformation
@@ -203,4 +203,4 @@ class OwnedHandle {
   }
 };
 
-}  // namespace rea
+}  // namespace nre

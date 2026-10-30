@@ -74,7 +74,7 @@ it("serves requests up to the frame limit and refuses a line that exceeds it", a
   });
   expect(result.stalled_line.reply).toMatchObject({
     error: {
-      message: expect.stringContaining("REA_BRIDGE_MAX_REQUEST_BYTES"),
+      message: expect.stringContaining("NRE_BRIDGE_MAX_REQUEST_BYTES"),
     },
   });
   expect(result.stalled_line.next).toEqual({ closed: true });
@@ -118,7 +118,7 @@ it.each([8192, 17 * 1024 * 1024])(
     expect(result.stalled_line.reply).toMatchObject({
       error: {
         type: "invalid_request",
-        message: expect.stringContaining("REA_BRIDGE_MAX_REQUEST_BYTES"),
+        message: expect.stringContaining("NRE_BRIDGE_MAX_REQUEST_BYTES"),
       },
     });
     expect(result.eof_partial.reply).toMatchObject({
@@ -138,7 +138,7 @@ it.each(["7463", "536870888", "0", "-1", "abc", "016777216", "٨١٩٢"])(
     const result = z
       .object({ error: z.string() })
       .parse(await runProbe("invalid", value));
-    expect(result.error).toContain("REA_BRIDGE_MAX_REQUEST_BYTES");
+    expect(result.error).toContain("NRE_BRIDGE_MAX_REQUEST_BYTES");
     expect(result.error).not.toContain("was accepted");
   },
 );

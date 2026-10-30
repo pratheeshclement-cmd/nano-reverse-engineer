@@ -33,7 +33,7 @@ it("keeps an unresolved earlier generation unknown when a later unrelated proces
   const signalGroup = vi.fn();
   const host: ProcessOwnershipHost = {
     listProcesses: async () => [row],
-    environment: async () => ({ REA_PROCESS_RUN_ID: "foreign" }),
+    environment: async () => ({ NRE_PROCESS_RUN_ID: "foreign" }),
     processIdentities: async (entries) =>
       new Map(
         entries.map((entry) => [
@@ -76,7 +76,7 @@ it.each([undefined, "run-token"])(
       command: "foreign-process",
     };
     const environment = vi.fn(() =>
-      Promise.resolve(runId === undefined ? {} : { REA_PROCESS_RUN_ID: runId }),
+      Promise.resolve(runId === undefined ? {} : { NRE_PROCESS_RUN_ID: runId }),
     );
     const signalGroup = vi.fn();
     const host: ProcessOwnershipHost = {
@@ -164,7 +164,7 @@ it("validates and cleans an exact-token owner without a capture baseline", async
   });
   const host: ProcessOwnershipHost = {
     listProcesses: () => Promise.resolve(live ? [process] : []),
-    environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+    environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
     runTokens: (entries) =>
       Promise.resolve(
         new Map(
@@ -850,7 +850,7 @@ it.skipIf(typeof process.getuid !== "function")(
       listProcesses: () => Promise.resolve(processes),
       environment: (pid) =>
         pid === owned.pid
-          ? Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" })
+          ? Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" })
           : Promise.reject(new Error("permission denied")),
       runTokens: (entries) =>
         Promise.resolve(
@@ -1003,7 +1003,7 @@ describe("capture-local process identity baselines", () => {
     const signalGroup = vi.fn();
     const host: ProcessOwnershipHost = {
       listProcesses: () => Promise.resolve([process]),
-      environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+      environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
       processIdentities: (entries) => {
         identityReads += 1;
         const identity = identityReads < 3 ? "owned-start" : "reused-start";
@@ -1240,7 +1240,7 @@ it("revalidates identity after the final environment token read", async () => {
     environment: () => {
       environmentReads += 1;
       if (environmentReads === 3) reusedDuringFinalRead = true;
-      return Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" });
+      return Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" });
     },
     processIdentities: (entries) => {
       const identity = reusedDuringFinalRead ? "reused-start" : "owned-start";
@@ -1345,7 +1345,7 @@ it("uses the launcher's native relation instead of stale process-table fields", 
   const signalGroup = vi.fn();
   const host: ProcessOwnershipHost = {
     listProcesses: () => Promise.resolve([row]),
-    environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+    environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
     runTokens: (members) =>
       Promise.resolve(
         new Map(
@@ -1394,7 +1394,7 @@ it("does not settle a live launcher from stale table ancestry when native relati
   const signalGroup = vi.fn();
   const host: ProcessOwnershipHost = {
     listProcesses: () => Promise.resolve([row]),
-    environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+    environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
     processIdentities: () =>
       Promise.resolve(
         new Map([
@@ -1443,7 +1443,7 @@ it("refuses to signal when PID identity changes after token validation", async (
   };
   const host: ProcessOwnershipHost = {
     listProcesses: () => Promise.resolve([process]),
-    environment: () => Promise.resolve({ REA_PROCESS_RUN_ID: "run-token" }),
+    environment: () => Promise.resolve({ NRE_PROCESS_RUN_ID: "run-token" }),
     processIdentities: (entries) => {
       identityReads += 1;
       const identity = identityReads < 3 ? "owned-start" : "reused-start";

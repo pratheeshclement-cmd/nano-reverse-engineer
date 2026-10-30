@@ -30,10 +30,10 @@ const { geminiUnsupportedLiteral } = await importVerifierSource(
 );
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_GEMINI_COMMAND ?? "gemini";
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_GEMINI_COMMAND ?? "gemini";
 const mode = process.argv[2] ?? "call";
-const schemaProfile = process.env.REA_VERIFY_GEMINI_SCHEMA_PROFILE ?? "full";
+const schemaProfile = process.env.NRE_VERIFY_GEMINI_SCHEMA_PROFILE ?? "full";
 assert(["full", "compact"].includes(schemaProfile));
 // npm installs of Gemini CLI provide a JavaScript entry point; on Windows only a gemini.cmd shim reaches
 // PATH, which Node does not spawn without a shell, so a selected .js entry runs under this Node. It is
@@ -48,7 +48,7 @@ assert(
   "Usage: verify-gemini-client.mjs [chat|call]",
 );
 const verifier = createVerifierRun();
-const lab = await mkdtemp(join(tmpdir(), "rea-gemini-client-"));
+const lab = await mkdtemp(join(tmpdir(), "nre-gemini-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -57,7 +57,7 @@ const skillPath = join(
   profile,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
   "SKILL.md",
 );
 let clientVersion = null;
@@ -94,8 +94,8 @@ await withVerifierCleanup(async () => {
       // Preserve the caller's bounded Node heap instead of the launcher's host-memory auto-sizing.
       GEMINI_CLI_NO_RELAUNCH: "1",
       GEMINI_CLI_TRUST_WORKSPACE: "true",
-      REA_PROCESS_RUN_ID: verifier.run_id,
-      REA_MCP_INPUT_SCHEMA_PROFILE: schemaProfile,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: schemaProfile,
     };
     try {
       clientVersion = (
@@ -111,7 +111,7 @@ await withVerifierCleanup(async () => {
           ? " On Windows, select the JavaScript entry point; npm installs provide it as node_modules/@google/gemini-cli/bundle/gemini.js."
           : "";
       throw new Error(
-        `Gemini preflight failed for ${command}; install Gemini CLI or set REA_VERIFY_GEMINI_COMMAND.${windowsHint} ${String(cause)}`,
+        `Gemini preflight failed for ${command}; install Gemini CLI or set NRE_VERIFY_GEMINI_COMMAND.${windowsHint} ${String(cause)}`,
         { cause },
       );
     }
@@ -137,7 +137,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const result = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
       const parsed = JSON.parse(result.stdout);
@@ -169,7 +169,7 @@ await withVerifierCleanup(async () => {
         result.stdout,
       );
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert.deepEqual(JSON.parse(configured).mcpServers.other, {
       command: "unrelated-server",
@@ -177,7 +177,7 @@ await withVerifierCleanup(async () => {
     const repeated = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/nre.mjs"),
         "setup",
         "--client",
         "gemini_cli",
@@ -188,10 +188,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     assert(
       (await readFile(skillPath, "utf8")).includes(
-        "name: reverse-engineer-anything",
+        "name: nano-reverse-engineer",
       ),
     );
     const target = join(lab, "fixture α测试");
@@ -220,21 +220,21 @@ await withVerifierCleanup(async () => {
         const analysis = tools.find((t) =>
           t.name.endsWith("analyze_javascript_application"),
         );
-        assert(analysis, "Gemini must expose the REA analysis tool");
+        assert(analysis, "Gemini must expose the NRE analysis tool");
         const prefix = analysis.name.slice(
           0,
           -"analyze_javascript_application".length,
         );
         const expected = TOOL_CONTRACTS.map((t) => prefix + t.name).sort();
-        const reaTools = tools.filter((t) => expected.includes(t.name));
-        catalogSize = reaTools.length;
+        const nreTools = tools.filter((t) => expected.includes(t.name));
+        catalogSize = nreTools.length;
         assert.deepEqual(
-          reaTools.map((t) => t.name).sort(),
+          nreTools.map((t) => t.name).sort(),
           expected,
-          "Gemini must forward the complete REA tool catalog",
+          "Gemini must forward the complete NRE tool catalog",
         );
         if (schemasChecked === 0) {
-          for (const tool of reaTools) {
+          for (const tool of nreTools) {
             assert(
               tool.parametersJsonSchema,
               `${tool.name}: missing advertised JSON Schema`,
@@ -272,10 +272,10 @@ await withVerifierCleanup(async () => {
           (r) =>
             r.name === "activate_skill" &&
             r.response?.output?.includes(
-              `<activated_skill name="reverse-engineer-anything">`,
+              `<activated_skill name="nano-reverse-engineer">`,
             ) &&
             r.response.output.includes(
-              join(profile, ".agents", "skills", "reverse-engineer-anything"),
+              join(profile, ".agents", "skills", "nano-reverse-engineer"),
             ),
         );
         const observed = findClientResult(
@@ -295,7 +295,7 @@ await withVerifierCleanup(async () => {
         }
         if (mode === "chat" || evidenceSeen) {
           finalSeen = true;
-          return [{ text: "REA_CLIENT_COMPATIBILITY_OK" }];
+          return [{ text: "NRE_CLIENT_COMPATIBILITY_OK" }];
         }
         if (!skillRequested) {
           const skill = tools.find((t) => t.name === "activate_skill");
@@ -305,14 +305,14 @@ await withVerifierCleanup(async () => {
             {
               functionCall: {
                 name: skill.name,
-                args: { name: "reverse-engineer-anything" },
+                args: { name: "nano-reverse-engineer" },
               },
             },
           ];
         }
         assert(
           skillLoaded,
-          "Gemini must load the installed personal REA skill",
+          "Gemini must load the installed personal NRE skill",
         );
         return [
           {
@@ -333,13 +333,13 @@ await withVerifierCleanup(async () => {
             "--approval-mode",
             mode === "chat" ? "default" : "yolo",
             "--allowed-mcp-server-names",
-            "rea",
+            "nre",
             "--output-format",
             "stream-json",
             "-p",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use REA to analyze the JavaScript directory ${target}. Report the result.`,
+              : `Use NRE to analyze the JavaScript directory ${target}. Report the result.`,
           ]),
           {
             env: {
@@ -368,7 +368,7 @@ await withVerifierCleanup(async () => {
     );
     assert.equal(fixture.failure, undefined);
     assert(
-      finalSeen && response.stdout.includes("REA_CLIENT_COMPATIBILITY_OK"),
+      finalSeen && response.stdout.includes("NRE_CLIENT_COMPATIBILITY_OK"),
     );
     if (mode === "call") assert(evidenceSeen && skillLoaded);
   }, [

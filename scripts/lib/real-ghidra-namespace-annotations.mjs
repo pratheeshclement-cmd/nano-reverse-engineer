@@ -19,7 +19,7 @@ export async function verifyGhidraNamespaceAnnotations({
 }) {
   await requireNamespaceDemangler(env);
   const exec = promisify(execFile);
-  const compiler = process.env.REA_CC ?? "cc";
+  const compiler = process.env.NRE_CC ?? "cc";
   try {
     await exec(compiler, ["--version"], { env, timeout: 30000 });
   } catch (cause) {
@@ -28,7 +28,7 @@ export async function verifyGhidraNamespaceAnnotations({
       { cause },
     );
   }
-  const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-namespaces-"));
+  const workspace = await mkdtemp(join(tmpdir(), "nre-ghidra-namespaces-"));
   const source = fileURLToPath(
     new URL("../../tests/conformance/ghidra/namespaces.c", import.meta.url),
   );
@@ -185,8 +185,8 @@ export async function verifyGhidraNamespaceAnnotations({
 
 async function verifyDuplicateAddressNames(call, procedures, names) {
   const functionEntries = [
-    "rea_duplicate_function_a",
-    "rea_duplicate_function_b",
+    "nre_duplicate_function_a",
+    "nre_duplicate_function_b",
   ].map((name) => {
     const procedure = procedures.find(
       ({ value }) => value === name || value === `_${name}`,
@@ -194,7 +194,7 @@ async function verifyDuplicateAddressNames(call, procedures, names) {
     assert.ok(procedure, `Missing duplicate-name fixture function ${name}`);
     return { address: procedure.address, original: procedure.value };
   });
-  const labelEntries = ["rea_duplicate_label_a", "rea_duplicate_label_b"].map(
+  const labelEntries = ["nre_duplicate_label_a", "nre_duplicate_label_b"].map(
     (name) => {
       const symbol = names.find(
         (item) =>
@@ -211,7 +211,7 @@ async function verifyDuplicateAddressNames(call, procedures, names) {
     ["label", labelEntries],
   ]) {
     const [owner, duplicate] = entries;
-    const name = `rea_duplicate_${kind}`;
+    const name = `nre_duplicate_${kind}`;
     assert.equal(
       await call("set_address_name", { address: owner.address, name }),
       true,
@@ -231,7 +231,7 @@ async function verifyDuplicateAddressNames(call, procedures, names) {
       "A rejected duplicate leaves the other address unchanged",
     );
 
-    const batchName = `rea_batch_duplicate_${kind}`;
+    const batchName = `nre_batch_duplicate_${kind}`;
     assert.deepEqual(
       await call("set_addresses_names", {
         names: {
@@ -395,6 +395,6 @@ async function requireNamespaceDemangler(env) {
     }
   }
   throw new Error(
-    `Ghidra namespace annotation verification requires the matching GNU demangler native component. Provide ${executable} for ${nativeDirectory} in GPL/DemanglerGnu/os or its build/os equivalent; REA does not build it. Checked: ${failures.join("; ")}`,
+    `Ghidra namespace annotation verification requires the matching GNU demangler native component. Provide ${executable} for ${nativeDirectory} in GPL/DemanglerGnu/os or its build/os equivalent; NRE does not build it. Checked: ${failures.join("; ")}`,
   );
 }

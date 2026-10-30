@@ -37,8 +37,8 @@ export interface SetupClient {
   readonly markerPath?: string;
   /**
    * Registration storage shared with other products. Its presence never proves
-   * this product is installed; only a recognizable REA-owned row in it proves
-   * ownership of a registration REA wrote.
+   * this product is installed; only a recognizable NRE-owned row in it proves
+   * ownership of a registration NRE wrote.
    */
   readonly sharedRegistration?: boolean;
   /** MSIX package storage that decides which configuration the client reads. */
@@ -263,7 +263,7 @@ const grokBotDirectory = ({ home, env }: ClientPathContext): string => {
  * hosted computer. The data directory is only a detection marker.
  */
 export const GROK_BOT_MANUAL_REGISTRATION_REMEDIATION =
-  "Grok Bot keeps connectors in the signed-in account and runs them on its hosted computer. Setup does not write that account store, and a data-directory mcp.json is not a registration. In the Grok Bot chat, add a custom MCP server named rea that runs on the Bot's computer with `npx -y rea-agents@<version> mcp`. Do not put credentials in the command or arguments. A stdio server on this machine is not attached.";
+  "Grok Bot keeps connectors in the signed-in account and runs them on its hosted computer. Setup does not write that account store, and a data-directory mcp.json is not a registration. In the Grok Bot chat, add a custom MCP server named nre that runs on the Bot's computer with `npx -y nano-reverse-engineer@<version> mcp`. Do not put credentials in the command or arguments. A stdio server on this machine is not attached.";
 
 /** Remediation for a client whose connector is not a local configuration file. */
 export const manualRegistrationRemediation = (
@@ -315,9 +315,9 @@ export const registrationWriteBlocker = (
   // Setup would write the configuration the app reads; uninstall cleans both files.
   const manualEdit =
     operation === "setup"
-      ? `Add REA's entry to ${client.configPath} by hand`
-      : `Remove REA's entry by hand from each of ${msix.privateConfigPath} and ${msix.appDataConfigPath} that has one`;
-  return `REA cannot tell whether ${name}'s MSIX package ${msix.packageFamilyName} started this process, because no private file under ${dirname(dirname(msix.privateConfigPath))} could be compared with ${dirname(dirname(msix.appDataConfigPath))}, and a ${name} that started it would overwrite the change from memory. ${manualEdit} while ${name} is fully quit, or rerun ${operation} from a terminal that ${name} did not start once REA can compare a private file there.`;
+      ? `Add NRE's entry to ${client.configPath} by hand`
+      : `Remove NRE's entry by hand from each of ${msix.privateConfigPath} and ${msix.appDataConfigPath} that has one`;
+  return `NRE cannot tell whether ${name}'s MSIX package ${msix.packageFamilyName} started this process, because no private file under ${dirname(dirname(msix.privateConfigPath))} could be compared with ${dirname(dirname(msix.appDataConfigPath))}, and a ${name} that started it would overwrite the change from memory. ${manualEdit} while ${name} is fully quit, or rerun ${operation} from a terminal that ${name} did not start once NRE can compare a private file there.`;
 };
 
 /** The MSIX package view, if any, that redirects this process's AppData writes. */
@@ -512,7 +512,7 @@ const devinDirectory = ({ home, platform, env }: ClientPathContext): string =>
 /**
  * FreeBuff's own profile directory (its `state.json` root, fixed under
  * `.config` on every platform). The shared `~/.agents` folder is not
- * FreeBuff-specific: REA's own skill installs create it, so it cannot
+ * FreeBuff-specific: NRE's own skill installs create it, so it cannot
  * prove FreeBuff is installed.
  */
 const freebuffProfileDirectory = ({ home }: ClientPathContext): string =>
@@ -786,9 +786,9 @@ export const clientEvidencePaths = (
 ];
 
 /**
- * Paths where a recognizable REA-owned row proves ownership of a registration
- * REA wrote, never that the product is installed: shared storage is created by
- * other products and by REA's own skill installs. A client whose registration
+ * Paths where a recognizable NRE-owned row proves ownership of a registration
+ * NRE wrote, never that the product is installed: shared storage is created by
+ * other products and by NRE's own skill installs. A client whose registration
  * is product-local declares no shared storage, so this stays empty for it.
  */
 export const clientOwnershipEvidencePaths = (
@@ -807,8 +807,8 @@ export const clientOwnershipEvidencePaths = (
  * Registration storage this client shares with another product: its own shared
  * configuration plus any same-scope fallback another client also loads. Only
  * this storage may be retained when product applicability is unproven, because
- * failing closed on it would block REA removals for files REA does not own.
- * Product-local configuration is REA's own boundary and stays fail-closed.
+ * failing closed on it would block NRE removals for files NRE does not own.
+ * Product-local configuration is NRE's own boundary and stays fail-closed.
  */
 export const clientSharedRegistrationPaths = (
   client: Pick<

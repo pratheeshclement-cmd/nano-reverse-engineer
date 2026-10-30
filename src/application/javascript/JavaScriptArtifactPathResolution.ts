@@ -127,7 +127,7 @@ const EXTENSIONS = [
 
 // A private URL namespace for logical artifact paths, including root packages.
 // Encode inventory segments so filename punctuation remains literal in the base.
-const PACKAGE_ARTIFACT_ROOT_URL = new URL("file:///rea-artifact/");
+const PACKAGE_ARTIFACT_ROOT_URL = new URL("file:///nre-artifact/");
 const encodePackageMetadataUrl = (path: string): URL =>
   new URL(
     path.split("/").map(encodeURIComponent).join("/"),
@@ -153,7 +153,7 @@ const packageMetadataUrl = (
     if (!(cause instanceof URIError)) throw cause;
     const reserved = new Set(
       `${path}\n${relativeTarget.replace(/[\t\n\r]/gu, "")}`.match(
-        /rea-opaque-\d+/gu,
+        /nre-opaque-\d+/gu,
       ) ?? [],
     );
     const structuralSegments = new Set<string>();
@@ -166,7 +166,7 @@ const packageMetadataUrl = (
         } catch (segmentCause: unknown) {
           if (!(segmentCause instanceof URIError)) throw segmentCause;
           let identity: string;
-          do identity = `rea-opaque-${nextIdentity++}`;
+          do identity = `nre-opaque-${nextIdentity++}`;
           while (reserved.has(identity));
           reserved.add(identity);
           structuralSegments.add(identity);

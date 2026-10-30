@@ -82,7 +82,7 @@ afterEach(async () => {
 });
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-ida-copy-owner-");
+  const root = await createTestTempDirectory("nre-ida-copy-owner-");
   const path = join(root, "authored.elf");
   const bytes = elf(2, 1, 62);
   await writeFile(path, bytes);

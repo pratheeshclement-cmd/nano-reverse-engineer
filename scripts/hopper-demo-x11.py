@@ -35,7 +35,7 @@ UNEXPECTED_DISPLAY_GEOMETRY = 77
 X11_INPUT_FAILED = 78
 RUNTIME_DEPENDENCY_UNAVAILABLE = 79
 X11_SOCKET_DIRECTORY_UNUSABLE = 80
-DIAGNOSTIC_PREFIX = "REA_X11_DIAGNOSTIC="
+DIAGNOSTIC_PREFIX = "NRE_X11_DIAGNOSTIC="
 X11_SOCKET_DIRECTORY = Path("/tmp/.X11-unix")
 class AdapterFailure(Exception):
     def __init__(
@@ -424,7 +424,7 @@ def mount_private_x11() -> None:
                 "tmpfs",
                 "-o",
                 "mode=1777,nosuid,nodev",
-                "rea-x11",
+                "nre-x11",
                 str(X11_SOCKET_DIRECTORY),
             ],
             check=False,
@@ -649,7 +649,7 @@ def start_xvfb(
 
 
 def run_probe(args: argparse.Namespace) -> dict[str, object]:
-    with tempfile.TemporaryDirectory(prefix="rea-x11-probe-", dir="/tmp") as root:
+    with tempfile.TemporaryDirectory(prefix="nre-x11-probe-", dir="/tmp") as root:
         xvfb, _, _, capture = start_xvfb(Path(root), args)
         try:
             stop_process(xvfb)
@@ -717,7 +717,7 @@ def run_launch(args: argparse.Namespace) -> int:
                 "XDG_SESSION_TYPE": "x11",
             }
         )
-        # Children must not consume or retain REA's lifetime pipe.
+        # Children must not consume or retain NRE's lifetime pipe.
         child = subprocess.Popen(
             command, env=hopper_environment, stdin=subprocess.DEVNULL
         )

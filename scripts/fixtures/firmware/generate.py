@@ -13,7 +13,7 @@ root.mkdir(parents=True, exist_ok=True)
 source = root / "probe.c"
 source.write_text("int firmware_probe(int x){return x*7+3;} int main(void){return firmware_probe(4);}\n")
 subprocess.run([sys.argv[2], "-O0", "-g", "-fno-inline", str(source), "-o", str(root / "probe")], check=True)
-payloads = {"etc/rea.conf": b"rea_fixture=true\n", "usr/bin/probe": (root / "probe").read_bytes()}
+payloads = {"etc/nre.conf": b"nre_fixture=true\n", "usr/bin/probe": (root / "probe").read_bytes()}
 buffer = io.BytesIO()
 with tarfile.open(fileobj=buffer, mode="w", format=tarfile.USTAR_FORMAT) as archive:
     for name, data in payloads.items():
@@ -23,7 +23,7 @@ with tarfile.open(fileobj=buffer, mode="w", format=tarfile.USTAR_FORMAT) as arch
         info.mtime = 0
         archive.addfile(info, io.BytesIO(data))
 compressed = gzip.compress(buffer.getvalue(), mtime=0)
-image = b"REA firmware fixture\n".ljust(64, b"\xff") + compressed + b"\x00" * 128
+image = b"NRE firmware fixture\n".ljust(64, b"\xff") + compressed + b"\x00" * 128
 (root / "firmware.bin").write_bytes(image)
 (root / "oracle.json").write_text(json.dumps({
     "generator": "Python tarfile USTAR + gzip; host cc; no target execution",

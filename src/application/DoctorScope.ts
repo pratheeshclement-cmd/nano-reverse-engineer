@@ -160,7 +160,7 @@ const selectedProviderChecksFor = (
       ok: false,
       classification: "missing_analysis_engine",
       detail: `Requested provider ${providerId} is unavailable.`,
-      remediation: `Configure the ${providerId} provider, then rerun rea doctor.`,
+      remediation: `Configure the ${providerId} provider, then rerun nre doctor.`,
     },
   ];
 };
@@ -184,7 +184,7 @@ const selectedRegistrationCheck = (
         ok: false,
         classification: "config_drift",
         detail: `Requested client ${client} was not detected.`,
-        remediation: `Install or select ${client}, then run rea setup --client ${client}.`,
+        remediation: `Install or select ${client}, then run nre setup --client ${client}.`,
       }
     : status.state === "aligned"
       ? {
@@ -220,14 +220,14 @@ const selectedSkillCheck = (
           ? "unknown"
           : "config_drift",
     ...(state === "aligned"
-      ? { detail: "Installed REA skill identity is aligned." }
+      ? { detail: "Installed NRE skill identity is aligned." }
       : {
           remediation:
             state === "unmanaged"
-              ? "Use regular skill directories, or run rea setup with --skill=false to configure the client without installing the skill."
+              ? "Use regular skill directories, or run nre setup with --skill=false to configure the client without installing the skill."
               : state === "unknown"
                 ? "Verify access to the reported skill files before retrying."
-                : "Run rea setup to update the installed REA skill.",
+                : "Run nre setup to update the installed NRE skill.",
         }),
   };
 

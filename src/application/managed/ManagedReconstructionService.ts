@@ -56,7 +56,7 @@ const createManagedReconstructionEvidence = (
     },
     MANAGED_WORKFLOW_PROVIDER,
     {
-      predicateType: "rea.managed-reconstruction-import",
+      predicateType: "nre.managed-reconstruction-import",
       operation: OPERATION,
       parameters: {
         static_members_evidence_id: result.static_observation.evidence_id,

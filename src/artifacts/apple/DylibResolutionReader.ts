@@ -52,12 +52,15 @@ class FilesystemTreeView implements DylibTreeView {
     const roots = isAbsolute(this.sourceRoot)
       ? [this.root, this.sourceRoot]
       : [this.root];
+    const normAbsolute = absolutePath.replaceAll("\\", "/");
     for (let root of roots) {
-      while (root.length > 1 && root.endsWith(sep)) root = root.slice(0, -1);
-      if (absolutePath === root) return "";
-      const prefix = root === sep ? sep : `${root}${sep}`;
-      if (absolutePath.startsWith(prefix))
-        return absolutePath.slice(prefix.length).split(sep).join("/");
+      let normRoot = root.replaceAll("\\", "/");
+      while (normRoot.length > 1 && normRoot.endsWith("/"))
+        normRoot = normRoot.slice(0, -1);
+      if (normAbsolute === normRoot) return "";
+      const prefix = normRoot === "/" ? "/" : `${normRoot}/`;
+      if (normAbsolute.startsWith(prefix))
+        return normAbsolute.slice(prefix.length);
     }
     return undefined;
   }
@@ -318,7 +321,7 @@ const compare = (left: string, right: string): number =>
  * Resolve each root segment by segment, as dependency candidates are, so a
  * symlink in an intermediate directory cannot lead outside the analyzed root.
  * A root the caller selected that fails is an input error on that root; a
- * root REA derived itself keeps reporting an artifact failure.
+ * root NRE derived itself keeps reporting an artifact failure.
  */
 const requireMachoRoots = async (
   view: FilesystemTreeView,

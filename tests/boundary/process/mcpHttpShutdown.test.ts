@@ -14,7 +14,7 @@ const shutdownSignals: readonly (readonly [NodeJS.Signals, number])[] = [
 ];
 
 // Windows child.kill() force-terminates even for SIGINT; it does not deliver a console interrupt.
-describe.skipIf(process.platform === "win32")("rea mcp --http shutdown", () => {
+describe.skipIf(process.platform === "win32")("nre mcp --http shutdown", () => {
   for (const [signal, status] of shutdownSignals)
     processTest(
       `releases the listener and exits ${String(status)} on ${signal}`,

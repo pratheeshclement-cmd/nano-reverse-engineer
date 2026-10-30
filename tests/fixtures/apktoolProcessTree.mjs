@@ -15,7 +15,7 @@ export const run = ({ mode, markerPath }) => {
     operation !== (mode === "probe" ? "--version" : "d")
   )
     throw new Error(`Unexpected Apktool fixture invocation: ${operation}`);
-  const runId = process.env.REA_PROCESS_RUN_ID;
+  const runId = process.env.NRE_PROCESS_RUN_ID;
   if (typeof runId !== "string" || runId.length === 0)
     throw new Error("Apktool fixture has no owned process run token");
   if (mode === "decode") process.on("SIGTERM", () => {});

@@ -52,7 +52,7 @@ def unicode_entry(text):
 
 def main():
     path = sys.argv[1]
-    bridge = {"__file__": path, "__name__": "rea_hopper_bridge"}
+    bridge = {"__file__": path, "__name__": "nre_hopper_bridge"}
     exec(compile(Path(path).read_text(encoding="utf-8"), path, "exec"), bridge)
 
     class API:

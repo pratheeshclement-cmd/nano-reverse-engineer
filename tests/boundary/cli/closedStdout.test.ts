@@ -15,8 +15,8 @@ const runWithClosedReader = async (
 ) => {
   const child = processes.spawn(
     process.execPath,
-    [resolve("scripts/rea.mjs"), ...arguments_],
-    { env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" } },
+    [resolve("scripts/nre.mjs"), ...arguments_],
+    { env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" } },
   );
   let received = 0;
   if (bytes === 0) child.stdout.destroy();
@@ -54,7 +54,7 @@ describe.skipIf(process.platform === "win32")(
     cliTest(
       "stops quietly when the reader closes during streamed JSON",
       async ({ processes }) => {
-        const directory = await createTestTempDirectory("rea-closed-stdout-");
+        const directory = await createTestTempDirectory("nre-closed-stdout-");
         const database = join(directory, "rows.db");
         const writer = new DatabaseSync(database);
         writer.exec("CREATE TABLE t (v TEXT)");

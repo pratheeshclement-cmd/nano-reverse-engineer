@@ -14,10 +14,10 @@ import { connectLocalToolsMcp } from "../fixtures/localToolsMcp.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 
 it("compares FIT declarations while preserving layout independence and unknowns", async () => {
-  const root = await createTestTempDirectory("rea-fit-comparison-");
+  const root = await createTestTempDirectory("nre-fit-comparison-");
   const { call } = await connectLocalToolsMcp({
-    REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-    REA_MCP_TOOL_FAMILIES: "artifact,application,session",
+    NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+    NRE_MCP_TOOL_FAMILIES: "artifact,application,session",
   });
   const properties = {
     type: dtString("kernel"),

@@ -85,7 +85,7 @@ describe("MCP target-content framing", () => {
     async ({ scope, lifecycle }) => {
       const client = await connect({
         ...process.env,
-        REA_MCP_TOOL_FAMILIES: scope,
+        NRE_MCP_TOOL_FAMILIES: scope,
       });
       const instructions = client.getInstructions() ?? "";
       expect(instructions).toContain(UNTRUSTED_CONTENT_INSTRUCTIONS);
@@ -103,7 +103,7 @@ it.each(["session", "session,application"])(
   async (scope) => {
     const client = await connect({
       ...process.env,
-      REA_MCP_TOOL_FAMILIES: scope,
+      NRE_MCP_TOOL_FAMILIES: scope,
     });
     const instructions = client.getInstructions() ?? "";
     expect(instructions).toBe(
@@ -117,7 +117,7 @@ it.each(["session", "session,application"])(
       expect(instructions.includes(name)).toBe(names.includes(name));
     }
     if (!scope.includes("application"))
-      expect(instructions).toContain("REA_MCP_TOOL_FAMILIES");
+      expect(instructions).toContain("NRE_MCP_TOOL_FAMILIES");
   },
 );
 
@@ -128,7 +128,7 @@ describe("MCP fixed-target scope guidance", () => {
         kind: "fixed",
         analysis: { execute: () => Promise.resolve(observed(null)) },
       },
-      { environment: { ...process.env, REA_MCP_TOOL_FAMILIES: scope } },
+      { environment: { ...process.env, NRE_MCP_TOOL_FAMILIES: scope } },
     );
     const client = new Client({ name: "fixed-target-scope", version: "1" });
     const [clientTransport, serverTransport] =

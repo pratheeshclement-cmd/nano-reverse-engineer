@@ -2,13 +2,13 @@
 
 `inspect_wasm_artifact` / `inspect-wasm-artifact` inspects explicitly selected
 local WASM bytes using caller-supplied WABT 1.0.42. No active binary target is
-required. REA does not install tools or fetch artifacts and does not execute WASM.
+required. NRE does not install tools or fetch artifacts and does not execute WASM.
 
 `open_binary` is not the WASM inspection route. A recognized WASM v1 header
 returns `target_unavailable` with category `unsupported_target` and constraint
 `wasm_requires_static_inspection`, including the selected path in a valid
 `inspect_wasm_artifact` call. Use that target-free tool or
-`rea inspect-wasm-artifact <path> --format json` with the toolchain below.
+`nre inspect-wasm-artifact <path> --format json` with the toolchain below.
 Check `binary_session` for configured capability availability. A recognized
 header is not validation of the complete module; missing WABT is reported
 separately as an unavailable capability, not as missing native engine support.
@@ -18,7 +18,7 @@ The recognized WASM header is checked before automatic database routing from a
 diagnostic. An explicit database selection or raw/COM format selection retains
 the caller's requested interpretation; ordinary .hop database routing is unchanged.
 
-Set `REA_WABT_BIN_DIRECTORY` to an absolute directory containing executable
+Set `NRE_WABT_BIN_DIRECTORY` to an absolute directory containing executable
 `wasm-validate`, `wasm-objdump` and `wasm2wat` (with `.exe` on Windows). Missing
 executables, unsupported banners and inaccessible tools produce actionable
 unavailable diagnostics. Capability discovery reports configured availability;
@@ -35,10 +35,10 @@ or repeating an unchanged call. All three tools must report 1.0.42 on stdout wit
 empty stderr. For CLI calls, set the environment before the next invocation. For
 MCP, change the server's launch environment and restart/reconnect that server;
 exporting a variable in a different shell does not update a running server.
-REA never installs tools or relaxes version admission to recover.
+NRE never installs tools or relaxes version admission to recover.
 
 ```bash
-REA_WABT_BIN_DIRECTORY=/absolute/wabt/bin rea inspect-wasm-artifact \
+NRE_WABT_BIN_DIRECTORY=/absolute/wabt/bin nre inspect-wasm-artifact \
   /artifacts/module.wasm --glue_paths /artifacts/glue.js \
   --candidate_paths /artifacts/other/module.wasm --format json
 ```
@@ -95,7 +95,7 @@ malformed. Exact warnings retain their producing tool and text. Older portable
 reports retain their original strict command profile; missing metadata coverage
 is `unknown` and missing warning history is `null`. Decoded WAT retains readable
 custom sections; WABT omits a section whose name is invalid UTF-8. In that case
-REA verifies the selected bytes, retains the section range and exact producer
+NRE verifies the selected bytes, retains the section range and exact producer
 diagnostic, and leaves its identity and debug-name coverage unknown. An uninterpretable name section leaves complete
 debug-name coverage unknown. Module names decoded before a later metadata
 failure remain available for exact objdump framing, including names containing
@@ -123,7 +123,7 @@ correct that argument if it caused the timeout. Runtime defaults do not insert
 omitted arguments into Evidence parameters. See the
 [settings design](design/limits-and-recovery.md#precedence-and-lifetime).
 
-For example, `rea inspect-wasm-artifact /artifacts/module.wasm
+For example, `nre inspect-wasm-artifact /artifacts/module.wasm
 --command-timeout-ms 60000 --format json` uses a 60-second per-command deadline;
 the equivalent MCP input is `{"path":"/artifacts/module.wasm",
 "command_timeout_ms":60000,"detail":"summary"}`. Summary delivery retains the
@@ -141,7 +141,7 @@ each stream's retained byte count, and the exit code and signal. Retained text
 can end in U+FFFD where the budget cut a multi-byte character.
 
 These excerpts bound the returned diagnostic text.
-[PR #2117](https://github.com/morluto/rea/pull/2117) reports elapsed time, CPU
+[PR #2117](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/2117) reports elapsed time, CPU
 time, and peak process-family memory, including WABT children, for warm Linux
 x64 WABT 1.0.42 CLI workflows; those costs did not change outside measurement
 noise. Agent token usage and truly cold workflows remain
@@ -168,7 +168,7 @@ Candidates are caller-selected files; their identity does not imply validation.
 
 Both CLI and MCP use the same typed port and application service. MCP publishes
 SDK-compatible schemas and records Evidence for `get_evidence_bundle` readback.
-See [WABT provenance](https://github.com/morluto/rea/blob/main/third_party/wabt/README.md) and
+See [WABT provenance](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/third_party/wabt/README.md) and
 [testing](testing.md#offline-wasm-artifacts) for real-tool verification.
 
 ## Compare core-module interfaces
@@ -193,7 +193,7 @@ records, or exact retained references in the current MCP session, and required
 WABT toolchain. CLI uses portable inline Evidence in one JSON document:
 
 ```bash
-rea compare-wasm-interfaces comparison-input.json --json
+nre compare-wasm-interfaces comparison-input.json --json
 ```
 
 ```json
@@ -216,7 +216,7 @@ Static type equality does not establish runtime compatibility, ABI compatibility
 or linking success. Comparison covers core modules; WebAssembly components and
 canonical ABI relationships belong to their separate inspection workflow.
 
-After building, run `REA_WABT_BIN_DIRECTORY=/absolute/wabt/bin node
+After building, run `NRE_WABT_BIN_DIRECTORY=/absolute/wabt/bin node
 scripts/verify-wasm-interface-comparison.mjs` for original-module comparison
 through the compiled CLI and stdio MCP. It uses owned fixtures and WABT 1.0.42;
 no WASM module is instantiated or executed.

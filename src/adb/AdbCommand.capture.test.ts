@@ -50,7 +50,7 @@ it.each([
     {
       binary: process.execPath,
       pathSource: "environment",
-      environment: { REA_TEST_PRIVATE: "ambient-value-must-not-be-persisted" },
+      environment: { NRE_TEST_PRIVATE: "ambient-value-must-not-be-persisted" },
     },
     ["-e", testCase.source],
     {

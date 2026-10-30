@@ -597,7 +597,7 @@ describe("binary keyed archive dates", () => {
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(
       "39f08db8341bd74220352dfd559485515cce1e6035e08f27a59ab8f856374a30",
     );
-    const root = await createTestTempDirectory("rea-keyed-date-control-");
+    const root = await createTestTempDirectory("nre-keyed-date-control-");
     await writeFile(join(root, "archive.plist"), bytes);
     const inspected = await inspectBundleKeyedArchive({
       bundlePath: root,
@@ -634,7 +634,7 @@ describe("binary keyed archive dates", () => {
         expect(createHash("sha256").update(bytes).digest("hex")).toBe(
           "ac5696b866c312feb53c2e82edd8fea79dbeb572eb1b07e4291603faa41e8c0e",
         );
-      const root = await createTestTempDirectory("rea-keyed-date-marker-");
+      const root = await createTestTempDirectory("nre-keyed-date-marker-");
       const path = join(root, "archive.plist");
       await writeFile(path, bytes);
       await expect(
@@ -670,7 +670,7 @@ describe("binary keyed archive dates", () => {
     expect(createHash("sha256").update(submillisecond).digest("hex")).toBe(
       "ab69ba6e8034c6f60b828ee323a5a3e81bae3e7657477e0ebfbfdb93d53ed2ce",
     );
-    const root = await createTestTempDirectory("rea-keyed-date-subms-");
+    const root = await createTestTempDirectory("nre-keyed-date-subms-");
     await writeFile(join(root, "archive.plist"), submillisecond);
     const inspected = await inspectBundleKeyedArchive({
       bundlePath: root,

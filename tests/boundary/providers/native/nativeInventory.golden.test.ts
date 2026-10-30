@@ -29,7 +29,7 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 
 const inventoryTarget = async (chained = false) => {
   const path = join(
-    await createTestTempDirectory("rea-native-inventory-"),
+    await createTestTempDirectory("nre-native-inventory-"),
     "fixture",
   );
   const segment = Buffer.alloc(72);
@@ -64,7 +64,7 @@ const signatureTarget = async (
   signedArchitecture: "arm64" | "arm64e" = "arm64",
 ) => {
   const path = join(
-    await createTestTempDirectory("rea-native-inventory-"),
+    await createTestTempDirectory("nre-native-inventory-"),
     "fixture",
   );
   await writeFile(
@@ -215,7 +215,7 @@ it("uses the admitted universal target when codesign describes only its selected
 
 it("retains distinct same-family FAT slices for signature coverage", async () => {
   const path = join(
-    await createTestTempDirectory("rea-native-same-family-"),
+    await createTestTempDirectory("nre-native-same-family-"),
     "fixture",
   );
   await writeFile(
@@ -273,7 +273,7 @@ it.each([42, 0x81000002])(
   "reports unknown signature coverage for unmapped FAT subtype %i",
   async (subtype) => {
     const path = join(
-      await createTestTempDirectory("rea-native-unknown-subtype-"),
+      await createTestTempDirectory("nre-native-unknown-subtype-"),
       "fixture",
     );
     const unknown = { type: CPU.arm64.type, subtype };
@@ -316,7 +316,7 @@ it.each(["x64", "arm64"] as const)(
   "inspects an x86_64 LIB64 slice when %s is selected",
   async (host) => {
     const path = join(
-      await createTestTempDirectory("rea-native-lib64-"),
+      await createTestTempDirectory("nre-native-lib64-"),
       "fixture",
     );
     const lib64 = { type: CPU.x86_64.type, subtype: 0x80000003 };
@@ -1226,7 +1226,7 @@ it("reruns nm with its dyld-info pass when a dyld_info export row is unreadable"
 
 it("lets codesign select the only slice of a thin arm64e target", async () => {
   const path = join(
-    await createTestTempDirectory("rea-thin-signature-"),
+    await createTestTempDirectory("nre-thin-signature-"),
     "fixture",
   );
   await writeFile(path, machoImage({ cpu: CPU.arm64e }));

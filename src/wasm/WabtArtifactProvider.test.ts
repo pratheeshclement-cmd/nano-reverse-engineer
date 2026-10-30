@@ -190,7 +190,7 @@ const assertCancellationDuringRootRelease = async (options: {
 };
 
 const createWabtArtifactFixture = async () => {
-  const selectedRoot = await createTestTempDirectory("rea-wabt-seam-");
+  const selectedRoot = await createTestTempDirectory("nre-wabt-seam-");
   const path = join(selectedRoot, "selected.wasm");
   const bytes = Buffer.alloc(76, 1);
   await writeFile(path, bytes);
@@ -263,7 +263,7 @@ it.each([
       "",
     ].join("\n");
     const provider = new WabtArtifactProvider(
-      { REA_WABT_BIN_DIRECTORY: fixture.selectedRoot },
+      { NRE_WABT_BIN_DIRECTORY: fixture.selectedRoot },
       (input) => {
         const version = input.arguments[0] === "--version";
         const isObjdump = input.command.includes("wasm-objdump");
@@ -440,7 +440,7 @@ it("returns actionable unavailable without creating a workspace when tools are a
       userMessage: "WABT configuration cannot be used",
       diagnostics: {
         code: "directory_not_absolute",
-        setting: "REA_WABT_BIN_DIRECTORY",
+        setting: "NRE_WABT_BIN_DIRECTORY",
       },
     },
   });
@@ -483,7 +483,7 @@ it.each([
   "retains the exact rejected $tool version probe and configuration recovery",
   async ({ tool, stdout, stderr, exitCode = 0 }) => {
     const root = await realpath(
-      await createTestTempDirectory("rea-wabt-version-recovery-"),
+      await createTestTempDirectory("nre-wabt-version-recovery-"),
     );
     const suffix = process.platform === "win32" ? ".exe" : "";
     for (const name of ["wasm-validate", "wasm-objdump", "wasm2wat"])
@@ -492,7 +492,7 @@ it.each([
       });
     const commands: string[] = [];
     const provider = new WabtArtifactProvider(
-      { REA_WABT_BIN_DIRECTORY: root },
+      { NRE_WABT_BIN_DIRECTORY: root },
       (input) => {
         expect(input.arguments).toEqual(["--version"]);
         commands.push(input.command);
@@ -521,7 +521,7 @@ it.each([
         retryable: false,
         details: {
           diagnostics: {
-            configuration_key: "REA_WABT_BIN_DIRECTORY",
+            configuration_key: "NRE_WABT_BIN_DIRECTORY",
             executable_path: join(root, tool + suffix),
             tool,
             expected_version: "1.0.42",
@@ -539,7 +539,7 @@ it.each([
 );
 
 it("retries a retained input descriptor before admitting the next WABT operation", async () => {
-  const root = await createTestTempDirectory("rea-wabt-read-cleanup-");
+  const root = await createTestTempDirectory("nre-wabt-read-cleanup-");
   const path = join(root, "selected.wasm");
   await writeFile(path, Buffer.alloc(76, 1));
   for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])
@@ -553,7 +553,7 @@ it("retries a retained input descriptor before admitting the next WABT operation
     "utf8",
   );
   const provider = new WabtArtifactProvider(
-    { REA_WABT_BIN_DIRECTORY: root },
+    { NRE_WABT_BIN_DIRECTORY: root },
     async (input) => {
       const version = input.arguments[0] === "--version";
       const stdout = version
@@ -646,7 +646,7 @@ it("retries a retained input descriptor before admitting the next WABT operation
 it.each([false, true])(
   "reports an unavailable private runtime root with retryable=%s without a misleading WABT remediation",
   async (retryable) => {
-    const toolRoot = await createTestTempDirectory("rea-wabt-tool-root-");
+    const toolRoot = await createTestTempDirectory("nre-wabt-tool-root-");
     for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])
       await writeFile(
         join(toolRoot, tool + (process.platform === "win32" ? ".exe" : "")),
@@ -654,11 +654,11 @@ it.each([false, true])(
         { mode: 0o700 },
       );
     const provider = new WabtArtifactProvider(
-      { REA_WABT_BIN_DIRECTORY: toolRoot },
+      { NRE_WABT_BIN_DIRECTORY: toolRoot },
       undefined,
       () => {
         throw new PrivateRuntimeRootUnavailableError(
-          "REA Windows native controls are unavailable: probe failure",
+          "NRE Windows native controls are unavailable: probe failure",
           { retryable },
         );
       },
@@ -675,7 +675,7 @@ it.each([false, true])(
         retryable,
         userMessage: undefined,
         message: expect.stringContaining(
-          "REA Windows native controls are unavailable",
+          "NRE Windows native controls are unavailable",
         ),
       },
     });
@@ -786,7 +786,7 @@ it("enforces a selected command deadline and completes a corrected retry after c
   let first = true;
   let runtimePath = "";
   const provider = new WabtArtifactProvider(
-    { REA_WABT_BIN_DIRECTORY: fixture.selectedRoot },
+    { NRE_WABT_BIN_DIRECTORY: fixture.selectedRoot },
     async (input) => {
       if (first) {
         first = false;
@@ -807,7 +807,7 @@ it("enforces a selected command deadline and completes a corrected retry after c
     },
     async () => {
       const root = await PrivateRuntimeRoot.create({
-        prefix: "rea-wabt-budget-",
+        prefix: "nre-wabt-budget-",
       });
       runtimePath = root.path;
       return root;
@@ -917,7 +917,7 @@ const runOwnedArtifactOutcome = async (
   let cleanupAttempts = 0;
   const controller = new AbortController();
   const provider = new WabtArtifactProvider(
-    { REA_WABT_BIN_DIRECTORY: selectedRoot },
+    { NRE_WABT_BIN_DIRECTORY: selectedRoot },
     async (input) => {
       const launched = await launchWabtOutcome(input, mode, {
         bytes,
@@ -931,7 +931,7 @@ const runOwnedArtifactOutcome = async (
     async () => {
       runtimeCreations += 1;
       const root = await PrivateRuntimeRoot.create({
-        prefix: "rea-wabt-owned-test-",
+        prefix: "nre-wabt-owned-test-",
       });
       runtimePath = root.path;
       if (
@@ -1055,7 +1055,7 @@ it.each([
       stage === "glue decoding" ? Buffer.from([0xff]) : Buffer.from(glueSource);
     await writeFile(gluePath, glueBytes);
     const provider = new WabtArtifactProvider(
-      { REA_WABT_BIN_DIRECTORY: fixture.selectedRoot },
+      { NRE_WABT_BIN_DIRECTORY: fixture.selectedRoot },
       (input) =>
         launchWabtOutcome(input, mode, {
           ...fixture,
@@ -1212,7 +1212,7 @@ const outputLimitFailure = ({
     cleanupFailure === null ? [] : ["/owned/runtime"],
   );
 it("reports WABT output beyond the budget as a resource constraint with a bounded excerpt", async () => {
-  const selectedRoot = await createTestTempDirectory("rea-wabt-budget-");
+  const selectedRoot = await createTestTempDirectory("nre-wabt-budget-");
   const path = join(selectedRoot, "selected.wasm");
   await writeFile(path, Buffer.alloc(76, 1));
   for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])
@@ -1226,7 +1226,7 @@ it("reports WABT output beyond the budget as a resource constraint with a bounde
     "utf8",
   );
   const provider = new WabtArtifactProvider(
-    { REA_WABT_BIN_DIRECTORY: selectedRoot },
+    { NRE_WABT_BIN_DIRECTORY: selectedRoot },
     (input) => {
       const version = input.arguments[0] === "--version";
       if (!version && input.command.includes("wasm2wat"))
@@ -1276,7 +1276,7 @@ it("reports WABT output beyond the budget as a resource constraint with a bounde
   });
 });
 it("does not attribute wasm-objdump output to a wasm2wat launch failure", async () => {
-  const selectedRoot = await createTestTempDirectory("rea-wabt-launch-");
+  const selectedRoot = await createTestTempDirectory("nre-wabt-launch-");
   const path = join(selectedRoot, "selected.wasm");
   await writeFile(path, Buffer.alloc(76, 1));
   for (const tool of ["wasm-validate", "wasm-objdump", "wasm2wat"])
@@ -1290,7 +1290,7 @@ it("does not attribute wasm-objdump output to a wasm2wat launch failure", async 
     "utf8",
   );
   const provider = new WabtArtifactProvider(
-    { REA_WABT_BIN_DIRECTORY: selectedRoot },
+    { NRE_WABT_BIN_DIRECTORY: selectedRoot },
     (input) => {
       const version = input.arguments[0] === "--version";
       if (!version && input.command.includes("wasm2wat"))

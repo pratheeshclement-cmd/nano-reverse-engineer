@@ -40,7 +40,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32").each(["tshark", "sigrok"] as const)(
   "executes selected %s and limiter wrappers, retaining identity failure output after success",
   async (kind) => {
-    const directory = await createTestTempDirectory("rea-selected-producer-");
+    const directory = await createTestTempDirectory("nre-selected-producer-");
     const bin = join(directory, "bin"),
       libexec = join(directory, "libexec");
     await mkdir(bin);
@@ -63,8 +63,8 @@ it.skipIf(process.platform === "win32").each(["tshark", "sigrok"] as const)(
     const environment = {
       ...process.env,
       ...(kind === "tshark"
-        ? { REA_TSHARK_COMMAND: command, REA_TSHARK_PRLIMIT_COMMAND: limiter }
-        : { REA_SIGROK_COMMAND: command, REA_SIGROK_PRLIMIT_COMMAND: limiter }),
+        ? { NRE_TSHARK_COMMAND: command, NRE_TSHARK_PRLIMIT_COMMAND: limiter }
+        : { NRE_SIGROK_COMMAND: command, NRE_SIGROK_PRLIMIT_COMMAND: limiter }),
     };
     const runtime = () =>
       PrivateRuntimeRoot.create({ parent: directory, prefix: "workspace-" });
@@ -159,7 +159,7 @@ const createSelectedEngineFixture = async (
   kind: "firmware" | "wakaru",
   afterLaunch?: () => void,
 ) => {
-  const directory = await createTestTempDirectory("rea-selected-command-");
+  const directory = await createTestTempDirectory("nre-selected-command-");
   const bin = join(directory, "bin"),
     libexec = join(directory, "libexec");
   await mkdir(bin);
@@ -197,18 +197,18 @@ const createSelectedEngineFixture = async (
   }[] = [];
   const environment = {
     ...process.env,
-    REA_BINWALK_COMMAND: command,
-    REA_FIRMWARE_PRLIMIT_COMMAND: limiter,
-    REA_WAKARU_COMMAND: command,
-    REA_JAVASCRIPT_PRLIMIT_COMMAND: limiter,
-    REA_SELECTED_ENVIRONMENT: "initial",
+    NRE_BINWALK_COMMAND: command,
+    NRE_FIRMWARE_PRLIMIT_COMMAND: limiter,
+    NRE_WAKARU_COMMAND: command,
+    NRE_JAVASCRIPT_PRLIMIT_COMMAND: limiter,
+    NRE_SELECTED_ENVIRONMENT: "initial",
   };
   const launcher: typeof spawnOwnedProviderProcess = async (options) => {
     restoreHost();
     const child = await spawnOwnedProviderProcess(options);
     launches.push({
       command: options.command,
-      environmentMarker: options.hostEnvironment?.REA_SELECTED_ENVIRONMENT,
+      environmentMarker: options.hostEnvironment?.NRE_SELECTED_ENVIRONMENT,
       ...(options.cwd === undefined ? {} : { cwd: options.cwd }),
       ...(child.process.pid === undefined ? {} : { pid: child.process.pid }),
     });
@@ -347,9 +347,9 @@ it.skipIf(process.platform === "win32")(
       signal,
     ) {
       const digest = await originalHash.call(this, path, signal);
-      environment.REA_BINWALK_COMMAND = nextCommand;
-      environment.REA_FIRMWARE_PRLIMIT_COMMAND = nextLimiter;
-      environment.REA_SELECTED_ENVIRONMENT = "updated";
+      environment.NRE_BINWALK_COMMAND = nextCommand;
+      environment.NRE_FIRMWARE_PRLIMIT_COMMAND = nextLimiter;
+      environment.NRE_SELECTED_ENVIRONMENT = "updated";
       return digest;
     });
     const first = await execute();
@@ -390,9 +390,9 @@ it.skipIf(process.platform === "win32")(
     const fixture = await createSelectedEngineFixture("wakaru", () => {
       if (!mutateOnce) return;
       mutateOnce = false;
-      fixture.environment.REA_WAKARU_COMMAND = nextCommand;
-      fixture.environment.REA_JAVASCRIPT_PRLIMIT_COMMAND = nextLimiter;
-      fixture.environment.REA_SELECTED_ENVIRONMENT = "updated";
+      fixture.environment.NRE_WAKARU_COMMAND = nextCommand;
+      fixture.environment.NRE_JAVASCRIPT_PRLIMIT_COMMAND = nextLimiter;
+      fixture.environment.NRE_SELECTED_ENVIRONMENT = "updated";
     });
     const {
       bin,
@@ -444,7 +444,7 @@ it.skipIf(process.platform === "win32")(
   "executes the selected PCAP limiter and retains completed output when its alias changes",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-selected-pcap-limiter-",
+      "nre-selected-pcap-limiter-",
     );
     const selected = join(directory, "prlimit"),
       physical = join(directory, "driver"),
@@ -472,7 +472,7 @@ it.skipIf(process.platform === "win32")(
         value: "linux",
       });
       prepared = await preparePcapNativeBound(
-        { REA_TSHARK_PRLIMIT_COMMAND: selected },
+        { NRE_TSHARK_PRLIMIT_COMMAND: selected },
         resources,
         async (_selected, args) => {
           const stdout =

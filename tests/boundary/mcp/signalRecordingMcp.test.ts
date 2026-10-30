@@ -47,7 +47,7 @@ it.each(["decode_signal_recording", "inspect_signal_decoders"])(
         code: "capability_unavailable",
         details: {
           operation: tool.name,
-          reason: expect.stringContaining("REA_SIGROK_COMMAND"),
+          reason: expect.stringContaining("NRE_SIGROK_COMMAND"),
         },
       },
     });

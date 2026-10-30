@@ -114,7 +114,7 @@ describe("DeepSeek Harness configuration paths", () => {
 });
 
 const harnessClient = async () => {
-  const home = await createTestTempDirectory("rea-dsh-");
+  const home = await createTestTempDirectory("nre-dsh-");
   const client = supportedClients(home, process.platform, {}).find(
     ({ name }) => name === "dsh",
   );
@@ -125,7 +125,7 @@ const harnessClient = async () => {
 };
 
 describe("DeepSeek Harness Cordis patch registration", () => {
-  it("appends the rea-mcp insert, preserves user patches, and reads back", async () => {
+  it("appends the nre-mcp insert, preserves user patches, and reads back", async () => {
     const { home, client } = await harnessClient();
     await writeFile(
       client.configPath,
@@ -162,10 +162,10 @@ describe("DeepSeek Harness Cordis patch registration", () => {
       {
         insert: [
           {
-            id: "rea-mcp",
+            id: "nre-mcp",
             name: "@deepseek-ai/dsh-mcp-client",
             config: {
-              serverName: "rea",
+              serverName: "nre",
               transport: "stdio",
               command: command[0],
               args: command.slice(1),
@@ -207,15 +207,15 @@ describe("DeepSeek Harness Cordis patch registration", () => {
     ]);
   });
 
-  it("replaces an existing rea-mcp entry without duplicating it", async () => {
+  it("replaces an existing nre-mcp entry without duplicating it", async () => {
     const { client } = await harnessClient();
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -235,15 +235,15 @@ describe("DeepSeek Harness Cordis patch registration", () => {
     );
   });
 
-  it("rewrites a wrong-package rea-mcp entry into the canonical one", async () => {
+  it("rewrites a wrong-package nre-mcp entry into the canonical one", async () => {
     const { client } = await harnessClient();
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: not-the-harness-client
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -263,7 +263,7 @@ describe("DeepSeek Harness Cordis patch registration", () => {
     }[];
     expect(patches).toHaveLength(1);
     expect(patches[0]?.insert).toHaveLength(1);
-    expect(patches[0]?.insert[0]?.id).toBe("rea-mcp");
+    expect(patches[0]?.insert[0]?.id).toBe("nre-mcp");
     expect(patches[0]?.insert[0]?.name).toBe("@deepseek-ai/dsh-mcp-client");
     expect(patches[0]?.insert[0]?.config?.env).toEqual({
       GHIDRA_INSTALL_DIR: "/caller/nondefault/ghidra",
@@ -280,16 +280,16 @@ describe("DeepSeek Harness registration identity", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
-- id: rea-mcp
+- id: nre-mcp
   config:
-    serverName: rea
+    serverName: nre
     transport: stdio
     command: redirected-launcher
     args: [mcp]
@@ -313,28 +313,28 @@ describe("DeepSeek Harness registration identity", () => {
     ).toBe("configured");
     const text = await readFile(client.configPath, "utf8");
     expect(text).not.toContain("redirected-launcher");
-    expect(text).not.toMatch(/^- id: rea-mcp$/mu);
+    expect(text).not.toMatch(/^- id: nre-mcp$/mu);
     const patches = parseYaml(text) as unknown[];
     expect(patches).toHaveLength(1);
   });
 
-  it("collapses duplicate rea entries into one canonical row", async () => {
+  it("collapses duplicate nre entries into one canonical row", async () => {
     const { client } = await harnessClient();
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: first-launcher
         args: [mcp]
 - insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: second-launcher
         args: [mcp]
@@ -347,15 +347,15 @@ describe("DeepSeek Harness registration identity", () => {
     const patches = parseYaml(await readFile(client.configPath, "utf8")) as {
       insert: unknown[];
     }[];
-    const reaRows = patches.flatMap(({ insert }) =>
+    const nreRows = patches.flatMap(({ insert }) =>
       insert.filter(
         (entry) =>
           typeof entry === "object" &&
           entry !== null &&
-          (entry as { id?: unknown }).id === "rea-mcp",
+          (entry as { id?: unknown }).id === "nre-mcp",
       ),
     );
-    expect(reaRows).toHaveLength(1);
+    expect(nreRows).toHaveLength(1);
   });
 
   it("reports a foreign server name as stale instead of aligned", async () => {
@@ -363,7 +363,7 @@ describe("DeepSeek Harness registration identity", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
         serverName: other
@@ -395,10 +395,10 @@ describe("DeepSeek Harness registration identity", () => {
       {
         insert: [
           {
-            id: "rea-mcp",
+            id: "nre-mcp",
             name: "@deepseek-ai/dsh-mcp-client",
             config: {
-              serverName: "rea",
+              serverName: "nre",
               transport: "stdio",
               command: command[0],
               args: command.slice(1),
@@ -419,10 +419,10 @@ describe("DeepSeek Harness repair boundaries", () => {
     const { client } = await harnessClient();
     await writeFile(
       client.configPath,
-      `- id: rea-mcp
+      `- id: nre-mcp
   name: "@deepseek-ai/dsh-mcp-client"
   config:
-    serverName: rea
+    serverName: nre
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -438,10 +438,10 @@ describe("DeepSeek Harness repair boundaries", () => {
       {
         insert: [
           {
-            id: "rea-mcp",
+            id: "nre-mcp",
             name: "@deepseek-ai/dsh-mcp-client",
             config: {
-              serverName: "rea",
+              serverName: "nre",
               transport: "stdio",
               command: command[0],
               args: command.slice(1),
@@ -489,7 +489,7 @@ describe("DeepSeek Harness repair boundaries", () => {
         ],
       },
     ]);
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
       initial,
     );
   });
@@ -521,7 +521,7 @@ describe("DeepSeek Harness repair boundaries", () => {
     ]);
   });
 
-  it.each(["{ id: rea-mcp }", "7", "false", "''", "[null]"])(
+  it.each(["{ id: nre-mcp }", "7", "false", "''", "[null]"])(
     "blocks a non-list literal insert value %s before setup edits the file",
     async (insert) => {
       const { client } = await harnessClient();
@@ -576,7 +576,7 @@ describe("DeepSeek Harness expression-backed structure", () => {
       expect((await host.removeClient(client)).status).toBe("retained");
       expect(await readFile(client.configPath, "utf8")).toBe(initial);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(`${client.configPath}.nre.backup`, "utf8"),
       ).rejects.toMatchObject({ code: "ENOENT" });
     },
   );
@@ -588,11 +588,11 @@ describe("DeepSeek Harness registration state", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       disabled: true
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -627,10 +627,10 @@ describe("DeepSeek Harness registration state", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -654,10 +654,10 @@ describe("DeepSeek Harness registration state", () => {
     const { home, client } = await harnessClient();
     await writeFile(
       client.configPath,
-      `- id: rea-mcp
+      `- id: nre-mcp
   name: "@deepseek-ai/dsh-mcp-client"
   config:
-    serverName: rea
+    serverName: nre
     transport: stdio
     command: ${command[0]}
     args: [${command.slice(1).join(", ")}]
@@ -692,10 +692,10 @@ describe("DeepSeek Harness registration state", () => {
     await writeFile(
       client.configPath,
       withCwd(`- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -722,10 +722,10 @@ describe("DeepSeek Harness canonical row repair", () => {
   it("normalizes two aligned insertions instead of reporting unchanged", async () => {
     const { home, client } = await harnessClient();
     const row = `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -748,15 +748,15 @@ describe("DeepSeek Harness canonical row repair", () => {
     const patches = parseYaml(await readFile(client.configPath, "utf8")) as {
       insert: unknown[];
     }[];
-    const reaRows = patches.flatMap(({ insert }) =>
+    const nreRows = patches.flatMap(({ insert }) =>
       insert.filter(
         (entry) =>
           typeof entry === "object" &&
           entry !== null &&
-          (entry as { id?: unknown }).id === "rea-mcp",
+          (entry as { id?: unknown }).id === "nre-mcp",
       ),
     );
-    expect(reaRows).toHaveLength(1);
+    expect(nreRows).toHaveLength(1);
     expect(
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("unchanged");
@@ -768,10 +768,10 @@ describe("DeepSeek Harness canonical row repair", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -805,16 +805,16 @@ describe("DeepSeek Harness canonical row repair", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: first-launcher
         args: [mcp]
-- id: rea-mcp
+- id: nre-mcp
   config:
-    serverName: rea
+    serverName: nre
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -829,7 +829,7 @@ describe("DeepSeek Harness canonical row repair", () => {
     expect(text).toContain("!!js process.cwd()");
     expect(text).not.toContain("stale-launcher");
     expect(text).not.toContain("first-launcher");
-    expect(text).not.toMatch(/^- id: rea-mcp$/mu);
+    expect(text).not.toMatch(/^- id: nre-mcp$/mu);
     const patches = parseYaml(text, { logLevel: "error" }) as {
       insert?: { config?: { cwd?: unknown } }[];
     }[];
@@ -844,10 +844,10 @@ describe("DeepSeek Harness document edges", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -887,10 +887,10 @@ describe("DeepSeek Harness document edges", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -941,7 +941,7 @@ describe("DeepSeek Harness document edges", () => {
     const text = await readFile(client.configPath, "utf8");
     expect(text).toContain("# harness notes");
     expect(text).toContain("# keep me");
-    expect(text).toContain("id: rea-mcp");
+    expect(text).toContain("id: nre-mcp");
     expect(text).not.toMatch(/^null$/mu);
 
     expect(
@@ -953,7 +953,7 @@ describe("DeepSeek Harness document edges", () => {
     const removed = await readFile(client.configPath, "utf8");
     expect(removed).toContain("# harness notes");
     expect(removed).toContain("# keep me");
-    expect(removed).not.toContain("rea-mcp");
+    expect(removed).not.toContain("nre-mcp");
     expect(removed).not.toMatch(/^null$/mu);
   });
 });
@@ -976,10 +976,10 @@ describe("DeepSeek Harness entry ownership", () => {
       name: other
       config:
         command: keep-me
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -991,7 +991,7 @@ describe("DeepSeek Harness entry ownership", () => {
     );
     const removed = await readFile(client.configPath, "utf8");
     expect(removed).toContain("other-tool");
-    expect(removed).not.toContain("rea-mcp");
+    expect(removed).not.toContain("nre-mcp");
     expect(removed).not.toContain("stale-launcher");
 
     await writeFile(
@@ -999,7 +999,7 @@ describe("DeepSeek Harness entry ownership", () => {
       `- id: other-tool
   config:
     command: keep-me
-- id: rea-mcp
+- id: nre-mcp
   name: "@deepseek-ai/dsh-mcp-client"
   config: {}
 `,
@@ -1009,7 +1009,7 @@ describe("DeepSeek Harness entry ownership", () => {
     );
     const direct = await readFile(client.configPath, "utf8");
     expect(direct).toContain("other-tool");
-    expect(direct).not.toContain("rea-mcp");
+    expect(direct).not.toContain("nre-mcp");
   });
 
   it("treats an expression disabled state as stale and clears it", async () => {
@@ -1017,11 +1017,11 @@ describe("DeepSeek Harness entry ownership", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       disabled: !!js process.env.DISABLE_REA === "1"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -1046,10 +1046,10 @@ describe("DeepSeek Harness entry ownership", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1096,10 +1096,10 @@ describe("DeepSeek Harness alias collapse", () => {
 - *other
 - &row
   insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1115,10 +1115,10 @@ describe("DeepSeek Harness alias collapse", () => {
     expect(text).not.toContain("*row");
     expect(text).not.toContain("stale-launcher");
     const patches = parseYaml(text) as { insert?: { id?: string }[] }[];
-    const reaRows = patches.flatMap(({ insert }) =>
-      (insert ?? []).filter((entry) => entry.id === "rea-mcp"),
+    const nreRows = patches.flatMap(({ insert }) =>
+      (insert ?? []).filter((entry) => entry.id === "nre-mcp"),
     );
-    expect(reaRows).toHaveLength(1);
+    expect(nreRows).toHaveLength(1);
     expect(
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("unchanged");
@@ -1130,10 +1130,10 @@ describe("DeepSeek Harness alias collapse", () => {
       client.configPath,
       `- insert:
     - &entry
-      id: rea-mcp
+      id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1149,7 +1149,7 @@ describe("DeepSeek Harness alias collapse", () => {
     const patches = parseYaml(text) as { insert?: { id?: string }[] }[];
     expect(
       patches.flatMap(({ insert }) =>
-        (insert ?? []).filter((entry) => entry.id === "rea-mcp"),
+        (insert ?? []).filter((entry) => entry.id === "nre-mcp"),
       ),
     ).toHaveLength(1);
     expect(
@@ -1168,10 +1168,10 @@ describe("DeepSeek Harness alias targets", () => {
       name: other
       config:
         command: keep-me
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1189,7 +1189,7 @@ describe("DeepSeek Harness alias targets", () => {
     const patches = parseYaml(text) as { insert?: { id?: string }[] }[];
     expect(
       patches.flatMap(({ insert }) =>
-        (insert ?? []).filter((entry) => entry.id === "rea-mcp"),
+        (insert ?? []).filter((entry) => entry.id === "nre-mcp"),
       ),
     ).toHaveLength(1);
     expect(
@@ -1203,12 +1203,12 @@ describe("DeepSeek Harness alias targets", () => {
       client.configPath,
       `- &cfg
   cwd: !!js process.cwd() # caller launch directory
-  serverName: rea
+  serverName: nre
   transport: stdio
   command: stale-launcher
   args: [mcp]
 - insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config: *cfg
 `,
@@ -1242,10 +1242,10 @@ describe("DeepSeek Harness alias identity", () => {
     name: other
     config:
       command: keep-me
-  - id: rea-mcp
+  - id: nre-mcp
     name: "@deepseek-ai/dsh-mcp-client"
     config:
-      serverName: rea
+      serverName: nre
       transport: stdio
       command: stale-launcher
       args: [mcp]
@@ -1263,7 +1263,7 @@ describe("DeepSeek Harness alias identity", () => {
     expect(inserted.filter((entry) => entry.id === "other-tool")).toHaveLength(
       1,
     );
-    expect(inserted.filter((entry) => entry.id === "rea-mcp")).toEqual([
+    expect(inserted.filter((entry) => entry.id === "nre-mcp")).toEqual([
       expect.objectContaining({
         config: expect.objectContaining({ command: command[0] }),
       }),
@@ -1280,10 +1280,10 @@ describe("DeepSeek Harness alias identity", () => {
       `- insert: []
   callerExpression: &expr !!js process.env.TOKEN
 - insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1309,12 +1309,12 @@ describe("DeepSeek Harness alias identity", () => {
     await writeFile(
       client.configPath,
       `- insert: []
-  holder: &entryId rea-mcp
+  holder: &entryId nre-mcp
 - insert:
     - id: *entryId
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1329,7 +1329,7 @@ describe("DeepSeek Harness alias identity", () => {
     }[];
     expect(
       patches.flatMap((patch) =>
-        (patch.insert ?? []).filter((entry) => entry.id === "rea-mcp"),
+        (patch.insert ?? []).filter((entry) => entry.id === "nre-mcp"),
       ),
     ).toHaveLength(1);
     expect((await systemUninstallHost(home).removeClient(client)).status).toBe(
@@ -1344,17 +1344,17 @@ describe("DeepSeek Harness alias cleanup", () => {
     const { client } = await harnessClient();
     await writeFile(
       client.configPath,
-      `- &reaEnv
+      `- &nreEnv
   TOKEN: !!js process.env.TOKEN
 - insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
-        env: *reaEnv
+        env: *nreEnv
 `,
     );
 
@@ -1376,10 +1376,10 @@ describe("DeepSeek Harness alias cleanup", () => {
       `- insert: []
   callerExpression: &expr !!js process.env.GHIDRA_INSTALL_DIR
 - insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1409,10 +1409,10 @@ describe("DeepSeek Harness alias cleanup", () => {
     await writeFile(
       client.configPath,
       `- insert: &rows
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -1424,7 +1424,7 @@ describe("DeepSeek Harness alias cleanup", () => {
       "removed",
     );
     const text = await readFile(client.configPath, "utf8");
-    expect(text).not.toContain("rea-mcp");
+    expect(text).not.toContain("nre-mcp");
     expect(text).not.toContain("*rows");
   });
 });
@@ -1435,19 +1435,19 @@ describe("DeepSeek Harness root aliases", () => {
     await writeFile(
       client.configPath,
       `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: first-launcher
         args: [mcp]
         env:
           GHIDRA_INSTALL_DIR: /absolute/ghidra
 - &patch
-  id: rea-mcp
+  id: nre-mcp
   config:
-    serverName: rea
+    serverName: nre
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -1479,10 +1479,10 @@ describe("DeepSeek Harness root aliases", () => {
       client.configPath,
       `- &row
   insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -1494,7 +1494,7 @@ describe("DeepSeek Harness root aliases", () => {
       "removed",
     );
     const text = await readFile(client.configPath, "utf8");
-    expect(text).not.toContain("rea-mcp");
+    expect(text).not.toContain("nre-mcp");
     expect(text).not.toContain("*row");
   });
 
@@ -1503,10 +1503,10 @@ describe("DeepSeek Harness root aliases", () => {
     await writeFile(
       client.configPath,
       `- &entry
-  id: rea-mcp
+  id: nre-mcp
   name: "@deepseek-ai/dsh-mcp-client"
   config:
-    serverName: rea
+    serverName: nre
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -1551,10 +1551,10 @@ describe("DeepSeek Harness inert anchors", () => {
         name: other
         config:
           command: keep-me
-      - id: rea-mcp
+      - id: nre-mcp
         name: "@deepseek-ai/dsh-mcp-client"
         config:
-          serverName: rea
+          serverName: nre
           transport: stdio
           command: stale-launcher
           args: [mcp]
@@ -1569,7 +1569,7 @@ describe("DeepSeek Harness inert anchors", () => {
     expect(inserted.filter((entry) => entry.id === "other-tool")).toHaveLength(
       1,
     );
-    expect(inserted.filter((entry) => entry.id === "rea-mcp")).toEqual([
+    expect(inserted.filter((entry) => entry.id === "nre-mcp")).toEqual([
       expect.objectContaining({
         config: expect.objectContaining({ command: command[0] }),
       }),
@@ -1589,10 +1589,10 @@ describe("DeepSeek Harness inert anchors", () => {
         name: other
         config:
           command: keep-me
-      - id: rea-mcp
+      - id: nre-mcp
         name: "@deepseek-ai/dsh-mcp-client"
         config:
-          serverName: rea
+          serverName: nre
           transport: stdio
           command: ${command[0]}
           args: [${command.slice(1).join(", ")}]
@@ -1609,7 +1609,7 @@ describe("DeepSeek Harness inert anchors", () => {
     expect(inserted.filter((entry) => entry.id === "other-tool")).toHaveLength(
       1,
     );
-    expect(inserted.filter((entry) => entry.id === "rea-mcp")).toHaveLength(0);
+    expect(inserted.filter((entry) => entry.id === "nre-mcp")).toHaveLength(0);
   });
 });
 
@@ -1618,9 +1618,9 @@ describe("DeepSeek Harness alias anchors", () => {
     const { client } = await harnessClient();
     await writeFile(
       client.configPath,
-      `- id: &entryId rea-mcp
+      `- id: &entryId nre-mcp
   config:
-    serverName: rea
+    serverName: nre
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -1628,7 +1628,7 @@ describe("DeepSeek Harness alias anchors", () => {
     - id: *entryId
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1641,7 +1641,7 @@ describe("DeepSeek Harness alias anchors", () => {
     const text = await readFile(client.configPath, "utf8");
     expect(text).not.toContain("*entryId");
     expect(
-      loadedInserts(text).filter((entry) => entry.id === "rea-mcp"),
+      loadedInserts(text).filter((entry) => entry.id === "nre-mcp"),
     ).toHaveLength(1);
     expect(
       (await configureClientConfiguration(client, {}, command)).status,
@@ -1653,10 +1653,10 @@ describe("DeepSeek Harness alias anchors", () => {
     await writeFile(
       client.configPath,
       `- holder: &rows
-  - id: rea-mcp
+  - id: nre-mcp
     name: "@deepseek-ai/dsh-mcp-client"
     config:
-      serverName: rea
+      serverName: nre
       transport: stdio
       command: ${command[0]}
       args: [${command.slice(1).join(", ")}]
@@ -1689,10 +1689,10 @@ const cordisPatches = (text: string) =>
   }) as { insert?: { id?: string; config?: Record<string, unknown> }[] }[];
 
 const canonicalEntry = () => ({
-  id: "rea-mcp",
+  id: "nre-mcp",
   name: "@deepseek-ai/dsh-mcp-client",
   config: {
-    serverName: "rea",
+    serverName: "nre",
     transport: "stdio",
     command: command[0],
     args: command.slice(1),
@@ -1710,8 +1710,8 @@ const dshStatus = async (home: string) =>
 describe("DeepSeek Harness runtime environment validation", () => {
   it.each([
     ["HOPPER_LOADER_ARGS_JSON", "{"],
-    ["REA_REFERENCE_SECRET_PATTERNS_JSON", '[""]'],
-    ["REA_GHIDRA_COMPILER_SPEC_ID", "borlandcpp"],
+    ["NRE_REFERENCE_SECRET_PATTERNS_JSON", '[""]'],
+    ["NRE_GHIDRA_COMPILER_SPEC_ID", "borlandcpp"],
   ])("refuses invalid literal %s before writing", async (setting, value) => {
     const { home, client } = await harnessClient();
     const entry = canonicalEntry();
@@ -1735,7 +1735,7 @@ describe("DeepSeek Harness runtime environment validation", () => {
     ).toMatchObject({ status: "failed" });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
     await expect(
-      access(`${client.configPath}.rea.backup`),
+      access(`${client.configPath}.nre.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 
@@ -1752,7 +1752,7 @@ describe("DeepSeek Harness runtime environment validation", () => {
                 ...entry.config,
                 command: "stale",
                 env: {
-                  REA_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
+                  NRE_GHIDRA_COMPILER_SPEC_ID: "borlandcpp",
                   CALLER_SETTING: "keep",
                 },
               },
@@ -1762,7 +1762,7 @@ describe("DeepSeek Harness runtime environment validation", () => {
       ]),
     );
     for (const setting of [
-      "REA_GHIDRA_LANGUAGE_ID",
+      "NRE_GHIDRA_LANGUAGE_ID",
       "HOPPER_LOADER_ARGS_JSON",
     ]) {
       const expression = document.createNode(`process.env.${setting}`);
@@ -1778,7 +1778,7 @@ describe("DeepSeek Harness runtime environment validation", () => {
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(client.configPath, "utf8");
-    expect(configured).toContain("!!js process.env.REA_GHIDRA_LANGUAGE_ID");
+    expect(configured).toContain("!!js process.env.NRE_GHIDRA_LANGUAGE_ID");
     expect(configured).toContain("!!js process.env.HOPPER_LOADER_ARGS_JSON");
     expect(configured).toContain("CALLER_SETTING: keep");
     expect(await dshStatus(home)).toMatchObject({ state: "aligned" });
@@ -1798,25 +1798,25 @@ describe("DeepSeek Harness runtime environment validation", () => {
     await expect(
       inspectClientConfiguration(
         client,
-        { REA_GHIDRA_LANGUAGE_ID: "" },
+        { NRE_GHIDRA_LANGUAGE_ID: "" },
         command,
       ),
     ).resolves.toMatchObject({
       status: "invalid",
-      remediation: expect.stringContaining("REA_GHIDRA_LANGUAGE_ID"),
+      remediation: expect.stringContaining("NRE_GHIDRA_LANGUAGE_ID"),
     });
     expect(
       await inspectClientConfiguration(
         client,
         {
-          REA_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
+          NRE_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
           HOPPER_LOADER_ARGS_JSON: '[""]',
         },
         command,
       ),
     ).toMatchObject({ status: "update" });
     expect(await readFile(client.configPath, "utf8")).toBe(configured);
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
       original,
     );
   });
@@ -1832,9 +1832,9 @@ describe("DeepSeek Harness source ownership", () => {
       - id: other-tool
         name: other
         config: {command: keep-me}
-      - id: rea-mcp
+      - id: nre-mcp
         name: '@deepseek-ai/dsh-mcp-client'
-        config: {serverName: rea, transport: stdio, command: stale, args: [mcp]}
+        config: {serverName: nre, transport: stdio, command: stale, args: [mcp]}
 - *op
 `;
       await writeFile(client.configPath, initial);
@@ -1849,10 +1849,10 @@ describe("DeepSeek Harness source ownership", () => {
       expect(entries.filter(({ id }) => id === "other-tool")).toEqual([
         { id: "other-tool", name: "other", config: { command: "keep-me" } },
       ]);
-      expect(entries.filter(({ id }) => id === "rea-mcp")).toHaveLength(
+      expect(entries.filter(({ id }) => id === "nre-mcp")).toHaveLength(
         operation === "setup" ? 1 : 0,
       );
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -1862,7 +1862,7 @@ describe("DeepSeek Harness source ownership", () => {
     "snapshots environment aliases before replacing their anchor in %s",
     async (shape) => {
       const { client } = await harnessClient();
-      const config = `serverName: rea
+      const config = `serverName: nre
       transport: stdio
       command: stale-launcher
       args: [mcp]
@@ -1872,8 +1872,8 @@ describe("DeepSeek Harness source ownership", () => {
 `;
       const initial =
         shape === "inline"
-          ? `- insert:\n    - id: rea-mcp\n      name: '@deepseek-ai/dsh-mcp-client'\n      config:\n        ${config.replaceAll("\n", "\n  ").trimEnd()}\n`
-          : `- holder: &cfg\n      ${config}- insert:\n    - id: rea-mcp\n      name: '@deepseek-ai/dsh-mcp-client'\n      config: *cfg\n`;
+          ? `- insert:\n    - id: nre-mcp\n      name: '@deepseek-ai/dsh-mcp-client'\n      config:\n        ${config.replaceAll("\n", "\n  ").trimEnd()}\n`
+          : `- holder: &cfg\n      ${config}- insert:\n    - id: nre-mcp\n      name: '@deepseek-ai/dsh-mcp-client'\n      config: *cfg\n`;
       await writeFile(client.configPath, initial);
       expect(
         (
@@ -1887,7 +1887,7 @@ describe("DeepSeek Harness source ownership", () => {
       const text = await readFile(client.configPath, "utf8");
       const row = cordisPatches(text)
         .flatMap((op) => op.insert ?? [])
-        .find(({ id }) => id === "rea-mcp");
+        .find(({ id }) => id === "nre-mcp");
       expect(row?.config?.env).toEqual({
         A: "literal-override",
         B: { __jsExpr: "process.env.TOKEN" },
@@ -1908,7 +1908,7 @@ describe("DeepSeek Harness source ownership", () => {
   it("keeps expression aliases used by unrelated rows when removing their source entry", async () => {
     const { home, client } = await harnessClient();
     const initial = `- insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: '@deepseek-ai/dsh-mcp-client'
       config:
         command: stale
@@ -1943,7 +1943,7 @@ describe("DeepSeek Harness registration applicability", () => {
     - id: other
       name: caller-plugin
       config: {1: one, true: yes}
-    - id: rea-mcp
+    - id: nre-mcp
       name: '@deepseek-ai/dsh-mcp-client'
       config: {command: stale, extra: {2: two}}
 `;
@@ -1974,7 +1974,7 @@ describe("DeepSeek Harness registration applicability", () => {
         ],
       },
       {
-        id: "rea-mcp",
+        id: "nre-mcp",
         name: entry.name,
         config: { ...entry.config, env: { FROM_SKIPPED_PATCH: "discard-me" } },
       },
@@ -2051,9 +2051,9 @@ describe("DeepSeek Harness registration applicability", () => {
       "- holder: &a [value, value]",
       "- holder: &b [*a, *a, *a, *a, *a, *a, *a, *a, *a, *a]",
       "- holder: &c [*b, *b, *b, *b, *b, *b, *b, *b, *b, *b]",
-      "- insert: [{id: rea-mcp, config: {extra: *c}}]",
+      "- insert: [{id: nre-mcp, config: {extra: *c}}]",
     ].join("\n"),
-    "- insert: [{id: rea-mcp, name: '@deepseek-ai/dsh-mcp-client', config: !!js process.env.CONFIG}]\n",
+    "- insert: [{id: nre-mcp, name: '@deepseek-ai/dsh-mcp-client', config: !!js process.env.CONFIG}]\n",
   ])("refuses unsafe YAML without mutation: %s", async (initial) => {
     const { client } = await harnessClient();
     await writeFile(client.configPath, initial);
@@ -2062,7 +2062,7 @@ describe("DeepSeek Harness registration applicability", () => {
     ).toBe("failed");
     expect(await readFile(client.configPath, "utf8")).toBe(initial);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.nre.backup`),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -2071,9 +2071,9 @@ describe("DeepSeek Harness registration applicability", () => {
 
 describe("DeepSeek Harness ownership and editability", () => {
   it.each([
-    `- insert: [{id: !!js '"rea-mcp"', name: caller-plugin}]\n`,
-    `- id: !!js '"rea-mcp"'\n  config: {command: caller-launcher}\n`,
-    `- holder: &id !!js '"rea-mcp"'\n- insert: [{id: *id}]\n`,
+    `- insert: [{id: !!js '"nre-mcp"', name: caller-plugin}]\n`,
+    `- id: !!js '"nre-mcp"'\n  config: {command: caller-launcher}\n`,
+    `- holder: &id !!js '"nre-mcp"'\n- insert: [{id: *id}]\n`,
   ])("retains registrations with unknown ID ownership: %s", async (initial) => {
     const { home, client } = await harnessClient();
     await writeFile(client.configPath, initial);
@@ -2096,7 +2096,7 @@ describe("DeepSeek Harness ownership and editability", () => {
     });
     expect(await readFile(client.configPath, "utf8")).toBe(initial);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.nre.backup`),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -2111,7 +2111,7 @@ describe("DeepSeek Harness ownership and editability", () => {
         stringifyYaml([
           { insert: [canonicalEntry()] },
           {
-            id: "rea-mcp",
+            id: "nre-mcp",
             name: "@deepseek-ai/dsh-mcp-client",
             config: { command: "patched-launcher" },
           },
@@ -2136,7 +2136,7 @@ describe("DeepSeek Harness ownership and editability", () => {
       expect(await host.inspectClient(client)).toBeUndefined();
       expect((await host.removeClient(client)).status).toBe("removed");
       expect(parseYaml(await readFile(client.configPath, "utf8"))).toEqual([]);
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -2154,7 +2154,7 @@ describe("DeepSeek Harness aliased mapping keys", () => {
 - holder: &envKey env
 - ? *insertKey
   : - ? *idKey
-      : rea-mcp
+      : nre-mcp
       name: '@deepseek-ai/dsh-mcp-client'
       ? *configKey
       : command: stale
@@ -2175,7 +2175,7 @@ describe("DeepSeek Harness aliased mapping keys", () => {
       expect(entries.filter(({ id }) => id === "other")).toEqual([
         { id: "other", name: "caller-plugin" },
       ]);
-      const owned = entries.filter(({ id }) => id === "rea-mcp");
+      const owned = entries.filter(({ id }) => id === "nre-mcp");
       expect(owned).toHaveLength(operation === "setup" ? 1 : 0);
       if (operation === "setup") {
         expect(owned[0]?.config).toMatchObject({ env: { TOKEN: "keep-me" } });
@@ -2184,7 +2184,7 @@ describe("DeepSeek Harness aliased mapping keys", () => {
           (await configureClientConfiguration(client, {}, command)).status,
         ).toBe("unchanged");
       }
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -2196,7 +2196,7 @@ describe("DeepSeek Harness ordered selector applicability", () => {
     "discards selector uncertainty %s",
     async (position) => {
       const { home, client } = await harnessClient();
-      const selector = `- id: rea-mcp
+      const selector = `- id: nre-mcp
   name: !!js '"@deepseek-ai/dsh-mcp-client"'
   config: {command: ignored-launcher, env: {IGNORED: discarded}}
 `;
@@ -2217,7 +2217,7 @@ describe("DeepSeek Harness ordered selector applicability", () => {
       expect(
         cordisPatches(text)
           .flatMap((patch) => patch.insert ?? [])
-          .filter(({ id }) => id === "rea-mcp"),
+          .filter(({ id }) => id === "nre-mcp"),
       ).toEqual([canonicalEntry()]);
       if (position === "before insertion") expect(text).toBe(initial);
       expect(
@@ -2339,7 +2339,7 @@ describe("DeepSeek Harness caller node metadata", () => {
         ).status,
       ).toBe("unchanged");
       expect(await readFile(client.configPath, "utf8")).toBe(text);
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -2347,7 +2347,7 @@ describe("DeepSeek Harness caller node metadata", () => {
 });
 
 describe("DeepSeek Harness uninstall of a shared operation", () => {
-  it("keeps a group patch's own fields and comment when its only row was REA's", async () => {
+  it("keeps a group patch's own fields and comment when its only row was NRE's", async () => {
     const { home, client } = await harnessClient();
     const entry = canonicalEntry();
     await writeFile(
@@ -2360,10 +2360,10 @@ describe("DeepSeek Harness uninstall of a shared operation", () => {
   config:
     sandbox: strict
   insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: "${entry.name}"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${entry.config.command}
         args: ${JSON.stringify(entry.config.args)}
@@ -2381,15 +2381,15 @@ describe("DeepSeek Harness uninstall of a shared operation", () => {
     expect(text).toContain("# caller group patch");
   });
 
-  it("keeps an operation's own fields when setup removes a second REA row from it", async () => {
-    // Setup refuses a REA row in a group patch, so the setup path meets the
+  it("keeps an operation's own fields when setup removes a second NRE row from it", async () => {
+    // Setup refuses a NRE row in a group patch, so the setup path meets the
     // keep rule only on an operation without a selector.
     const { home, client } = await harnessClient();
     const entry = canonicalEntry();
-    const row = (launcher: string) => `    - id: rea-mcp
+    const row = (launcher: string) => `    - id: nre-mcp
       name: "${entry.name}"
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: ${launcher}
         args: [mcp]
@@ -2413,15 +2413,15 @@ ${row("second-launcher")}`,
     expect(await dshStatus(home)).toMatchObject({ state: "aligned" });
   });
 
-  it("drops an emptied operation that targets REA's own row", async () => {
+  it("drops an emptied operation that targets NRE's own row", async () => {
     const { home, client } = await harnessClient();
     await writeFile(
       client.configPath,
       stringifyYaml([
         { insert: [{ id: "user-a", name: "plugin-a" }] },
         {
-          id: "rea-mcp",
-          config: { serverName: "rea" },
+          id: "nre-mcp",
+          config: { serverName: "nre" },
           insert: [canonicalEntry()],
         },
       ]),
@@ -2459,7 +2459,7 @@ ${row("second-launcher")}`,
     },
   );
 
-  it("still drops an insert-only operation that REA's row emptied", async () => {
+  it("still drops an insert-only operation that NRE's row emptied", async () => {
     const { home, client } = await harnessClient();
     await writeFile(
       client.configPath,
@@ -2492,7 +2492,7 @@ it("keeps Cordis YAML syntax failures distinct from unresolved ID ownership", as
     expect(inspected?.detail).not.toContain("unknown ownership");
     expect(await readFile(client.configPath, "utf8")).toBe(initial);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.nre.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
   } finally {
     await host.close?.();

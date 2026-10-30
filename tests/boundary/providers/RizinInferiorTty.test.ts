@@ -92,7 +92,7 @@ afterEach(async () => {
 it("requires an explicit inferior TTY before spawning Rizin", async () => {
   let spawned = false;
   const manager = new RizinDebugSessionManager(
-    { REA_RIZIN_COMMAND: "rizin" },
+    { NRE_RIZIN_COMMAND: "rizin" },
     {
       spawnProcess: async () => {
         spawned = true;
@@ -114,7 +114,7 @@ it.skipIf(process.platform === "win32")(
       startup: (control) => control.output(Buffer.from([0, 0])),
     });
     manager = createRizinTestManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       { spawnProcess: injected.spawnProcess },
     );
     const originalIndexOf = Buffer.prototype.indexOf;
@@ -191,7 +191,7 @@ it.skipIf(process.platform !== "linux").each([
   "validates Rizin `olj` close response: $name",
   async ({ response, closeSucceeds }) => {
     const tty = await rizinTestInferiorTty();
-    testDirectory = await mkdtemp(join(tmpdir(), "rea-rizin-olj-"));
+    testDirectory = await mkdtemp(join(tmpdir(), "nre-rizin-olj-"));
     const provider = join(testDirectory, "fake-rizin.cjs");
     await writeFile(
       provider,
@@ -217,7 +217,7 @@ process.stdin.on("data", (chunk) => {
     await chmod(provider, 0o700);
     manager = new RizinDebugSessionManager({
       ...process.env,
-      REA_RIZIN_COMMAND: provider,
+      NRE_RIZIN_COMMAND: provider,
     });
     const started = await manager.start({
       path: "/tmp/fake-target",
@@ -341,7 +341,7 @@ it.skipIf(process.platform !== "linux")(
   async () => {
     const injected = createInjectedProcess({ stdin: "null" });
     manager = new RizinDebugSessionManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       {
         spawnProcess: injected.spawnProcess,
         stopProcess: async (session) => {
@@ -457,21 +457,21 @@ it.skipIf(
       });
     });
     const tty = await realpath(ttyPath);
-    testDirectory = await mkdtemp(join(tmpdir(), "rea-rizin-tty-"));
+    testDirectory = await mkdtemp(join(tmpdir(), "nre-rizin-tty-"));
     const wrapper = join(testDirectory, "rizin-with-long-lived-inferior.sh");
     const pidPath = join(testDirectory, "target.pid");
     const releasePath = join(testDirectory, "emit-output");
     const target = join(testDirectory, "target.py");
     await writeFile(
       target,
-      `import os, sys, time\nopen(${JSON.stringify(pidPath)}, "w").write(str(os.getpid()))\nwhile not os.path.exists(${JSON.stringify(releasePath)}): time.sleep(0.02)\nprint("REA_RIZIN_STDOUT_MARKER", flush=True)\nprint("REA_RIZIN_STDERR_MARKER", file=sys.stderr, flush=True)\ntime.sleep(60)\n`,
+      `import os, sys, time\nopen(${JSON.stringify(pidPath)}, "w").write(str(os.getpid()))\nwhile not os.path.exists(${JSON.stringify(releasePath)}): time.sleep(0.02)\nprint("NRE_RIZIN_STDOUT_MARKER", flush=True)\nprint("NRE_RIZIN_STDERR_MARKER", file=sys.stderr, flush=True)\ntime.sleep(60)\n`,
     );
     await writeFile(
       wrapper,
       `#!/bin/sh\nexec ${shellQuote(rizinBinary!)} -R arg1=${target} "$@"\n`,
     );
     await chmod(wrapper, 0o700);
-    manager = new RizinDebugSessionManager({ REA_RIZIN_COMMAND: wrapper });
+    manager = new RizinDebugSessionManager({ NRE_RIZIN_COMMAND: wrapper });
     const started = await manager.start({
       path: "/usr/bin/python3",
       inferior_tty: tty,
@@ -501,12 +501,12 @@ it.skipIf(
     const outputDeadline = Date.now() + 3_000;
     while (
       Date.now() < outputDeadline &&
-      (!terminalOutput.includes("REA_RIZIN_STDOUT_MARKER") ||
-        !terminalOutput.includes("REA_RIZIN_STDERR_MARKER"))
+      (!terminalOutput.includes("NRE_RIZIN_STDOUT_MARKER") ||
+        !terminalOutput.includes("NRE_RIZIN_STDERR_MARKER"))
     )
       await new Promise((resolveDelay) => setTimeout(resolveDelay, 25));
-    expect(terminalOutput).toContain("REA_RIZIN_STDOUT_MARKER");
-    expect(terminalOutput).toContain("REA_RIZIN_STDERR_MARKER");
+    expect(terminalOutput).toContain("NRE_RIZIN_STDOUT_MARKER");
+    expect(terminalOutput).toContain("NRE_RIZIN_STDERR_MARKER");
     expect(() => process.kill(inferiorPid!, 0)).not.toThrow();
   },
 );
@@ -547,7 +547,7 @@ async function startFakeInferiorSession(
   } = {},
 ): Promise<string> {
   const tty = await realpath(await rizinTestInferiorTty());
-  testDirectory = await mkdtemp(join(tmpdir(), "rea-rizin-protocol-"));
+  testDirectory = await mkdtemp(join(tmpdir(), "nre-rizin-protocol-"));
   const targetPath = join(testDirectory, "inferior.mjs");
   const pidPath = join(testDirectory, "target.pid");
   const provider = join(testDirectory, "fake-rizin.cjs");
@@ -595,7 +595,7 @@ process.stdin.on("data", (chunk) => {
   await chmod(provider, 0o700);
   let providerStderr = "";
   manager = new RizinDebugSessionManager(
-    { ...process.env, REA_RIZIN_COMMAND: provider },
+    { ...process.env, NRE_RIZIN_COMMAND: provider },
     {
       spawnProcess: async (spawnOptions) => {
         const launched = await spawnOwnedProviderProcess(spawnOptions);

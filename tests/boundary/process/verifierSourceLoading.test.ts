@@ -51,7 +51,7 @@ import { createVerifierCommands } from ${scriptUrl("verify-commands.mjs")};
 import { createPackageVerifierCommands } from ${scriptUrl("verify-package-commands.mjs")};
 import { withVerifierCleanup } from ${scriptUrl("verifier-cleanup.mjs")};
 const run = createVerifierRun();
-const root = await mkdtemp(join(tmpdir(), "rea-verifier-source-"));
+const root = await mkdtemp(join(tmpdir(), "nre-verifier-source-"));
 let generic;
 let packaged;
 let outputs;
@@ -132,7 +132,7 @@ await withVerifierCleanup(async () => {
     format: "cjs", write: false, logLevel: "silent",
   });
   await context.rebuild();
-  root = await mkdtemp(join(tmpdir(), "rea-verifier-compiler-owner-"));
+  root = await mkdtemp(join(tmpdir(), "nre-verifier-compiler-owner-"));
   commands = await createPackageVerifierCommands({ workspace: {
     path: root, close: () => rm(root, { recursive: true, force: true }),
   } });
@@ -164,7 +164,7 @@ await withVerifierCleanup(async () => {
 processTest(
   "loads one scoped TypeScript graph and preserves native module failures",
   async ({ processes }) => {
-    const workspace = await createTestWorkspace("rea-verifier-source-loader-");
+    const workspace = await createTestWorkspace("nre-verifier-source-loader-");
     onTestFinished(() => removeTestWorkspace(workspace.root));
     await workspace.mkdir("scripts/lib");
     await copyFile(

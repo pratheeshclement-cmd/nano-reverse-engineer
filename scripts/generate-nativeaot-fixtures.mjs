@@ -17,7 +17,7 @@ if (!supportsNativeAotFixtureHost(process.platform, process.arch))
   );
 const runtime = process.platform === "win32" ? "win-x64" : "linux-x64";
 const directory = resolve(
-  process.env.REA_NATIVEAOT_FIXTURE_ROOT ??
+  process.env.NRE_NATIVEAOT_FIXTURE_ROOT ??
     join(root, "_reference/nativeaot-integration/generated"),
 );
 const output = join(directory, runtime);
@@ -48,15 +48,15 @@ const run = (command, args) => {
     throw nativeAotCommandError(command, args[0], result);
   return result.stdout;
 };
-const dotnet = process.env.REA_NATIVEAOT_DOTNET ?? "dotnet";
+const dotnet = process.env.NRE_NATIVEAOT_DOTNET ?? "dotnet";
 if (run(dotnet, ["--version"]).trim() !== "8.0.416")
   throw new Error(
-    "NativeAOT fixtures require existing .NET SDK 8.0.416; REA does not install SDKs.",
+    "NativeAOT fixtures require existing .NET SDK 8.0.416; NRE does not install SDKs.",
   );
 if (process.platform === "linux") {
-  run(process.env.REA_NATIVEAOT_STRIP ?? "strip", ["--version"]);
-  run(process.env.REA_NATIVEAOT_NM ?? "nm", ["--version"]);
-  run(process.env.REA_NATIVEAOT_CC ?? "cc", ["--version"]);
+  run(process.env.NRE_NATIVEAOT_STRIP ?? "strip", ["--version"]);
+  run(process.env.NRE_NATIVEAOT_NM ?? "nm", ["--version"]);
+  run(process.env.NRE_NATIVEAOT_CC ?? "cc", ["--version"]);
   run("clang", ["--version"]);
 }
 const map = join(output, "NativeAotFixture.map");
@@ -73,12 +73,12 @@ let symbols = "";
 if (process.platform === "linux") {
   // Preserve the symbol table as an independent oracle while avoiding a full
   // runtime DWARF import in this metadata-specific lane.
-  run(process.env.REA_NATIVEAOT_STRIP ?? "strip", ["--strip-debug", binary]);
-  symbols = run(process.env.REA_NATIVEAOT_NM ?? "nm", ["-n", binary]);
+  run(process.env.NRE_NATIVEAOT_STRIP ?? "strip", ["--strip-debug", binary]);
+  symbols = run(process.env.NRE_NATIVEAOT_NM ?? "nm", ["-n", binary]);
   await mkdir(join(output, "stripped"), { recursive: true });
   const stripped = join(output, "stripped", name);
   await copyFile(binary, stripped);
-  run(process.env.REA_NATIVEAOT_STRIP ?? "strip", ["--strip-all", stripped]);
+  run(process.env.NRE_NATIVEAOT_STRIP ?? "strip", ["--strip-all", stripped]);
 } else {
   symbols = await readFile(map, "utf8");
 }
@@ -130,9 +130,9 @@ await writeFile(
       sha256,
       headers: candidates,
       expected_strings: [
-        "REA_NATIVEAOT_FROZEN",
-        "REA_NATIVEAOT_BASE",
-        "REA_NATIVEAOT_DERIVED",
+        "NRE_NATIVEAOT_FROZEN",
+        "NRE_NATIVEAOT_BASE",
+        "NRE_NATIVEAOT_DERIVED",
       ],
     },
     null,
@@ -146,7 +146,7 @@ if (process.platform === "linux") {
     source,
     "int ordinary_probe(int x) { return x * 3 + 1; }\nint main(void) { return ordinary_probe(1); }\n",
   );
-  run(process.env.REA_NATIVEAOT_CC ?? "cc", [
+  run(process.env.NRE_NATIVEAOT_CC ?? "cc", [
     "-g",
     "-O0",
     source,
@@ -168,7 +168,7 @@ if (process.platform === "linux") {
       negative,
       `${row}\n${header}\nconst char data[16] = {0};\n${declaration}\n${extra}\nint main(void) { return 0; }\n`,
     );
-    run(process.env.REA_NATIVEAOT_CC ?? "cc", [
+    run(process.env.NRE_NATIVEAOT_CC ?? "cc", [
       "-O0",
       "-fno-pie",
       "-no-pie",

@@ -18,7 +18,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "keeps fixed APK pair refusals nonretryable through CLI and MCP, then accepts a valid input",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-pair-limit-");
+    const root = await createTestTempDirectory("nre-apk-pair-limit-");
     const archive = await zipWith([
       { name: "AndroidManifest.xml", data: Uint8Array.of(3, 0, 8, 0) },
     ]);
@@ -61,7 +61,7 @@ cliTest(
       );
     }
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
     });
     const rejected = await call("inspect_apk_signature", {
       path: paths.get(4097),

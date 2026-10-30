@@ -44,7 +44,7 @@ const REAL_YML = [
 
 const REAL_MANIFEST = [
   '<?xml version="1.0" encoding="utf-8" standalone="no"?>',
-  '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rea.apktool.probe">',
+  '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.nre.apktool.probe">',
   '    <application android:label="@string/app_name" android:debuggable="true"/>',
   "</manifest>",
   "",
@@ -70,7 +70,7 @@ const DE_STRINGS = [
 const writeApktoolStub = async (
   body: (root: string) => string,
 ): Promise<{ readonly command: string; readonly root: string }> => {
-  const root = await mkdtemp(join("/tmp", "rea-apktool-stub-"));
+  const root = await mkdtemp(join("/tmp", "nre-apktool-stub-"));
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const command = join(root, "apktool");
   await writeFile(command, `#!/bin/sh\n${body(root)}\n`, { mode: 0o755 });
@@ -80,7 +80,7 @@ const writeApktoolStub = async (
 
 const providerOver = (command: string): ApktoolProvider =>
   new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: command },
+    environment: { NRE_APKTOOL_COMMAND: command },
   });
 
 const evidenceResult = async (
@@ -275,7 +275,7 @@ it.each([
     let denied = denyCleanup;
     const controller = new AbortController();
     const provider = new ApktoolProvider({
-      environment: { REA_APKTOOL_COMMAND: command },
+      environment: { NRE_APKTOOL_COMMAND: command },
       removeWorkspace: async (path) => {
         if (lateCancellation) controller.abort({ stage: "cleanup" });
         if (denied) throw new Error("authored removal denial");
@@ -300,7 +300,7 @@ it.each([
         parameters: { path: apk.path, locales: ["de"] },
         subject: { local_path: apk.path, digest: { sha256: apk.sha256 } },
         normalized_result: {
-          metadata: { package_name: "com.rea.apktool.probe" },
+          metadata: { package_name: "com.nre.apktool.probe" },
           manifest: `${REAL_MANIFEST}\n`,
           strings: [
             { name: "api_endpoint", value: "https://api.example.com/v1" },
@@ -364,7 +364,7 @@ it.each(
     const controller = new AbortController();
     let denied = denyCleanup;
     const provider = new ApktoolProvider({
-      environment: { REA_APKTOOL_COMMAND: command },
+      environment: { NRE_APKTOOL_COMMAND: command },
       removeWorkspace: async (path) => {
         controller.abort({ stage: "final cleanup" });
         if (denied) throw new Error("authored staged removal denial");
@@ -424,7 +424,7 @@ it.each(
       if (stage === "inventory")
         expect(observation.normalized_result).toMatchObject({
           decoded_file_count: 1,
-          metadata: { package_name: "com.rea.apktool.probe" },
+          metadata: { package_name: "com.nre.apktool.probe" },
         });
       denied = false;
       await provider.close();
@@ -469,9 +469,9 @@ it("decodes resources with target identity, metadata, and strings", async () => 
     version_code: "7",
     min_sdk_version: "24",
     target_sdk_version: "34",
-    package_name: "com.rea.apktool.probe",
+    package_name: "com.nre.apktool.probe",
   });
-  expect(result.manifest).toContain('package="com.rea.apktool.probe"');
+  expect(result.manifest).toContain('package="com.nre.apktool.probe"');
   expect(result.strings).toEqual([
     { name: "api_endpoint", value: "https://api.example.com/v1" },
     { name: "app_name", value: "ApktoolProbe" },
@@ -557,7 +557,7 @@ it("preserves literal U+FFFD in decoded XML with complete coverage", async () =>
   });
   expect(result).toMatchObject({
     manifest,
-    metadata: { package_name: "com.rea.apktool.probe" },
+    metadata: { package_name: "com.nre.apktool.probe" },
     strings: [
       { name: "good", value: "Hello" },
       { name: "edge", value: "\uFFFD" },
@@ -672,7 +672,7 @@ it("reports apktool's own refusal for undecodable targets", async () => {
 
 it("reports a missing launcher as a capability gap with recovery", async () => {
   const provider = new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: "/nonexistent/apktool" },
+    environment: { NRE_APKTOOL_COMMAND: "/nonexistent/apktool" },
   });
   const availability = await provider.inspectAvailability();
   expect(availability).toMatchObject({
@@ -686,7 +686,7 @@ it("reports a missing launcher as a capability gap with recovery", async () => {
   expect(projected).toMatchObject({ code: "capability_unavailable" });
   expect(projected.details).toMatchObject({
     provider_id: "apktool",
-    reason: expect.stringContaining("REA_APKTOOL_COMMAND") as unknown,
+    reason: expect.stringContaining("NRE_APKTOOL_COMMAND") as unknown,
   });
 });
 
@@ -1101,11 +1101,11 @@ describe("truncated manifest prefixes", () => {
   it.each([
     {
       name: "a retained prefix ending after the root element",
-      manifest: `<manifest package="com.rea.large"></manifest>${" ".repeat(512 * 1024 + 1)}`,
+      manifest: `<manifest package="com.nre.large"></manifest>${" ".repeat(512 * 1024 + 1)}`,
     },
     {
       name: "a retained prefix ending before the root element closes",
-      manifest: `<manifest package="com.rea.large">${" ".repeat(512 * 1024 + 1)}</manifest>`,
+      manifest: `<manifest package="com.nre.large">${" ".repeat(512 * 1024 + 1)}</manifest>`,
     },
   ])("retains $name without parsing its package", async ({ manifest }) => {
     const { command, root } = await writeApktoolStub((root) =>
@@ -1141,7 +1141,7 @@ it("retains failed workspace cleanup and retries it on close", async () => {
   let attempts = 0;
   let owned: string | undefined;
   const provider = new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: command },
+    environment: { NRE_APKTOOL_COMMAND: command },
     removeWorkspace: async (path) => {
       owned = path;
       if (++attempts === 1) throw new Error("busy");
@@ -1180,7 +1180,7 @@ it("retains completed Evidence and live cleanup until a denied workspace removal
   let denied = true;
   let owned: string | undefined;
   const provider = new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: command },
+    environment: { NRE_APKTOOL_COMMAND: command },
     removeWorkspace: async (path) => {
       owned = path;
       if (denied) throw new Error("authored removal denial");
@@ -1198,7 +1198,7 @@ it("retains completed Evidence and live cleanup until a denied workspace removal
       operation: "decode_android_resources",
       subject: { local_path: apk.path, digest: { sha256: apk.sha256 } },
       normalized_result: {
-        metadata: { package_name: "com.rea.apktool.probe" },
+        metadata: { package_name: "com.nre.apktool.probe" },
         strings: [
           { name: "api_endpoint", value: "https://api.example.com/v1" },
           { name: "app_name", value: "ApktoolProbe" },
@@ -1260,7 +1260,7 @@ it.each([
     const reason = { caller: "during final workspace removal" };
     let denied = deniedInitially;
     const provider = new ApktoolProvider({
-      environment: { REA_APKTOOL_COMMAND: command },
+      environment: { NRE_APKTOOL_COMMAND: command },
       removeWorkspace: async (path) => {
         controller.abort(reason);
         if (denied) throw new Error("authored denial");
@@ -1321,7 +1321,7 @@ it.each(["decode", "projection"] as const)(
     }
     const controller = new AbortController();
     const provider = new ApktoolProvider({
-      environment: { REA_APKTOOL_COMMAND: command },
+      environment: { NRE_APKTOOL_COMMAND: command },
       removeWorkspace: async (path) => {
         controller.abort({ caller: "after decode refusal" });
         await rm(path, { recursive: true, force: true });
@@ -1358,7 +1358,7 @@ it.each(["decode", "projection"] as const)(
               subject: { local_path: apk.path, digest: { sha256: apk.sha256 } },
               normalized_result: {
                 coverage: "partial",
-                metadata: { package_name: "com.rea.apktool.probe" },
+                metadata: { package_name: "com.nre.apktool.probe" },
                 strings: [],
               },
             },
@@ -1376,7 +1376,7 @@ it("releases successful workspace peers once while retaining a denied peer for r
   let denied = true;
   const attempts = new Map<string, number>();
   const provider = new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: command },
+    environment: { NRE_APKTOOL_COMMAND: command },
     removeWorkspace: async (path) => {
       attempts.set(path, (attempts.get(path) ?? 0) + 1);
       deniedRoot ??= path;

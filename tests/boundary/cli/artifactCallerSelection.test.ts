@@ -10,7 +10,7 @@ import { parseEvidence } from "../../../src/domain/evidence.js";
 cliTest.skipIf(process.platform === "win32")(
   "retains the selected archive alias without changing inventory identity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-artifact-selected-alias-");
+    const root = await createTestTempDirectory("nre-artifact-selected-alias-");
     const target = join(root, "program.zip");
     const alias = "selected-alias.zip";
     await writeFile(target, await createSingleEntryZip("payload.txt"));
@@ -57,7 +57,7 @@ cliTest(
   "offers a fresh destination after protected inspection publication collides, preserving the existing bundle",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-artifact-collision-guidance-",
+      "nre-artifact-collision-guidance-",
     );
     const archive = join(root, "program.zip");
     const output = join(root, "evidence.json");

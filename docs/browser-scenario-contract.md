@@ -25,11 +25,11 @@ For attached browsers, `block` rejects captures when the selected page or its
 frames are controlled by a service worker or already have a registration,
 including after navigation. Policy checks bracket each artifact capture, including
 the final step. If an external worker takes control while artifacts are being
-captured, REA rejects the capture and retains the completed artifacts in
+captured, NRE rejects the capture and retains the completed artifacts in
 `details.diagnostics.collected_artifacts`; they do not establish policy-compliant
 completion. Existing caller registrations are never removed.
 Navigation can run destination code before a newly discovered worker is rejected;
-that rejection does not roll back browser effects. REA removes its owned
+that rejection does not roll back browser effects. NRE removes its owned
 future-document scripts, restores live frame methods, then disconnects.
 Add secret declarations, storage seeds, and additional artifact or event
 capture only when needed. Missing environment-backed secrets fail as input errors before browser acquisition, naming the declaration and required variable. An explicitly set empty string is a resolved value. Action, secret, and storage counts are not capped.
@@ -59,7 +59,7 @@ stops there. `INPUT_JSON` may be inline JSON, a JSON file path, or `-` for
 standard input.
 
 ```bash
-rea validate-browser-scenario ./browser-scenario.json --json
+nre validate-browser-scenario ./browser-scenario.json --json
 ```
 
 A valid scenario reports `{"valid":true,"actions":<count>,"secrets":<count>}`
@@ -94,11 +94,11 @@ already-installed Chrome-family browser and the URL with your running fixture:
 ```
 
 ```bash
-rea capture-browser-scenario ./browser-scenario.json --json > browser-capture.json
+nre capture-browser-scenario ./browser-scenario.json --json > browser-capture.json
 ```
 
 The default capture includes the final URL. Select DOM, screenshots, or events
-only when they help answer the question. REA launches and cleans up the browser
+only when they help answer the question. NRE launches and cleans up the browser
 profile for this request; it does not start your fixture server or install a
 browser. A schema-valid scenario does not prove that the executable or target
 is available on the host.
@@ -148,12 +148,12 @@ Save it as `browser-search.json` and run it the same way as the minimal
 example:
 
 ```bash
-rea capture-browser-scenario ./browser-search.json --json > browser-search-capture.json
+nre capture-browser-scenario ./browser-search.json --json > browser-search-capture.json
 ```
 
 Through MCP, pass the same object as the `capture_browser_scenario` arguments.
 The final step's DOM and accessibility artifacts retain the page state at that
-capture time inline. REA still launches and cleans up the browser profile.
+capture time inline. NRE still launches and cleans up the browser profile.
 
 Action `timeout_ms` and `wait_for_timeout.duration_ms` accept integers from 1
 through 2,147,483,647 milliseconds, matching the underlying timer representation.
@@ -163,7 +163,7 @@ to keep an action pending until completion or request cancellation.
 The click's `timeout_ms` covers the click action. A non-navigating `fetch` or
 delayed render can finish later, so use `wait_for` to observe a page-specific
 ready condition before final capture. A page that updates synchronously can
-omit that wait. REA does not infer application readiness from capture selection.
+omit that wait. NRE does not infer application readiness from capture selection.
 
 Choose captures by the question being asked:
 
@@ -182,7 +182,7 @@ Choose captures by the question being asked:
   logged. Select only the event families you need.
 
 Capture states are reported per artifact. An artifact you did not request is
-`not_requested`, which means REA did not look, not that the page had nothing
+`not_requested`, which means NRE did not look, not that the page had nothing
 to show. A step's `completeness` of `complete` covers only the sections that
 were requested. A URL-only capture can be `complete` and still be unable to
 answer a question about rendered content, so add the relevant artifact and run
@@ -203,26 +203,26 @@ emulation, so actions can complete while that page is in the background.
 Its environment owner clears these overrides before disconnecting; other pages
 keep their media settings. Connecting does not create a bootstrap page.
 
-That cleanup requires REA to remain running. Abrupt termination, including
+That cleanup requires NRE to remain running. Abrupt termination, including
 Windows process-tree termination or POSIX `SIGKILL`, can leave the launch
 profile and Playwright artifacts behind. A profile can retain cookies, history,
-cache and origin storage. Later REA runs currently do not reclaim these paths.
+cache and origin storage. Later NRE runs currently do not reclaim these paths.
 Playwright 1.58.2 can also leave an artifacts directory when launch preparation
 fails before a browser process exists, such as for a missing executable.
 POSIX wrappers can request awaited cancellation with `SIGINT` or `SIGTERM`;
 Windows process termination is not an equivalent graceful-cancellation channel.
 Do not identify owned artifacts by directory prefix or creation time alone.
-See [#4659](https://github.com/morluto/rea/issues/4659) for the remaining recovery
+See [#4659](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4659) for the remaining recovery
 and wrapper-cancellation work.
 
 Keeping that browser alive does not guarantee its emulation state survives.
 Chromium can clear caller-owned `navigator.platform` emulation when a page CDP
-session disconnects, including sessions that sent no emulation commands. REA
+session disconnects, including sessions that sent no emulation commands. NRE
 cannot snapshot the other client's complete user-agent/client-hint settings and
 does not replay a partial reconstruction. Use launch mode to keep this effect
 inside a provider-owned browser, or have the external owning client reapply its
 complete configuration after capture. Connected captures report this limitation;
-see [issue #4089](https://github.com/morluto/rea/issues/4089).
+see [issue #4089](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4089).
 
 `environment.locale` sets Intl formatting in both modes. Launch also sets
 `navigator.language`, `navigator.languages`, and the request `Accept-Language`.
@@ -265,7 +265,7 @@ local storage seeds even when they share an origin. The pre-script mechanism
 uses CDP debugger instrumentation. The observer resumes only pauses whose top
 frame belongs to its private seed script; page breakpoints and `debugger`
 statements remain under the attached debugger client's control.
-If Chromium leaves the private isolated world's origin empty, REA looks up
+If Chromium leaves the private isolated world's origin empty, NRE looks up
 that exact frame's reported security origin before selecting a seed. It does
 not infer the origin from a frame URL or serialized storage key. Unresolved
 frame identity or security origin fails initialization rather than silently
@@ -304,7 +304,7 @@ event, 16 MiB estimated allocation across retained events, 1,024 network
 transactions, 64 KiB of body bytes per transaction phase, 1 MiB estimated
 allocation for body redaction/base64, 1 MiB for retained header values, and
 1 MiB for network metadata. The same limits are included in the capture
-Evidence. Playwright materializes response bodies before REA can inspect their
+Evidence. Playwright materializes response bodies before NRE can inspect their
 byte length; `max_network_body_bytes` bounds subsequent retained copies and
 does not bound the browser API read itself. A body that exceeds its selected
 limit has an explicit `body-size-limit` or `body-allocation-limit` unavailable
@@ -320,7 +320,7 @@ when the currently available event budget already rejects the body.
 Concurrent reads may each pass that check before their events are retained;
 their retained-copy work is bounded by 16 times the selected per-body
 allocation limit. The Playwright response Buffer itself is materialized before
-REA can apply that limit. Requested artifacts and retained events are returned
+NRE can apply that limit. Requested artifacts and retained events are returned
 inline within the declared limits.
 Attach-mode captures also declare the unavoidable pre-attach event gap.
 
@@ -336,7 +336,7 @@ and are omitted; attach coverage remains incomplete.
 Playwright reports new popup Pages after their first navigation has committed.
 It buffers early console messages and page errors, but the pinned API cannot
 recover every earlier frame, worker, WebSocket, or download event. If one of
-those families is selected and a popup is discovered, REA reports the family gap
+those families is selected and a popup is discovered, NRE reports the family gap
 in `limitations`, marks `events` missing, and disables equality eligibility.
 Later events remain available; no initial navigation is synthesized from the
 popup's current URL.
@@ -346,7 +346,7 @@ actions, and capture behavior. Origin filters and environment-variable names
 are included when the scenario needs them.
 Launch owns a temporary profile; connect mode disconnects from the selected
 external browser without closing it. The request itself defines the operation;
-there is no additional REA grant step. The browser and host still enforce their
+there is no additional NRE grant step. The browser and host still enforce their
 own access and process rules.
 
 ## Request steps
@@ -603,7 +603,7 @@ id the application assigns:
   measurement or guarantee of browser/process-family memory.
 - Evidence records a request step's empty `save` list as absent, so a scenario
   that saves nothing records the same parameters and `scenario_sha256` as
-  before saved values existed, and REA versions without saved values read its
+  before saved values existed, and NRE versions without saved values read its
   captures.
 
 ## Network evidence
@@ -646,17 +646,17 @@ and unfinished-request metadata. Select content independently:
 All three options default to `false`. Any selected network content also enables
 network metadata observation; listing `network` in `events` is then optional.
 Each observed request object receives a capture-scoped `transaction_id`.
-Each `request` event carries `observed_at`, the wall-clock time REA observed the
+Each `request` event carries `observed_at`, the wall-clock time NRE observed the
 request start. Playwright reports the browser's own start only once a request
 ends, so each `request-finished` or `request-failed` event carries `started_at`,
 the browser's wall-clock start, and `elapsed_ms`, its time from that start to
 the end of the response, when the browser reports them. The environment views
 time scenario records from these, as HAR entries are timed: the browser's start
 where it reported one, else `observed_at`, which trails it by up to tens of
-milliseconds while REA reads other responses. A duration is retained only from a
+milliseconds while NRE reads other responses. A duration is retained only from a
 unique terminal event that reports it; missing or ambiguous durations stay
 omitted, while an explicitly reported zero remains zero. Captures made before these fields existed lack them and
-are read in record order. REA versions before them refuse captures that carry
+are read in record order. NRE versions before them refuse captures that carry
 them. Scenario comparisons ignore all three (`ignore_network_request_timing`).
 Requests sharing a URL remain distinct. Redirects link to the preceding
 transaction only when it was observed; a null predecessor does not establish
@@ -820,7 +820,7 @@ with capture omissions reported separately.
 For the one-shot CLI, save the complete Evidence before selecting a summary:
 
 ```bash
-rea capture-browser-scenario scenario.json --detail summary --evidence_output /absolute/path/scenario-evidence.json --json
+nre capture-browser-scenario scenario.json --detail summary --evidence_output /absolute/path/scenario-evidence.json --json
 ```
 
 Use the returned `normalized_result.parent_evidence_id` with

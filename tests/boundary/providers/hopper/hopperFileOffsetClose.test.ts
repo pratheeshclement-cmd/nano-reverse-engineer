@@ -103,7 +103,7 @@ const clientFor = async (path: string, bytes: Buffer) => {
 };
 
 it("preserves file-offset reads and retries the exact descriptor after close fails", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-hopper-file-offset-close-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-hopper-file-offset-close-"));
   const bytes = Buffer.alloc(64);
   bytes.writeUInt32LE(0xfeedfacf, 0);
   bytes.writeUInt32LE(0x0100000c, 4);
@@ -244,7 +244,7 @@ it("preserves file-offset reads and retries the exact descriptor after close fai
 });
 
 it("clears a combined Hopper close only after the descriptor and session release", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-hopper-combined-close-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-hopper-combined-close-"));
   const bytes = Buffer.alloc(64);
   bytes.writeUInt32LE(0xfeedfacf, 0);
   bytes.writeUInt32LE(0x0100000c, 4);
@@ -315,7 +315,7 @@ it.each([false, true])(
   "retains a source metadata failure when cancellation arrives during close (close failure: %s)",
   async (closeFails) => {
     const root = await mkdtemp(
-      join(tmpdir(), "rea-hopper-file-offset-primary-"),
+      join(tmpdir(), "nre-hopper-file-offset-primary-"),
     );
     const bytes = Buffer.alloc(64);
     state.path = join(root, "sample");
@@ -367,7 +367,7 @@ it.each([false, true])(
   "retains verified source coordinates when cancellation arrives during close (close failure: %s)",
   async (closeFails) => {
     const root = await mkdtemp(
-      join(tmpdir(), "rea-hopper-file-offset-cancel-"),
+      join(tmpdir(), "nre-hopper-file-offset-cancel-"),
     );
     const bytes = Buffer.alloc(64);
     state.path = join(root, "sample");
@@ -432,7 +432,7 @@ it.each([false, true])(
 it.each([false, true])(
   "uses the descriptor read outcome when cancellation and an I/O result coincide (read failure: %s)",
   async (readFails) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-hopper-file-offset-read-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-hopper-file-offset-read-"));
     const bytes = Buffer.alloc(64);
     state.path = join(root, "sample");
     await writeFile(state.path, bytes);
@@ -478,7 +478,7 @@ it.each([false, true])(
 );
 
 it("retains a changed source digest without publishing verified coordinates after late cancellation", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-hopper-file-offset-changed-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-hopper-file-offset-changed-"));
   const bytes = Buffer.alloc(64);
   state.path = join(root, "sample");
   await writeFile(state.path, bytes);

@@ -19,7 +19,7 @@ const cliCaptureTest = cliTest.skipIf(CAPTURE_SKIP_REASON);
 cliCaptureTest(
   "records no normal exit code for a target a scenario signal terminated",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-process-signal-exit-");
+    const root = await createTestTempDirectory("nre-process-signal-exit-");
     for (const [name, additions, expected] of [
       [
         "SIGKILL",

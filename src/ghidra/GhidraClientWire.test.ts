@@ -79,7 +79,7 @@ describe("GhidraWire request ceiling", () => {
     try {
       const refused = await wire.request("search_strings", params, {});
       if (refused.ok) throw new Error("Expected a request ceiling refusal");
-      expect(refused.error.message).toContain("REA_BRIDGE_MAX_REQUEST_BYTES");
+      expect(refused.error.message).toContain("NRE_BRIDGE_MAX_REQUEST_BYTES");
       expect(refused.error.message).toContain("8192");
       expect(refused.error.message).toContain("Ghidra request exceeds");
       const constraint = refused.error.cause;

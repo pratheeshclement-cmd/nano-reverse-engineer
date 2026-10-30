@@ -11,7 +11,7 @@ it("retains the caller abort reason when the socket signal is already aborted", 
   const controller = new AbortController();
   controller.abort(reason);
   const result = await connectHopperSocketOnce(
-    join(tmpdir(), "rea-hopper-cancelled.sock"),
+    join(tmpdir(), "nre-hopper-cancelled.sock"),
     controller.signal,
   );
 

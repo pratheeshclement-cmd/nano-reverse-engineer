@@ -12,7 +12,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "function fingerprint seeds retain directive values and normalized duplicates through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-function-fingerprints-");
+    const root = await createTestTempDirectory("nre-function-fingerprints-");
     const application = join(root, "application");
     await mkdir(application);
     await writeFile(
@@ -36,7 +36,7 @@ cliTest(
         "directory",
         "--json",
       ],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(analyzed.exitCode, analyzed.stderr).toBe(0);
     const evidence = toolContract(
@@ -113,7 +113,7 @@ cliTest(
         );
         const cliTrace = await cli.run({
           arguments: ["trace-javascript-semantics", requestPath, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(cliTrace.exitCode, cliTrace.stderr).toBe(0);
         const cliEvidence = toolContract(

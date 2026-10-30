@@ -98,7 +98,7 @@ afterEach(() => {
 
 describe("decompile export creation", () => {
   it("removes the output directory it created when it cannot be made private", async () => {
-    const parent = await createTestTempDirectory("rea-decompile-create-");
+    const parent = await createTestTempDirectory("nre-decompile-create-");
     const root = join(parent, "out");
     failChmodFor.path = root;
 
@@ -121,7 +121,7 @@ describe("decompile export creation", () => {
     if (retried.ok) expect((await retried.value.close()).ok).toBe(true);
   });
   it("holds the lease while removing a failed initialization with a valid journal", async () => {
-    const parent = await createTestTempDirectory("rea-decompile-create-");
+    const parent = await createTestTempDirectory("nre-decompile-create-");
     const root = join(parent, "out");
     const journal = join(root, "decompile-journal.jsonl");
     failChmodFor.path = journal;
@@ -149,7 +149,7 @@ describe("decompile export creation", () => {
   });
 
   it("retains an export after a journal close failure until session cleanup retries it", async () => {
-    const parent = await createTestTempDirectory("rea-decompile-close-");
+    const parent = await createTestTempDirectory("nre-decompile-close-");
     const root = join(parent, "out");
     const resources = new SessionResources();
     failChmodFor.journalClose = join(root, "decompile-journal.jsonl");
@@ -182,7 +182,7 @@ describe("decompile export creation", () => {
   });
 
   it("preserves unexpected files and keeps initialization cleanup owned until a retry", async () => {
-    const parent = await createTestTempDirectory("rea-decompile-cleanup-");
+    const parent = await createTestTempDirectory("nre-decompile-cleanup-");
     const root = join(parent, "out");
     const journal = join(root, "decompile-journal.jsonl");
     const resources = new SessionResources();
@@ -209,7 +209,7 @@ describe("decompile export creation", () => {
 
 describe("decompile export lease acquisition", () => {
   it("preserves an empty new root when another run acquires its lease first", async () => {
-    const parent = await createTestTempDirectory("rea-decompile-lease-race-");
+    const parent = await createTestTempDirectory("nre-decompile-lease-race-");
     const root = join(parent, "out");
     let release: (() => Promise<void>) | undefined;
     failChmodFor.beforeLeasePath = root;
@@ -222,7 +222,7 @@ describe("decompile export lease acquisition", () => {
           inode: stat.ino.toString(),
         },
         runId: "competing-export",
-        directory: join("/tmp", `rea-decompile-${process.getuid?.() ?? 0}`),
+        directory: join("/tmp", `nre-decompile-${process.getuid?.() ?? 0}`),
         failure: () => new Error("competing lease could not be acquired"),
       });
       expect(acquired.acquired).toBe(true);
@@ -249,7 +249,7 @@ describe("decompile export lease acquisition", () => {
 
 describe("decompile journal ownership", () => {
   it("keeps the parsed committed record when a caller mutates its input during append", async () => {
-    const parent = await createTestTempDirectory("rea-decompile-record-");
+    const parent = await createTestTempDirectory("nre-decompile-record-");
     const root = join(parent, "out");
     const opened = await DecompileExport.open({
       placement: { mode: "create", root },

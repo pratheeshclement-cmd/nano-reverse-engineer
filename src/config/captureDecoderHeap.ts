@@ -9,7 +9,7 @@ import { ConfigurationError } from "../domain/configurationErrors.js";
 import { err, ok, type Result } from "../domain/result.js";
 
 export const CAPTURE_DECODER_OLD_GENERATION_SETTING =
-  "REA_CAPTURE_DECODER_OLD_GENERATION_MIB";
+  "NRE_CAPTURE_DECODER_OLD_GENERATION_MIB";
 
 /** Effective HAR/SAZ/qlog old-generation heap and where its value came from. */
 export interface CaptureDecoderHeap {
@@ -71,7 +71,7 @@ export const resolveCaptureDecoderHeap = (
 export const captureDecoderHeapRecovery = (heap: CaptureDecoderHeap): string =>
   [
     `The effective ${CAPTURE_DECODER_OLD_GENERATION_SETTING} value is ${String(heap.oldGenerationMiB)} MiB (source ${heap.source}; default ${String(DEFAULT_CAPTURE_DECODER_OLD_GENERATION_MIB)} MiB, floor ${String(CAPTURE_DECODER_SEMI_SPACE_MIB)} MiB, maximum ${String(MAXIMUM_CAPTURE_DECODER_OLD_GENERATION_MIB)} MiB).`,
-    `Set ${CAPTURE_DECODER_OLD_GENERATION_SETTING} in the environment that starts REA to a decimal integer from ${String(CAPTURE_DECODER_SEMI_SPACE_MIB)} to ${String(MAXIMUM_CAPTURE_DECODER_OLD_GENERATION_MIB)}, then restart REA. In a running MCP server, use update_analysis_settings with setting capture.decoder_old_generation_mib and action set instead; the new value applies to new work without a REA restart.`,
+    `Set ${CAPTURE_DECODER_OLD_GENERATION_SETTING} in the environment that starts NRE to a decimal integer from ${String(CAPTURE_DECODER_SEMI_SPACE_MIB)} to ${String(MAXIMUM_CAPTURE_DECODER_OLD_GENERATION_MIB)}, then restart NRE. In a running MCP server, use update_analysis_settings with setting capture.decoder_old_generation_mib and action set instead; the new value applies to new work without a NRE restart.`,
     `On Node.js the decoder passes --max-old-space-size=${String(heap.oldGenerationMiB)} and removes inherited NODE_OPTIONS, so additional host memory and NODE_OPTIONS do not raise this heap. The ${String(CAPTURE_DECODER_SEMI_SPACE_MIB)} MiB semi-space stays fixed.`,
     "On Bun the V8 flags are ignored. Windows limits the decoder's committed memory to this value plus a 512 MiB reserve. Other Bun hosts enforce no decoder heap limit.",
   ].join(" ");

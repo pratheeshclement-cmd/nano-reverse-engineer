@@ -17,7 +17,7 @@ export const createReverseEngineeringCommandPort = (
 ): ReverseEngineeringCommandPort => ({
   objdump: (input) => ({
     executable: providerExecutable(
-      environment.REA_OBJDUMP_COMMAND ?? "objdump",
+      environment.NRE_OBJDUMP_COMMAND ?? "objdump",
       environment,
       platform,
     ),
@@ -27,7 +27,7 @@ export const createReverseEngineeringCommandPort = (
   }),
   rizin: (input) => ({
     executable: providerExecutable(
-      environment.REA_RIZIN_COMMAND ?? "rizin",
+      environment.NRE_RIZIN_COMMAND ?? "rizin",
       environment,
       platform,
     ),

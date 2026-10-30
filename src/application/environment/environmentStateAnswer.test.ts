@@ -135,9 +135,9 @@ const load = (
   edit: (entities: Record<string, unknown>[]) => Record<string, unknown>[],
   documents: unknown[] = [],
 ): void => {
-  const initial = structuredClone(serving.store.snapshot().rea_state);
+  const initial = structuredClone(serving.store.snapshot().nre_state);
   const replaced = serving.store.replace({
-    rea_state: {
+    nre_state: {
       version: 1,
       entities: edit(initial.entities as unknown as Record<string, unknown>[]),
       documents,
@@ -594,7 +594,7 @@ describe("recorded and document answers", () => {
     ]);
     expect(answer(serving, "get_settings", {}).body).toEqual({ theme: "blue" });
     // Only the Evidence's own value cites its record; an edited one cites none and an invented citation is refused.
-    expect(serving.store.snapshot().rea_state.documents).toEqual([
+    expect(serving.store.snapshot().nre_state.documents).toEqual([
       { tool: "get_settings", path: "/api/settings", value: { theme: "blue" } },
     ]);
     load(serving, (entities) => entities, [
@@ -604,7 +604,7 @@ describe("recorded and document answers", () => {
         value: { theme: "dark", density: "compact" },
       },
     ]);
-    expect(serving.store.snapshot().rea_state.documents).toEqual([
+    expect(serving.store.snapshot().nre_state.documents).toEqual([
       {
         tool: "get_settings",
         path: "/api/settings",
@@ -613,7 +613,7 @@ describe("recorded and document answers", () => {
       },
     ]);
     const invented = serving.store.replace({
-      rea_state: {
+      nre_state: {
         version: 1,
         entities: [],
         documents: [
@@ -627,7 +627,7 @@ describe("recorded and document answers", () => {
       },
     });
     expect(invented.ok || invented.error.issues[0]?.path).toEqual([
-      "rea_state",
+      "nre_state",
       "documents",
       0,
       "record_ordinal",

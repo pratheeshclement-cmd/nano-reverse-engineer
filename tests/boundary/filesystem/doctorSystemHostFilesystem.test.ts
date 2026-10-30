@@ -47,7 +47,7 @@ it("threads the selected host and environment into system diagnostics", async ()
         };
       if (command === "which")
         return {
-          stdout: "/selected/bin/rea\n",
+          stdout: "/selected/bin/nre\n",
           stderr: "",
           stdoutBytes: 18,
           stderrBytes: 0,
@@ -147,7 +147,7 @@ it.each(["complete", "failed"] as const)(
 it.skipIf(process.platform === "win32").each(["abort", "close"] as const)(
   "%s joins an active diagnostic probe's exit and preserves cancellation",
   async (action) => {
-    const home = await createTestTempDirectory("rea-doctor-probe-stop-");
+    const home = await createTestTempDirectory("nre-doctor-probe-stop-");
     const started = join(home, "started");
     const cleaned = join(home, "cleaned");
     await writeFile(
@@ -192,7 +192,7 @@ fs.writeFileSync(${JSON.stringify(started)}, "ready");
 it.skipIf(process.platform === "win32")(
   "does not launch a diagnostic for an already cancelled request",
   async () => {
-    const home = await createTestTempDirectory("rea-doctor-pre-abort-");
+    const home = await createTestTempDirectory("nre-doctor-pre-abort-");
     const marker = join(home, "launched");
     await writeFile(
       join(home, "which"),
@@ -247,7 +247,7 @@ it.each([
 ])(
   "locates the Hopper cask from its Caskroom receipt without a cask command (%j)",
   async (config, expectedAppdir) => {
-    const root = await createTestTempDirectory("rea-doctor-caskroom-");
+    const root = await createTestTempDirectory("nre-doctor-caskroom-");
     const caskroom = join(root, "Caskroom");
     const metadata = join(caskroom, "hopper-disassembler", ".metadata");
     await mkdir(metadata, { recursive: true });
@@ -281,7 +281,7 @@ it.each([
 it.skipIf(process.platform === "win32").each(["absolute", "home"])(
   "preserves symlink traversal in the cask appdir (%s)",
   async (spelling) => {
-    const root = await createTestTempDirectory("rea-doctor-cask-path-");
+    const root = await createTestTempDirectory("nre-doctor-cask-path-");
     const home = join(root, "home");
     const caskroom = join(root, "Caskroom");
     const metadata = join(caskroom, "hopper-disassembler", ".metadata");
@@ -316,7 +316,7 @@ it.skipIf(process.platform === "win32").each(["absolute", "home"])(
 );
 
 it("reports no Homebrew Hopper when the cask has no receipt", async () => {
-  const caskroom = await createTestTempDirectory("rea-doctor-caskroom-");
+  const caskroom = await createTestTempDirectory("nre-doctor-caskroom-");
   const calls: (readonly string[])[] = [];
   const host = systemDoctorHost({
     platform: "darwin",

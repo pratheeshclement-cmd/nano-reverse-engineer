@@ -40,7 +40,7 @@ const isCliOutputFormat = (value: string): value is CliOutputFormat =>
   CLI_OUTPUT_FORMAT_SET.has(value);
 
 /**
- * Render a document REA writes outside Incur's command pipeline. JSON follows
+ * Render a document NRE writes outside Incur's command pipeline. JSON follows
  * the CLI contract: indented for a terminal, compact when piped or redirected.
  */
 export const renderCliDocument = (
@@ -52,7 +52,7 @@ export const renderCliDocument = (
     ? [...jsonOutputParts(value, format, stdoutIsTerminal)].join("")
     : `${formatCliOutput(value, format)}\n`;
 /**
- * Validate a spaced output-flag value before Incur dispatch. REA narrows token
+ * Validate a spaced output-flag value before Incur dispatch. NRE narrows token
  * coordinates to nonnegative safe integers so slice metadata remains coherent.
  */
 export const cliOutputValueRejection = (

@@ -21,7 +21,7 @@ it("names the Wakaru configuration requirement when it is not configured", async
 
   if (!(refusal instanceof AnalysisCapabilityUnavailableError))
     throw new Error("Expected a capability refusal");
-  expect(refusal.reason).toContain("REA_WAKARU_COMMAND");
+  expect(refusal.reason).toContain("NRE_WAKARU_COMMAND");
   expect(projectAnalysisError(refusal)).toMatchObject({
     code: "capability_unavailable",
     message: refusal.reason,

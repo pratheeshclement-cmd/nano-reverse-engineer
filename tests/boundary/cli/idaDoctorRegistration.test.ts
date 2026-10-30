@@ -9,12 +9,12 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "doctor rejects an IDA registration FIFO without waiting for a writer",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-ida-doctor-fifo-");
+    const root = await createTestTempDirectory("nre-ida-doctor-fifo-");
     const registration = join(root, "registration.json");
     execFileSync("mkfifo", [registration], { timeout: 5_000 });
     const result = await cli.run({
       arguments: ["doctor", "--provider", "ida", "--json"],
-      environment: { HOME: root, REA_IDA_MCP_CONFIG: registration },
+      environment: { HOME: root, NRE_IDA_MCP_CONFIG: registration },
       timeoutMs: 10_000,
     });
     expect(result.exitCode, result.stderr).toBe(1);
@@ -39,7 +39,7 @@ cliTest.skipIf(process.platform === "win32")(
 cliTest.skipIf(process.platform !== "darwin").for([true, false])(
   "doctor checks the filesystem-selected IDA parent without creating entries (usable=%s)",
   async (usable, { cli }) => {
-    const root = await createTestTempDirectory("rea-ida-doctor-parent-");
+    const root = await createTestTempDirectory("nre-ida-doctor-parent-");
     const physical = join(root, "physical");
     const parent = join(physical, "workspace");
     const lexical = join(root, "workspace");
@@ -63,7 +63,7 @@ cliTest.skipIf(process.platform !== "darwin").for([true, false])(
     const before = await readdir(physical);
     const result = await cli.run({
       arguments: ["doctor", "--provider", "ida", "--json"],
-      environment: { HOME: root, REA_IDA_MCP_CONFIG: registration },
+      environment: { HOME: root, NRE_IDA_MCP_CONFIG: registration },
       timeoutMs: 10_000,
     });
     expect(result.exitCode, result.stderr).toBe(usable ? 0 : 1);
@@ -138,12 +138,12 @@ cliTest.for([
 ] as const)(
   "doctor retains the IDA registration constraint: $name",
   async ({ registration, constraint }, { cli }) => {
-    const root = await createTestTempDirectory("rea-ida-doctor-constraint-");
+    const root = await createTestTempDirectory("nre-ida-doctor-constraint-");
     const path = join(root, "registration.json");
     await writeFile(path, JSON.stringify(registration));
     const result = await cli.run({
       arguments: ["doctor", "--provider", "ida", "--json"],
-      environment: { HOME: root, REA_IDA_MCP_CONFIG: path },
+      environment: { HOME: root, NRE_IDA_MCP_CONFIG: path },
       timeoutMs: 10_000,
     });
     expect(result.exitCode, result.stderr).toBe(
@@ -170,7 +170,7 @@ cliTest.for([
     if (constraint?.startsWith("timeoutMs") === true) {
       const providers = await cli.run({
         arguments: ["providers", "--json"],
-        environment: { HOME: root, REA_IDA_MCP_CONFIG: path },
+        environment: { HOME: root, NRE_IDA_MCP_CONFIG: path },
         timeoutMs: 10_000,
       });
       expect(providers.exitCode, providers.stderr).toBe(0);
@@ -186,7 +186,7 @@ cliTest.for([
                 configuration_details: expect.objectContaining({
                   settings: expect.arrayContaining([
                     expect.objectContaining({
-                      setting: "REA_IDA_MCP_CONFIG",
+                      setting: "NRE_IDA_MCP_CONFIG",
                       constraint: expect.stringContaining(constraint),
                     }),
                   ]),

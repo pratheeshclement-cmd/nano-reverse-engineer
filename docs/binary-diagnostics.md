@@ -16,8 +16,8 @@ Python executable whose environment already contains unchanged pwntools 4.15.0,
 pyelftools 0.33 and Unicorn 2.1.2:
 
 ```sh
-REA_PWNTOOLS_PYTHON=/absolute/isolated-env/bin/python \
-  rea inspect-binary-layout ./selected.elf --json
+NRE_PWNTOOLS_PYTHON=/absolute/isolated-env/bin/python \
+  nre inspect-binary-layout ./selected.elf --json
 ```
 
 ```json
@@ -27,10 +27,10 @@ REA_PWNTOOLS_PYTHON=/absolute/isolated-env/bin/python \
 }
 ```
 
-REA never installs Python, packages or GDB, changes a user init file, launches
+NRE never installs Python, packages or GDB, changes a user init file, launches
 the selected object as a host process, or requests runtime library resolution. The Python process
 uses isolated mode and an owned cache. Exact upstream profiles are recorded in
-[upstream provenance](https://github.com/morluto/rea/blob/main/third_party/pwntools/README.md).
+[upstream provenance](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/third_party/pwntools/README.md).
 
 The adapter skips pwntools kernel configuration and version discovery: those
 memory-content scans supply none of this report's fields. Ordinary `IKCFG_ST`
@@ -117,16 +117,16 @@ section, symbol, mitigation or linkage views. The default `complete` detail and
 CLI output are unchanged.
 
 Complete results have a 32 MiB input, 64 MiB reply, 1 MiB combined diagnostics
-and 30-second owned command deadline. `REA_PWNTOOLS_MAX_INPUT_BYTES` raises the
+and 30-second owned command deadline. `NRE_PWNTOOLS_MAX_INPUT_BYTES` raises the
 input bound alone, up to 1 GiB; the reply and deadline bounds are unchanged. The
 reply budget applies to the decoder record; the CLI/MCP Evidence envelope adds
 copies and encoding overhead. The
 pinned MCP SDK defaults to a 10 MiB receive buffer. Large complete results need
 a caller-configured `StdioClientTransport({ maxBufferSize: ... })` and a matching
-server `REA_MCP_MAX_RESPONSE_BYTES`. See [MCP delivery budgets](mcp-contracts.md#tool-results).
+server `NRE_MCP_MAX_RESPONSE_BYTES`. See [MCP delivery budgets](mcp-contracts.md#tool-results).
 These settings affect delivery, not decoder coverage or limits. The large
 extended-index verification uses 256 MiB and an explicit five-minute request
-timeout in its separate opt-in MCP lane. REA does not silently truncate the result. Python lowers resource soft limits to at most 3 GiB virtual address space,
+timeout in its separate opt-in MCP lane. NRE does not silently truncate the result. Python lowers resource soft limits to at most 3 GiB virtual address space,
 30 CPU seconds and 64 MiB file output. Inherited tighter soft/hard limits are
 retained, and the effective values are returned in the result limitations. Virtual address space is not RSS;
 Unicorn needs a large virtual map. Limits fail with no partial success, and
@@ -145,7 +145,7 @@ Memory allocation failures use `resource_constraint`, with effective resource
 limits (or an explicit unknown) and memory-specific recovery guidance. A
 MemoryError alone does not establish the exact failed allocation or that a
 particular budget was exhausted. Invalid undersized symbol entries are rejected
-before REA reports source ranges for them.
+before NRE reports source ranges for them.
 The bridge reserves 1 MiB to report allocation failures. If even error reporting
 or serialization fails with MemoryError, its reserved exit status preserves the
 resource classification with unknown effective limits.
@@ -169,12 +169,12 @@ first NUL, with any padding still represented by the original segment range.
 ## Ghidra process failures
 
 When output from the failing Ghidra startup or operation reports
-`java.lang.OutOfMemoryError`, REA returns `resource_constraint`. Java heap or GC
+`java.lang.OutOfMemoryError`, NRE returns `resource_constraint`. Java heap or GC
 overhead exhaustion includes heap-specific recovery advice. Metaspace and array
 size failures do not recommend increasing the heap; native-thread exhaustion is
 reported as a capacity constraint with unknown limits.
 
-`configured_jvm_max_heap` records the explicit `-Xmx` value selected by REA's
+`configured_jvm_max_heap` records the explicit `-Xmx` value selected by NRE's
 launch builder. It is a configuration fact, not measured memory use or proof of
 the effective JVM limit; JVM environment options may affect that limit.
 When a Windows script wrapper selects the JVM, this value remains unknown.
@@ -191,18 +191,18 @@ the session until release succeeds.
 
 A kernel or container OOM killer ends Ghidra with `SIGKILL` and prints no
 `OutOfMemoryError`. When a process or protocol failure records
-`exit_signal: "SIGKILL"` and no `stop_requested`, REA reports the signal
-instead of generic `rea doctor` advice. The process supervisor records
-`stop_requested: true` once REA begins stopping Ghidra, before it sends any
-signal, so REA's own SIGKILL is never reported as an outside kill.
+`exit_signal: "SIGKILL"` and no `stop_requested`, NRE reports the signal
+instead of generic `nre doctor` advice. The process supervisor records
+`stop_requested: true` once NRE begins stopping Ghidra, before it sends any
+signal, so NRE's own SIGKILL is never reported as an outside kill.
 
-On Linux with cgroup v2, REA also reads its own cgroup's `memory.events` before
+On Linux with cgroup v2, NRE also reads its own cgroup's `memory.events` before
 launch and again after the kill, locating the group through the cgroup2 mount
 in `/proc/self/mountinfo`. `memory_cgroup` records the group path,
-`oom_kill_before`, `oom_kill_after` and `memory_max`. If the count rose, REA
+`oom_kill_before`, `oom_kill_after` and `memory_max`. If the count rose, NRE
 returns `resource_constraint` with `resource: "memory"` and `cgroup_memory_max`
-in `reported_limits`. The count covers every process in REA's cgroup and its
-child groups, which can include processes outside REA's process tree when the
+in `reported_limits`. The count covers every process in NRE's cgroup and its
+child groups, which can include processes outside NRE's process tree when the
 group is shared, so a rise shows that the kernel OOM killer ended a process in
 that cgroup or a child group, not which process it chose. `memory_max` is the
 limit in bytes, `"max"` when the group sets none, or `null` when it could not be
@@ -220,7 +220,7 @@ out-of-memory kill.
 PE32+ file without an active target, native engine, Python, or Windows SDK:
 
 ```sh
-rea inspect-pe-resources ./selected.exe --json
+nre inspect-pe-resources ./selected.exe --json
 ```
 
 ```json
@@ -274,8 +274,8 @@ regular files only and rejects symbolic links.
 without an analysis engine, execution, extraction or network access.
 
 ```sh
-rea inspect-byte-entropy ./firmware.bin --block-size 4096 --json
-rea inspect-byte-entropy ./firmware.bin --offset 4096 --length 65536 --json
+nre inspect-byte-entropy ./firmware.bin --block-size 4096 --json
+nre inspect-byte-entropy ./firmware.bin --offset 4096 --length 65536 --json
 ```
 
 ```json
@@ -359,7 +359,7 @@ explicit PE or ELF image on any supported host, without an active target,
 native engine, `objdump` or Windows SDK:
 
 ```sh
-rea inspect-native-exports ./runtimes/linux-x64/native/libexample.so --json
+nre inspect-native-exports ./runtimes/linux-x64/native/libexample.so --json
 ```
 
 ```json
@@ -408,7 +408,7 @@ does not make a partial source complete. Retained views never reopen the file.
 The CLI uses the same projector and requires a durable bundle for a summary:
 
 ```sh
-rea inspect-native-exports ./libexample.so --detail summary --evidence_output ./exports.bundle.json --json
+nre inspect-native-exports ./libexample.so --detail summary --evidence_output ./exports.bundle.json --json
 # Pass the summary's parent ID and the same view as JSON to inspect-analysis-view,
 # together with --evidence-bundle ./exports.bundle.json.
 ```

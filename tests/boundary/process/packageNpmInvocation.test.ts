@@ -9,11 +9,11 @@ import { processTest } from "../../support/process/processFixture.js";
 processTest(
   "runs the caller-selected npm entry through Node without rewriting its inputs",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-npm-invocation-");
+    const root = await createTestTempDirectory("nre-npm-invocation-");
     const npmEntry = join(root, "selected npm entry.mjs");
     await writeFile(
       npmEntry,
-      `process.stdout.write(JSON.stringify({ arguments: process.argv.slice(2), cwd: process.cwd(), marker: process.env.REA_NPM_TEST_MARKER }));\n`,
+      `process.stdout.write(JSON.stringify({ arguments: process.argv.slice(2), cwd: process.cwd(), marker: process.env.NRE_NPM_TEST_MARKER }));\n`,
     );
     const helper = pathToFileURL(
       resolve("scripts/lib/verify-package-commands.mjs"),
@@ -30,7 +30,7 @@ processTest(
       const result = await withVerifierCleanup(
         () => commands.execNpm(["pack", "value with spaces"], {
           cwd: ${JSON.stringify(root)},
-          env: { ...process.env, npm_execpath: ${JSON.stringify(npmEntry)}, REA_NPM_TEST_MARKER: "caller-selected" },
+          env: { ...process.env, npm_execpath: ${JSON.stringify(npmEntry)}, NRE_NPM_TEST_MARKER: "caller-selected" },
         }),
         [() => commands.close()],
       );
@@ -56,7 +56,7 @@ const windowsIt = processTest.skipIf(process.platform !== "win32");
 windowsIt(
   "uses the npm entry adjacent to Node when none is selected",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-adjacent-npm-");
+    const root = await createTestTempDirectory("nre-adjacent-npm-");
     const node = join(root, "node.exe");
     const npmEntry = join(root, "node_modules/npm/bin/npm-cli.js");
     await mkdir(dirname(npmEntry), { recursive: true });

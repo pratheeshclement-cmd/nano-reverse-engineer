@@ -11,7 +11,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 const historicalModuleFixture = async () => {
-  const root = await createTestTempDirectory("rea-reference-module-semantics-");
+  const root = await createTestTempDirectory("nre-reference-module-semantics-");
   const files: Record<string, string> = {
     "package.json": '{"type":"module"}\n',
     "main.js": 'require("./dep.cjs"); export {};\n',
@@ -175,7 +175,7 @@ cliTest(
   "preserves case-sensitive compiler suffix languages in full graphs and summaries",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-reference-native-suffixes-",
+      "nre-reference-native-suffixes-",
     );
     const languages = {
       "upper.C": "C++",

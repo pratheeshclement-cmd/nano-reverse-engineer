@@ -144,7 +144,7 @@ it.each(
 )(
   "retains completed $name acquisition through $mode",
   async ({ make, mode }) => {
-    const root = await createTestTempDirectory("rea-native-finalization-");
+    const root = await createTestTempDirectory("nre-native-finalization-");
     const path = join(root, "selected.bin");
     // The descriptor must finalize before any format parser runs, so one
     // physical file can exercise every acquisition boundary.

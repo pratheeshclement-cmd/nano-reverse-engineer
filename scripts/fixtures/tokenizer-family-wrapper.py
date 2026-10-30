@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """POSIX fault fixture for the optional module-reference token counter.
 
-Use as --tokenizer-python with an explicit REA_TOKENIZER_PROBE_RECORD path.
+Use as --tokenizer-python with an explicit NRE_TOKENIZER_PROBE_RECORD path.
 It deliberately ignores the counter arguments, forks a detached helper that
 ignores SIGTERM, and stalls. The production owned-command supervisor must
 terminate the verified family. Recorded PIDs are observations, not authority
@@ -16,7 +16,7 @@ import time
 
 
 def main():
-    record = Path(os.environ["REA_TOKENIZER_PROBE_RECORD"])
+    record = Path(os.environ["NRE_TOKENIZER_PROBE_RECORD"])
     child = os.fork()
     if child == 0:
         os.setsid()
@@ -25,7 +25,7 @@ def main():
             "pid": os.getpid(),
             "group": os.getpgrp(),
             "parent": os.getppid(),
-            "run_id": os.environ.get("REA_PROCESS_RUN_ID"),
+            "run_id": os.environ.get("NRE_PROCESS_RUN_ID"),
             "detached": True,
             "ignores_sigterm": True,
         }) + "\n", encoding="utf-8")

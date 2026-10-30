@@ -31,10 +31,10 @@ export async function buildPspFixture(directory, globalValue = 7) {
   }
   const build = await execute(
     "make",
-    [`REA_PSP_GLOBAL=${globalValue}`, "rea_psp_fixture.elf"],
+    [`NRE_PSP_GLOBAL=${globalValue}`, "nre_psp_fixture.elf"],
     { ...options, timeout: 60000 },
   );
-  const path = join(directory, "rea_psp_fixture.elf");
+  const path = join(directory, "nre_psp_fixture.elf");
   const bytes = await readFile(path);
   assert.ok(bytes.length >= 52);
   assert.equal(bytes.toString("hex", 0, 6), "7f454c460101");
@@ -65,11 +65,11 @@ export async function buildPspFixture(directory, globalValue = 7) {
   );
   const symbols = {};
   for (const [name, type] of [
-    ["rea_psp_entry", "FUNC"],
-    ["rea_psp_leaf", "FUNC"],
-    ["rea_psp_probe", "FUNC"],
-    ["rea_psp_global", "OBJECT"],
-    ["rea_psp_marker", "OBJECT"],
+    ["nre_psp_entry", "FUNC"],
+    ["nre_psp_leaf", "FUNC"],
+    ["nre_psp_probe", "FUNC"],
+    ["nre_psp_global", "OBJECT"],
+    ["nre_psp_marker", "OBJECT"],
   ]) {
     const rows = readelf.stdout
       .split("\n")
@@ -85,7 +85,7 @@ export async function buildPspFixture(directory, globalValue = 7) {
   }
   const objdump = await execute(
     "psp-objdump",
-    ["-d", "--disassemble=rea_psp_probe", path],
+    ["-d", "--disassemble=nre_psp_probe", path],
     options,
   );
   assert.equal(objdump.stderr.trim(), "");
@@ -106,7 +106,7 @@ export async function buildPspFixture(directory, globalValue = 7) {
   };
 }
 
-/** Complete independent fields for the pinned PSPSDK fixture, not REA's parser. */
+/** Complete independent fields for the pinned PSPSDK fixture, not NRE's parser. */
 export function parsePspReadelfMips(text) {
   const field = (expression, label) => {
     const matches = [...text.matchAll(expression)];

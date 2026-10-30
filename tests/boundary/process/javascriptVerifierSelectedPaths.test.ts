@@ -25,7 +25,7 @@ afterEach(async () => {
 
 const selectedFixture = async () => {
   const physical = await applicationFixture();
-  const root = await createTestTempDirectory("rea-verifier-selection-");
+  const root = await createTestTempDirectory("nre-verifier-selection-");
   temporary.push(physical, root);
   const alias = join(root, "selected-app");
   await symlink(

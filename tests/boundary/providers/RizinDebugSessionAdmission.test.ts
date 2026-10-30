@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "identifies the rejected TTY field and physical reason before spawning Rizin",
   async () => {
-    const root = await createTestTempDirectory("rea-rizin-tty-rejection-");
+    const root = await createTestTempDirectory("nre-rizin-tty-rejection-");
     const regular = join(root, "regular");
     await writeFile(regular, "not a terminal");
     const manager = new RizinDebugSessionManager(

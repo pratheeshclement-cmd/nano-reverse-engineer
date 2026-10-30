@@ -29,7 +29,7 @@ const cases = [
 cliTest.for(cases)(
   "inventories and extracts $mode FIT images through the compiled CLI",
   async ({ bytes }, { cli }) => {
-    const directory = await createTestTempDirectory("rea-fit-cli-");
+    const directory = await createTestTempDirectory("nre-fit-cli-");
     const source = join(directory, "boot.itb");
     await writeFile(source, bytes);
     const inspected = await cli.run({
@@ -84,7 +84,7 @@ cliTest.for(cases)(
 );
 
 cliTest("rejects a FIT hash mismatch through the CLI", async ({ cli }) => {
-  const directory = await createTestTempDirectory("rea-fit-invalid-cli-");
+  const directory = await createTestTempDirectory("nre-fit-invalid-cli-");
   const source = join(directory, "boot.itb");
   const bytes = Buffer.from(FIT_EXTERNAL);
   const kernel = bytes.indexOf(FIT_KERNEL);
@@ -106,7 +106,7 @@ cliTest.for([
 ])(
   "suggests no direct analysis for compressed or ciphered FIT images ($label algorithm)",
   async ({ label, properties }, { cli }) => {
-    const directory = await createTestTempDirectory("rea-fit-encoded-cli-");
+    const directory = await createTestTempDirectory("nre-fit-encoded-cli-");
     const source = join(directory, "boot.itb");
     await writeFile(
       source,
@@ -162,7 +162,7 @@ cliTest.for([
 cliTest.for([true, false])(
   "checks embedded image-data content (equal=%s)",
   async (equal, { cli }) => {
-    const directory = await createTestTempDirectory("rea-fit-shared-cli-");
+    const directory = await createTestTempDirectory("nre-fit-shared-cli-");
     const source = join(directory, "shared.itb");
     await writeFile(
       source,
@@ -211,7 +211,7 @@ cliTest.for([true, false])(
 cliTest(
   "preserves unreadable image and configuration signature declarations",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-fit-unknown-signatures-");
+    const root = await createTestTempDirectory("nre-fit-unknown-signatures-");
     const source = join(root, "signed.itb");
     const signatures = [
       { name: "signature-missing", properties: {} },
@@ -363,7 +363,7 @@ cliTest.for([
     allowed: false,
   },
 ])("offers admitted FIT raw analysis ($label)", async (item, { cli }) => {
-  const root = await createTestTempDirectory("rea-fit-raw-probe-");
+  const root = await createTestTempDirectory("nre-fit-raw-probe-");
   const source = join(root, "raw.itb");
   await writeFile(
     source,

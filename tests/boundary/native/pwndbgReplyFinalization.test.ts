@@ -59,7 +59,7 @@ const fixture = async (
     JSON.stringify({ ok: true, value: recordedCrashDebuggerFixture() }),
   ),
 ) => {
-  const workspace = await createTestWorkspace("rea-pwndbg-reply-finalization-");
+  const workspace = await createTestWorkspace("nre-pwndbg-reply-finalization-");
   const path = workspace.path("recorded.core");
   const value = recordedCrashFixture(path);
   const bytes = recordedCrashFixtureBytes(value);
@@ -75,9 +75,9 @@ const fixture = async (
   replyClose.onClose = undefined;
   replyClose.handles = [];
   const environment = snapshotEnvironment({
-    REA_PWNDBG_GDB: process.execPath,
-    REA_PWNDBG_GDBINIT: init,
-    REA_PWNDBG_VENV_PATH: venv,
+    NRE_PWNDBG_GDB: process.execPath,
+    NRE_PWNDBG_GDBINIT: init,
+    NRE_PWNDBG_VENV_PATH: venv,
   });
   const provider = new PwntoolsRecordedCrashProvider(environment);
   onTestFinished(async () => {

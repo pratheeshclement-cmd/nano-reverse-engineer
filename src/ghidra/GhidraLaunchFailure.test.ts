@@ -31,7 +31,7 @@ const launchSession = (runtimeRoot: string): GhidraLaunchSession => ({
 
 /** Stand-in "java" whose LaunchSupport probe fails the way a broken JVM does. */
 const failingJavaHome = async (script: string): Promise<string> => {
-  const javaHome = await mkdtemp(join(tmpdir(), "rea-fake-java-"));
+  const javaHome = await mkdtemp(join(tmpdir(), "nre-fake-java-"));
   await mkdir(join(javaHome, "bin"), { recursive: true });
   await writeFile(join(javaHome, "bin", "java"), script, { mode: 0o755 });
   return javaHome;
@@ -44,7 +44,7 @@ const probeLauncher = (javaHome: string, runtimeRoot: string) =>
     analyzeHeadlessPath: join(runtimeRoot, "support", "analyzeHeadless"),
     configurationDirectoryName: "ghidra_test_PUBLIC",
     javaHome,
-    bridgeScriptPath: join(runtimeRoot, "bridge", "ReaGhidraBridge.java"),
+    bridgeScriptPath: join(runtimeRoot, "bridge", "NreGhidraBridge.java"),
   });
 
 const launchOutcomeOf = (error: Error): Record<string, unknown> | undefined => {
@@ -67,7 +67,7 @@ describe("Ghidra launch failure diagnostics", () => {
     const javaHome = await failingJavaHome(
       "#!/bin/sh\necho 'jvm probe exploded' >&2\nexit 3\n",
     );
-    const runtimeRoot = await mkdtemp(join(tmpdir(), "rea-ghidra-launch-"));
+    const runtimeRoot = await mkdtemp(join(tmpdir(), "nre-ghidra-launch-"));
     try {
       const launched = await probeLauncher(javaHome, runtimeRoot).launch(
         launchSession(runtimeRoot),
@@ -100,7 +100,7 @@ describe("Ghidra launch failure diagnostics", () => {
     const javaHome = await failingJavaHome(
       "#!/bin/sh\necho 'jvm probe exploded' >&2\nexit 3\n",
     );
-    const runtimeRoot = await mkdtemp(join(tmpdir(), "rea-ghidra-launch-"));
+    const runtimeRoot = await mkdtemp(join(tmpdir(), "nre-ghidra-launch-"));
     try {
       const launched = await probeLauncher(javaHome, runtimeRoot).launch(
         launchSession(runtimeRoot),
@@ -125,7 +125,7 @@ describe("Ghidra launch failure diagnostics", () => {
     const javaHome = await failingJavaHome(
       `#!/bin/sh\nprintf '%s' '${oversized}' >&2\nexit 1\n`,
     );
-    const runtimeRoot = await mkdtemp(join(tmpdir(), "rea-ghidra-launch-"));
+    const runtimeRoot = await mkdtemp(join(tmpdir(), "nre-ghidra-launch-"));
     try {
       const launched = await probeLauncher(javaHome, runtimeRoot).launch(
         launchSession(runtimeRoot),
@@ -148,14 +148,14 @@ describe("Ghidra launch failure diagnostics", () => {
   });
 
   it("leaves non-command launch failures without retained output", async () => {
-    const runtimeRoot = await mkdtemp(join(tmpdir(), "rea-ghidra-launch-"));
+    const runtimeRoot = await mkdtemp(join(tmpdir(), "nre-ghidra-launch-"));
     try {
       const launcher = new GhidraHeadlessLauncher({
         environment: {},
         platform: "darwin",
         analyzeHeadlessPath: join(runtimeRoot, "support", "analyzeHeadless"),
         configurationDirectoryName: "ghidra_test_PUBLIC",
-        bridgeScriptPath: join(runtimeRoot, "bridge", "ReaGhidraBridge.java"),
+        bridgeScriptPath: join(runtimeRoot, "bridge", "NreGhidraBridge.java"),
       });
       const launched = await launcher.launch(launchSession(runtimeRoot));
       expect(launched.ok).toBe(false);

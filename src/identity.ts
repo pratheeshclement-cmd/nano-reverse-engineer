@@ -5,20 +5,17 @@
  */
 export const PRODUCT_IDENTITY = {
   displayName: "NRE",
-  legacyDisplayName: "REA",
+  fullName: "Nano Reverse Engineer",
   packageName: PACKAGE_METADATA.name,
   packageSpecifier: `${PACKAGE_METADATA.name}@latest`,
   registrationPackageSpecifier: `${PACKAGE_METADATA.name}@${PACKAGE_METADATA.version}`,
   packageVersion: PACKAGE_METADATA.version,
-  cliBinary: "rea",
-  nreCliBinary: "nre",
+  cliBinary: "nre",
   mcpCommand: `npx -y ${PACKAGE_METADATA.name}@${PACKAGE_METADATA.version} mcp`,
-  mcpServerKey: "rea",
-  nreMcpServerKey: "nre",
-  skillName: "reverse-engineer-anything",
+  mcpServerKey: "nre",
+  skillName: "nano-reverse-engineer",
   skillVersion: PACKAGE_METADATA.skillVersion,
-  configFileName: "rea.json",
-  nreConfigFileName: "nre.json",
+  configFileName: "nre.json",
 } as const;
 
 /** Exact SDK package identities, distinct from negotiated protocol version. */

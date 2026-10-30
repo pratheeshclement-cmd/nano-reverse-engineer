@@ -90,7 +90,7 @@ it.each([
   async ({ phase, message, parsedFiles }) => {
     const boundary = createCancellationBoundary(phase, message);
     progressBoundary.observe = boundary.observe;
-    const root = await createTestTempDirectory("rea-mcp-js-cancellation-");
+    const root = await createTestTempDirectory("nre-mcp-js-cancellation-");
     await writeFile(join(root, "main.js"), "export const observed = 1;\n");
     await writeFile(join(root, "second.js"), "export const pending = 2;\n");
     const session = createTestBinarySession(() => {

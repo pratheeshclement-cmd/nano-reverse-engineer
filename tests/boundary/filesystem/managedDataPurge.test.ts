@@ -14,10 +14,10 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "finishes purging after $name removes the working directory (relative selection: $relative)",
   async ({ name, relative }) => {
-    const home = await createTestTempDirectory("rea-managed-cache-cwd-");
-    const cwd = join(home, ".rea", name);
+    const home = await createTestTempDirectory("nre-managed-cache-cwd-");
+    const cwd = join(home, ".nre", name);
     const cacheRoot = join(home, "cache");
-    const cache = join(cacheRoot, "rea", "kuna");
+    const cache = join(cacheRoot, "nre", "kuna");
     await mkdir(cwd, { recursive: true });
     await mkdir(cache, { recursive: true });
     await writeFile(join(cache, "cached"), "owned cache");
@@ -37,7 +37,7 @@ it.skipIf(process.platform === "win32").each([
         `import { systemUninstallHost } from ${JSON.stringify(moduleUrl)};
 const [home, cwd, cacheRoot, selected] = process.argv.slice(1);
 const host = systemUninstallHost(home, undefined, {
-  XDG_CACHE_HOME: cacheRoot, REA_KUNA_CACHE_DIR: selected,
+  XDG_CACHE_HOME: cacheRoot, NRE_KUNA_CACHE_DIR: selected,
 }, "linux");
 // Reset Node's cwd cache after module loading, before the real removal.
 process.chdir(cwd);
@@ -75,22 +75,22 @@ finally { await host.close?.(); }`,
 it.each(["darwin", "linux"] as const)(
   "purges producer-owned default cache namespaces on %s and preserves their siblings",
   async (platform) => {
-    const home = await createTestTempDirectory("rea-managed-cache-purge-");
+    const home = await createTestTempDirectory("nre-managed-cache-purge-");
     const cache = join(
       home,
       platform === "darwin" ? "Library/Caches" : "xdg-cache",
     );
     const directories = [
-      join(home, ".rea", "cache"),
-      join(home, ".rea", "state"),
-      join(cache, "rea", "kuna"),
-      ...(platform === "linux" ? [join(cache, "rea", "hopper-releases")] : []),
+      join(home, ".nre", "cache"),
+      join(home, ".nre", "state"),
+      join(cache, "nre", "kuna"),
+      ...(platform === "linux" ? [join(cache, "nre", "hopper-releases")] : []),
     ];
     for (const directory of directories) {
       await mkdir(directory, { recursive: true });
-      await writeFile(join(directory, "cached"), "REA cache");
+      await writeFile(join(directory, "cached"), "NRE cache");
     }
-    const sibling = join(cache, "rea", "caller-evidence");
+    const sibling = join(cache, "nre", "caller-evidence");
     await mkdir(sibling);
     await writeFile(join(sibling, "retained"), "caller evidence");
     const host = systemUninstallHost(
@@ -121,19 +121,19 @@ it.each(["darwin", "linux"] as const)(
 );
 
 it("retains an arbitrary caller-selected Kuna cache and refuses a linked managed namespace", async () => {
-  const home = await createTestTempDirectory("rea-managed-cache-link-");
+  const home = await createTestTempDirectory("nre-managed-cache-link-");
   const custom = join(home, "caller-data");
   await mkdir(custom);
   await writeFile(join(custom, "evidence"), "retained");
   const cache = join(home, "cache");
   await mkdir(cache);
-  await symlink(custom, join(cache, "rea"), "dir");
+  await symlink(custom, join(cache, "nre"), "dir");
   const host = systemUninstallHost(
     home,
     undefined,
     {
       XDG_CACHE_HOME: cache,
-      REA_KUNA_CACHE_DIR: custom,
+      NRE_KUNA_CACHE_DIR: custom,
     },
     "linux",
   );
@@ -174,16 +174,16 @@ it.each([
 ])(
   "purges a default Kuna cache selected with a $label",
   async ({ spelling }) => {
-    const home = await createTestTempDirectory("rea-managed-cache-spelling-");
+    const home = await createTestTempDirectory("nre-managed-cache-spelling-");
     const root = join(home, "Library/Caches");
-    const cache = join(root, "rea", "kuna");
+    const cache = join(root, "nre", "kuna");
     await mkdir(cache, { recursive: true });
-    await writeFile(join(cache, "cached"), "REA cache");
+    await writeFile(join(cache, "cached"), "NRE cache");
     const host = systemUninstallHost(
       home,
       undefined,
       {
-        REA_KUNA_CACHE_DIR: spelling(cache),
+        NRE_KUNA_CACHE_DIR: spelling(cache),
       },
       "darwin",
     );
@@ -205,8 +205,8 @@ it.each([
 );
 
 it("reports the Hopper producer's invalid cache selection rather than silently falling back", async () => {
-  const home = await createTestTempDirectory("rea-managed-cache-invalid-");
-  const fallback = join(home, ".cache", "rea", "hopper-releases");
+  const home = await createTestTempDirectory("nre-managed-cache-invalid-");
+  const fallback = join(home, ".cache", "nre", "hopper-releases");
   await mkdir(fallback, { recursive: true });
   await writeFile(join(fallback, "release"), "retained");
   const host = systemUninstallHost(
@@ -230,21 +230,21 @@ it("reports the Hopper producer's invalid cache selection rather than silently f
 });
 
 it("reports a retained Kuna cache reached through symlink parent traversal", async () => {
-  const home = await createTestTempDirectory("rea-managed-cache-parent-");
+  const home = await createTestTempDirectory("nre-managed-cache-parent-");
   const root = join(home, "cache");
-  const cache = join(root, "rea", "kuna");
+  const cache = join(root, "nre", "kuna");
   const external = join(home, "external");
   await mkdir(cache, { recursive: true });
   await mkdir(join(external, "subdir"), { recursive: true });
   await mkdir(join(external, "kuna"));
   await writeFile(join(cache, "cached"), "owned cache");
   await writeFile(join(external, "kuna", "evidence"), "caller evidence");
-  await symlink(join(external, "subdir"), join(root, "rea", "alias"), "dir");
-  const custom = `${root}/rea/alias/../kuna`;
+  await symlink(join(external, "subdir"), join(root, "nre", "alias"), "dir");
+  const custom = `${root}/nre/alias/../kuna`;
   const host = systemUninstallHost(
     home,
     undefined,
-    { XDG_CACHE_HOME: root, REA_KUNA_CACHE_DIR: custom },
+    { XDG_CACHE_HOME: root, NRE_KUNA_CACHE_DIR: custom },
     "linux",
   );
   try {

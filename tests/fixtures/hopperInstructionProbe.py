@@ -109,7 +109,7 @@ class Procedure:
 
 def main():
     path = sys.argv[1]
-    bridge = {"__file__": path, "__name__": "rea_hopper_bridge"}
+    bridge = {"__file__": path, "__name__": "nre_hopper_bridge"}
     exec(compile(Path(path).read_text(encoding="utf-8"), path, "exec"), bridge)
     scenario = sys.argv[2]
     instructions = {0x1000: Instruction("mov"), 0x1004: Instruction("b.ne"),

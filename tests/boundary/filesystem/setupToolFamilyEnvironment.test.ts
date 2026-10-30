@@ -17,7 +17,7 @@ it.each([
 ])(
   "validates selected environment scope $environmentFamilies with option $toolFamilies taking precedence",
   async ({ environmentFamilies, toolFamilies }) => {
-    const home = await createTestTempDirectory("rea-setup-tool-families-");
+    const home = await createTestTempDirectory("nre-setup-tool-families-");
     const client = supportedClients(home, "darwin", {}).find(
       ({ name }) => name === "cursor",
     );
@@ -26,7 +26,7 @@ it.each([
     await writeFile(client.configPath, '{"theme":"caller"}\n');
     const createHost = () => ({
       ...systemSetupHost(createDoctorHostFixture({ homeDirectory: home }), {
-        REA_MCP_TOOL_FAMILIES: environmentFamilies,
+        NRE_MCP_TOOL_FAMILIES: environmentFamilies,
         UNRELATED_CALLER_VARIABLE: "must not persist",
       }),
       detectedClients: async () => [client],
@@ -44,9 +44,9 @@ it.each([
     if (toolFamilies === undefined && environmentFamilies !== "artifact") {
       expect(first.status).toBe("needs_human");
       expect(first.appliedActions).toEqual([]);
-      expect(first.remediation).toContain("REA_MCP_TOOL_FAMILIES");
+      expect(first.remediation).toContain("NRE_MCP_TOOL_FAMILIES");
       await expect(
-        access(`${client.configPath}.rea.backup`),
+        access(`${client.configPath}.nre.backup`),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });
@@ -60,7 +60,7 @@ it.each([
     expect(JSON.parse(configured)).toMatchObject({
       theme: "caller",
       mcpServers: {
-        rea: { env: { REA_MCP_TOOL_FAMILIES: toolFamilies ?? "artifact" } },
+        nre: { env: { NRE_MCP_TOOL_FAMILIES: toolFamilies ?? "artifact" } },
       },
     });
     expect(configured).not.toContain("UNRELATED_CALLER_VARIABLE");

@@ -11,7 +11,7 @@ import { connectLocalToolsMcp } from "../fixtures/localToolsMcp.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 
 it("reports an ESP segment whose load address alone changed", async () => {
-  const root = await createTestTempDirectory("rea-esp-comparison-");
+  const root = await createTestTempDirectory("nre-esp-comparison-");
   const { call } = await connectLocalToolsMcp();
   const inspect = async (
     name: string,

@@ -38,7 +38,7 @@ const cases = [
 cliTest.for(cases)(
   "inventories and extracts an ESP $role image through the compiled CLI",
   async ({ role, bytes, segments }, { cli }) => {
-    const directory = await createTestTempDirectory("rea-esp-cli-");
+    const directory = await createTestTempDirectory("nre-esp-cli-");
     const source = join(directory, `${role}.bin`);
     await writeFile(source, bytes);
     const inspected = await cli.run({
@@ -94,7 +94,7 @@ cliTest.for(cases)(
 );
 
 cliTest("refuses an ESP8266 image through the CLI", async ({ cli }) => {
-  const directory = await createTestTempDirectory("rea-esp8266-cli-");
+  const directory = await createTestTempDirectory("nre-esp8266-cli-");
   const source = join(directory, "esp8266.bin");
   await writeFile(source, esp8266Image());
   const result = await cli.run({

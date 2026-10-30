@@ -37,9 +37,9 @@ const inspectedPair = async (
   await writeZip(one, { "a.txt": "same" });
   await writeZip(two, { "a.txt": "same", "b.txt": "new" });
   const { call, client } = await connectLocalToolsMcp({
-    REA_MCP_TOOL_FAMILIES: "session,artifact",
-    REA_MCP_INPUT_SCHEMA_PROFILE: profile,
-    REA_MCP_OUTPUT_SCHEMA_PROFILE: profile,
+    NRE_MCP_TOOL_FAMILIES: "session,artifact",
+    NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
+    NRE_MCP_OUTPUT_SCHEMA_PROFILE: profile,
     NODE_OPTIONS: "--max-old-space-size=2048",
     RAYON_NUM_THREADS: "2",
   });
@@ -63,7 +63,7 @@ cliTest.for(["full", "compact"] as const)(
   { timeout: 60_000 },
   async (profile, { cli }) => {
     const { root, one, call, client, inspect, left, right } =
-      await inspectedPair("rea-artifact-sources-", profile);
+      await inspectedPair("nre-artifact-sources-", profile);
     const compare = async (input: Record<string, unknown>) => {
       const compared = await call("compare_artifacts", input);
       expect(compared.isError, JSON.stringify(compared)).not.toBe(true);
@@ -165,9 +165,9 @@ cliTest.for(["full", "compact"] as const)(
     const summaryOnly = join(root, "summary-only.json");
     await writeFile(summaryOnly, JSON.stringify(summary));
     const { call: freshCall } = await connectLocalToolsMcp({
-      REA_MCP_TOOL_FAMILIES: "session,artifact",
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_TOOL_FAMILIES: "session,artifact",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: profile,
       NODE_OPTIONS: "--max-old-space-size=2048",
     });
     const missingParent = await freshCall("compare_artifacts", {
@@ -190,7 +190,7 @@ cliTest(
   "refuses artifact references it cannot resolve through MCP and the CLI",
   async ({ cli }) => {
     const { root, one, call, right } = await inspectedPair(
-      "rea-artifact-refusals-",
+      "nre-artifact-refusals-",
     );
     // Evidence the CLI produced was never retained by this MCP session.
     const produced = await cli.run({

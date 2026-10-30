@@ -60,7 +60,7 @@ it.each(["path", "sha256"] as const)(
   "excludes an explicitly sensitive selected capture %s from public snapshot facts",
   async (sensitiveField) => {
     const root = await createTestTempDirectory(
-      "rea-capture-snapshot-redaction-",
+      "nre-capture-snapshot-redaction-",
     );
     const path = join(root, "private-capture-marker.har");
     const bytes = Buffer.from(JSON.stringify(historicalHar()));
@@ -112,7 +112,7 @@ it.each(["path", "sha256"] as const)(
 );
 
 it("redacts repeated selected-file close failures at final CLI delivery and retains retry ownership", async () => {
-  const root = await createTestTempDirectory("rea-capture-cli-redaction-");
+  const root = await createTestTempDirectory("nre-capture-cli-redaction-");
   const path = join(root, "private-cli-capture.har");
   const bytes = Buffer.from(JSON.stringify(historicalHar()));
   const sha256 = createHash("sha256").update(bytes).digest("hex");
@@ -177,7 +177,7 @@ it("redacts repeated selected-file close failures at final CLI delivery and reta
 it.each(["captured", "over-capacity"] as const)(
   "preserves %s read facts through unchanged-error and cleanup-primary service redaction",
   async (status) => {
-    const root = await createTestTempDirectory("rea-read-snapshot-redaction-");
+    const root = await createTestTempDirectory("nre-read-snapshot-redaction-");
     const path = join(root, "private-read-marker.bin");
     await writeFile(path, "physical snapshot bytes");
     const snapshot = await readStableArtifact(path, 1024);

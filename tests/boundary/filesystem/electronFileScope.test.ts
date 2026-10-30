@@ -20,7 +20,7 @@ import { authorizedElectronFile } from "../../../src/browser/ElectronFileScope.j
 
 describe("Electron file scope", () => {
   it("accepts dot-prefixed child names beneath a canonical root", async () => {
-    const root = await createTestTempDirectory("rea-electron-dot-child-");
+    const root = await createTestTempDirectory("nre-electron-dot-child-");
     const directory = join(root, "..cache");
     await mkdir(directory);
     const path = join(directory, "index.html");
@@ -29,7 +29,7 @@ describe("Electron file scope", () => {
   });
 
   it("accepts explicit canonical local files and rejects remote or malformed URLs", async () => {
-    const base = await createTestTempDirectory("rea-electron-scope-");
+    const base = await createTestTempDirectory("nre-electron-scope-");
     const root = join(base, "root");
     const outside = join(base, "outside");
     await mkdir(root);
@@ -59,7 +59,7 @@ describe("Electron file scope", () => {
   });
 
   it("resolves regular files Electron serves from inside an ASAR archive", async () => {
-    const root = await createTestTempDirectory("rea-electron-asar-scope-");
+    const root = await createTestTempDirectory("nre-electron-asar-scope-");
     const source = join(root, "source");
     await mkdir(join(source, "build", "static"), { recursive: true });
     await mkdir(join(source, "native"));
@@ -96,7 +96,7 @@ describe("Electron file scope", () => {
   });
 
   it("accepts file URLs with long query text", async () => {
-    const root = await createTestTempDirectory("rea-electron-long-url-");
+    const root = await createTestTempDirectory("nre-electron-long-url-");
     const path = join(root, "index.html");
     await writeFile(path, "allowed");
     const value = `${pathToFileURL(path).href}?${"x".repeat(70_000)}`;
@@ -105,7 +105,7 @@ describe("Electron file scope", () => {
   });
 
   it("resolves an archive beneath an ASAR-named directory and rejects oversized declared headers", async () => {
-    const root = await createTestTempDirectory("rea-electron-header-");
+    const root = await createTestTempDirectory("nre-electron-header-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "index.html"), "page");
@@ -130,7 +130,7 @@ describe("Electron file scope", () => {
     ).toBeUndefined();
   });
   it("authorizes ASAR members only under the provider's selected header admission", async () => {
-    const root = await createTestTempDirectory("rea-electron-admission-");
+    const root = await createTestTempDirectory("nre-electron-admission-");
     const source = join(root, "source");
     await mkdir(source);
     await writeFile(join(source, "index.html"), "page");
@@ -162,7 +162,7 @@ describe("Electron file scope", () => {
 });
 
 it("keeps encoded query and fragment separators outside filesystem admission", async () => {
-  const root = await createTestTempDirectory("rea-electron-url-components-");
+  const root = await createTestTempDirectory("nre-electron-url-components-");
   const path = join(root, "index.html");
   await writeFile(path, "allowed");
   const base = pathToFileURL(path).href;
@@ -185,7 +185,7 @@ it("keeps encoded query and fragment separators outside filesystem admission", a
 });
 
 it("refreshes ASAR member admission after a same-size rewrite preserving modification time", async () => {
-  const root = await createTestTempDirectory("rea-electron-asar-rewrite-");
+  const root = await createTestTempDirectory("nre-electron-asar-rewrite-");
   const source = join(root, "source");
   await mkdir(source);
   await writeFile(join(source, "old.html"), "page");

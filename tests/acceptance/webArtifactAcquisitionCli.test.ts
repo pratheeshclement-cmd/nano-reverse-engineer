@@ -11,7 +11,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "delivers completed web acquisition identities through CLI and stdio MCP when a later map is missing",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-web-acquisition-cli-");
+    const root = await createTestTempDirectory("nre-web-acquisition-cli-");
     const fixture = webSourceLocationFixture();
     const manifestPath = join(root, "manifest.json");
     const sourcePath = join(root, "files", "modules", "main.js");
@@ -21,8 +21,8 @@ cliTest(
     await writeFile(manifestPath, manifest);
     await writeFile(sourcePath, fixture.source);
     const environment = {
-      REA_LOG_LEVEL: "silent",
-      REA_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
+      NRE_LOG_LEVEL: "silent",
+      NRE_BROWSER_EXECUTABLE: "relative-unconfigured-browser",
     };
     const result = await cli.run({
       arguments: [

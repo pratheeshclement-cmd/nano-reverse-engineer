@@ -28,7 +28,7 @@ const acquireProvider = async (
     Parameters<typeof createApplicationMcpHarness>[0]
   >["serverOptions"],
 ) => {
-  const directory = await createTestTempDirectory("rea-mcp-harness-close-");
+  const directory = await createTestTempDirectory("nre-mcp-harness-close-");
   const path = join(directory, "target.hop");
   await writeFile(path, "fixture database bytes");
   const operations: string[] = [];

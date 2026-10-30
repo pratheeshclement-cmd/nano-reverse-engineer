@@ -41,7 +41,7 @@ const saveSelectedSnapshot = async (
 };
 
 it("retains a selected snapshot descriptor through MCP cleanup discovery and same-connection recovery", async () => {
-  const root = await createTestTempDirectory("rea-mcp-snapshot-read-cleanup-");
+  const root = await createTestTempDirectory("nre-mcp-snapshot-read-cleanup-");
   const resources: Array<{ close(): Promise<unknown> }> = [];
   const calls: string[] = [];
   let starts = 0;
@@ -169,7 +169,7 @@ it("retains a selected snapshot descriptor through MCP cleanup discovery and sam
       evidence_id: expect.any(String),
       limitations: [
         ...originalEvidence.limitations,
-        "Loaded from a local REA analysis snapshot; this call did not re-run the provider.",
+        "Loaded from a local NRE analysis snapshot; this call did not re-run the provider.",
       ],
     });
     expect(replayEvidence.evidence_id).not.toBe(originalEvidence.evidence_id);

@@ -29,7 +29,7 @@ it.each([
 ] as const)(
   "preserves the %s host resource refusal through redaction",
   async (code, guidance) => {
-    const root = await createTestTempDirectory("rea-write-resource-");
+    const root = await createTestTempDirectory("nre-write-resource-");
     const resources = new ArtifactResourceScope();
     onTestFinished(() => resources.close());
     failure.code = code;
@@ -79,7 +79,7 @@ function* limitedParts(): Generator<string> {
 it.each([false, true])(
   "retains a staged EFBIG and cleans or retries its owner (cleanup fails: %s)",
   async (cleanupFails) => {
-    const root = await createTestTempDirectory("rea-staged-resource-");
+    const root = await createTestTempDirectory("nre-staged-resource-");
     const output = join(root, "out.json");
     const resources = new ArtifactResourceScope();
     const { OwnedStagedOutput } =
@@ -108,7 +108,7 @@ it.each([false, true])(
         },
       });
       const staging = (await readdir(root)).filter((name) =>
-        name.startsWith(".rea-write-"),
+        name.startsWith(".nre-write-"),
       );
       expect(staging).toHaveLength(cleanupFails ? 1 : 0);
       expect((await readdir(root)).includes("out.json")).toBe(false);

@@ -41,7 +41,7 @@ const expectArchive = (bytes: Buffer, result: unknown) => {
 cliTest(
   "decodes nonstandard binary-plist table widths without changing evidence",
   async ({ cli }) => {
-    const directory = await createTestTempDirectory("rea-plist-table-widths-");
+    const directory = await createTestTempDirectory("nre-plist-table-widths-");
     const { call } = await connectLocalToolsMcp({
       HOME: directory,
       USERPROFILE: directory,
@@ -53,7 +53,7 @@ cliTest(
       const cliOutput = await cli.run({
         arguments: ["inspect-keyed-archive", path, "--json"],
         environment: {
-          REA_LOG_LEVEL: "silent",
+          NRE_LOG_LEVEL: "silent",
           HOME: directory,
           USERPROFILE: directory,
         },

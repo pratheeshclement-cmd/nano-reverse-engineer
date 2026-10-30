@@ -33,7 +33,7 @@ const annotatedSchema = {
 
 const referencedSchema = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
-  $id: "urn:rea:tool-output:sha256:fixture",
+  $id: "urn:nre:tool-output:sha256:fixture",
   type: "object",
   properties: {
     entries: { type: "array", items: { $ref: "#/$defs/entry" } },

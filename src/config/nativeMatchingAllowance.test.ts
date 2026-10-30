@@ -40,7 +40,7 @@ it("accepts decimal byte counts from 1 byte to 1 GiB as a launch setting", () =>
       ),
     ).toEqual({ ok: true, value: { value: bytes, source: "setting" } });
   }
-  // rea setup forwards the launch seed into client registrations.
+  // nre setup forwards the launch seed into client registrations.
   expect(
     explicitSetupRegistrationEnvironment({
       [NATIVE_MATCHING_ALLOWANCE_SETTING]: "268435456",

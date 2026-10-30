@@ -38,7 +38,7 @@ const it = test.skipIf(process.platform === "win32");
 it.each(["alias/../bin", ""])(
   "keeps PATH=%j Java tied to each caller directory across private-workspace launches",
   async (searchPath) => {
-    const root = await createTestTempDirectory("rea-jadx-relative-java-");
+    const root = await createTestTempDirectory("nre-jadx-relative-java-");
     const apk = join(root, "fixture.apk"),
       jar = join(root, "fixture.jar");
     await writeOrderedZip(apk, ["AndroidManifest.xml", "classes.dex"]);
@@ -72,9 +72,9 @@ it.each(["alias/../bin", ""])(
       ...process.env,
       JAVA_HOME: undefined,
       PATH: searchPath,
-      REA_JADX_MCP_JAR: jar,
-      REA_JADX_OPERATION_TIMEOUT_MS: "5000",
-      REA_FAKE_JADX_CLASS_COUNT: "0",
+      NRE_JADX_MCP_JAR: jar,
+      NRE_JADX_OPERATION_TIMEOUT_MS: "5000",
+      NRE_FAKE_JADX_CLASS_COUNT: "0",
     });
     const service = new AndroidAnalysisService(provider);
     const previousCwd = process.cwd();
@@ -357,7 +357,7 @@ it("rejects a copied JAR that differs from its admitted session identity", async
   }
   await writeFile(jar, "engine changed between hashing and copying");
   const root = await PrivateRuntimeRoot.create({
-    prefix: "rea-jadx-admission-",
+    prefix: "nre-jadx-admission-",
   });
   try {
     await expect(
@@ -391,7 +391,7 @@ it("reuses immutable engine state while keeping each Evidence observation separa
   expect(second.value.raw_result).toMatchObject({
     loaded: { class_count: 401 },
     calls: [
-      expect.objectContaining({ operation: "rea_jvm_status" }),
+      expect.objectContaining({ operation: "nre_jvm_status" }),
       expect.objectContaining({ operation: "get_class_summary" }),
     ],
   });
@@ -523,7 +523,7 @@ it("retires an idle engine and starts a fresh one for a later request", async ()
 
 it("keeps idle retirement after refusing a mapping for a loaded engine", async () => {
   const { service, apk, launches, provider } = await setup();
-  const missing = `${await createTestTempDirectory("rea-jadx-mapping-")}/mapping.txt`;
+  const missing = `${await createTestTempDirectory("nre-jadx-mapping-")}/mapping.txt`;
   vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
   try {
     const first = await service.execute("inspect_android_package", {
@@ -867,7 +867,7 @@ it("ends each queued stalled operation at the caller-selected deadline and clean
     "stall",
     undefined,
     undefined,
-    { REA_JADX_OPERATION_TIMEOUT_MS: "1500" },
+    { NRE_JADX_OPERATION_TIMEOUT_MS: "1500" },
   );
   const started = performance.now();
   // The second request waits behind the first; its deadline starts at the
@@ -884,7 +884,7 @@ it("ends each queued stalled operation at the caller-selected deadline and clean
         _tag: "AnalysisTimeoutError",
         timeoutMs: 1500,
         partialObservation: {
-          calls: [expect.objectContaining({ operation: "rea_jvm_status" })],
+          calls: [expect.objectContaining({ operation: "nre_jvm_status" })],
         },
       },
     });
@@ -905,7 +905,7 @@ it("completes an operation under the largest accepted deadline", async () => {
     "normal",
     undefined,
     undefined,
-    { REA_JADX_OPERATION_TIMEOUT_MS: "2147483647" },
+    { NRE_JADX_OPERATION_TIMEOUT_MS: "2147483647" },
   );
   const outcome = await service.execute("inspect_android_package", {
     path: apk,
@@ -916,13 +916,13 @@ it("completes an operation under the largest accepted deadline", async () => {
 });
 
 it.each(["", "2147483648"])(
-  "rejects REA_JADX_OPERATION_TIMEOUT_MS=%j before probing or launching Java",
+  "rejects NRE_JADX_OPERATION_TIMEOUT_MS=%j before probing or launching Java",
   async (value) => {
     const { service, apk, launches, javaProbeCount } = await setup(
       "normal",
       undefined,
       undefined,
-      { REA_JADX_OPERATION_TIMEOUT_MS: value },
+      { NRE_JADX_OPERATION_TIMEOUT_MS: value },
     );
     const outcome = await service.execute("inspect_android_package", {
       path: apk,
@@ -931,7 +931,7 @@ it.each(["", "2147483648"])(
       ok: false,
       error: {
         _tag: "AnalysisCapabilityUnavailableError",
-        reason: expect.stringContaining("REA_JADX_OPERATION_TIMEOUT_MS"),
+        reason: expect.stringContaining("NRE_JADX_OPERATION_TIMEOUT_MS"),
       },
     });
     expect(launches).toHaveLength(0);
@@ -946,7 +946,7 @@ it("bounds each upstream call by the selected deadline instead of a fixed limit"
   const { apk } = await setup();
   const target = await parseBinaryTarget(apk);
   if (!target.ok) throw target.error;
-  const workspace = await createTestTempDirectory("rea-jadx-call-deadline-");
+  const workspace = await createTestTempDirectory("nre-jadx-call-deadline-");
   const pids: number[] = [];
   const session = new JadxSession(
     {
@@ -966,7 +966,7 @@ it("bounds each upstream call by the selected deadline instead of a fixed limit"
           ),
         ],
         expectedCommand: process.execPath,
-        env: { ...options.env, REA_FAKE_JADX_MODE: "stall" },
+        env: { ...options.env, NRE_FAKE_JADX_MODE: "stall" },
       });
       if (spawned.process.pid !== undefined) pids.push(spawned.process.pid);
       return spawned;
@@ -993,7 +993,7 @@ it("bounds each upstream call by the selected deadline instead of a fixed limit"
     });
     expect(performance.now() - started).toBeLessThan(10_000);
     expect(session.partialObservation()?.calls).toEqual([
-      expect.objectContaining({ operation: "rea_jvm_status" }),
+      expect.objectContaining({ operation: "nre_jvm_status" }),
     ]);
   } finally {
     await session.close();
@@ -1018,7 +1018,7 @@ it("reports missing explicit tools without trying to install or launch them", as
     ok: false,
     error: {
       _tag: "AnalysisCapabilityUnavailableError",
-      reason: expect.stringContaining("REA_JADX_MCP_JAR"),
+      reason: expect.stringContaining("NRE_JADX_MCP_JAR"),
     },
   });
 });
@@ -1092,7 +1092,7 @@ it.each(["heap-failure", "other-memory-failure"])(
     });
     expect(projected.remediation.action).toContain(
       mode === "heap-failure"
-        ? "REA_JADX_HEAP_MIB"
+        ? "NRE_JADX_HEAP_MIB"
         : "increasing heap alone may not help",
     );
     await provider.close();
@@ -1150,7 +1150,7 @@ it("retains typed memory failure through failed cleanup and restores it after re
     expect(projectAnalysisError(failure)).toMatchObject({
       code: "resource_constraint",
       retryable: false,
-      remediation: { action: expect.stringContaining("REA_JADX_HEAP_MIB") },
+      remediation: { action: expect.stringContaining("NRE_JADX_HEAP_MIB") },
       details: {
         resource: "memory",
         reported_limits: { observed_max_heap_bytes: 67108864 },

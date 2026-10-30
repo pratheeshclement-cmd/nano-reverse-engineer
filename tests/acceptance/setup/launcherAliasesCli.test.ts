@@ -13,10 +13,10 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(process.platform === "win32")(
   "migrates an owned shebang registration and starts its generated MCP command without a runtime on PATH",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-registration-interpreter-");
+    const home = await createTestTempDirectory("nre-registration-interpreter-");
     const profile = join(home, ".qwen");
     const config = join(profile, "settings.json");
-    const entrypoint = resolve("scripts/rea.mjs");
+    const entrypoint = resolve("scripts/nre.mjs");
     const restrictedPath = join(home, "path-without-runtime");
     await mkdir(restrictedPath);
     // Linux process ownership requires procps; no JavaScript runtime is exposed.
@@ -29,7 +29,7 @@ cliTest.skipIf(process.platform === "win32")(
     const unrelated = { command: "other-server", args: ["keep"] };
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
+        nre: {
           command: entrypoint,
           args: ["mcp"],
           env: retainedEnvironment,
@@ -83,7 +83,7 @@ cliTest.skipIf(process.platform === "win32")(
     const document = z
       .object({
         mcpServers: z.object({
-          rea: z.object({
+          nre: z.object({
             command: z.string(),
             args: z.array(z.string()),
             env: z.record(z.string(), z.string()),
@@ -92,14 +92,14 @@ cliTest.skipIf(process.platform === "win32")(
         }),
       })
       .parse(JSON.parse(configured));
-    const registration = document.mcpServers.rea;
+    const registration = document.mcpServers.nre;
     expect(registration).toMatchObject({
       command: process.execPath,
       args: [entrypoint, "mcp"],
       env: retainedEnvironment,
     });
     expect(document.mcpServers.unrelated).toEqual(unrelated);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
 
     const transport = new StdioClientTransport({
       command: registration.command,
@@ -134,24 +134,24 @@ cliTest.skipIf(process.platform === "win32")(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
 cliTest.skipIf(process.platform === "win32").for([
-  ["rea", "rea-agents"],
-  ["rea-agents", "rea"],
+  ["nre", "nano-reverse-engineer"],
+  ["nano-reverse-engineer", "nre"],
 ] as const)(
   "recognizes setup through %s when doctor and uninstall use %s",
   async ([registered, alternate], { processes }) => {
-    const root = await createTestTempDirectory("rea-launcher-registration-");
+    const root = await createTestTempDirectory("nre-launcher-registration-");
     const home = join(root, "home");
     const config = join(home, ".cursor/mcp.json");
     await mkdir(join(home, ".cursor"), { recursive: true });
     const unrelated = { command: "other-server", args: [] };
     await writeFile(config, JSON.stringify({ mcpServers: { unrelated } }));
     for (const name of [registered, alternate])
-      await symlink(resolve("scripts/rea.mjs"), join(root, name));
+      await symlink(resolve("scripts/nre.mjs"), join(root, name));
     const run = (alias: string, arguments_: readonly string[]) =>
       processes.run(process.execPath, [join(root, alias), ...arguments_], {
         cwd: home,
@@ -204,11 +204,11 @@ cliTest.skipIf(process.platform === "win32").for([
 ] as const)(
   "retains %s launcher identity as unknown for a %s registration",
   async ([failure, form], { cli }) => {
-    const home = await createTestTempDirectory("rea-unresolved-registration-");
+    const home = await createTestTempDirectory("nre-unresolved-registration-");
     const directory = join(home, ".cursor");
     const config = join(directory, "mcp.json");
     await mkdir(directory);
-    const launcher = join(home, "rea");
+    const launcher = join(home, "nre");
     if (failure === "dangling")
       await symlink(join(home, "removed-release.mjs"), launcher);
     else {
@@ -221,7 +221,7 @@ cliTest.skipIf(process.platform === "win32").for([
         : [process.execPath, launcher, "mcp"];
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: command[0], args: command.slice(1) },
+        nre: { command: command[0], args: command.slice(1) },
         unrelated: { command: "other-server" },
       },
     });
@@ -265,24 +265,24 @@ cliTest.skipIf(process.platform === "win32")(
   "uninstall preserves a different executable reached through symlink parent traversal",
   async ({ processes }) => {
     const root = await createTestTempDirectory(
-      "rea-launcher-native-traversal-",
+      "nre-launcher-native-traversal-",
     );
     const home = join(root, "home");
     const config = join(home, ".cursor/mcp.json");
     await mkdir(join(home, ".cursor"), { recursive: true });
-    const current = join(root, "rea");
-    await symlink(resolve("scripts/rea.mjs"), current);
+    const current = join(root, "nre");
+    await symlink(resolve("scripts/nre.mjs"), current);
     const other = join(root, "other");
     await mkdir(join(other, "child"), { recursive: true });
-    await writeFile(join(other, "rea"), "#!/bin/sh\nprintf foreign\n", {
+    await writeFile(join(other, "nre"), "#!/bin/sh\nprintf foreign\n", {
       mode: 0o700,
     });
     await symlink(join(other, "child"), join(root, "link"));
-    const candidate = `${root}/link/../rea`;
+    const candidate = `${root}/link/../nre`;
     expect(await readFile(candidate, "utf8")).toContain("printf foreign");
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: candidate, args: ["mcp"] },
+        nre: { command: candidate, args: ["mcp"] },
         unrelated: { command: "other-server" },
       },
     });

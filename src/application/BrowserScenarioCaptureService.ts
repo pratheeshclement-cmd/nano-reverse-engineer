@@ -17,7 +17,7 @@ import {
 } from "./ProviderOperationExecution.js";
 
 const OPERATION = "capture_browser_scenario" as const;
-const PROVIDER_ID = "rea-playwright-browser-scenario";
+const PROVIDER_ID = "nre-playwright-browser-scenario";
 
 /** Execute one controlled browser scenario using its explicit request scope. */
 export const captureBrowserScenario = async (

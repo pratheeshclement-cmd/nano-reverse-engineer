@@ -445,7 +445,7 @@ describe("resource uncertainty in public CLI Evidence", () => {
     "preserves partial membership while complete inventories still prove removal",
     async ({ cli }) => {
       const { state, inspect } = await startBrowser();
-      const root = await createTestTempDirectory("rea-resource-comparison-");
+      const root = await createTestTempDirectory("nre-resource-comparison-");
       const before = join(root, "before.json");
       const after = join(root, "after.json");
       await writeFile(before, JSON.stringify({ inspection: await inspect() }));

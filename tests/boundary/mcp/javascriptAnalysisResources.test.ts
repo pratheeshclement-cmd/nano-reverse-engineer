@@ -37,8 +37,8 @@ it("delivers deadline recovery guidance at initialization before any tool call",
 });
 
 it("accepts more work after application expansion exceeds memory and retains every static finding", async () => {
-  const root = await createTestTempDirectory("rea-js-resource-boundary-");
-  const nextRoot = await createTestTempDirectory("rea-js-resource-recovery-");
+  const root = await createTestTempDirectory("nre-js-resource-boundary-");
+  const nextRoot = await createTestTempDirectory("nre-js-resource-recovery-");
   await writeFile(join(nextRoot, "main.js"), "export const recovered = 9;\n");
   const source = Array.from(
     { length: 4000 },
@@ -180,7 +180,7 @@ const repeatedSourceCount = 1500;
 const repeatedSourceText = "export const observed = 7;\n";
 
 it("returns a directly usable partial analysis reference for an oversized timeout observation", async () => {
-  const root = await createTestTempDirectory("rea-js-large-timeout-");
+  const root = await createTestTempDirectory("nre-js-large-timeout-");
   for (let offset = 0; offset < repeatedSourceCount; offset += 50)
     await Promise.all(
       Array.from({ length: 50 }, (_, index) =>
@@ -190,7 +190,7 @@ it("returns a directly usable partial analysis reference for an oversized timeou
         ),
       ),
     );
-  const nextRoot = await createTestTempDirectory("rea-js-timeout-recovery-");
+  const nextRoot = await createTestTempDirectory("nre-js-timeout-recovery-");
   await writeFile(join(nextRoot, "main.js"), "export const recovered = 9;\n");
   const { client, transport, diagnostics } = createResourceClient();
   try {
@@ -222,7 +222,7 @@ it("returns a directly usable partial analysis reference for an oversized timeou
         maximum: 2_147_483_647,
         applies_at: "next_operation",
         agent_editable: true,
-        rea_restart_required: false,
+        nre_restart_required: false,
       },
     });
     expect(error.recovery).toEqual({
@@ -310,7 +310,7 @@ const createResourceClient = () => {
   const client = new Client({ name: "javascript-resources", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: process.cwd(),
     env: {
       PATH: process.env.PATH ?? "",

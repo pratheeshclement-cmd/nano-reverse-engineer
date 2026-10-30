@@ -1,7 +1,7 @@
 import { err, ok, type Result } from "../../domain/result.js";
 
 /**
- * Preserve REA's source integer interpretation, including uint64
+ * Preserve NRE's source integer interpretation, including uint64
  * wrapping for unusual widths. Callers own byte-range and safe-number admission.
  */
 export const readBinaryPlistUnsigned64 = (

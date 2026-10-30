@@ -25,7 +25,7 @@ const harWithRequestUrls = (urls: readonly string[]) => {
 
 const writeHar = async (urls: readonly string[]): Promise<string> => {
   const path = join(
-    await createTestTempDirectory("rea-har-request-url-"),
+    await createTestTempDirectory("nre-har-request-url-"),
     "capture.har",
   );
   await writeFile(path, JSON.stringify(harWithRequestUrls(urls)));

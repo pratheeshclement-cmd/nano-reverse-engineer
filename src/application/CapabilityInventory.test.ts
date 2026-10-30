@@ -183,7 +183,7 @@ describe("ADB and Apktool host availability", () => {
     const configuredButInvalid = {
       status: "unavailable" as const,
       code: "not_configured" as const,
-      reason: "REA_ADB_PATH is invalid",
+      reason: "NRE_ADB_PATH is invalid",
       diagnostics: {},
     };
     const readyInventory = buildCapabilityInventory(status(), {

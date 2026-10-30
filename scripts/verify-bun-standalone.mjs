@@ -7,7 +7,7 @@ import { parseEvidence } from "../dist/domain/evidence.js";
 import { withVerifierCleanup } from "./lib/verifier-cleanup.mjs";
 import { createVerifierCommands } from "./lib/verify-commands.mjs";
 
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-bun-verifier-" });
+const root = await PrivateRuntimeRoot.create({ prefix: "nre-bun-verifier-" });
 const commands = await createVerifierCommands();
 const run = (command, args, options = {}) =>
   commands.exec(command, args, {
@@ -20,7 +20,7 @@ const run = (command, args, options = {}) =>
 let commandsClosed = false;
 await withVerifierCleanup(async () => {
   const source = join(root.path, "hello.ts");
-  await writeFile(source, 'console.log("REA_BUN_VERIFICATION");\n');
+  await writeFile(source, 'console.log("NRE_BUN_VERIFICATION");\n');
   const docker = process.argv.includes("--docker");
   const binary = join(root.path, "hello");
   const compiler = docker
@@ -50,7 +50,7 @@ await withVerifierCleanup(async () => {
       (
         await run(
           process.execPath,
-          ["scripts/rea.mjs", command, binary, "--json"],
+          ["scripts/nre.mjs", command, binary, "--json"],
           {
             env: {
               ...process.env,
@@ -82,7 +82,7 @@ await withVerifierCleanup(async () => {
   assert.equal(extracted.containment_verified, true);
   assert.match(
     await readFile(join(extracted.output_root, module.logical_path), "utf8"),
-    /REA_BUN_VERIFICATION/u,
+    /NRE_BUN_VERIFICATION/u,
   );
   console.log(
     JSON.stringify(

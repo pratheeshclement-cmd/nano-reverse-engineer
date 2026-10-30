@@ -18,7 +18,7 @@ import { NonRegularFileReadError } from "../filesystem/RegularFile.js";
 import { err, ok, type Result } from "../domain/result.js";
 
 /** Seed file format admitted by this adapter. */
-export const GHIDRA_SEED_FORMAT = "rea-ghidra-seeds-v1";
+export const GHIDRA_SEED_FORMAT = "nre-ghidra-seeds-v1";
 export const MAX_GHIDRA_SEED_BYTES = 32 * 1024 * 1024;
 export const MAX_GHIDRA_SEED_ENTRIES = 1_000_000;
 export const MAX_GHIDRA_SEED_NAME_LENGTH = 2000;
@@ -60,10 +60,10 @@ interface SeedEntry {
 }
 
 const seedLineError = (line: number, constraint: string) =>
-  new ConfigurationError("Invalid REA environment configuration", {
+  new ConfigurationError("Invalid NRE environment configuration", {
     settings: [
       {
-        setting: "REA_GHIDRA_SEED_FILE",
+        setting: "NRE_GHIDRA_SEED_FILE",
         constraint: `line ${line}: ${constraint}`,
       },
     ],
@@ -192,7 +192,7 @@ export const resolveGhidraAnalysisSeeds = async (
       } catch (cause: unknown) {
         return err(
           ghidraFileFailure(cause, "resolve_analysis_profile", {
-            setting: "REA_GHIDRA_SEED_FILE",
+            setting: "NRE_GHIDRA_SEED_FILE",
             path: configured,
           }),
         );
@@ -211,7 +211,7 @@ export const resolveGhidraAnalysisSeeds = async (
     .catch((cause: unknown) =>
       err(
         ghidraFileFailure(cause, "resolve_analysis_profile", {
-          setting: "REA_GHIDRA_SEED_FILE",
+          setting: "NRE_GHIDRA_SEED_FILE",
         }),
       ),
     );
@@ -244,7 +244,7 @@ export const snapshotGhidraAnalysisSeeds = async (
     })
     .catch((cause: unknown) => {
       throw ghidraFileFailure(cause, "open_binary", {
-        setting: "REA_GHIDRA_SEED_FILE",
+        setting: "NRE_GHIDRA_SEED_FILE",
         path: commitment.path,
       });
     });

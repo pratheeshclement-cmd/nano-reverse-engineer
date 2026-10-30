@@ -1,6 +1,6 @@
 /** Numeric admission contracts shared by environment parsing and runtime tools.
  * Timer maxima follow signed 32-bit scheduling. ASAR's 256 MiB maximum and
- * worker 16 GiB maxima are REA policies, not claims about format/host capacity.
+ * worker 16 GiB maxima are NRE policies, not claims about format/host capacity.
  * Regex's 7 MiB floor is measured; decoder's 8 MiB floor matches its semi-space.
  */
 /** Header/index bytes admitted when the setting is unset. */
@@ -18,7 +18,7 @@ export const MAXIMUM_ASAR_MAX_HEADER_BYTES = 256 * 1024 * 1024;
 export const DEFAULT_NATIVE_MATCHING_REPRESENTATION_BYTES = 96 * 1024 * 1024;
 
 /**
- * Largest configurable matching admission. This is an REA policy ceiling, not
+ * Largest configurable matching admission. This is an NRE policy ceiling, not
  * a claim about host capacity: the allowance approximates the heap
  * representation matching retains, and peak heap during a request can exceed
  * it. A lower value only refuses more requests, so the setting has no floor.
@@ -89,10 +89,10 @@ export const DEFAULT_REGEX_WORKER_HEAP_REQUEST_MIB = 128;
 export const MINIMUM_REGEX_WORKER_HEAP_REQUEST_MIB = 7;
 
 /**
- * Largest request one regex worker may make. 16 GiB is the same ceiling REA
+ * Largest request one regex worker may make. 16 GiB is the same ceiling NRE
  * already uses for an isolated JavaScript analysis worker. A positive Node
  * `--max-old-space-size` can still set a different effective heap; this
- * maximum bounds only the REA request.
+ * maximum bounds only the NRE request.
  */
 export const MAXIMUM_REGEX_WORKER_HEAP_REQUEST_MIB = 16_384;
 
@@ -108,8 +108,8 @@ export const CAPTURE_DECODER_SEMI_SPACE_MIB = 8;
 
 /**
  * Largest old generation one owned decoder may request. 16 GiB is the same
- * ceiling REA already uses for an isolated JavaScript analysis worker. Node
- * will start with a larger flag; this maximum is REA's refusal, so one
+ * ceiling NRE already uses for an isolated JavaScript analysis worker. Node
+ * will start with a larger flag; this maximum is NRE's refusal, so one
  * decoder cannot ask for an unbounded old generation.
  */
 export const MAXIMUM_CAPTURE_DECODER_OLD_GENERATION_MIB = 16_384;
@@ -133,7 +133,7 @@ export const MAXIMUM_DEBUGGER_COMMAND_DEADLINE_MS = 2_147_483_647;
 export const DEFAULT_DEBUGGER_MAX_SESSIONS = 8;
 
 /**
- * Smallest useful session cap. Zero admits no session. 64 is REA's refusal
+ * Smallest useful session cap. Zero admits no session. 64 is NRE's refusal
  * so one process cannot spawn an unbounded set of debugger processes; it is
  * not a measurement of host process capacity.
  */
@@ -144,7 +144,7 @@ export const MAXIMUM_DEBUGGER_MAX_SESSIONS = 64;
 export const DEFAULT_DEBUGGER_MAX_PENDING_COMMANDS = 16;
 
 /**
- * Smallest useful queue. Zero admits no command. 256 is REA's refusal so
+ * Smallest useful queue. Zero admits no command. 256 is NRE's refusal so
  * one session cannot retain an unbounded command queue. Each queued command
  * can also retain output up to the command-output cap.
  */
@@ -181,7 +181,7 @@ export const MAXIMUM_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES = Math.floor(
 
 /**
  * Bytes reserved for debugger control replies (Rizin cleanup readback and
- * GDB startup or detach MI). This is not `REA_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES`:
+ * GDB startup or detach MI). This is not `NRE_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES`:
  * a caller cap below this budget must not truncate those required replies.
  */
 export const DEBUGGER_CONTROL_REPLY_BYTES =

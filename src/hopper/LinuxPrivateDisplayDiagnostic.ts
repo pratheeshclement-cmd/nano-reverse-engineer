@@ -6,7 +6,7 @@ import {
 } from "../domain/hopperStartupFailure.js";
 import { safeParseJson } from "../domain/safeJson.js";
 
-export const LINUX_PRIVATE_DISPLAY_DIAGNOSTIC_PREFIX = "REA_X11_DIAGNOSTIC=";
+export const LINUX_PRIVATE_DISPLAY_DIAGNOSTIC_PREFIX = "NRE_X11_DIAGNOSTIC=";
 
 const diagnosticContextSchema = z.object({
   component: z.literal("hopper_private_display"),

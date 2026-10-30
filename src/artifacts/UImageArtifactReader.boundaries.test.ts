@@ -14,7 +14,7 @@ import {
 
 const fixture = async (bytes: Buffer): Promise<string> => {
   const path = join(
-    await createTestTempDirectory("rea-uimage-boundary-"),
+    await createTestTempDirectory("nre-uimage-boundary-"),
     "image",
   );
   await writeFile(path, bytes);

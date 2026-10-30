@@ -15,12 +15,12 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { analyzeJavaScriptApplication } from "../../support/javascriptApplicationScope.js";
 
 it("checks native client fixture Evidence, provenance, and every result observation", async () => {
-  const target = await createTestTempDirectory("rea-client-evidence-");
+  const target = await createTestTempDirectory("nre-client-evidence-");
   // Independent source exercises the verifier's expectations through production
   // analysis instead of manufacturing a copy of its graph representation.
   await writeFile(
     join(target, "result.js"),
-    'export function result() { return { count: 7, clientCompatibility: "REA_CLIENT_FIXTURE" }; }',
+    'export function result() { return { count: 7, clientCompatibility: "NRE_CLIENT_FIXTURE" }; }',
   );
   const result = await analyzeJavaScriptApplication({
     input_path: target,

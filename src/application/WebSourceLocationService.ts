@@ -50,7 +50,7 @@ const artifactsSchema = selectedWebScriptArtifactsSchema.extend({
 const LIMITATIONS = [
   "The source/map pairing and source-map URL context are caller-selected. Deployment authenticity and execution remain unknown.",
   "Capture metadata and its Evidence reference are historical context; this trace independently verifies only the selected manifest, script and map bytes.",
-  "Source names and sourceRoot are reported declarations. REA derives resolved URLs using WHATWG URL resolution; the pinned upstream codec decodes mappings. No original source is fetched or executed.",
+  "Source names and sourceRoot are reported declarations. NRE derives resolved URLs using WHATWG URL resolution; the pinned upstream codec decodes mappings. No original source is fetched or executed.",
   "Embedded source hashes identify the UTF-8 encoding of decoded sourcesContent text, not an independently retained original file. Missing or out-of-range original content positions remain explicit.",
   "Lookup returns all segments at the greatest generated position not greater than the selected point, including earlier lines and generated-only segments. A mapped point does not establish an executed range or UI causality.",
   "Regular maps and inline indexed sections are supported. External section URLs are unsupported; unknown extensions are retained in raw map text and are not interpreted.",
@@ -66,8 +66,8 @@ const codecBudgetLimitation = (
   if (runtime.id === "node-v8")
     return `${budget}, ${String(WEB_SOURCE_MAP_LIMITS.codecHeapMiB)} MiB old-generation heap and one V8 worker; cleanup may extend the deadline. V8 heap limits do not establish aggregate RSS limits.`;
   return runtime.process_memory_limit_bytes === null
-    ? `${budget}; cleanup may extend the deadline. The codec ran on Bun, which does not enforce REA's V8 heap flags, so no codec heap limit is established.`
-    : `${budget}; cleanup may extend the deadline. The codec ran on Bun, which does not enforce REA's V8 heap flags; a Windows Job Object limited its committed memory to ${String(runtime.process_memory_limit_bytes)} bytes, which is not a heap or RSS limit.`;
+    ? `${budget}; cleanup may extend the deadline. The codec ran on Bun, which does not enforce NRE's V8 heap flags, so no codec heap limit is established.`
+    : `${budget}; cleanup may extend the deadline. The codec ran on Bun, which does not enforce NRE's V8 heap flags; a Windows Job Object limited its committed memory to ${String(runtime.process_memory_limit_bytes)} bytes, which is not a heap or RSS limit.`;
 };
 
 /** Join verified captured bytes with an explicitly selected source-map point. */
@@ -210,8 +210,8 @@ export class WebSourceLocationService {
           format: "file",
         },
         {
-          id: "rea-web-source-location",
-          name: "REA captured source-map point trace",
+          id: "nre-web-source-location",
+          name: "NRE captured source-map point trace",
           version: "1",
         },
         {

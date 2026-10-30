@@ -101,7 +101,7 @@ it("admits application relationships up to the shared parent budget and keeps st
     3 * (staticCharge + projection) +
     Math.floor((staticCharge + projection) / 2);
   parentHeap.remainingBytes = TRANSFER_RESERVE + 2 * budget;
-  const root = await createTestTempDirectory("rea-shared-projection-budget-");
+  const root = await createTestTempDirectory("nre-shared-projection-budget-");
   const checkpointPath = join(root, "checkpoint.json");
   await writeFile(checkpointPath, checkpoint);
   const worker = new JavaScriptAnalysisWorker(
@@ -166,7 +166,7 @@ it("charges nothing for a large rejected checkpoint before a valid source", asyn
   const budget = staticCharge + projection + Math.floor(malformedCharge / 2);
   expect(malformedCharge).toBeGreaterThan(2 * (staticCharge + projection));
   parentHeap.remainingBytes = TRANSFER_RESERVE + 2 * budget;
-  const root = await createTestTempDirectory("rea-shared-budget-rejected-");
+  const root = await createTestTempDirectory("nre-shared-budget-rejected-");
   const checkpointPath = join(root, "checkpoint.json");
   const malformedPath = join(root, "malformed.json");
   await writeFile(checkpointPath, checkpoint);

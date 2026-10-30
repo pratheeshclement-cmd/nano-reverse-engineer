@@ -58,7 +58,7 @@ import { peResourceFixture } from "../../../src/native/pe/PeResources.fixture.js
 it.each(["go", "pe"] as const)(
   "%s provider retains a failed descriptor close and retries that owner before the next read",
   async (kind) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-read-cleanup-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-read-cleanup-"));
     const path = join(root, kind === "go" ? "program.elf" : "program.exe");
     const bytes =
       kind === "go" ? createGoBinaryFixture().bytes : peResourceFixture().bytes;

@@ -21,11 +21,11 @@ import { cliTest } from "../support/cli/cliFixture.js";
 const createTransport = () =>
   new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     cwd: process.cwd(),
     env: {
       PATH: process.env.PATH ?? "",
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
       ...(process.platform === "win32"
         ? {
             SystemRoot: process.env.SystemRoot ?? "",
@@ -40,7 +40,7 @@ const createTransport = () =>
 cliTest(
   "CLI and stdio MCP recover type discovery and preserve partial retained pages",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-member-recovery-");
+    const root = await createTestTempDirectory("nre-managed-member-recovery-");
     const path = join(root, "large-method.dll");
     const bytes = buildManagedMemberCapacityFixture();
     await writeFile(path, bytes);

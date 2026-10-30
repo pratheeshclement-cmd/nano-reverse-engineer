@@ -6,7 +6,7 @@ import { parseConfig } from "../../../src/config/parseConfig.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("validates selected and existing JEB endpoints without losing caller selection", async () => {
-  const home = await createTestTempDirectory("rea-setup-jeb-selection-");
+  const home = await createTestTempDirectory("nre-setup-jeb-selection-");
   const path = join(home, ".cursor/mcp.json");
   await mkdir(join(home, ".cursor"));
   const oldEndpoint = "http://127.0.0.1:8425/mcp";
@@ -15,10 +15,10 @@ it("validates selected and existing JEB endpoints without losing caller selectio
   const registration = (endpoint: string) =>
     JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        nre: {
+          command: "nre",
           args: ["mcp"],
-          env: { REA_JEB_MCP_URL: endpoint },
+          env: { NRE_JEB_MCP_URL: endpoint },
         },
       },
     });
@@ -27,7 +27,7 @@ it("validates selected and existing JEB endpoints without losing caller selectio
   const env: Record<string, string> = {
     HOME: home,
     USERPROFILE: home,
-    REA_JEB_MCP_URL: invalidEndpoint,
+    NRE_JEB_MCP_URL: invalidEndpoint,
     HOPPER_LAUNCHER_PATH: join(home, "missing"),
   };
   const setup = async () => {
@@ -47,19 +47,19 @@ it("validates selected and existing JEB endpoints without losing caller selectio
 
   const refused = await setup();
   expect(refused.status).toBe("needs_human");
-  expect(refused.remediation).toContain("REA_JEB_MCP_URL");
+  expect(refused.remediation).toContain("NRE_JEB_MCP_URL");
   expect(await readFile(path, "utf8")).toBe(original);
   expect(parseConfig(env).ok).toBe(true);
 
-  delete env.REA_JEB_MCP_URL;
+  delete env.NRE_JEB_MCP_URL;
   const invalidExisting = registration(invalidEndpoint);
   await writeFile(path, invalidExisting);
   expect((await setup()).status).toBe("needs_human");
   expect(await readFile(path, "utf8")).toBe(invalidExisting);
 
-  env.REA_JEB_MCP_URL = selectedEndpoint;
+  env.NRE_JEB_MCP_URL = selectedEndpoint;
   const repaired = await setup();
   expect(repaired.status, JSON.stringify(repaired)).toBe("ready");
   const saved = JSON.parse(await readFile(path, "utf8"));
-  expect(saved.mcpServers.rea.env.REA_JEB_MCP_URL).toBe(selectedEndpoint);
+  expect(saved.mcpServers.nre.env.NRE_JEB_MCP_URL).toBe(selectedEndpoint);
 });

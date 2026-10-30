@@ -47,13 +47,13 @@ if (process.platform !== "linux" || process.arch !== "x64")
   );
 for (const key of ["loader-failure", "default-native"].includes(mode)
   ? ["GHIDRA_INSTALL_DIR"]
-  : ["GHIDRA_INSTALL_DIR", "REA_GHIDRA_NATIVEAOT_JAR"])
+  : ["GHIDRA_INSTALL_DIR", "NRE_GHIDRA_NATIVEAOT_JAR"])
   if (!process.env[key] || !isAbsolute(process.env[key]))
     throw new Error(
       `verify:ghidra:nativeaot prerequisite missing: absolute ${key}`,
     );
 const fixtureRoot = resolve(
-  process.env.REA_NATIVEAOT_PROOF_FIXTURE_ROOT ??
+  process.env.NRE_NATIVEAOT_PROOF_FIXTURE_ROOT ??
     "_reference/nativeaot-integration/generated/linux-x64",
 );
 const oracle = JSON.parse(
@@ -84,43 +84,43 @@ const target =
       : symbolTarget;
 const bytes = await readFile(target);
 const sha256 = hash(bytes);
-const workspace = await mkdtemp(join(tmpdir(), "rea-nativeaot-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-nativeaot-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
-const packageRoot = process.env.REA_NATIVEAOT_PROOF_PACKAGE_ROOT;
+const packageRoot = process.env.NRE_NATIVEAOT_PROOF_PACKAGE_ROOT;
 if (packageRoot !== undefined && !isAbsolute(packageRoot))
-  throw new Error("REA_NATIVEAOT_PROOF_PACKAGE_ROOT must be absolute");
+  throw new Error("NRE_NATIVEAOT_PROOF_PACKAGE_ROOT must be absolute");
 const entrypoint =
   packageRoot === undefined
-    ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
-    : join(packageRoot, "scripts/rea.mjs");
+    ? fileURLToPath(new URL("./nre.mjs", import.meta.url))
+    : join(packageRoot, "scripts/nre.mjs");
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
   GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR,
-  REA_GHIDRA_NATIVEAOT_JAR: process.env.REA_GHIDRA_NATIVEAOT_JAR,
+  NRE_GHIDRA_NATIVEAOT_JAR: process.env.NRE_GHIDRA_NATIVEAOT_JAR,
   GHIDRA_HEADLESS_MAXMEM: process.env.GHIDRA_HEADLESS_MAXMEM ?? "768M",
   ...(process.env.JAVA_HOME === undefined
     ? {}
     : { JAVA_HOME: process.env.JAVA_HOME }),
 };
-if (mode === "default-native") delete env.REA_GHIDRA_NATIVEAOT_JAR;
+if (mode === "default-native") delete env.NRE_GHIDRA_NATIVEAOT_JAR;
 // Source-built linkage failure exercises the actual JVM loader boundary, not
 // a simulated producer report. Its class/JAR exist only in the owned workspace.
 if (mode === "loader-failure")
-  env.REA_GHIDRA_NATIVEAOT_JAR = join(workspace, "bad-extension.jar");
+  env.NRE_GHIDRA_NATIVEAOT_JAR = join(workspace, "bad-extension.jar");
 async function prepareLoaderFailure() {
   const source = join(workspace, "NativeAotExtension.java");
   const classes = join(workspace, "classes");
   await mkdir(classes);
   await writeFile(
     source,
-    `package rea.extensions.nativeaot;
+    `package nre.extensions.nativeaot;
 public final class NativeAotExtension {
   static { fail(); }
-  private static void fail() { throw new IllegalStateException("REA_INITIALIZER_FIXTURE"); }
+  private static void fail() { throw new IllegalStateException("NRE_INITIALIZER_FIXTURE"); }
   public NativeAotExtension() {}
 }
 `,
@@ -136,7 +136,7 @@ public final class NativeAotExtension {
   );
   await promisify(execFile)(
     command("jar"),
-    ["--create", "--file", env.REA_GHIDRA_NATIVEAOT_JAR, "-C", classes, "."],
+    ["--create", "--file", env.NRE_GHIDRA_NATIVEAOT_JAR, "-C", classes, "."],
     { timeout: 60000 },
   );
 }
@@ -146,7 +146,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-nativeaot-proof", version: "1" });
+const client = new Client({ name: "nre-nativeaot-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);
@@ -181,7 +181,7 @@ try {
         : mode === "malformed"
           ? /Reversed NativeAOT section/
           : mode === "loader-failure"
-            ? /ExceptionInInitializerError.*REA_INITIALIZER_FIXTURE/
+            ? /ExceptionInInitializerError.*NRE_INITIALIZER_FIXTURE/
             : /Ambiguous NativeAOT directory candidates/,
     );
     report = { mode, target, sha256, typed_failure: failure };
@@ -207,7 +207,7 @@ try {
     assert.equal(summary.format, "dotnet-nativeaot");
     assert.equal(
       summary.analysis_artifact_sha256,
-      hash(await readFile(env.REA_GHIDRA_NATIVEAOT_JAR)),
+      hash(await readFile(env.NRE_GHIDRA_NATIVEAOT_JAR)),
     );
     if (mode === "ordinary") {
       assert.equal(summary.status, "not_applicable");
@@ -326,7 +326,7 @@ try {
       opened = false;
       // One representative CLI boundary, selected explicitly to avoid repeated
       // full NativeAOT auto-analysis during each focused iteration.
-      if (process.env.REA_NATIVEAOT_PROOF_CLI === "1") {
+      if (process.env.NRE_NATIVEAOT_PROOF_CLI === "1") {
         const { stdout } = await promisify(execFile)(
           process.execPath,
           [
@@ -366,7 +366,7 @@ try {
     [],
     "Owned runtime/project/extension files leaked after close",
   );
-  const capture = process.env.REA_NATIVEAOT_PROOF_CAPTURE_DIR;
+  const capture = process.env.NRE_NATIVEAOT_PROOF_CAPTURE_DIR;
   if (capture !== undefined) {
     assert.ok(isAbsolute(capture));
     await mkdir(capture, { recursive: true });

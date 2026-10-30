@@ -26,7 +26,7 @@ if (!(args.length === 0 || (args.length === 2 && args[0] === "--metadata")))
 const path = args[1] === undefined ? null : absoluteCallerPath(args[1]);
 const operation = "inspect_il2cpp_metadata";
 const contract = toolContract(operation);
-const entrypoint = resolve("scripts/rea.mjs");
+const entrypoint = resolve("scripts/nre.mjs");
 const execute = promisify(execFile);
 const client = new Client({ name: "il2cpp-metadata-verifier", version: "1" });
 const transport = new StdioClientTransport({

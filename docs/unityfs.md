@@ -52,9 +52,9 @@ filters and paging; full Evidence remains available without repeating the graph.
 ## CLI
 
 ```sh
-rea inspect-artifact assets/hotfix.bundle --detail summary \
+nre inspect-artifact assets/hotfix.bundle --detail summary \
   --evidence_output evidence/hotfix.json --json
-rea extract-artifact assets/hotfix.bundle --json
+nre extract-artifact assets/hotfix.bundle --json
 ```
 
 Detection is byte-based on the `UnityFS\0` signature, so `.bundle`, `.ab`,

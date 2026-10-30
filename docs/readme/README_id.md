@@ -3,42 +3,42 @@
 [English](../../README.md) · [简体中文](README_zh.md) · [繁體中文](README_zh-TW.md) · [日本語](README_ja.md) · [한국어](README_ko.md) · [Türkçe](README_tr.md) · [Русский](README_ru.md) · [Tiếng Việt](README_vi.md) · [ไทย](README_th.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md) · [Українська](README_uk.md) · [Polski](README_pl.md) · [Português (Brasil)](README_pt-BR.md) · [العربية](README_ar.md) · [فارسی](README_fa.md) · **Bahasa Indonesia** · [Italiano](README_it.md)
 · [Ελληνικά](README_el.md) · [മലയാളം](README_ml.md) · [Roman Urdu](README_ur-Latn.md) · [Română](README_ro.md)
 
-# REA: Rekayasa Balik Apa Pun
+# NRE: Rekayasa Balik Apa Pun
 
 ### Satu MCP untuk rekayasa balik pada berbagai biner, aplikasi, dan perilaku saat runtime.
 
 **Melihat fitur yang Anda sukai. Pahami cara kerjanya hingga ke tingkat biner.**
 
-[![npm version](https://img.shields.io/npm/v/rea-agents?style=flat-square&color=cb3837)](https://www.npmjs.com/package/rea-agents)
+[![npm version](https://img.shields.io/npm/v/nano-reverse-engineer?style=flat-square&color=cb3837)](https://www.npmjs.com/package/nano-reverse-engineer)
 [![MCP tool catalog](https://img.shields.io/badge/MCP-tool_catalog-5c4ee5?style=flat-square)](../mcp-contracts.md#generated-catalog)
 [![Node.js requirements](https://img.shields.io/badge/Node.js-requirements-339933?style=flat-square&logo=nodedotjs&logoColor=white)](#current-status)
-[![skills.sh](https://skills.sh/b/morluto/rea?style=flat-square)](https://skills.sh/morluto/rea/reverse-engineer-anything)
+[![skills.sh](https://skills.sh/b/pratheeshclement-cmd/nano-reverse-engineer?style=flat-square)](https://skills.sh/pratheeshclement-cmd/nano-reverse-engineer/nano-reverse-engineer)
 [![MIT license](https://img.shields.io/badge/license-MIT-f4c430?style=flat-square)](../../LICENSE)
 [![Discord](https://img.shields.io/discord/1556595354999332884?logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/GkcryMnJDM)
 
-<a href="https://trendshift.io/repositories/82054?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-82054" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/82054" alt="morluto%2Frea | Trendshift" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/82054?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-82054" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/82054" alt="pratheeshclement-cmd%2Fnano-reverse-engineer | Trendshift" width="250" height="55"/></a>
 
-**[Situs Web](https://rea.tools/id/) · [Panduan](https://rea.tools/id/guides/) · [Contoh Penggunaan](https://rea.tools/id/showcase/)**
+**[Situs Web](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/) · [Panduan](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/guides/) · [Contoh Penggunaan](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/showcase/)**
 
-[Mulai Cepat](#mulai-cepat) · [Cara Kerja REA](#cara-kerja-rea) · [Hal yang Dapat Anda Analisis](#hal-yang-dapat-anda-analisis) · [Contoh Penggunaan](#contoh-penggunaan) · [Membangun lingkungan RL](#build-rl-environments) · [FAQ](#faq) · [Dokumentasi](#dokumentasi)
+[Mulai Cepat](#mulai-cepat) · [Cara Kerja NRE](#cara-kerja-nre) · [Hal yang Dapat Anda Analisis](#hal-yang-dapat-anda-analisis) · [Contoh Penggunaan](#contoh-penggunaan) · [Membangun lingkungan RL](#build-rl-environments) · [FAQ](#faq) · [Dokumentasi](#dokumentasi)
 
-<code>npx rea-agents setup</code>
+<code>npx nano-reverse-engineer setup</code>
 
 </div>
 
 > [!IMPORTANT]
-> Sumber resmi REA: [morluto/rea](https://github.com/morluto/rea), [rea.tools](https://rea.tools/), [rea-agents](https://www.npmjs.com/package/rea-agents) (npm).
+> Sumber resmi NRE: [pratheeshclement-cmd/nano-reverse-engineer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer), [nano-reverse-engineer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/), [nano-reverse-engineer](https://www.npmjs.com/package/nano-reverse-engineer) (npm).
 > Gunakan tautan instalasi dan rilis dari sumber resmi ini. Nama repositori yang mirip atau README yang disalin tidak membuktikan bahwa unduhan tersebut resmi.
 
 <div align="center">
 
 <br />
 
-<img src="../assets/rea-hopper-analysis.png" alt="REA menjalankan jembatan analisisnya di dalam Hopper saat memeriksa biner native" width="1200" />
+<img src="../assets/nre-hopper-analysis.png" alt="NRE menjalankan jembatan analisisnya di dalam Hopper saat memeriksa biner native" width="1200" />
 
 <br /><br />
 
-<table aria-label="Komunitas REA">
+<table aria-label="Komunitas NRE">
 <tr>
 <td align="center" width="360">
   <a href="https://discord.gg/GkcryMnJDM">
@@ -56,31 +56,31 @@
 
 ---
 
-Melihat fitur dalam suatu aplikasi yang ingin Anda hadirkan di produk sendiri? Minta agen Anda menyelidikinya menggunakan REA. REA dapat memeriksa aplikasi tanpa kode sumbernya, menjelaskan cara kerja fitur tersebut, menunjukkan bukti, dan membangun versi untuk proyek Anda.
+Melihat fitur dalam suatu aplikasi yang ingin Anda hadirkan di produk sendiri? Minta agen Anda menyelidikinya menggunakan NRE. NRE dapat memeriksa aplikasi tanpa kode sumbernya, menjelaskan cara kerja fitur tersebut, menunjukkan bukti, dan membangun versi untuk proyek Anda.
 
-REA menghubungkan agen Anda dengan berbagai alat untuk memeriksa biner native, aplikasi JavaScript dan Electron, assembly .NET, serta situs web. Anda juga dapat menggunakan alat yang sama dari terminal. Analisis dijalankan secara lokal, dan hasilnya mencakup bukti serta keterbatasan yang mendasari setiap kesimpulan.
+NRE menghubungkan agen Anda dengan berbagai alat untuk memeriksa biner native, aplikasi JavaScript dan Electron, assembly .NET, serta situs web. Anda juga dapat menggunakan alat yang sama dari terminal. Analisis dijalankan secara lokal, dan hasilnya mencakup bukti serta keterbatasan yang mendasari setiap kesimpulan.
 
-Proses penyiapan mendaftarkan REA ke agen Anda dan memasang instruksi alur kerja yang sesuai. Analisis native dapat menggunakan instalasi Hopper, Ghidra, IDA, atau Kuna yang sudah ada. Proses penyiapan juga dapat memasang Hopper secara opsional setelah mendapatkan persetujuan. Analisis JavaScript statis tidak memerlukan mesin analisis native.
+Proses penyiapan mendaftarkan NRE ke agen Anda dan memasang instruksi alur kerja yang sesuai. Analisis native dapat menggunakan instalasi Hopper, Ghidra, IDA, atau Kuna yang sudah ada. Proses penyiapan juga dapat memasang Hopper secara opsional setelah mendapatkan persetujuan. Analisis JavaScript statis tidak memerlukan mesin analisis native.
 
-> **[Kunjungi situs web REA](https://rea.tools/id/)** untuk mendapatkan petunjuk penyiapan, panduan bergambar, dan studi kasus nyata.
+> **[Kunjungi situs web NRE](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/)** untuk mendapatkan petunjuk penyiapan, panduan bergambar, dan studi kasus nyata.
 
 ## Mulai Cepat
 
-Di Linux, peluncuran Ghidra, JADX dan alat firmware serta analisis statis JavaScript/Electron memerlukan `ps` yang kompatibel dengan procps pada `PATH` REA untuk memeriksa kepemilikan proses. Lihat prasyarat Linux.
+Di Linux, peluncuran Ghidra, JADX dan alat firmware serta analisis statis JavaScript/Electron memerlukan `ps` yang kompatibel dengan procps pada `PATH` NRE untuk memeriksa kepemilikan proses. Lihat prasyarat Linux.
 
 ### Siapkan agen Anda
 
 Dengan Node.js dan npm yang telah terpasang, jalankan:
 
 ```bash
-npx rea-agents setup
+npx nano-reverse-engineer setup
 ```
 
-Pilih agen yang ingin digunakan, tinjau perubahan yang diusulkan, lalu setujui perubahan tersebut. Proses penyiapan menambahkan server MCP REA dan instruksi alur kerja yang sesuai, serta membuat cadangan konfigurasi yang sudah ada. Setelah itu, mulai ulang agen Anda.
+Pilih agen yang ingin digunakan, tinjau perubahan yang diusulkan, lalu setujui perubahan tersebut. Proses penyiapan menambahkan server MCP NRE dan instruksi alur kerja yang sesuai, serta membuat cadangan konfigurasi yang sudah ada. Setelah itu, mulai ulang agen Anda.
 
 Penyiapan mendukung Claude Code, Codex, Cursor, Gemini CLI, Grok Build, dan [agen lainnya](../installation.md#supported-agents). Lihat [instalasi dan penyiapan](../installation.md) untuk konfigurasi penyedia dan pendaftaran MCP secara manual.
 
-MCP menggunakan skema input ringkas secara default. Untuk petunjuk bidang lengkap dan validasi bertingkat, atur `REA_MCP_INPUT_SCHEMA_PROFILE=full` pada pendaftaran MCP. Kedua profil mempertahankan semua alat dan validasi server kanonis yang sama; lihat panduan kontrak MCP.
+MCP menggunakan skema input ringkas secara default. Untuk petunjuk bidang lengkap dan validasi bertingkat, atur `NRE_MCP_INPUT_SCHEMA_PROFILE=full` pada pendaftaran MCP. Kedua profil mempertahankan semua alat dan validasi server kanonis yang sama; lihat panduan kontrak MCP.
 
 ### Minta agen Anda
 
@@ -95,63 +95,63 @@ Ganti Notes dengan aplikasi target dan fitur yang ingin Anda pahami.
 Periksa direktori aplikasi JavaScript/Electron yang telah diekstrak atau berkas ASAR:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y nano-reverse-engineer@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 Hasilnya mencakup modul, impor, batas antarkomponen Electron, dan bukti yang mendasarinya. Ganti jalur tersebut dengan lokasi target Anda, misalnya `"D:/apps/example"` di Windows.
 
-Untuk memasang perintah `rea` agar dapat digunakan secara rutin:
+Untuk memasang perintah `nre` agar dapat digunakan secara rutin:
 
 ```bash
-npm install --global rea-agents
-rea --help
+npm install --global nano-reverse-engineer
+nre --help
 ```
 
 Untuk analisis native, konfigurasikan penyedia terlebih dahulu. Lihat [Panduan CLI dan Bukti](../cli.md) untuk perintah native, pemilihan penyedia, snapshot, dan pembuatan skrip.
 
-### Perbarui REA
+### Perbarui NRE
 
-REA berkembang dengan cepat, dan rilis baru sering menyertakan perbaikan bug. Pastikan instalasi Anda selalu diperbarui.
+NRE berkembang dengan cepat, dan rilis baru sering menyertakan perbaikan bug. Pastikan instalasi Anda selalu diperbarui.
 
 Untuk CLI yang dipasang melalui `npm install --global` atau `bun add --global`:
 
 ```bash
-rea update
+nre update
 ```
 
-`rea --update` adalah alias `rea update` dengan opsi keluaran global yang sama. Perintah pembaruan menyimpan stdout/stderr gabungan maksimal 4 MiB. Metadata terlalu besar ditolak setelah perintah selesai; instalasi verbose menyimpan diagnostik terbatas. Kemajuan mengikuti backpressure terminal dan menunggu penulisan yang telah dikirim.
+`nre --update` adalah alias `nre update` dengan opsi keluaran global yang sama. Perintah pembaruan menyimpan stdout/stderr gabungan maksimal 4 MiB. Metadata terlalu besar ditolak setelah perintah selesai; instalasi verbose menyimpan diagnostik terbatas. Kemajuan mengikuti backpressure terminal dan menunggu penulisan yang telah dikirim.
 
-Pembaruan global dengan Bun memerlukan Bun 1.2.17 atau yang lebih baru. Pada rilis Bun yang lebih lama, perbarui Bun secara manual sebelum menjalankan `rea update`.
+Pembaruan global dengan Bun memerlukan Bun 1.2.17 atau yang lebih baru. Pada rilis Bun yang lebih lama, perbarui Bun secara manual sebelum menjalankan `nre update`.
 
 Untuk memperbarui pendaftaran agen dan skill Anda, jalankan perintah penyiapan yang ditampilkan oleh proses pembaruan.
 
 Jika Anda menggunakan `npx`, perbarui penyiapan agen dengan:
 
 ```bash
-npx rea-agents@latest setup
+npx nano-reverse-engineer@latest setup
 ```
 
-Tinjau perubahan penyiapan dan mulai ulang agen Anda. Untuk menjalankan perintah CLI sekali pakai, gunakan `npx rea-agents@latest` diikuti dengan perintah yang diinginkan. Dengan Bun, gunakan `bunx rea-agents@latest` sebagai pengganti `npx rea-agents@latest`.
+Tinjau perubahan penyiapan dan mulai ulang agen Anda. Untuk menjalankan perintah CLI sekali pakai, gunakan `npx nano-reverse-engineer@latest` diikuti dengan perintah yang diinginkan. Dengan Bun, gunakan `bunx nano-reverse-engineer@latest` sebagai pengganti `npx nano-reverse-engineer@latest`.
 
-## Cara Kerja REA
+## Cara Kerja NRE
 
-Agen Anda memanggil REA melalui MCP untuk memeriksa target dan menelusuri kode yang relevan. REA mengembalikan temuan beserta bukti pendukungnya. Agen kemudian menggunakan temuan tersebut untuk mengajukan pertanyaan lanjutan, menjelaskan perilaku, atau menulis dan menguji implementasi.
+Agen Anda memanggil NRE melalui MCP untuk memeriksa target dan menelusuri kode yang relevan. NRE mengembalikan temuan beserta bukti pendukungnya. Agen kemudian menggunakan temuan tersebut untuk mengajukan pertanyaan lanjutan, menjelaskan perilaku, atau menulis dan menguji implementasi.
 
 Perintah CLI menggunakan alur kerja yang sama.
 
-![Alur investigasi REA: agen Anda menanyakan sesuatu tentang target lokal, REA memeriksa dan menelusurinya menggunakan alat analisis, lalu agen menggunakan kode, referensi, dan hal-hal yang belum diketahui dari hasil tersebut untuk menjelaskan, mengimplementasikan, dan menguji.](../../website/public/assets/figures/rea-investigation-flow.svg)
+![Alur investigasi NRE: agen Anda menanyakan sesuatu tentang target lokal, NRE memeriksa dan menelusurinya menggunakan alat analisis, lalu agen menggunakan kode, referensi, dan hal-hal yang belum diketahui dari hasil tersebut untuk menjelaskan, mengimplementasikan, dan menguji.](../../website/public/assets/figures/nre-investigation-flow.svg)
 
-[Buka ilustrasi dalam ukuran penuh](../../website/public/assets/figures/rea-investigation-flow.svg).
+[Buka ilustrasi dalam ukuran penuh](../../website/public/assets/figures/nre-investigation-flow.svg).
 
 <a id="current-status"></a>
 
 ## Hal yang Dapat Anda Analisis
 
-REA memerlukan Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), atau 26+ (>=26.12.1), beserta npm.
+NRE memerlukan Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), atau 26+ (>=26.12.1), beserta npm.
 
 Alat tambahan dan dukungan sistem host bergantung pada target yang dianalisis:
 
-| Target                     | Hasil yang diberikan REA                                                                              | Persyaratan dan panduan                                                                                                        |
+| Target                     | Hasil yang diberikan NRE                                                                              | Persyaratan dan panduan                                                                                                        |
 | -------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | Biner native               | Pseudocode, assembly, string, simbol, pemanggilan, dan referensi                                      | Hopper, Ghidra, IDA, atau Kuna; [analisis native](../native-investigation.md)                                                  |
 | Tata letak ELF offline     | Bagian, segmen, simbol/relokasi asli, dan kandidat mitigasi statis                                    | pwntools yang disediakan pemanggil pada Linux x64; [diagnostik biner](../binary-diagnostics.md)                                |
@@ -174,7 +174,7 @@ Alat tambahan dan dukungan sistem host bergantung pada target yang dianalisis:
 | PyInstaller                | CArchive, PYZ, Python bytecode                                                                        | Static inspection; [Python packaged applications](../python-packaged-applications.md)                                          |
 | APK Android                | Deklarasi manifest, kelas, metode hasil dekompilasi, dan referensi                                    | JADX mode headless dan JDK lengkap di Linux/macOS/Windows x64; [panduan Android](../android-analysis.md)                       |
 | Perangkat Android          | Perangkat, paket, proses, log, dump, tangkapan layar, serta transfer APK/berkas                       | adb buatan pemanggil (emulator atau perangkat); [panduan ADB](../adb-device-analysis.md)                                       |
-| Proyek JEB                 | Unit proyek bertenaga mesin, hash artefak, dan pseudokode tipe/metode                                 | Klien JEB yang dijalankan pemanggil dan menyajikan MCP, dipilih dengan REA_JEB_MCP_URL; [panduan JEB](../jeb-analysis.md)      |
+| Proyek JEB                 | Unit proyek bertenaga mesin, hash artefak, dan pseudokode tipe/metode                                 | Klien JEB yang dijalankan pemanggil dan menyajikan MCP, dipilih dengan NRE_JEB_MCP_URL; [panduan JEB](../jeb-analysis.md)      |
 | Resource Android           | Manifest terdekode, tabel string, lokal, dan fakta versi                                              | Peluncur Apktool buatan pemanggil; [panduan resource](../apktool-resource-analysis.md)                                         |
 | Aplikasi Flutter           | Hash snapshot Dart, hash pustaka per ABI, dan asal build engine                                       | Tidak ada (parsing APK statis); [panduan Flutter](../flutter-analysis.md)                                                      |
 | Firmware                   | Wilayah, hasil ekstraksi, dan pengalihan ke analisis native                                           | Binwalk / Unblob di Linux; [panduan firmware](../firmware-analysis.md)                                                         |
@@ -192,7 +192,7 @@ Alat tambahan dan dukungan sistem host bergantung pada target yang dianalisis:
 
 Pemeriksaan JavaScript dan .NET statis membaca berkas yang disediakan tanpa menjalankan aplikasinya. Perekaman runtime menjalankan atau berinteraksi dengan target yang dipilih menggunakan izin pengguna Anda. Setiap panduan runtime menjelaskan dampaknya.
 
-Untuk pemeriksaan biner native secara offline, REA juga mendukung GNU objdump dan Rizin yang Anda sediakan sendiri. [Panduan alat rekayasa balik](../reverse-engineering-tools.md) menjelaskan penyiapan penyedia, perintah CLI, dan keterbatasan Evidence. REA tidak menginstal atau memperbarui kedua penyedia tersebut.
+Untuk pemeriksaan biner native secara offline, NRE juga mendukung GNU objdump dan Rizin yang Anda sediakan sendiri. [Panduan alat rekayasa balik](../reverse-engineering-tools.md) menjelaskan penyiapan penyedia, perintah CLI, dan keterbatasan Evidence. NRE tidak menginstal atau memperbarui kedua penyedia tersebut.
 
 <a id="choosing-a-deep-analysis-provider"></a>
 
@@ -200,7 +200,7 @@ Format native dan dukungan sistem host berbeda-beda menurut penyedia. Lihat [pen
 
 Ghidra juga mendukung [analisis DOS 16-bit](../ghidra-dos.md).
 
-Untuk biner berukuran besar, tingkatkan batas waktu startup menggunakan `REA_GHIDRA_STARTUP_TIMEOUT_MS` / `REA_HOPPER_STARTUP_TIMEOUT_MS`.
+Untuk biner berukuran besar, tingkatkan batas waktu startup menggunakan `NRE_GHIDRA_STARTUP_TIMEOUT_MS` / `NRE_HOPPER_STARTUP_TIMEOUT_MS`.
 
 Untuk memilih penyedia, lihat [panduan CLI](../cli.md#choose-a-provider).
 
@@ -208,10 +208,10 @@ Periksa [ketersediaan rilis](../installation.md#released-package-and-main) untuk
 
 ## Contoh Penggunaan
 
-<a href="https://rea.tools/id/showcase/">
+<a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/showcase/">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="../assets/rea-showcases-dark.svg" />
-    <img alt="Ilustrasi contoh penggunaan DX-Ball sound-pan, Notion clipboard-bridge, dan TH04 bullet-ring" src="../assets/rea-showcases.svg" />
+    <source media="(prefers-color-scheme: dark)" srcset="../assets/nre-showcases-dark.svg" />
+    <img alt="Ilustrasi contoh penggunaan DX-Ball sound-pan, Notion clipboard-bridge, dan TH04 bullet-ring" src="../assets/nre-showcases.svg" />
   </picture>
 </a>
 
@@ -219,28 +219,28 @@ Periksa [ketersediaan rilis](../installation.md#released-package-and-main) untuk
 
 Ikuti pemanggilan suara hingga ke fungsi pembantu yang mengubah posisi menjadi nilai pan, periksa instruksinya, lalu ubah pseudocode yang belum lengkap menjadi C. Hasil rekonstruksi tersebut lolos pada 3.205 kasus x86 asli dan mereproduksi seluruh 63 byte fungsi hasil kompilasi.
 
-[Baca studi kasus](https://rea.tools/id/showcase/dx-ball/) · [Repositori rekonstruksi](https://github.com/N0zoM1z0/dx-ball)
+[Baca studi kasus](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/showcase/dx-ball/) · [Repositori rekonstruksi](https://github.com/N0zoM1z0/dx-ball)
 
 ### Notion: menelusuri jembatan clipboard Electron
 
 Temukan API clipboard pada renderer, telusuri jalurnya melalui preload dan IPC hingga ke proses utama, lalu periksa format clipboard kaya.
 
-[Baca studi kasus](https://rea.tools/id/showcase/notion/)
+[Baca studi kasus](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/showcase/notion/)
 
 ### TH04: memulihkan perhitungan bullet-ring DOS
 
 Periksa instruksi 16-bit dari gim PC-98 asli, pulihkan perhitungan sudut tetap dan sudut yang diarahkan, lalu bandingkan C++ hasil rekonstruksi dengan keluaran historis kompiler.
 
-[Baca studi kasus](https://rea.tools/id/showcase/th04/) · [Repositori rekonstruksi](https://github.com/N0zoM1z0/th04)
+[Baca studi kasus](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/showcase/th04/) · [Repositori rekonstruksi](https://github.com/N0zoM1z0/th04)
 
-### Bangun lingkungan RL dengan REA
+### Bangun lingkungan RL dengan NRE
 
 Rekam sesi aplikasi web, ubah API menjadi alat, lalu ekspor lingkungan yang dapat digunakan agen AI. Jalankan dengan AgentEnv dan tambahkan tugas serta pemeriksaan reward untuk pelatihan RL atau evaluasi.
 
-[Panduan membangun lingkungan](https://rea.tools/guides/rl-environments/) ·
+[Panduan membangun lingkungan](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/rl-environments/) ·
 [Tonton demo di X](https://x.com/reatools/status/2112574822584918075?s=20)
 
-Jika Anda telah menggunakan REA untuk menganalisis sesuatu yang menarik, kami ingin melihat hasilnya. Bagikan kasus Anda melalui [issue](https://github.com/morluto/rea/issues) atau [pull request](https://github.com/morluto/rea/pulls), sertakan target, pertanyaan Anda, bagaimana REA membantu, dan apa yang Anda temukan.
+Jika Anda telah menggunakan NRE untuk menganalisis sesuatu yang menarik, kami ingin melihat hasilnya. Bagikan kasus Anda melalui [issue](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues) atau [pull request](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls), sertakan target, pertanyaan Anda, bagaimana NRE membantu, dan apa yang Anda temukan.
 
 <a id="build-rl-environments"></a>
 
@@ -248,12 +248,12 @@ Jika Anda telah menggunakan REA untuk menganalisis sesuatu yang menarik, kami in
 
 Buat lingkungan lokal agar agen AI dapat berlatih tugas seperti mencari issue atau membuat folder tanpa menjalankan aplikasi aslinya. Gunakan untuk pembelajaran penguatan (RL) atau menguji kemampuan agen menyelesaikan tugas.
 
-REA mengubah permintaan dan respons API yang direkam menjadi alat yang dapat dipanggil agen. Lingkungan memakai data rekaman dan hanya mendukung perubahan yang dampaknya dikonfirmasi oleh rekaman.
+NRE mengubah permintaan dan respons API yang direkam menjadi alat yang dapat dipanggil agen. Lingkungan memakai data rekaman dan hanya mendukung perubahan yang dampaknya dikonfirmasi oleh rekaman.
 
-Setelah menyiapkan REA di agen, ganti URL contoh dan tugas folder di bawah sesuai aplikasi Anda:
+Setelah menyiapkan NRE di agen, ganti URL contoh dan tugas folder di bawah sesuai aplikasi Anda:
 
 ```text
-Gunakan REA untuk membuat lingkungan RL dari aplikasi web uji saya di
+Gunakan NRE untuk membuat lingkungan RL dari aplikasi web uji saya di
 http://127.0.0.1:3000.
 Cakup daftar, pembuatan, penggantian nama, dan penghapusan folder. Boleh membuat
 dan menghapus folder uji, tetapi jangan ubah data yang sudah ada.
@@ -266,24 +266,24 @@ Simpan dalam folder bernama my-env, periksa operasi yang berfungsi, dan beri tah
 Gunakan perintah ini jika Anda sudah punya file rekaman permintaan dan respons aplikasi di browser. Untuk menjalankan hasilnya, Anda juga perlu AgentEnv dan Docker.
 
 ```sh
-rea environment-build ./session.har ./my-env --name my-env --json
+nre environment-build ./session.har ./my-env --name my-env --json
 agent-env run ./my-env
 ```
 
 </details>
 
-REA mengekspor lingkungan yang dapat dijalankan dengan uji dasar untuk memeriksa bahwa lingkungan mulai dan merespons. Hubungkan ke framework RL untuk menetapkan tujuan tugas, menambahkan pemeriksaan reward, dan menjalankan pelatihan.
+NRE mengekspor lingkungan yang dapat dijalankan dengan uji dasar untuk memeriksa bahwa lingkungan mulai dan merespons. Hubungkan ke framework RL untuk menetapkan tujuan tugas, menambahkan pemeriksaan reward, dan menjalankan pelatihan.
 
-[Panduan membangun lingkungan](https://rea.tools/guides/rl-environments/) ·
+[Panduan membangun lingkungan](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/guides/rl-environments/) ·
 [Referensi lingkungan](../agent-environments.md) ·
 [Tonton demo di X](https://x.com/reatools/status/2112574822584918075?s=20)
 
 ## FAQ
 
 <details>
-<summary><strong>Agen apa saja yang dapat menggunakan REA?</strong></summary>
+<summary><strong>Agen apa saja yang dapat menggunakan NRE?</strong></summary>
 
-Agen apa pun yang mendukung server MCP lokal dapat menggunakan REA. Proses penyiapan mengonfigurasi [agen yang didukung](../installation.md#supported-agents). Klien lain dapat menggunakan [pendaftaran MCP manual](../installation.md#mcp-registry).
+Agen apa pun yang mendukung server MCP lokal dapat menggunakan NRE. Proses penyiapan mengonfigurasi [agen yang didukung](../installation.md#supported-agents). Klien lain dapat menggunakan [pendaftaran MCP manual](../installation.md#mcp-registry).
 
 </details>
 
@@ -299,7 +299,7 @@ Proses penyiapan dapat memasang Hopper setelah memperoleh persetujuan. Ghidra, I
 <details>
 <summary><strong>Apakah saya harus menjalankan Hopper terlebih dahulu?</strong></summary>
 
-REA akan menjalankan Hopper saat suatu operasi membutuhkannya. Di macOS, dialog saat pertama kali dijalankan mungkin meminta Anda memilih mode demo atau mengaktifkan lisensi.
+NRE akan menjalankan Hopper saat suatu operasi membutuhkannya. Di macOS, dialog saat pertama kali dijalankan mungkin meminta Anda memilih mode demo atau mengaktifkan lisensi.
 
 Lihat [startup dan pemecahan masalah Hopper](../installation.md#launcher-paths-and-troubleshooting).
 
@@ -308,23 +308,23 @@ Lihat [startup dan pemecahan masalah Hopper](../installation.md#launcher-paths-a
 <details>
 <summary><strong>Apa fungsi memasang skill dari skills.sh?</strong></summary>
 
-Skill tersebut menyediakan instruksi investigasi untuk agen Anda. Gunakan `npx rea-agents setup` untuk mendaftarkan server MCP REA dan memasang instruksi yang sesuai, lalu mulai ulang agen Anda.
+Skill tersebut menyediakan instruksi investigasi untuk agen Anda. Gunakan `npx nano-reverse-engineer setup` untuk mendaftarkan server MCP NRE dan memasang instruksi yang sesuai, lalu mulai ulang agen Anda.
 
 Lihat [instalasi khusus skill](../installation.md#skill-only-installation).
 
 </details>
 
 <details>
-<summary><strong>Kode seperti apa yang dihasilkan REA?</strong></summary>
+<summary><strong>Kode seperti apa yang dihasilkan NRE?</strong></summary>
 
 Analisis native menghasilkan pseudocode dan assembly. Analisis JavaScript/Electron memulihkan modul dan hubungan antarmodulnya. Agen Anda menggunakan temuan tersebut untuk menulis dan menguji implementasi. [Contoh penggunaan](#contoh-penggunaan) menyediakan contoh yang telah dikerjakan.
 
 </details>
 
 <details>
-<summary><strong>Apakah REA mengunggah aplikasi saya?</strong></summary>
+<summary><strong>Apakah NRE mengunggah aplikasi saya?</strong></summary>
 
-REA menganalisis target secara lokal. Agen Anda menerima hasil alat, sedangkan penyedia model yang digunakannya memiliki kebijakan datanya sendiri.
+NRE menganalisis target secara lokal. Agen Anda menerima hasil alat, sedangkan penyedia model yang digunakannya memiliki kebijakan datanya sendiri.
 
 </details>
 
@@ -336,24 +336,24 @@ Perbarui terlebih dahulu. Rilis terbaru mungkin sudah memperbaiki masalah terseb
 Untuk CLI yang dipasang melalui `npm install --global` atau `bun add --global`:
 
 ```bash
-rea update
+nre update
 ```
 
 Untuk penyiapan agen melalui `npx`:
 
 ```bash
-npx rea-agents@latest setup
+npx nano-reverse-engineer@latest setup
 ```
 
-Jika Anda menggunakan agen, selesaikan [pembaruan penyiapan](#perbarui-rea) dan mulai ulang agen tersebut.
+Jika Anda menggunakan agen, selesaikan [pembaruan penyiapan](#perbarui-nre) dan mulai ulang agen tersebut.
 
-Coba kembali tugas yang sama. Jika masalah masih terjadi, [buat issue](https://github.com/morluto/rea/issues) dengan menyertakan versi REA, jenis target, langkah-langkah untuk mereproduksi masalah, dan keluaran kesalahan.
+Coba kembali tugas yang sama. Jika masalah masih terjadi, [buat issue](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues) dengan menyertakan versi NRE, jenis target, langkah-langkah untuk mereproduksi masalah, dan keluaran kesalahan.
 
 </details>
 
 ## Dokumentasi
 
-Mulailah dengan [panduan praktik di situs web](https://rea.tools/id/guides/).
+Mulailah dengan [panduan praktik di situs web](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/id/guides/).
 
 Untuk mengetahui opsi, prasyarat, dan kontrak hasil secara tepat:
 
@@ -370,13 +370,13 @@ Laporkan kerentanan melalui [SECURITY.md](../../SECURITY.md).
 
 🎉 **400.000 bintang GitHub, terima kasih!**
 
-Terima kasih kepada semua orang yang menggunakan REA, melaporkan bug, meminta fitur, menguji build, dan berkontribusi dalam perbaikan.
+Terima kasih kepada semua orang yang menggunakan NRE, melaporkan bug, meminta fitur, menguji build, dan berkontribusi dalam perbaikan.
 
-<a href="https://www.star-history.com/?repos=morluto%2Frea&amp;type=date">
+<a href="https://www.star-history.com/?repos=pratheeshclement-cmd%2Fnano-reverse-engineer&amp;type=date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date&amp;theme=dark&amp;legend=top-left" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date" />
-    <img alt="Riwayat bintang GitHub REA" src="https://api.star-history.com/chart?repos=morluto/rea&amp;type=date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=pratheeshclement-cmd/nano-reverse-engineer&amp;type=date&amp;theme=dark&amp;legend=top-left" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=pratheeshclement-cmd/nano-reverse-engineer&amp;type=date" />
+    <img alt="Riwayat bintang GitHub NRE" src="https://api.star-history.com/chart?repos=pratheeshclement-cmd/nano-reverse-engineer&amp;type=date" />
   </picture>
 </a>
 
@@ -384,15 +384,15 @@ Terima kasih kepada semua orang yang menggunakan REA, melaporkan bug, meminta fi
 
 Lihat [DISCLAIMER.md](../../DISCLAIMER.md) untuk panduan penggunaan yang bertanggung jawab.
 
-REA ditujukan untuk penelitian, pendidikan, interoperabilitas, pelestarian perangkat lunak, dan analisis perangkat lunak yang Anda miliki atau diizinkan untuk Anda periksa, sesuai hukum.
+NRE ditujukan untuk penelitian, pendidikan, interoperabilitas, pelestarian perangkat lunak, dan analisis perangkat lunak yang Anda miliki atau diizinkan untuk Anda periksa, sesuai hukum.
 
-The project's position on illegal or unauthorized use covers all REA
+The project's position on illegal or unauthorized use covers all NRE
 versions, distribution channels, and platforms; each copy retains its
 applicable licenses.
 
 ## Kontribusi
 
-Kami sangat menghargai bantuan Anda untuk REA! [Buat issue](https://github.com/morluto/rea/issues) untuk melaporkan bug atau menyarankan fitur, atau [kirim pull request](https://github.com/morluto/rea/pulls) untuk meningkatkan kode atau dokumentasi.
+Kami sangat menghargai bantuan Anda untuk NRE! [Buat issue](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues) untuk melaporkan bug atau menyarankan fitur, atau [kirim pull request](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls) untuk meningkatkan kode atau dokumentasi.
 
 Lihat [CONTRIBUTING.md](../../CONTRIBUTING.md) untuk penyiapan pengembangan dan pemeriksaan, [pengujian](../testing.md) untuk tahapan verifikasi, serta [peta arsitektur](../architecture.mermaid) untuk struktur proyek.
 
@@ -400,13 +400,13 @@ Lihat [CONTRIBUTING.md](../../CONTRIBUTING.md) untuk penyiapan pengembangan dan 
 
 [MIT](../../LICENSE)
 
-REA-authored code is licensed under MIT. Third-party material retains its own
+NRE-authored code is licensed under MIT. Third-party material retains its own
 licenses and copyright notices; see [Third-party notices](../../THIRD_PARTY_NOTICES.md)
 for the dependency inventory, preserved license texts, and external-tool terms.
 
 **You must legally obtain and be authorized to use commercial tools**, including
 IDA Pro / Hex-Rays decompilers, Hopper, and JEB, under their applicable licenses.
-REA grants no tool license, key, or activation entitlement. Trials and demos
+NRE grants no tool license, key, or activation entitlement. Trials and demos
 remain subject to vendor terms, including user, feature, automation, and output
 sharing restrictions. Cracked copies, stolen keys, unauthorized key sharing,
 and bypassing license restrictions are not authorized. This guidance does not

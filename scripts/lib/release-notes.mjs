@@ -105,8 +105,8 @@ export async function readReleaseHistory(run, base, target) {
 // GitHub maps these coding-agent trailers to ordinary User actors.
 // Keep those source identities in the inventory while excluding automation credit.
 const AGENT_ACCOUNTS = new Set(["claude", "cursoragent", "codex", "copilot"]);
-// REA's maintainer requested external-contributor thanks without self-credit.
-const MAINTAINER_ACCOUNTS = new Set(["morluto"]);
+// NRE's maintainer requested external-contributor thanks without self-credit.
+const MAINTAINER_ACCOUNTS = new Set(["pratheeshclement-cmd"]);
 const human = (value) =>
   value?.__typename === "User" &&
   !value.login.endsWith("[bot]") &&
@@ -173,7 +173,7 @@ export function contributionRecord(raw) {
 /** Keep the full authorship snapshot available without duplicating public thanks. */
 export function contributionSummary(raw) {
   const inventory = releaseInventorySchema.parse(raw);
-  return `Full contribution record: [${inventory.commits.length} commits and ${inventory.pullRequests.length} merged PR${inventory.pullRequests.length === 1 ? "" : "s"}](https://github.com/${inventory.repository}/blob/rea-agents-${inventory.version}/docs/releases/${inventory.version}.contributions.json).\n`;
+  return `Full contribution record: [${inventory.commits.length} commits and ${inventory.pullRequests.length} merged PR${inventory.pullRequests.length === 1 ? "" : "s"}](https://github.com/${inventory.repository}/blob/nano-reverse-engineer-${inventory.version}/docs/releases/${inventory.version}.contributions.json).\n`;
 }
 
 export function selectedReleaseNotes(text, version) {
@@ -385,16 +385,16 @@ function pluginMetadataWithoutVersions(path, text) {
     if (Array.isArray(manifest.plugins))
       for (const plugin of manifest.plugins)
         if (
-          plugin?.name === "rea" &&
+          plugin?.name === "nre" &&
           plugin?.source?.source === "npm" &&
-          plugin.source.package === "rea-agents" &&
+          plugin.source.package === "nano-reverse-engineer" &&
           typeof plugin.source.version === "string"
         )
           plugin.source.version = "";
     return JSON.stringify(manifest);
   }
   if ("version" in manifest) manifest.version = "";
-  const launch = manifest.mcpServers?.rea?.args;
+  const launch = manifest.mcpServers?.nre?.args;
   // Only the scalar pinned version is release-owned; the launcher owns the
   // fixed package name and the executable/path remain product behavior.
   if (Array.isArray(launch) && typeof launch[1] === "string") launch[1] = "";
@@ -403,7 +403,7 @@ function pluginMetadataWithoutVersions(path, text) {
 
 /**
  * Plugin metadata also carries behavior, so a release may change only
- * its version, pinned server launch, and exact REA marketplace version. Any other difference, an unreadable
+ * its version, pinned server launch, and exact NRE marketplace version. Any other difference, an unreadable
  * side, or a manifest added by the release counts as a product change.
  */
 async function changesOnlyPluginVersions(run, path, from, to) {

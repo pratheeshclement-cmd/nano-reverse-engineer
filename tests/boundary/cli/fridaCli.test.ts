@@ -312,7 +312,7 @@ it("maps one-shot Frida CLI target, script, duration, and remote options", async
 });
 
 it("keeps Frida script-file identity in original bytes when UTF-8 decoding replaces invalid bytes", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-frida-script-identity-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-frida-script-identity-"));
   const files = [
     {
       name: "ff.js",
@@ -582,7 +582,7 @@ it.each([
 );
 
 it("advances each Frida script source to the attach target error without attaching or spawning", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-frida-script-source-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-frida-script-source-"));
   const scriptPath = join(directory, "source.js");
   try {
     await writeFile(scriptPath, "send(1);\n");

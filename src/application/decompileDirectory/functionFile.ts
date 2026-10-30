@@ -26,7 +26,7 @@ export const functionFileText = (input: {
   readonly pseudocode: string;
 }): string => {
   const lines = [
-    "// rea decompile_all",
+    "// nre decompile_all",
     `// name: ${headerValue(input.procedure.name ?? "")}`,
     `// address: ${headerValue(input.procedure.address)}`,
     ...bodyLines(input.body),

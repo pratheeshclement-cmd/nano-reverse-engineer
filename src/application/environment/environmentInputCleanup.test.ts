@@ -9,7 +9,7 @@ import { readEnvironmentExportInputs } from "./environmentExport.js";
 it.each([false, true])(
   "retries a failed input close and retains persistent cleanup authority: %s",
   async (persistent) => {
-    const root = await createTestTempDirectory("rea-environment-input-close-");
+    const root = await createTestTempDirectory("nre-environment-input-close-");
     const files = await writeEnvironmentServeFiles(root);
     const original = OwnedFileHandle.prototype.close;
     let owner: OwnedFileHandle | undefined;

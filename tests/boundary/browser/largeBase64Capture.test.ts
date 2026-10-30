@@ -19,7 +19,7 @@ const sha256 = (value: Uint8Array | string): string =>
 cliTest(
   "retains a 4 MiB canonical HAR body through CLI and MCP evidence export",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-large-base64-har-");
+    const root = await createTestTempDirectory("nre-large-base64-har-");
     const path = join(root, "capture.har");
     const body = Buffer.alloc(4 * 1024 * 1024, 0x5a);
     const contentBase64 = body.toString("base64");

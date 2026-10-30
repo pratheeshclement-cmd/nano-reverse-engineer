@@ -32,9 +32,9 @@ const { assertClientSchemaPatterns } = await importVerifierSource(
 );
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
-const command = process.env.REA_VERIFY_DEEPSEEK_COMMAND ?? "dsh";
-const lab = await mkdtemp(join(tmpdir(), "rea-deepseek-client-"));
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
+const command = process.env.NRE_VERIFY_DEEPSEEK_COMMAND ?? "dsh";
+const lab = await mkdtemp(join(tmpdir(), "nre-deepseek-client-"));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
@@ -43,10 +43,10 @@ const skillPath = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
   "SKILL.md",
 );
-const cli = join(runtimeRoot, "scripts", "rea.mjs");
+const cli = join(runtimeRoot, "scripts", "nre.mjs");
 const configPath = join(profile, "cordis.patch.yml");
 const verifier = createVerifierRun();
 let clientVersion = null;
@@ -76,7 +76,7 @@ await withVerifierCleanup(async () => {
       USERPROFILE: account,
       DSH_HOME: profile,
       OPENAI_API_KEY: "local-fixture-key",
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     // A temporary directory under the checkout must not inherit its project skills or AGENTS.md.
     await commands.exec(
@@ -122,9 +122,9 @@ await withVerifierCleanup(async () => {
       });
     const withoutRea = (text) =>
       patches(text).flatMap((op) => {
-        if (op.id === "rea-mcp") return [];
+        if (op.id === "nre-mcp") return [];
         if (!Array.isArray(op.insert)) return [op];
-        const insert = op.insert.filter((entry) => entry.id !== "rea-mcp");
+        const insert = op.insert.filter((entry) => entry.id !== "nre-mcp");
         return insert.length === 0 ? [] : [{ ...op, insert }];
       });
 
@@ -135,13 +135,13 @@ await withVerifierCleanup(async () => {
       onRequest: async ({ body, tools, requestIndex }) => {
         // Harness generates a session title in a separate, tool-free model request.
         if (tools.length === 0)
-          return { role: "assistant", content: "REA validation" };
+          return { role: "assistant", content: "NRE validation" };
         assert(
           ++mainRequests <= 4,
           "Harness did not complete the bounded fixture workflow.",
         );
-        const rea = tools.filter((tool) => tool.name.startsWith("mcp__rea__"));
-        const observedCatalog = rea
+        const nre = tools.filter((tool) => tool.name.startsWith("mcp__rea__"));
+        const observedCatalog = nre
           .map((tool) => tool.name.slice("mcp__rea__".length))
           .sort();
         assert.deepEqual(
@@ -150,7 +150,7 @@ await withVerifierCleanup(async () => {
         );
         if (catalog === undefined) {
           catalog = observedCatalog;
-          for (const tool of rea) {
+          for (const tool of nre) {
             assert(
               ajv.validateSchema(tool.parameters),
               `${tool.name}: ${ajv.errorsText(ajv.errors)}`,
@@ -172,7 +172,7 @@ await withVerifierCleanup(async () => {
         const serialized = JSON.stringify(toolMessages);
         skillLoaded ||=
           serialized.includes(
-            '<skill_content name=\\"reverse-engineer-anything\\">',
+            '<skill_content name=\\"nano-reverse-engineer\\">',
           ) && serialized.includes(dirname(skillPath));
         for (const message of toolMessages) {
           const found = findClientResult(
@@ -191,7 +191,7 @@ await withVerifierCleanup(async () => {
         }
         if (mode === "chat" || evidenceSeen) {
           finalSeen = true;
-          return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+          return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
         }
         const call = (name, args) => ({
           role: "assistant",
@@ -207,7 +207,7 @@ await withVerifierCleanup(async () => {
         if (!skillRequested) {
           assert(tools.some((tool) => tool.name === "skill"));
           skillRequested = true;
-          return call("skill", { name: "reverse-engineer-anything" });
+          return call("skill", { name: "nano-reverse-engineer" });
         }
         assert(
           skillLoaded,
@@ -225,7 +225,7 @@ await withVerifierCleanup(async () => {
 - id: llm-pi-ai
   config:
     providers:
-      rea-fixture:
+      nre-fixture:
         apiKeyEnv: OPENAI_API_KEY
         api: openai-completions
         baseURL: ${fixture.baseUrl}
@@ -234,23 +234,23 @@ await withVerifierCleanup(async () => {
           mode: normal
           maxRetries: 0
         models:
-          - id: rea-client-fixture
+          - id: nre-client-fixture
             contextWindow: 1000000
 - id: agent-default-model
   config:
-    provider: rea-fixture
-    model: rea-client-fixture
+    provider: nre-fixture
+    model: nre-client-fixture
 - insert:
-    - id: rea-mcp
+    - id: nre-mcp
       name: '@deepseek-ai/dsh-mcp-client'
       config:
-        serverName: rea
+        serverName: nre
         transport: stdio
         command: stale-launcher
         args: [mcp]
         cwd: !!js process.cwd()
         env:
-          REA_PROCESS_RUN_ID: ${JSON.stringify(verifier.run_id)}
+          NRE_PROCESS_RUN_ID: ${JSON.stringify(verifier.run_id)}
 `;
     await writeFile(configPath, original);
     const planned = await runRea(
@@ -273,17 +273,17 @@ await withVerifierCleanup(async () => {
       ),
     );
     assert.equal(await readFile(configPath, "utf8"), original);
-    assert.equal(await pathExists(`${configPath}.rea.backup`), false);
+    assert.equal(await pathExists(`${configPath}.nre.backup`), false);
     lifecycle.push("dry-run");
     const setup = await runRea(["setup", "--client", "dsh", "--yes"], "setup");
     assert.equal(setup.status, "ready");
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert.deepEqual(withoutRea(configured), withoutRea(original));
     assert(configured.includes("!!js process.cwd()"));
     assert(
       (await readFile(skillPath, "utf8")).includes(
-        "name: reverse-engineer-anything",
+        "name: nano-reverse-engineer",
       ),
     );
     lifecycle.push("setup");
@@ -293,7 +293,7 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     lifecycle.push("idempotent-setup");
     const doctor = await runRea(
       ["doctor", "--client", "dsh", "--skill"],
@@ -311,7 +311,7 @@ await withVerifierCleanup(async () => {
             "--json",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use REA to analyze ${target}.`,
+              : `Use NRE to analyze ${target}.`,
           ],
           {
             env: environment,
@@ -327,7 +327,7 @@ await withVerifierCleanup(async () => {
       },
     );
     assert.equal(fixture.failure, undefined);
-    assert(finalSeen && result.stdout.includes("REA_CLIENT_COMPATIBILITY_OK"));
+    assert(finalSeen && result.stdout.includes("NRE_CLIENT_COMPATIBILITY_OK"));
     if (mode === "call") assert(evidenceSeen && skillLoaded);
     lifecycle.push(mode === "call" ? "native-tool-invocation" : "native-chat");
     const uninstall = await runRea(["uninstall"], "uninstall");

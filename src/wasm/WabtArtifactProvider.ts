@@ -99,7 +99,7 @@ export class WabtArtifactProvider implements WasmArtifactPort {
     readonly launcher?: Launcher,
     readonly createRuntime: () => Promise<
       Pick<PrivateRuntimeRoot, "path" | "close">
-    > = () => PrivateRuntimeRoot.create({ prefix: "rea-wabt-" }),
+    > = () => PrivateRuntimeRoot.create({ prefix: "nre-wabt-" }),
   ) {}
   /** Retry retained cleanup without discarding roots that still cannot be removed. */
   async close(): Promise<void> {
@@ -220,10 +220,10 @@ export class WabtArtifactProvider implements WasmArtifactPort {
         throw new AnalysisCancelledError(OPERATION, {
           cause: options.signal.reason,
         });
-      const directory = environment.REA_WABT_BIN_DIRECTORY ?? "";
+      const directory = environment.NRE_WABT_BIN_DIRECTORY ?? "";
       if (!isAbsolute(directory))
         throw new WabtAdmissionError("directory_not_absolute", {
-          setting: "REA_WABT_BIN_DIRECTORY",
+          setting: "NRE_WABT_BIN_DIRECTORY",
         });
       const commands: {
         tool: "wasm-validate" | "wasm-objdump" | "wasm2wat";
@@ -307,7 +307,7 @@ export class WabtArtifactProvider implements WasmArtifactPort {
             // Trusted caller tools may be interpreter shims; run-token, parent
             // and process-group identity own cleanup after their exec handoff.
             expectedCommand: null,
-            runId: `rea-wabt-${randomUUID()}`,
+            runId: `nre-wabt-${randomUUID()}`,
             hostEnvironment: environment,
           },
           {
@@ -345,7 +345,7 @@ export class WabtArtifactProvider implements WasmArtifactPort {
       };
       for (const command of commands) {
         versionProbe = {
-          configuration_key: "REA_WABT_BIN_DIRECTORY",
+          configuration_key: "NRE_WABT_BIN_DIRECTORY",
           executable_path: command.path,
           tool: command.tool,
           expected_version: WABT_VERSION,

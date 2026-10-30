@@ -9,7 +9,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("gamecube-dol admission", () => {
   it("admits an explicitly selected DOL as big-endian 32-bit powerpc", async () => {
-    const directory = await createTestTempDirectory("rea-dol-admit-");
+    const directory = await createTestTempDirectory("nre-dol-admit-");
     const bytes = buildGamecubeDol();
     await writeFile(join(directory, "game.dol"), bytes);
     const target = await parseBinaryTarget("game.dol", {
@@ -34,7 +34,7 @@ describe("gamecube-dol admission", () => {
   });
 
   it("refuses a caller architecture that conflicts with the DOL header", async () => {
-    const directory = await createTestTempDirectory("rea-dol-arch-");
+    const directory = await createTestTempDirectory("nre-dol-arch-");
     await writeFile(join(directory, "game.dol"), buildGamecubeDol());
     const target = await parseBinaryTarget("game.dol", {
       cwd: directory,
@@ -49,7 +49,7 @@ describe("gamecube-dol admission", () => {
   });
 
   it("refuses a caller entry that conflicts with the DOL header entry", async () => {
-    const directory = await createTestTempDirectory("rea-dol-entry-");
+    const directory = await createTestTempDirectory("nre-dol-entry-");
     await writeFile(join(directory, "game.dol"), buildGamecubeDol());
     const target = await parseBinaryTarget("game.dol", {
       cwd: directory,
@@ -64,7 +64,7 @@ describe("gamecube-dol admission", () => {
   });
 
   it("refuses a selected file whose header fails parsing", async () => {
-    const directory = await createTestTempDirectory("rea-dol-bad-");
+    const directory = await createTestTempDirectory("nre-dol-bad-");
     await writeFile(join(directory, "bad.dol"), Buffer.alloc(0x100));
     const target = await parseBinaryTarget("bad.dol", {
       cwd: directory,
@@ -83,7 +83,7 @@ describe("gamecube-dol admission", () => {
   it("refuses a large selected file with an invalid header after reading only the header", async () => {
     // Sparse: the 2 GiB length is a metadata extension, so no real disk is used.
     // A whole-file read would allocate the full length before the header check.
-    const directory = await createTestTempDirectory("rea-dol-sparse-");
+    const directory = await createTestTempDirectory("nre-dol-sparse-");
     const path = join(directory, "huge.dol");
     await writeFile(path, Buffer.alloc(0x100));
     await truncate(path, 2 * 1024 ** 3);
@@ -104,7 +104,7 @@ describe("gamecube-dol admission", () => {
   });
 
   it("never auto-detects a DOL without the caller's format selection", async () => {
-    const directory = await createTestTempDirectory("rea-dol-detect-");
+    const directory = await createTestTempDirectory("nre-dol-detect-");
     await writeFile(join(directory, "game.dol"), buildGamecubeDol());
     const target = await parseBinaryTarget("game.dol", { cwd: directory });
     if (target.ok) expect(target.value.format).not.toBe("gamecube-dol");

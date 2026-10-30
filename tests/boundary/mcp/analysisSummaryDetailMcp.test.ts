@@ -52,7 +52,7 @@ const connect = async (
 };
 
 const application = async () => {
-  const root = await createTestTempDirectory("rea-summary-detail-");
+  const root = await createTestTempDirectory("nre-summary-detail-");
   await writeFile(
     join(root, "main.js"),
     'import { helper } from "./util.js";\nexport const greet = (name) => helper(name);\n',
@@ -178,7 +178,7 @@ it("returns the summary of retained binary layout Evidence", async () => {
 cliTest(
   "retains complete entropy Evidence, summarizes runs and matches CLI JSON",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-entropy-summary-");
+    const root = await createTestTempDirectory("nre-entropy-summary-");
     const path = join(root, "bytes");
     await writeFile(path, Buffer.alloc(65536));
     const client = await connect(true);

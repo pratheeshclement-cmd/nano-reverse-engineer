@@ -10,7 +10,7 @@ import { analyzeJavaScriptDirectory } from "../../support/cli/javascriptApplicat
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "reports Webpack exports attached to original renamed factory parameter values through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-webpack-renamed-exports-");
+    const root = await createTestTempDirectory("nre-webpack-renamed-exports-");
     await mkdir(join(root, "src"));
     await writeFile(
       join(root, "src", "chunk.js"),
@@ -87,7 +87,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "reports Webpack exports through defaulted and destructured factory parameters through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-webpack-pattern-exports-");
+    const root = await createTestTempDirectory("nre-webpack-pattern-exports-");
     await mkdir(join(root, "src"));
     await writeFile(
       join(root, "src", "exact.js"),

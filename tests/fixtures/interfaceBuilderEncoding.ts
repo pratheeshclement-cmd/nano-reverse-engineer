@@ -55,7 +55,7 @@ let nativeEncodingFixtures: Promise<NativeEncodingFixtures> | undefined;
 
 const produceNativeEncodingFixtures =
   async (): Promise<NativeEncodingFixtures> => {
-    const directory = await createTestTempDirectory("rea-ib-native-encodings-");
+    const directory = await createTestTempDirectory("nre-ib-native-encodings-");
     await promisify(execFile)("/usr/bin/xcrun", [
       "swift",
       "tests/conformance/native/interface-builder-encoding.swift",
@@ -126,7 +126,7 @@ export const createInterfaceBuilderEncodingFixture = async (
   encoding: Encoding,
 ) => {
   const native = await readNativeEncodingFixtures();
-  const directory = await createTestTempDirectory("rea-ib-encoding-");
+  const directory = await createTestTempDirectory("nre-ib-encoding-");
   const oracle = structuredClone(native.oracle);
   expect(oracle.views.map(({ identifier }) => identifier)).toEqual([
     "Café",

@@ -33,14 +33,14 @@ cliTest.for([
 ] as const)(
   "attributes the BrowserWindow to Electron only through %s",
   async ([, source, windows], { cli }) => {
-    const root = await createTestTempDirectory("rea-webpack-loader-returns-");
+    const root = await createTestTempDirectory("nre-webpack-loader-returns-");
     await writeFixtureFiles(root, {
       "main.js": source,
       "package.json": JSON.stringify({ name: "fixture", main: "main.js" }),
     });
     const response = await cli.run({
       arguments: ["analyze-javascript-application", root, "--format", "json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode).toBe(0);
     const result = javascriptApplicationAnalysisResultSchema.parse(

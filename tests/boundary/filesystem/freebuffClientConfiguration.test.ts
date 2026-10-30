@@ -70,8 +70,8 @@ describe("FreeBuff configuration paths", () => {
   });
 
   it("stays undetected when only the shared agents skill directory exists", async () => {
-    const home = await createTestTempDirectory("rea-freebuff-shared-");
-    // REA's own skill installs create this directory for every client.
+    const home = await createTestTempDirectory("nre-freebuff-shared-");
+    // NRE's own skill installs create this directory for every client.
     await mkdir(join(home, ".agents", "skills"), { recursive: true });
     await writeFile(
       join(home, ".agents", "mcp.json"),
@@ -100,7 +100,7 @@ describe("FreeBuff configuration paths", () => {
   it.skipIf(process.platform === "win32")(
     "ignores dangling profile links while preserving explicit and ownership reads",
     async () => {
-      const home = await createTestTempDirectory("rea-freebuff-profile-link-");
+      const home = await createTestTempDirectory("nre-freebuff-profile-link-");
       const profile = join(home, ".config", "freebuff-desktop");
       await mkdir(dirname(profile), { recursive: true });
       await symlink(join(home, "removed-profile"), profile, "dir");
@@ -152,7 +152,7 @@ describe("FreeBuff configuration paths", () => {
     expect(skillDestinations("/home/a", ["freebuff"])).toEqual([
       {
         client: "shared",
-        path: join("/home/a", ".agents", "skills", "reverse-engineer-anything"),
+        path: join("/home/a", ".agents", "skills", "nano-reverse-engineer"),
       },
     ]);
   });
@@ -160,7 +160,7 @@ describe("FreeBuff configuration paths", () => {
 
 describe("FreeBuff JSON registration", () => {
   const freebuffClient = async () => {
-    const home = await createTestTempDirectory("rea-freebuff-");
+    const home = await createTestTempDirectory("nre-freebuff-");
     const client = freebuffPath(home, process.platform);
     if (client === undefined) throw new Error("missing FreeBuff client");
     await mkdir(dirname(client.configPath), { recursive: true });
@@ -168,7 +168,7 @@ describe("FreeBuff JSON registration", () => {
     return { home, client };
   };
 
-  it("upserts rea into mcpServers while preserving unrelated settings", async () => {
+  it("upserts nre into mcpServers while preserving unrelated settings", async () => {
     const { home, client } = await freebuffClient();
     await writeFile(
       client.configPath,
@@ -186,7 +186,7 @@ describe("FreeBuff JSON registration", () => {
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
     expect(parsed.agents).toEqual({ discoverSkills: true });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -215,7 +215,7 @@ describe("FreeBuff JSON registration", () => {
       JSON.stringify(
         {
           mcpServers: {
-            rea: { command: command[0], args: command.slice(1), enable: false },
+            nre: { command: command[0], args: command.slice(1), enable: false },
           },
         },
         null,
@@ -226,7 +226,7 @@ describe("FreeBuff JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toMatchObject({
+    expect(parsed.mcpServers.nre).toMatchObject({
       command: command[0],
       args: command.slice(1),
       enable: false,
@@ -243,7 +243,7 @@ describe("FreeBuff JSON registration", () => {
       JSON.stringify(
         {
           mcpServers: {
-            rea: { command: command[0], args: command.slice(1), enable: false },
+            nre: { command: command[0], args: command.slice(1), enable: false },
           },
         },
         null,
@@ -276,7 +276,7 @@ describe("FreeBuff JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.agents).toEqual({ discoverSkills: true });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -289,13 +289,13 @@ describe("FreeBuff JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the nre entry on uninstall", async () => {
     const { home, client } = await freebuffClient();
     await writeFile(
       client.configPath,
@@ -312,13 +312,13 @@ describe("FreeBuff JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toBeUndefined();
+    expect(parsed.mcpServers.nre).toBeUndefined();
   });
 });
 
 describe("uninstall applicability for shared FreeBuff storage", () => {
-  it("retains malformed shared settings without blocking unrelated REA removal", async () => {
-    const home = await createTestTempDirectory("rea-freebuff-absent-");
+  it("retains malformed shared settings without blocking unrelated NRE removal", async () => {
+    const home = await createTestTempDirectory("nre-freebuff-absent-");
     const client = freebuffPath(home, process.platform)!;
     await mkdir(dirname(client.configPath), { recursive: true });
     await writeFile(client.configPath, "{unrelated malformed shared data");
@@ -328,8 +328,8 @@ describe("uninstall applicability for shared FreeBuff storage", () => {
     await mkdir(dirname(codex.configPath), { recursive: true });
     await writeFile(codex.configPath, "");
     await configureClientConfiguration(codex, {}, command);
-    await mkdir(join(home, ".rea", "cache"), { recursive: true });
-    await writeFile(join(home, ".rea", "cache", "owned"), "owned");
+    await mkdir(join(home, ".nre", "cache"), { recursive: true });
+    await writeFile(join(home, ".nre", "cache", "owned"), "owned");
     const result = await runUninstall(
       true,
       systemUninstallHost(home, undefined, {}),
@@ -352,7 +352,7 @@ describe("uninstall applicability for shared FreeBuff storage", () => {
   it("fails closed when a denied product profile leaves a client config unreadable", async () => {
     // ZCode reads product-local storage, so an unreadable profile directory
     // leaves an unknown registration state rather than an absent one.
-    const home = await createTestTempDirectory("rea-zcode-denied-");
+    const home = await createTestTempDirectory("nre-zcode-denied-");
     const zcode = supportedClients(home, process.platform, {}).find(
       ({ name }) => name === "zcode",
     )!;
@@ -398,7 +398,7 @@ describe("uninstall applicability for shared FreeBuff storage", () => {
   });
 
   it("removes a recognizable owned shared row even without a FreeBuff profile", async () => {
-    const home = await createTestTempDirectory("rea-freebuff-owned-row-");
+    const home = await createTestTempDirectory("nre-freebuff-owned-row-");
     const client = freebuffPath(home, process.platform)!;
     await mkdir(dirname(client.configPath), { recursive: true });
     await writeFile(
@@ -423,15 +423,15 @@ describe("uninstall applicability for shared FreeBuff storage", () => {
     // A denied profile probe is not absence: when the shared file also
     // cannot be read, uninstall must block instead of treating applicability
     // as unproven and purging data while an installed FreeBuff may still hold
-    // an active REA registration.
-    const home = await createTestTempDirectory("rea-freebuff-denied-probe-");
+    // an active NRE registration.
+    const home = await createTestTempDirectory("nre-freebuff-denied-probe-");
     const client = freebuffPath(home, process.platform)!;
     const profile = client.discoveryPaths?.[0];
     if (profile === undefined)
       throw new Error("freebuff discovery path missing");
     await mkdir(profile, { recursive: true });
     await configureClientConfiguration(client, {}, command);
-    const state = join(home, ".rea", "state.json");
+    const state = join(home, ".nre", "state.json");
     await mkdir(dirname(state), { recursive: true });
     await writeFile(state, "{}\n");
     const denied = () => Object.assign(new Error("denied"), { code: "EACCES" });
@@ -463,7 +463,7 @@ describe("uninstall applicability for shared FreeBuff storage", () => {
         name: "uninstall",
         status: "skipped",
         detail: expect.stringContaining(
-          "No REA registration, skill, or data was removed",
+          "No NRE registration, skill, or data was removed",
         ),
       }),
     );

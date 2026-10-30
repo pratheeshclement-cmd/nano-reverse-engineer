@@ -18,11 +18,11 @@ import {
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
-describe("rea environment-serve refusals", () => {
+describe("nre environment-serve refusals", () => {
   cliTest(
     "refuses a manifest whose parent is not the supplied evidence with a typed invalid request",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-environment-serve-cli-");
+      const root = await createTestTempDirectory("nre-environment-serve-cli-");
       const files = await writeEnvironmentServeFiles(root);
       const other = join(root, "other.json");
       await writeFile(
@@ -61,7 +61,7 @@ describe("rea environment-serve refusals", () => {
     "reports a missing --evidence option as a usage error",
     async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-environment-serve-usage-",
+        "nre-environment-serve-usage-",
       );
       const files = await writeEnvironmentServeFiles(root);
       const result = await cli.run({
@@ -79,7 +79,7 @@ describe("rea environment-serve refusals", () => {
   cliTest(
     "refuses an unreadable manifest path before binding",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-environment-serve-path-");
+      const root = await createTestTempDirectory("nre-environment-serve-path-");
       const files = await writeEnvironmentServeFiles(root);
       const result = await cli.run({
         arguments: [
@@ -147,7 +147,7 @@ cliTest(
       ),
     ).toBe(true);
     const root = await createTestTempDirectory(
-      "rea-environment-catalog-capacity-",
+      "nre-environment-catalog-capacity-",
     );
     const files = await writeEnvironmentServeFiles(root, {
       capture,

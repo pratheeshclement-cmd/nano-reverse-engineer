@@ -65,12 +65,12 @@ const results: Readonly<Record<string, unknown>> = {
     client: clientIdentity,
     serial: "emulator-5554",
     package_name: "com.example",
-    output_directory: "/tmp/rea-pulls",
+    output_directory: "/tmp/nre-pulls",
     artifacts: [
       {
         device_path: "/data/app/x/base.apk",
         file_name: "base.apk",
-        local_path: "/tmp/rea-pulls/com.example/base.apk",
+        local_path: "/tmp/nre-pulls/com.example/base.apk",
         bytes: 2048,
         sha256: "a".repeat(64),
         role: "base",
@@ -109,7 +109,7 @@ const results: Readonly<Record<string, unknown>> = {
     client: clientIdentity,
     serial: "emulator-5554",
     device_path: "/data/local/tmp/notes.txt",
-    local_path: "/tmp/rea-pulls/notes.txt",
+    local_path: "/tmp/nre-pulls/notes.txt",
     bytes: 10,
     sha256: "a".repeat(64),
   },
@@ -127,7 +127,7 @@ const results: Readonly<Record<string, unknown>> = {
   capture_adb_screen: {
     client: clientIdentity,
     serial: "emulator-5554",
-    local_path: "/tmp/rea-captures/screen.png",
+    local_path: "/tmp/nre-captures/screen.png",
     bytes: 8192,
     sha256: "a".repeat(64),
     width: 1080,
@@ -229,10 +229,10 @@ const results: Readonly<Record<string, unknown>> = {
   collect_adb_bugreport: {
     client: clientIdentity,
     serial: "emulator-5554",
-    local_path: "/tmp/rea-bugreports/bugreport.zip",
+    local_path: "/tmp/nre-bugreports/bugreport.zip",
     bytes: 1024,
     sha256: "a".repeat(64),
-    adb_reported_path: "/tmp/rea-bugreports/bugreport.zip",
+    adb_reported_path: "/tmp/nre-bugreports/bugreport.zip",
   },
   resolve_adb_packages: {
     client: clientIdentity,
@@ -348,7 +348,7 @@ it("advertises exact valid ADB schemas and records inline evidence through MCP",
     arguments: {
       serial: "emulator-5554",
       package: "com.example",
-      output_directory: "/tmp/rea-pulls",
+      output_directory: "/tmp/nre-pulls",
     },
   });
   expect(pulled.isError).not.toBe(true);

@@ -13,7 +13,7 @@ import type { SetupAction } from "./SetupTypes.js";
 import type { Result } from "../domain/result.js";
 import type { ArtifactResourceScope } from "../artifacts/ArtifactResourceScope.js";
 
-/** Existing REA integrations selected for maintenance, without discovering new targets. */
+/** Existing NRE integrations selected for maintenance, without discovering new targets. */
 export interface MaintenanceScope {
   readonly clients: readonly string[];
   readonly skill: boolean;
@@ -57,7 +57,7 @@ const setupPlanSchema = z.object({
   ),
 });
 
-/** Discover owned registrations and REA skills without writes. */
+/** Discover owned registrations and NRE skills without writes. */
 export const existingMaintenanceScope = async (
   home: string,
   entryPoint: string,
@@ -69,7 +69,7 @@ export const existingMaintenanceScope = async (
     entryPoint,
     {
       environment,
-      // A registration REA wrote must be refreshed even when the product
+      // A registration NRE wrote must be refreshed even when the product
       // profile is absent, so maintenance reads ownership evidence instead of
       // product applicability. Owned rows stay the only ones selected below.
       evidence: "ownership",
@@ -118,7 +118,7 @@ export const existingMaintenanceScope = async (
   };
 };
 
-/** Ask the verified new executable to plan only existing REA integrations. */
+/** Ask the verified new executable to plan only existing NRE integrations. */
 export const planIntegrationMaintenance = async (
   home: string,
   entryPoint: string,
@@ -187,7 +187,7 @@ export const planIntegrationMaintenance = async (
       return {
         status: "unavailable",
         remediation:
-          "The updated setup plan included an integration outside the existing REA maintenance scope.",
+          "The updated setup plan included an integration outside the existing NRE maintenance scope.",
       };
     return {
       status: "planned",

@@ -160,7 +160,7 @@ class IdaCleanupError extends ProviderAdapterError {
                   }),
                 ),
                 reason:
-                  "Release of upstream sessions matching the requested session ID or private input was not confirmed; input_path preserves the last observed binding and is null when no inventory has reported it. is_active preserves registry activity and is null when unknown; it does not establish process liveness. A worker outlives its supervisor and may keep running until it finishes and reaches its idle timeout; exiting REA does not stop it. A gui session belongs to an IDA instance REA does not control. An empty session_id means upstream reported none; owned is null when no inventory has reported ownership; an empty list means the requested worker's close was confirmed but no inventory has identified any remaining session.",
+                  "Release of upstream sessions matching the requested session ID or private input was not confirmed; input_path preserves the last observed binding and is null when no inventory has reported it. is_active preserves registry activity and is null when unknown; it does not establish process liveness. A worker outlives its supervisor and may keep running until it finishes and reaches its idle timeout; exiting NRE does not stop it. A gui session belongs to an IDA instance NRE does not control. An empty session_id means upstream reported none; owned is null when no inventory has reported ownership; an empty list means the requested worker's close was confirmed but no inventory has identified any remaining session.",
               },
             }),
       },
@@ -176,7 +176,7 @@ class IdaCleanupError extends ProviderAdapterError {
  * owning worker is matched by its own session ID separately, and a genuine peer
  * on the same input keeps a session ID, so neither case is weakened.
  *
- * Limited to `backend: "worker"`: a gui row belongs to an IDA instance REA does
+ * Limited to `backend: "worker"`: a gui row belongs to an IDA instance NRE does
  * not control, and the observed teardown shape covers workers only, so a gui
  * row keeps blocking release whatever its flags say.
  */
@@ -342,7 +342,7 @@ export class IdaSessionClient implements AnalysisClient {
             reason: "invalid_value",
             expected: this.target.path,
             message:
-              "IDA document must be the REA-bound target; omit document or use its admitted path.",
+              "IDA document must be the NRE-bound target; omit document or use its admitted path.",
           },
         ]),
       );
@@ -784,7 +784,7 @@ export class IdaSessionClient implements AnalysisClient {
       if (metadata.sha256.toLowerCase() !== this.target.sha256.toLowerCase())
         throw new IdaIdentityRefusal(
           `The attached IDA input SHA-256 does not match the selected target ${this.target.path}; open that target in IDA or use headless mode.`,
-          "Open the selected original input in IDA, or configure headless mode and reopen the target through REA.",
+          "Open the selected original input in IDA, or configure headless mode and reopen the target through NRE.",
           "attached_sha256",
         );
       identity = JSON.stringify([
@@ -796,7 +796,7 @@ export class IdaSessionClient implements AnalysisClient {
       if (this.#database === undefined || this.#workspace === undefined)
         throw new IdaIdentityRefusal(
           "IDA headless session has no database binding.",
-          "Close the REA analysis session and reopen the selected target using the configured headless supervisor.",
+          "Close the NRE analysis session and reopen the selected target using the configured headless supervisor.",
           "database_binding",
         );
       const raw = await readSettledHealth(this.connection, {
@@ -814,7 +814,7 @@ export class IdaSessionClient implements AnalysisClient {
       )
         throw new IdaIdentityRefusal(
           "IDA headless input identity changed after target admission.",
-          "Close the REA analysis session, confirm private-worker cleanup, then reopen the selected original target.",
+          "Close the NRE analysis session, confirm private-worker cleanup, then reopen the selected original target.",
           "headless_input",
         );
       if (metadata.auto_analysis_ready !== true)
@@ -845,8 +845,8 @@ export class IdaSessionClient implements AnalysisClient {
       identity !== this.#initialIdentity
     )
       throw new IdaIdentityRefusal(
-        "The IDA target or image base changed during the REA session; reopen the target.",
-        "Close the REA analysis session and reopen the selected target after confirming the intended input and image base in IDA.",
+        "The IDA target or image base changed during the NRE session; reopen the target.",
+        "Close the NRE analysis session and reopen the selected target after confirming the intended input and image base in IDA.",
         "session_identity",
       );
     this.#initialIdentity = identity;

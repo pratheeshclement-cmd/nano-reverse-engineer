@@ -23,12 +23,12 @@ export async function verifyElectronToolContracts({
   repositoryRoot,
 }) {
   const root = await realpath(
-    await mkdtemp(join(tmpdir(), "rea-electron-e2e-")),
+    await mkdtemp(join(tmpdir(), "nre-electron-e2e-")),
   );
   const main = join(root, "main.cjs");
   const preload = join(root, "preload.cjs");
   const ready = join(root, "ready");
-  const entrypoint = join(repositoryRoot, "scripts", "rea.mjs");
+  const entrypoint = join(repositoryRoot, "scripts", "nre.mjs");
   const runId = randomUUID();
   await writeFile(
     main,
@@ -80,8 +80,8 @@ bridge.exposeInMainWorld("fixture", {
         ),
       ),
       PATH: process.env.PATH,
-      REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured/hopper",
+      NRE_LOG_LEVEL: "silent",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured/hopper",
     },
     stderr: "pipe",
   });
@@ -104,7 +104,7 @@ bridge.exposeInMainWorld("fixture", {
       ],
       {
         cwd: root,
-        env: { ...process.env, REA_PROCESS_RUN_ID: runId },
+        env: { ...process.env, NRE_PROCESS_RUN_ID: runId },
         detached: true,
         stdio: ["ignore", "ignore", "pipe"],
       },
@@ -207,7 +207,7 @@ bridge.exposeInMainWorld("fixture", {
         "--json",
       ],
       {
-        env: { ...process.env, REA_LOG_LEVEL: "silent" },
+        env: { ...process.env, NRE_LOG_LEVEL: "silent" },
         timeout: 60_000,
         maxBuffer: 32 * 1024 * 1024,
       },
@@ -328,7 +328,7 @@ async function verifyCancellation({ input, ready, entrypoint, root }) {
     ],
     {
       cwd: root,
-      env: { ...process.env, REA_LOG_LEVEL: "silent" },
+      env: { ...process.env, NRE_LOG_LEVEL: "silent" },
       stdio: ["ignore", "pipe", "pipe"],
     },
   );
@@ -402,7 +402,7 @@ async function verifyCancellation({ input, ready, entrypoint, root }) {
     const error = JSON.parse(stdout);
     assert.ok(["cancelled", "cleanup_incomplete"].includes(error.code), stdout);
     assert.equal(error.category, "cancelled", stdout);
-    assert.doesNotMatch(error.message, /rea doctor/u);
+    assert.doesNotMatch(error.message, /nre doctor/u);
     assert.equal(
       error.details?.partial_observation?.kind,
       "electron-active-observation",

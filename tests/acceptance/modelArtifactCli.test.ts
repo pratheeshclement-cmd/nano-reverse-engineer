@@ -36,7 +36,7 @@ cliTest(
   "preserves lowercase hyphenated GGUF architecture metadata from the published writer",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-model-hyphen-architecture-",
+      "nre-model-hyphen-architecture-",
     );
     const base = ggufFixture();
     for (const architecture of ["gpt-oss", "wavtokenizer-dec"] as const) {
@@ -85,7 +85,7 @@ cliTest(
 cliTest(
   "preserves unresolved Q8_1 layout through CLI, MCP summaries and retained tensor/type pages",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-q8-layout-");
+    const root = await createTestTempDirectory("nre-model-q8-layout-");
     const call = await modelMcp.session.call();
     for (const blockBytes of [36, 40]) {
       const path = join(root, `blocks-${String(blockBytes)}.gguf`);
@@ -312,7 +312,7 @@ const assertRetainedLayoutViews = async (
 cliTest(
   "preserves released K and shifted integer/IQ uncertainty through CLI and retained MCP views",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-historical-layouts-");
+    const root = await createTestTempDirectory("nre-model-historical-layouts-");
     const call = await modelMcp.session.call();
     for (const layout of ["legacy", "modern"] as const) {
       const path = join(root, `${layout}.gguf`);
@@ -442,7 +442,7 @@ cliTest(
 cliTest(
   "preserves exact large safetensors dimensions while bounding actual offsets",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-shape-precision-");
+    const root = await createTestTempDirectory("nre-model-shape-precision-");
     const path = join(root, "empty.safetensors");
     const fixture = safetensorsFixture(
       '{"a":{"dtype":"F32","shape":[0,9007199254740992],"data_offsets":[0,0]},"b":{"dtype":"F32","shape":[18446744073709551615,0],"data_offsets":[0,0]}}',
@@ -528,7 +528,7 @@ cliTest(
 it.each(["named", "default", "inventory-only", "absent"] as const)(
   "reports actual chat-template presence in summaries and page context (%s)",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-model-templates-");
+    const root = await createTestTempDirectory("nre-model-templates-");
     const path = join(root, "model.gguf");
     const { text, u32, u64 } = ggufFixture();
     const names = {
@@ -585,7 +585,7 @@ it.each(["named", "default", "inventory-only", "absent"] as const)(
 );
 
 it("keeps generated headline keys and imported compound metadata out of compact summaries", async () => {
-  const root = await createTestTempDirectory("rea-model-headlines-");
+  const root = await createTestTempDirectory("nre-model-headlines-");
   const path = join(root, "model");
   const architecture = "a".repeat(12000);
   const { text, u32 } = ggufFixture();
@@ -633,7 +633,7 @@ it("keeps generated headline keys and imported compound metadata out of compact 
 });
 
 it("rejects noncanonical imported model indexes and duplicate identities through public MCP", async () => {
-  const root = await createTestTempDirectory("rea-model-import-");
+  const root = await createTestTempDirectory("nre-model-import-");
   const path = join(root, "model");
   await writeFile(path, ggufFixture().bytes);
   const call = await modelMcp.session.call();
@@ -684,7 +684,7 @@ it("rejects noncanonical imported model indexes and duplicate identities through
 });
 
 it("bounds compact model warnings and omits unselected long labels while retaining complete Evidence", async () => {
-  const root = await createTestTempDirectory("rea-model-long-labels-");
+  const root = await createTestTempDirectory("nre-model-long-labels-");
   const path = join(root, "model");
   const name = "tensor".repeat(4000);
   const type = "FUTURE".repeat(4000);
@@ -875,7 +875,7 @@ const assertHistoricalModelPages = async (
 cliTest(
   "shares scoped model facts through real CLI/MCP and pages retained metadata after source removal",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-cli-");
+    const root = await createTestTempDirectory("nre-model-cli-");
     const call = await modelMcp.session.call();
     for (const [format, fixture] of [
       ["gguf", ggufFixture()],
@@ -972,7 +972,7 @@ cliTest(
 cliTest(
   "preserves optional safetensors fields and aligns empty GGUF data in CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-boundary-compat-");
+    const root = await createTestTempDirectory("nre-model-boundary-compat-");
     const call = await modelMcp.session.call();
     const safetensors = safetensorsFixture(
       '{"__metadata__":null,"weight":{"dtype":"F32","shape":[1],"data_offsets":[0,4],"note":{"source":"local","flags":[null,false,-1,1.25]}}}',
@@ -1099,7 +1099,7 @@ cliTest(
 cliTest(
   "inspects unpadded zero-tensor vocab GGUF through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-vocab-only-");
+    const root = await createTestTempDirectory("nre-model-vocab-only-");
     const call = await modelMcp.session.call();
     const base = ggufFixture();
     const vocab = ggufFixture({
@@ -1208,7 +1208,7 @@ cliTest(
 cliTest(
   "exports complete model Evidence for portable paging and returns typed malformed errors",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-export-");
+    const root = await createTestTempDirectory("nre-model-export-");
     const path = join(root, "model");
     const output = join(root, "evidence.json");
     await writeFile(path, ggufFixture().bytes);
@@ -1288,7 +1288,7 @@ cliTest(
 cliTest(
   "rejects malformed model view JSON before opening the selected path",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-model-view-json-");
+    const root = await createTestTempDirectory("nre-model-view-json-");
     const missing = join(root, "not-created.gguf");
     const result = await cli.run({
       arguments: ["inspect-model-artifact", missing, "--view", "{", "--json"],

@@ -19,7 +19,7 @@ import { mcpTest } from "../../support/mcp/mcpFixture.js";
 mcpTest(
   "MCP inspects an XML keyed archive with a non-plist suffix",
   async ({ mcp, onTestFinished }) => {
-    const root = await createTestTempDirectory("rea-keyed-xml-extension-mcp-");
+    const root = await createTestTempDirectory("nre-keyed-xml-extension-mcp-");
     const path = join(root, "Model.archive");
     await writeFile(
       path,
@@ -30,7 +30,7 @@ mcpTest(
         $top: { root: { UID: 1 } },
       }).replace("?>", `?><?audit run?>${" ".repeat(8192)}`),
     );
-    const configured = parseConfig({ REA_ANALYSIS_PROVIDER: "auto" });
+    const configured = parseConfig({ NRE_ANALYSIS_PROVIDER: "auto" });
     if (!configured.ok) throw configured.error;
     const session = createBinarySession(
       configured.value,

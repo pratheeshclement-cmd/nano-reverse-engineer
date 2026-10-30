@@ -46,7 +46,7 @@ const fixtures = fileURLToPath(
   new URL("../tests/conformance/ghidra", import.meta.url),
 );
 const bridge = fileURLToPath(new URL("../bridge/ghidra", import.meta.url));
-const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-noreturn-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-ghidra-noreturn-"));
 let cleaned = true;
 let report;
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -65,7 +65,7 @@ try {
           "-D_FORTIFY_SOURCE=0",
         ]
       : ["-shared"];
-  await exec(process.env.REA_CC ?? "cc", [
+  await exec(process.env.NRE_CC ?? "cc", [
     ...targetOptions,
     "-fPIC",
     "-O0",
@@ -77,7 +77,7 @@ try {
   const targetDigest = digest(await readFile(targetPath));
   const sourceDigests = Object.fromEntries(
     await Promise.all(
-      ["ReaGhidraBridge.java", "ReaGhidraNoReturnFix.java"].map(
+      ["NreGhidraBridge.java", "NreGhidraNoReturnFix.java"].map(
         async (name) => [name, digest(await readFile(join(bridge, name)))],
       ),
     ),
@@ -96,7 +96,7 @@ try {
       "-scriptPath",
       `${fixtures};${bridge}`,
       "-postScript",
-      join(fixtures, "ReaNoReturnProbe.java"),
+      join(fixtures, "NreNoReturnProbe.java"),
       bridge,
     ],
     runId: run.run_id,
@@ -121,7 +121,7 @@ try {
     const output = `${snapshot.stdout.text}\n${snapshot.stderr.text}`;
     assert.equal(snapshot.exitCode, 0, output);
     const reports = [
-      ...output.matchAll(/REA_NO_RETURN_PROBE_JSON (\{[^\r\n]*\})/gu),
+      ...output.matchAll(/NRE_NO_RETURN_PROBE_JSON (\{[^\r\n]*\})/gu),
     ];
     assert.equal(reports.length, 1, output);
     probe = JSON.parse(reports[0][1]);
@@ -175,7 +175,7 @@ try {
       "analyze_function",
     ]) {
       const result = await client.execute(operation, {
-        procedure: procedureName("rea_abort"),
+        procedure: procedureName("nre_abort"),
       });
       if (!result.ok) throw result.error;
       const warnings = result.value.limitations.filter((value) =>
@@ -190,7 +190,7 @@ try {
       observations.push({ operation, warnings });
     }
     const healthy = await client.execute("procedure_pseudo_code", {
-      procedure: procedureName("rea_tls"),
+      procedure: procedureName("nre_tls"),
     });
     if (!healthy.ok) throw healthy.error;
     assert.ok(

@@ -24,7 +24,7 @@ const setupArguments = [
 cliTest(
   "codex setup and uninstall preserve signed 64-bit TOML integers exactly",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-toml-int64-");
+    const home = await createTestTempDirectory("nre-toml-int64-");
     const config = join(home, ".codex/config.toml");
     const original =
       "[history]\n" +
@@ -51,10 +51,10 @@ cliTest(
       status: "ready",
       clients: { codex: { status: "configured" } },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
     const configured = await readFile(config, "utf8");
     expect(configured.startsWith(original)).toBe(true);
-    expect(configured).toContain("[mcp_servers.rea]");
+    expect(configured).toContain("[mcp_servers.nre]");
 
     const repeated = await run([...setupArguments, "--yes"]);
     expect(repeated.exitCode, repeated.stdout).toBe(0);
@@ -72,14 +72,14 @@ cliTest(
 );
 
 cliTest(
-  "codex setup keeps exact integers and a large REA timeout in an inline server table",
+  "codex setup keeps exact integers and a large NRE timeout in an inline server table",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-toml-int64-inline-");
+    const home = await createTestTempDirectory("nre-toml-int64-inline-");
     const config = join(home, ".codex/config.toml");
     const original =
       "# retained comment\n" +
       'mcp_servers = { other = { command = "other", budget = 9007199254740993 }, ' +
-      'rea = { command = "npx", args = ["-y", "rea-agents@6.1.0", "mcp"], tool_timeout_sec = 9223372036854775807 } }\n';
+      'nre = { command = "npx", args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"], tool_timeout_sec = 9223372036854775807 } }\n';
     await mkdir(dirname(config), { recursive: true });
     await writeFile(config, original);
     const applied = await cli.run({
@@ -92,7 +92,7 @@ cliTest(
     expect(configured.startsWith("# retained comment\n")).toBe(true);
     expect(configured).toContain("budget = 9007199254740993");
     expect(configured).toContain("tool_timeout_sec = 9223372036854775807");
-    expect(configured).not.toContain("rea-agents@6.1.0");
+    expect(configured).not.toContain("nano-reverse-engineer@6.1.0");
   },
 );
 
@@ -100,7 +100,7 @@ for (const value of ["9223372036854775808", "-9223372036854775809"])
   cliTest(
     `codex setup rejects ${value} outside Int64 before writing`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-toml-int64-range-");
+      const home = await createTestTempDirectory("nre-toml-int64-range-");
       const config = join(home, ".codex/config.toml");
       const original = `[history]\nmax_bytes = ${value}\n`;
       await mkdir(dirname(config), { recursive: true });

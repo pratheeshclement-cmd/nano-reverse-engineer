@@ -30,7 +30,7 @@ for (const { command, limit, recovery } of [
   cliTest.skipIf(process.platform === "win32")(
     `${command} identifies fixed input-size refusal and recovery`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-artifact-input-limit-");
+      const root = await createTestTempDirectory("nre-artifact-input-limit-");
       const selected = join(root, "oversized.bin");
       const handle = await open(selected, "wx");
       try {
@@ -52,7 +52,7 @@ exit 1
         );
       const output = await cli.run({
         arguments: [command, selected, "--json"],
-        environment: { REA_WABT_BIN_DIRECTORY: tools },
+        environment: { NRE_WABT_BIN_DIRECTORY: tools },
       });
       expect(output.exitCode).toBe(1);
       const refusal = z

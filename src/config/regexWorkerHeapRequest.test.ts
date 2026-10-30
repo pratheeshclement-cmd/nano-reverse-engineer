@@ -59,8 +59,8 @@ it("keeps the 128 MiB request when the setting is unset", () => {
         source: "default",
         applies_at: "next_worker",
         agent_editable: true,
-        scope: "rea-runtime",
-        rea_restart_required: false,
+        scope: "nre-runtime",
+        nre_restart_required: false,
       },
       reported_limits: {
         requested_worker_heap_mib: DEFAULT_REGEX_WORKER_HEAP_REQUEST.heapMiB,
@@ -71,7 +71,7 @@ it("keeps the 128 MiB request when the setting is unset", () => {
   expect(projected.remediation.action).toContain(recovery);
 });
 
-it("uses a valid REA_REGEX_WORKER_HEAP_REQUEST_MIB override", () => {
+it("uses a valid NRE_REGEX_WORKER_HEAP_REQUEST_MIB override", () => {
   expect(MINIMUM_REGEX_WORKER_HEAP_REQUEST_MIB).toBe(7);
   expect(
     parseRegexWorkerHeapRequest(String(MINIMUM_REGEX_WORKER_HEAP_REQUEST_MIB)),
@@ -89,11 +89,11 @@ it("uses a valid REA_REGEX_WORKER_HEAP_REQUEST_MIB override", () => {
     ok: true,
     value: configured(MAXIMUM_REGEX_WORKER_HEAP_REQUEST_MIB),
   });
-  const parsed = parseConfig({ REA_REGEX_WORKER_HEAP_REQUEST_MIB: "256" });
+  const parsed = parseConfig({ NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "256" });
   if (!parsed.ok) throw new Error("valid heap request was rejected");
   expect(parsed.value.regexWorkerHeapRequest).toEqual(configured(256));
   const hopper = new HopperProvider(parsed.value, silentLogger, {
-    REA_REGEX_WORKER_HEAP_REQUEST_MIB: "8",
+    NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "8",
   });
   const hopperText = hopper
     .capabilities()
@@ -109,7 +109,7 @@ it("uses a valid REA_REGEX_WORKER_HEAP_REQUEST_MIB override", () => {
   vi.stubEnv(REGEX_WORKER_HEAP_REQUEST_SETTING, "8");
   try {
     const kuna = new KunaProvider({
-      REA_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
+      NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
     });
     const kunaText = kuna
       .capabilities()
@@ -153,27 +153,27 @@ it.each([
   expect(parsed.error).toBeInstanceOf(ConfigurationError);
   expect(parsed.error.settings).toEqual([
     {
-      setting: "REA_REGEX_WORKER_HEAP_REQUEST_MIB",
+      setting: "NRE_REGEX_WORKER_HEAP_REQUEST_MIB",
       constraint: regexWorkerHeapRequestConstraint,
     },
   ]);
   expect(parsed.error.message).toBe(regexWorkerHeapRequestConstraint);
   const startup = parseEnvironment({
-    REA_REGEX_WORKER_HEAP_REQUEST_MIB: value,
+    NRE_REGEX_WORKER_HEAP_REQUEST_MIB: value,
   });
   if (startup.ok) throw new Error(`Startup accepted ${JSON.stringify(value)}`);
   expect(startup.error.settings).toContainEqual({
     setting: REGEX_WORKER_HEAP_REQUEST_SETTING,
     constraint: regexWorkerHeapRequestConstraint,
   });
-  const config = parseConfig({ REA_REGEX_WORKER_HEAP_REQUEST_MIB: value });
+  const config = parseConfig({ NRE_REGEX_WORKER_HEAP_REQUEST_MIB: value });
   if (config.ok)
     throw new Error(`parseConfig accepted ${JSON.stringify(value)}`);
   expect(projectAnalysisError(config.error)).toMatchObject({
     code: "configuration_invalid",
-    message: expect.stringContaining("REA_REGEX_WORKER_HEAP_REQUEST_MIB"),
+    message: expect.stringContaining("NRE_REGEX_WORKER_HEAP_REQUEST_MIB"),
   });
   expect(
-    () => new KunaProvider({ REA_REGEX_WORKER_HEAP_REQUEST_MIB: value }),
+    () => new KunaProvider({ NRE_REGEX_WORKER_HEAP_REQUEST_MIB: value }),
   ).toThrow(ConfigurationError);
 });

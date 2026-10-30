@@ -12,7 +12,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "accepts zero-based numeric source indices and returns the same engine-free CLI/MCP trace",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-module-cli-");
+    const root = await createTestTempDirectory("nre-module-cli-");
     const artifacts = webModuleArtifactsFixture("import(name)");
     const manifest = {
       ...artifacts.manifest,
@@ -33,8 +33,8 @@ cliTest(
       manifestPath = `${root}/lexical/link/../manifest.json`;
     }
     const environment = {
-      REA_LOG_LEVEL: "silent",
-      REA_BROWSER_EXECUTABLE: "relative-missing-browser",
+      NRE_LOG_LEVEL: "silent",
+      NRE_BROWSER_EXECUTABLE: "relative-missing-browser",
     };
     const cliResponse = await cli.run({
       arguments: ["trace-web-module-imports", manifestPath, "0", "--json"],
@@ -93,7 +93,7 @@ cliTest(
 cliTest(
   "returns a failing outcome when the selected source digest disagrees",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-module-integrity-");
+    const root = await createTestTempDirectory("nre-module-integrity-");
     const artifacts = webModuleArtifactsFixture("export const a = 1;");
     const files = join(root, "files");
     await mkdir(join(files, "modules"), { recursive: true });
@@ -140,7 +140,7 @@ cliTest(
 cliTest(
   "retains an invalid caller-selected browser path in trace errors",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-module-browser-config-");
+    const root = await createTestTempDirectory("nre-module-browser-config-");
     const artifacts = webModuleArtifactsFixture('import "./dep.js"');
     const files = join(root, "files");
     await mkdir(join(files, "modules"), { recursive: true });
@@ -156,7 +156,7 @@ cliTest(
     );
     const result = await cli.run({
       arguments: ["trace-web-module-imports", manifest, "0", "--json"],
-      environment: { REA_BROWSER_EXECUTABLE: "relative/chromium" },
+      environment: { NRE_BROWSER_EXECUTABLE: "relative/chromium" },
     });
     expect(result.exitCode).toBe(1);
     expect(result.json).toMatchObject({

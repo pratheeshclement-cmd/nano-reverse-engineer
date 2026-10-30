@@ -26,11 +26,11 @@ const MAX_STDOUT_BYTES = 16 * 1024 * 1024;
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const ENTRYPOINT = resolve(
-  process.env.REA_FIRMWARE_TEST_ENTRYPOINT ??
-    join(REPO_ROOT, "scripts/rea.mjs"),
+  process.env.NRE_FIRMWARE_TEST_ENTRYPOINT ??
+    join(REPO_ROOT, "scripts/nre.mjs"),
 );
 const FIXTURE_ROOT = resolve(
-  process.env.REA_FIRMWARE_FIXTURE_ROOT ??
+  process.env.NRE_FIRMWARE_FIXTURE_ROOT ??
     join(REPO_ROOT, "_reference/firmware-integration/generated"),
 );
 
@@ -45,7 +45,7 @@ async function checkPrerequisites() {
     );
   }
 
-  for (const name of ["REA_BINWALK_COMMAND", "REA_UNBLOB_COMMAND"]) {
+  for (const name of ["NRE_BINWALK_COMMAND", "NRE_UNBLOB_COMMAND"]) {
     const value = process.env[name];
     if (value === undefined) {
       throw new Error(
@@ -86,12 +86,12 @@ const oracle = JSON.parse(
 const firmwarePath = join(FIXTURE_ROOT, "firmware.bin");
 const fileResources = new ArtifactResourceScope();
 
-const workDir = await fs.mkdtemp(join(tmpdir(), "rea-real-firmware-"));
+const workDir = await fs.mkdtemp(join(tmpdir(), "nre-real-firmware-"));
 const baseEnv = Object.fromEntries(
   Object.entries(process.env).filter(([, v]) => v !== undefined),
 );
 const mcpClient = new Client({
-  name: "rea-real-firmware-verifier",
+  name: "nre-real-firmware-verifier",
   version: "1",
 });
 
@@ -389,8 +389,8 @@ await withVerifierCleanup(async () => {
   await connectMcp();
   const mcpFiles = await stageMcp(cli);
 
-  if (process.env.REA_FIRMWARE_VERIFY_EXT4 === "1") await stageExt4();
-  if (process.env.REA_FIRMWARE_VERIFY_GHIDRA === "1")
+  if (process.env.NRE_FIRMWARE_VERIFY_EXT4 === "1") await stageExt4();
+  if (process.env.NRE_FIRMWARE_VERIFY_GHIDRA === "1")
     await stageGhidra(mcpFiles);
 
   assert.equal(

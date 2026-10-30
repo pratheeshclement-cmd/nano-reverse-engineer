@@ -22,7 +22,7 @@ const installCliRuntime = async (
     recursive: true,
   });
   await Promise.all([
-    copyFile("scripts/rea.mjs", workspace.path("scripts/rea.mjs")),
+    copyFile("scripts/nre.mjs", workspace.path("scripts/nre.mjs")),
     copyFile(
       "scripts/lib/cli-process-environment.mjs",
       workspace.path("scripts/lib/cli-process-environment.mjs"),
@@ -48,7 +48,7 @@ describe("version report dispatch", () => {
         "package.json",
         JSON.stringify({
           type: "module",
-          name: "rea-fixture",
+          name: "nre-fixture",
           version: "1.0.0",
         }),
       );
@@ -60,12 +60,12 @@ describe("version report dispatch", () => {
       const invoke = (arguments_: readonly string[], invalidLogLevel = false) =>
         processes.run(
           process.execPath,
-          [workspace.path("scripts/rea.mjs"), ...arguments_],
+          [workspace.path("scripts/nre.mjs"), ...arguments_],
           {
             cwd: workspace.root,
             env: {
               ...process.env,
-              REA_LOG_LEVEL: invalidLogLevel ? "invalid-level" : "silent",
+              NRE_LOG_LEVEL: invalidLogLevel ? "invalid-level" : "silent",
             },
           },
         );
@@ -73,7 +73,7 @@ describe("version report dispatch", () => {
       const report = await invoke(["--version", "--json"]);
       expect(report.exitCode, report.stderr).toBe(0);
       expect(JSON.parse(report.stdout)).toMatchObject({
-        name: "rea-fixture",
+        name: "nre-fixture",
         version: "1.0.0",
         runtime: { id: "node", version: process.versions.node },
       });
@@ -90,7 +90,7 @@ describe("version report dispatch", () => {
       const invalidConfiguration = await invoke(["--version", "--json"], true);
       expect(invalidConfiguration.exitCode).toBe(1);
       expect(invalidConfiguration.stdout).toBe("");
-      expect(invalidConfiguration.stderr).toContain("REA_LOG_LEVEL");
+      expect(invalidConfiguration.stderr).toContain("NRE_LOG_LEVEL");
       expect(invalidConfiguration.stderr).not.toContain(
         "analysis command runtime was loaded",
       );
@@ -115,12 +115,12 @@ describe("doctor configuration dispatch", () => {
       const invoke = (args: readonly string[], completion = "") =>
         processes.run(
           process.execPath,
-          [workspace.path("scripts/rea.mjs"), ...args],
+          [workspace.path("scripts/nre.mjs"), ...args],
           {
             cwd: workspace.root,
             env: {
               ...process.env,
-              REA_LOG_LEVEL: "invalid-level",
+              NRE_LOG_LEVEL: "invalid-level",
               COMPLETE: completion,
             },
           },
@@ -175,14 +175,14 @@ describe("doctor configuration dispatch", () => {
         const result = await invoke(args);
         expect(result.exitCode, JSON.stringify(args)).toBe(1);
         expect(result.stdout, JSON.stringify(args)).toBe("");
-        expect(result.stderr, JSON.stringify(args)).toContain("REA_LOG_LEVEL");
+        expect(result.stderr, JSON.stringify(args)).toContain("NRE_LOG_LEVEL");
         expect(result.stderr, JSON.stringify(args)).not.toContain(imported);
       }
 
       const completion = await invoke(["doctor"], "bash");
       expect(completion.exitCode).toBe(1);
       expect(completion.stdout).toBe("");
-      expect(completion.stderr).toContain("REA_LOG_LEVEL");
+      expect(completion.stderr).toContain("NRE_LOG_LEVEL");
       expect(completion.stderr).not.toContain(imported);
     },
   );
@@ -199,7 +199,7 @@ describe("executable dispatcher", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/nre.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(1);
@@ -231,7 +231,7 @@ describe("executable dispatcher", () => {
       const invoke = async (args: readonly string[]): Promise<unknown> => {
         const { exitCode, stdout } = await processes.run(
           process.execPath,
-          [join(scripts, "rea.mjs"), ...args],
+          [join(scripts, "nre.mjs"), ...args],
           { cwd: workspace.root },
         );
         expect(exitCode).toBe(0);
@@ -295,7 +295,7 @@ describe("executable dispatcher", () => {
       const scripts = await workspace.mkdir("scripts");
       await workspace.mkdir("scripts/lib");
       await Promise.all([
-        copyFile("scripts/rea.mjs", join(scripts, "rea.mjs")),
+        copyFile("scripts/nre.mjs", join(scripts, "nre.mjs")),
         copyFile(
           "scripts/lib/cli-process-environment.mjs",
           workspace.path("scripts/lib/cli-process-environment.mjs"),
@@ -309,17 +309,17 @@ describe("executable dispatcher", () => {
       for (const args of [["mcp"], ["mcp", "doctor"], ["--help"]]) {
         const result = await processes.run(
           process.execPath,
-          [join(scripts, "rea.mjs"), ...args],
+          [join(scripts, "nre.mjs"), ...args],
           { cwd: workspace.root },
         );
         expect(result).toMatchObject({
           exitCode: 1,
           stderr: expect.stringContaining(
-            "REA's compiled runtime is missing. Run `npm ci && npm run build:cached` in",
+            "NRE's compiled runtime is missing. Run `npm ci && npm run build:cached` in",
           ),
         });
         expect(result.stderr).toContain(
-          "If this is an installed package, reinstall rea-agents.",
+          "If this is an installed package, reinstall nano-reverse-engineer.",
         );
         expect(result).toMatchObject({
           stderr: expect.not.stringContaining("ERR_MODULE_NOT_FOUND"),
@@ -339,7 +339,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/nre.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(cleanupFails ? 1 : 141);
@@ -373,7 +373,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/nre.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(
@@ -399,7 +399,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/nre.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(1);
@@ -416,7 +416,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/nre.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(141);

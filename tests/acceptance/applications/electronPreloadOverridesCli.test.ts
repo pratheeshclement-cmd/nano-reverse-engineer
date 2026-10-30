@@ -61,7 +61,7 @@ const scenarios = [
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "reports effective preload overrides through %s without executing source",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-preload-overrides-");
+    const root = await createTestTempDirectory("nre-preload-overrides-");
     const sourceLines = scenarios.map(
       ({ preferences }) =>
         `new BrowserWindow({webPreferences:{${preferences}}});`,
@@ -79,7 +79,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
     if (surface === "CLI") {
       const response = await cli.run({
         arguments: ["analyze-javascript-application", root, "--format", "json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       document = response.json;
@@ -179,7 +179,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "preserves asserted inline options and unresolved overrides through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-asserted-window-options-");
+    const root = await createTestTempDirectory("nre-asserted-window-options-");
     const scenarios = [
       {
         sourceLine:
@@ -225,7 +225,7 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
     if (surface === "CLI") {
       const response = await cli.run({
         arguments: ["analyze-javascript-application", root, "--format", "json"],
-        environment: { REA_LOG_LEVEL: "silent" },
+        environment: { NRE_LOG_LEVEL: "silent" },
       });
       expect(response.exitCode, response.stderr).toBe(0);
       document = response.json;

@@ -1,10 +1,10 @@
 # Serve an environment manifest as a replay environment
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
-`rea environment-serve <manifest.json> --evidence <capture.json> [--host H]
+`nre environment-serve <manifest.json> --evidence <capture.json> [--host H]
 [--port N]` serves an environment manifest, projected by `inspect-analysis-view`
 from retained HAR capture Evidence, as an agent environment: an MCP server at
 `/mcp` with one tool per manifest tool that replays the retained records the
@@ -17,7 +17,7 @@ later increment.
 
 ## Requirements
 
-- Read both files as bounded JSON input, authenticate each as REA Evidence and
+- Read both files as bounded JSON input, authenticate each as NRE Evidence and
   require `inspect_analysis_view` Evidence of kind `environment-manifest` and
   complete `inspect_web_network_capture` Evidence; refuse any other pair with an
   `invalid_request` whose issue path names the offending file.
@@ -36,7 +36,7 @@ later increment.
   becomes `request_body` when a query parameter is named `body`), closed with
   `additionalProperties: false` so unknown arguments are refused; the
   description reads `METHOD template; replays retained records [ordinals];
-  evidence ev_…`. The served catalog stays separate from REA's own tool
+  evidence ev_…`. The served catalog stays separate from NRE's own tool
   contracts and digests.
 - Prefix tool descriptions with the shared captured-catalog warning so
   standalone card readers receive the trust notice before MCP initialization.
@@ -62,7 +62,7 @@ later increment.
   UTF-8, so they are returned exactly rather than decoded lossily) and
   `truncated` (a large retained base64 body is decoded only up to that limit),
   as both
-  structured content and text, with REA's existing target-content provenance
+  structured content and text, with NRE's existing target-content provenance
   marker in `_meta`.
 - Serve the card with exactly the echo example's keys and nesting: `name`
   (`ENVIRONMENT_NAME` from the environment snapshot, else the manifest name; a
@@ -72,7 +72,7 @@ later increment.
   `extensions: null`, the tools and `operations: []`, and
   `children_environments: null`. Read the `/agentenv` body within the SDK's
   4 MiB bound and answer `413` with JSON-RPC `-32000` beyond it.
-- Resolve host and port as `rea mcp --http` does (flags, `MCP_HOST`/`MCP_PORT`,
+- Resolve host and port as `nre mcp --http` does (flags, `MCP_HOST`/`MCP_PORT`,
   then `127.0.0.1` and port `0`), announce the bound URL as one pino JSON line
   on stderr, serve through the shared streamable HTTP listener, and run until
   SIGINT or SIGTERM only, then close, print one `stopped` document and exit

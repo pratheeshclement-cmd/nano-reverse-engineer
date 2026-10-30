@@ -22,7 +22,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "closes cancelled discovery probes, stops queued probes and reuses the MCP connection",
   async () => {
-    const directory = await createTestTempDirectory("rea-cutter-discovery-");
+    const directory = await createTestTempDirectory("nre-cutter-discovery-");
     await chmod(directory, 0o700);
     const sockets = new Set<Socket>();
     let accepted = 0;
@@ -36,7 +36,7 @@ it.skipIf(process.platform === "win32")(
     });
     const descriptors: string[] = [];
     const service = new CutterBridgeService(
-      new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: directory }),
+      new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: directory }),
     );
     const server = new McpServer({ name: "cutter-discovery", version: "1" });
     registerCutterTools(
@@ -282,7 +282,7 @@ it("cancels active discovery sockets, stops queued probes and recovers on the sa
     await import("../../../src/cutter/CutterBridgeClient.js");
   const { createTestTempDirectory } =
     await import("../../fixtures/temporaryDirectory.js");
-  const root = await createTestTempDirectory("rea-cutter-discovery-cancel-");
+  const root = await createTestTempDirectory("nre-cutter-discovery-cancel-");
   const sockets = new Set<import("node:net").Socket>();
   let connections = 0;
   let ready!: () => void;
@@ -322,7 +322,7 @@ it("cancels active discovery sockets, stops queued probes and recovers on the sa
     );
   }
   const service = new CutterBridgeService(
-    new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: root }),
+    new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: root }),
   );
   let settled = false;
   const list = service.listSessions.bind(service);
@@ -380,7 +380,7 @@ it.skipIf(process.platform === "win32")(
   "retains a generation-error command until authenticated terminal proof",
   async () => {
     const directory = await createTestTempDirectory(
-      "rea-cutter-generation-proof-",
+      "nre-cutter-generation-proof-",
     );
     await chmod(directory, 0o700);
     const sessionId = "27d3e3f1-f1e5-49ae-91ec-95af1f343a5a";
@@ -429,7 +429,7 @@ it.skipIf(process.platform === "win32")(
       throw new Error("Missing listener");
     await writeDescriptor(directory, sessionId, address.port, token);
     const service = new CutterBridgeService(
-      new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: directory }),
+      new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: directory }),
     );
     const server = new McpServer({
       name: "cutter-generation-proof",

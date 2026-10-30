@@ -15,7 +15,7 @@ describe.skipIf(process.platform === "win32")(
     cliTest(
       "selects a committed summary without changing complete output",
       async ({ cli }) => {
-        const root = await createTestTempDirectory("rea-reference-summary-");
+        const root = await createTestTempDirectory("nre-reference-summary-");
         await mkdir(join(root, "src", "nested"), { recursive: true });
         await Promise.all([
           writeFile(join(root, "package.json"), '{"name":"fixture"}\n'),
@@ -115,7 +115,7 @@ describe.skipIf(process.platform === "win32")(
       "retains exclusions and parse coverage independently of a hidden outline",
       async ({ cli }) => {
         const root = await createTestTempDirectory(
-          "rea-reference-partial-summary-",
+          "nre-reference-partial-summary-",
         );
         await Promise.all([
           writeFile(join(root, ".gitignore"), "ignored.txt\n"),
@@ -193,7 +193,7 @@ describe("compiled historical-source summary input boundaries", () => {
   ] as const) {
     cliTest(`rejects ${label} as an outline depth`, async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-reference-summary-input-",
+        "nre-reference-summary-input-",
       );
       const result = await cli.run({
         arguments: ["import-reference-source", root, ...options, "--json"],
@@ -220,7 +220,7 @@ describe("compiled historical-source summary input boundaries", () => {
   ]) {
     cliTest(`rejects ${options.join(" ")}`, async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-reference-summary-input-",
+        "nre-reference-summary-input-",
       );
       const result = await cli.run({
         arguments: ["import-reference-source", root, ...options, "--json"],
@@ -237,7 +237,7 @@ describe("compiled historical-source summary input boundaries", () => {
     "preserves the missing-root failure in summary mode",
     async ({ cli }) => {
       const root = await createTestTempDirectory(
-        "rea-reference-summary-missing-",
+        "nre-reference-summary-missing-",
       );
       const result = await cli.run({
         arguments: [

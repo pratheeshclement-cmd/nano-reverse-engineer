@@ -9,7 +9,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "cancels an in-flight APK snapshot and removes its partial output",
   async () => {
-    const root = await createTestTempDirectory("rea-android-snapshot-cancel-");
+    const root = await createTestTempDirectory("nre-android-snapshot-cancel-");
     const source = join(root, "large.apk");
     const snapshot = join(root, "target.apk");
     await writeFile(source, "");

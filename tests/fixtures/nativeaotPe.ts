@@ -83,7 +83,7 @@ export const nativeAotPeFixture = (major = 9, minor = 1): Buffer => {
 
   const frozen = 0x600 + 0x2300 - 0x2000;
   bytes.writeBigUInt64LE(address(0x22c0), frozen);
-  const value = Buffer.from("REA_NATIVEAOT_FROZEN", "utf16le");
+  const value = Buffer.from("NRE_NATIVEAOT_FROZEN", "utf16le");
   bytes.writeUInt32LE(value.length / 2, frozen + 8);
   value.copy(bytes, frozen + 12);
   bytes.writeUInt16LE(0, frozen + 12 + value.length);

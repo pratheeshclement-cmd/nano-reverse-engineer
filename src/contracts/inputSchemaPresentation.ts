@@ -48,7 +48,7 @@ const describeSchema = (
   // These operands are complete producer results, not fields an agent builds.
   // Their owner keeps full canonical validation; only their wire declaration
   // omits the repeated result schema. Analyst-authored controls stay explicit.
-  if (schema.type === "object" && schema["x-rea-complete-observation"] === true)
+  if (schema.type === "object" && schema["x-nre-complete-observation"] === true)
     return {
       type: "object",
       description: [
@@ -483,7 +483,7 @@ const flattenRootObjectUnion = (
 const presentDiscriminatedRoot = (
   root: Record<string, unknown>,
 ): Record<string, unknown> => {
-  const { "x-rea-root-discriminator": discriminator, ...canonical } = root;
+  const { "x-nre-root-discriminator": discriminator, ...canonical } = root;
   const references = new JsonSchemaReferences(canonical);
   const flattened = flattenRootObjectUnion(canonical, references);
   if (typeof discriminator !== "string" || flattened === canonical)

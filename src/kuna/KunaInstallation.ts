@@ -101,7 +101,7 @@ export interface KunaInstallation {
   /** Canonical path of the probed executable. */
   readonly executable: string;
   readonly version: string;
-  /** Whether this release is the one REA verified. */
+  /** Whether this release is the one NRE verified. */
   readonly verified: boolean;
   readonly sha256: string;
   readonly bytes: number;
@@ -259,7 +259,7 @@ export const createKunaResourceScope = (
 /**
  * Environment for every Kuna child. Kuna unpacks its built-in SLEIGH tree into
  * the per-user cache under HOME (macOS) or XDG_CACHE_HOME (Linux), so both
- * point inside REA's own cache root instead of the user's.
+ * point inside NRE's own cache root instead of the user's.
  */
 export const kunaChildEnvironment = (
   configuration: KunaConfiguration,
@@ -406,13 +406,13 @@ export const inspectKunaInstallation = async (
     if (!(await stat(executable)).isFile())
       return failure(
         "executable_missing",
-        `REA_KUNA_COMMAND is not a regular file: ${command}. ${KUNA_COMMAND_REMEDIATION}`,
+        `NRE_KUNA_COMMAND is not a regular file: ${command}. ${KUNA_COMMAND_REMEDIATION}`,
         { command },
       );
   } catch (cause: unknown) {
     return failure(
       "executable_missing",
-      `Cannot execute REA_KUNA_COMMAND ${command}: ${message(cause)}. ${KUNA_COMMAND_REMEDIATION}`,
+      `Cannot execute NRE_KUNA_COMMAND ${command}: ${message(cause)}. ${KUNA_COMMAND_REMEDIATION}`,
       { command },
     );
   }
@@ -463,7 +463,7 @@ export const inspectKunaInstallation = async (
         {
           command,
           arguments: ["--version"],
-          runId: `rea-kuna-version-${randomUUID()}`,
+          runId: `nre-kuna-version-${randomUUID()}`,
           // The configured command may be an interpreter-driven shim.
           expectedCommand: null,
           hostEnvironment: kunaChildEnvironment(configuration.value),

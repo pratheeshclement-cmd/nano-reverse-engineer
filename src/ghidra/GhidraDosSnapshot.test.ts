@@ -20,7 +20,7 @@ it.each([false, true])(
     const first = fixture.observation.relocations[0];
     if (first === undefined) throw new Error("Missing authored overlap record");
     if (intermediate) first.memory_bytes_hex = "0410";
-    const directory = await createTestTempDirectory("rea-mz-overlap-");
+    const directory = await createTestTempDirectory("nre-mz-overlap-");
     const path = join(directory, "inert.exe");
     await writeFile(path, fixture.bytes);
     const handle = await open(path, "r");
@@ -53,7 +53,7 @@ it.each([23, 65539])(
   "streams complete MZ identity with a %s-byte overlay",
   async (overlay) => {
     const fixture = fixtureDosLoadImage(Buffer.alloc(overlay, 0xa5));
-    const directory = await createTestTempDirectory("rea-mz-source-");
+    const directory = await createTestTempDirectory("nre-mz-source-");
     const path = join(directory, "inert.exe");
     await writeFile(path, fixture.bytes);
     const handle = await open(path, "r");
@@ -97,7 +97,7 @@ it.each([41, 170])(
   async (offset) => {
     const fixture = fixtureDosLoadImage();
     fixture.bytes[offset] = (fixture.bytes[offset] ?? 0) ^ 1;
-    const directory = await createTestTempDirectory("rea-mz-identity-");
+    const directory = await createTestTempDirectory("nre-mz-identity-");
     const path = join(directory, "inert.exe");
     await writeFile(path, fixture.bytes);
     const handle = await open(path, "r");
@@ -133,7 +133,7 @@ it.each(["ZZZZ", "NE00"])(
     Object.assign(fixture.observation.mappings[1] ?? {}, {
       sha256: hash(modified.subarray(32, 160)),
     });
-    const directory = await createTestTempDirectory("rea-mz-signature-");
+    const directory = await createTestTempDirectory("nre-mz-signature-");
     const path = join(directory, "inert.exe");
     await writeFile(path, fixture.bytes);
     const handle = await open(path, "r");
@@ -158,7 +158,7 @@ it.each(["ZZZZ", "NE00"])(
 
 it("preserves exact cancellation after an overlay descriptor read", async () => {
   const fixture = fixtureDosLoadImage(Buffer.alloc(65539));
-  const directory = await createTestTempDirectory("rea-mz-cancel-");
+  const directory = await createTestTempDirectory("nre-mz-cancel-");
   const path = join(directory, "inert.exe");
   await writeFile(path, fixture.bytes);
   const handle = await open(path, "r");
@@ -200,7 +200,7 @@ it.each([
     fixture.bytes.writeUInt16LE(pages, 4);
     fixture.bytes.writeUInt32LE(512, 60);
     fixture.bytes.write("NE", 512, "ascii");
-    const directory = await createTestTempDirectory("rea-mz-extent-");
+    const directory = await createTestTempDirectory("nre-mz-extent-");
     const path = join(directory, "inert.exe");
     await writeFile(path, fixture.bytes);
     const handle = await open(path, "r");

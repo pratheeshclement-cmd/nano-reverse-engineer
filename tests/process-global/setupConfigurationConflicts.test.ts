@@ -74,7 +74,7 @@ afterEach(() => {
 });
 
 it("reports a conflict when a file changes while the freshness snapshot is being read", async () => {
-  const root = await createTestTempDirectory("rea-config-read-conflict-");
+  const root = await createTestTempDirectory("nre-config-read-conflict-");
   const path = join(root, "config.json");
   const changed = '{"external":"changed during read"}\n';
   await writeFile(path, "{}\n");
@@ -96,7 +96,7 @@ it.each(["before", "after"] as const)(
   "preserves an invalid UTF-8 replacement written %s installation and reports a conflict",
   async (phase) => {
     const root = await createTestTempDirectory(
-      "rea-config-invalid-replacement-",
+      "nre-config-invalid-replacement-",
     );
     const path = join(root, "config.json");
     const original = "{}\n";
@@ -112,22 +112,22 @@ it.each(["before", "after"] as const)(
       }),
     ).toMatchObject({ status: "failed", reason: "conflict" });
     expect(Buffer.compare(await readFile(path), changed)).toBe(0);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(original);
     expect(await readdir(root)).toEqual([
       "config.json",
-      "config.json.rea.backup",
+      "config.json.nre.backup",
     ]);
   },
 );
 
 it("preserves an unrelated concurrent edit when a matching recovery backup already exists", async () => {
-  const root = await createTestTempDirectory("rea-config-conflict-");
+  const root = await createTestTempDirectory("nre-config-conflict-");
   const path = join(root, "config.json");
   const original = '{"theme":"dark"}\n';
   const changed =
     '{"theme":"light","mcpServers":{"other":{"command":"other"}}}\n';
   await writeFile(path, original);
-  await writeFile(`${path}.rea.backup`, original);
+  await writeFile(`${path}.nre.backup`, original);
   writers.before = (target) => writeFile(target, changed);
 
   const result = await configureClientConfiguration({
@@ -138,10 +138,10 @@ it("preserves an unrelated concurrent edit when a matching recovery backup alrea
 
   expect(result).toMatchObject({ status: "failed", reason: "conflict" });
   expect(await readFile(path, "utf8")).toBe(changed);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(original);
   expect(await readdir(root)).toEqual([
     "config.json",
-    "config.json.rea.backup",
+    "config.json.nre.backup",
   ]);
   writers.before = undefined;
   const retry = await configureClientConfiguration({
@@ -167,7 +167,7 @@ it("preserves an unrelated concurrent edit when a matching recovery backup alrea
 });
 
 it("does not overwrite a file created by another writer during first-run setup", async () => {
-  const root = await createTestTempDirectory("rea-config-first-run-conflict-");
+  const root = await createTestTempDirectory("nre-config-first-run-conflict-");
   const path = join(root, "config.json");
   const changed = '{"theme":"light"}\n';
   writers.before = (target) => writeFile(target, changed);
@@ -184,7 +184,7 @@ it("does not overwrite a file created by another writer during first-run setup",
 });
 
 it("does not recreate a configuration deleted during setup", async () => {
-  const root = await createTestTempDirectory("rea-config-deleted-");
+  const root = await createTestTempDirectory("nre-config-deleted-");
   const path = join(root, "config.json");
   await writeFile(path, "{}\n");
   writers.before = (target) => rm(target);
@@ -200,7 +200,7 @@ it("does not recreate a configuration deleted during setup", async () => {
 });
 
 it("preserves an external edit made after the atomic write without rolling it back", async () => {
-  const root = await createTestTempDirectory("rea-config-after-write-");
+  const root = await createTestTempDirectory("nre-config-after-write-");
   const path = join(root, "config.json");
   const changed = '{"theme":"external"}\n';
   await writeFile(path, "{}\n");
@@ -217,7 +217,7 @@ it("preserves an external edit made after the atomic write without rolling it ba
 });
 
 it("does not adopt another writer's replacement merely because its bytes match", async () => {
-  const root = await createTestTempDirectory("rea-config-replaced-");
+  const root = await createTestTempDirectory("nre-config-replaced-");
   const path = join(root, "config.json");
   const replacement = join(root, "replacement.json");
   let replacementInode: number | undefined;
@@ -238,7 +238,7 @@ it("does not adopt another writer's replacement merely because its bytes match",
 });
 
 it("detects a replacement of the original file even when its contents are identical", async () => {
-  const root = await createTestTempDirectory("rea-config-original-replaced-");
+  const root = await createTestTempDirectory("nre-config-original-replaced-");
   const path = join(root, "config.json");
   const replacement = join(root, "replacement.json");
   await writeFile(path, "{}\n");
@@ -262,7 +262,7 @@ it("detects a replacement of the original file even when its contents are identi
 it.skipIf(process.platform === "win32")(
   "does not follow a retargeted configuration symlink",
   async () => {
-    const root = await createTestTempDirectory("rea-config-retargeted-");
+    const root = await createTestTempDirectory("nre-config-retargeted-");
     const path = join(root, "config.json");
     const first = join(root, "first.json");
     const second = join(root, "second.json");
@@ -289,7 +289,7 @@ it.skipIf(process.platform === "win32")(
 it.each(["absolute", "relative"])(
   "merges queued setup requests using a %s path to the same configuration",
   async (pathKind) => {
-    const root = await createTestTempDirectory("rea-config-queued-");
+    const root = await createTestTempDirectory("nre-config-queued-");
     const path = join(root, "config.json");
     const client = {
       name: "cursor",
@@ -312,7 +312,7 @@ it.each(["absolute", "relative"])(
       true,
     );
     expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
-      mcpServers: { rea: { env: { FIRST: "1", SECOND: "2" } } },
+      mcpServers: { nre: { env: { FIRST: "1", SECOND: "2" } } },
     });
   },
 );
@@ -322,7 +322,7 @@ it.skipIf(process.platform === "win32")(
   async () => {
     for (const presence of ["missing", "existing"] as const) {
       const root = await createTestTempDirectory(
-        `rea-config-dir-alias-${presence}-`,
+        `nre-config-dir-alias-${presence}-`,
       );
       const realDirectory = join(root, "real");
       const alias = join(root, "alias");
@@ -382,7 +382,7 @@ it.skipIf(process.platform === "win32")(
           "configured",
         ]);
         expect(JSON.parse(await readFile(realPath, "utf8"))).toMatchObject({
-          mcpServers: { rea: { env: { FIRST: "1", SECOND: "2" } } },
+          mcpServers: { nre: { env: { FIRST: "1", SECOND: "2" } } },
         });
         expect(await readFile(aliasPath, "utf8")).toBe(
           await readFile(realPath, "utf8"),
@@ -398,7 +398,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "preserves a concurrent permission change even when the configuration bytes match",
   async () => {
-    const root = await createTestTempDirectory("rea-config-mode-conflict-");
+    const root = await createTestTempDirectory("nre-config-mode-conflict-");
     const path = join(root, "config.json");
     const original = "{}\n";
     await writeFile(path, original, { mode: 0o600 });
@@ -413,12 +413,12 @@ it.skipIf(process.platform === "win32")(
     ).toMatchObject({ status: "failed", reason: "conflict" });
     expect(await readFile(path, "utf8")).toBe(original);
     expect((await lstat(path)).mode & 0o777).toBe(0o640);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(original);
   },
 );
 
 it("releases a failed setup transaction so a queued request can configure the file", async () => {
-  const root = await createTestTempDirectory("rea-config-queued-failure-");
+  const root = await createTestTempDirectory("nre-config-queued-failure-");
   const path = join(root, "config.json");
   const client = { name: "cursor", configPath: path, format: "json" } as const;
   let markStarted!: () => void;
@@ -452,7 +452,7 @@ it("releases a failed setup transaction so a queued request can configure the fi
     },
   });
   expect(queued.status).toBe("configured");
-  expect(JSON.parse(await readFile(path, "utf8")).mcpServers.rea.env).toEqual({
+  expect(JSON.parse(await readFile(path, "utf8")).mcpServers.nre.env).toEqual({
     SECOND: "2",
   });
   expect(await readdir(root)).toEqual(["config.json"]);

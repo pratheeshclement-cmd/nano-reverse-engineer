@@ -32,7 +32,7 @@ import { SafeOutputTree } from "../../../src/artifacts/SafeOutputTree.js";
 it.skipIf(process.platform === "win32")(
   "syncs nested directory entries before their parents and refuses publication when one cannot sync",
   async () => {
-    const root = await createTestTempDirectory("rea-tree-directory-sync-");
+    const root = await createTestTempDirectory("nre-tree-directory-sync-");
     const bytes = Buffer.from("published bytes");
     for (const fail of [false, true]) {
       const output = join(root, fail ? "failed" : "success");
@@ -88,7 +88,7 @@ it
   .each([false, true])(
   "resumes rollback after root removal denial without readmitting a closed file (failed write: %s)",
   async (failedWrite) => {
-    const root = await createTestTempDirectory("rea-tree-removal-retry-");
+    const root = await createTestTempDirectory("nre-tree-removal-retry-");
     const output = join(root, "output");
     const tree = await SafeOutputTree.create(output);
     const bytes = Buffer.from("x");

@@ -1,9 +1,9 @@
 # Retained web-bundle paging verification
 
-Issue [#6198](https://github.com/morluto/rea/issues/6198). Runtime source
+Issue [#6198](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/6198). Runtime source
 `a92e07f484e444755c2ee33f355351a28d79f430`, based on main
 `8423c5c6d08512568c2a75753b6b7c3a9b6bbd4e`. The original implementation is
-HarsH's [#7213](https://github.com/morluto/rea/pull/7213), head
+HarsH's [#7213](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pull/7213), head
 `6b1d5d42c6d6b4dba19295b8e9520cbeb55fc39e`. Subsequent commits update the
 verifier, tests and this record; they do not change that runtime implementation.
 
@@ -122,13 +122,13 @@ capture. For example:
 
 ```bash
 node experiments/analysis-efficiency/web-bundle-paging.mjs \
-  --repository "$REA_CHECKOUT" --mode capture --application "$ASSET_DIRECTORY" \
+  --repository "$NRE_CHECKOUT" --mode capture --application "$ASSET_DIRECTORY" \
   --browser /usr/bin/chromium --output "$NEW_CAPTURE_DIRECTORY"
 node experiments/analysis-efficiency/web-bundle-paging.mjs \
   --repository "$MAIN_CHECKOUT" --mode complete --parent "$PARENT_JSON" \
   --output "$NEW_BASELINE_DIRECTORY"
 node experiments/analysis-efficiency/web-bundle-paging.mjs \
-  --repository "$REA_CHECKOUT" --mode selected --task first-candidate \
+  --repository "$NRE_CHECKOUT" --mode selected --task first-candidate \
   --parent "$PARENT_JSON" --output "$NEW_SELECTED_DIRECTORY"
 ```
 

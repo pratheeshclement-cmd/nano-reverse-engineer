@@ -125,14 +125,14 @@ function historyPage(
 }
 
 function releaseRecord(version: string, sha = baseline) {
-  const tagName = `rea-agents-${version}`;
+  const tagName = `nano-reverse-engineer-${version}`;
   return {
     name: version,
     tag: { name: tagName },
     tagCommit: { oid: sha },
     description: "",
     isDraft: false,
-    url: `https://github.com/fixture/rea/releases/tag/${tagName}`,
+    url: `https://github.com/fixture/nre/releases/tag/${tagName}`,
   };
 }
 
@@ -155,7 +155,7 @@ const defaultConfiguration = {
   "include-v-in-tag": false,
   packages: {
     ".": {
-      "package-name": "rea-agents",
+      "package-name": "nano-reverse-engineer",
       "extra-files": [{ type: "generic", path: "version.txt" }],
     },
   },
@@ -169,11 +169,11 @@ function releaseFileEntries(
     "release-please-config.json": configuration,
     ".release-please-manifest.json": releasedVersions,
     "package.json": {
-      name: "rea-agents",
+      name: "nano-reverse-engineer",
       version: releasedVersions["."] ?? "0.0.0",
     },
     "pkg/package.json": {
-      name: "rea-agents",
+      name: "nano-reverse-engineer",
       version: releasedVersions.pkg ?? "0.0.0",
     },
   };
@@ -217,7 +217,7 @@ async function releaseFixture({
   const entries = releaseFileEntries(configuration, releasedVersions);
   const github = await upstream.GitHub.create({
     owner: "fixture",
-    repo: "rea",
+    repo: "nre",
     defaultBranch: "main",
     logger: silent,
     fetch: async (
@@ -229,8 +229,8 @@ async function releaseFixture({
         method: options.method ?? "GET",
         pathname: url.pathname,
       });
-      if (url.pathname === "/repos/fixture/rea/tags") return respond(tags);
-      if (url.pathname === "/repos/fixture/rea/releases/generate-notes") {
+      if (url.pathname === "/repos/fixture/nre/tags") return respond(tags);
+      if (url.pathname === "/repos/fixture/nre/releases/generate-notes") {
         return respond({ body: "Generated release notes" });
       }
       if (url.pathname === "/graphql") {
@@ -267,7 +267,7 @@ async function releaseFixture({
         }
         return respond(historyPage(commits, query.variables, pullRequest));
       }
-      if (url.pathname === "/repos/fixture/rea/git/trees/main") {
+      if (url.pathname === "/repos/fixture/nre/git/trees/main") {
         return respond({
           truncated: false,
           sha: baseline,
@@ -280,7 +280,7 @@ async function releaseFixture({
           })),
         });
       }
-      const blobPrefix = "/repos/fixture/rea/git/blobs/";
+      const blobPrefix = "/repos/fixture/nre/git/blobs/";
       if (url.pathname.startsWith(blobPrefix)) {
         const entry = entries.find(
           (item) => item.sha === url.pathname.slice(blobPrefix.length),
@@ -293,7 +293,7 @@ async function releaseFixture({
           size: entry.text.length,
         });
       }
-      const commitPath = "/repos/fixture/rea/commits/";
+      const commitPath = "/repos/fixture/nre/commits/";
       if (url.pathname.startsWith(commitPath)) {
         const commit = commits.find(
           (item) => item.sha === url.pathname.slice(commitPath.length),
@@ -356,7 +356,7 @@ it("keeps real associated PR metadata, body overrides and attribution", async ()
   const candidates = await fixture.manifest.buildPullRequests();
   const body = candidates[0]?.body.toString();
   expect(body).toContain("attributed override");
-  expect(body).toContain("https://github.com/fixture/rea/issues/42");
+  expect(body).toContain("https://github.com/fixture/nre/issues/42");
   expect(body).not.toContain("direct change");
   const commits = [];
   for await (const commit of fixture.github.mergeCommitIterator("main", {
@@ -457,7 +457,10 @@ it.each([
     name: "package exclusion",
     config: {
       packages: {
-        ".": { "package-name": "rea-agents", "exclude-paths": ["docs"] },
+        ".": {
+          "package-name": "nano-reverse-engineer",
+          "exclude-paths": ["docs"],
+        },
       },
     },
     excluded: true,
@@ -479,7 +482,7 @@ it.each([
   },
   {
     name: "subpackage",
-    config: { packages: { pkg: { "package-name": "rea-agents" } } },
+    config: { packages: { pkg: { "package-name": "nano-reverse-engineer" } } },
     excluded: true,
   },
 ])("retains file-backed semantics for $name", async ({ config, excluded }) => {
@@ -558,7 +561,7 @@ it("uses a tag-only manifest release and excludes older version overrides", asyn
   const fixture = await releaseFixture({
     releasedVersions: { ".": "6.8.0" },
     releases: [],
-    tags: [{ name: "rea-agents-6.8.0", commit: { sha: baseline } }],
+    tags: [{ name: "nano-reverse-engineer-6.8.0", commit: { sha: baseline } }],
     commits: [
       { sha: latest, message: "fix: current change", files: ["src/change.ts"] },
       {
@@ -587,7 +590,7 @@ it("uses a tag-only manifest release and excludes older version overrides", asyn
   ).toContain("6.9.0");
   expect(
     fixture.requests.some(
-      (request) => request.pathname === "/repos/fixture/rea/tags",
+      (request) => request.pathname === "/repos/fixture/nre/tags",
     ),
   ).toBe(true);
 });
@@ -756,7 +759,7 @@ it("preserves complete mixed bootstrap history with all known release boundaries
     releasedVersions: { ".": "6.7.0", pkg: "0.0.0" },
     config: {
       packages: {
-        ".": { "package-name": "rea-agents" },
+        ".": { "package-name": "nano-reverse-engineer" },
         pkg: { "package-name": "unreleased" },
       },
     },
@@ -765,7 +768,7 @@ it("preserves complete mixed bootstrap history with all known release boundaries
 });
 
 it("requires complete local history when sizing the upstream search", async () => {
-  const directory = await createTestTempDirectory("rea-release-depth-");
+  const directory = await createTestTempDirectory("nre-release-depth-");
   await execute("git", ["init", "--quiet", directory]);
   await execute("git", [
     "-C",
@@ -791,7 +794,7 @@ it("requires complete local history when sizing the upstream search", async () =
 });
 
 const releasePatchFixture = async () => {
-  const root = await createTestTempDirectory("rea-release-git-patch-");
+  const root = await createTestTempDirectory("nre-release-git-patch-");
   const project = join(root, "project space Ω");
   const dependencyPath = "node_modules/release dependency space Ω";
   const directory = join(project, dependencyPath);
@@ -877,7 +880,7 @@ it("applies the private dependency patch with protected Git paths and is idempot
 });
 
 it("rejects a different dependency version before patching", async () => {
-  const fixture = await createTestTempDirectory("rea-release-patch-");
+  const fixture = await createTestTempDirectory("nre-release-patch-");
   await writeFile(
     join(fixture, "package.json"),
     JSON.stringify({ version: "17.4.0" }),

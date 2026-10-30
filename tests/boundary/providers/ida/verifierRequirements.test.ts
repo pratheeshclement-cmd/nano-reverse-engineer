@@ -19,7 +19,7 @@ it.each([
 ])(
   "enforces native switching requirements for $protocol with $flags",
   async ({ protocol, flags, required }) => {
-    const root = await mkdtemp(join(tmpdir(), "rea-ida-verifier-options-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-ida-verifier-options-"));
     try {
       const config = join(root, "ida.json");
       await writeFile(
@@ -42,7 +42,7 @@ it.each([
           ],
           {
             cwd: process.cwd(),
-            env: { ...process.env, REA_IDA_MCP_CONFIG: config },
+            env: { ...process.env, NRE_IDA_MCP_CONFIG: config },
             timeout: 10_000,
           },
         ),

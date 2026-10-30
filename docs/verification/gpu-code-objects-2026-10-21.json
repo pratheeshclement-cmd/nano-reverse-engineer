@@ -35,7 +35,7 @@
       "files": [
         {
           "member": "libnvjpeg-windows-x86_64-12.4.0.76-archive/bin/nvjpeg64_12.dll",
-          "path": "/home/yann/yann/rea-5345-lab/fixtures/nvjpeg64_12.dll",
+          "path": "/home/yann/yann/nre-5345-lab/fixtures/nvjpeg64_12.dll",
           "size": 7664128,
           "sha256": "26559f5319f6b947912daded08680ab248d5af7867529402af050b38b53193ff"
         }
@@ -81,8 +81,8 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-5345-lab/bench.mjs",
-          "/home/yann/yann/rea-5345-gpu-code-objects",
+          "/home/yann/yann/nre-5345-lab/bench.mjs",
+          "/home/yann/yann/nre-5345-gpu-code-objects",
           "final-full",
           "full"
         ],
@@ -95,10 +95,10 @@
         "guard_stop": null
       },
       "task_receipt": {
-        "runtime": "/home/yann/yann/rea-5345-gpu-code-objects",
+        "runtime": "/home/yann/yann/nre-5345-gpu-code-objects",
         "label": "final-full",
         "mode": "full",
-        "target": "/home/yann/yann/rea-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
+        "target": "/home/yann/yann/nre-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
         "task": "Read sm_100 parameter layout, physical registers and shared memory for the named kernel, retain source Evidence and repeat the historical query three times",
         "answer": [
           {
@@ -174,8 +174,8 @@
           "-c",
           "0,1",
           "node",
-          "/home/yann/yann/rea-5345-lab/bench.mjs",
-          "/home/yann/yann/rea-5345-gpu-code-objects",
+          "/home/yann/yann/nre-5345-lab/bench.mjs",
+          "/home/yann/yann/nre-5345-gpu-code-objects",
           "final-selected",
           "selected"
         ],
@@ -188,10 +188,10 @@
         "guard_stop": null
       },
       "task_receipt": {
-        "runtime": "/home/yann/yann/rea-5345-gpu-code-objects",
+        "runtime": "/home/yann/yann/nre-5345-gpu-code-objects",
         "label": "final-selected",
         "mode": "selected",
-        "target": "/home/yann/yann/rea-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
+        "target": "/home/yann/yann/nre-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
         "task": "Read sm_100 parameter layout, physical registers and shared memory for the named kernel, retain source Evidence and repeat the historical query three times",
         "answer": [
           {
@@ -267,9 +267,9 @@
           "-c",
           "0,1",
           "node",
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "inspect-gpu-code-objects",
-          "/home/yann/yann/rea-5345-lab/fixtures/nvjpeg64_12.dll",
+          "/home/yann/yann/nre-5345-lab/fixtures/nvjpeg64_12.dll",
           "--analysis",
           "kernels",
           "--detail",
@@ -277,7 +277,7 @@
           "--view",
           "{\"collection\":\"targets\"}",
           "--evidence_output",
-          "/home/yann/yann/rea-5345-lab/final-windows-evidence.json",
+          "/home/yann/yann/nre-5345-lab/final-windows-evidence.json",
           "--json"
         ],
         "exit_code": 0,
@@ -298,7 +298,7 @@
           "node",
           "--import",
           "tsx",
-          "/home/yann/yann/rea-5345-lab/probe.mts"
+          "/home/yann/yann/nre-5345-lab/probe.mts"
         ],
         "exit_code": 0,
         "wall_s": 0.8731043400002818,
@@ -451,9 +451,9 @@
             "kind": "inventory",
             "command": [
               "node",
-              "scripts/rea.mjs",
+              "scripts/nre.mjs",
               "inspect-gpu-code-objects",
-              "/home/yann/yann/rea-5345-lab/fixtures/add-gfx900.hsaco",
+              "/home/yann/yann/nre-5345-lab/fixtures/add-gfx900.hsaco",
               "--detail",
               "complete",
               "--json"
@@ -467,9 +467,9 @@
             "kind": "selected",
             "command": [
               "node",
-              "scripts/rea.mjs",
+              "scripts/nre.mjs",
               "inspect-gpu-code-objects",
-              "/home/yann/yann/rea-5345-lab/fixtures/add-gfx900.hsaco",
+              "/home/yann/yann/nre-5345-lab/fixtures/add-gfx900.hsaco",
               "--detail",
               "complete",
               "--json",
@@ -487,9 +487,9 @@
             "kind": "unselected",
             "command": [
               "node",
-              "scripts/rea.mjs",
+              "scripts/nre.mjs",
               "inspect-gpu-code-objects",
-              "/home/yann/yann/rea-5345-lab/fixtures/add-gfx900.hsaco",
+              "/home/yann/yann/nre-5345-lab/fixtures/add-gfx900.hsaco",
               "--detail",
               "complete",
               "--json",
@@ -512,7 +512,7 @@
           "-c",
           "0,1",
           "python3",
-          "/home/yann/yann/rea-5345-lab/review-amd-cli.py"
+          "/home/yann/yann/nre-5345-lab/review-amd-cli.py"
         ],
         "exit_code": 0,
         "wall_s": 5.9736752989992965,
@@ -580,7 +580,7 @@
           "node",
           "--import",
           "tsx",
-          "/home/yann/yann/rea-5345-lab/probe.mts"
+          "/home/yann/yann/nre-5345-lab/probe.mts"
         ],
         "exit_code": 0,
         "wall_s": 0.5241675279976334,
@@ -664,8 +664,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-gpu-code-objects",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-gpu-code-objects",
             "revised-full",
             "full"
           ],
@@ -678,10 +678,10 @@
           "guard_stop": null
         },
         "task_receipt": {
-          "runtime": "/home/yann/yann/rea-5345-gpu-code-objects",
+          "runtime": "/home/yann/yann/nre-5345-gpu-code-objects",
           "label": "revised-full",
           "mode": "full",
-          "target": "/home/yann/yann/rea-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
+          "target": "/home/yann/yann/nre-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
           "task": "Read sm_100 parameter layout, physical registers and shared memory for the named kernel, retain source Evidence and repeat the historical query three times",
           "answer": [
             {
@@ -757,8 +757,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-gpu-code-objects",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-gpu-code-objects",
             "revised-selected",
             "selected"
           ],
@@ -771,10 +771,10 @@
           "guard_stop": null
         },
         "task_receipt": {
-          "runtime": "/home/yann/yann/rea-5345-gpu-code-objects",
+          "runtime": "/home/yann/yann/nre-5345-gpu-code-objects",
           "label": "revised-selected",
           "mode": "selected",
-          "target": "/home/yann/yann/rea-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
+          "target": "/home/yann/yann/nre-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
           "task": "Read sm_100 parameter layout, physical registers and shared memory for the named kernel, retain source Evidence and repeat the historical query three times",
           "answer": [
             {
@@ -850,9 +850,9 @@
             "-c",
             "0,1",
             "node",
-            "scripts/rea.mjs",
+            "scripts/nre.mjs",
             "inspect-gpu-code-objects",
-            "/home/yann/yann/rea-5345-lab/fixtures/nvjpeg64_12.dll",
+            "/home/yann/yann/nre-5345-lab/fixtures/nvjpeg64_12.dll",
             "--analysis",
             "kernels",
             "--detail",
@@ -860,7 +860,7 @@
             "--view",
             "{\"collection\":\"targets\"}",
             "--evidence_output",
-            "/home/yann/yann/rea-5345-lab/revised-windows-evidence.json",
+            "/home/yann/yann/nre-5345-lab/revised-windows-evidence.json",
             "--json"
           ],
           "exit_code": 0,
@@ -879,7 +879,7 @@
             "-c",
             "0,1",
             "python3",
-            "/home/yann/yann/rea-5345-lab/verify-review-edges.py"
+            "/home/yann/yann/nre-5345-lab/verify-review-edges.py"
           ],
           "exit_code": 0,
           "wall_s": 5.132059294999635,
@@ -899,7 +899,7 @@
             "node",
             "--import",
             "tsx",
-            "/home/yann/yann/rea-5345-lab/probe.mts"
+            "/home/yann/yann/nre-5345-lab/probe.mts"
           ],
           "exit_code": 0,
           "wall_s": 0.501328217000264,
@@ -925,17 +925,17 @@
     },
     "edge_inputs": [
       {
-        "path": "/home/yann/yann/rea-5345-lab/fixtures/aliased-cubin",
+        "path": "/home/yann/yann/nre-5345-lab/fixtures/aliased-cubin",
         "bytes": 861896,
         "sha256": "dc363e8192d11dcb2d9718f1467b636ab707c10a07e5919a990d9c1db0ff40c9"
       },
       {
-        "path": "/home/yann/yann/rea-5345-lab/fixtures/partial-amdgpu",
+        "path": "/home/yann/yann/nre-5345-lab/fixtures/partial-amdgpu",
         "bytes": 608,
         "sha256": "f403ac1c38758d4226111daaa4ec9aeb4ea03ff73fad9efe5eb2d1808093ff20"
       },
       {
-        "path": "/home/yann/yann/rea-5345-lab/fixtures/long-header-ptx",
+        "path": "/home/yann/yann/nre-5345-lab/fixtures/long-header-ptx",
         "bytes": 71946,
         "sha256": "567068fe43816d4ad7ec6c2de47f3536f5041da974c8fc686a518e3f10445159"
       }
@@ -945,9 +945,9 @@
         "case": "aliased-cubin",
         "command": [
           "node",
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "inspect-gpu-code-objects",
-          "/home/yann/yann/rea-5345-lab/fixtures/aliased-cubin",
+          "/home/yann/yann/nre-5345-lab/fixtures/aliased-cubin",
           "--analysis",
           "kernels",
           "--detail",
@@ -981,9 +981,9 @@
         "case": "partial-amdgpu",
         "command": [
           "node",
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "inspect-gpu-code-objects",
-          "/home/yann/yann/rea-5345-lab/fixtures/partial-amdgpu",
+          "/home/yann/yann/nre-5345-lab/fixtures/partial-amdgpu",
           "--analysis",
           "kernels",
           "--detail",
@@ -1017,9 +1017,9 @@
         "case": "long-header-ptx",
         "command": [
           "node",
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "inspect-gpu-code-objects",
-          "/home/yann/yann/rea-5345-lab/fixtures/long-header-ptx",
+          "/home/yann/yann/nre-5345-lab/fixtures/long-header-ptx",
           "--analysis",
           "kernels",
           "--detail",
@@ -1233,9 +1233,9 @@
             "-c",
             "0,1",
             "node",
-            "scripts/rea.mjs",
+            "scripts/nre.mjs",
             "inspect-gpu-code-objects",
-            "/home/yann/yann/rea-5345-lab/fixtures/nvjpeg64_12.dll",
+            "/home/yann/yann/nre-5345-lab/fixtures/nvjpeg64_12.dll",
             "--analysis",
             "kernels",
             "--detail",
@@ -1243,7 +1243,7 @@
             "--view",
             "{\"collection\":\"targets\"}",
             "--evidence_output",
-            "/home/yann/yann/rea-5345-lab/final-abi-windows-evidence.json",
+            "/home/yann/yann/nre-5345-lab/final-abi-windows-evidence.json",
             "--json"
           ],
           "exit_code": 0,
@@ -1262,8 +1262,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-gpu-code-objects",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-gpu-code-objects",
             "final-abi-full",
             "full"
           ],
@@ -1276,10 +1276,10 @@
           "guard_stop": null
         },
         "task_receipt": {
-          "runtime": "/home/yann/yann/rea-5345-gpu-code-objects",
+          "runtime": "/home/yann/yann/nre-5345-gpu-code-objects",
           "label": "final-abi-full",
           "mode": "full",
-          "target": "/home/yann/yann/rea-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
+          "target": "/home/yann/yann/nre-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
           "task": "Read sm_100 parameter layout, physical registers and shared memory for the named kernel, retain source Evidence and repeat the historical query three times",
           "answer": [
             {
@@ -1355,8 +1355,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-gpu-code-objects",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-gpu-code-objects",
             "final-abi-selected",
             "selected"
           ],
@@ -1369,10 +1369,10 @@
           "guard_stop": null
         },
         "task_receipt": {
-          "runtime": "/home/yann/yann/rea-5345-gpu-code-objects",
+          "runtime": "/home/yann/yann/nre-5345-gpu-code-objects",
           "label": "final-abi-selected",
           "mode": "selected",
-          "target": "/home/yann/yann/rea-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
+          "target": "/home/yann/yann/nre-5345-lab/fixtures/libnvjpeg.so.12.4.0.76",
           "task": "Read sm_100 parameter layout, physical registers and shared memory for the named kernel, retain source Evidence and repeat the historical query three times",
           "answer": [
             {
@@ -1448,7 +1448,7 @@
             "-c",
             "0,1",
             "python3",
-            "/home/yann/yann/rea-5345-lab/hip-roundtrip.py"
+            "/home/yann/yann/nre-5345-lab/hip-roundtrip.py"
           ],
           "exit_code": 0,
           "wall_s": 15.695726638998167,
@@ -1468,7 +1468,7 @@
             "node",
             "--import",
             "tsx",
-            "/home/yann/yann/rea-5345-lab/probe.mts"
+            "/home/yann/yann/nre-5345-lab/probe.mts"
           ],
           "exit_code": 0,
           "wall_s": 0.7437617239993415,
@@ -1491,8 +1491,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-gpu-code-objects",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-gpu-code-objects",
             "target-full",
             "full"
           ],
@@ -1510,8 +1510,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-gpu-code-objects",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-gpu-code-objects",
             "target-selected",
             "selected"
           ],
@@ -1529,8 +1529,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-perf-before",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-perf-before",
             "control-before-selected",
             "selected"
           ],
@@ -1548,8 +1548,8 @@
             "-c",
             "0,1",
             "node",
-            "/home/yann/yann/rea-5345-lab/bench.mjs",
-            "/home/yann/yann/rea-5345-gpu-code-objects",
+            "/home/yann/yann/nre-5345-lab/bench.mjs",
+            "/home/yann/yann/nre-5345-gpu-code-objects",
             "control-after-selected",
             "selected"
           ],
@@ -1589,11 +1589,11 @@
     },
     "compiler_control": {
       "command": [
-        "/home/yann/yann/rea-5345-lab/toolchains/cuda_nvcc-unpacked/cuda_nvcc-linux-x86_64-12.9.86-archive/bin/ptxas",
+        "/home/yann/yann/nre-5345-lab/toolchains/cuda_nvcc-unpacked/cuda_nvcc-linux-x86_64-12.9.86-archive/bin/ptxas",
         "-arch=sm_80",
-        "/home/yann/yann/rea-5345-lab/pointer-parameter.ptx",
+        "/home/yann/yann/nre-5345-lab/pointer-parameter.ptx",
         "-o",
-        "/home/yann/yann/rea-5345-lab/pointer-parameter.cubin"
+        "/home/yann/yann/nre-5345-lab/pointer-parameter.cubin"
       ],
       "exit_code": 0,
       "stdout": "",
@@ -1603,9 +1603,9 @@
       "pointer": {
         "command": [
           "node",
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "inspect-gpu-code-objects",
-          "/home/yann/yann/rea-5345-lab/pointer-parameter.ptx",
+          "/home/yann/yann/nre-5345-lab/pointer-parameter.ptx",
           "--analysis",
           "kernels",
           "--detail",
@@ -1613,13 +1613,13 @@
           "--view",
           "{\"collection\":\"targets\"}",
           "--evidence_output",
-          "/home/yann/yann/rea-5345-lab/ptx-pointer-validated-evidence.json",
+          "/home/yann/yann/nre-5345-lab/ptx-pointer-validated-evidence.json",
           "--json"
         ],
         "artifact": {
           "bytes_read": 302,
           "file_size": 135,
-          "path": "/home/yann/yann/rea-5345-lab/pointer-parameter.ptx",
+          "path": "/home/yann/yann/nre-5345-lab/pointer-parameter.ptx",
           "sha256": "fcabf9ca3bea80be8a9a2e55f1f2235423705609c63fecc7c04924ab468d1dcb"
         },
         "coverage": {
@@ -1692,9 +1692,9 @@
       "windows": {
         "command": [
           "node",
-          "scripts/rea.mjs",
+          "scripts/nre.mjs",
           "inspect-gpu-code-objects",
-          "/home/yann/yann/rea-5345-lab/fixtures/nvjpeg64_12.dll",
+          "/home/yann/yann/nre-5345-lab/fixtures/nvjpeg64_12.dll",
           "--analysis",
           "kernels",
           "--detail",
@@ -1702,7 +1702,7 @@
           "--view",
           "{\"collection\":\"targets\"}",
           "--evidence_output",
-          "/home/yann/yann/rea-5345-lab/final-review-windows-validated-evidence.json",
+          "/home/yann/yann/nre-5345-lab/final-review-windows-validated-evidence.json",
           "--json"
         ],
         "kernel_count": 3968,
@@ -1795,7 +1795,7 @@
           "node",
           "--import",
           "tsx",
-          "/home/yann/yann/rea-5345-lab/probe.mts"
+          "/home/yann/yann/nre-5345-lab/probe.mts"
         ],
         "exit_code": 0,
         "wall_s": 1.1484615720000875,
@@ -1811,7 +1811,7 @@
           "-c",
           "0,1",
           "python3",
-          "/home/yann/yann/rea-5345-lab/verify-final-review.py"
+          "/home/yann/yann/nre-5345-lab/verify-final-review.py"
         ],
         "exit_code": 0,
         "wall_s": 10.10232881200136,
@@ -1851,7 +1851,7 @@
             "-c",
             "0,1",
             "python3",
-            "/home/yann/yann/rea-5345-lab/verify-final-review.py"
+            "/home/yann/yann/nre-5345-lab/verify-final-review.py"
           ],
           "exit_code": 1,
           "wall_s": 4.254547918000753,
@@ -1870,7 +1870,7 @@
             "-c",
             "0,1",
             "python3",
-            "/home/yann/yann/rea-5345-lab/verify-final-review.py"
+            "/home/yann/yann/nre-5345-lab/verify-final-review.py"
           ],
           "exit_code": 1,
           "wall_s": 5.362011795001308,
@@ -1889,7 +1889,7 @@
             "-c",
             "0,1",
             "python3",
-            "/home/yann/yann/rea-5345-lab/verify-final-review.py"
+            "/home/yann/yann/nre-5345-lab/verify-final-review.py"
           ],
           "exit_code": 1,
           "wall_s": 18.017960425997444,

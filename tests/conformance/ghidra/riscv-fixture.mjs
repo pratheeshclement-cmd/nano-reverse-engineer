@@ -11,9 +11,9 @@ const execute = promisify(execFile);
 /** Build and independently inspect a source-owned ELF; never execute it. */
 export async function buildRiscvFixture(directory, bits) {
   assert.ok(bits === 32 || bits === 64);
-  const compiler = process.env.REA_RISCV_CLANG ?? "clang";
-  const linker = process.env.REA_RISCV_LLD ?? "ld.lld";
-  const reader = process.env.REA_RISCV_READELF ?? "llvm-readelf";
+  const compiler = process.env.NRE_RISCV_CLANG ?? "clang";
+  const linker = process.env.NRE_RISCV_LLD ?? "ld.lld";
+  const reader = process.env.NRE_RISCV_READELF ?? "llvm-readelf";
   const source = fileURLToPath(new URL("../c/riscv.c", import.meta.url));
   const probe = fileURLToPath(new URL("./riscv-probe.S", import.meta.url));
   const path = join(directory, `rv${bits}.elf`);
@@ -27,7 +27,7 @@ export async function buildRiscvFixture(directory, bits) {
     "-fno-pic",
     "-O0",
     "-g",
-    "-Wl,-e,rea_riscv_entry",
+    "-Wl,-e,nre_riscv_entry",
     "-Wl,--build-id=none",
     source,
     probe,
@@ -57,11 +57,11 @@ export async function buildRiscvFixture(directory, bits) {
   assert.equal(flags, 5, "Compiler did not declare RVC and double-float ABI");
   const symbols = {};
   for (const name of [
-    "rea_riscv_entry",
-    "rea_riscv_leaf",
-    "rea_riscv_float",
-    "rea_riscv_probe",
-    "rea_riscv_global",
+    "nre_riscv_entry",
+    "nre_riscv_leaf",
+    "nre_riscv_float",
+    "nre_riscv_probe",
+    "nre_riscv_global",
   ]) {
     const value = field(
       new RegExp(

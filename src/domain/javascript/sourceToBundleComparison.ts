@@ -179,7 +179,7 @@ const comparisonCoverage = (
 });
 
 const scoringModel = (): SourceToBundleComparisonResult["scoring"] => ({
-  algorithm: "rea-source-to-bundle-signals",
+  algorithm: "nre-source-to-bundle-signals",
   minimum_candidate_score: 20,
   weights: SOURCE_TO_BUNDLE_SIGNAL_WEIGHTS.map(([signal, weight]) => ({
     signal,

@@ -392,7 +392,7 @@ setTimeout(() => process.exit(99), 10000);
 
 it("refuses a root's valid listing until an inherited descendant pipe is finalized", async () => {
   const resources = createInspectionResources();
-  const root = await createTestTempDirectory("rea-jadx-readiness-descendant-");
+  const root = await createTestTempDirectory("nre-jadx-readiness-descendant-");
   const release = join(root, "release");
   const child = String.raw`const fs = require("node:fs"); process.stdout.write("DESCENDANT_READY\n");
     setInterval(() => { if (fs.existsSync(${JSON.stringify(release)})) process.exit(0); }, 50);

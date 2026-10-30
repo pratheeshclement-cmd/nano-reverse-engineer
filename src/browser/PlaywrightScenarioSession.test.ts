@@ -1670,7 +1670,7 @@ it("keeps declared secrets out of final cleanup and retry failure diagnostics", 
     secrets: [
       {
         secret_id: "credential",
-        environment_variable: "REA_SCENARIO_TEST_SECRET",
+        environment_variable: "NRE_SCENARIO_TEST_SECRET",
       },
     ],
     capture: { after_each_step: ["url"], at_end: [], events: [] },
@@ -1688,7 +1688,7 @@ it("keeps declared secrets out of final cleanup and retry failure diagnostics", 
   const provider = new PlaywrightBrowserScenarioProvider((scenario, options) =>
     PlaywrightScenarioSession.open(
       scenario,
-      { REA_SCENARIO_TEST_SECRET: secret },
+      { NRE_SCENARIO_TEST_SECRET: secret },
       options,
     ),
   );

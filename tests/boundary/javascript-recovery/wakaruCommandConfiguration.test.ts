@@ -11,7 +11,7 @@ const linuxX64 = it.skipIf(
 linuxX64(
   "refuses a directory configured as the Wakaru resource limiter",
   async () => {
-    const root = await createTestTempDirectory("rea-wakaru-limiter-");
+    const root = await createTestTempDirectory("nre-wakaru-limiter-");
     const command = join(root, "wakaru");
     const limiter = join(root, "prlimit");
     await writeFile(command, "#!/bin/sh\n", { mode: 0o700 });
@@ -19,8 +19,8 @@ linuxX64(
 
     await expect(
       resolveWakaruCommand({
-        REA_WAKARU_COMMAND: command,
-        REA_JAVASCRIPT_PRLIMIT_COMMAND: limiter,
+        NRE_WAKARU_COMMAND: command,
+        NRE_JAVASCRIPT_PRLIMIT_COMMAND: limiter,
       }),
     ).rejects.toMatchObject({
       _tag: "AnalysisCapabilityUnavailableError",
@@ -30,7 +30,7 @@ linuxX64(
 );
 
 linuxX64("allows a symlink to a regular Wakaru resource limiter", async () => {
-  const root = await createTestTempDirectory("rea-wakaru-limiter-symlink-");
+  const root = await createTestTempDirectory("nre-wakaru-limiter-symlink-");
   const command = join(root, "wakaru");
   const limiter = join(root, "prlimit");
   const target = join(root, "prlimit-bin");
@@ -40,8 +40,8 @@ linuxX64("allows a symlink to a regular Wakaru resource limiter", async () => {
 
   await expect(
     resolveWakaruCommand({
-      REA_WAKARU_COMMAND: command,
-      REA_JAVASCRIPT_PRLIMIT_COMMAND: limiter,
+      NRE_WAKARU_COMMAND: command,
+      NRE_JAVASCRIPT_PRLIMIT_COMMAND: limiter,
     }),
   ).resolves.toMatchObject({
     limiter: { invocationPath: limiter, resolvedPath: await realpath(target) },

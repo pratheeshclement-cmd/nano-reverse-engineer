@@ -25,7 +25,7 @@ it.each(["after", "before"] as const)(
   async (partialSide) => {
     // Enumeration order is filesystem-dependent. Choose a genuinely omitted
     // entry by comparing a complete snapshot with a capacity-limited one.
-    const root = await createTestTempDirectory("rea-fs-partial-absence-");
+    const root = await createTestTempDirectory("nre-fs-partial-absence-");
     await writeFile(join(root, "a1.txt"), "first");
     await writeFile(join(root, "a2.txt"), "second");
     await writeFile(join(root, "z.txt"), "target");
@@ -62,7 +62,7 @@ it.each(["after", "before"] as const)(
 );
 
 it("preserves proven deletion in an exhausted root while another root is partial", async () => {
-  const root = await createTestTempDirectory("rea-fs-multiple-roots-");
+  const root = await createTestTempDirectory("nre-fs-multiple-roots-");
   const complete = join(root, "complete");
   const partial = join(root, "partial");
   await mkdir(complete);
@@ -88,7 +88,7 @@ it("preserves proven deletion in an exhausted root while another root is partial
 });
 
 it("distinguishes unavailable content hashes from completed path enumeration", async () => {
-  const root = await createTestTempDirectory("rea-fs-hash-coverage-");
+  const root = await createTestTempDirectory("nre-fs-hash-coverage-");
   await writeFile(join(root, "removed.txt"), "larger than the byte budget");
   const scenario = processScenarioSchema.parse({
     executable: process.execPath,
@@ -111,7 +111,7 @@ it.skipIf(process.platform === "win32")(
   "retains readable entries and marks an unreadable directory subtree unknown",
   async (context) => {
     await requirePermissionDenial(context, "directory-read");
-    const root = await createTestTempDirectory("rea-fs-unreadable-directory-");
+    const root = await createTestTempDirectory("nre-fs-unreadable-directory-");
     const visible = join(root, "a-visible.txt");
     const blocked = join(root, "z-blocked");
     await writeFile(visible, "visible");
@@ -151,7 +151,7 @@ it.skipIf(process.platform === "win32")(
   "retains unreadable-file and sibling observations in a complete snapshot",
   async (context) => {
     await requirePermissionDenial(context, "file-read");
-    const root = await createTestTempDirectory("rea-fs-unreadable-file-");
+    const root = await createTestTempDirectory("nre-fs-unreadable-file-");
     const unreadable = join(root, "unreadable.txt");
     const readable = join(root, "readable.txt");
     await writeFile(unreadable, "permission denied");
@@ -216,7 +216,7 @@ it.each([
 ])(
   "keeps content equality unknown when $name snapshots omit its digest",
   async ({ beforeOmitted, afterOmitted, contents }) => {
-    const root = await createTestTempDirectory("rea-fs-content-unknown-");
+    const root = await createTestTempDirectory("nre-fs-content-unknown-");
     const budgetFile = join(root, "a.txt");
     const file = join(root, "b.txt");
     await writeFile(file, "before");
@@ -254,7 +254,7 @@ it.each([
 );
 
 it("preserves observed content and metadata changes without treating missing hashes as equality", async () => {
-  const root = await createTestTempDirectory("rea-fs-observed-changes-");
+  const root = await createTestTempDirectory("nre-fs-observed-changes-");
   for (const name of ["changed", "stable", "unhashed", "retyped"])
     await writeFile(join(root, name), "before");
   const scenario = processScenarioSchema.parse({
@@ -299,7 +299,7 @@ it("preserves observed content and metadata changes without treating missing has
 it.skipIf(process.platform === "win32")(
   "preserves an observed permission change when file digests are omitted",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-mode-change-");
+    const root = await createTestTempDirectory("nre-fs-mode-change-");
     const file = join(root, "file");
     await writeFile(file, "before", { mode: 0o600 });
     const scenario = processScenarioSchema.parse({
@@ -320,7 +320,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "compares directories and symlink targets without requiring file content hashes",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-nonfile-effects-");
+    const root = await createTestTempDirectory("nre-fs-nonfile-effects-");
     await mkdir(join(root, "empty"));
     await writeFile(join(root, "a.txt"), "before");
     await writeFile(join(root, "b.txt"), "unused");
@@ -351,7 +351,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "keeps the observed symlink target when dot segments resolve to the same path",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-symlink-spelling-");
+    const root = await createTestTempDirectory("nre-fs-symlink-spelling-");
     await mkdir(join(root, "aaa"));
     await writeFile(join(root, "target"), "content");
     // Equal length, so only the target spelling distinguishes the links;
@@ -381,7 +381,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("preserves creation when the selected root was observed missing before capture", async () => {
-  const root = await createTestTempDirectory("rea-fs-missing-root-");
+  const root = await createTestTempDirectory("nre-fs-missing-root-");
   const file = join(root, "created.txt");
   const scenario = processScenarioSchema.parse({
     executable: process.execPath,
@@ -407,7 +407,7 @@ it.skipIf(process.platform === "win32")(
   "rejects only selected roots that cannot be admitted before launch",
   async (context) => {
     await requirePermissionDenial(context, "directory-search");
-    const root = await createTestTempDirectory("rea-fs-root-admission-");
+    const root = await createTestTempDirectory("nre-fs-root-admission-");
     await writeFile(join(root, "file"), "regular file");
     await mkdir(join(root, "denied"));
     await chmod(join(root, "denied"), 0);
@@ -476,7 +476,7 @@ it.skipIf(process.platform === "win32")(
   "records an unsearchable directory's children as omitted rather than failing",
   async (context) => {
     await requirePermissionDenial(context, "directory-search");
-    const root = await createTestTempDirectory("rea-fs-unsearchable-");
+    const root = await createTestTempDirectory("nre-fs-unsearchable-");
     const listed = join(root, "listed");
     await mkdir(listed);
     await writeFile(join(listed, "child.txt"), "child");
@@ -510,7 +510,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "keeps an admitted root behind a symlink loop unobserved",
   async () => {
-    const root = await createTestTempDirectory("rea-fs-root-loop-");
+    const root = await createTestTempDirectory("nre-fs-root-loop-");
     const scenario = processScenarioSchema.parse({
       executable: process.execPath,
       working_directory: root,
@@ -529,7 +529,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "owns symlink subtree uncertainty independently of complete metadata enumeration",
   async () => {
-    const root = await createTestTempDirectory("rea-symlink-subtree-");
+    const root = await createTestTempDirectory("nre-symlink-subtree-");
     const target = join(root, "target");
     const link = join(root, "link");
     await mkdir(target);
@@ -562,7 +562,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("allocates the observer directory before baseline and excludes it before entry accounting", async () => {
-  const root = await createTestTempDirectory("rea-observer-filesystem-");
+  const root = await createTestTempDirectory("nre-observer-filesystem-");
   const scenario = processScenarioSchema.parse({
     executable: process.execPath,
     filesystem_observation_paths: [root],
@@ -573,7 +573,7 @@ it("allocates the observer directory before baseline and excludes it before entr
     undefined,
     snapshotRoots,
     {
-      createTemporaryRoot: () => mkdtemp(join(root, "rea-process-")),
+      createTemporaryRoot: () => mkdtemp(join(root, "nre-process-")),
       cleanup: (path) => rm(path, { recursive: true, force: true }),
     },
   );
@@ -601,7 +601,7 @@ it("allocates the observer directory before baseline and excludes it before entr
 it.skipIf(process.platform === "win32")(
   "excludes the exact observer path through parent aliases while retaining same-name target directories",
   async () => {
-    const fixture = await createTestTempDirectory("rea-observer-alias-");
+    const fixture = await createTestTempDirectory("nre-observer-alias-");
     const physicalParent = join(fixture, "physical");
     const root = join(physicalParent, "root");
     const alias = join(fixture, "alias");
@@ -638,7 +638,7 @@ it.skipIf(process.platform === "win32")(
   async () => {
     const { processFilesystemSnapshotSchema } =
       await import("../../domain/process/processCapture.js");
-    const root = await createTestTempDirectory("rea-fs-symlink-bytes-");
+    const root = await createTestTempDirectory("nre-fs-symlink-bytes-");
     const path = join(root, "link");
     const first = Buffer.from([0x61, 0xff]);
     const second = Buffer.from([0x61, 0xfe]);

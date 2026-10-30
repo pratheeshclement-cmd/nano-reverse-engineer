@@ -1,13 +1,13 @@
 # CLI version report verification — 2026-10-23
 
-`rea --version --json` reports package/runtime/platform facts without loading
+`nre --version --json` reports package/runtime/platform facts without loading
 analysis command implementations. The shared CLI preflight retains configuration
 and output-option error precedence. No cache was added: the unnecessary work was
 loading the full command graph, and runtime facts must remain current.
 
 ## Scope and identities
 
-- Real application: REA 6.7.0's built public CLI, on Linux x64; Node 24.22.1 and
+- Real application: NRE 6.7.0's built public CLI, on Linux x64; Node 24.22.1 and
   npm 11.16.0 (repository pins). No target or analysis provider is required.
 - Host CPU: AMD EPYC 7B12; affinity is restricted to two logical CPUs.
   Node executable SHA-256: `e32e2d16081cf644f88392934288086e7662529d0d43277c34f7aad2207cfafb`.
@@ -24,7 +24,7 @@ loading the full command graph, and runtime facts must remain current.
   paths, a NUL separator, and each file's binary SHA-256.
 
 ```text
-47eae72df85b722dcabab6860980a7285886a854daaec74b47490b41f9652154  scripts/rea.mjs
+47eae72df85b722dcabab6860980a7285886a854daaec74b47490b41f9652154  scripts/nre.mjs
 73e5f50400b11012ccf6c6c312e1f91e027e92c4a5616f112bf97ea135e3253d  src/cliOutput.ts
 64d82457c9f9f276379f9734caff181117afc3fd17fa50d90140a92853395f43  src/cliConfiguration.ts
 fa221460cf337bb2463bd47cd919066a612f369ab866cc1dfbf27ae49259e182  src/domain/versionReport.ts
@@ -35,9 +35,9 @@ fa221460cf337bb2463bd47cd919066a612f369ab866cc1dfbf27ae49259e182  src/domain/ver
 Commands, each in a fresh process from each checkout:
 
 ```sh
-node scripts/rea.mjs --version --json
-node scripts/rea.mjs --version
-node scripts/rea.mjs providers --json --filter-output 'capabilities[0,1].provider.id,open'
+node scripts/nre.mjs --version --json
+node scripts/nre.mjs --version
+node scripts/nre.mjs providers --json --filter-output 'capabilities[0,1].provider.id,open'
 ```
 
 Three alternating pairs per task, reversing order in pair two. All 18 completed

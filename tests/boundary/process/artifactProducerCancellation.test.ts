@@ -22,7 +22,7 @@ const fixture = async (
   kind: "signal" | "capture",
   readArtifact = readStableArtifact,
 ) => {
-  const root = await createTestTempDirectory("rea-producer-cancellation-");
+  const root = await createTestTempDirectory("nre-producer-cancellation-");
   const command = join(root, "selected-tool");
   const path = join(root, "recording");
   await writeFile(command, "not an executable producer", { mode: 0o700 });
@@ -31,10 +31,10 @@ const fixture = async (
     kind === "signal" ? SigrokRecordingProvider : TsharkCaptureProvider;
   const provider = new Provider(
     {
-      REA_SIGROK_COMMAND: command,
-      REA_SIGROK_PRLIMIT_COMMAND: command,
-      REA_TSHARK_COMMAND: command,
-      REA_TSHARK_PRLIMIT_COMMAND: command,
+      NRE_SIGROK_COMMAND: command,
+      NRE_SIGROK_PRLIMIT_COMMAND: command,
+      NRE_TSHARK_COMMAND: command,
+      NRE_TSHARK_PRLIMIT_COMMAND: command,
     },
     async () => {
       throw new Error("Must not launch a producer");

@@ -28,14 +28,14 @@ patterns, the request-step limitation appears only with request steps, and the b
 ## End to end: environments from a prompt
 
 Five self-hosted applications were brought up fresh and seeded on four disposable VMs, loopback only. Claude Code 2.1.310
-(`claude-sonnet-5-5` through a LiteLLM proxy) got this branch's packed CLI, registered with `rea setup --client
+(`claude-sonnet-5-5` through a LiteLLM proxy) got this branch's packed CLI, registered with `nre setup --client
 claude_code` (the MCP server and the skill), and one prompt per application: build an agent environment of the app at
 this URL, cover these entities, the instance is disposable but leave the seeded data as found, sign in as this user, the
 password is in `APP_PASSWORD`, Chromium is here, write the bundle there. The prompt did not mention the skill. The agent
-could use the REA tools, the skill and file tools; Bash and web tools were disabled.
+could use the NRE tools, the skill and file tools; Bash and web tools were disabled.
 
 Each bundle was then rebuilt with `environment-build` from its own `evidence.json` and this branch's tarball (the
-registry's `rea-agents@6.7.0` has no `environment-serve`); `manifest.json` and `evidence.json` were byte-identical to
+registry's `nano-reverse-engineer@6.7.0` has no `environment-serve`); `manifest.json` and `evidence.json` were byte-identical to
 the agent's in all five. It ran its smoke task, a retrieval eval generated from its manifest and capture, and the
 application's recorded write eval with `fireworks_ai/gpt-oss-120b` and `fireworks_ai/glm-5p3-flash`, one run per task.
 

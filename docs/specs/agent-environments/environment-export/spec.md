@@ -1,14 +1,14 @@
 # Export an environment manifest as an agent environment bundle
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
-`rea environment-export <manifest.json> --evidence <capture.json> <dir>
+`nre environment-export <manifest.json> --evidence <capture.json> <dir>
 [--package-tarball <path>] [--name <override>]` writes the manifest and
 capture pair that `environment-serve` serves as a bundle folder the agentenv
 framework runs with `agent-env run <dir>`: a README with provenance, an env
-folder whose Dockerfile installs this exact `rea-agents` version and serves the
+folder whose Dockerfile installs this exact `nano-reverse-engineer` version and serves the
 copied pair, a Python replay verifier and a smoke task. The hosted
 `real-agentenv` lane exports such a bundle from the source-owned Grafana-shaped
 capture through the built CLI, packs the checkout into the image and runs it
@@ -42,11 +42,11 @@ previous increment.
   `MCP_HOST=0.0.0.0`, `MCP_PORT=18765`, and
   `MCP_ALLOWED_HOSTS=127.0.0.1,localhost,<name>`, installs Debian's `python3` for the
   framework's readiness probe, installs
-  `rea-agents@<PRODUCT_IDENTITY.packageVersion>` from the registry or, with
-  `--package-tarball`, copies the tarball as `rea-agents.tgz`, installs it
+  `nano-reverse-engineer@<PRODUCT_IDENTITY.packageVersion>` from the registry or, with
+  `--package-tarball`, copies the tarball as `nano-reverse-engineer.tgz`, installs it
   from `/tmp/` and removes it in the same layer, copies the pair to `/env/`,
   switches to the image's `node` user
-  and runs `rea environment-serve /env/manifest.json --evidence
+  and runs `nre environment-serve /env/manifest.json --evidence
   /env/evidence.json`.
 - `verify.py` mirrors the framework's echo example: `async def verify(mcp_url)`
   over `mcp.client.streamable_http`, lists the tools and checks the count
@@ -72,7 +72,7 @@ previous increment.
   environment with `agentenv-framework==0.9.1334`, the runner's Docker, 30
   minutes), the `verify:agentenv:environment` script and
   `scripts/verify-agentenv-environment.mjs`, which requires absolute
-  `REA_AGENT_ENV_COMMAND` and `REA_DOCKER_COMMAND` like every other lane
+  `NRE_AGENT_ENV_COMMAND` and `NRE_DOCKER_COMMAND` like every other lane
   verifier, runs `agent-env run <dir> --sandbox local` bounded to 15 minutes
   and resolves nothing from `PATH`; wire `ci.yml` at the four spots and extend
   the two CI guard tests.

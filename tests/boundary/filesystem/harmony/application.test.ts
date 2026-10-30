@@ -40,7 +40,7 @@ const stageHapEntries = [
 it("retains inventoried certificate-block suffixes without claiming verified signatures", async () => {
   const names = ["CERT.RSA", "CERT.DSA", "CERT.EC", "FIXTURE.p7b"];
   const path = await writeApplicationZip(
-    "rea-harmony-certificate-paths-",
+    "nre-harmony-certificate-paths-",
     "Fixture.hap",
     [
       ...names.map((name) => ({
@@ -67,7 +67,7 @@ describe("HarmonyOS application projection", () => {
     async (extension) => {
       const member = `assets/js/index.${extension}`;
       const path = await writeApplicationZip(
-        "rea-harmony-javascript-",
+        "nre-harmony-javascript-",
         "Fixture.hap",
         [{ path: member, content: "export const value = 1;" }],
       );
@@ -87,7 +87,7 @@ describe("HarmonyOS application projection", () => {
 
   it("does not infer JavaScript from unrelated inventory content", async () => {
     const path = await writeApplicationZip(
-      "rea-harmony-no-javascript-",
+      "nre-harmony-no-javascript-",
       "Fixture.hap",
       [
         { path: "module.json", content: "{}" },
@@ -106,7 +106,7 @@ describe("HarmonyOS application projection", () => {
 
   it("projects deterministic Stage HAP components and explicit bridge hypotheses", async () => {
     const path = await writeApplicationZip(
-      "rea-harmony-",
+      "nre-harmony-",
       "Fixture.hap",
       stageHapEntries,
     );
@@ -155,7 +155,7 @@ describe("HarmonyOS application projection", () => {
 
   it("projects App Pack children by path without recursive inventory", async () => {
     const entryHap = await writeApplicationZip(
-      "rea-harmony-entry-",
+      "nre-harmony-entry-",
       "entry.hap",
       [
         { path: "module.json", content: '{"module":{}}' },
@@ -163,11 +163,11 @@ describe("HarmonyOS application projection", () => {
       ],
     );
     const featureHsp = await writeApplicationZip(
-      "rea-harmony-feature-",
+      "nre-harmony-feature-",
       "feature.hsp",
       [{ path: "module.json", content: '{"module":{}}' }],
     );
-    const path = await writeApplicationZip("rea-harmony-app-", "Bundle.app", [
+    const path = await writeApplicationZip("nre-harmony-app-", "Bundle.app", [
       { path: "pack.info", content: '{"packages":[]}' },
       { path: "entry.hap", content: new Uint8Array(await readFile(entryHap)) },
       {
@@ -199,11 +199,11 @@ describe("HarmonyOS application projection", () => {
 describe("HarmonyOS packaging boundaries", () => {
   it("keeps a nested .app ZIP member inside an IPA out of the App Pack classification", async () => {
     const nested = await writeApplicationZip(
-      "rea-harmony-nested-",
+      "nre-harmony-nested-",
       "Nested.app",
       [{ path: "inner.txt", content: "not an app pack" }],
     );
-    const path = await writeApplicationZip("rea-harmony-ipa-", "Fixture.ipa", [
+    const path = await writeApplicationZip("nre-harmony-ipa-", "Fixture.ipa", [
       { path: "Payload/App.app/Info.plist", content: "plist" },
       {
         path: "Payload/Nested.app",
@@ -227,7 +227,7 @@ describe("HarmonyOS packaging boundaries", () => {
   });
 
   it("claims the FA model only from config.json", async () => {
-    const path = await writeApplicationZip("rea-harmony-fa-", "Legacy.hap", [
+    const path = await writeApplicationZip("nre-harmony-fa-", "Legacy.hap", [
       { path: "config.json", content: '{"app":{}}' },
       { path: "assets/js/default.js", content: "legacy();" },
       { path: "assets/entry/resources.index", content: "resource index" },
@@ -255,7 +255,7 @@ describe("HarmonyOS packaging boundaries", () => {
 
   it("does not classify a rawfile named module.json as a manifest", async () => {
     const path = await writeApplicationZip(
-      "rea-harmony-rawfile-module-manifest-",
+      "nre-harmony-rawfile-module-manifest-",
       "Legacy.hap",
       [
         { path: "config.json", content: '{"app":{}}' },
@@ -283,7 +283,7 @@ describe("HarmonyOS packaging boundaries", () => {
 
   it("rejects non-HarmonyOS inventory Evidence", async () => {
     const inventory = await createNonApplicationZipInventory(
-      "rea-harmony-invalid-",
+      "nre-harmony-invalid-",
     );
     expect(
       projectHarmonyApplicationEvidence({ inventory_evidence: [inventory] }),
@@ -294,7 +294,7 @@ describe("HarmonyOS packaging boundaries", () => {
   });
 
   it("keeps HTTP Archive .har files out of the HarmonyOS classification", async () => {
-    const root = await createTestTempDirectory("rea-harmony-http-har-");
+    const root = await createTestTempDirectory("nre-harmony-http-har-");
     const path = join(root, "capture.har");
     await writeFile(
       path,
@@ -315,7 +315,7 @@ describe("HarmonyOS packaging boundaries", () => {
 describe("HarmonyOS inventory coverage", () => {
   it("retains complete traversal and case-collision limits in the application projection", async () => {
     const path = await writeApplicationZip(
-      "rea-harmony-case-collision-",
+      "nre-harmony-case-collision-",
       "Fixture.hap",
       [
         { path: "module.json", content: '{"module":{}}' },
@@ -346,7 +346,7 @@ describe("HarmonyOS inventory coverage", () => {
     async (format) => {
       const suffix = format === "app-pack" ? "app" : format;
       const path = await writeApplicationZip(
-        "rea-package-family-",
+        "nre-package-family-",
         `Fixture.${suffix}`,
         [{ path: "module.json", content: "{}" }],
       );
@@ -368,7 +368,7 @@ describe("HarmonyOS inventory coverage", () => {
   );
 
   it("preserves unavailable encrypted component paths and qualifies absence", async () => {
-    const root = await createTestTempDirectory("rea-harmony-encrypted-");
+    const root = await createTestTempDirectory("nre-harmony-encrypted-");
     const path = join(root, "Locked.hap");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("module.json", new TextReader("{}"));
@@ -406,7 +406,7 @@ describe("HarmonyOS manifest path rules", () => {
     // HAP/HSP/App Pack members are ZIP names. OpenHarmony's stage, FA, and
     // app-pack manifests are module.json, config.json, and pack.info.
     const path = await writeApplicationZip(
-      "rea-harmony-manifest-case-",
+      "nre-harmony-manifest-case-",
       "Fixture.hap",
       [
         { path: "MODULE.JSON", content: "{}" },
@@ -428,7 +428,7 @@ describe("HarmonyOS manifest path rules", () => {
     { paths: ["a/config.json", "z/module.json"] },
   ])("keeps Stage precedence for $paths", async ({ paths }) => {
     const path = await writeApplicationZip(
-      "rea-harmony-mixed-model-",
+      "nre-harmony-mixed-model-",
       "Both.hap",
       paths.map((path) => ({ path, content: "{}" })),
     );
@@ -448,7 +448,7 @@ describe("HarmonyOS manifest path rules", () => {
     { name: "config.json", model: "fa" },
     { name: "MODULE.JSON", model: "unknown" },
   ])("retains the path hint for unavailable $name", async ({ name, model }) => {
-    const root = await createTestTempDirectory("rea-harmony-locked-manifest-");
+    const root = await createTestTempDirectory("nre-harmony-locked-manifest-");
     const path = join(root, "Locked.hap");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add(name, new TextReader("{}"), { password: "fixture-only" });

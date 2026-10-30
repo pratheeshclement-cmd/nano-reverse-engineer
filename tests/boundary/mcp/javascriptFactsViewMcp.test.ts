@@ -101,7 +101,7 @@ const expectSelectedSourceCoverage = async (
 };
 
 it("pages selected real filesystem observations with shared identities and portable/retained parity", async () => {
-  const root = await createTestTempDirectory("rea-retained-file-facts-");
+  const root = await createTestTempDirectory("nre-retained-file-facts-");
   await Promise.all(
     (
       [

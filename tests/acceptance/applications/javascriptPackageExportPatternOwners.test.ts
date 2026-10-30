@@ -52,7 +52,7 @@ cliTest.for(
 )(
   "retains $name dependency ownership through $surface",
   async ({ surface, exports, status, possibleOwner, nodeAllowed }, { cli }) => {
-    const root = await createTestTempDirectory("rea-exports-pattern-owner-");
+    const root = await createTestTempDirectory("nre-exports-pattern-owner-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs":

@@ -60,14 +60,12 @@ describe("ZCode configuration paths", () => {
   it("resolves the personal skills directory beside the config root", () => {
     expect(
       skillDestinations("/home/a", ["zcode"]).map(({ path }) => path),
-    ).toEqual([
-      join("/home/a", ".zcode", "skills", "reverse-engineer-anything"),
-    ]);
+    ).toEqual([join("/home/a", ".zcode", "skills", "nano-reverse-engineer")]);
   });
 });
 
 const zcodeClient = async () => {
-  const home = await createTestTempDirectory("rea-zcode-");
+  const home = await createTestTempDirectory("nre-zcode-");
   const client = zcodePath(home, process.platform);
   if (client?.markerPath === undefined) throw new Error("missing ZCode client");
   await mkdir(client.markerPath, { recursive: true });
@@ -75,13 +73,13 @@ const zcodeClient = async () => {
 };
 
 describe("ZCode JSON registration", () => {
-  it("upserts rea into mcp.servers while preserving unrelated settings", async () => {
+  it("upserts nre into mcp.servers while preserving unrelated settings", async () => {
     const { home, client } = await zcodeClient();
     await writeFile(
       client.configPath,
       `{
   "mcp": {
-    "rea": { "unrelated": true },
+    "nre": { "unrelated": true },
     "servers": {
       "other": { "command": "other-server" }
     }
@@ -93,9 +91,9 @@ describe("ZCode JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcp.rea).toEqual({ unrelated: true });
+    expect(parsed.mcp.nre).toEqual({ unrelated: true });
     expect(parsed.mcp.servers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -124,7 +122,7 @@ describe("ZCode JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.ui).toEqual({ theme: "dark" });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -137,13 +135,13 @@ describe("ZCode JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the nre entry on uninstall", async () => {
     const { home, client } = await zcodeClient();
     await writeFile(
       client.configPath,
@@ -160,7 +158,7 @@ describe("ZCode JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcp.servers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcp.servers.rea).toBeUndefined();
+    expect(parsed.mcp.servers.nre).toBeUndefined();
   });
 });
 
@@ -179,11 +177,11 @@ describe("ZCode .agents fallback preservation", () => {
           {
             mcpServers: {
               other: { command: "other-server", env: { TOKEN: "x" } },
-              rea: {
-                command: "rea",
+              nre: {
+                command: "nre",
                 args: ["mcp"],
                 env: {
-                  REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
+                  NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
                   GHIDRA_INSTALL_DIR: "/caller/ghidra",
                   CALLER_CHOICE: "keep-me",
                 },
@@ -203,17 +201,17 @@ describe("ZCode .agents fallback preservation", () => {
         command: "other-server",
         env: { TOKEN: "x" },
       });
-      expect(parsed.mcp.servers.rea).toEqual({
+      expect(parsed.mcp.servers.nre).toEqual({
         command: command[0],
         args: command.slice(1),
         env: {
-          REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
+          NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
           GHIDRA_INSTALL_DIR: "/caller/ghidra",
           CALLER_CHOICE: "keep-me",
         },
       });
       if (original !== undefined) {
-        expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+        expect(await readFile(`${client.configPath}.nre.backup`, "utf8")).toBe(
           original,
         );
         if (JSON.parse(original).ui !== undefined)
@@ -256,7 +254,7 @@ describe("ZCode .agents fallback preservation", () => {
     expect(parsed.mcp.servers.existing).toEqual({
       command: "existing-server",
     });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -281,7 +279,7 @@ describe("ZCode fallback uninstall", () => {
       // must not block a removal the file's owner can perform.
       const { home } = await zcodeClient();
       const valid = await writeFallback(home, {
-        rea: owned,
+        nre: owned,
         other: { command: "other-server" },
       });
       const original =
@@ -303,22 +301,22 @@ describe("ZCode fallback uninstall", () => {
           ?.actions?.map(({ status }) => status),
       ).toContain("removed");
       const edited = await readFile(fallbackPath(home), "utf8");
-      expect(edited).not.toContain('"rea"');
+      expect(edited).not.toContain('"nre"');
       expect(edited).toContain("other-server");
-      expect(await readFile(`${fallbackPath(home)}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${fallbackPath(home)}.nre.backup`, "utf8")).toBe(
         original,
       );
     },
   );
 
-  it("removes the REA-owned fallback entry with the native registration", async () => {
+  it("removes the NRE-owned fallback entry with the native registration", async () => {
     const { home, client } = await zcodeClient();
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcp: { servers: { rea: owned } } }),
+      JSON.stringify({ mcp: { servers: { nre: owned } } }),
     );
     const original = await writeFallback(home, {
-      rea: owned,
+      nre: owned,
     });
 
     const result = await runUninstall(false, systemUninstallHost(home));
@@ -334,23 +332,23 @@ describe("ZCode fallback uninstall", () => {
       ui: { keep: true },
       mcpServers: {},
     });
-    expect(await readFile(`${fallbackPath(home)}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${fallbackPath(home)}.nre.backup`, "utf8")).toBe(
       original,
     );
   });
 
   it.each([
-    { rea: { command: "/usr/bin/false" } },
-    { rea: owned, other: { command: "other-server" } },
+    { nre: { command: "/usr/bin/false" } },
+    { nre: owned, other: { command: "other-server" } },
   ])("refuses to activate retained fallback servers: %j", async (servers) => {
     const { home, client } = await zcodeClient();
-    const native = JSON.stringify({ mcp: { servers: { rea: owned } } });
+    const native = JSON.stringify({ mcp: { servers: { nre: owned } } });
     await writeFile(client.configPath, native);
     const fallback = await writeFallback(home, servers);
     const cursor = supportedClients(home).find(({ name }) => name === "cursor");
     if (cursor === undefined) throw new Error("missing Cursor client");
     await mkdir(dirname(cursor.configPath), { recursive: true });
-    const otherClient = JSON.stringify({ mcpServers: { rea: owned } });
+    const otherClient = JSON.stringify({ mcpServers: { nre: owned } });
     await writeFile(cursor.configPath, otherClient);
     const result = await runUninstall(false, systemUninstallHost(home));
     expect(result.status).toBe("failed");
@@ -358,16 +356,16 @@ describe("ZCode fallback uninstall", () => {
     expect(await readFile(fallbackPath(home), "utf8")).toBe(fallback);
     expect(await readFile(cursor.configPath, "utf8")).toBe(otherClient);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.nre.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
     await expect(
-      readFile(`${cursor.configPath}.rea.backup`),
+      readFile(`${cursor.configPath}.nre.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 
   it("refuses last-native removal when the fallback cannot be interpreted", async () => {
     const { home, client } = await zcodeClient();
-    const native = JSON.stringify({ mcp: { servers: { rea: owned } } });
+    const native = JSON.stringify({ mcp: { servers: { nre: owned } } });
     await writeFile(client.configPath, native);
     await mkdir(join(home, ".agents"), { recursive: true });
     await writeFile(fallbackPath(home), "{invalid");
@@ -382,11 +380,11 @@ describe("ZCode fallback uninstall", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcp: { servers: { rea: owned, other: { command: "other-server" } } },
+        mcp: { servers: { nre: owned, other: { command: "other-server" } } },
       }),
     );
     const fallback = await writeFallback(home, {
-      rea: { command: "/usr/bin/false" },
+      nre: { command: "/usr/bin/false" },
     });
     const result = await runUninstall(false, systemUninstallHost(home));
     expect(result.status).toBe("complete");
@@ -398,12 +396,12 @@ describe("ZCode fallback uninstall", () => {
     expect(await readFile(fallbackPath(home), "utf8")).toBe(fallback);
   });
 
-  it("removes a fallback-only REA entry and keeps a foreign rea entry", async () => {
+  it("removes a fallback-only NRE entry and keeps a foreign nre entry", async () => {
     for (const [servers, expected] of [
-      [{ rea: owned }, {}],
+      [{ nre: owned }, {}],
       [
-        { rea: { command: "someone-else" } },
-        { rea: { command: "someone-else" } },
+        { nre: { command: "someone-else" } },
+        { nre: { command: "someone-else" } },
       ],
     ] as const) {
       const { home } = await zcodeClient();
@@ -420,13 +418,13 @@ describe("ZCode fallback uninstall", () => {
 });
 
 describe("ZCode fallback admission", () => {
-  it.each([{ PORT: 123 }, { REA_MCP_INPUT_SCHEMA_PROFILE: "unknown" }])(
-    "refuses malformed fallback REA environment %j before native writes",
+  it.each([{ PORT: 123 }, { NRE_MCP_INPUT_SCHEMA_PROFILE: "unknown" }])(
+    "refuses malformed fallback NRE environment %j before native writes",
     async (env) => {
       const { home, client } = await zcodeClient();
       await mkdir(join(home, ".agents"), { recursive: true });
       const original = JSON.stringify({
-        mcpServers: { rea: { command: "rea", args: ["mcp"], env } },
+        mcpServers: { nre: { command: "nre", args: ["mcp"], env } },
       });
       await writeFile(fallbackPath(home), original);
       expect(
@@ -505,7 +503,7 @@ describe("ZCode disabled registrations", () => {
         {
           mcp: {
             servers: {
-              rea: {
+              nre: {
                 command: command[0],
                 args: command.slice(1),
                 enable: false,
@@ -528,7 +526,7 @@ describe("ZCode disabled registrations", () => {
     // and is the working repair; doctor must keep recommending it.
     expect(await statusFor()).toMatchObject({
       state: "stale",
-      remediation: expect.stringContaining("rea setup"),
+      remediation: expect.stringContaining("nre setup"),
     });
     expect((await statusFor())?.remediation).not.toContain("enable: false");
 
@@ -547,7 +545,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: command[0], args: command.slice(1) },
+          nre: { command: command[0], args: command.slice(1) },
         },
       }),
     );
@@ -592,7 +590,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: command[0], args: command.slice(1), enable: false },
+          nre: { command: command[0], args: command.slice(1), enable: false },
         },
       }),
     );
@@ -623,7 +621,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: "fallback-command", args: ["mcp"] },
+          nre: { command: "fallback-command", args: ["mcp"] },
         },
       }),
     );
@@ -631,7 +629,7 @@ describe("ZCode disabled registrations", () => {
       client.configPath,
       JSON.stringify({
         mcp: {
-          servers: { rea: { command: command[0], args: command.slice(1) } },
+          servers: { nre: { command: command[0], args: command.slice(1) } },
         },
       }),
     );
@@ -666,7 +664,7 @@ describe("ZCode strict native JSON", () => {
       });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`),
+        readFile(`${client.configPath}.nre.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
       expect(
         (

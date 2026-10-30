@@ -8,7 +8,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "uses shared loader and export ownership for native bindings through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-native-binding-ownership-");
+    const root = await createTestTempDirectory("nre-native-binding-ownership-");
     await writeFixtureFiles(root, {
       "ordinary.cjs": 'const addon = require("./addon.node");',
       "optional.cjs": 'const addon = require?.("./addon.node");',

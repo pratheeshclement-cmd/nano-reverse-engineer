@@ -57,8 +57,8 @@ describe("static Electron application analysis", () => {
     const evidence = parseEvidence(result.value);
     expect(evidence).toMatchObject({
       operation: "analyze_javascript_application",
-      predicate_type: "rea.javascript-application-analysis",
-      provider: { id: "rea-javascript-application" },
+      predicate_type: "nre.javascript-application-analysis",
+      provider: { id: "nre-javascript-application" },
       authority: "shipped-artifact",
       confidence: "derived",
       subject: { local_path: root, format: "directory" },
@@ -128,7 +128,7 @@ describe("static Electron application analysis", () => {
       },
       utility_processes: 1,
     });
-    expect(handledChannels.sort()).toEqual(["rea:read", "rea:write"]);
+    expect(handledChannels.sort()).toEqual(["nre:read", "nre:write"]);
   });
 
   it("maps unchanged var and let require aliases while excluding reassigned bindings", async () => {
@@ -174,7 +174,7 @@ describe("native addon association", () => {
   ])(
     "associates a requested binding only with a resolved native addon (exact addon.node: $native)",
     async ({ native, associations }) => {
-      const root = await createTestTempDirectory("rea-electron-addon-kind-");
+      const root = await createTestTempDirectory("nre-electron-addon-kind-");
       await Promise.all([
         writeFile(
           join(root, "main.js"),
@@ -217,7 +217,7 @@ describe("native addon association", () => {
 });
 
 const exactRuntimeEntrypointFixture = async (): Promise<void> => {
-  const root = await createTestTempDirectory("rea-electron-exact-entrypoints-");
+  const root = await createTestTempDirectory("nre-electron-exact-entrypoints-");
   await mkdir(join(root, "renderer/page"), { recursive: true });
   await Promise.all([
     writeFile(
@@ -555,7 +555,7 @@ const expectElectronBoundaries = (graph: ApplicationGraph): void => {
         observations: expect.arrayContaining([
           expect.objectContaining({
             properties: expect.objectContaining({
-              api_key: "reaApi",
+              api_key: "nreApi",
               members: expect.arrayContaining([
                 "nested",
                 "nested.write",
@@ -597,18 +597,18 @@ const expectElectronBoundaries = (graph: ApplicationGraph): void => {
 };
 
 const fixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-boundaries-");
+  const root = await createTestTempDirectory("nre-electron-boundaries-");
   await writeElectronBoundaryFixture(root);
   return root;
 };
 
 const requireAliasFixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-require-aliases-");
+  const root = await createTestTempDirectory("nre-electron-require-aliases-");
   await Promise.all([
     writeFile(
       join(root, "package.json"),
       JSON.stringify({
-        name: "rea-electron-require-aliases",
+        name: "nre-electron-require-aliases",
         main: "main.cjs",
       }),
     ),
@@ -617,29 +617,29 @@ const requireAliasFixtureDirectory = async (): Promise<string> => {
       String.raw`
 var { ipcMain: main } = require("electron");
 let listener = require("electron/main").ipcMain;
-main.handle("rea:read", async () => "value");
-listener.on("rea:write", () => undefined);
+main.handle("nre:read", async () => "value");
+listener.on("nre:write", () => undefined);
 
 let replaced = require("electron").ipcMain;
 replaced = { handle() {} };
-replaced.handle("rea:reassigned", () => undefined);
+replaced.handle("nre:reassigned", () => undefined);
 
 var assignedLater;
-assignedLater.handle("rea:before-assignment", () => undefined);
+assignedLater.handle("nre:before-assignment", () => undefined);
 assignedLater = require("electron").ipcMain;
 
 if (globalThis.registerIpc) {
   var conditional = require("electron").ipcMain;
 }
-conditional.handle("rea:conditional", () => undefined);
+conditional.handle("nre:conditional", () => undefined);
 `,
     ),
     writeFile(
       join(root, "preload.cjs"),
       String.raw`
 const { ipcRenderer } = require("electron");
-ipcRenderer.invoke("rea:read");
-ipcRenderer.send("rea:write", "value");
+ipcRenderer.invoke("nre:read");
+ipcRenderer.send("nre:write", "value");
 `,
     ),
   ]);
@@ -647,11 +647,11 @@ ipcRenderer.send("rea:write", "value");
 };
 
 const renamedBindingFixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-renamed-");
+  const root = await createTestTempDirectory("nre-electron-renamed-");
   await Promise.all([
     writeFile(
       join(root, "package.json"),
-      JSON.stringify({ name: "rea-electron-renamed", main: "main.mjs" }),
+      JSON.stringify({ name: "nre-electron-renamed", main: "main.mjs" }),
     ),
     // Bundlers rename colliding imports, e.g. esbuild's ipcMain2.
     writeFile(
@@ -661,11 +661,11 @@ import { BrowserWindow as BrowserWindow2, ipcMain as ipcMain2 } from "electron";
 import { ipcMain as ipcMain3, utilityProcess as utility } from "electron/main";
 
 new BrowserWindow2({ webPreferences: { preload: "./preload.cjs" } });
-ipcMain2.handle("rea:read", async () => "value");
-ipcMain3.on("rea:write", () => undefined);
+ipcMain2.handle("nre:read", async () => "value");
+ipcMain3.on("nre:write", () => undefined);
 utility.fork("./worker.js");
 function register(ipcMain2) {
-  ipcMain2.handle("rea:shadowed", async () => "local");
+  ipcMain2.handle("nre:shadowed", async () => "local");
 }
 export { register };
 `,
@@ -674,9 +674,9 @@ export { register };
       join(root, "preload.cjs"),
       String.raw`
 const { contextBridge: bridge, ipcRenderer: ipc } = require("electron");
-bridge.exposeInMainWorld("reaApi", {
-  read: () => ipc.invoke("rea:read"),
-  write: (value) => ipc.send("rea:write", value),
+bridge.exposeInMainWorld("nreApi", {
+  read: () => ipc.invoke("nre:read"),
+  write: (value) => ipc.send("nre:write", value),
 });
 `,
     ),
@@ -686,7 +686,7 @@ bridge.exposeInMainWorld("reaApi", {
 };
 
 const computedMemberFixtureDirectory = async (): Promise<string> => {
-  const root = await createTestTempDirectory("rea-electron-computed-members-");
+  const root = await createTestTempDirectory("nre-electron-computed-members-");
   await mkdir(join(root, "native"));
   await Promise.all([
     writeFile(

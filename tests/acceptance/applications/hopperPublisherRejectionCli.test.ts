@@ -10,13 +10,13 @@ cliTest
   .for(["default-python-home", "missing-python-home"] as const)(
   "refuses an unauthenticated Hopper launcher through the public CLI before executing it (%s)",
   async (pythonHome, { cli }) => {
-    const home = await createTestTempDirectory("rea-hopper-publisher-cli-");
+    const home = await createTestTempDirectory("nre-hopper-publisher-cli-");
     const launcher = join(home, "foreign-hopper");
     const target = join(home, "sample");
     const marker = join(home, "launched");
     await writeFile(
       launcher,
-      '#!/bin/sh\nprintf launched > "$REA_HOPPER_TEST_MARKER"\nexit 99\n',
+      '#!/bin/sh\nprintf launched > "$NRE_HOPPER_TEST_MARKER"\nexit 99\n',
     );
     await chmod(launcher, 0o700);
     await copyFile("/usr/bin/true", target);
@@ -38,8 +38,8 @@ cliTest
         HOME: home,
         TMPDIR: home,
         HOPPER_LAUNCHER_PATH: launcher,
-        REA_HOPPER_TEST_MARKER: marker,
-        REA_LOG_LEVEL: "silent",
+        NRE_HOPPER_TEST_MARKER: marker,
+        NRE_LOG_LEVEL: "silent",
         // Publisher rejection must not depend on the display probe's Python.
         ...(pythonHome === "missing-python-home"
           ? { PYTHONHOME: join(home, "missing-python-home") }

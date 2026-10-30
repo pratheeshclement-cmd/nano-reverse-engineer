@@ -207,7 +207,7 @@ cliTest(
 cliTest(
   "classifies a field MemberRef loaded by ldtoken in the CLI inspection",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-ldtoken-cli-");
+    const root = await createTestTempDirectory("nre-managed-ldtoken-cli-");
     const path = join(root, "field-token.dll");
     const il = Buffer.from([0xd0, 1, 0, 0, 0x0a, 0x26, 0x2a]);
     await writeFile(
@@ -240,7 +240,7 @@ cliTest(
 cliTest(
   "retains complete member Evidence for exact CLI pages after process exit and target removal",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-member-summary-cli-");
+    const root = await createTestTempDirectory("nre-member-summary-cli-");
     const path = join(root, "fixture.dll");
     const bundlePath = join(root, "members.json");
     await writeFile(path, memberFixture());
@@ -351,7 +351,7 @@ cliTest(
 cliTest(
   "refuses summary without a durable destination before opening the target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-member-summary-missing-");
+    const root = await createTestTempDirectory("nre-member-summary-missing-");
     const result = await cli.run({
       arguments: [
         "inspect-managed-members",
@@ -380,7 +380,7 @@ cliTest(
 cliTest(
   "does not replace caller files or report successful summary when bundle publication fails",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-member-summary-write-");
+    const root = await createTestTempDirectory("nre-member-summary-write-");
     const path = join(root, "fixture.dll");
     const bytes = buildManagedPeFixture();
     await writeFile(path, bytes);
@@ -432,7 +432,7 @@ cliTest(
 cliTest(
   "preserves provider refusal without publishing an Evidence bundle",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-member-summary-provider-");
+    const root = await createTestTempDirectory("nre-member-summary-provider-");
     const path = join(root, "absent.dll");
     const destination = join(root, "bundle.json");
     const complete = await cli.run({
@@ -461,7 +461,7 @@ cliTest(
 cliTest(
   "keeps unavailable managed member coverage explicit in saved summary Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-member-summary-unknown-");
+    const root = await createTestTempDirectory("nre-member-summary-unknown-");
     const path = join(root, "malformed.dll");
     const destination = join(root, "bundle.json");
     await writeFile(path, buildManagedPeFixture({ virtualSectionSize: 0 }));
@@ -500,7 +500,7 @@ cliTest(
 cliTest(
   "preserves decoded CIL and reports invalid LocalVarSigTok through CLI Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-member-locals-token-");
+    const root = await createTestTempDirectory("nre-member-locals-token-");
     const path = join(root, "fixture.dll");
     const body = Buffer.alloc(13);
     body.writeUInt16LE(0x3003, 0);
@@ -541,12 +541,12 @@ cliTest.for(
 )(
   "keeps a committed receipt when $signal ($delivery) is queued during final cleanup",
   async ({ signal, status, delivery }, { cli }) => {
-    const root = await createTestTempDirectory("rea-managed-queued-signal-");
+    const root = await createTestTempDirectory("nre-managed-queued-signal-");
     const target = join(root, "fixture.dll");
     const destination = join(root, "parent.json");
     const marker = join(root, "signal.json");
     const preload = resolve("tests/fixtures/evidencePublicationPreload.mjs");
-    const prefix = join(await realpath(root), ".rea-write-");
+    const prefix = join(await realpath(root), ".nre-write-");
     await writeFile(target, memberFixture());
     const reply = await cli.run({
       cwd: root,
@@ -563,8 +563,8 @@ cliTest.for(
       ],
       environment: {
         HOME: root,
-        REA_LOG_LEVEL: "silent",
-        REA_TEST_EVIDENCE_PUBLICATION: JSON.stringify({
+        NRE_LOG_LEVEL: "silent",
+        NRE_TEST_EVIDENCE_PUBLICATION: JSON.stringify({
           prefix,
           marker,
           signal,
@@ -601,7 +601,7 @@ cliTest.for(
       JSON.parse(await readFile(marker, "utf8")).listeners,
     ).toBeGreaterThan(0);
     expect(
-      (await readdir(root)).some((name) => name.startsWith(".rea-write-")),
+      (await readdir(root)).some((name) => name.startsWith(".nre-write-")),
     ).toBe(false);
   },
 );
@@ -617,7 +617,7 @@ cliTest.for(
 )(
   "retains complete default Evidence when $signal ($delivery) is queued during sealing",
   async ({ signal, status, delivery }, { cli }) => {
-    const root = await createTestTempDirectory("rea-managed-complete-signal-");
+    const root = await createTestTempDirectory("nre-managed-complete-signal-");
     const target = join(root, "fixture.dll"),
       marker = join(root, "signal.json");
     await writeFile(target, memberFixture());
@@ -634,8 +634,8 @@ cliTest.for(
       ],
       environment: {
         HOME: root,
-        REA_LOG_LEVEL: "silent",
-        REA_TEST_EVIDENCE_COMPLETION: JSON.stringify({
+        NRE_LOG_LEVEL: "silent",
+        NRE_TEST_EVIDENCE_COMPLETION: JSON.stringify({
           operation: "inspect_managed_members",
           target_path: target,
           marker,

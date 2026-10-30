@@ -104,7 +104,7 @@ afterEach(async () => {
 
 const asarPage = async (): Promise<string> => {
   const root = await realpath(
-    await mkdtemp(join(tmpdir(), "rea-electron-file-scope-")),
+    await mkdtemp(join(tmpdir(), "nre-electron-file-scope-")),
   );
   roots.push(root);
   const archive = join(root, "app.asar");
@@ -191,7 +191,7 @@ it("retains a failed ASAR close through denial and retries before reopening", as
   expect(failure.cleanup?.resources).toEqual([handleState.archive]);
   const mapped = mapElectronFileAuthorizationFailure(
     failure,
-    "rea-cdp-electron",
+    "nre-cdp-electron",
     "list_electron_targets",
   );
   expect(mapped?.cleanupIncomplete).toBe(true);
@@ -231,7 +231,7 @@ it("keeps cancellation primary when ASAR close fails, then retries the same hand
   expect(failure).toBeInstanceOf(ArtifactReaderFailure);
   const mapped = mapElectronFileAuthorizationFailure(
     failure,
-    "rea-cdp-electron",
+    "nre-cdp-electron",
     "inspect_electron_page",
   );
   expect(mapped?.cleanupIncomplete).toBe(true);
@@ -239,7 +239,7 @@ it("keeps cancellation primary when ASAR close fails, then retries the same hand
   expect(mapped?.cleanupPrimary?.cause).toBe(reason);
 
   await expect(authorizedElectronFile(location)).resolves.toBe(
-    `${handleState.archive}/index.html`,
+    join(handleState.archive!, "index.html"),
   );
   expect(handleState.events).toEqual([
     "open",
@@ -269,7 +269,7 @@ it("keeps an earlier read failure primary over a later abort and close failure",
   }
   const mapped = mapElectronFileAuthorizationFailure(
     failure,
-    "rea-cdp-electron",
+    "nre-cdp-electron",
     "inspect_electron_page",
   );
   expect(mapped?.cleanupIncomplete).toBe(true);
@@ -277,7 +277,7 @@ it("keeps an earlier read failure primary over a later abort and close failure",
   expect(mapped?.cleanupPrimary?.cause).toBe(readFailure);
 
   await expect(authorizedElectronFile(location)).resolves.toBe(
-    `${handleState.archive}/index.html`,
+    join(handleState.archive!, "index.html"),
   );
   expect(mapped?.cleanupIncomplete).toBe(false);
 });
@@ -298,7 +298,7 @@ it("preserves an arbitrary cancellation reason observed during ASAR read", async
   }
   const mapped = mapElectronFileAuthorizationFailure(
     failure,
-    "rea-cdp-electron",
+    "nre-cdp-electron",
     "inspect_electron_page",
   );
   expect(mapped?.cleanupIncomplete).toBe(true);
@@ -306,7 +306,7 @@ it("preserves an arbitrary cancellation reason observed during ASAR read", async
   expect(mapped?.cleanupPrimary?.cause).toBe(reason);
 
   await expect(authorizedElectronFile(location)).resolves.toBe(
-    `${handleState.archive}/index.html`,
+    join(handleState.archive!, "index.html"),
   );
   expect(mapped?.cleanupIncomplete).toBe(false);
 });
@@ -327,7 +327,7 @@ it("preserves cancellation observed after ASAR stat when final close fails", asy
   }
   const mapped = mapElectronFileAuthorizationFailure(
     failure,
-    "rea-cdp-electron",
+    "nre-cdp-electron",
     "inspect_electron_page",
   );
   expect(mapped?.cleanupIncomplete).toBe(true);
@@ -335,7 +335,7 @@ it("preserves cancellation observed after ASAR stat when final close fails", asy
   expect(mapped?.cleanupPrimary?.cause).toBe(reason);
 
   await expect(authorizedElectronFile(location)).resolves.toBe(
-    `${handleState.archive}/index.html`,
+    join(handleState.archive!, "index.html"),
   );
   expect(mapped?.cleanupIncomplete).toBe(false);
 });

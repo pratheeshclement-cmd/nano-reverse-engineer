@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "retains standalone archive aliases across session selection and refuses retargeted selections",
   async () => {
-    const root = await createTestTempDirectory("rea-keyed-alias-");
+    const root = await createTestTempDirectory("nre-keyed-alias-");
     const stored = join(root, "stored.plist");
     const other = join(root, "other.plist");
     const aliases = [join(root, "chosen.plist"), join(root, "second.plist")];

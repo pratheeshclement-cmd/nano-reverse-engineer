@@ -82,7 +82,7 @@ cliTest.for([
 ])(
   "refuses ambiguous descriptor field identities through CLI/MCP while retaining source Evidence: %s",
   async (variant, { cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-field-identity-");
+    const root = await createTestTempDirectory("nre-protobuf-field-identity-");
     const capture = join(root, "capture.har");
     const text = protobufHar(body, "application/x-protobuf");
     await writeFile(capture, text);
@@ -205,7 +205,7 @@ cliTest.for([
 cliTest(
   "keeps repeated wire occurrences and message-local number reuse through CLI/MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-field-control-");
+    const root = await createTestTempDirectory("nre-protobuf-field-control-");
     const capture = join(root, "capture.har");
     const descriptor = join(root, "valid.pb");
     const valid = descriptorDefinition();

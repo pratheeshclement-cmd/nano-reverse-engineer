@@ -15,7 +15,7 @@ export async function verifyBrowserUrlUserInfo(endpoint, origin) {
   const expectedUrl = `${origin}\\path@tail/../keep.js?x=1#frag`;
   const sources = [rawUrl, expectedUrl].map(
     (url, index) =>
-      `globalThis.reaUserinfoUrlProbe${index} = () => 4731;\n//# sourceURL=${url}`,
+      `globalThis.nreUserinfoUrlProbe${index} = () => 4731;\n//# sourceURL=${url}`,
   );
   const response = await fetch(`${endpoint}/json/new?about:blank`, {
     method: "PUT",
@@ -93,8 +93,8 @@ export async function verifyBrowserUrlUserInfo(endpoint, origin) {
     );
     transport = new StdioClientTransport({
       command: process.execPath,
-      args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
-      env: { ...process.env, REA_LOG_LEVEL: "silent" },
+      args: [fileURLToPath(new URL("../nre.mjs", import.meta.url)), "mcp"],
+      env: { ...process.env, NRE_LOG_LEVEL: "silent" },
       stderr: "pipe",
     });
     client = new Client({ name: "browser-url-userinfo-e2e", version: "1" });

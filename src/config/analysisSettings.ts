@@ -14,14 +14,14 @@ import { captureDecoderOldGenerationMiBSchema } from "./captureDecoderHeap.js";
 import { parseNativeMatchingAllowance } from "./nativeMatchingAllowance.js";
 const environmentSchemas: Readonly<Record<string, z.ZodType<number, string>>> =
   {
-    REA_ASAR_MAX_HEADER_BYTES: asarMaxHeaderBytesSchema,
-    REA_GHIDRA_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema,
-    REA_HOPPER_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema,
-    REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: ghidraDecompileTimeoutSchema,
-    REA_JADX_OPERATION_TIMEOUT_MS: providerStartupTimeoutSchema,
-    REA_REGEX_MATCHING_DEADLINE_MS: regexMatchingDeadlineMsSchema,
-    REA_REGEX_WORKER_HEAP_REQUEST_MIB: regexWorkerHeapRequestMiBSchema,
-    REA_CAPTURE_DECODER_OLD_GENERATION_MIB:
+    NRE_ASAR_MAX_HEADER_BYTES: asarMaxHeaderBytesSchema,
+    NRE_GHIDRA_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema,
+    NRE_HOPPER_STARTUP_TIMEOUT_MS: providerStartupTimeoutSchema,
+    NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: ghidraDecompileTimeoutSchema,
+    NRE_JADX_OPERATION_TIMEOUT_MS: providerStartupTimeoutSchema,
+    NRE_REGEX_MATCHING_DEADLINE_MS: regexMatchingDeadlineMsSchema,
+    NRE_REGEX_WORKER_HEAP_REQUEST_MIB: regexWorkerHeapRequestMiBSchema,
+    NRE_CAPTURE_DECODER_OLD_GENERATION_MIB:
       captureDecoderOldGenerationMiBSchema,
   };
 export const launchAnalysisSetting = (

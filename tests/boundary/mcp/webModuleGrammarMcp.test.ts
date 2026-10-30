@@ -31,7 +31,7 @@ it.each([
 ])(
   "retains JavaScript imports and requests resolution through public MCP: $source",
   async ({ source, expected }) => {
-    const root = await createTestTempDirectory("rea-module-grammar-");
+    const root = await createTestTempDirectory("nre-module-grammar-");
     const original = webModuleArtifactsFixture(source);
     const manifest = {
       ...original.manifest,

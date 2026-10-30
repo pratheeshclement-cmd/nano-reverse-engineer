@@ -55,7 +55,7 @@ it.each(
       platform: "linux",
       listProcesses: async () => [launcher],
       environment: async () =>
-        runId === undefined ? {} : { REA_PROCESS_RUN_ID: runId },
+        runId === undefined ? {} : { NRE_PROCESS_RUN_ID: runId },
       ...(native
         ? {
             processIdentities: async (rows: readonly ProcessTableEntry[]) =>
@@ -77,7 +77,7 @@ it.each(
       status: "unavailable",
       reason:
         runId === undefined
-          ? "REA_PROCESS_RUN_ID was absent from the readable environment for PID 100; process lineage ownership remains unverified"
+          ? "NRE_PROCESS_RUN_ID was absent from the readable environment for PID 100; process lineage ownership remains unverified"
           : "process lineage contains an unowned or PID-reused process",
     });
     await expect(
@@ -329,7 +329,7 @@ it.each([
     const host: ProcessOwnershipHost = {
       listProcesses: async () =>
         phase === "observing" ? [launcher, child, grandchild] : [],
-      environment: async () => ({ REA_PROCESS_RUN_ID: ownership.runId }),
+      environment: async () => ({ NRE_PROCESS_RUN_ID: ownership.runId }),
       runTokens: async (rows) =>
         new Map(
           rows.map(({ pid }) => [
@@ -435,7 +435,7 @@ it("retains a live native descendant behind an exited table ancestor", async () 
     listProcesses: async () => [launcher, child, grandchild],
     environment: async (pid) => {
       tokenReads.push(pid);
-      return { REA_PROCESS_RUN_ID: "run" };
+      return { NRE_PROCESS_RUN_ID: "run" };
     },
     processIdentities: async (rows) =>
       new Map(
@@ -544,7 +544,7 @@ it("retains a verified child before rejecting an unreadable launcher identity", 
   const evidenceOwner = new ProcessOwnershipEvidenceOwner();
   const host: ProcessOwnershipHost = {
     listProcesses: async () => [launcher, child],
-    environment: async () => ({ REA_PROCESS_RUN_ID: "run" }),
+    environment: async () => ({ NRE_PROCESS_RUN_ID: "run" }),
     processIdentities: async (rows) =>
       new Map(
         rows.map((row): [number, ProcessIdentityObservation] => [
@@ -584,7 +584,7 @@ it("uses a readable native relation to exclude a stale table descendant", async 
     listProcesses: async () => [launcher, child],
     environment: async (pid) => {
       tokenReads.push(pid);
-      return { REA_PROCESS_RUN_ID: pid === launcher.pid ? "run" : "foreign" };
+      return { NRE_PROCESS_RUN_ID: pid === launcher.pid ? "run" : "foreign" };
     },
     processIdentities: async (rows) =>
       new Map(
@@ -621,7 +621,7 @@ it("does not retain table scope after a native relation resolves as unrelated", 
   const host: ProcessOwnershipHost = {
     listProcesses: async () => [launcher, child],
     environment: async (pid) => ({
-      REA_PROCESS_RUN_ID: pid === launcher.pid ? "run" : "foreign",
+      NRE_PROCESS_RUN_ID: pid === launcher.pid ? "run" : "foreign",
     }),
     processIdentities: async (rows) => {
       identityReads += 1;
@@ -673,7 +673,7 @@ it.each(["none", "unresolved", "known"] as const)(
       listProcesses: async () =>
         phase === "cleanup" ? [replacement] : [launcher, child],
       environment: async (pid) => ({
-        REA_PROCESS_RUN_ID: pid === launcher.pid ? "run" : "foreign",
+        NRE_PROCESS_RUN_ID: pid === launcher.pid ? "run" : "foreign",
       }),
       processIdentities: async (rows) => {
         identityReads += 1;
@@ -882,7 +882,7 @@ it("keeps an exiting descendant whose termination cannot be confirmed", async ()
   const signalGroup = vi.fn();
   const host: ProcessOwnershipHost = {
     listProcesses: async () => (omitted ? [] : [launcher, child]),
-    environment: async () => ({ REA_PROCESS_RUN_ID: "run" }),
+    environment: async () => ({ NRE_PROCESS_RUN_ID: "run" }),
     processIdentities: async (rows) => {
       identityReads += 1;
       return new Map(
@@ -965,7 +965,7 @@ it.each(
           : [launcher, phase === "absent" && reparented ? replacement : child],
       environment: async (pid) => {
         tokenReads.push(pid);
-        return { REA_PROCESS_RUN_ID: pid === stale.pid ? "foreign" : "run" };
+        return { NRE_PROCESS_RUN_ID: pid === stale.pid ? "foreign" : "run" };
       },
       processIdentities: async (rows) => {
         identityReads += 1;

@@ -53,7 +53,7 @@ const retainedCaptureDetailsSchema = z.object({
 async function prepareMcpCapture(
   call: Awaited<ReturnType<typeof connectLocalToolsMcp>>["call"],
 ) {
-  const root = await createTestTempDirectory("rea-protobuf-mcp-");
+  const root = await createTestTempDirectory("nre-protobuf-mcp-");
   const capture = join(root, "capture.har");
   const descriptor = join(root, "capture.pb");
   await writeFile(capture, protobufHar());
@@ -387,7 +387,7 @@ captureTest(
 captureTest(
   "decodes selected capture bytes with a supplied descriptor and pages exported facts after both sources disappear",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-protobuf-cli-");
+    const root = await createTestTempDirectory("nre-protobuf-cli-");
     const capture = join(root, "capture.har");
     const descriptor = join(root, "capture.pb");
     const bundle = join(root, "evidence.json");
@@ -595,7 +595,7 @@ captureTest.for(
 )(
   "preserves $framing trailer case $name through CLI and MCP without changing capture bytes",
   async ({ framing, name, headerName, value, status }, { cli, mcp }) => {
-    const root = await createTestTempDirectory("rea-grpc-web-trailers-");
+    const root = await createTestTempDirectory("nre-grpc-web-trailers-");
     const path = join(root, `${framing}-${name}.har`);
     const trailer = Buffer.from(
       `${headerName}: ${value}\r\n`,
@@ -657,7 +657,7 @@ captureTest.for(
 captureTest(
   "keeps automatic framing partial when a HAR mimeType is excluded through MCP",
   async ({ mcp }) => {
-    const root = await createTestTempDirectory("rea-protobuf-mime-");
+    const root = await createTestTempDirectory("nre-protobuf-mime-");
     const path = join(root, "capture.har");
     await writeFile(path, protobufHar());
     const reply = await mcp.call("inspect_web_network_capture", {

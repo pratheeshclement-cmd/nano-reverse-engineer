@@ -33,7 +33,7 @@ it.each([
         : undefined,
     );
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: fixture.endpoint },
+      environment: { NRE_JEB_MCP_URL: fixture.endpoint },
       connectionFactory: (endpoint) =>
         createStreamableHttpJebMcpConnection(endpoint, {
           discoveryTimeoutMs: 100,
@@ -54,7 +54,7 @@ it.each([
         stage === "catalog" ? "catalog discovery" : "tools/call",
       );
       expect(projected.message).toContain("100 ms");
-      expect(projected.remediation.action).toContain("REA_JEB_MCP_TIMEOUT_MS");
+      expect(projected.remediation.action).toContain("NRE_JEB_MCP_TIMEOUT_MS");
       expect(projected.remediation.action).toContain("2147483647");
       expect(projected.remediation.action).toContain("60000");
       expect(projected.remediation.action).toContain("restart");

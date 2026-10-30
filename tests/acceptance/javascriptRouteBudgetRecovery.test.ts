@@ -8,7 +8,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "recovers an oversized retained route page by selecting fields",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-route-budget-recovery-");
+    const root = await createTestTempDirectory("nre-route-budget-recovery-");
     const source = join(root, "app.js");
     const bundle = join(root, "parent.json");
     const route = `/api/${"a".repeat(1_100_000)}`;

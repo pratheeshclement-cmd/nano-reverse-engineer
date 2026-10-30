@@ -8,7 +8,7 @@ export const readAndroidNativeInventory = async (
   tools: JadxToolPort,
   snapshot: string,
 ): Promise<AndroidNativeDeclarations> => {
-  const raw = await tools.json("rea_native_declarations", { path: snapshot });
+  const raw = await tools.json("nre_native_declarations", { path: snapshot });
   const parsed = jadxNativeDeclarationsSchema.safeParse(raw);
   if (!parsed.success)
     throw new AnalysisOutputError(

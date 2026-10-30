@@ -1,13 +1,13 @@
 {
-  "name": "rea",
+  "name": "nre",
   "version": "6.8.0",
   "description": "Nano Reverse Engineer with agents, from app behavior down to native binaries.",
   "author": {
-    "name": "morluto",
-    "url": "https://github.com/morluto"
+    "name": "pratheeshclement-cmd",
+    "url": "https://github.com/pratheeshclement-cmd"
   },
-  "homepage": "https://rea.tools/",
-  "repository": "https://github.com/morluto/rea",
+  "homepage": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/",
+  "repository": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer",
   "license": "MIT",
   "keywords": [
     "reverse-engineering",
@@ -18,23 +18,23 @@
   "skills": "./skills",
   "mcpServers": "./.codex-plugin/mcp.json",
   "interface": {
-    "displayName": "REA",
+    "displayName": "NRE",
     "shortDescription": "Nano Reverse Engineer",
     "longDescription": "Nano Reverse Engineer with agents, from app behavior down to native binaries.",
-    "developerName": "morluto",
+    "developerName": "pratheeshclement-cmd",
     "category": "Developer Tools",
     "capabilities": [
       "Interactive",
       "Read",
       "Write"
     ],
-    "websiteURL": "https://rea.tools/",
+    "websiteURL": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/",
     "defaultPrompt": [
-      "Use REA to explain how this binary implements a feature.",
-      "Use REA to compare two versions of this application.",
-      "Use REA to recover the sources from this JavaScript bundle."
+      "Use NRE to explain how this binary implements a feature.",
+      "Use NRE to compare two versions of this application.",
+      "Use NRE to recover the sources from this JavaScript bundle."
     ],
-    "composerIcon": "./assets/rea-plugin.png",
-    "logo": "./assets/rea-plugin.png"
+    "composerIcon": "./assets/nre-plugin.png",
+    "logo": "./assets/nre-plugin.png"
   }
 }

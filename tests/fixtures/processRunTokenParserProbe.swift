@@ -27,12 +27,12 @@ func fixture(
 struct ProcessRunTokenParserProbe {
   static func main() throws {
     let argvDecoy = try parseProcessEnvironment(in: fixture(
-      arguments: ["/fixture/executable", "REA_PROCESS_RUN_ID=argv-decoy", "trailing"],
-      environment: ["DECOY=words REA_PROCESS_RUN_ID=synthetic-decoy"]
+      arguments: ["/fixture/executable", "NRE_PROCESS_RUN_ID=argv-decoy", "trailing"],
+      environment: ["DECOY=words NRE_PROCESS_RUN_ID=synthetic-decoy"]
     ))
     let realToken = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/executable"],
-      environment: ["DECOY=words REA_PROCESS_RUN_ID=synthetic-decoy", "REA_PROCESS_RUN_ID=owned-token"]
+      environment: ["DECOY=words NRE_PROCESS_RUN_ID=synthetic-decoy", "NRE_PROCESS_RUN_ID=owned-token"]
     ))
     let readableNoToken = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/executable"],
@@ -40,30 +40,30 @@ struct ProcessRunTokenParserProbe {
     ))
     let emptyLaterArgument = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/executable", "", "after-empty"],
-      environment: ["REA_PROCESS_RUN_ID=empty-argument-token"],
+      environment: ["NRE_PROCESS_RUN_ID=empty-argument-token"],
       pointerSize: 8
     ))
     let alternatePadding = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/executable", "argument"],
-      environment: ["REA_PROCESS_RUN_ID=alternate-padding-token"],
+      environment: ["NRE_PROCESS_RUN_ID=alternate-padding-token"],
       pointerSize: 4
     ), pointerSize: 4)
     let emptyArgv0Read = try parseProcessEnvironment(in: fixture(
       arguments: ["", "", "after-empty"],
-      environment: ["REA_PROCESS_RUN_ID=empty-argv0-token"],
+      environment: ["NRE_PROCESS_RUN_ID=empty-argv0-token"],
       pointerSize: 8
     ))
     let finalAssignmentArgumentRead = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/executable", "FOO=bar"],
-      environment: ["REA_PROCESS_RUN_ID=final-assignment-token"]
+      environment: ["NRE_PROCESS_RUN_ID=final-assignment-token"]
     ))
     let reservedArgumentIgnored = try parseProcessEnvironment(in: fixture(
-      arguments: ["/fixture/executable", "REA_PROCESS_RUN_ID=argv-decoy"],
-      environment: ["DECOY=words REA_PROCESS_RUN_ID=synthetic-decoy"]
+      arguments: ["/fixture/executable", "NRE_PROCESS_RUN_ID=argv-decoy"],
+      environment: ["DECOY=words NRE_PROCESS_RUN_ID=synthetic-decoy"]
     ))
     let nonAsciiPathRead = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/é", "FOO=bar"],
-      environment: ["REA_PROCESS_RUN_ID=utf8-path-token"],
+      environment: ["NRE_PROCESS_RUN_ID=utf8-path-token"],
       pointerSize: 8,
       executablePath: "/fixture/é"
     ))
@@ -72,7 +72,7 @@ struct ProcessRunTokenParserProbe {
       _ = try parseProcessEnvironment(in: fixture(
         arguments: ["/fixture/executable"],
         environment: ["pfz=user-value", "PATH=/usr/bin"],
-        appleRecords: ["pfz=synthetic", "REA_PROCESS_RUN_ID=apple-decoy"]
+        appleRecords: ["pfz=synthetic", "NRE_PROCESS_RUN_ID=apple-decoy"]
       ))
       appleVectorTokenFailsClosed = false
     } catch RunTokenReadError.ambiguousEnvironmentBoundary {
@@ -82,8 +82,8 @@ struct ProcessRunTokenParserProbe {
     do {
       _ = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/executable"],
-      environment: ["REA_PROCESS_RUN_ID=cleared-pfz-owned-token"],
-      appleRecords: ["REA_PROCESS_RUN_ID=apple-decoy"],
+      environment: ["NRE_PROCESS_RUN_ID=cleared-pfz-owned-token"],
+      appleRecords: ["NRE_PROCESS_RUN_ID=apple-decoy"],
       zeroedPfz: true
       ))
       clearedAppleVectorTokenFailsClosed = false
@@ -92,14 +92,14 @@ struct ProcessRunTokenParserProbe {
     }
     let callerPfzBeforeTokenRead = try parseProcessEnvironment(in: fixture(
       arguments: ["/fixture/executable"],
-      environment: ["pfz=caller-value", "REA_PROCESS_RUN_ID=cleared-pfz-owned-token"],
+      environment: ["pfz=caller-value", "NRE_PROCESS_RUN_ID=cleared-pfz-owned-token"],
       zeroedPfz: true
     ))
     let emptyEnvironmentRecordsBeforeTokenFailClosed: Bool
     do {
       _ = try parseProcessEnvironment(in: fixture(
         arguments: ["/fixture/executable"],
-        environment: ["DECOY=value", "", "", "REA_PROCESS_RUN_ID=synthetic-decoy"],
+        environment: ["DECOY=value", "", "", "NRE_PROCESS_RUN_ID=synthetic-decoy"],
         appleRecords: [],
         zeroedPfz: true
       ))
@@ -109,7 +109,7 @@ struct ProcessRunTokenParserProbe {
     }
     let zeroArgumentsRead = try parseProcessEnvironment(in: fixture(
       arguments: [],
-      environment: ["REA_PROCESS_RUN_ID=zero-argc-token"],
+      environment: ["NRE_PROCESS_RUN_ID=zero-argc-token"],
       pointerSize: 4
     ), pointerSize: 4)
     var truncatedArgv = withUnsafeBytes(of: Int32(2).littleEndian, Array.init)
@@ -118,7 +118,7 @@ struct ProcessRunTokenParserProbe {
     let truncatedPadding = (8 - ((Array("executable_path=".utf8).count + truncatedPath.count + 1) % 8)) % 8
     truncatedArgv.append(contentsOf: repeatElement(UInt8(0), count: truncatedPadding))
     truncatedArgv.append(contentsOf: Array("/fixture/executable".utf8) + [0])
-    truncatedArgv.append(contentsOf: Array("REA_PROCESS_RUN_ID=synthetic-decoy".utf8))
+    truncatedArgv.append(contentsOf: Array("NRE_PROCESS_RUN_ID=synthetic-decoy".utf8))
     let truncatedArgvFailsClosed: Bool
     do {
       _ = try parseProcessEnvironment(in: truncatedArgv)
@@ -130,7 +130,7 @@ struct ProcessRunTokenParserProbe {
     do {
       _ = try parseProcessEnvironment(in: fixture(
         arguments: ["/fixture/executable"],
-        environment: ["REA_PROCESS_RUN_ID=first", "REA_PROCESS_RUN_ID=second"]
+        environment: ["NRE_PROCESS_RUN_ID=first", "NRE_PROCESS_RUN_ID=second"]
       ))
       duplicateTokenFailsClosed = false
     } catch RunTokenReadError.duplicateToken {
@@ -140,7 +140,7 @@ struct ProcessRunTokenParserProbe {
     do {
       _ = try parseProcessEnvironment(in: fixture(
         arguments: ["/fixture/executable"],
-        environment: ["REA_PROCESS_RUN_ID=synthetic-decoy"],
+        environment: ["NRE_PROCESS_RUN_ID=synthetic-decoy"],
         appleRecords: []
       ))
       missingAppleBoundaryFailsClosed = false

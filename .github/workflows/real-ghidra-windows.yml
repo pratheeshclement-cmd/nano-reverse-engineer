@@ -83,35 +83,35 @@ jobs:
           "${{ github.workspace }}\.cache\windows-process-boundary\process-boundary.exe"
       - name: Verify all admitted Windows Ghidra operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows | Tee-Object -FilePath windows-ghidra-proof.log
       - name: Verify native x86 Windows Ghidra operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows -- --x86 | Tee-Object -FilePath windows-ghidra-x86-proof.log
       - name: Verify native x64 DLL Windows Ghidra operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows -- --dll | Tee-Object -FilePath windows-ghidra-dll-proof.log
       - name: Verify native x86 DLL Windows Ghidra operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows -- --x86 --dll | Tee-Object -FilePath windows-ghidra-x86-dll-proof.log
       - name: Verify ordinary-user CLI and MCP operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows:package | Tee-Object -FilePath windows-ghidra-package-proof.log
       - name: Verify ordinary-user x86 CLI and MCP operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows:package -- --x86 | Tee-Object -FilePath windows-ghidra-x86-package-proof.log
       - name: Verify ordinary-user x64 DLL CLI and MCP operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows:package -- --dll | Tee-Object -FilePath windows-ghidra-dll-package-proof.log
       - name: Verify ordinary-user x86 DLL CLI and MCP operations
         env:
-          REA_ANALYSIS_PROVIDER: ghidra
+          NRE_ANALYSIS_PROVIDER: ghidra
         run: npm run verify:ghidra:windows:package -- --x86 --dll | Tee-Object -FilePath windows-ghidra-x86-dll-package-proof.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()

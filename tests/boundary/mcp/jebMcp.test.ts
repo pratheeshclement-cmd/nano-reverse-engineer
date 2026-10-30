@@ -30,7 +30,7 @@ it("discovers current JEB operation support and recovery through binary_session"
   let availability: JebAnalysisAvailability = {
     status: "unavailable",
     code: "not_configured",
-    reason: "Start JEB at REA_JEB_MCP_URL",
+    reason: "Start JEB at NRE_JEB_MCP_URL",
     diagnostics: {},
   };
   let probes = 0;
@@ -223,7 +223,7 @@ it("preserves JEB provider failure reasons through the MCP boundary", async () =
           "connect ECONNREFUSED 127.0.0.1:8425",
           {
             userMessage:
-              "Start a JEB client serving MCP (default http://127.0.0.1:8425/mcp) or set REA_JEB_MCP_URL to the running endpoint.",
+              "Start a JEB client serving MCP (default http://127.0.0.1:8425/mcp) or set NRE_JEB_MCP_URL to the running endpoint.",
           },
         ),
       };
@@ -255,16 +255,16 @@ it("preserves JEB provider failure reasons through the MCP boundary", async () =
     .map((block) => (block.type === "text" ? block.text : ""))
     .join("");
   expect(text).toContain("ECONNREFUSED");
-  expect(text).toContain("REA_JEB_MCP_URL");
+  expect(text).toContain("NRE_JEB_MCP_URL");
 });
 
-it("keeps the MCP server usable when REA_JEB_MCP_URL is invalid", async () => {
+it("keeps the MCP server usable when NRE_JEB_MCP_URL is invalid", async () => {
   const session = createTestBinarySession(() => {
     throw new Error("deep provider must not start");
   });
   const server = createServer(
     { kind: "session", session },
-    { environment: { REA_JEB_MCP_URL: "http://localhost:8425/mcp" } },
+    { environment: { NRE_JEB_MCP_URL: "http://localhost:8425/mcp" } },
   );
   const client = new Client({ name: "jeb-invalid-endpoint", version: "1" });
   onTestFinished(async () => {
@@ -291,7 +291,7 @@ it("keeps the MCP server usable when REA_JEB_MCP_URL is invalid", async () => {
       details: {
         settings: [
           {
-            setting: "REA_JEB_MCP_URL",
+            setting: "NRE_JEB_MCP_URL",
             constraint: expect.stringContaining("loopback"),
           },
         ],
@@ -344,7 +344,7 @@ it.each(
         : { success: true, gui_client: false };
     });
     const provider = new JebProvider({
-      environment: { REA_JEB_MCP_URL: fixture.endpoint },
+      environment: { NRE_JEB_MCP_URL: fixture.endpoint },
     });
     const session = createTestBinarySession(() => {
       throw new Error("JEB must not start a deep provider");

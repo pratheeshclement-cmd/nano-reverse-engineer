@@ -32,11 +32,11 @@ jobs:
         shell: bash
         run: |
           tarball="$(npm pack --silent)"
-          prefix="${RUNNER_TEMP}/rea-prefix"
+          prefix="${RUNNER_TEMP}/nre-prefix"
           npm install --global --ignore-scripts --prefix "${prefix}" "./${tarball}"
-          echo "REA_VERIFY_SERVER_COMMAND=${prefix}/bin/rea" >> "${GITHUB_ENV}"
-          echo 'REA_VERIFY_SERVER_ARGS_JSON=["mcp"]' >> "${GITHUB_ENV}"
+          echo "NRE_VERIFY_SERVER_COMMAND=${prefix}/bin/nre" >> "${GITHUB_ENV}"
+          echo 'NRE_VERIFY_SERVER_ARGS_JSON=["mcp"]' >> "${GITHUB_ENV}"
       - name: Verify source-owned fixtures with real Hopper
         env:
-          REA_HOPPER_CONFORMANCE_MANIFEST_PATH: ${{ github.workspace }}/build/conformance/manifest.json
+          NRE_HOPPER_CONFORMANCE_MANIFEST_PATH: ${{ github.workspace }}/build/conformance/manifest.json
         run: npm run verify:hopper

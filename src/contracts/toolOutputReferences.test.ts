@@ -206,7 +206,7 @@ it.each(
       outputSchema: canonical,
     })["~standard"].jsonSchema.output({ target });
     expect(advertised.$id).toMatch(
-      /^urn:rea:tool-output:sha256:[a-f0-9]{64}$/u,
+      /^urn:nre:tool-output:sha256:[a-f0-9]{64}$/u,
     );
     expect(Reflect.get(advertised, keyword)).toEqual(annotation);
     const validate = new AjvJsonSchemaValidator().getValidator(

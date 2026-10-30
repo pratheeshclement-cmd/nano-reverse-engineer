@@ -100,7 +100,7 @@ const launchVerifierCommand = async (
     environment: {
       ...input.hostEnvironment,
       ...input.env,
-      REA_PROCESS_RUN_ID: input.runId,
+      NRE_PROCESS_RUN_ID: input.runId,
     },
   });
   // These labels describe the launch; cleanup authority is the exact native job.
@@ -203,7 +203,7 @@ class VerifierCommandOwner implements VerifierCommands {
             cwd: options.cwd ?? process.cwd(),
             hostEnvironment: options.env ?? process.env,
             expectedCommand: null,
-            runId: `rea-verifier-command-${randomUUID()}`,
+            runId: `nre-verifier-command-${randomUUID()}`,
             sweepTokenOwnedProcesses: true,
           },
           limits,

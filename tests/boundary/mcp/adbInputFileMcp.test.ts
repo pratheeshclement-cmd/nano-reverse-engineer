@@ -12,7 +12,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "reports each refused local file before device commands",
   async () => {
-    const root = await createTestTempDirectory("rea-adb-input-refusal-");
+    const root = await createTestTempDirectory("nre-adb-input-refusal-");
     const adb = join(root, "adb");
     const calls = join(root, "calls");
     await mkdir(join(root, "directory"));
@@ -31,7 +31,7 @@ it.skipIf(process.platform === "win32")(
       },
       {
         adbDeviceAnalysis: new AdbProvider({
-          environment: { REA_ADB_PATH: adb },
+          environment: { NRE_ADB_PATH: adb },
         }),
       },
     );
@@ -84,7 +84,7 @@ it.skipIf(process.platform === "win32")(
         const cli = spawnSync(
           process.execPath,
           [
-            "scripts/rea.mjs",
+            "scripts/nre.mjs",
             name.replaceAll("_", "-"),
             "device",
             selected,
@@ -93,7 +93,7 @@ it.skipIf(process.platform === "win32")(
           ],
           {
             encoding: "utf8",
-            env: { ...process.env, REA_ADB_PATH: adb },
+            env: { ...process.env, NRE_ADB_PATH: adb },
             timeout: 20_000,
           },
         );

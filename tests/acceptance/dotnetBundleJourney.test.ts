@@ -121,16 +121,16 @@ for (const format of ["dotnet-bundle", "pyinstaller"] as const) {
       XDG_CONFIG_HOME: workspace.path("config"),
       XDG_CACHE_HOME: workspace.path("cache"),
       XDG_STATE_HOME: workspace.path("state"),
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
     };
     const outputs: string[] = [];
     const client = new Client({
-      name: "rea-dotnet-bundle-acceptance",
+      name: "nre-dotnet-bundle-acceptance",
       version: "1",
     });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       env: environment,
       stderr: "pipe",
     });
@@ -235,7 +235,7 @@ test("reports excessive bundle path depth as a public CLI limit", async ({
 
   const result = await cli.run({
     arguments: ["inspect-artifact", path, "--json"],
-    environment: { REA_LOG_LEVEL: "silent" },
+    environment: { NRE_LOG_LEVEL: "silent" },
   });
   expect(result.exitCode, result.stderr).toBe(1);
   const failure = artifactFixedLimitFailure(

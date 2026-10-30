@@ -21,7 +21,7 @@ import {
 import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js";
 
 it("resolves selected paths and defaults without conflating intent and file readiness", async () => {
-  const root = await createTestTempDirectory("rea-plist-origin-");
+  const root = await createTestTempDirectory("nre-plist-origin-");
   const program = join(root, "program");
   await writeFile(program, "fixture program");
   const target = nativeMachoTarget(program);
@@ -60,7 +60,7 @@ it("resolves selected paths and defaults without conflating intent and file read
 it.skipIf(process.platform === "win32")(
   "preserves selected plist symlink-parent semantics for absolute and app-relative input",
   async () => {
-    const root = await createTestTempDirectory("rea-plist-physical-selection-");
+    const root = await createTestTempDirectory("nre-plist-physical-selection-");
     const selected = join(root, "physical");
     await mkdir(join(selected, "child"), { recursive: true });
     await writeFile(join(root, "program"), "inert executable");
@@ -88,7 +88,7 @@ it.skipIf(process.platform === "win32")(
 it.each(["missing", "directory"] as const)(
   "retains selected target intent for a %s plist",
   async (kind) => {
-    const root = await createTestTempDirectory("rea-plist-origin-file-");
+    const root = await createTestTempDirectory("nre-plist-origin-file-");
     const path = join(root, "chosen.plist");
     if (kind === "directory") await mkdir(path);
     const client = new NativeMacOSProvider(
@@ -127,7 +127,7 @@ it.each(["missing", "directory"] as const)(
 it.skipIf(process.platform === "win32")(
   "reports selected and default plist path-resolution failures as selection failures",
   async () => {
-    const root = await createTestTempDirectory("rea-plist-origin-resolve-");
+    const root = await createTestTempDirectory("nre-plist-origin-resolve-");
     const loop = join(root, "Loop.plist");
     await symlink("Loop.plist", loop);
     const long = join(root, `${"x".repeat(300)}.plist`);
@@ -183,7 +183,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.getuid?.() === 0 || process.platform === "win32")(
   "keeps permission failure distinct from selection and format",
   async () => {
-    const root = await createTestTempDirectory("rea-plist-origin-denied-");
+    const root = await createTestTempDirectory("nre-plist-origin-denied-");
     const path = join(root, "chosen.plist");
     await writeFile(path, "<plist><dict/></plist>");
     const client = new NativeMacOSProvider(
@@ -223,7 +223,7 @@ it("does not invent selection facts for unresolved scope failures", () => {
 });
 
 it("refuses closed client admission before resolving a target or launching tools", async () => {
-  const root = await createTestTempDirectory("rea-plist-origin-closed-");
+  const root = await createTestTempDirectory("nre-plist-origin-closed-");
   const client = new NativeMacOSProvider(
     {},
     new NativeFixtureRunner(),

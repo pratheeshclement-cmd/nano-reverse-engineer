@@ -67,7 +67,7 @@ const sharedEntryArchiveBytes = (): Buffer => {
 };
 
 export const keyedArchiveSharedEntryFixture = async () => {
-  const root = await createTestTempDirectory("rea-keyed-shared-entry-");
+  const root = await createTestTempDirectory("nre-keyed-shared-entry-");
   const path = join(root, "archive.plist");
   const bytes = sharedEntryArchiveBytes();
   await writeFile(path, bytes);
@@ -113,7 +113,7 @@ const archiveBytes = (): Buffer => {
 };
 
 export const keyedArchiveWideIntegerFixture = async () => {
-  const root = await createTestTempDirectory("rea-keyed-wide-integers-");
+  const root = await createTestTempDirectory("nre-keyed-wide-integers-");
   const path = join(root, "archive.bin");
   const bytes = archiveBytes();
   await writeFile(path, bytes);

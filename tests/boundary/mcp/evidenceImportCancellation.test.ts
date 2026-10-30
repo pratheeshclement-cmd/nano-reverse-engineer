@@ -17,7 +17,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("preserves the exact reason when import is cancelled after reading the bundle", async () => {
   const root = await createTestTempDirectory(
-    "rea-mcp-import-post-read-cancel-",
+    "nre-mcp-import-post-read-cancel-",
   );
   const path = join(root, "bundle.json");
   const session = createTestBinarySession(() => {
@@ -80,7 +80,7 @@ it("preserves the exact reason when import is cancelled after reading the bundle
 });
 
 it("keeps the complete session unchanged after SDK import cancellation and permits a retry", async () => {
-  const root = await createTestTempDirectory("rea-mcp-import-cancel-");
+  const root = await createTestTempDirectory("nre-mcp-import-cancel-");
   const path = join(root, "bundle.json");
   const session = createTestBinarySession(() => {
     throw new Error("Evidence import must not start a binary provider");
@@ -208,7 +208,7 @@ it("keeps the complete session unchanged after SDK import cancellation and permi
 });
 
 it("retains a failed import close in the server scope through SDK error projection", async () => {
-  const root = await createTestTempDirectory("rea-mcp-import-close-");
+  const root = await createTestTempDirectory("nre-mcp-import-close-");
   const path = join(root, "bundle.json");
   const session = createTestBinarySession(() => {
     throw new Error("Evidence import must not start a binary provider");
@@ -267,7 +267,7 @@ it("retains a failed import close in the server scope through SDK error projecti
   expect(retainedOwner?.handle.fd).toBeGreaterThanOrEqual(0);
 
   await client.close();
-  await expect(server.close()).rejects.toThrow("REA session cleanup failed");
+  await expect(server.close()).rejects.toThrow("NRE session cleanup failed");
   expect(retainedOwner?.handle.fd).toBeGreaterThanOrEqual(0);
   allowClose = true;
   close.mockRestore();
@@ -277,7 +277,7 @@ it("retains a failed import close in the server scope through SDK error projecti
 });
 
 it("retries a transient import close failure before admitting the bundle", async () => {
-  const root = await createTestTempDirectory("rea-mcp-import-close-retry-");
+  const root = await createTestTempDirectory("nre-mcp-import-close-retry-");
   const path = join(root, "bundle.json");
   const session = createTestBinarySession(() => {
     throw new Error("Evidence import must not start a binary provider");

@@ -85,7 +85,7 @@ import { ProcessCaptureResourceScope } from "../../../src/process/capture/Proces
 
 const roots: string[] = [];
 const trackedRoot = async (): Promise<string> => {
-  const root = await mkdtemp(join(tmpdir(), "rea-snapshot-handle-owner-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-snapshot-handle-owner-"));
   roots.push(root);
   return root;
 };

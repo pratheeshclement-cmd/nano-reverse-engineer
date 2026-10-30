@@ -6,7 +6,7 @@ import type { CliInstance } from "./types.js";
 import { visitRegisteredCommands } from "./visitRegisteredCommands.js";
 
 const ARGUMENT_GUIDANCE =
-  "REA could not read the command arguments. Check the named argument and its expected type, then try again.";
+  "NRE could not read the command arguments. Check the named argument and its expected type, then try again.";
 
 const adbPackageCommands = new Set([
   "pull-adb-package",

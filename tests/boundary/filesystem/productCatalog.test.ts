@@ -106,7 +106,7 @@ describe("canonical product catalog", () => {
       catalog.providers.find(({ id }) => id === BYTE_ENTROPY_PROVIDER.id),
     ).toEqual({
       id: "byte-entropy",
-      name: "REA byte entropy",
+      name: "NRE byte entropy",
       version: "1",
       capabilities: ["inspect_byte_entropy"],
     });
@@ -159,7 +159,7 @@ describe("canonical CLI catalog", () => {
 
 describe("canonical product catalog drift", () => {
   it("rejects missing and repository-only links in an independently installed skill", async () => {
-    const directory = await createTestTempDirectory("rea-skill-references-");
+    const directory = await createTestTempDirectory("nre-skill-references-");
     const bundle = join(directory, "skill");
     await mkdir(bundle);
     await writeFile(join(directory, "repo-only.md"), "Repository-only guide");
@@ -199,7 +199,7 @@ describe("canonical product catalog drift", () => {
   });
 
   it("fails check mode without rewriting a stale generated artifact", async () => {
-    const directory = await createTestTempDirectory("rea-generated-check-");
+    const directory = await createTestTempDirectory("nre-generated-check-");
     temporaryRoots.push(directory);
     const path = join(directory, "catalog.json");
     await writeFile(path, "stale\n", "utf8");
@@ -224,7 +224,7 @@ describe("canonical product catalog drift", () => {
   });
 
   it("accepts and preserves native generated-file line endings", async () => {
-    const directory = await createTestTempDirectory("rea-generated-eol-");
+    const directory = await createTestTempDirectory("nre-generated-eol-");
     temporaryRoots.push(directory);
     const path = join(directory, "catalog.json");
     await writeFile(path, "current\r\n", "utf8");

@@ -364,7 +364,7 @@ it("shares one capture reservation when analyzers use one admission", async () =
 it("does not fail one admission when another host's worker runtime is retained", async () => {
   let fail = true;
   const stuck = new OwnedWorkerRuntime({
-    rootPrefix: "rea-web-host-isolation-",
+    rootPrefix: "nre-web-host-isolation-",
     retryCleanup: async () => {
       if (fail) throw new Error("other host still owns its worker");
     },

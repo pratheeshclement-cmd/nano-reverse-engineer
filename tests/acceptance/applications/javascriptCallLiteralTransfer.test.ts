@@ -9,8 +9,8 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "retains a partial call-site record when its arguments exceed transfer capacity",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-call-transfer-input-");
-    const output = await createTestTempDirectory("rea-call-transfer-output-");
+    const root = await createTestTempDirectory("nre-call-transfer-input-");
+    const output = await createTestTempDirectory("nre-call-transfer-output-");
     const source = `rpc(${Array.from({ length: 64 }, () => JSON.stringify("x".repeat(140_000))).join(",")});`;
     await writeFile(join(root, "large.js"), source);
     const bundlePath = join(output, "evidence.json");

@@ -34,7 +34,7 @@ const reobservesExternallyMutableState = async (): Promise<void> => {
   roots.push(root);
   const path = join(root, "registration.json");
   await writeFile(path, JSON.stringify({ command: "fixture" }));
-  const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+  const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
   if (!config.ok) throw config.error;
   const producer = new RecordingIdaMcp(target);
   const session = createTestBinarySession(
@@ -109,7 +109,7 @@ describe("IDA provider composition", () => {
         mode: "headless",
       }),
     );
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const producer = new RecordingIdaMcp(target, "headless");
     const provider = new IdaProvider(config.value, {}, () => producer);
@@ -123,7 +123,7 @@ describe("IDA provider composition", () => {
       engine_version: null,
       upstream_distribution_version: null,
       cache_policy: "live",
-      version_scope: "rea-ida-adapter",
+      version_scope: "nre-ida-adapter",
     });
     expect(JSON.stringify(resolution)).not.toContain("private-fixture-token");
     expect(producer.connects).toBe(0);
@@ -149,7 +149,7 @@ describe("IDA provider composition", () => {
         workspaceRoot: root,
       }),
     );
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const producer = new RecordingIdaMcp(target);
     const provider = new IdaProvider(config.value, {}, () => producer);
@@ -198,7 +198,7 @@ describe("IDA provider selection cancellation", () => {
     roots.push(first.root, second.root);
     const path = join(first.root, "registration.json");
     await writeFile(path, JSON.stringify({ command: "first-server" }));
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const factorySelections: string[] = [];
     const controller = new AbortController();
@@ -248,7 +248,7 @@ describe("IDA provider selection cancellation", () => {
     const { root, target } = await createIdaTarget();
     roots.push(root);
     const config = parseConfig({
-      REA_IDA_MCP_CONFIG: join(root, "registration-that-must-not-be-read.json"),
+      NRE_IDA_MCP_CONFIG: join(root, "registration-that-must-not-be-read.json"),
     });
     if (!config.ok) throw config.error;
     const reason = new Error("cancel before IDA profile inspection");
@@ -278,7 +278,7 @@ describe("IDA provider selection cancellation", () => {
 
 describe("IDA universal Mach-O target identity", () => {
   const openUniversal = async (registration: Record<string, unknown>) => {
-    const root = await createTestTempDirectory("rea-ida-universal-");
+    const root = await createTestTempDirectory("nre-ida-universal-");
     const input = join(root, "universal");
     // x86_64 and arm64 slices share one whole-file digest.
     await writeFile(input, fat([0x01000007, 0x0100000c]));
@@ -289,7 +289,7 @@ describe("IDA universal Mach-O target identity", () => {
       path,
       JSON.stringify({ ...registration, workspaceRoot: root }),
     );
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const producer = new RecordingIdaMcp(
       resolved.value,
@@ -360,7 +360,7 @@ describe("IDA binary_overview execution", () => {
     roots.push(root);
     const path = join(root, "registration.json");
     await writeFile(path, JSON.stringify({ command: "fixture" }));
-    const config = parseConfig({ REA_IDA_MCP_CONFIG: path });
+    const config = parseConfig({ NRE_IDA_MCP_CONFIG: path });
     if (!config.ok) throw config.error;
     const producer = new RecordingIdaMcp(target);
     const session = createTestBinarySession(

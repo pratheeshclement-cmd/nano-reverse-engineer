@@ -1,13 +1,13 @@
 {
-  "name": "rea",
+  "name": "nre",
   "version": "6.8.0",
   "description": "Nano Reverse Engineer with agents, from app behavior down to native binaries.",
   "author": {
-    "name": "morluto",
-    "url": "https://github.com/morluto"
+    "name": "pratheeshclement-cmd",
+    "url": "https://github.com/pratheeshclement-cmd"
   },
-  "homepage": "https://rea.tools/",
-  "repository": "https://github.com/morluto/rea",
+  "homepage": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer/",
+  "repository": "https://github.com/pratheeshclement-cmd/nano-reverse-engineer",
   "license": "MIT",
   "keywords": [
     "reverse-engineering",
@@ -17,7 +17,7 @@
   ],
   "skills": "./skills",
   "mcpServers": {
-    "rea": {
+    "nre": {
       "command": "node",
       "args": [
         "${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs",
@@ -25,5 +25,5 @@
       ]
     }
   },
-  "icon": "./assets/rea-plugin.png"
+  "icon": "./assets/nre-plugin.png"
 }

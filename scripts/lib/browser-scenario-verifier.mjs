@@ -18,7 +18,7 @@ const duplicateOriginStorage = (origin) => ({
       origin,
       entries: [
         {
-          name: "rea-first-seed",
+          name: "nre-first-seed",
           value: {
             source: "literal",
             value: "first",
@@ -30,14 +30,14 @@ const duplicateOriginStorage = (origin) => ({
       origin,
       entries: [
         {
-          name: "rea-second-seed",
+          name: "nre-second-seed",
           value: {
             source: "literal",
             value: "second",
           },
         },
         {
-          name: "rea-secret-seed",
+          name: "nre-secret-seed",
           value: { source: "secret", secret_id: "verifier_storage" },
         },
       ],
@@ -90,11 +90,11 @@ export function browserScenario(browser, origin) {
     secrets: [
       {
         secret_id: "verifier_url",
-        environment_variable: "REA_BROWSER_VERIFIER_URL",
+        environment_variable: "NRE_BROWSER_VERIFIER_URL",
       },
       {
         secret_id: "verifier_storage",
-        environment_variable: "REA_BROWSER_VERIFIER_SECRET",
+        environment_variable: "NRE_BROWSER_VERIFIER_SECRET",
       },
     ],
     capture: {
@@ -133,7 +133,7 @@ export async function runScenarioCli(scenario) {
   const { stdout } = await execute(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/nre.mjs",
       "capture-browser-scenario",
       JSON.stringify(scenario),
       "--json",
@@ -169,7 +169,7 @@ export async function verifyScenarioFailureEvidence(executable, origin) {
   assertFailedNavigation(cliFailure, scenario.start_url.url);
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
+    args: [fileURLToPath(new URL("../nre.mjs", import.meta.url)), "mcp"],
     env: process.env,
     stderr: "pipe",
   });
@@ -218,7 +218,7 @@ const assertFailedNavigation = (error, requestedUrl) => {
 export async function scenarioProfiles() {
   return new Set(
     (await readdir(tmpdir())).filter((entry) =>
-      entry.startsWith("rea-browser-scenario-"),
+      entry.startsWith("nre-browser-scenario-"),
     ),
   );
 }
@@ -251,14 +251,14 @@ export function assertScenarioCapture(capture) {
       ? final.artifacts.storage.value.local_storage.map(({ name }) => name)
       : [];
   if (
-    !storageNames.includes("rea-first-seed") ||
-    !storageNames.includes("rea-second-seed")
+    !storageNames.includes("nre-first-seed") ||
+    !storageNames.includes("nre-second-seed")
   )
     throw new Error("Scenario launch did not retain duplicate-origin seeds");
   const secretSeed =
     final.artifacts.storage.state === "captured"
       ? final.artifacts.storage.value.local_storage.find(
-          ({ name }) => name === "rea-secret-seed",
+          ({ name }) => name === "nre-secret-seed",
         )
       : undefined;
   if (secretSeed?.value_state !== "redacted-secret")

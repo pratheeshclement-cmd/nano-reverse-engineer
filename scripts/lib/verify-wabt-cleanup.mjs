@@ -45,14 +45,14 @@ export async function verifyWabtCleanup(entrypoint, environment, parent) {
           ...environment,
           HOME: root,
           USERPROFILE: root,
-          REA_LOG_LEVEL: "silent",
+          NRE_LOG_LEVEL: "silent",
           TMPDIR: temporary,
           TMP: temporary,
           TEMP: temporary,
-          REA_CLEANUP_PROBE_ROOT: temporary,
-          REA_CLEANUP_PROBE_TRACE: trace,
-          REA_CLEANUP_PROBE_MODE: mode,
-          REA_CLEANUP_PROBE_INPUT: input,
+          NRE_CLEANUP_PROBE_ROOT: temporary,
+          NRE_CLEANUP_PROBE_TRACE: trace,
+          NRE_CLEANUP_PROBE_MODE: mode,
+          NRE_CLEANUP_PROBE_INPUT: input,
         },
       };
     }
@@ -180,7 +180,7 @@ export async function verifyWabtCleanup(entrypoint, environment, parent) {
           assert.equal(requireMcpToolError(second).code, "cleanup_incomplete");
           assert.equal(
             (await observations(c)).remaining.filter((name) =>
-              name.startsWith("rea-wabt-"),
+              name.startsWith("nre-wabt-"),
             ).length,
             1,
           );

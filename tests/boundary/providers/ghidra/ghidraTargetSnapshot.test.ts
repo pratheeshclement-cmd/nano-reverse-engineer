@@ -10,7 +10,7 @@ import { createGhidraTargetSnapshot } from "../../../../src/ghidra/GhidraTargetS
 
 describe("Ghidra target snapshot", () => {
   it("uses the selected installation platform instead of the ambient host", async () => {
-    const root = await createTestTempDirectory("rea-ghidra-platform-");
+    const root = await createTestTempDirectory("nre-ghidra-platform-");
     const source = join(root, "source.exe");
     const bytes = Buffer.from("platform fixture");
     const sha256 = createHash("sha256").update(bytes).digest("hex");

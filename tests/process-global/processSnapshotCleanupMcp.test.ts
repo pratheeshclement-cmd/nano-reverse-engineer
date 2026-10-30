@@ -62,7 +62,7 @@ const connectSession = async () => {
 };
 
 it("retains and retries the exact snapshot file handle through public MCP capture", async () => {
-  const root = await createTestTempDirectory("rea-process-snapshot-cleanup-");
+  const root = await createTestTempDirectory("nre-process-snapshot-cleanup-");
   const observedRoot = join(root, "observed");
   const filePath = join(observedRoot, "input.txt");
   await mkdir(observedRoot);

@@ -8,7 +8,7 @@ import { openRegularFile } from "../../filesystem/RegularFile.js";
 import { ok } from "../../domain/result.js";
 
 it("keeps structural Mach-O slice inventory across short descriptor reads", async () => {
-  const root = await createTestTempDirectory("rea-macho-short-reads-");
+  const root = await createTestTempDirectory("nre-macho-short-reads-");
   const fat = join(root, "fat");
   const arm = machoImage({ cpu: CPU.arm64 });
   await writeFile(fat, fatImage([{ cpu: CPU.arm64, bytes: arm }]));

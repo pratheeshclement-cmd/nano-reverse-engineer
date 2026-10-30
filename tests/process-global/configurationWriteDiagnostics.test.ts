@@ -13,7 +13,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
       const handle = await actual.open(...args);
       if (
         typeof args[0] === "string" &&
-        args[0].includes(`${sep}.rea-config-`) &&
+        args[0].includes(`${sep}.nre-config-`) &&
         args[0].endsWith(`${sep}content`)
       ) {
         const operation = selected.operation;
@@ -60,7 +60,7 @@ it.each([
 ] as const)(
   "retains %s failure facts, original bytes and backup through setup projection",
   async (operation, expectedOperation, systemCode, syscall) => {
-    const root = await createTestTempDirectory("rea-config-write-diagnostic-");
+    const root = await createTestTempDirectory("nre-config-write-diagnostic-");
     const path = join(root, "config.json");
     const original = '{"caller":"retained"}\n';
     await writeFile(path, original);
@@ -73,7 +73,7 @@ it.each([
     expect(result).toMatchObject({
       status: "failed",
       reason: "write",
-      backupPath: `${path}.rea.backup`,
+      backupPath: `${path}.nre.backup`,
       failure: {
         kind: "write",
         operation: expectedOperation,
@@ -94,10 +94,10 @@ it.each([
         gid: expect.any(Number),
       });
     expect(await readFile(path, "utf8")).toBe(original);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.nre.backup`, "utf8")).toBe(original);
     expect(await readdir(root)).toEqual([
       "config.json",
-      "config.json.rea.backup",
+      "config.json.nre.backup",
     ]);
   },
 );

@@ -40,7 +40,7 @@ const captureEvidence = (
   ),
 ) =>
   createEvidence(undefined, provider, {
-    predicateType: "rea.process-capture",
+    predicateType: "nre.process-capture",
     operation: "capture_process_scenario",
     parameters: { side },
     result: {
@@ -73,7 +73,7 @@ const connect = async (
         ...process.env,
         ...(maximumInputElements === undefined
           ? {}
-          : { REA_MCP_MAX_INPUT_ELEMENTS: String(maximumInputElements) }),
+          : { NRE_MCP_MAX_INPUT_ELEMENTS: String(maximumInputElements) }),
       },
     },
   );
@@ -93,7 +93,7 @@ const compareViaCli = async (
   right: ReturnType<typeof captureEvidence>,
   specification?: ProcessTraceSpecification,
 ) => {
-  const root = await createTestTempDirectory("rea-process-provider-");
+  const root = await createTestTempDirectory("nre-process-provider-");
   const leftPath = join(root, "left.json");
   const rightPath = join(root, "right.json");
   await Promise.all([
@@ -235,7 +235,7 @@ it.each(
   },
 );
 
-it.each([PROCESS_PROVIDER.name, "REA deterministic process harness"])(
+it.each([PROCESS_PROVIDER.name, "NRE deterministic process harness"])(
   "preserves authenticated CLI/MCP comparison Evidence for provider name %s",
   async (name) => {
     const provider = { ...PROCESS_PROVIDER, name };
@@ -311,7 +311,7 @@ it("names differing comparison contract fields through MCP and the CLI", async (
     error: { code: "invalid_request", details: { issues: [issue] } },
   });
 
-  const root = await createTestTempDirectory("rea-process-contract-");
+  const root = await createTestTempDirectory("nre-process-contract-");
   const leftPath = join(root, "left.json");
   const rightPath = join(root, "right.json");
   await writeFile(leftPath, JSON.stringify(left));
@@ -389,7 +389,7 @@ it("retains a selected max_capture_age_ms requirement in comparison Evidence par
 });
 
 it("reports CLI trace specification issues like the MCP trace_spec input", async () => {
-  const root = await createTestTempDirectory("rea-process-trace-spec-");
+  const root = await createTestTempDirectory("nre-process-trace-spec-");
   const capturePath = join(root, "capture.json");
   const specPath = join(root, "spec.json");
   await writeFile(capturePath, JSON.stringify(captureEvidence("left")));
@@ -433,7 +433,7 @@ it("rejects a deep trace cycle as an input error through CLI and MCP", async () 
     message: "happens-before graph must be acyclic",
   };
   const capture = captureEvidence("left");
-  const root = await createTestTempDirectory("rea-process-trace-cycle-");
+  const root = await createTestTempDirectory("nre-process-trace-cycle-");
   const capturePath = join(root, "capture.json");
   const specPath = join(root, "spec.json");
   await writeFile(capturePath, JSON.stringify(capture));
@@ -525,13 +525,13 @@ it("names the side and constraint when Evidence is not a usable capture", async 
         "(at truncation_details.rendered_terminal.normalization_over_budget_frames: normalization omissions must be a subset of unknown-size rendered frames)",
     },
   ];
-  const root = await createTestTempDirectory("rea-process-malformed-");
+  const root = await createTestTempDirectory("nre-process-malformed-");
   const leftPath = join(root, "left.json");
   const rightPath = join(root, "right.json");
   await writeFile(leftPath, JSON.stringify(capture));
   for (const { result, description } of invalidCaptures) {
     const invalidResult = createEvidence(undefined, PROCESS_PROVIDER, {
-      predicateType: "rea.process-capture",
+      predicateType: "nre.process-capture",
       operation: "capture_process_scenario",
       parameters: {},
       result: result,
@@ -573,7 +573,7 @@ it("keeps structural capture issues alongside semantic ones through MCP and the 
     ...rest
   } = FINALIZED_PROCESS_CAPTURE_EXAMPLE;
   const mixed = createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "nre.process-capture",
     operation: "capture_process_scenario",
     parameters: {},
     result: {

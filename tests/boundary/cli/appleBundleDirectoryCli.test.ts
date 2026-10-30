@@ -45,7 +45,7 @@ cliTest.for([
 ])(
   "Apple CLI respects directory identity with $name",
   async (fixture, { cli }) => {
-    const root = await createTestTempDirectory("rea-apple-directory-cli-");
+    const root = await createTestTempDirectory("nre-apple-directory-cli-");
     const path = join(root, "Fixture.ipa");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add(
@@ -99,7 +99,7 @@ cliTest(
   "Apple CLI and MCP read a flattened framework's Resources/Info.plist",
   { timeout: 60_000 },
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-flat-framework-");
+    const root = await createTestTempDirectory("nre-apple-flat-framework-");
     const app = join(root, "Fixture.app");
     const framework = "Contents/Frameworks/Core.framework";
     const machO = thinMach(0xcffaedfe, 0x0100000c);
@@ -167,7 +167,7 @@ cliTest(
 cliTest(
   "Apple CLI does not invent an application from a leaf Contents file",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-false-root-cli-");
+    const root = await createTestTempDirectory("nre-apple-false-root-cli-");
     const path = join(root, "Fixture.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("Fake.app/Contents", new TextReader("ordinary resource"));

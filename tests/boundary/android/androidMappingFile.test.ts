@@ -20,7 +20,7 @@ const digest = (text: string): string =>
   createHash("sha256").update(text).digest("hex");
 
 const fixture = async (text = SOURCE) => {
-  const root = await createTestTempDirectory("rea-android-mapping-file-");
+  const root = await createTestTempDirectory("nre-android-mapping-file-");
   const resources = new ArtifactResourceScope();
   onTestFinished(() => resources.close());
   const path = join(root, "mapping.txt");

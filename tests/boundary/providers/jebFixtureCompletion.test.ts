@@ -51,7 +51,7 @@ const bounded = async <Value>(operation: Promise<Value>): Promise<Value> => {
 
 for (const scenario of ["tool", "catalog", "late-render-failure"] as const) {
   it(`JEB fixture close joins admitted ${scenario} work after transport disconnect`, async () => {
-    const root = await createTestTempDirectory("rea-jeb-fixture-close-");
+    const root = await createTestTempDirectory("nre-jeb-fixture-close-");
     const artifact = join(root, "completed callback.txt");
     const entered = createDeferred<void>();
     const release = createDeferred<void>();

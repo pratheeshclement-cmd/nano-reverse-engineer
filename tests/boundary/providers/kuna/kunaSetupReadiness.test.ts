@@ -22,7 +22,7 @@ test.each([
 ])(
   "projects installation separately from $cache cache readiness",
   async ({ cache, version, expected }) => {
-    const root = await createTestTempDirectory("rea-kuna-setup-readiness-");
+    const root = await createTestTempDirectory("nre-kuna-setup-readiness-");
     const command = await writeFakeKuna(root, {
       version: { stdout: version },
     });
@@ -31,8 +31,8 @@ test.each([
     else await mkdir(cachePath);
 
     const inspection = await inspectKunaProviderOwned({
-      REA_KUNA_COMMAND: command,
-      REA_KUNA_CACHE_DIR: cachePath,
+      NRE_KUNA_COMMAND: command,
+      NRE_KUNA_CACHE_DIR: cachePath,
     });
     expect(inspection.available).toBe(cache === "ready");
     expect(inspection.checks[0]).toMatchObject({

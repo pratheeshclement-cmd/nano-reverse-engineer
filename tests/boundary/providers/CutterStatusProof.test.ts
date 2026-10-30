@@ -10,7 +10,7 @@ import { projectAnalysisError } from "../../../src/domain/analysisErrorProjectio
 it.each(["invalid-identity", "exact-receipt", "unrelated-receipt"] as const)(
   "checks command completion independently of preflight watermark admission: %s",
   async (mode) => {
-    const directory = await createTestTempDirectory("rea-cutter-status-proof-");
+    const directory = await createTestTempDirectory("nre-cutter-status-proof-");
     const sessionId = "27d3e3f1-f1e5-49ae-91ec-95af1f343a5a";
     const requestId = "4b18ce4d-bf31-456e-ae31-e8c547b2f9db";
     const otherId = "ede4bbfd-6348-46aa-963b-0de0e78ccbdc";
@@ -50,7 +50,7 @@ it.each(["invalid-identity", "exact-receipt", "unrelated-receipt"] as const)(
       throw new Error("Missing listener");
     const port = address.port;
     await writeDescriptor(directory, sessionId, port, token);
-    const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: directory });
+    const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: directory });
     const result = await client.confirmCommandCompletion(sessionId, requestId);
     if (mode === "invalid-identity") {
       if (result.ok) throw new Error("Expected invalid status identity");

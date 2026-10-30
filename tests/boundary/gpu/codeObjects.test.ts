@@ -28,7 +28,7 @@ const inspect = async (
     expected_sha256?: string;
   } = {},
 ) => {
-  const root = await createTestTempDirectory("rea-gpu-"),
+  const root = await createTestTempDirectory("nre-gpu-"),
     path = join(root, "no-format-extension");
   await writeFile(path, bytes);
   const provider = new GpuCodeObjectsProvider();

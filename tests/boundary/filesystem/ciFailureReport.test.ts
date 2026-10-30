@@ -52,9 +52,9 @@ const run = (overrides: Partial<CiRun> = {}) =>
     path: ".github/workflows/ci.yml@main",
     head_sha: sha("a"),
     head_branch: "feature",
-    repository: { full_name: "owner/rea" },
+    repository: { full_name: "owner/nre" },
     pull_requests: [
-      { base: { sha: sha("b"), repo: { full_name: "owner/rea" } } },
+      { base: { sha: sha("b"), repo: { full_name: "owner/nre" } } },
     ],
     ...overrides,
   });
@@ -66,7 +66,7 @@ const job = (overrides: Partial<CiJob> = {}) => ({
 });
 
 const comparison = (): Parameters<typeof classifyFailure>[0] => ({
-  repository: "owner/rea",
+  repository: "owner/nre",
   defaultBranch: "main",
   run: run(),
   job: job(),
@@ -233,10 +233,10 @@ it.each([
 );
 
 it("writes informational JSON and Markdown from the supplied manifest using only read API calls", async () => {
-  const directory = await createTestTempDirectory("rea-ci-failure-test-");
+  const directory = await createTestTempDirectory("nre-ci-failure-test-");
   const calls: string[] = [];
   const manifest = {
-    repository: "owner/rea",
+    repository: "owner/nre",
     truncation: [],
     coverage: { exhaustive: false },
     runs: [
@@ -283,7 +283,7 @@ it("writes informational JSON and Markdown from the supplied manifest using only
     },
   };
   const report = await reportCiFailures({
-    repository: "owner/rea",
+    repository: "owner/nre",
     defaultBranch: "main",
     batchManifest: manifest,
     api,
@@ -313,7 +313,7 @@ it.each([
 ] as const)(
   "finds verified main evidence after %s newer PR runs (extra incorrect main hint: %s)",
   async (prCount, incorrectMainHints) => {
-    const directory = await createTestTempDirectory("rea-ci-main-proof-");
+    const directory = await createTestTempDirectory("nre-ci-main-proof-");
     const mainSha = sha("c");
     const prHeadSha = sha("a");
     const mergeSha = sha("d");
@@ -327,7 +327,7 @@ it.each([
     const prRun = run({
       head_sha: prHeadSha,
       pull_requests: [
-        { base: { sha: mainSha, repo: { full_name: "owner/rea" } } },
+        { base: { sha: mainSha, repo: { full_name: "owner/nre" } } },
       ],
     });
     const evidence = (sourceSha: string, prHead?: string) => ({
@@ -362,10 +362,10 @@ it.each([
       },
     };
     const result = await reportCiFailures({
-      repository: "owner/rea",
+      repository: "owner/nre",
       defaultBranch: "main",
       batchManifest: {
-        repository: "owner/rea",
+        repository: "owner/nre",
         runs: [
           ...(incorrectMainHints
             ? [
@@ -426,7 +426,7 @@ it("proves checkout merge parents in base-then-PR-head order and rejects false i
   const prRun = run({
     head_sha: headSha,
     pull_requests: [
-      { base: { sha: baseSha, repo: { full_name: "owner/rea" } } },
+      { base: { sha: baseSha, repo: { full_name: "owner/nre" } } },
     ],
   });
   let parents = [baseSha, headSha];
@@ -443,16 +443,16 @@ it("proves checkout merge parents in base-then-PR-head order and rejects false i
   });
   const mergeContext = context(mergeSha, undefined, headSha);
   expect(
-    await api.verifyExecutionSource("owner/rea", prRun, mergeContext),
+    await api.verifyExecutionSource("owner/nre", prRun, mergeContext),
   ).toBe(true);
-  expect(calls).toEqual([`repos/owner/rea/commits/${mergeSha}`]);
+  expect(calls).toEqual([`repos/owner/nre/commits/${mergeSha}`]);
 
   parents = [headSha, baseSha];
   expect(
-    await api.verifyExecutionSource("owner/rea", prRun, mergeContext),
+    await api.verifyExecutionSource("owner/nre", prRun, mergeContext),
   ).toBe(false);
   expect(
-    await api.verifyExecutionSource("owner/rea", prRun, {
+    await api.verifyExecutionSource("owner/nre", prRun, {
       ...mergeContext,
       prHeadSha: sha("e"),
     }),
@@ -561,21 +561,21 @@ it("loads each static gate from its own artifact", async () => {
   });
   const runRecord = { id: 10, run_attempt: 1, head_sha: sha("a") };
   await expect(
-    api.getStaticEvidence("owner/rea", runRecord, {
+    api.getStaticEvidence("owner/nre", runRecord, {
       name: "Deep static checks",
     }),
   ).rejects.toThrow("stop-before-download");
   await expect(
-    api.getStaticEvidence("owner/rea", runRecord, { name: "Static checks" }),
+    api.getStaticEvidence("owner/nre", runRecord, { name: "Static checks" }),
   ).rejects.toThrow("stop-before-download");
   expect(
-    await api.getStaticEvidence("owner/rea", runRecord, {
+    await api.getStaticEvidence("owner/nre", runRecord, {
       name: "Test shard (1)",
     }),
   ).toBeNull();
   expect(downloads).toEqual([
-    "https://api.github.com/repos/owner/rea/actions/artifacts/2/zip",
-    "https://api.github.com/repos/owner/rea/actions/artifacts/1/zip",
+    "https://api.github.com/repos/owner/nre/actions/artifacts/2/zip",
+    "https://api.github.com/repos/owner/nre/actions/artifacts/1/zip",
   ]);
 });
 
@@ -583,7 +583,7 @@ it("rejects artifact redirects that could send the bearer token to a non-HTTPS h
   const calls: string[] = [];
   await expect(
     readStaticCheckArtifact({
-      repository: "owner/rea",
+      repository: "owner/nre",
       artifactId: 12,
       token: "fixture-token",
       fetchImpl: (async (url: string | URL | Request) => {
@@ -596,6 +596,6 @@ it("rejects artifact redirects that could send the bearer token to a non-HTTPS h
     }),
   ).rejects.toThrow("static_artifact_redirect_invalid");
   expect(calls).toEqual([
-    "https://api.github.com/repos/owner/rea/actions/artifacts/12/zip",
+    "https://api.github.com/repos/owner/nre/actions/artifacts/12/zip",
   ]);
 });

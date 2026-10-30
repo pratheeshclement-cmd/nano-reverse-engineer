@@ -46,20 +46,20 @@ if (installation.status !== "available")
     `Ghidra prerequisite unavailable: ${JSON.stringify(installation)}`,
   );
 const execute = promisify(execFile);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-mips-rel-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-mips-rel-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
-  HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+  HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
 };
 for (const setting of ["GHIDRA_HEADLESS_MAXMEM", "GHIDRA_MAXMEM"]) {
   if (process.env[setting] !== undefined) env[setting] = process.env[setting];
@@ -106,7 +106,7 @@ async function verifyFixture(byteOrder, kernelModule) {
   assert.deepEqual(
     resolved.value.mips,
     independent.mips,
-    "REA ELF/ABI interpretation disagrees with GNU readelf",
+    "NRE ELF/ABI interpretation disagrees with GNU readelf",
   );
   assert.equal(resolved.value.sha256, fixture.sha256);
   const label = `${byteOrder}${kernelModule ? "-module" : ""}`;
@@ -117,7 +117,7 @@ async function verifyFixture(byteOrder, kernelModule) {
     env,
     stderr: "pipe",
   });
-  const client = new Client({ name: "rea-real-mips-rel-proof", version: "1" });
+  const client = new Client({ name: "nre-real-mips-rel-proof", version: "1" });
   let stderr = "";
   transport.stderr?.on("data", (chunk) => {
     stderr = (stderr + chunk.toString()).slice(-65536);
@@ -177,18 +177,18 @@ async function verifyFixture(byteOrder, kernelModule) {
       assert.equal(found.length, 1, `Procedure ${name}`);
       return found[0].address;
     };
-    const entry = named("rea_mips_rel_entry");
+    const entry = named("nre_mips_rel_entry");
     const callees = await call("procedure_callees", { procedure: entry });
     for (const callee of [
-      named("rea_mips_rel_leaf"),
-      named("rea_mips_rel_far"),
+      named("nre_mips_rel_leaf"),
+      named("nre_mips_rel_far"),
     ])
       assert.ok(callees.includes(callee), `Missing direct call to ${callee}`);
     // Ghidra lists the external function and its EXTERNAL-block thunk.
     assert.ok(
       procedures.some(
         (item) =>
-          item.value === "<EXTERNAL>::rea_mips_rel_external" &&
+          item.value === "<EXTERNAL>::nre_mips_rel_external" &&
           callees.includes(item.address),
       ),
       "Missing call to the external function",
@@ -197,16 +197,16 @@ async function verifyFixture(byteOrder, kernelModule) {
       await call("analyze_function", { procedure: entry, detail: "complete" }),
     );
     for (const name of [
-      "rea_mips_rel_leaf",
-      "rea_mips_rel_far",
-      "rea_mips_rel_external",
+      "nre_mips_rel_leaf",
+      "nre_mips_rel_far",
+      "nre_mips_rel_external",
     ])
       assert.ok(dossier.pseudocode.includes(name), `Pseudocode lost ${name}`);
     // powf's float prototype comes from Ghidra's C library archive; soft-float
     // builds pass 1.5f/2.5f in $a0/$a1, hard-float builds in $f12/$f14.
     const scaled = functionDossierSchema.parse(
       await call("analyze_function", {
-        procedure: named("rea_mips_rel_scaled"),
+        procedure: named("nre_mips_rel_scaled"),
         detail: "complete",
       }),
     );
@@ -257,7 +257,7 @@ async function verifyFixture(byteOrder, kernelModule) {
         entrypoint,
         "function",
         fixture.path,
-        "rea_mips_rel_entry",
+        "nre_mips_rel_entry",
         "--provider",
         "ghidra",
         "--json",

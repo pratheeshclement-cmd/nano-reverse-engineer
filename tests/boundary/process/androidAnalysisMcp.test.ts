@@ -192,11 +192,11 @@ test.each([
     scenario: "failed upstream reply",
     mode: "tool-error",
     errorCode: "execution_failure",
-    serverName: "rea-jadx-bridge",
+    serverName: "nre-jadx-bridge",
     serverVersion: JADX_BRIDGE_IDENTITY.version,
     engineVersion: "0.7.1",
     calls: [
-      { operation: "rea_jvm_status" },
+      { operation: "nre_jvm_status" },
       { operation: "load_apk" },
       { operation: "get_app_info" },
       {
@@ -210,10 +210,10 @@ test.each([
     scenario: "transport error after successful replies",
     mode: "rpc-disconnect",
     errorCode: "execution_failure",
-    serverName: "rea-jadx-bridge",
+    serverName: "nre-jadx-bridge",
     serverVersion: JADX_BRIDGE_IDENTITY.version,
     engineVersion: "0.7.1",
-    calls: [{ operation: "rea_jvm_status" }, { operation: "load_apk" }],
+    calls: [{ operation: "nre_jvm_status" }, { operation: "load_apk" }],
     containsAmbientEnvironment: true,
   },
   {
@@ -274,7 +274,7 @@ test.each([
       operation: "inspect_android_package",
       target: { selected_path: apk, path: apk, format: "apk" },
       provider_facts: {
-        bridge_name: "rea-jadx-bridge",
+        bridge_name: "nre-jadx-bridge",
         bridge_version: JADX_BRIDGE_IDENTITY.version,
         server_name: serverName,
         server_version: serverVersion,
@@ -306,7 +306,7 @@ it("retains partial JADX replies when owned cleanup also fails", async () => {
       provider_id: "jadx",
       operation: "inspect_android_package",
       calls: [
-        { operation: "rea_jvm_status" },
+        { operation: "nre_jvm_status" },
         { operation: "load_apk" },
         { operation: "get_app_info" },
         {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Real Kuna provider lane. Requires a caller-supplied kuna (REA_KUNA_COMMAND)
-// and a host C compiler; REA installs neither. The default run builds a
+// Real Kuna provider lane. Requires a caller-supplied kuna (NRE_KUNA_COMMAND)
+// and a host C compiler; NRE installs neither. The default run builds a
 // source-owned fixture, with symbols and stripped, and verifies the public MCP
 // workflow: cold single-function pseudocode, the project export, warm reuse
 // from a fresh server, and cleanup. `--targets DIR --functions a,b` adds
@@ -53,12 +53,12 @@ const { values } = parseArgs({
 });
 const entrypoint =
   values.entrypoint === undefined
-    ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
+    ? fileURLToPath(new URL("./nre.mjs", import.meta.url))
     : resolve(values.entrypoint);
-const kuna = process.env.REA_KUNA_COMMAND;
+const kuna = process.env.NRE_KUNA_COMMAND;
 assert.ok(
   kuna !== undefined && kuna.startsWith("/"),
-  "Kuna lane prerequisite missing: REA_KUNA_COMMAND must name a caller-supplied kuna by absolute path (bring your own)",
+  "Kuna lane prerequisite missing: NRE_KUNA_COMMAND must name a caller-supplied kuna by absolute path (bring your own)",
 );
 if (values["compare-ghidra"]) {
   // The comparison runs on caller-built targets only; the fixture has none.
@@ -82,7 +82,7 @@ const resourceScope = {
     }),
   run: (operation) => inspectionResources.run(operation),
 };
-const workspace = await mkdtemp(join(tmpdir(), "rea-kuna-lane-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-kuna-lane-"));
 const cacheRoot = join(workspace, "cache");
 // A server retains its workspace until both provider and transport cleanup
 // have positively completed, even if later lineage observation is empty.
@@ -94,20 +94,20 @@ let kunaVersion;
 const FIXTURE_SOURCE = String.raw`
 #include <stdio.h>
 #include <stdlib.h>
-static const char rea_kuna_utf8[] __attribute__((used)) = "＿φ( °-°)/ REA unicode marker";
+static const char nre_kuna_utf8[] __attribute__((used)) = "＿φ( °-°)/ NRE unicode marker";
 /* The leading NUL unit ends any UTF-16 run that bytes before this array would
    start: the UTF-8 marker's last byte and NUL decode as the unit 'r', so on
    layouts where it precedes this array Kuna reports "rREA wide marker". */
-static const unsigned short rea_kuna_wide[] __attribute__((used)) = {
+static const unsigned short nre_kuna_wide[] __attribute__((used)) = {
   0,'R','E','A',' ','w','i','d','e',' ','m','a','r','k','e','r',0
 };
 #include <string.h>
-__attribute__((noinline)) unsigned rea_checksum(const unsigned char *p, size_t n) {
+__attribute__((noinline)) unsigned nre_checksum(const unsigned char *p, size_t n) {
   unsigned h = 2166136261u;
   for (size_t i = 0; i < n; i++) h = (h ^ p[i]) * 16777619u;
   return h;
 }
-__attribute__((noinline)) int rea_classify(int c) {
+__attribute__((noinline)) int nre_classify(int c) {
   switch (c) {
   case 'a': return 1; case 'e': return 2; case 'i': return 3;
   case 'o': return 4; case 'u': return 5; default: return c > 'z' ? -1 : 0;
@@ -115,15 +115,15 @@ __attribute__((noinline)) int rea_classify(int c) {
 }
 int main(int argc, char **argv) {
   if (argc < 2) return 2;
-  printf("%u %d\n", rea_checksum((const unsigned char *)argv[1], strlen(argv[1])),
-         rea_classify(argv[1][0]));
+  printf("%u %d\n", nre_checksum((const unsigned char *)argv[1], strlen(argv[1])),
+         nre_classify(argv[1][0]));
   return 0;
 }
 `;
 
 /** Resolve function entry addresses from a symbol-bearing build. */
 const symbolAddresses = async (binary, names) => {
-  const { stdout } = await exec(process.env.REA_NM ?? "nm", [binary]);
+  const { stdout } = await exec(process.env.NRE_NM ?? "nm", [binary]);
   const found = new Map();
   for (const line of stdout.split("\n")) {
     const [address, type, symbol] = line.trim().split(/\s+/u);
@@ -178,10 +178,10 @@ const openServer = async (provider) => {
     env: {
       PATH: process.env.PATH ?? "/usr/bin:/bin",
       HOME: process.env.HOME ?? workspace,
-      REA_LOG_LEVEL: "silent",
-      REA_PROCESS_RUN_ID: run.run_id,
-      REA_KUNA_COMMAND: kuna,
-      REA_KUNA_CACHE_DIR: cacheRoot,
+      NRE_LOG_LEVEL: "silent",
+      NRE_PROCESS_RUN_ID: run.run_id,
+      NRE_KUNA_COMMAND: kuna,
+      NRE_KUNA_CACHE_DIR: cacheRoot,
       ...(process.env.GHIDRA_INSTALL_DIR === undefined
         ? {}
         : { GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR }),
@@ -191,7 +191,7 @@ const openServer = async (provider) => {
     },
     stderr: "ignore",
   });
-  const client = new Client({ name: "rea-real-kuna", version: "1" });
+  const client = new Client({ name: "nre-real-kuna", version: "1" });
   let peakKiB = 0;
   const cpu = new Map();
   const sampleOnce = async () => {
@@ -500,7 +500,7 @@ const failures = [];
 let inspectionResourcesClean = true;
 try {
   const installation = await inspectKunaInstallation(
-    { REA_KUNA_COMMAND: kuna, REA_KUNA_CACHE_DIR: cacheRoot },
+    { NRE_KUNA_COMMAND: kuna, NRE_KUNA_CACHE_DIR: cacheRoot },
     { resourceScope },
   );
   assert.ok(
@@ -533,14 +533,14 @@ try {
   await mkdir(fixtureDir);
   const source = join(fixtureDir, "fixture.c");
   await writeFile(source, FIXTURE_SOURCE);
-  const built = join(fixtureDir, "rea-kuna-fixture");
-  await exec(process.env.REA_CC ?? "cc", ["-O2", "-o", built, source]);
+  const built = join(fixtureDir, "nre-kuna-fixture");
+  await exec(process.env.NRE_CC ?? "cc", ["-O2", "-o", built, source]);
   const stripped = `${built}.stripped`;
   await writeFile(stripped, await readFile(built));
-  await exec(process.env.REA_STRIP ?? "strip", [stripped]);
+  await exec(process.env.NRE_STRIP ?? "strip", [stripped]);
   const fixtureFunctions = await symbolAddresses(built, [
-    "rea_checksum",
-    "rea_classify",
+    "nre_checksum",
+    "nre_classify",
     "main",
   ]);
   assert.equal(fixtureFunctions.size, 3, "Fixture symbols were not found");
@@ -550,8 +550,8 @@ try {
     results.push({
       binary: binary.slice(workspace.length + 1),
       kuna: await verifyKuna(binary, [...fixtureFunctions], fixtureMain, [
-        "＿φ( °-°)/ REA unicode marker",
-        "REA wide marker",
+        "＿φ( °-°)/ NRE unicode marker",
+        "NRE wide marker",
       ]),
     });
 

@@ -157,7 +157,7 @@ export const verifyAndroidMethodBodies = async ({
     stderr += chunk.toString();
   });
   const client = new Client({
-    name: "rea-real-android-method-bodies",
+    name: "nre-real-android-method-bodies",
     version: "1",
   });
   try {

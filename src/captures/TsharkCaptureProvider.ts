@@ -73,7 +73,7 @@ import { privateWorkspaceFailure } from "../process/privateWorkspaceFailure.js";
 const OPERATION = "inspect_packet_capture";
 export const TSHARK_PROVIDER_IDENTITY = {
   id: "tshark-capture",
-  name: "REA TShark capture adapter",
+  name: "NRE TShark capture adapter",
   version: "tshark@4",
 } as const;
 type Launcher = NonNullable<Parameters<typeof runOwnedCommand>[2]>["launcher"];
@@ -89,7 +89,7 @@ export class TsharkCaptureProvider implements PacketCapturePort {
     readonly environment: Readonly<NodeJS.ProcessEnv> = process.env,
     readonly launcher?: Launcher,
     readonly createRuntime: () => Promise<ArtifactAnalysisRuntime> = () =>
-      PrivateRuntimeRoot.create({ prefix: "rea-tshark-" }),
+      PrivateRuntimeRoot.create({ prefix: "nre-tshark-" }),
     readonly platform: NodeJS.Platform = process.platform,
     readonly readArtifact: typeof readStableArtifact = readStableArtifact,
     readonly readLimits: typeof readLinuxResourceLimits = readLinuxResourceLimits,
@@ -151,7 +151,7 @@ export class TsharkCaptureProvider implements PacketCapturePort {
       await this.#resources.release();
       if (!tsharkHostSupported(this.platform))
         throw new Error(
-          "Packet inspection requires Linux with util-linux prlimit and TShark 4.x (on PATH or through absolute REA_TSHARK_COMMAND) so expanded captures are processed under an enforced address-space limit.",
+          "Packet inspection requires Linux with util-linux prlimit and TShark 4.x (on PATH or through absolute NRE_TSHARK_COMMAND) so expanded captures are processed under an enforced address-space limit.",
         );
       const selection = selectWiresharkTool(this.environment, "tshark");
       const configured = locateWiresharkTool(selection, this.environment);
@@ -172,9 +172,9 @@ export class TsharkCaptureProvider implements PacketCapturePort {
       );
       const tool = wiresharkExecutableIdentity(toolSnapshot);
       const configuredLimiter =
-        this.environment.REA_TSHARK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
+        this.environment.NRE_TSHARK_PRLIMIT_COMMAND ?? "/usr/bin/prlimit";
       if (!isAbsolute(configuredLimiter))
-        throw new Error("REA_TSHARK_PRLIMIT_COMMAND must be absolute.");
+        throw new Error("NRE_TSHARK_PRLIMIT_COMMAND must be absolute.");
       const selectedLimiter = await selectArtifactCommandPath(
         configuredLimiter,
         options?.signal,
@@ -211,7 +211,7 @@ export class TsharkCaptureProvider implements PacketCapturePort {
             arguments: [...limitArguments, ...args],
             ...(root === undefined ? {} : { cwd: root.path }),
             expectedCommand: null,
-            runId: `rea-tshark-${randomUUID()}`,
+            runId: `nre-tshark-${randomUUID()}`,
             hostEnvironment: {
               ...this.environment,
               WIRESHARK_CONFIG_DIR: configurationPath,
@@ -405,7 +405,7 @@ export class TsharkCaptureProvider implements PacketCapturePort {
               "Packet limits count input packets before display filtering. Filtered results do not establish whole-capture or device traffic absence. Two-pass reassembly cannot recover bytes missing from the recording or beyond the read limit.",
               "Repeated field values remain ordered string arrays; raw packet bytes are included only when explicitly selected as a supported field. Export index/score metadata are omitted. All stderr, including warnings on exit zero, is retained.",
               "A private empty personal configuration is used. Installed libraries, global configuration and dissector plugins are trusted and not fully fingerprinted. File-only analysis and disabled name resolution do not constitute an OS sandbox.",
-              "Linux prlimit enforces soft and hard ceilings before execution, preserving stricter inherited limits: at most 1 GiB address space per process, 64 MiB per file, 30 CPU seconds and no core dumps. Effective limits are reported. Resident input is capped at 32 MiB, each command at 30 wall-clock seconds and combined output at 4 MiB. Output overflow fails. These are per-process/per-file limits, not aggregate memory or filesystem quotas; caller-supplied tools and the limiter are trusted. REA retains the tighter inherited limit. This release has no runtime override.",
+              "Linux prlimit enforces soft and hard ceilings before execution, preserving stricter inherited limits: at most 1 GiB address space per process, 64 MiB per file, 30 CPU seconds and no core dumps. Effective limits are reported. Resident input is capped at 32 MiB, each command at 30 wall-clock seconds and combined output at 4 MiB. Output overflow fails. These are per-process/per-file limits, not aggregate memory or filesystem quotas; caller-supplied tools and the limiter are trusted. NRE retains the tighter inherited limit. This release has no runtime override.",
             ],
           }),
         );
@@ -532,7 +532,7 @@ export class TsharkCaptureProvider implements PacketCapturePort {
           ...(observedOutput === undefined
             ? {}
             : { capturedOutput: observedOutput }),
-          userMessage: `${reason} On Linux, supply TShark 4.x on PATH or through absolute REA_TSHARK_COMMAND, and util-linux prlimit through REA_TSHARK_PRLIMIT_COMMAND (default /usr/bin/prlimit).`,
+          userMessage: `${reason} On Linux, supply TShark 4.x on PATH or through absolute NRE_TSHARK_COMMAND, and util-linux prlimit through NRE_TSHARK_PRLIMIT_COMMAND (default /usr/bin/prlimit).`,
         },
       );
     if (cause instanceof ArtifactReaderFailure && cause.reason === "integrity")

@@ -414,7 +414,7 @@ it("routes a nested unknown chunk through its published child", async () => {
     ]),
   );
   expect(gapsWithContinuations(normalized)[0]?.continuation).toContain(
-    "only if Binwalk is configured with REA_BINWALK_COMMAND",
+    "only if Binwalk is configured with NRE_BINWALK_COMMAND",
   );
   expect(gapsWithContinuations(normalized)[0]?.continuation).toContain(
     "unavailable without configured Binwalk",
@@ -881,7 +881,7 @@ it.each([
     };
     expect(projectAnalysisError(result.error)).toMatchObject(error);
     expect(projectAnalysisError(result.error).message).not.toContain(
-      "rea doctor",
+      "nre doctor",
     );
     expect(
       delivery.toCallToolResult(result, toolContract(operation))

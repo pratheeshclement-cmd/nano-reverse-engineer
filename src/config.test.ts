@@ -57,11 +57,11 @@ it("accepts ordinary custom environment strings and omitted values", () => {
 
 describe("runtime configuration", () => {
   it("preserves a selected MCP input allowance for deferred startup and refuses disabling values", () => {
-    expect(parseConfig({ REA_MCP_MAX_INPUT_ELEMENTS: "8192" })).toMatchObject({
+    expect(parseConfig({ NRE_MCP_MAX_INPUT_ELEMENTS: "8192" })).toMatchObject({
       ok: true,
       value: { mcpMaxInputElements: 8192 },
     });
-    const invalid = parseConfig({ REA_MCP_MAX_INPUT_ELEMENTS: "Infinity" });
+    const invalid = parseConfig({ NRE_MCP_MAX_INPUT_ELEMENTS: "Infinity" });
     expect(invalid.ok).toBe(false);
     if (invalid.ok)
       throw new Error(
@@ -69,7 +69,7 @@ describe("runtime configuration", () => {
       );
     expect(invalid.error.settings).toEqual([
       {
-        setting: "REA_MCP_MAX_INPUT_ELEMENTS",
+        setting: "NRE_MCP_MAX_INPUT_ELEMENTS",
         constraint: expect.stringContaining("positive decimal safe integer"),
       },
     ]);
@@ -97,44 +97,44 @@ describe("runtime configuration", () => {
   it("parses one shared provider selector and rejects unstable IDs", () => {
     expect(
       parseConfig({
-        REA_ANALYSIS_PROVIDER: "ida",
-        REA_IDA_MCP_CONFIG: "/tmp/ida-mcp.json",
+        NRE_ANALYSIS_PROVIDER: "ida",
+        NRE_IDA_MCP_CONFIG: "/tmp/ida-mcp.json",
       }),
     ).toMatchObject({
       ok: true,
       value: { analysisProvider: "ida", idaMcpConfigPath: "/tmp/ida-mcp.json" },
     });
-    expect(parseConfig({ REA_IDA_MCP_CONFIG: "relative.json" }).ok).toBe(false);
-    expect(parseConfig({ REA_ANALYSIS_PROVIDER: "ghidra" })).toMatchObject({
+    expect(parseConfig({ NRE_IDA_MCP_CONFIG: "relative.json" }).ok).toBe(false);
+    expect(parseConfig({ NRE_ANALYSIS_PROVIDER: "ghidra" })).toMatchObject({
       ok: true,
       value: { analysisProvider: "ghidra" },
     });
-    expect(parseConfig({ REA_ANALYSIS_PROVIDER: "auto" })).toMatchObject({
+    expect(parseConfig({ NRE_ANALYSIS_PROVIDER: "auto" })).toMatchObject({
       ok: true,
       value: { analysisProvider: "auto" },
     });
     for (const invalid of ["", "Auto", "ghidra_1", "ghidra "])
-      expect(parseConfig({ REA_ANALYSIS_PROVIDER: invalid }).ok).toBe(false);
+      expect(parseConfig({ NRE_ANALYSIS_PROVIDER: invalid }).ok).toBe(false);
   });
 
   it("shares native admission with doctor and ignores the JEB-only timeout", () => {
     expect(inspectNativeAnalysisConfiguration({})).toEqual({ issues: [] });
     expect(
-      inspectNativeAnalysisConfiguration({ REA_JEB_MCP_TIMEOUT_MS: "abc" }),
+      inspectNativeAnalysisConfiguration({ NRE_JEB_MCP_TIMEOUT_MS: "abc" }),
     ).toEqual({ issues: [] });
-    expect(parseConfig({ REA_JEB_MCP_TIMEOUT_MS: "abc" }).ok).toBe(true);
+    expect(parseConfig({ NRE_JEB_MCP_TIMEOUT_MS: "abc" }).ok).toBe(true);
     const rejected = inspectNativeAnalysisConfiguration({
-      REA_ANALYSIS_PROVIDER: "Hopper",
-      REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
+      NRE_ANALYSIS_PROVIDER: "Hopper",
+      NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
     });
     expect(rejected.issues.map(({ setting }) => setting)).toEqual([
-      "REA_ANALYSIS_PROVIDER",
-      "REA_GHIDRA_STARTUP_TIMEOUT_MS",
+      "NRE_ANALYSIS_PROVIDER",
+      "NRE_GHIDRA_STARTUP_TIMEOUT_MS",
     ]);
     expect(
       parseConfig({
-        REA_ANALYSIS_PROVIDER: "Hopper",
-        REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
+        NRE_ANALYSIS_PROVIDER: "Hopper",
+        NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
       }).ok,
     ).toBe(false);
   });
@@ -142,7 +142,7 @@ describe("runtime configuration", () => {
   it("preserves the timeout's schema cause when aggregate admission stops at NUL", () => {
     const inspected = inspectNativeAnalysisConfiguration({
       CALLER_SETTING: "private\0value",
-      REA_HOPPER_STARTUP_TIMEOUT_MS: "0",
+      NRE_HOPPER_STARTUP_TIMEOUT_MS: "0",
     });
     expect(inspected.issues).toEqual([
       {
@@ -160,7 +160,7 @@ describe("runtime configuration", () => {
     });
     expect(timeout.error.settings).toEqual([
       {
-        setting: "REA_HOPPER_STARTUP_TIMEOUT_MS",
+        setting: "NRE_HOPPER_STARTUP_TIMEOUT_MS",
         constraint: "must be a positive decimal integer",
       },
     ]);
@@ -187,14 +187,14 @@ describe("runtime configuration", () => {
 
   it("parses an optional absolute BYO ilspycmd path", () => {
     expect(
-      parseConfig({ REA_ILSPY_CMD_PATH: "/home/user/.dotnet/tools/ilspycmd" }),
+      parseConfig({ NRE_ILSPY_CMD_PATH: "/home/user/.dotnet/tools/ilspycmd" }),
     ).toMatchObject({
       ok: true,
       value: {
         ilspyCmdPath: "/home/user/.dotnet/tools/ilspycmd",
       },
     });
-    expect(parseConfig({ REA_ILSPY_CMD_PATH: "relative/ilspycmd" }).ok).toBe(
+    expect(parseConfig({ NRE_ILSPY_CMD_PATH: "relative/ilspycmd" }).ok).toBe(
       false,
     );
   });
@@ -204,14 +204,14 @@ describe("runtime target configuration", () => {
   it("rejects invalid target kinds with actionable environment diagnostics", () => {
     const result = parseConfig({ HOPPER_TARGET_KIND: "archive" });
     if (result.ok) throw new Error("Expected invalid target kind");
-    expect(result.error.message).toContain("Invalid REA environment");
+    expect(result.error.message).toContain("Invalid NRE environment");
   });
 
   it("parses database kind and loader arguments", () => {
     expect(
       parseConfig({
         HOPPER_LAUNCHER_PATH: "/custom/hopper",
-        REA_ANALYSIS_PROVIDER: "hopper",
+        NRE_ANALYSIS_PROVIDER: "hopper",
         HOPPER_TARGET_PATH: "/fixture/sample.hop",
         HOPPER_TARGET_KIND: "database",
         HOPPER_LOADER_ARGS_JSON: '["-l","FAT","--aarch64","-l","Mach-O"]',
@@ -241,7 +241,7 @@ describe("runtime collection configuration", () => {
       ok: true,
       value: { hopperLoaderArgs: ["", " ", "--option"] },
     });
-    expect(parseConfig({ REA_REFERENCE_SECRET_PATTERNS_JSON: '[""]' }).ok).toBe(
+    expect(parseConfig({ NRE_REFERENCE_SECRET_PATTERNS_JSON: '[""]' }).ok).toBe(
       false,
     );
   });
@@ -262,14 +262,14 @@ describe("runtime collection configuration", () => {
   );
 
   it("parses supported log levels and rejects unknown levels", () => {
-    const configured = parseConfig({ REA_LOG_LEVEL: "debug" });
+    const configured = parseConfig({ NRE_LOG_LEVEL: "debug" });
     expect(configured.ok && configured.value.logLevel).toBe("debug");
-    expect(parseConfig({ REA_LOG_LEVEL: "verbose" }).ok).toBe(false);
+    expect(parseConfig({ NRE_LOG_LEVEL: "verbose" }).ok).toBe(false);
   });
 
   it("parses reference source secret patterns", () => {
     const result = parseConfig({
-      REA_REFERENCE_SECRET_PATTERNS_JSON: '["*.env", "*.pem", "secrets/"]',
+      NRE_REFERENCE_SECRET_PATTERNS_JSON: '["*.env", "*.pem", "secrets/"]',
     });
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -283,7 +283,7 @@ describe("runtime collection configuration", () => {
     "rejects invalid reference source secret patterns: %s",
     (encoded) => {
       expect(
-        parseConfig({ REA_REFERENCE_SECRET_PATTERNS_JSON: encoded }).ok,
+        parseConfig({ NRE_REFERENCE_SECRET_PATTERNS_JSON: encoded }).ok,
       ).toBe(false);
     },
   );
@@ -294,7 +294,7 @@ describe("configuration failure diagnostics", () => {
     "accepts Hopper startup deadline %s without changing Ghidra's deadline",
     (value) => {
       expect(
-        parseConfig({ REA_HOPPER_STARTUP_TIMEOUT_MS: value }),
+        parseConfig({ NRE_HOPPER_STARTUP_TIMEOUT_MS: value }),
       ).toMatchObject({
         ok: true,
         value: {
@@ -308,7 +308,7 @@ describe("configuration failure diagnostics", () => {
   it.each(["", "0", "-1", "1.5", "1e3", "invalid", "2147483648"])(
     "rejects malformed Hopper startup deadline %j with its setting",
     (value) => {
-      const result = parseConfig({ REA_HOPPER_STARTUP_TIMEOUT_MS: value });
+      const result = parseConfig({ NRE_HOPPER_STARTUP_TIMEOUT_MS: value });
       if (result.ok) throw new Error("Expected invalid startup deadline");
       expect(projectAnalysisError(result.error)).toMatchObject({
         code: "configuration_invalid",
@@ -316,7 +316,7 @@ describe("configuration failure diagnostics", () => {
         details: {
           settings: [
             {
-              setting: "REA_HOPPER_STARTUP_TIMEOUT_MS",
+              setting: "NRE_HOPPER_STARTUP_TIMEOUT_MS",
               constraint: expect.any(String),
             },
           ],
@@ -339,7 +339,7 @@ describe("configuration failure diagnostics", () => {
   ])(
     "rejects malformed Ghidra startup deadline %j with its setting and constraint",
     (value) => {
-      const result = parseConfig({ REA_GHIDRA_STARTUP_TIMEOUT_MS: value });
+      const result = parseConfig({ NRE_GHIDRA_STARTUP_TIMEOUT_MS: value });
       if (result.ok) throw new Error("Expected invalid startup deadline");
       expect(projectAnalysisError(result.error)).toMatchObject({
         code: "configuration_invalid",
@@ -347,7 +347,7 @@ describe("configuration failure diagnostics", () => {
         details: {
           settings: [
             {
-              setting: "REA_GHIDRA_STARTUP_TIMEOUT_MS",
+              setting: "NRE_GHIDRA_STARTUP_TIMEOUT_MS",
               constraint: expect.any(String),
             },
           ],
@@ -360,7 +360,7 @@ describe("configuration failure diagnostics", () => {
     "accepts Swift compile deadline %s without changing Hopper's deadline",
     (value) => {
       expect(
-        parseConfig({ REA_SWIFTC_COMPILE_TIMEOUT_MS: value }),
+        parseConfig({ NRE_SWIFTC_COMPILE_TIMEOUT_MS: value }),
       ).toMatchObject({
         ok: true,
         value: {
@@ -373,7 +373,7 @@ describe("configuration failure diagnostics", () => {
   it.each(["", "0", "-1", "1.5", "1e3", "invalid", "2147483648"])(
     "rejects malformed Swift compile deadline %j with its setting",
     (value) => {
-      const result = parseConfig({ REA_SWIFTC_COMPILE_TIMEOUT_MS: value });
+      const result = parseConfig({ NRE_SWIFTC_COMPILE_TIMEOUT_MS: value });
       if (result.ok) throw new Error("Expected invalid Swift compile deadline");
       expect(projectAnalysisError(result.error)).toMatchObject({
         code: "configuration_invalid",
@@ -381,7 +381,7 @@ describe("configuration failure diagnostics", () => {
         details: {
           settings: [
             {
-              setting: "REA_SWIFTC_COMPILE_TIMEOUT_MS",
+              setting: "NRE_SWIFTC_COMPILE_TIMEOUT_MS",
               constraint: expect.any(String),
             },
           ],
@@ -393,7 +393,7 @@ describe("configuration failure diagnostics", () => {
   it.each([
     ["GHIDRA_INSTALL_DIR", "./fixture"],
     ["JAVA_HOME", "./jdk"],
-    ["REA_GHIDRA_NATIVEAOT_JAR", "./missing.jar"],
+    ["NRE_GHIDRA_NATIVEAOT_JAR", "./missing.jar"],
   ])(
     "names the rejected %s and its absolute-path constraint",
     (setting, value) => {
@@ -404,7 +404,7 @@ describe("configuration failure diagnostics", () => {
       expect(projectAnalysisError(result.error)).toMatchObject({
         code: "configuration_invalid",
         category: "invalid_input",
-        message: `REA configuration is invalid: ${constraint}.`,
+        message: `NRE configuration is invalid: ${constraint}.`,
         remediation: { action: expect.stringContaining(`Correct ${setting} `) },
         details: { settings: [{ setting, constraint }] },
       });
@@ -443,8 +443,8 @@ describe("JEB MCP timeout configuration", () => {
       value: 900_000,
     });
     expect(
-      parseEnvironmentValues({ REA_JEB_MCP_TIMEOUT_MS: "900000" }),
-    ).toMatchObject({ ok: true, value: { REA_JEB_MCP_TIMEOUT_MS: 900_000 } });
+      parseEnvironmentValues({ NRE_JEB_MCP_TIMEOUT_MS: "900000" }),
+    ).toMatchObject({ ok: true, value: { NRE_JEB_MCP_TIMEOUT_MS: 900_000 } });
   });
 
   it.each(["", "0", "-1", "1.5", "1e3", "invalid", "2147483648"])(
@@ -456,7 +456,7 @@ describe("JEB MCP timeout configuration", () => {
         details: {
           settings: [
             {
-              setting: "REA_JEB_MCP_TIMEOUT_MS",
+              setting: "NRE_JEB_MCP_TIMEOUT_MS",
               constraint: expect.any(String),
             },
           ],
@@ -482,7 +482,7 @@ describe("default Linux Hopper launcher", () => {
     },
   );
 
-  it("prefers REA-managed and user-local launchers over system paths", () => {
+  it("prefers NRE-managed and user-local launchers over system paths", () => {
     expect(
       defaultHopperLauncherPath(
         "linux",
@@ -499,11 +499,11 @@ describe("default Linux Hopper launcher", () => {
         "linux",
         home,
         withExecutables([
-          `${home}/.local/share/rea/hopper/bin/Hopper`,
+          `${home}/.local/share/nre/hopper/bin/Hopper`,
           "/usr/bin/hopper",
         ]),
       ),
-    ).toBe(`${home}/.local/share/rea/hopper/bin/Hopper`);
+    ).toBe(`${home}/.local/share/nre/hopper/bin/Hopper`);
   });
 });
 
@@ -547,7 +547,7 @@ describe("Ghidra decompile limit configuration", () => {
       const result = parseConfig(
         value === undefined
           ? {}
-          : { REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: value },
+          : { NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: value },
       );
       if (!result.ok) throw result.error;
       expect(result.value.ghidraDecompileTimeoutSeconds).toBe(expected);
@@ -558,7 +558,7 @@ describe("Ghidra decompile limit configuration", () => {
     "rejects malformed Ghidra decompile limit %j with its setting",
     (value) => {
       const result = parseConfig({
-        REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: value,
+        NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: value,
       });
       if (result.ok) throw new Error("Expected invalid decompile limit");
       expect(projectAnalysisError(result.error)).toMatchObject({
@@ -566,7 +566,7 @@ describe("Ghidra decompile limit configuration", () => {
         details: {
           settings: [
             {
-              setting: "REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
+              setting: "NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
               constraint: expect.any(String),
             },
           ],

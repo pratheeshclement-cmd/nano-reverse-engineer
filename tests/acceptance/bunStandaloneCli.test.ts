@@ -18,7 +18,7 @@ import {
 cliTest(
   "inventories and extracts Bun source without executing its carrier",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-bun-cli-");
+    const root = await createTestTempDirectory("nre-bun-cli-");
     const source = join(root, "app");
     const contents = "console.log('Bun fixture');\n";
     await writeFile(

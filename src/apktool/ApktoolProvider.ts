@@ -88,7 +88,7 @@ const apktoolDecodeTimeoutGuidance = (
   userMessage: `apktool decode reached its ${String(timeoutMs)} ms wall-clock deadline (deadlineExpired).`,
   remediationAction: `${
     timeoutMs < MAX_APKTOOL_DECODE_TIMEOUT_MS
-      ? `Increase decode_timeout_ms above ${String(timeoutMs)} (integer milliseconds from 1 to ${String(MAX_APKTOOL_DECODE_TIMEOUT_MS)}; omitted means ${String(DEFAULT_APKTOOL_DECODE_TIMEOUT_MS)}), or use rea decode-android-resources <path> --decode-timeout-ms <milliseconds> on the CLI.`
+      ? `Increase decode_timeout_ms above ${String(timeoutMs)} (integer milliseconds from 1 to ${String(MAX_APKTOOL_DECODE_TIMEOUT_MS)}; omitted means ${String(DEFAULT_APKTOOL_DECODE_TIMEOUT_MS)}), or use nre decode-android-resources <path> --decode-timeout-ms <milliseconds> on the CLI.`
       : `decode_timeout_ms is already at the maximum ${String(MAX_APKTOOL_DECODE_TIMEOUT_MS)} ms; do not increase it further.`
   } A change applies on the next decode. It does not raise the ${String(DECODE_MAX_OUTPUT_BYTES)}-byte output capture allowance or the version probe; both have no runtime override. Allow execution, cleanup and delivery headroom in the outer MCP client deadline. Confirm outstanding work and cleanup before retrying.`,
 });
@@ -126,7 +126,7 @@ const runApktool = async (
     invocation = apktoolInvocation(selection, arguments_, environment);
   } catch (cause) {
     if (!(cause instanceof WindowsBatchCommandError)) throw cause;
-    const reason = `The apktool batch launcher cannot receive REA's decode paths through cmd.exe: ${cause.message}`;
+    const reason = `The apktool batch launcher cannot receive NRE's decode paths through cmd.exe: ${cause.message}`;
     return err(
       new AnalysisCapabilityUnavailableError(
         APKTOOL_PROVIDER_IDENTITY.id,
@@ -526,7 +526,7 @@ export class ApktoolProvider {
     clientLimitations: readonly string[],
     signal: AbortSignal | undefined,
   ): Promise<Result<AnalysisExecution, AnalysisError>> {
-    const runtime = await PrivateRuntimeRoot.create({ prefix: "rea-apktool-" });
+    const runtime = await PrivateRuntimeRoot.create({ prefix: "nre-apktool-" });
     const resources = new ApktoolWorkspace(
       runtime,
       this.#commands,

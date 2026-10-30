@@ -21,7 +21,7 @@ const currentCoverage = () => {
 };
 
 const evaluate = async (cli: TestCli, coverage: unknown) => {
-  const root = await createTestTempDirectory("rea-coverage-cli-");
+  const root = await createTestTempDirectory("nre-coverage-cli-");
   const input = join(root, "request.json");
   await writeFile(
     input,

@@ -129,12 +129,12 @@ async function standaloneConnections() {
     const transport = new StdioClientTransport({
       command: process.execPath,
       args: [
-        fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../scripts/nre.mjs", import.meta.url)),
         "mcp",
       ],
       env: {
         PATH: process.env.PATH ?? "/usr/bin:/bin",
-        REA_LOG_LEVEL: "silent",
+        NRE_LOG_LEVEL: "silent",
       },
       stderr: "pipe",
     });

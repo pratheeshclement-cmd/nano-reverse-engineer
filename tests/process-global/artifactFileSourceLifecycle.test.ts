@@ -80,7 +80,7 @@ const carriers = [
 ] as const;
 
 const carrierFile = async (carrier: (typeof carriers)[number]) => {
-  const root = await createTestTempDirectory("rea-artifact-source-lifecycle-");
+  const root = await createTestTempDirectory("nre-artifact-source-lifecycle-");
   const path = join(root, "carrier.bin");
   const bytes = carrier.bytes();
   await writeFile(path, bytes);

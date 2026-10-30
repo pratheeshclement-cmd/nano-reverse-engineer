@@ -224,7 +224,7 @@ export class CdpRuntimeSession {
     );
   }
 
-  /** Cleanup uses its own deadline after caller cancellation, then closes REA's transport. */
+  /** Cleanup uses its own deadline after caller cancellation, then closes NRE's transport. */
   async close(
     previousError: AnalysisError | undefined,
     objectGroup?: string,
@@ -291,7 +291,7 @@ export class CdpRuntimeSession {
           cause instanceof AnalysisError
             ? cause
             : new ProviderCleanupError(
-                "rea-cdp-browser",
+                "nre-cdp-browser",
                 [this.target.target_id],
                 {
                   reason:
@@ -307,7 +307,7 @@ export class CdpRuntimeSession {
     return failures.length === 0
       ? undefined
       : new ProviderCleanupError(
-          "rea-cdp-browser",
+          "nre-cdp-browser",
           [this.target.target_id, "runtime-instrumentation"],
           {
             target_id: this.target.target_id,

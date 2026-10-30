@@ -71,7 +71,7 @@ describe("setup workflow", () => {
     host.clientResults.set("codex", {
       status: "failed",
       reason: "rollback",
-      backupPath: "/fixture/codex.json.rea.backup",
+      backupPath: "/fixture/codex.json.nre.backup",
       failure: {
         kind: "restore",
         path: "/fixture/codex.json",
@@ -87,7 +87,7 @@ describe("setup workflow", () => {
     expect(result.clients.codex).toEqual({
       status: "failed",
       reason: "rollback",
-      backupPath: "/fixture/codex.json.rea.backup",
+      backupPath: "/fixture/codex.json.nre.backup",
       failure: {
         kind: "restore",
         path: "/fixture/codex.json",
@@ -95,7 +95,7 @@ describe("setup workflow", () => {
       },
     });
     expect(result.remediation).toContain("permission denied");
-    expect(result.remediation).toContain("/fixture/codex.json.rea.backup");
+    expect(result.remediation).toContain("/fixture/codex.json.nre.backup");
   });
 
   it("explains skill installation recovery", async () => {
@@ -116,7 +116,7 @@ describe("setup workflow", () => {
     );
     expect(result.status).toBe("needs_human");
     expect(result.code).toBe("skill_install_failed");
-    expect(result.remediation).toContain("REA skill write failed at");
+    expect(result.remediation).toContain("NRE skill write failed at");
     expect(result.remediation).toContain("injected skill write failure");
     expect(result.remediation).toContain(
       "Correct the reported skill installation failure and rerun setup.",
@@ -137,7 +137,7 @@ describe("setup workflow", () => {
       host,
     );
     expect(result.remediation).toBe(
-      "Run rea doctor and apply each reported remediation.",
+      "Run nre doctor and apply each reported remediation.",
     );
   });
 
@@ -449,7 +449,7 @@ describe("setup scoped readiness", () => {
       {
         client: "codex",
         config_path: "/codex.toml",
-        command: ["rea", "mcp"],
+        command: ["nre", "mcp"],
         state: "aligned",
         remediation: null,
       },
@@ -593,7 +593,7 @@ describe("setup Hopper install eligibility", () => {
       label: "Windows",
       platform: "win32",
       refusal:
-        "REA supports Hopper on macOS and selected x86_64 Linux distributions.",
+        "NRE supports Hopper on macOS and selected x86_64 Linux distributions.",
     },
     {
       label: "macOS 11",
@@ -636,7 +636,7 @@ describe("setup Hopper install eligibility", () => {
       expect(advised.status).toBe("needs_human");
       expect(advised.remediation).not.toContain("--install-hopper");
       expect(advised.remediation).toContain(
-        "Run rea doctor and apply each reported remediation.",
+        "Run nre doctor and apply each reported remediation.",
       );
       expect(advised.remediation).toContain("hosted computer");
       expect(await proposesHopper(host)).toBe(false);

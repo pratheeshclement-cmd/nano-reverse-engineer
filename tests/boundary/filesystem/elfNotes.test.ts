@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("ELF note stable filesystem boundary", () => {
   it("reports non-file and malformed ELF selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-elf-notes-files-");
+    const root = await createTestTempDirectory("nre-elf-notes-files-");
     const path = join(root, "program");
     const alias = join(root, "alias");
     const malformed = join(root, "malformed");
@@ -39,7 +39,7 @@ describe("ELF note stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-elf-notes-budget-");
+    const root = await createTestTempDirectory("nre-elf-notes-budget-");
     const path = join(root, "program");
     await writeFile(path, elfNoteFixture());
     const service = createElfNotesService();

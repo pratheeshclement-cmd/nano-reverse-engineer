@@ -23,7 +23,7 @@ cliTest.for(
 )(
   "preserves loadFile host path semantics through $surface: $declared",
   async ({ surface, declared, status, path }, { cli }) => {
-    const root = await createTestTempDirectory("rea-windows-loadfile-path-");
+    const root = await createTestTempDirectory("nre-windows-loadfile-path-");
     await writeFixtureFiles(root, {
       "app/package.json": JSON.stringify({ main: "main.cjs" }),
       "app/main.cjs": [

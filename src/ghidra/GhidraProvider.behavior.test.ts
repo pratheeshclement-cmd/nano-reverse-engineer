@@ -579,7 +579,7 @@ describe("Ghidra platform support", () => {
     "records explicit Windows $architecture processor selection without claiming loader selection",
     async ({ architecture, languageId }) => {
       const directory = await mkdtemp(
-        join(tmpdir(), "rea-arm-profile-language-"),
+        join(tmpdir(), "nre-arm-profile-language-"),
       );
       onTestFinished(() => rm(directory, { recursive: true, force: true }));
       const languages = join(
@@ -593,8 +593,8 @@ describe("Ghidra platform support", () => {
       );
       const config = parseConfig({
         GHIDRA_INSTALL_DIR: directory,
-        REA_GHIDRA_LANGUAGE_ID: languageId,
-        REA_GHIDRA_COMPILER_SPEC_ID: "windows",
+        NRE_GHIDRA_LANGUAGE_ID: languageId,
+        NRE_GHIDRA_COMPILER_SPEC_ID: "windows",
       });
       if (!config.ok) throw config.error;
       const ghidra = new GhidraProvider(
@@ -942,7 +942,7 @@ describe("Ghidra Windows PE fixture admission", () => {
         const path = join(
           root,
           "build/fixtures",
-          `rea-ghidra-windows${suffix}.${dll ? "dll" : "exe"}`,
+          `nre-ghidra-windows${suffix}.${dll ? "dll" : "exe"}`,
         );
         const bytes = await readFile(path);
         const metadata = parseExecutableHeader(bytes, "x64");
@@ -1016,7 +1016,7 @@ describe("Ghidra startup configuration", () => {
     ] as const) {
       const config = parseConfig({
         GHIDRA_INSTALL_DIR: INSTALL,
-        ...(raw === undefined ? {} : { REA_GHIDRA_STARTUP_TIMEOUT_MS: raw }),
+        ...(raw === undefined ? {} : { NRE_GHIDRA_STARTUP_TIMEOUT_MS: raw }),
       });
       if (!config.ok) throw config.error;
       let timeout: number | undefined;
@@ -1359,19 +1359,19 @@ describe("Ghidra decompiler failure projection", () => {
         message: `${message}. Only the decompiler failed for this procedure; the Ghidra session remains usable.`,
         details: { diagnostics: { remote_code: code } },
       });
-      expect(projected.message).not.toContain("rea doctor");
+      expect(projected.message).not.toContain("nre doctor");
       expect(projected.remediation.action).toContain("analyze_function");
       expect(projected.remediation.action).toContain(
         "facet_availability.pseudocode",
       );
-      expect(projected.remediation.action).not.toContain("rea doctor");
+      expect(projected.remediation.action).not.toContain("nre doctor");
     }
   });
 
   it("reports one procedure's decompile limit as a request timeout", async () => {
     const code = "decompile_timed_out";
     const message =
-      "Ghidra decompilation of 0x401000 exceeded the 5-second configured decompilation limit (ghidra.decompile_timeout_seconds; launch seed REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS)";
+      "Ghidra decompilation of 0x401000 exceeded the 5-second configured decompilation limit (ghidra.decompile_timeout_seconds; launch seed NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS)";
     const ghidra = provider(
       installationHost(),
       () => ({
@@ -1389,7 +1389,7 @@ describe("Ghidra decompiler failure projection", () => {
           ),
         close: () => Promise.resolve(ok(null)),
       }),
-      { REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "5" },
+      { NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "5" },
     );
     const client = await createElfClient(ghidra);
     const result = await client.execute("procedure_pseudo_code", {
@@ -1412,12 +1412,12 @@ describe("Ghidra decompiler failure projection", () => {
       });
       const action = projected.remediation.action;
       expect(action).toContain("analyze_function");
-      expect(action).toContain("REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS");
+      expect(action).toContain("NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS");
       expect(action).toContain("tool-call deadline");
       expect(action).toContain("new Codex/Kimi registrations");
       expect(action).toContain("preserves existing positive values");
       expect(action).toContain("edit existing deadlines yourself");
-      expect(action).not.toContain("rea doctor");
+      expect(action).not.toContain("nre doctor");
     }
   });
 });
@@ -1434,7 +1434,7 @@ describe("Ghidra failures during cancellation cleanup", () => {
         remoteCode: "decompile_timed_out",
         projectedCode: "provider_timeout",
         message:
-          "Ghidra decompilation of 0x401000 exceeded the 5-second configured decompilation limit (ghidra.decompile_timeout_seconds; launch seed REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS)",
+          "Ghidra decompilation of 0x401000 exceeded the 5-second configured decompilation limit (ghidra.decompile_timeout_seconds; launch seed NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS)",
       },
       {
         remoteCode: "regex_stack_exhausted",
@@ -1478,7 +1478,7 @@ describe("Ghidra failures during cancellation cleanup", () => {
             ),
           close: () => Promise.resolve(ok(null)),
         }),
-        { REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "5" },
+        { NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS: "5" },
       );
       const client = await createElfClient(ghidra);
       const result =
@@ -1508,7 +1508,7 @@ describe("Ghidra failures during cancellation cleanup", () => {
       expect(explanation).toContain(
         cleanupFailed
           ? "retry retained cleanup"
-          : "REA closed the Ghidra session",
+          : "NRE closed the Ghidra session",
       );
       if (cleanupFailed) {
         expect(explanation).not.toContain(
@@ -1889,7 +1889,7 @@ it("returns read-only NativeAOT metadata inline and drills down by derived Metho
               status: "complete",
               analysis_mode: "read-only-derived-overlay",
               method_tables: 3,
-              frozen_strings: [{ value: "REA_NATIVEAOT_FROZEN" }],
+              frozen_strings: [{ value: "NRE_NATIVEAOT_FROZEN" }],
             },
           ],
         },
@@ -2797,7 +2797,7 @@ describe("Ghidra NativeAOT snapshot budget", () => {
 });
 
 const sessionInfo = () => ({
-  name: "REA Ghidra bridge" as const,
+  name: "NRE Ghidra bridge" as const,
   run_id: "11111111-1111-4111-8111-111111111111",
   profile_digest: "a".repeat(64),
   provider: { id: "ghidra" as const, version: "12.1.4" },
@@ -2958,14 +2958,14 @@ describe("Ghidra extension failures", () => {
     "preserves %s recovery diagnostics and closes without restarting",
     async (status) => {
       const directory = await mkdtemp(
-        join(tmpdir(), "rea-provider-extension-"),
+        join(tmpdir(), "nre-provider-extension-"),
       );
       try {
         const jar = join(directory, "addon.jar");
         await writeFile(jar, Buffer.from([0x50, 0x4b, 3, 4]));
         const config = parseConfig({
           GHIDRA_INSTALL_DIR: INSTALL,
-          REA_GHIDRA_NATIVEAOT_JAR: jar,
+          NRE_GHIDRA_NATIVEAOT_JAR: jar,
         });
         if (!config.ok) throw config.error;
         let starts = 0,
@@ -3201,15 +3201,15 @@ describe("Ghidra deadline guidance", () => {
       details: { timeout_ms: 250 },
     });
     expect(projected.message).toContain(
-      "250 ms startup deadline (REA_GHIDRA_STARTUP_TIMEOUT_MS)",
+      "250 ms startup deadline (NRE_GHIDRA_STARTUP_TIMEOUT_MS)",
     );
     expect(projected.remediation.action).toContain(
       "ghidra.startup_timeout_ms and action set above 250",
     );
     expect(projected.remediation.action).toContain(
-      "REA_GHIDRA_DISABLED_ANALYZERS",
+      "NRE_GHIDRA_DISABLED_ANALYZERS",
     );
-    expect(projected.remediation.action).toContain("without restarting REA");
+    expect(projected.remediation.action).toContain("without restarting NRE");
     expect(projected.remediation.action).toContain("Export useful Evidence");
     expect(projected.details).toMatchObject({
       limit: {
@@ -3218,7 +3218,7 @@ describe("Ghidra deadline guidance", () => {
         applies_at: "next_startup",
       },
     });
-    expect(projected.remediation.action).not.toContain("rea doctor");
+    expect(projected.remediation.action).not.toContain("nre doctor");
   });
 
   it("keeps generic guidance for a bridge request deadline", async () => {
@@ -3227,9 +3227,9 @@ describe("Ghidra deadline guidance", () => {
       "Ghidra bridge request timed out",
     );
     expect(projected.code).toBe("provider_timeout");
-    expect(projected.message).not.toContain("REA_GHIDRA_STARTUP_TIMEOUT_MS");
+    expect(projected.message).not.toContain("NRE_GHIDRA_STARTUP_TIMEOUT_MS");
     expect(projected.remediation.action).not.toContain(
-      "REA_GHIDRA_STARTUP_TIMEOUT_MS",
+      "NRE_GHIDRA_STARTUP_TIMEOUT_MS",
     );
   });
 });
@@ -3238,12 +3238,12 @@ describe("Ghidra analysis seeds and configured language", () => {
   const seedSession = async (
     report: (sha256: string) => GhidraSeedReport | undefined,
   ) => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-provider-seeds-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-provider-seeds-"));
     const seeds = join(directory, "seeds.tsv");
     await writeFile(seeds, "0x401000\tfunction\tentry\n0x401010\tcode\n");
     const config = parseConfig({
       GHIDRA_INSTALL_DIR: INSTALL,
-      REA_GHIDRA_SEED_FILE: seeds,
+      NRE_GHIDRA_SEED_FILE: seeds,
     });
     if (!config.ok) throw config.error;
     const counts = { starts: 0, calls: 0, closes: 0 };
@@ -3290,7 +3290,7 @@ describe("Ghidra analysis seeds and configured language", () => {
     };
   };
   const applied = (sha256: string): GhidraSeedReport => ({
-    format: "rea-ghidra-seeds-v1",
+    format: "nre-ghidra-seeds-v1",
     sha256,
     entries: 2,
     function_created: 1,
@@ -3355,8 +3355,8 @@ describe("Ghidra analysis seeds and configured language", () => {
     if (!resolved.ok || resolved.value.profile === null)
       throw new Error("expected profile");
     for (const environment of [
-      { REA_GHIDRA_SEED_FILE: "/seeds.tsv" },
-      { REA_GHIDRA_LANGUAGE_ID: "x86:LE:32:default" },
+      { NRE_GHIDRA_SEED_FILE: "/seeds.tsv" },
+      { NRE_GHIDRA_LANGUAGE_ID: "x86:LE:32:default" },
     ]) {
       const configured = parseConfig({
         GHIDRA_INSTALL_DIR: INSTALL,
@@ -3406,14 +3406,14 @@ const analyzerReport = (
     status: GhidraDisabledAnalyzerReport["analyzers"][number]["status"],
   ])[]
 ): GhidraDisabledAnalyzerReport => ({
-  format: "rea-ghidra-disabled-analyzers-v1",
+  format: "nre-ghidra-disabled-analyzers-v1",
   analyzers: analyzers.map(([name, status]) => ({ name, status })),
 });
 
 describe("Ghidra disabled analyzer options", () => {
   it("records the configured analyzer options in the analysis profile", async () => {
     const ghidra = configuredProvider({
-      REA_GHIDRA_DISABLED_ANALYZERS:
+      NRE_GHIDRA_DISABLED_ANALYZERS:
         "Objective-C Message Analyzer,Decompiler Switch Analysis",
     });
     const resolved = await ghidra.resolveAnalysisProfile(
@@ -3436,7 +3436,7 @@ describe("Ghidra disabled analyzer options", () => {
   it("hands the configured analyzers to the launcher for a matching profile", async () => {
     const launchers: GhidraHeadlessLauncher[] = [];
     const ghidra = configuredProvider(
-      { REA_GHIDRA_DISABLED_ANALYZERS: "Objective-C Message Analyzer" },
+      { NRE_GHIDRA_DISABLED_ANALYZERS: "Objective-C Message Analyzer" },
       (options) => {
         launchers.push(options.launcher as GhidraHeadlessLauncher);
         return {
@@ -3471,7 +3471,7 @@ describe("Ghidra disabled analyzer options", () => {
   it("binds analyzer overrides and raw import settings in one profile", async () => {
     const launchers: GhidraHeadlessLauncher[] = [];
     const ghidra = configuredProvider(
-      { REA_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis" },
+      { NRE_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis" },
       (options) => {
         launchers.push(options.launcher as GhidraHeadlessLauncher);
         return {
@@ -3531,7 +3531,7 @@ describe("Ghidra disabled analyzer options", () => {
     if (!plain.ok || plain.value.profile === null)
       throw new Error("expected profile");
     const configuredProvider2 = configuredProvider({
-      REA_GHIDRA_DISABLED_ANALYZERS: "Objective-C Message Analyzer",
+      NRE_GHIDRA_DISABLED_ANALYZERS: "Objective-C Message Analyzer",
     });
     const configured = await configuredProvider2.resolveAnalysisProfile(target);
     if (!configured.ok || configured.value.profile === null)
@@ -3539,12 +3539,12 @@ describe("Ghidra disabled analyzer options", () => {
     for (const [profile, environment] of [
       [
         plain.value.profile,
-        { REA_GHIDRA_DISABLED_ANALYZERS: "Objective-C Message Analyzer" },
+        { NRE_GHIDRA_DISABLED_ANALYZERS: "Objective-C Message Analyzer" },
       ],
       [configured.value.profile, {}],
       [
         configured.value.profile,
-        { REA_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis" },
+        { NRE_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis" },
       ],
     ] as const) {
       let starts = 0;
@@ -3571,7 +3571,7 @@ describe("Ghidra disabled analyzer applicability per program", () => {
   ) => {
     const counts = { starts: 0, calls: 0, closes: 0 };
     const ghidra = configuredProvider(
-      setting === undefined ? {} : { REA_GHIDRA_DISABLED_ANALYZERS: setting },
+      setting === undefined ? {} : { NRE_GHIDRA_DISABLED_ANALYZERS: setting },
       () => ({
         start: () => {
           counts.starts++;
@@ -3674,7 +3674,7 @@ describe("Ghidra disabled analyzer applicability per program", () => {
     if (!failed.ok) {
       expect(failed.error._tag).toBe("ProviderAdapterError");
       expect(failed.error.diagnostics?.reason).toEqual(
-        expect.stringContaining("REA_GHIDRA_DISABLED_ANALYZERS"),
+        expect.stringContaining("NRE_GHIDRA_DISABLED_ANALYZERS"),
       );
     }
     expect(counts).toEqual({ starts: 1, calls: 0, closes: 1 });
@@ -3749,7 +3749,7 @@ describe("Ghidra queries after the owned provider is lost", () => {
     expect(projected.message).toContain("exited with code 137");
     expect(projected.message).toContain("Call open_binary");
     expect(projected.remediation.action).toContain("Call open_binary");
-    expect(projected.remediation.action).not.toContain("rea doctor");
+    expect(projected.remediation.action).not.toContain("nre doctor");
   });
 
   it("tells the caller to reopen the target when the bridge became unreachable", async () => {
@@ -3769,7 +3769,7 @@ describe("Ghidra queries after the owned provider is lost", () => {
     if (result.ok) return;
     const projected = projectAnalysisError(result.error);
     expect(projected.message).not.toContain("Call open_binary");
-    expect(projected.remediation.action).toContain("rea doctor");
+    expect(projected.remediation.action).toContain("nre doctor");
   });
 
   it("keeps the generic failure when the provider is not known to be lost", async () => {
@@ -3778,7 +3778,7 @@ describe("Ghidra queries after the owned provider is lost", () => {
     expect(result.ok).toBe(false);
     if (result.ok) return;
     expect(projectAnalysisError(result.error).remediation.action).toContain(
-      "rea doctor",
+      "nre doctor",
     );
   });
 
@@ -3868,7 +3868,7 @@ describe("Ghidra exit-signal evidence", () => {
     expect(projected.remediation.action).toContain(
       "host or container termination records",
     );
-    expect(projected.remediation.action).not.toContain("rea doctor");
+    expect(projected.remediation.action).not.toContain("nre doctor");
     expect(projected.remediation.action).not.toContain(
       "GHIDRA_HEADLESS_MAXMEM",
     );
@@ -3906,7 +3906,7 @@ describe("Ghidra OOME error projection", () => {
     expect(projected.message).toContain("Java heap space");
     expect(projected.remediation.action).toContain("GHIDRA_HEADLESS_MAXMEM");
     expect(projected.remediation.action).toContain(
-      "REA_GHIDRA_DISABLED_ANALYZERS",
+      "NRE_GHIDRA_DISABLED_ANALYZERS",
     );
   });
 
@@ -4120,7 +4120,7 @@ describe("Ghidra SIGKILL projection", () => {
       expect(projected.message).toContain("child groups");
       expect(projected.message).not.toContain("process tree");
       expect(projected.remediation.action).toContain("decompiler");
-      expect(projected.remediation.action).not.toContain("rea doctor");
+      expect(projected.remediation.action).not.toContain("nre doctor");
       expect(projected.remediation.action).not.toMatch(
         /increas\w* GHIDRA_HEADLESS_MAXMEM/u,
       );
@@ -4157,7 +4157,7 @@ describe("Ghidra SIGKILL projection", () => {
       expect(projected.code).toBe("execution_failure");
       expect(projected.message).toContain("SIGKILL");
       expect(projected.message).toContain("does not establish its cause");
-      expect(projected.message).not.toContain("before REA stopped it");
+      expect(projected.message).not.toContain("before NRE stopped it");
       expect(projected.message).not.toContain("oom_kill");
       expect(projected.details?.diagnostics).toMatchObject(diagnostics);
     },
@@ -4194,7 +4194,7 @@ describe("Ghidra SIGKILL projection", () => {
     expect(projected.code).toBe("execution_failure");
     expect(projected.message).toContain("SIGKILL");
     expect(projected.message).toContain("does not establish its cause");
-    expect(projected.message).not.toContain("rea doctor");
+    expect(projected.message).not.toContain("nre doctor");
     expect(projected.remediation.action).toContain(
       "host or container termination records",
     );
@@ -4516,7 +4516,7 @@ it("commits native coordinates independently of analyzer choices and preserves r
   };
   const defaultProvider = provider();
   const configured = configuredProvider({
-    REA_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis",
+    NRE_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis",
   });
   const target = executableTarget("elf", "x86_64");
   const baseline = await resolve(defaultProvider, target);
@@ -4555,7 +4555,7 @@ it("session-observation failure clears only its resolved cleanup dependency afte
   let closes = 0;
   let calls = 0;
   const ghidra = configuredProvider(
-    { REA_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis" },
+    { NRE_GHIDRA_DISABLED_ANALYZERS: "Decompiler Switch Analysis" },
     () => ({
       start: async () => ok(sessionInfo()),
       callTool: async () => {
@@ -4588,7 +4588,7 @@ it("session-observation failure clears only its resolved cleanup dependency afte
 
 it("reports every Windows existing-project capability unavailable before open", async () => {
   const ghidra = provider(installationHost("win32"), undefined, {
-    REA_GHIDRA_PROJECT_PATH: join(process.cwd(), "selected.gpr"),
+    NRE_GHIDRA_PROJECT_PATH: join(process.cwd(), "selected.gpr"),
   });
   try {
     expect(
@@ -4618,9 +4618,9 @@ it("reports every Windows existing-project capability unavailable before open", 
   }
 });
 
-it("reports an unsupported existing-project target as an invalid REA_GHIDRA_PROJECT_PATH setting", async () => {
+it("reports an unsupported existing-project target as an invalid NRE_GHIDRA_PROJECT_PATH setting", async () => {
   const ghidra = provider(installationHost(), undefined, {
-    REA_GHIDRA_PROJECT_PATH: join(process.cwd(), "selected.gpr"),
+    NRE_GHIDRA_PROJECT_PATH: join(process.cwd(), "selected.gpr"),
   });
   try {
     const resolved = await ghidra.resolveAnalysisProfile({
@@ -4631,7 +4631,7 @@ it("reports an unsupported existing-project target as an invalid REA_GHIDRA_PROJ
     if (resolved.ok) return;
     expect(resolved.error).toMatchObject({
       _tag: "ConfigurationError",
-      settings: [{ setting: "REA_GHIDRA_PROJECT_PATH" }],
+      settings: [{ setting: "NRE_GHIDRA_PROJECT_PATH" }],
     });
   } finally {
     await ghidra.closeOwnedResources();
@@ -4639,12 +4639,12 @@ it("reports an unsupported existing-project target as an invalid REA_GHIDRA_PROJ
 });
 
 it("keeps saved project reports as shared historical Evidence without applying fresh overrides", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-history-project-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-history-project-"));
   await mkdir(join(root, "history.rep"));
   await writeFile(join(root, "history.gpr"), "marker");
   const prior = {
     analysis_seeds: {
-      format: "rea-ghidra-seeds-v1" as const,
+      format: "nre-ghidra-seeds-v1" as const,
       sha256: "b".repeat(64),
       entries: 0,
       function_created: 0,
@@ -4657,7 +4657,7 @@ it("keeps saved project reports as shared historical Evidence without applying f
       unmapped: 0,
     },
     disabled_analyzers: {
-      format: "rea-ghidra-disabled-analyzers-v1" as const,
+      format: "nre-ghidra-disabled-analyzers-v1" as const,
       analyzers: [
         { name: "Decompiler Parameter ID", status: "disabled" as const },
       ],
@@ -4681,7 +4681,7 @@ it("keeps saved project reports as shared historical Evidence without applying f
       callTool: async () => ok([]),
       close,
     }),
-    { REA_GHIDRA_PROJECT_PATH: join(root, "history.gpr") },
+    { NRE_GHIDRA_PROJECT_PATH: join(root, "history.gpr") },
   );
   onTestFinished(async () => {
     await ghidra.closeOwnedResources();

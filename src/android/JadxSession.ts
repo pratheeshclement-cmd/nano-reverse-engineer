@@ -62,7 +62,7 @@ type JadxCallObservation = {
 /** One owned engine connection; its wire protocol stays inside the Android adapter. */
 export class JadxSession {
   readonly transport: JadxMcpTransport;
-  readonly #client = new Client({ name: "rea-android-adapter", version: "1" });
+  readonly #client = new Client({ name: "nre-android-adapter", version: "1" });
   #loaded: ReturnType<typeof jadxLoadSchema.parse> | undefined;
   #connected = false;
   #partialContext:
@@ -168,7 +168,7 @@ export class JadxSession {
         );
       const tools = this.#tools(request, target, signal, timeoutMs);
       const runtime = jadxRuntimeSchema.parse(
-        await tools.json("rea_jvm_status", {}),
+        await tools.json("nre_jvm_status", {}),
       );
       this.#engineVersion = runtime.engine_reported_version;
       if (runtime.engine_reported_version !== JADX_RELEASE.version)
@@ -287,11 +287,10 @@ export class JadxSession {
             calls: this.#observedCalls.map(({ complete }) => complete),
           },
           subject: target,
-          limitations: [
-            ...(request.operation === "inspect_android_jni_bindings"
+          limitations:
+            request.operation === "inspect_android_jni_bindings"
               ? []
-              : [...JADX_LIMITATIONS, ...androidMappingLimitations(mapping)]),
-          ],
+              : [...JADX_LIMITATIONS, ...androidMappingLimitations(mapping)],
           locations:
             request.operation === "inspect_android_package"
               ? [{ kind: "artifact-path", path: "AndroidManifest.xml" }]
@@ -343,7 +342,7 @@ export class JadxSession {
     };
   }
 
-  /** Whether the selected Java runtime established the REA bridge protocol. */
+  /** Whether the selected Java runtime established the NRE bridge protocol. */
   initialized(): boolean {
     return this.#connected;
   }
@@ -395,7 +394,7 @@ export class JadxSession {
                 retryable: false,
                 remediationAction:
                   failure.memory_area === "heap"
-                    ? "Increase REA_JADX_HEAP_MIB (MiB) in the environment that starts REA, within the host or container memory budget. Review JAVA_TOOL_OPTIONS and other JVM heap overrides. The observed heap is this run's limit, not the heap the APK requires."
+                    ? "Increase NRE_JADX_HEAP_MIB (MiB) in the environment that starts NRE, within the host or container memory budget. Review JAVA_TOOL_OPTIONS and other JVM heap overrides. The observed heap is this run's limit, not the heap the APK requires."
                     : "Review the JVM allocation failure and the host or container memory limits. The observed maximum heap does not establish which memory region was exhausted; increasing heap alone may not help.",
                 diagnostics: {
                   upstream_operation: name,

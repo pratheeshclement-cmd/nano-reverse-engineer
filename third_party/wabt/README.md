@@ -1,7 +1,7 @@
 # Bring-your-own WABT
 
-REA does not bundle, patch, install or download WABT executables. Operators select
-an existing tool directory with `REA_WABT_BIN_DIRECTORY`.
+NRE does not bundle, patch, install or download WABT executables. Operators select
+an existing tool directory with `NRE_WABT_BIN_DIRECTORY`.
 
 - Upstream: https://github.com/WebAssembly/wabt
 - Admitted release: https://github.com/WebAssembly/wabt/releases/tag/1.0.42

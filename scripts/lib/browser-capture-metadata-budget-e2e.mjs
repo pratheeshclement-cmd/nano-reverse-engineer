@@ -10,7 +10,7 @@ const SCRIPT_COUNT = 5;
 
 /** Verify real Chrome scriptParsed metadata is bounded before public capture retention. */
 export async function verifyBrowserCaptureMetadataBudget(endpoint) {
-  const marker = "rea-capture-metadata-budget";
+  const marker = "nre-capture-metadata-budget";
   let page = "";
   let pageReady = false;
   let fixtureOrigin = "";
@@ -105,8 +105,8 @@ export async function verifyBrowserCaptureMetadataBudget(endpoint) {
     );
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
-      env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+      args: [fileURLToPath(new URL("../nre.mjs", import.meta.url)), "mcp"],
+      env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
       stderr: "pipe",
     });
     const client = new Client({ name: "browser-metadata-e2e", version: "1" });

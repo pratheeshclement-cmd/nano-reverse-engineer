@@ -326,7 +326,7 @@ const espAppDescriptorSchema = z.strictObject({
    */
   mmu_page_size: uint8.nullable(),
   /**
-   * The byte ESP-IDF v6.1 names `spi_flash_mode`, as stored; REA does not
+   * The byte ESP-IDF v6.1 names `spi_flash_mode`, as stored; NRE does not
    * interpret it. Releases that reserve this byte leave it zero.
    */
   spi_flash_mode: uint8.nullable(),
@@ -442,7 +442,7 @@ export const espImageSignatureBlockMetadataSchema = z.strictObject({
   image_digest_matches: z.boolean().nullable(),
   /** SHA-256 of the block's public key, the value eFuse key digests hold. */
   public_key_sha256: sha256Hex.nullable(),
-  /** REA checks no key, signature or eFuse. */
+  /** NRE checks no key, signature or eFuse. */
   signature_status: z.literal("unverified"),
 });
 export type EspImageSignatureBlockMetadata = z.infer<

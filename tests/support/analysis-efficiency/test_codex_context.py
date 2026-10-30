@@ -649,7 +649,7 @@ class ContextCaptureTests(unittest.TestCase):
             root = Path(directory)
             runtime = root / 'runtime'
             (runtime / 'scripts').mkdir(parents=True)
-            (runtime / 'scripts' / 'rea.mjs').write_text('')
+            (runtime / 'scripts' / 'nre.mjs').write_text('')
             (runtime / 'package-lock.json').write_text('{}')
             auth_home = root / 'source-auth'
             auth_home.mkdir()

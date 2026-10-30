@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.runIf(process.platform === "win32")(
   "hands native admission one drive path for every separator spelling",
   async () => {
-    const directory = await createTestTempDirectory("rea-win-separators-");
+    const directory = await createTestTempDirectory("nre-win-separators-");
     const path = join(directory, "image.exe");
     await writeFile(path, pe(0x8664));
     const spellings = [

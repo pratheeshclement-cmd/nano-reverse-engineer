@@ -16,22 +16,22 @@ it.each([
   ["inspect-pcap-capture", "/nonexistent/capture.pcap"],
 ])("%s names the missing Wireshark tool to configure", async (...argv) => {
   const result = await serveCli([...argv, "--json"], {
-    REA_TSHARK_COMMAND: "/nonexistent/tshark",
-    REA_CAPINFOS_COMMAND: "/nonexistent/capinfos",
+    NRE_TSHARK_COMMAND: "/nonexistent/tshark",
+    NRE_CAPINFOS_COMMAND: "/nonexistent/capinfos",
   });
   expectConfigurationRefusal(
     result,
     "The selected tshark executable /nonexistent/tshark could not be found",
   );
-  expectConfigurationRefusal(result, "through absolute REA_TSHARK_COMMAND");
+  expectConfigurationRefusal(result, "through absolute NRE_TSHARK_COMMAND");
 });
 
 it("names a relative tool selection as configuration to fix", async () => {
   const result = await serveCli(["inspect-pcap-client", "--json"], {
-    REA_TSHARK_COMMAND: "tshark",
+    NRE_TSHARK_COMMAND: "tshark",
   });
   expectConfigurationRefusal(
     result,
-    "REA_TSHARK_COMMAND must be an absolute path to the tshark binary",
+    "NRE_TSHARK_COMMAND must be an absolute path to the tshark binary",
   );
 });

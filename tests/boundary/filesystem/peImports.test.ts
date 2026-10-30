@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("PE import stable filesystem boundary", () => {
   it("reports non-file and malformed PE selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-pe-imports-files-");
+    const root = await createTestTempDirectory("nre-pe-imports-files-");
     const path = join(root, "app.exe");
     const alias = join(root, "alias.exe");
     const malformed = join(root, "malformed.exe");
@@ -39,7 +39,7 @@ describe("PE import stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-pe-imports-budget-");
+    const root = await createTestTempDirectory("nre-pe-imports-budget-");
     const path = join(root, "app.exe");
     await writeFile(path, peImportImage());
     const service = createPeImportsService();
@@ -55,7 +55,7 @@ describe("PE import stable filesystem boundary", () => {
   });
 
   it("derives limit recovery from the parser's structured limit tag", async () => {
-    const root = await createTestTempDirectory("rea-pe-imports-limits-");
+    const root = await createTestTempDirectory("nre-pe-imports-limits-");
     const twoDlls = join(root, "two.exe");
     const longNames = join(root, "names.exe");
     await writeFile(

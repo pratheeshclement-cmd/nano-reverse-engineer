@@ -79,7 +79,7 @@ packageCommands = await createActualCommands({
   ...options,
   launcher: async (input) => {
     const nested = input.arguments.includes(nestedVerifier);
-    if (nested) appendFileSync(process.env.OWNERSHIP_EVENTS, JSON.stringify({ kind: "command", runId: input.runId, inheritedRunId: process.env.REA_PROCESS_RUN_ID }) + "\\n");
+    if (nested) appendFileSync(process.env.OWNERSHIP_EVENTS, JSON.stringify({ kind: "command", runId: input.runId, inheritedRunId: process.env.NRE_PROCESS_RUN_ID }) + "\\n");
     const acquired = await spawnOwnedProviderProcess(input);
     if (!nested) return acquired;
     return {
@@ -110,7 +110,7 @@ process.on("SIGTERM", () => {
   appendFileSync(process.env.OWNERSHIP_EVENTS, JSON.stringify({ kind: "descendant-stopped", rootExists: existsSync(dirname(process.env.HOME)) }) + "\\n");
   process.exit(0);
 });
-process.send({ pid: process.pid, runId: process.env.REA_PROCESS_RUN_ID });
+process.send({ pid: process.pid, runId: process.env.NRE_PROCESS_RUN_ID });
 setInterval(() => {}, 1000);
 `)};
 const child = spawn(process.execPath, ["--eval", childSource], { stdio: ["ignore", "ignore", "ignore", "ipc"] });
@@ -122,7 +122,7 @@ process.on("SIGTERM", () => {
   record({ kind: "leader-stopped", rootExists: existsSync(runtime) });
   process.exit(0);
 });
-record({ kind: "ready", runtime, leader: process.pid, descendant: ready.pid, runId: process.env.REA_PROCESS_RUN_ID, descendantRunId: ready.runId });
+record({ kind: "ready", runtime, leader: process.pid, descendant: ready.pid, runId: process.env.NRE_PROCESS_RUN_ID, descendantRunId: ready.runId });
 process.stdout.write("nested ready\\n");
 setInterval(() => {}, 1000);
 `;
@@ -248,7 +248,7 @@ it.skipIf(process.platform === "win32").each([
 ])(
   "joins a real packaged-verifier descendant before root cleanup (denied: $denied, assertion failure: $harnessFailure)",
   async ({ denied, harnessFailure }) => {
-    const workspace = await createTestWorkspace("rea-packaged-wasm-owner-");
+    const workspace = await createTestWorkspace("nre-packaged-wasm-owner-");
     const events = workspace.path("events.jsonl");
     const report = workspace.path("report.json");
     const allow = workspace.path("allow-cleanup");
@@ -294,7 +294,7 @@ it.skipIf(process.platform === "win32").each([
         command: process.execPath,
         arguments: [workspace.path("harness.mjs")],
         cwd: workspace.root,
-        runId: `rea-packaged-wasm-test-${randomUUID()}`,
+        runId: `nre-packaged-wasm-test-${randomUUID()}`,
         sweepTokenOwnedProcesses: true,
         stdin: "pipe",
         hostEnvironment: {

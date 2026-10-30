@@ -67,7 +67,7 @@ const earlierArtifact = (
 it("reports a missing Windows native control as an unavailable capability", async () => {
   const platform = Object.getOwnPropertyDescriptor(process, "platform")!;
   const spawns: string[] = [];
-  const parent = await createTestTempDirectory("rea-native-control-");
+  const parent = await createTestTempDirectory("nre-native-control-");
   const root = join(parent, "runtime");
   await mkdir(root);
   let rootClosed = false;
@@ -125,7 +125,7 @@ it("reports a missing Windows native control as an unavailable capability", asyn
       ),
       remediation: {
         action: expect.stringContaining(
-          "matching current Windows x64 REA package",
+          "matching current Windows x64 NRE package",
         ),
       },
       details: {

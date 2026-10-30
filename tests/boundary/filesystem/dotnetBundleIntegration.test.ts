@@ -8,7 +8,7 @@ import { extractArtifact } from "../../../src/artifacts/extraction/ArtifactExtra
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("shares a single marker scan through extraction preflight, inventory and materialization", async () => {
-  const root = await createTestTempDirectory("rea-dotnet-shared-scan-");
+  const root = await createTestTempDirectory("nre-dotnet-shared-scan-");
   const path = join(root, "host");
   const member = Buffer.from("owned .NET resource".repeat(128));
   await writeFile(

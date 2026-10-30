@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 /** Verify decoded return evidence and distinct non-return flows on owned fixtures. */
 export async function verifyGhidraInstructionFlow(call, names, cli) {
   const leaf = names.find((item) =>
-    item.value.endsWith("rea_ghidra_inventory_leaf"),
+    item.value.endsWith("nre_ghidra_inventory_leaf"),
   );
   assert.ok(leaf, "Source fixture lacks its returning leaf");
   const leafInstructions = await inspectFunction(call, leaf.address);
@@ -23,10 +23,10 @@ export async function verifyGhidraInstructionFlow(call, names, cli) {
   );
 
   const controls = [
-    ["rea_ghidra_flow_return", "RET", "c3"],
-    ["rea_ghidra_flow_cleanup_return", "RET", "c21000"],
-    ["rea_ghidra_flow_shared_tail", "JMP", null],
-    ["rea_ghidra_flow_trap", "UD2", "0f0b"],
+    ["nre_ghidra_flow_return", "RET", "c3"],
+    ["nre_ghidra_flow_cleanup_return", "RET", "c21000"],
+    ["nre_ghidra_flow_shared_tail", "JMP", null],
+    ["nre_ghidra_flow_trap", "UD2", "0f0b"],
   ];
   let checked = 0;
   for (const [symbol, mnemonic, bytes] of controls) {

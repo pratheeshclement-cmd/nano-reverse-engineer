@@ -6,7 +6,7 @@
     <title>Native Binary Analysis — Nre</title>
     <meta
       name="description"
-      content="Recover a native calculation with Nre: inspect instructions, follow a caller, Nred constants and check reconstructed C."
+      content="Recover a native calculation with Nre: inspect instructions, follow a caller, Read constants and check reconstructed C."
     />
     <!-- website:sharing:start -->
     <!-- prettier-ignore -->
@@ -68,7 +68,7 @@
     <!-- prettier-ignore -->
     <meta property="og:title" content="Native Binary Analysis — Nre" />
     <!-- prettier-ignore -->
-    <meta property="og:description" content="Recover a native calculation with Nre: inspect instructions, follow a caller, Nred constants and check reconstructed C." />
+    <meta property="og:description" content="Recover a native calculation with Nre: inspect instructions, follow a caller, Read constants and check reconstructed C." />
     <!-- prettier-ignore -->
     <meta property="og:url" content="https://Nre.tools/guides/native/" />
     <!-- prettier-ignore -->
@@ -89,7 +89,7 @@
     <!-- prettier-ignore -->
     <meta name="twitter:title" content="Native Binary Analysis — Nre" />
     <!-- prettier-ignore -->
-    <meta name="twitter:description" content="Recover a native calculation with Nre: inspect instructions, follow a caller, Nred constants and check reconstructed C." />
+    <meta name="twitter:description" content="Recover a native calculation with Nre: inspect instructions, follow a caller, Read constants and check reconstructed C." />
     <!-- prettier-ignore -->
     <meta name="twitter:image" content="https://Nre.tools/assets/social-card.png" />
     <!-- prettier-ignore -->
@@ -136,7 +136,7 @@
           </button>
           <a
             class="nav-github"
-            href="https://github.com/morluto/Nre"
+            href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer"
             aria-label="Nre on GitHub"
             title="Nre on GitHub"
           >
@@ -213,7 +213,7 @@
           <ul>
             <li><a href="#example">The example</a></li>
             <li><a href="#ask">Ask your agent</a></li>
-            <li><a href="#follow">Nred the Nre results</a></li>
+            <li><a href="#follow">Read the Nre results</a></li>
             <li><a href="#result">Recover and check</a></li>
             <li><a href="#try">Use your own binary</a></li>
           </ul>
@@ -254,7 +254,7 @@
                 </li>
                 <li>
                   <strong>Constants:</strong> fixed numbers stored in the
-                  program, Nred as raw bytes and decoded.
+                  program, Read as raw bytes and decoded.
                 </li>
               </ul>
             </details>
@@ -267,7 +267,7 @@
                   <span class="flow-label">01 · Instructions</span
                   ><span class="flow-node">An integer input</span
                   ><span class="flow-note"
-                    >A stack Nred supplies the value used by the floating-point
+                    >A stack Read supplies the value used by the floating-point
                     instructions.</span
                   >
                 </li>
@@ -311,7 +311,7 @@
             </p>
             <details class="evidence-details">
               <summary>Which analysis tool should I use?</summary>
-              <p>Nre needs one of these to Nred native programs:</p>
+              <p>Nre needs one of these to Read native programs:</p>
               <ul>
                 <li>
                   <strong>Hopper</strong> (macOS or Linux): Nre's setup detects
@@ -387,8 +387,8 @@
             </details>
           </section>
           <section class="article-section" id="follow">
-            <h2>Nred the Nre results</h2>
-            <h3>Nred the input</h3>
+            <h2>Read the Nre results</h2>
+            <h3>Read the input</h3>
             <div class="code-block">
               <div class="code-header">
                 <span>Nre instruction excerpt · 0x406409</span>
@@ -416,7 +416,7 @@ CALL 0x00406400</code></pre>
               multiply the tile coordinate by 30; adding <code>0x14</code> (20)
               gives the brick's screen position.
             </p>
-            <h3 class="small-heading">Nred the referenced constants</h3>
+            <h3 class="small-heading">Read the referenced constants</h3>
             <div class="code-block">
               <div class="code-header">
                 <span
@@ -494,7 +494,7 @@ return (DxBallInt)pan;</code></pre>
               reuse the imported binary while that session is open.
             </p>
             <p>
-              Nred the pseudocode alongside instructions and references. When a
+              Read the pseudocode alongside instructions and references. When a
               result leaves a call or value unresolved, use that location as the
               next question.
             </p>
@@ -510,8 +510,8 @@ return (DxBallInt)pan;</code></pre>
         <div class="footer-links">
           <a href="../../faq/">FAQ</a
           ><a href="../../contributors/">Contributors</a
-          ><a href="https://github.com/morluto/Nre">Source</a
-          ><a href="https://github.com/morluto/Nre/blob/main/LICENSE">MIT license</a
+          ><a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer">Source</a
+          ><a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/LICENSE">MIT license</a
           ><a href="https://discord.gg/GkcryMnJDM">Join the community</a
           ><a href="https://x.com/Nretools">Follow us on X</a>
         </div>

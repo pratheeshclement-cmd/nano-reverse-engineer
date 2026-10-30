@@ -111,7 +111,7 @@ export async function verifyGhidraBoundaries(
     detail: "complete",
   });
   const roots = (await readdir(env.TMPDIR)).filter((name) =>
-    name.startsWith("rea-ghidra-"),
+    name.startsWith("nre-ghidra-"),
   );
   assert.equal(roots.length, 1, "Expected one owned Ghidra runtime");
   const runtimeRoot = join(env.TMPDIR, roots[0]);
@@ -191,17 +191,17 @@ export async function verifyGhidraBoundaries(
   );
   await invalid(
     "annotate_native_function",
-    { procedure: external.address, name: "rea_external_edit" },
+    { procedure: external.address, name: "nre_external_edit" },
     /Annotations require a local function entry/u,
   );
   const names = await call("list_names");
   const batchIdentity = await verifyGhidraBatchIdentity(call, names);
   const instructionFlow = await verifyGhidraInstructionFlow(call, names, cli);
   const leaf = names.find((item) =>
-    item.value.endsWith("rea_ghidra_inventory_leaf"),
+    item.value.endsWith("nre_ghidra_inventory_leaf"),
   );
   const pointer = names.find((item) =>
-    item.value.endsWith("rea_ghidra_interior_pointer"),
+    item.value.endsWith("nre_ghidra_interior_pointer"),
   );
   assert.ok(
     leaf && pointer,
@@ -252,7 +252,7 @@ export async function verifyGhidraBoundaries(
     entrypoint,
     env,
   });
-  const longSelector = "REA_MISSING_" + "x".repeat(32768);
+  const longSelector = "NRE_MISSING_" + "x".repeat(32768);
   for (const selected of [
     longSelector,
     `${longSelector}:0x1`,
@@ -367,7 +367,7 @@ export async function verifyGhidraBoundaries(
     ),
   );
   const indirectProcedure = (await call("list_procedures")).find((item) =>
-    item.value.endsWith("rea_ghidra_inventory_indirect"),
+    item.value.endsWith("nre_ghidra_inventory_indirect"),
   );
   assert.ok(indirectProcedure);
   const references = await call("procedure_references", {
@@ -392,7 +392,7 @@ export async function verifyGhidraBoundaries(
     [strings[0]],
   );
   const marker = strings.find(
-    (item) => item.value === "REA_GHIDRA_INVENTORY_ENTRY",
+    (item) => item.value === "NRE_GHIDRA_INVENTORY_ENTRY",
   );
   assert.ok(marker);
   assert.ok(
@@ -411,7 +411,7 @@ export async function verifyGhidraBoundaries(
   );
   assert.deepEqual(
     await call("search_strings", {
-      pattern: `REA_GHIDRA_ABSENT_${randomUUID()}`,
+      pattern: `NRE_GHIDRA_ABSENT_${randomUUID()}`,
     }),
     [],
   );
@@ -438,8 +438,8 @@ export async function verifyGhidraBoundaries(
   );
   await invalid(
     "procedure_address",
-    { procedure: "rea_missing_procedure" },
-    /rea_missing_procedure/u,
+    { procedure: "nre_missing_procedure" },
+    /nre_missing_procedure/u,
   );
   await invalid(
     "search_procedures",
@@ -448,8 +448,8 @@ export async function verifyGhidraBoundaries(
   );
   await invalid(
     "list_procedures",
-    { document: "rea_missing_program" },
-    /rea_missing_program.*active program/u,
+    { document: "nre_missing_program" },
+    /nre_missing_program.*active program/u,
   );
   // JSON permits escaped lone surrogates. Error replies must preserve them
   // without letting the Java UTF-8 writer terminate the provider session.
@@ -725,12 +725,12 @@ export async function verifyGhidraBoundaries(
   for (const selected of [address, indirectProcedure.address]) {
     await call("annotate_native_function", {
       procedure: selected,
-      name: "rea_ambiguous",
+      name: "nre_ambiguous",
     });
   }
   const ambiguous = await invalid(
     "procedure_address",
-    { procedure: "rea_ambiguous" },
+    { procedure: "nre_ambiguous" },
     /ambiguous.*select an exact entry address/u,
   );
   for (const selected of [address, indirectProcedure.address]) {
@@ -864,7 +864,7 @@ async function verifyStartupCancellation(client, call, target, env, options) {
   try {
     while (Date.now() < deadline && !settled) {
       const roots = (await readdir(env.TMPDIR)).filter((name) =>
-        name.startsWith("rea-ghidra-"),
+        name.startsWith("nre-ghidra-"),
       );
       if (roots.length === 1) {
         const root = join(env.TMPDIR, roots[0]);

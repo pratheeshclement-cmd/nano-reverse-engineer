@@ -21,8 +21,8 @@ import {
 import { inspectVerifierGhidraInstallation } from "./lib/ghidra-installation-inspection.mjs";
 import { SUPPORTED_GHIDRA_VERSION } from "../dist/ghidra/GhidraReleasePolicy.js";
 import { GhidraHeadlessLauncher } from "../dist/ghidra/GhidraLauncher.js";
-import { GHIDRA_PROVIDER_IDENTITY } from "../dist/ghidra/GhidraProviderCapabilities.js";
 import {
+  GHIDRA_PROVIDER_IDENTITY,
   WINDOWS_P0_NATIVE_PE_ARCHITECTURES,
   windowsP0Capabilities,
 } from "../dist/ghidra/GhidraProviderCapabilities.js";
@@ -117,7 +117,7 @@ const client = new GhidraClient({
       ? {}
       : { javaHome: process.env.JAVA_HOME }),
     bridgeScriptPath: fileURLToPath(
-      new URL("../bridge/ghidra/ReaGhidraBridge.java", import.meta.url),
+      new URL("../bridge/ghidra/NreGhidraBridge.java", import.meta.url),
     ),
     platform: "win32",
     ...(configuration.value.ghidraDisabledAnalyzers === undefined
@@ -239,7 +239,7 @@ try {
     address: procedure.address,
   });
   await inventory("search_procedures", { pattern: procedure.value });
-  await inventory("search_strings", { pattern: "rea" });
+  await inventory("search_strings", { pattern: "nre" });
   const byteSearch = await verifyWindowsGhidraByteSearch({
     invoke: inventory,
     sourceBytes,
@@ -351,7 +351,7 @@ if (report === undefined)
 try {
   report.file_offsets = await verifyGhidraFileOffsets(
     targetPath,
-    resolve(root, "scripts", "rea.mjs"),
+    resolve(root, "scripts", "nre.mjs"),
     fixture.calleeAddress,
   );
 } catch (cause) {

@@ -19,7 +19,7 @@ import {
 cliTest.for(["elf", "mach-o", "pe"] as const)(
   "inventories and extracts %s SEA through the compiled CLI",
   async (carrier, { cli }) => {
-    const root = await createTestTempDirectory("rea-sea-cli-");
+    const root = await createTestTempDirectory("nre-sea-cli-");
     const source = join(root, "application");
     const build = { elf: nodeSeaElf, "mach-o": nodeSeaMachO, pe: nodeSeaPe }[
       carrier
@@ -86,7 +86,7 @@ cliTest.for(["elf", "mach-o", "pe"] as const)(
 cliTest(
   "reads a real Node-produced SEA blob with an absolute main and empty asset key",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-sea-node-producer-");
+    const root = await createTestTempDirectory("nre-sea-node-producer-");
     const mainPath = join(root, "main.cjs");
     const assetPath = join(root, "asset.txt");
     const blobPath = join(root, "preparation.blob");
@@ -142,7 +142,7 @@ cliTest(
 cliTest(
   "preserves opaque SEA source keys through CLI and MCP inventory and extraction",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sea-opaque-public-");
+    const root = await createTestTempDirectory("nre-sea-opaque-public-");
     const source = join(root, "application");
     const main = Buffer.from("void 0;\n");
     const assets = [
@@ -265,7 +265,7 @@ cliTest(
 cliTest(
   "offers no JavaScript probe for a main script without a source suffix",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sea-plain-cli-");
+    const root = await createTestTempDirectory("nre-sea-plain-cli-");
     const source = join(root, "application");
     await writeFile(
       source,
@@ -285,7 +285,7 @@ cliTest(
 );
 
 cliTest("rejects a malformed SEA blob through the CLI", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-sea-invalid-cli-");
+  const root = await createTestTempDirectory("nre-sea-invalid-cli-");
   const source = join(root, "application");
   await writeFile(source, nodeSeaElf({ blob: Buffer.alloc(16) }));
   const result = await cli.run({
@@ -298,7 +298,7 @@ cliTest("rejects a malformed SEA blob through the CLI", async ({ cli }) => {
 cliTest(
   "refuses an empty-body SEA asset table over its record bound",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-sea-limit-cli-");
+    const root = await createTestTempDirectory("nre-sea-limit-cli-");
     const source = join(root, "application");
     await writeFile(
       source,

@@ -26,8 +26,8 @@ import {
 } from "../config/regexWorkerHeapRequest.js";
 /**
  * Node's Worker `resourceLimits.maxOldGenerationSizeMb` request.
- * `REA_REGEX_WORKER_HEAP_REQUEST_MIB` is that request (default 128 MiB). A positive
- * `--max-old-space-size` on the process that starts REA, including
+ * `NRE_REGEX_WORKER_HEAP_REQUEST_MIB` is that request (default 128 MiB). A positive
+ * `--max-old-space-size` on the process that starts NRE, including
  * `NODE_OPTIONS`, overrides it. A zero or empty value leaves this request
  * in effect. `NODE_OPTIONS` is applied before `process.execArgv`, and the
  * last absolute flag wins. That environment value is not copied into `execArgv`.
@@ -448,7 +448,7 @@ export const launchRegexMatchingLimitation = (
 
 /**
  * Capability text for the default deadline on this process's launch heap.
- * Providers that resolved `REA_REGEX_MATCHING_DEADLINE_MS` pass that value to
+ * Providers that resolved `NRE_REGEX_MATCHING_DEADLINE_MS` pass that value to
  * `launchRegexMatchingLimitation` instead of this constant.
  */
 export const REGEX_MATCHING_LIMITATION = launchRegexMatchingLimitation();
@@ -510,7 +510,7 @@ export const regexWorkerHeapError = (
             ),
           }
         : {}),
-      remediationAction: `${heapBound(heap, request)} Use update_analysis_settings with setting regex.worker_heap_request_mib to change the request for the next worker; launch heap flags can override it. Restart REA after changing --max-old-space-size or ${REGEX_WORKER_HEAP_REQUEST_SETTING} in the launch environment. A launch --max-old-space-size-percentage takes precedence over that flag in either order. Simplify the pattern or use literal mode.`,
+      remediationAction: `${heapBound(heap, request)} Use update_analysis_settings with setting regex.worker_heap_request_mib to change the request for the next worker; launch heap flags can override it. Restart NRE after changing --max-old-space-size or ${REGEX_WORKER_HEAP_REQUEST_SETTING} in the launch environment. A launch --max-old-space-size-percentage takes precedence over that flag in either order. Simplify the pattern or use literal mode.`,
     },
   );
 const replySchema = z.discriminatedUnion("status", [

@@ -13,7 +13,7 @@ const script = fileURLToPath(
 );
 const repository = fileURLToPath(new URL("../../../", import.meta.url));
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-static-report-");
+  const root = await createTestTempDirectory("nre-static-report-");
   await Promise.all([mkdir(join(root, "src")), mkdir(join(root, "tests"))]);
   await writeFile(
     join(root, ".oxlintrc.json"),
@@ -392,10 +392,10 @@ it.each([
     const reportPath = join(root, ".cache/static-checks", name);
     await mkdir(join(root, ".cache/static-checks/jscpd"), { recursive: true });
     await writeFile(reportPath, '{"previous_success":true}');
-    const result = invoke(root, mode, "--rea-invalid-checker-option");
+    const result = invoke(root, mode, "--nre-invalid-checker-option");
     expect(result.error).toBeUndefined();
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain("rea-invalid-checker-option");
+    expect(result.stderr).toContain("nre-invalid-checker-option");
     await expect(access(reportPath)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );

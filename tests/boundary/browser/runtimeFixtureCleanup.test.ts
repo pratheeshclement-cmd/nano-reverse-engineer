@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 it.skipIf(process.platform === "win32")(
   "rejects an exited fixture before returning a lease and removes its profile",
   async () => {
-    const root = await createTestTempDirectory("rea-runtime-startup-failure-");
+    const root = await createTestTempDirectory("nre-runtime-startup-failure-");
     const helper = new URL(
       "../../../scripts/lib/browser-runtime-fixture-lifecycle.mjs",
       import.meta.url,
@@ -49,7 +49,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "retains browser ownership after denied cleanup and retries the whole process group",
   async () => {
-    const root = await createTestTempDirectory("rea-runtime-owned-browser-");
+    const root = await createTestTempDirectory("nre-runtime-owned-browser-");
     const executable = await writeFixtureBrowser(root);
     const helper = new URL(
       "../../../scripts/lib/browser-runtime-fixture-lifecycle.mjs",

@@ -52,8 +52,8 @@ it("keeps the 5000 ms deadline when the setting is unset", () => {
         source: "default",
         applies_at: "next_operation",
         agent_editable: true,
-        scope: "rea-runtime",
-        rea_restart_required: false,
+        scope: "nre-runtime",
+        nre_restart_required: false,
       },
       reported_limits: {
         matching_deadline_ms: DEFAULT_REGEX_MATCHING_DEADLINE.deadlineMs,
@@ -64,7 +64,7 @@ it("keeps the 5000 ms deadline when the setting is unset", () => {
   expect(projected.remediation.action).toContain(recovery);
 });
 
-it("uses a valid REA_REGEX_MATCHING_DEADLINE_MS override", () => {
+it("uses a valid NRE_REGEX_MATCHING_DEADLINE_MS override", () => {
   expect(parseRegexMatchingDeadline("10000")).toEqual({
     ok: true,
     value: configured(10_000),
@@ -75,11 +75,11 @@ it("uses a valid REA_REGEX_MATCHING_DEADLINE_MS override", () => {
     ok: true,
     value: configured(MAXIMUM_REGEX_MATCHING_DEADLINE_MS),
   });
-  const parsed = parseConfig({ REA_REGEX_MATCHING_DEADLINE_MS: "10000" });
+  const parsed = parseConfig({ NRE_REGEX_MATCHING_DEADLINE_MS: "10000" });
   if (!parsed.ok) throw new Error("valid deadline was rejected");
   expect(parsed.value.regexMatchingDeadline).toEqual(configured(10_000));
   const hopper = new HopperProvider(parsed.value, silentLogger, {
-    REA_REGEX_MATCHING_DEADLINE_MS: "1",
+    NRE_REGEX_MATCHING_DEADLINE_MS: "1",
   });
   const hopperText = hopper
     .capabilities()
@@ -94,7 +94,7 @@ it("uses a valid REA_REGEX_MATCHING_DEADLINE_MS override", () => {
 
   vi.stubEnv(REGEX_MATCHING_DEADLINE_SETTING, "1");
   try {
-    const kuna = new KunaProvider({ REA_REGEX_MATCHING_DEADLINE_MS: "10000" });
+    const kuna = new KunaProvider({ NRE_REGEX_MATCHING_DEADLINE_MS: "10000" });
     const kunaText = kuna
       .capabilities()
       .find((capability) => capability.operation === "search_strings")
@@ -136,25 +136,25 @@ it.each([
   expect(parsed.error).toBeInstanceOf(ConfigurationError);
   expect(parsed.error.settings).toEqual([
     {
-      setting: "REA_REGEX_MATCHING_DEADLINE_MS",
+      setting: "NRE_REGEX_MATCHING_DEADLINE_MS",
       constraint: regexMatchingDeadlineConstraint,
     },
   ]);
   expect(parsed.error.message).toBe(regexMatchingDeadlineConstraint);
-  const startup = parseEnvironment({ REA_REGEX_MATCHING_DEADLINE_MS: value });
+  const startup = parseEnvironment({ NRE_REGEX_MATCHING_DEADLINE_MS: value });
   if (startup.ok) throw new Error(`Startup accepted ${JSON.stringify(value)}`);
   expect(startup.error.settings).toContainEqual({
     setting: REGEX_MATCHING_DEADLINE_SETTING,
     constraint: regexMatchingDeadlineConstraint,
   });
-  const config = parseConfig({ REA_REGEX_MATCHING_DEADLINE_MS: value });
+  const config = parseConfig({ NRE_REGEX_MATCHING_DEADLINE_MS: value });
   if (config.ok)
     throw new Error(`parseConfig accepted ${JSON.stringify(value)}`);
   expect(projectAnalysisError(config.error)).toMatchObject({
     code: "configuration_invalid",
-    message: expect.stringContaining("REA_REGEX_MATCHING_DEADLINE_MS"),
+    message: expect.stringContaining("NRE_REGEX_MATCHING_DEADLINE_MS"),
   });
   expect(
-    () => new KunaProvider({ REA_REGEX_MATCHING_DEADLINE_MS: value }),
+    () => new KunaProvider({ NRE_REGEX_MATCHING_DEADLINE_MS: value }),
   ).toThrow(ConfigurationError);
 });

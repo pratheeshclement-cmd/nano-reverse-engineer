@@ -13,7 +13,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "Apple CLI preserves unread paths and distinguishes readable coverage",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apple-unread-cli-");
+    const root = await createTestTempDirectory("nre-apple-unread-cli-");
     for (const encrypted of [false, true]) {
       const path = join(root, `${encrypted ? "encrypted" : "readable"}.ipa`);
       const unread = "Payload/Fixture.app/libentry.dylib";

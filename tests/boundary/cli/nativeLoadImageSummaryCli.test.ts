@@ -16,7 +16,7 @@ import { nativeDosLoadImageFixture } from "../../fixtures/nativeLoadImage.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("preserves the relative request path in a load-image CLI summary and its complete bundle", async () => {
-  const directory = await createTestTempDirectory("rea-load-image-cli-path-");
+  const directory = await createTestTempDirectory("nre-load-image-cli-path-");
   const destination = join(directory, "complete.json");
   const selectedPath = "./alias/../selected.exe";
   const parent = withEvidenceCallerInputPath(
@@ -32,7 +32,7 @@ it("preserves the relative request path in a load-image CLI summary and its comp
     selectedPath,
   );
   const run = vi.fn(async () => ({ ok: true as const, value: parent }));
-  const cli = Cli.create("rea-load-image-cli-test", { sync: false });
+  const cli = Cli.create("nre-load-image-cli-test", { sync: false });
   registerCoreNativeCommands(cli, pino({ enabled: false }), run);
   let stdout = "";
   await cli.serve(

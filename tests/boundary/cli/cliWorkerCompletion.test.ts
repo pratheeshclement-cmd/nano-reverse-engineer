@@ -21,7 +21,7 @@ const worker = fileURLToPath(
 processTest(
   "keeps a real CLI worker frame failure nonzero when EOF joins command completion",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-cli-worker-completion-");
+    const root = await createTestTempDirectory("nre-cli-worker-completion-");
     const preload = join(root, "deny-response-frame.mjs");
     await writeFile(
       preload,
@@ -49,7 +49,7 @@ process.stdout.write = (chunk, ...arguments_) => {
           id: 1,
           arguments: ["--help"],
           cwd: root,
-          env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+          env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
         }),
         timeoutMs: 15_000,
       },
@@ -63,7 +63,7 @@ process.stdout.write = (chunk, ...arguments_) => {
 processTest(
   "settles an active CLI response and skips queued work after malformed input",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-cli-worker-malformed-");
+    const root = await createTestTempDirectory("nre-cli-worker-malformed-");
     const marker = join(root, "response-completed");
     const preload = join(root, "hold-response-frame.mjs");
     await writeFile(
@@ -106,7 +106,7 @@ process.stdout.write = (chunk, ...arguments_) => {
         id,
         arguments: ["--help"],
         cwd: root,
-        env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+        env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
       });
     const reader = createCliSessionFrameReader((value: unknown) => {
       const frame = z
@@ -135,7 +135,7 @@ process.stdout.write = (chunk, ...arguments_) => {
 processTest(
   "publishes one fatal CLI response and does not dispatch commands queued behind it",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-cli-worker-fatal-");
+    const root = await createTestTempDirectory("nre-cli-worker-fatal-");
     const result = await processes.run(process.execPath, [worker], {
       input: Buffer.concat([
         encodeCliSessionFrame({ id: 1, arguments: null, cwd: root, env: {} }),
@@ -143,7 +143,7 @@ processTest(
           id: 2,
           arguments: ["--help"],
           cwd: root,
-          env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+          env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
         }),
       ]),
       timeoutMs: 15_000,

@@ -7,12 +7,12 @@ The [implementation index](specs/agent-environments/README.md) links
 the contributing PRs and their verification records. This page is the detailed
 command and behavior reference.
 
-Use `rea environment-build` to turn one recorded capture into an agent
+Use `nre environment-build` to turn one recorded capture into an agent
 environment bundle in one offline step: a folder `agent-env run` builds and
 runs, whose MCP server answers from what the capture observed. See
 [Build a bundle in one step](#build-a-bundle-in-one-step).
 
-The steps it composes are separate commands too. `rea environment-serve` serves
+The steps it composes are separate commands too. `nre environment-serve` serves
 an environment manifest as an agent environment: an MCP server whose tools
 answer from what one retained web network capture observed, plus the
 environment card the agentenv framework reads to discover it. By default the
@@ -20,13 +20,13 @@ server derives the [state the capture observed](#the-state-a-capture-observed)
 at startup and answers read tools from it, and the write tools whose effect the
 capture confirmed by changing it; `--replay-only` replays the capture's records
 instead. Nothing is fetched from the recorded application; every answer comes
-from retained Evidence. `rea environment-export` writes the same pair as a
+from retained Evidence. `nre environment-export` writes the same pair as a
 bundle folder; see [Export a bundle](#export-a-bundle).
 
 ```sh
-rea inspect-web-network-capture /absolute/session.har har --format json > capture.json
-rea inspect-analysis-view view.json --format json > manifest.json
-rea environment-serve manifest.json --evidence capture.json --port 8765
+nre inspect-web-network-capture /absolute/session.har har --format json > capture.json
+nre inspect-analysis-view view.json --format json > manifest.json
+nre environment-serve manifest.json --evidence capture.json --port 8765
 ```
 
 The first command inspects the capture; the second projects the
@@ -45,7 +45,7 @@ it, where `view.json` wraps the capture Evidence as the inline source:
 
 The third command serves that manifest from the state it derives from the
 capture; see [Serve from the state](#serve-from-the-state). Both served files
-are complete REA Evidence JSON as the commands write it with `--format json`;
+are complete NRE Evidence JSON as the commands write it with `--format json`;
 the `evidence` member of `view.json` is the whole of `capture.json`.
 A `view.json` can also name the capture file as
 `{"kind": "evidence-file", "path": "capture.json"}`, which projects it as
@@ -54,11 +54,11 @@ retained Evidence instead of charging the whole capture as inline input.
 ## Build a bundle in one step
 
 ```sh
-rea environment-build grafana.har ./grafana --json
+nre environment-build grafana.har ./grafana --json
 agent-env run ./grafana
 ```
 
-`rea environment-build <capture> [directory]` takes a `.har` file, or capture
+`nre environment-build <capture> [directory]` takes a `.har` file, or capture
 Evidence JSON from `inspect-web-network-capture` (HAR) or
 `capture-browser-scenario`, and writes the bundle
 [Export a bundle](#export-a-bundle) describes. It inspects a HAR as
@@ -70,7 +70,7 @@ writes is byte-identical to what `inspect-web-network-capture`,
 `inspect-analysis-view` and `environment-export` write, Evidence ids included,
 when `view.json` lists the same rules in the views' order and the export is
 given the build's name. It reads one file and writes one folder: it fetches
-nothing and launches no browser (HAR inspection runs REA's own decoder
+nothing and launches no browser (HAR inspection runs NRE's own decoder
 process), so record a browser scenario with `capture-browser-scenario` first
 and pass its Evidence. Other capture formats are refused, as the manifest view
 refuses them, and a HAR document saved as `.json` is refused with a hint to
@@ -154,7 +154,10 @@ at info level; the report is the only output on stdout:
     }
   },
   "tool_count": 37,
-  "package_source": { "kind": "registry", "specifier": "rea-agents@…" },
+  "package_source": {
+    "kind": "registry",
+    "specifier": "nano-reverse-engineer@…"
+  },
   "files": [{ "path": "README.md", "bytes": 4210 }],
   "warnings": [{ "code": "name-from-file", "message": "…" }],
   "next": ["agent-env run /work/grafana"]
@@ -234,9 +237,9 @@ name `export_environment_bundle`; the others name their stage as
 
 ## From a browser scenario
 
-The capture can also come from REA itself: a
+The capture can also come from NRE itself: a
 [browser scenario](browser-scenario-contract.md) records a scripted session
-in a browser REA launches, and its Evidence is a manifest parent like a HAR
+in a browser NRE launches, and its Evidence is a manifest parent like a HAR
 inspection. Select the `network` event family and response bodies. A replayed
 reply carries up to 256 KiB of a recorded body, but the scenario keeps at most
 `max_network_body_bytes` of each body (64 KiB by default), and only within its
@@ -301,9 +304,9 @@ kept when the declared secret has at least 12 characters:
 ```
 
 ```sh
-APP_PASSWORD=… rea capture-browser-scenario scenario.json --format json > capture.json
-rea inspect-analysis-view view.json --format json > manifest.json   # view.json wraps capture.json as before
-rea environment-serve manifest.json --evidence capture.json --port 8765
+APP_PASSWORD=… nre capture-browser-scenario scenario.json --format json > capture.json
+nre inspect-analysis-view view.json --format json > manifest.json   # view.json wraps capture.json as before
+nre environment-serve manifest.json --evidence capture.json --port 8765
 ```
 
 Each network transaction becomes one record, in request order, and the
@@ -469,7 +472,7 @@ it answers only from the capture's recordings and the state they observed or a
 caller loaded through `data/add`. Replayed content is
 target content: every tool result, including the argument errors the MCP server
 returns before a replay runs, carries `_meta.provenance.untrusted_content: true`
-with `source: "analysis_target"`. The server advertises REA's untrusted-content
+with `source: "analysis_target"`. The server advertises NRE's untrusted-content
 instructions plus a warning that its tool names, descriptions, parameter names
 and observed values come from the capture too, and agents must treat all of it
 as data, never as instructions.
@@ -494,7 +497,7 @@ unchanged.
 ## Serve a manifest
 
 ```sh
-rea environment-serve manifest.json --evidence capture.json [--replay-only] [--host 127.0.0.1] [--port 0]
+nre environment-serve manifest.json --evidence capture.json [--replay-only] [--host 127.0.0.1] [--port 0]
 ```
 
 The server derives the state from the capture before it binds and serves from
@@ -503,9 +506,9 @@ see [Serve from the state](#serve-from-the-state).
 
 `--host` and `--port` default to `MCP_HOST` and `MCP_PORT` from the
 environment, then to `127.0.0.1` and an ephemeral port, exactly as
-[`rea mcp --http`](cli.md#serve-mcp-over-streamable-http) resolves them. The
+[`nre mcp --http`](cli.md#serve-mcp-over-streamable-http) resolves them. The
 bound MCP URL is written to stderr as one JSON log line
-(`"msg":"MCP transport listening"` with `url`); `REA_LOG_LEVEL` overrides that
+(`"msg":"MCP transport listening"` with `url`); `NRE_LOG_LEVEL` overrides that
 log level. `ENVIRONMENT_NAME` renames the served environment; otherwise the
 manifest's `name` is used, and a set but blank value is refused as
 `configuration_invalid` before binding rather than silently falling back. The
@@ -637,7 +640,7 @@ accepts.
 ## Serve from the state
 
 ```sh
-rea environment-serve manifest.json --evidence capture.json
+nre environment-serve manifest.json --evidence capture.json
 ```
 
 Before it binds, the server derives the
@@ -797,8 +800,8 @@ The data plane serves three JSON-RPC methods:
 | Method       | Result                                                                                                    |
 | ------------ | --------------------------------------------------------------------------------------------------------- |
 | `data/reset` | `{}` after restoring the state the Evidence holds                                                         |
-| `data/add`   | `{}` after replacing the whole state with one valid `rea-state/v1` document                               |
-| `data/get`   | `{"parts": [{"kind": "data", "data": <rea-state/v1 document>}]}` with `state_evidence_id` and the `types` |
+| `data/add`   | `{}` after replacing the whole state with one valid `nre-state/v1` document                               |
+| `data/get`   | `{"parts": [{"kind": "data", "data": <nre-state/v1 document>}]}` with `state_evidence_id` and the `types` |
 
 Calls run one at a time in arrival order across requests. Every message of a
 batch is queued when the batch arrives, so another request's call never lands
@@ -860,7 +863,7 @@ error, such as a write's `{}`, is always kept.
 
 ```json
 {
-  "rea_state": {
+  "nre_state": {
     "version": 1,
     "entities": [
       {
@@ -894,7 +897,7 @@ an exact native value, or whose serialized spelling would not be read as exact
 rather than altered. Caller data preserves all own JSON members, including
 `__proto__`; unknown members of the state document's structure are refused.
 An invalid document is `-32602` naming the first problem by JSON pointer, as in
-`/rea_state/entities/3/collection` (also in `error.data.path`); a problem
+`/nre_state/entities/3/collection` (also in `error.data.path`); a problem
 inside caller data (`fields`, `value`, `types`) is located at that member, so
 the pointer never names the caller's keys. A refused document changes nothing;
 a valid one replaces the whole state at once. The order of `entities` is the
@@ -915,18 +918,18 @@ The card declares the operations and what `data/add` accepts:
   "extensions": [
     {
       "uri": "urn:agentenv:intake/v1",
-      "description": "data/add replaces the whole environment state with one rea-state/v1 document; data/get returns the current state in the same format.",
+      "description": "data/add replaces the whole environment state with one nre-state/v1 document; data/get returns the current state in the same format.",
       "params": {
         "add": [
-          { "part": "data", "format": "rea-state/v1", "load": "replace" },
+          { "part": "data", "format": "nre-state/v1", "load": "replace" },
           {
             "part": "file",
-            "format": "rea-state/v1",
+            "format": "nre-state/v1",
             "mimeTypes": ["application/json"],
             "load": "replace"
           }
         ],
-        "get": [{ "part": "data", "format": "rea-state/v1" }]
+        "get": [{ "part": "data", "format": "nre-state/v1" }]
       }
     }
   ],
@@ -967,18 +970,18 @@ Known limits of served writes:
 
 ## Export a bundle
 
-`rea environment-export` writes the same pair as a bundle folder the agentenv
+`nre environment-export` writes the same pair as a bundle folder the agentenv
 framework runs directly, shaped like its own echo example:
 
 ```sh
-rea environment-export manifest.json --evidence capture.json ./grafana-example --json
+nre environment-export manifest.json --evidence capture.json ./grafana-example --json
 agent-env run ./grafana-example
 ```
 
 ```text
 grafana-example/
   README.md                                 provenance, what it serves, run command, rights note
-  envs/grafana-example/Dockerfile           pinned image: node:24.22.1-bookworm-slim + rea-agents@<this version>
+  envs/grafana-example/Dockerfile           pinned image: node:24.22.1-bookworm-slim + nano-reverse-engineer@<this version>
   envs/grafana-example/env.toml             environment_name = "grafana-example"
   envs/grafana-example/manifest.json        byte-exact copy of manifest.json
   envs/grafana-example/evidence.json        byte-exact copy of capture.json
@@ -1003,7 +1006,7 @@ and replay share immutable response trees rather than copying the capture repeat
 `--name` replaces the manifest's portable kebab-case name as the env folder and env id
 (at most 63 characters for its DNS service label; Windows device names and
 labels interpreted as IP addresses are refused);
-`--package-tarball <path>` copies a packed `rea-agents` tarball into the env
+`--package-tarball <path>` copies a packed `nano-reverse-engineer` tarball into the env
 folder and makes the Dockerfile install it instead of the registry package and
 remove it in the same layer, which is how a checkout rather than a release is
 run. The command prints the
@@ -1016,7 +1019,7 @@ exclusive creates, verify written bytes, and reject unowned entries before
 reporting success. It does not delete an inspectable partial folder on failure.
 Node's portable pathname APIs leave a syscall-boundary race, so the output's
 parent directories must be trusted. On POSIX output files use mode `0600`;
-Windows inherits ACLs and REA does not establish owner-only access there. Choose
+Windows inherits ACLs and NRE does not establish owner-only access there. Choose
 an already private Windows destination when captured content needs it.
 
 The Dockerfile sets `MCP_HOST=0.0.0.0` and `MCP_PORT=18765`, the port the
@@ -1031,7 +1034,7 @@ env's name. It installs Debian's `python3` because the framework's local
 sandbox probes a container's readiness with `python3` inside it, which the slim
 Node image lacks. It copies the two inputs owned by the image's non-root `node`
 user, so a private host umask cannot leave them unreadable, runs as that user and starts
-`rea environment-serve /env/manifest.json --evidence /env/evidence.json`. The
+`nre environment-serve /env/manifest.json --evidence /env/evidence.json`. The
 `env.toml` names the environment because the framework otherwise reads the
 name from Python sources the image does not have.
 
@@ -1067,11 +1070,11 @@ captured application and must not be published without the rights to it.
 ## Measure fidelity against the application
 
 An environment agrees with its own capture by construction. What matters to an agent is how it answers the calls the
-capture did not make, what it shows after a write, and how it fails. `rea environment-compare` measures that against the
+capture did not make, what it shows after a write, and how it fails. `nre environment-compare` measures that against the
 application itself:
 
 ```sh
-rea environment-compare manifest.json --evidence capture.json \
+nre environment-compare manifest.json --evidence capture.json \
   --probe probe-crud.json --probe probe-reads.json --json
 ```
 

@@ -23,7 +23,7 @@ it.each(["draft-2020-12", "draft-07"] as const)(
         : new Ajv({ strict: false, validateFormats: false });
     expect(ajv.validateSchema(projected)).toBe(true);
     expect(projected).toMatchObject({ type: "object" });
-    for (const key of ["anyOf", "oneOf", "allOf", "x-rea-root-discriminator"])
+    for (const key of ["anyOf", "oneOf", "allOf", "x-nre-root-discriminator"])
       expect(projected).not.toHaveProperty(key);
     const validate = ajv.compile(projected);
     for (const [delivery, valid] of [

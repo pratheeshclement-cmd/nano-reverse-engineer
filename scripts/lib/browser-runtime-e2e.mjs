@@ -34,7 +34,7 @@ const executionObservationMs = 2_000;
 /** Exercise native browser runtime attribution through public CLI and stdio MCP, including arming. */
 export async function verifyBrowserRuntime(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url)),
 ) {
   await requireOrdinaryWindowsVerifierCaller();
   await access(executable);
@@ -64,8 +64,8 @@ export async function verifyBrowserRuntime(
     let isolatedContext = await createRuntimeIsolatedWorld(action);
     const env = {
       ...process.env,
-      REA_LOG_LEVEL: "silent",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+      NRE_LOG_LEVEL: "silent",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-provider/hopper",
     };
     const input = { cdp_endpoint: endpoint, target_id: target.target_id };
     const cliListener = await promisify(execFile)(
@@ -154,7 +154,7 @@ export async function verifyBrowserRuntime(
     assert.equal(
       stillOpen.result.value,
       true,
-      "REA must preserve the externally owned page",
+      "NRE must preserve the externally owned page",
     );
     const location = await action.send("Runtime.evaluate", {
       expression: "location.href",

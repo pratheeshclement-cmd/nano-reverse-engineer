@@ -47,7 +47,7 @@ export const session = async (
   };
   const cacheRoot = join(root, "cache");
   const provider = new KunaProvider(
-    { REA_KUNA_COMMAND: kuna, REA_KUNA_CACHE_DIR: cacheRoot, ...environment },
+    { NRE_KUNA_COMMAND: kuna, NRE_KUNA_CACHE_DIR: cacheRoot, ...environment },
     {
       platform: process.platform,
       ...(launcher === undefined ? {} : { launcher }),

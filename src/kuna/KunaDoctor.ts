@@ -26,12 +26,12 @@ import {
 
 /** Settings a registration may carry; only those the caller set explicitly. */
 const REGISTRATION_SETTINGS = [
-  "REA_KUNA_COMMAND",
-  "REA_KUNA_CACHE_DIR",
-  "REA_KUNA_CACHE_MAX_BYTES",
-  "REA_KUNA_PROJECT_TIMEOUT_MS",
-  "REA_KUNA_TIMEOUT_MS",
-  "REA_KUNA_JOBS",
+  "NRE_KUNA_COMMAND",
+  "NRE_KUNA_CACHE_DIR",
+  "NRE_KUNA_CACHE_MAX_BYTES",
+  "NRE_KUNA_PROJECT_TIMEOUT_MS",
+  "NRE_KUNA_TIMEOUT_MS",
+  "NRE_KUNA_JOBS",
 ] as const;
 
 /** Project Kuna readiness into the doctor contract without writing anything. */
@@ -56,7 +56,7 @@ export const inspectKunaProvider = async (
     if (retainedCleanup !== undefined)
       return {
         id: KUNA_PROVIDER_ID,
-        configured: environment.REA_KUNA_COMMAND !== undefined,
+        configured: environment.NRE_KUNA_COMMAND !== undefined,
         available: false,
         providerVersion: null,
         registrationEnvironment: {},
@@ -85,7 +85,7 @@ export const inspectKunaProvider = async (
     }
     return {
       id: KUNA_PROVIDER_ID,
-      configured: environment.REA_KUNA_COMMAND !== undefined,
+      configured: environment.NRE_KUNA_COMMAND !== undefined,
       available: false,
       providerVersion: null,
       registrationEnvironment: {},
@@ -106,8 +106,8 @@ export const inspectKunaProvider = async (
     };
   }
   const configured =
-    environment.REA_KUNA_COMMAND !== undefined &&
-    environment.REA_KUNA_COMMAND.length > 0;
+    environment.NRE_KUNA_COMMAND !== undefined &&
+    environment.NRE_KUNA_COMMAND.length > 0;
   const base = {
     id: KUNA_PROVIDER_ID,
     configured,
@@ -157,7 +157,7 @@ export const inspectKunaProvider = async (
         detail: `${value.executable} reports Kuna ${value.version} (sha256 ${value.sha256})${
           value.verified
             ? "."
-            : `; REA verified ${KUNA_VERIFIED_VERSION}, so this release's project layout is unverified.`
+            : `; NRE verified ${KUNA_VERIFIED_VERSION}, so this release's project layout is unverified.`
         }`,
         remediation: null,
         classification: "config_drift",
@@ -224,7 +224,7 @@ const cacheCheck = async (
         code: "open_options_invalid",
         detail: `The Kuna cache root ${cacheRoot} exists but is not a directory.`,
         remediation:
-          "Set REA_KUNA_CACHE_DIR to a directory REA may own, or remove the conflicting file.",
+          "Set NRE_KUNA_CACHE_DIR to a directory NRE may own, or remove the conflicting file.",
         classification: "config_drift",
         details,
       };
@@ -237,7 +237,7 @@ const cacheCheck = async (
             name: "cache",
             ok: true,
             code: null,
-            detail: `REA creates the Kuna project cache at ${cacheRoot} on first use.`,
+            detail: `NRE creates the Kuna project cache at ${cacheRoot} on first use.`,
             remediation: null,
             classification: "config_drift",
             details,
@@ -246,9 +246,9 @@ const cacheCheck = async (
             name: "cache",
             ok: false,
             code: "open_options_invalid",
-            detail: `REA cannot create the Kuna cache root ${cacheRoot}: ${creatable.reason}`,
+            detail: `NRE cannot create the Kuna cache root ${cacheRoot}: ${creatable.reason}`,
             remediation:
-              "Set REA_KUNA_CACHE_DIR to a directory the REA process user can create or write.",
+              "Set NRE_KUNA_CACHE_DIR to a directory the NRE process user can create or write.",
             classification: "config_drift",
             details,
           };
@@ -257,9 +257,9 @@ const cacheCheck = async (
       name: "cache",
       ok: false,
       code: "open_options_invalid",
-      detail: `REA cannot write the Kuna cache root ${cacheRoot}: ${cause instanceof Error ? cause.message : String(cause)}`,
+      detail: `NRE cannot write the Kuna cache root ${cacheRoot}: ${cause instanceof Error ? cause.message : String(cause)}`,
       remediation:
-        "Set REA_KUNA_CACHE_DIR to a directory the REA process user can write.",
+        "Set NRE_KUNA_CACHE_DIR to a directory the NRE process user can write.",
       classification: "config_drift",
       details,
     };
@@ -276,7 +276,7 @@ const cacheCheck = async (
 };
 
 /**
- * Whether the nearest existing entry on `path` is a directory REA may create
+ * Whether the nearest existing entry on `path` is a directory NRE may create
  * entries in. A missing target is only absent when no entry occupies its name;
  * a dangling symbolic link blocks creation just as a regular file does.
  * `path` must not end in a separator, or lstat follows a dangling link.

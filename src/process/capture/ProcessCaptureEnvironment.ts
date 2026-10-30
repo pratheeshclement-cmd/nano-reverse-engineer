@@ -31,6 +31,6 @@ export const makeProcessCaptureEnvironment = (
       ),
     ),
     TERM: environment.TERM ?? "xterm-256color",
-    REA_PROCESS_RUN_ID: options.runId,
+    NRE_PROCESS_RUN_ID: options.runId,
   };
 };

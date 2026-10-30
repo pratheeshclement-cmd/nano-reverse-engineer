@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 describe("Python pyc stable filesystem boundary", () => {
   it("reports non-file and malformed pyc selections as caller input errors", async () => {
-    const root = await createTestTempDirectory("rea-python-pyc-files-");
+    const root = await createTestTempDirectory("nre-python-pyc-files-");
     const path = join(root, "sample.pyc");
     const alias = join(root, "alias.pyc");
     const malformed = join(root, "malformed.pyc");
@@ -40,7 +40,7 @@ describe("Python pyc stable filesystem boundary", () => {
   });
 
   it("returns typed resource and cancellation failures", async () => {
-    const root = await createTestTempDirectory("rea-python-pyc-budget-");
+    const root = await createTestTempDirectory("nre-python-pyc-budget-");
     const path = join(root, "sample.pyc");
     const bytes = pythonPycFixture("py311", { nested: true });
     await writeFile(path, bytes);

@@ -7,7 +7,7 @@ import { writeFixtureFiles } from "../../support/javascriptApplicationFixture.js
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "retains a switch selection on Electron bridge paths through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-electron-switch-");
+    const root = await createTestTempDirectory("nre-electron-switch-");
     await writeFixtureFiles(root, {
       "package.json": JSON.stringify({
         name: "switch",

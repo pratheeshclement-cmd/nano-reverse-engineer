@@ -10,7 +10,7 @@ import { executeWorkflowFixture } from "../../support/workflowGit.js";
 const script = fileURLToPath(
   new URL("../../../scripts/ci/test-history.mjs", import.meta.url),
 );
-const repository = "example/rea";
+const repository = "example/nre";
 const repositoryId = 1;
 const now = Date.now();
 
@@ -54,7 +54,7 @@ async function invoke(
     tier?: string;
   } = {},
 ) {
-  const directory = await createTestTempDirectory("rea-ci-test-history-");
+  const directory = await createTestTempDirectory("nre-ci-test-history-");
   const fakeBin = join(directory, "bin");
   await mkdir(fakeBin);
   const fixture = join(directory, "api.json");
@@ -70,7 +70,7 @@ async function invoke(
       "#!/bin/sh",
       'printf \'%s\\n\' "$*" >> "$GH_API_CALLS"',
       'if [ "$GH_API_ERROR" = "true" ]; then exit 1; fi',
-      'if [ "$4" = "repos/example/rea/actions/artifacts" ]; then',
+      'if [ "$4" = "repos/example/nre/actions/artifacts" ]; then',
       '  node -e \'const fs=require("node:fs"); const x=JSON.parse(fs.readFileSync(process.env.GH_FIXTURE_RESPONSE,"utf8")); process.stdout.write(JSON.stringify({artifacts:x.artifacts}));\'',
       "else",
       '  run_id="${4##*/}"',

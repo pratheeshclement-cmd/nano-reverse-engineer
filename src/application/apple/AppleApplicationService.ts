@@ -17,7 +17,7 @@ export const projectAppleApplicationEvidence = (
     rawInput,
     project: projectAppleInventory,
     operation: OPERATION,
-    predicateType: "rea.apple-application-graph",
+    predicateType: "nre.apple-application-graph",
     provider: APPLE_APPLICATION_PROVIDER,
     subjectFormat: (first) => first.subject?.format ?? "unknown",
   });

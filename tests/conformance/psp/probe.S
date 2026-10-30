@@ -2,13 +2,13 @@
 .set noreorder
 .text
 .align 2
-.globl rea_psp_probe
-.type rea_psp_probe, @function
-.ent rea_psp_probe
-rea_psp_probe:
+.globl nre_psp_probe
+.type nre_psp_probe, @function
+.ent nre_psp_probe
+nre_psp_probe:
   addiu $v0, $zero, 0x1234
   bitrev $v0, $v0
   jr $ra
   nop
-.end rea_psp_probe
-.size rea_psp_probe, .-rea_psp_probe
+.end nre_psp_probe
+.size nre_psp_probe, .-nre_psp_probe

@@ -85,7 +85,7 @@ it("advertises and executes Android and Apple inventory projections", async () =
   expect(names.has("project_android_application_graph")).toBe(true);
   expect(names.has("project_apple_application_graph")).toBe(true);
 
-  const root = await createTestTempDirectory("rea-mobile-graph-mcp-");
+  const root = await createTestTempDirectory("nre-mobile-graph-mcp-");
   const apkInventory = parseEvidence(
     await runProviderAnalysis(
       await writeApk(root),
@@ -102,7 +102,7 @@ it("advertises and executes Android and Apple inventory projections", async () =
     throw new Error(JSON.stringify(android, null, 2));
   expect(android.structuredContent).toMatchObject({
     operation: "project_android_application_graph",
-    provider: { id: "rea-android-application" },
+    provider: { id: "nre-android-application" },
   });
   const androidEvidence = parseEvidence(android.structuredContent);
   const androidBundle = await client.callTool({
@@ -153,13 +153,13 @@ it("advertises and executes Android and Apple inventory projections", async () =
   if (apple.isError === true) throw new Error(JSON.stringify(apple, null, 2));
   expect(apple.structuredContent).toMatchObject({
     operation: "project_apple_application_graph",
-    provider: { id: "rea-apple-application" },
+    provider: { id: "nre-apple-application" },
   });
 });
 
 it("projects a single inventory page as partial and links only that source", async () => {
   const client = await connect();
-  const root = await createTestTempDirectory("rea-mobile-partial-page-mcp-");
+  const root = await createTestTempDirectory("nre-mobile-partial-page-mcp-");
   const inventory = parseEvidence(
     await runProviderAnalysis(
       await writeApk(root),
@@ -282,7 +282,7 @@ it("rejects a valid non-inventory carrier as caller-selected input", async () =>
 
 it("rejects authentic pages from different roots without retaining either", async () => {
   const client = await connect();
-  const root = await createTestTempDirectory("rea-mobile-mixed-pages-mcp-");
+  const root = await createTestTempDirectory("nre-mobile-mixed-pages-mcp-");
   const apk = parseEvidence(
     await runProviderAnalysis(
       await writeApk(root),
@@ -349,7 +349,7 @@ it.each([
   "retains $family unavailable components and their source Evidence through MCP",
   async ({ name, manifest, unread, operation }) => {
     const client = await connect();
-    const root = await createTestTempDirectory("rea-harmony-graph-mcp-");
+    const root = await createTestTempDirectory("nre-harmony-graph-mcp-");
     const path = join(root, name);
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add(manifest, new TextReader("{}"));

@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "rejects malformed oversized input through CLI and Evidence readers",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-json-string-limit-");
+    const root = await createTestTempDirectory("nre-json-string-limit-");
     const input = join(root, "oversized.json");
     const file = await open(input, "wx");
     try {
@@ -58,7 +58,7 @@ cliTest(
 cliTest(
   "traces valid Evidence beyond the whole-document string limit",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-json-streamed-evidence-");
+    const root = await createTestTempDirectory("nre-json-streamed-evidence-");
     const source = join(root, "application");
     await mkdir(source);
     await writeFile(
@@ -119,7 +119,7 @@ cliTest(
 cliTest(
   "returns a typed container assembly constraint and allows a following read",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-json-container-headroom-");
+    const root = await createTestTempDirectory("nre-json-container-headroom-");
     const input = join(root, "containers.json");
     const following = join(root, "following.json");
     const file = await open(input, "wx");
@@ -176,7 +176,7 @@ cliTest(
 cliTest(
   "returns a typed string assembly constraint under a bounded heap",
   async ({ cli, processes }) => {
-    const root = await createTestTempDirectory("rea-json-string-headroom-");
+    const root = await createTestTempDirectory("nre-json-string-headroom-");
     const input = join(root, "long-string.json");
     const file = await open(input, "wx");
     try {

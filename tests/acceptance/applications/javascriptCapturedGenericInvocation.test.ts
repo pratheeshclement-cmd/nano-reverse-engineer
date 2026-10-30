@@ -15,7 +15,7 @@ cliTest.for(
 )(
   "retains competing application owners for $name through $surface",
   async (testCase, { cli }) => {
-    const root = await createTestTempDirectory("rea-captured-generic-");
+    const root = await createTestTempDirectory("nre-captured-generic-");
     await writeFixtureFiles(root, {
       "a/package.json": JSON.stringify({ main: "main.cjs" }),
       "a/main.cjs": "require('../shared/window.cjs');",

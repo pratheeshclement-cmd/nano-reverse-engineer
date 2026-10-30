@@ -28,7 +28,7 @@ type Permissions = {
   readonly writable: boolean;
   readonly executable: boolean;
 };
-/** Permissions the DOL import must set: text r-x, data rw-, BSS rw- (see ReaGhidraPrepareDol.java). */
+/** Permissions the DOL import must set: text r-x, data rw-, BSS rw- (see NreGhidraPrepareDol.java). */
 const TEXT_PERMISSIONS: Permissions = {
   readable: true,
   writable: false,

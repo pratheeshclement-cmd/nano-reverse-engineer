@@ -54,7 +54,7 @@ mcpTest.for([
 ])(
   "projects partial model Evidence through an MCP tool error ($retained, fullHash=$fullHash)",
   async ({ retained, fullHash }, { mcp }) => {
-    const root = await createTestTempDirectory("rea-model-mcp-partial-");
+    const root = await createTestTempDirectory("nre-model-mcp-partial-");
     const path = join(root, fullHash ? "model.safetensors" : "model.gguf");
     const fixture = interruptedFixture(fullHash);
     await writeFile(path, fixture.bytes);

@@ -164,7 +164,7 @@ describe("browser process startup", () => {
 });
 
 const temporaryRoot = async (): Promise<string> => {
-  return createTestTempDirectory("rea-browser-startup-");
+  return createTestTempDirectory("nre-browser-startup-");
 };
 
 const devtoolsPortDeadlines = (source: string): string[][] => {

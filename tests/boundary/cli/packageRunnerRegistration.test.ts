@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 const ompConfigurationSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+    nre: z.object({ command: z.string(), args: z.array(z.string()) }),
   }),
 });
 
@@ -22,7 +22,7 @@ const controlledRunnerFixture = async (home: string) => {
   await writeFile(
     script,
     `const { appendFileSync } = require("node:fs");
-appendFileSync(process.env.REA_TEST_RUNNER_LOG, JSON.stringify({
+appendFileSync(process.env.NRE_TEST_RUNNER_LOG, JSON.stringify({
   runner: process.argv[2],
   arguments: process.argv.slice(3),
   home: process.env.HOME,
@@ -36,8 +36,8 @@ console.log("controlled runner fixture");
     await writeFile(
       join(bin, process.platform === "win32" ? `${runner}.cmd` : runner),
       process.platform === "win32"
-        ? `@echo off\r\n"%REA_TEST_NODE%" "%REA_TEST_RUNNER_SCRIPT%" ${runner} %*\r\n`
-        : `#!/bin/sh\nexec "$REA_TEST_NODE" "$REA_TEST_RUNNER_SCRIPT" ${runner} "$@"\n`,
+        ? `@echo off\r\n"%NRE_TEST_NODE%" "%NRE_TEST_RUNNER_SCRIPT%" ${runner} %*\r\n`
+        : `#!/bin/sh\nexec "$NRE_TEST_NODE" "$NRE_TEST_RUNNER_SCRIPT" ${runner} "$@"\n`,
       { mode: 0o700 },
     );
   }
@@ -45,9 +45,9 @@ console.log("controlled runner fixture");
     log,
     environment: {
       PATH: [bin, process.env.PATH ?? ""].join(delimiter),
-      REA_TEST_NODE: process.execPath,
-      REA_TEST_RUNNER_SCRIPT: script,
-      REA_TEST_RUNNER_LOG: log,
+      NRE_TEST_NODE: process.execPath,
+      NRE_TEST_RUNNER_SCRIPT: script,
+      NRE_TEST_RUNNER_LOG: log,
     },
   };
 };
@@ -61,7 +61,7 @@ for (const { runner, userAgent } of [
   cliTest(
     `${runner} setup binds the selected installation without invoking another runner`,
     async ({ cli }) => {
-      const home = await createTestTempDirectory("rea-package-runner-");
+      const home = await createTestTempDirectory("nre-package-runner-");
       const controlledRunner = await controlledRunnerFixture(home);
       const run = (arguments_: readonly string[]) =>
         cli.run({
@@ -92,10 +92,10 @@ for (const { runner, userAgent } of [
           await readFile(join(home, ".omp", "agent", "mcp.json"), "utf8"),
         ),
       );
-      const { command, args } = configuration.mcpServers.rea;
+      const { command, args } = configuration.mcpServers.nre;
       expect([command, ...args]).toEqual(
         currentClientRegistrationCommand({
-          entrypointPath: resolve("scripts/rea.mjs"),
+          entrypointPath: resolve("scripts/nre.mjs"),
           environment: controlledRunner.environment,
         }),
       );

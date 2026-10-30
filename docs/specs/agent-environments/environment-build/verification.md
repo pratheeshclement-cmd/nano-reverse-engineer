@@ -18,7 +18,7 @@ end-to-end runs.
 ## Equivalence and coverage over the published captures
 
 Each of the 50 published capture-built environments' captures (capture Evidence JSON) and four scoped HAR recordings
-(EspoCRM, Ghost, NocoDB, Sonarr) was built twice: once with `rea environment-build <capture> <dir> --json`, and once
+(EspoCRM, Ghost, NocoDB, Sonarr) was built twice: once with `nre environment-build <capture> <dir> --json`, and once
 with the three CLI steps, `inspect-web-network-capture --format json` (HAR only), `inspect-analysis-view` with an
 `evidence-file` source and the four default rules, and `environment-export --name <the build's name>`. Every file of
 every bundle was compared by SHA-256.
@@ -39,7 +39,7 @@ every bundle was compared by SHA-256.
 ## End to end
 
 Five environments last rebuilt on 10-23 were built again with this branch's packed CLI on disposable Ubuntu VMs, four
-from their scoped HAR recordings and Metabase from its capture Evidence, with `rea environment-build <capture> <dir>
+from their scoped HAR recordings and Metabase from its capture Evidence, with `nre environment-build <capture> <dir>
 --name <app> --package-tarball <tarball>`. Each bundle then ran its smoke task, a retrieval eval generated from the
 bundle's own manifest and capture, and the write eval from its recorded write spec, with two models through a LiteLLM
 proxy (`fireworks_ai/gpt-oss-120b`, `fireworks_ai/glm-5p3-flash`), one run per task.

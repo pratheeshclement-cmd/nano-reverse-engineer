@@ -52,7 +52,7 @@ const nodeTarget = async (
 };
 /**
  * Install one real package on disk and mirror it into an artifact inventory,
- * so Node and REA observe the same container, then resolve through both.
+ * so Node and NRE observe the same container, then resolve through both.
  */
 const compareWithNode = async (
   exportsMap: unknown,
@@ -74,7 +74,7 @@ const compareWithNode = async (
   readonly outcome: ArtifactPathResolution;
   readonly files: ReadonlyMap<string, JavaScriptArtifactFile>;
 }> => {
-  const root = await createTestTempDirectory("rea-exports-");
+  const root = await createTestTempDirectory("nre-exports-");
   const packageName = options.packageName ?? "example";
   const specifier = options.specifier ?? packageName;
   const sourcePath =
@@ -147,7 +147,7 @@ const compareWithNode = async (
 };
 const resolvedLeaf = (outcome: ArtifactPathResolution): string | null =>
   outcome.resolved_path?.split("/").pop() ?? null;
-/** Pin the real Node result, then require REA to select the same target. */
+/** Pin the real Node result, then require NRE to select the same target. */
 const expectNodeAgreement = async (
   exportsMap: unknown,
   expected: string | null,
@@ -840,8 +840,8 @@ describe("unmatched package export conditions", () => {
   it.each([
     [[{ browser: "./default.cjs" }], "browser"],
     [
-      [[{ browser: "./default.cjs" }, { "rea-inactive": "./node.cjs" }]],
-      "browser, rea-inactive",
+      [[{ browser: "./default.cjs" }, { "nre-inactive": "./node.cjs" }]],
+      "browser, nre-inactive",
     ],
     [{ node: [{ browser: "./default.cjs" }] }, "node, browser"],
   ] as const)(

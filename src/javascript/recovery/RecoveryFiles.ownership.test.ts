@@ -84,7 +84,7 @@ afterEach(() => {
 });
 
 const selectedFile = async () => {
-  const root = await createTestTempDirectory("rea-recovery-file-owner-");
+  const root = await createTestTempDirectory("nre-recovery-file-owner-");
   const path = join(root, "bundle.js");
   const bytes = Buffer.from("module.exports = 42;\n");
   await writeFile(path, bytes);

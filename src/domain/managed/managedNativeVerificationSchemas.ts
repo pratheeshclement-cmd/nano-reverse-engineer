@@ -135,7 +135,7 @@ export const managedNativeVerificationResultSchema = z
   .strictObject({
     verification_id: prefixedDigestSchema("mnv"),
     algorithm: z.strictObject({
-      name: z.literal("rea-managed-native-verification"),
+      name: z.literal("nre-managed-native-verification"),
       token_identity: z.literal("build-local"),
       token_to_address_mapping: z.literal("not-inferred"),
     }),
@@ -208,7 +208,7 @@ export const managedNativeVerificationResultSchema = z
       });
   })
   .describe(
-    "Counts must agree across the result: native accepted plus unsupported equals total; each P/Invoke summary count equals the number of items with that status; and native_body_unresolved equals native_implementations.unresolved. REA checks these cross-field invariants after constructing the result.",
+    "Counts must agree across the result: native accepted plus unsupported equals total; each P/Invoke summary count equals the number of items with that status; and native_body_unresolved equals native_implementations.unresolved. NRE checks these cross-field invariants after constructing the result.",
   );
 
 export type ManagedNativeVerificationResult = z.infer<

@@ -47,7 +47,7 @@ const configFor = (environment: NodeJS.ProcessEnv) => {
 };
 
 const installedConfig = async (environment: NodeJS.ProcessEnv) => {
-  const installDir = await createTestTempDirectory("rea-ghidra-dol-");
+  const installDir = await createTestTempDirectory("nre-ghidra-dol-");
   const languages = join(
     installDir,
     "Ghidra/Processors/PowerPC/data/languages",
@@ -60,7 +60,7 @@ const installedConfig = async (environment: NodeJS.ProcessEnv) => {
 const dolTarget = async (
   options: Parameters<typeof buildGamecubeDol>[0] = {},
 ): Promise<BinaryTarget> => {
-  const directory = await createTestTempDirectory("rea-dol-profile-");
+  const directory = await createTestTempDirectory("nre-dol-profile-");
   await writeFile(join(directory, "game.dol"), buildGamecubeDol(options));
   const parsed = await parseBinaryTarget("game.dol", {
     cwd: directory,
@@ -112,10 +112,10 @@ describe("GameCube DOL Ghidra profile", () => {
     expect(left.value.profile?.digest).not.toBe(right.value.profile?.digest);
   });
 
-  it("lets REA_GHIDRA_LANGUAGE_ID select a Broadway variant with the language-default spec", async () => {
+  it("lets NRE_GHIDRA_LANGUAGE_ID select a Broadway variant with the language-default spec", async () => {
     const ghidra = new GhidraProvider(
       await installedConfig({
-        REA_GHIDRA_LANGUAGE_ID: "PowerPC:BE:32:Gekko_Broadway",
+        NRE_GHIDRA_LANGUAGE_ID: "PowerPC:BE:32:Gekko_Broadway",
       }),
       silentLogger,
       {},
@@ -134,11 +134,11 @@ describe("GameCube DOL Ghidra profile", () => {
     });
   });
 
-  it("commits an override compiler spec when REA_GHIDRA_COMPILER_SPEC_ID is set", async () => {
+  it("commits an override compiler spec when NRE_GHIDRA_COMPILER_SPEC_ID is set", async () => {
     const ghidra = new GhidraProvider(
       await installedConfig({
-        REA_GHIDRA_LANGUAGE_ID: "PowerPC:BE:32:Gekko_Broadway",
-        REA_GHIDRA_COMPILER_SPEC_ID: "default",
+        NRE_GHIDRA_LANGUAGE_ID: "PowerPC:BE:32:Gekko_Broadway",
+        NRE_GHIDRA_COMPILER_SPEC_ID: "default",
       }),
       silentLogger,
       {},
@@ -155,7 +155,7 @@ describe("GameCube DOL Ghidra profile", () => {
 
   it("refuses an installed override that is not big-endian 32-bit PowerPC", async () => {
     const ghidra = new GhidraProvider(
-      await installedConfig({ REA_GHIDRA_LANGUAGE_ID: "x86:LE:32:default" }),
+      await installedConfig({ NRE_GHIDRA_LANGUAGE_ID: "x86:LE:32:default" }),
       silentLogger,
       {},
       host,
@@ -170,7 +170,7 @@ describe("GameCube DOL Ghidra profile", () => {
       code: "configuration_invalid",
       details: {
         settings: [
-          expect.objectContaining({ setting: "REA_GHIDRA_LANGUAGE_ID" }),
+          expect.objectContaining({ setting: "NRE_GHIDRA_LANGUAGE_ID" }),
         ],
       },
     });
@@ -179,8 +179,8 @@ describe("GameCube DOL Ghidra profile", () => {
   it("names only the language when a compiler spec accompanies a conflicting language", async () => {
     const ghidra = new GhidraProvider(
       await installedConfig({
-        REA_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
-        REA_GHIDRA_COMPILER_SPEC_ID: "gcc",
+        NRE_GHIDRA_LANGUAGE_ID: "x86:LE:32:default",
+        NRE_GHIDRA_COMPILER_SPEC_ID: "gcc",
       }),
       silentLogger,
       {},
@@ -193,7 +193,7 @@ describe("GameCube DOL Ghidra profile", () => {
       code: "configuration_invalid",
       details: {
         settings: [
-          expect.objectContaining({ setting: "REA_GHIDRA_LANGUAGE_ID" }),
+          expect.objectContaining({ setting: "NRE_GHIDRA_LANGUAGE_ID" }),
         ],
       },
     });

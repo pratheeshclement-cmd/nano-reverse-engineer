@@ -87,9 +87,9 @@ export const inspectPwndbgCore = async ({
     mode: number,
   ) => Promise<void>;
 }): Promise<PwndbgCoreInspection> => {
-  const gdb = environment.REA_PWNDBG_GDB ?? "/usr/bin/gdb";
-  const entry = environment.REA_PWNDBG_GDBINIT ?? "";
-  const venv = environment.REA_PWNDBG_VENV_PATH ?? "";
+  const gdb = environment.NRE_PWNDBG_GDB ?? "/usr/bin/gdb";
+  const entry = environment.NRE_PWNDBG_GDBINIT ?? "";
+  const venv = environment.NRE_PWNDBG_VENV_PATH ?? "";
   const unavailable = (message: string, cause?: unknown) =>
     new AnalysisCapabilityUnavailableError("pwndbg-core", OPERATION, message, {
       ...(cause === undefined ? {} : { cause }),
@@ -105,15 +105,15 @@ export const inspectPwndbgCore = async ({
   };
   checkCancelled();
   for (const [key, path, kind] of [
-    ["REA_PWNDBG_GDB", gdb, "file"],
-    ["REA_PWNDBG_GDBINIT", entry, "file"],
-    ["REA_PWNDBG_VENV_PATH", venv, "directory"],
+    ["NRE_PWNDBG_GDB", gdb, "file"],
+    ["NRE_PWNDBG_GDBINIT", entry, "file"],
+    ["NRE_PWNDBG_VENV_PATH", venv, "directory"],
   ] as const) {
     try {
       checkCancelled();
       if (!isAbsolute(path))
         throw new Error("Expected an absolute caller-supplied path.");
-      const mode = key === "REA_PWNDBG_GDB" ? constants.X_OK : constants.R_OK;
+      const mode = key === "NRE_PWNDBG_GDB" ? constants.X_OK : constants.R_OK;
       if (probePath !== undefined) {
         await probePath(path, kind, mode);
       } else {
@@ -164,7 +164,7 @@ export const inspectPwndbgCore = async ({
       cause,
       "debugger",
       gdb,
-      environment.REA_PWNTOOLS_PYTHON ?? "",
+      environment.NRE_PWNTOOLS_PYTHON ?? "",
       {},
       failureContext,
     );
@@ -172,7 +172,7 @@ export const inspectPwndbgCore = async ({
     checkCancelled();
     const execution = await runCommand(
       {
-        command: environment.REA_PWNTOOLS_PYTHON ?? "",
+        command: environment.NRE_PWNTOOLS_PYTHON ?? "",
         arguments: [
           "-I",
           fileURLToPath(
@@ -182,7 +182,7 @@ export const inspectPwndbgCore = async ({
           requestPath,
         ],
         cwd: stage,
-        runId: `rea-recorded-core-debugger-${randomUUID()}`,
+        runId: `nre-recorded-core-debugger-${randomUUID()}`,
         hostEnvironment: {
           ...environment,
           PWNDBG_NO_AUTOUPDATE: "1",
@@ -308,7 +308,7 @@ export const inspectPwndbgCore = async ({
       cause,
       "debugger",
       gdb,
-      environment.REA_PWNTOOLS_PYTHON ?? "",
+      environment.NRE_PWNTOOLS_PYTHON ?? "",
       await readPwntoolsFailureEvidence(cause, stage, resources),
       failureContext,
     );

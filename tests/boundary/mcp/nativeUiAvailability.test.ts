@@ -220,7 +220,7 @@ describe("native UI action availability through available routes", () => {
     "reports the $name route available when its observed path succeeds",
     async (scenario) => {
       const directory = await createTestTempDirectory(
-        "rea-native-ui-availability-",
+        "nre-native-ui-availability-",
       );
       const calls: ProviderOperation[] = [];
       const { mcp } = await createSessionMcpHarness(
@@ -282,7 +282,7 @@ describe("native UI action availability for unmet routes", () => {
     "reports unmet route sources for $name without hiding partial results",
     async (scenario) => {
       const directory = await createTestTempDirectory(
-        "rea-native-ui-no-metadata-",
+        "nre-native-ui-no-metadata-",
       );
       const calls: ProviderOperation[] = [];
       const { mcp } = await createSessionMcpHarness(
@@ -399,7 +399,7 @@ describe("native UI action availability for failures and target gates", () => {
     "preserves runtime failures for $name without trying another declared source",
     async (scenario) => {
       const directory = await createTestTempDirectory(
-        "rea-native-ui-source-failure-",
+        "nre-native-ui-source-failure-",
       );
       const calls: ProviderOperation[] = [];
       const { mcp } = await createSessionMcpHarness(
@@ -447,7 +447,7 @@ describe("native UI action availability for failures and target gates", () => {
   );
 
   it("reports target_required before querying provider operations", async () => {
-    const directory = await createTestTempDirectory("rea-native-ui-no-target-");
+    const directory = await createTestTempDirectory("nre-native-ui-no-target-");
     const calls: ProviderOperation[] = [];
     const { mcp } = await createSessionMcpHarness(
       directory,
@@ -465,7 +465,7 @@ describe("native UI action availability for failures and target gates", () => {
 
   it("keeps authored UI dispatch unavailable for a non-bundle target", async () => {
     const directory = await createTestTempDirectory(
-      "rea-native-ui-non-bundle-",
+      "nre-native-ui-non-bundle-",
     );
     const calls: ProviderOperation[] = [];
     const { mcp } = await createSessionMcpHarness(

@@ -30,10 +30,10 @@ not executions performed here.
 PocketBase **0.40.6** runs on an owned loopback instance. Its official Linux amd64
 archive is 12,824,710 bytes, SHA-256
 `0e1f609158ed945f809f8a02ae012aa0427129c66ebb63c1aee76f2c0309373f`.
-The [owned frontend](https://github.com/morluto/rea/blob/938052704/experiments/analysis-efficiency/fixtures/browser-saved-values/index.html)
+The [owned frontend](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/938052704/experiments/analysis-efficiency/fixtures/browser-saved-values/index.html)
 uses actual superuser authentication and record APIs. It is a small test
 frontend rather than PocketBase's entire administrative application.
-Collection `rea_items` has required text `title` and numeric `quantity`, public
+Collection `nre_items` has required text `title` and numeric `quantity`, public
 list/view, and superuser-only create/update/delete rules.
 
 The completed task signs in, creates a record, reuses its generated ID and
@@ -147,7 +147,7 @@ and initialization traffic are unmeasured.
 
 Whole-verifier cost includes discovery, browser setup, proof/oracle work and
 cleanup, distinct from timed task calls. PocketBase runs externally: its CPU
-and memory are **unmeasured**. REA/Chromium families use two CPUs, a 3 GiB Node
+and memory are **unmeasured**. NRE/Chromium families use two CPUs, a 3 GiB Node
 heap and an 8 GiB family RSS guard. RSS is summed every 100 ms, may double-count
 shared pages and miss short peaks. No guard stopped the completed runs.
 

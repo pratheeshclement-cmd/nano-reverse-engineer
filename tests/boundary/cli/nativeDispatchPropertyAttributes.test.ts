@@ -13,7 +13,7 @@ describe.skipIf(process.platform !== "darwin")(
     cliTest(
       "preserves a leading U+FEFF in a binary property name",
       async ({ cli }) => {
-        const directory = await createTestTempDirectory("rea-objc-property-");
+        const directory = await createTestTempDirectory("nre-objc-property-");
         const path = join(directory, "fixture.bin");
         await writeFile(
           path,
@@ -21,7 +21,7 @@ describe.skipIf(process.platform !== "darwin")(
         );
         const output = await cli.run({
           arguments: ["inspect-native-dispatch-metadata", path, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(output.exitCode, `${output.stdout}\n${output.stderr}`).toBe(0);
         expect(output.json).toMatchObject({
@@ -47,12 +47,12 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "reports established property flags only for $0 attributes",
       async ([, attributes, atomicity, readonly, facet], { cli }) => {
-        const directory = await createTestTempDirectory("rea-objc-property-");
+        const directory = await createTestTempDirectory("nre-objc-property-");
         const path = join(directory, "fixture.bin");
         await writeFile(path, machoWithPropertyAttributes(attributes));
         const output = await cli.run({
           arguments: ["inspect-native-dispatch-metadata", path, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(output.exitCode, `${output.stdout}\n${output.stderr}`).toBe(0);
         const property = {
@@ -108,12 +108,12 @@ describe.skipIf(process.platform !== "darwin")(
     ] as const)(
       "retains the valid sibling of a property with $0",
       async ([, layout, kept, location], { cli }) => {
-        const directory = await createTestTempDirectory("rea-objc-property-");
+        const directory = await createTestTempDirectory("nre-objc-property-");
         const path = join(directory, "fixture.bin");
         await writeFile(path, machoWithPropertyAttributes("Tq,N", layout));
         const output = await cli.run({
           arguments: ["inspect-native-dispatch-metadata", path, "--json"],
-          environment: { REA_LOG_LEVEL: "silent" },
+          environment: { NRE_LOG_LEVEL: "silent" },
         });
         expect(output.exitCode, `${output.stdout}\n${output.stderr}`).toBe(0);
         expect(output.json).toMatchObject({
@@ -153,7 +153,7 @@ describe.skipIf(process.platform !== "darwin")(
       "preserves explicit selection %j",
       async ([options, configured, exitCode, reason], { cli }) => {
         const directory = await createTestTempDirectory(
-          "rea-dispatch-provider-choice-",
+          "nre-dispatch-provider-choice-",
         );
         const path = join(directory, "fixture.bin");
         await writeFile(path, machoWithPropertyAttributes("Tq,N"));
@@ -165,8 +165,8 @@ describe.skipIf(process.platform !== "darwin")(
             "--json",
           ],
           environment: {
-            REA_LOG_LEVEL: "silent",
-            REA_ANALYSIS_PROVIDER: configured,
+            NRE_LOG_LEVEL: "silent",
+            NRE_ANALYSIS_PROVIDER: configured,
           },
         });
         expect(output.exitCode, `${output.stdout}\n${output.stderr}`).toBe(

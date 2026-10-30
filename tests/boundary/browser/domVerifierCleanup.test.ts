@@ -72,7 +72,7 @@ processTest(
       process.execPath,
       ["--input-type=module", "--eval", source],
       {
-        env: { ...process.env, REA_BROWSER_EXECUTABLE: "fixture-chrome" },
+        env: { ...process.env, NRE_BROWSER_EXECUTABLE: "fixture-chrome" },
         timeoutMs: 15_000,
       },
     );

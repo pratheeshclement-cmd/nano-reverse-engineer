@@ -17,7 +17,7 @@ cliTest
   "reads selected analysis-view Evidence through a %s caller path containing a symlink parent",
   async (pathKind, { cli }) => {
     const root = await createTestTempDirectory(
-      "rea-analysis-view-caller-path-",
+      "nre-analysis-view-caller-path-",
     );
     await mkdir(join(root, "real", "inner"), { recursive: true });
     await symlink("real/inner", join(root, "link"));

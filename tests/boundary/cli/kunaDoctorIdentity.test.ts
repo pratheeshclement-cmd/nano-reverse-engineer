@@ -12,7 +12,7 @@ cliTest
   .for(["stable", "replaced"] as const)(
   "doctor binds Kuna version output to a %s executable identity",
   async (identity, { cli }) => {
-    const root = await createTestTempDirectory("rea-kuna-doctor-identity-");
+    const root = await createTestTempDirectory("nre-kuna-doctor-identity-");
     const home = join(root, "home");
     const executable = join(root, "kuna");
     await mkdir(home);
@@ -37,9 +37,9 @@ ${mutation}
         USERPROFILE: home,
         HOPPER_LAUNCHER_PATH: join(root, "missing-hopper"),
         GHIDRA_INSTALL_DIR: join(root, "missing-ghidra"),
-        REA_KUNA_COMMAND: executable,
-        REA_KUNA_CACHE_DIR: join(root, "cache"),
-        REA_LOG_LEVEL: "silent",
+        NRE_KUNA_COMMAND: executable,
+        NRE_KUNA_CACHE_DIR: join(root, "cache"),
+        NRE_LOG_LEVEL: "silent",
       },
       timeoutMs: 20_000,
     });

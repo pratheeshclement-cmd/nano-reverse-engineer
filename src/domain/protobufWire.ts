@@ -82,7 +82,7 @@ export const protobufFrameSchema = z.strictObject({
 export const protobufDecodingObjectSchema = z.strictObject({
   pointer: z.string(),
   content_type: z.string().nullable(),
-  decoder: z.literal("rea-protobuf-wire-v1"),
+  decoder: z.literal("nre-protobuf-wire-v1"),
   body_sha256: z.string().regex(/^[0-9a-f]{64}$/),
   framing: z.enum(["raw", "grpc", "grpc-web", "grpc-web-text"]),
   offset_basis: z.enum(["retained-body", "base64-decoded-body"]),

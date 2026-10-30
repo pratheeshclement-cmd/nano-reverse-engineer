@@ -18,6 +18,6 @@ node tests/support/analysis-efficiency/mcp-integer-report.mjs --check
 ```
 
 The full experiment suite was retired. For historical reproduction, use the
-recorded runtime and producer revisions; the [archived source tree](https://github.com/morluto/rea/tree/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency)
+recorded runtime and producer revisions; the [archived source tree](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/tree/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency)
 preserves the former layout. Current deterministic checks do not requalify
 those historical measurements.

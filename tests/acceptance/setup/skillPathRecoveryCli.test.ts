@@ -14,8 +14,8 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.for(["ancestor", "selected-root"] as const)(
   "explains a non-directory skill %s and recovers after preserving the blocker",
   async (kind, { cli }) => {
-    const home = await createTestTempDirectory("rea-skill-path-recovery-");
-    const selected = join(home, ".agents/skills/reverse-engineer-anything");
+    const home = await createTestTempDirectory("nre-skill-path-recovery-");
+    const selected = join(home, ".agents/skills/nano-reverse-engineer");
     const blocker = kind === "ancestor" ? join(home, ".agents") : selected;
     await mkdir(dirname(blocker), { recursive: true });
     await writeFile(blocker, "caller-owned blocker\n");
@@ -74,7 +74,7 @@ cliTest.for(["ancestor", "selected-root"] as const)(
       for (const file of MANAGED_SKILL_FILES)
         expect(
           (await readFile(join(selected, file))).equals(
-            await readFile(resolve("skills/reverse-engineer-anything", file)),
+            await readFile(resolve("skills/nano-reverse-engineer", file)),
           ),
           file,
         ).toBe(true);

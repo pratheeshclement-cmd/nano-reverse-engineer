@@ -289,7 +289,7 @@ describe("Linux private display selection", () => {
     ] as const) {
       const result = spawnSync(
         "/usr/bin/python3",
-        [helperPath, "--probe", option, "/rea/missing-executable"],
+        [helperPath, "--probe", option, "/nre/missing-executable"],
         { encoding: "utf8" },
       );
       expect(result.status).toBe(79);
@@ -363,7 +363,7 @@ it("passes the private X authority cookie through xauth stdin", () => {
 });
 
 const inertProbe = async (keepLeader = false) => {
-  const root = await mkdtemp(join(tmpdir(), "rea-private-display-lifecycle-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-private-display-lifecycle-"));
   const marker = join(root, "descendant-survived");
   const ready = join(root, "ready");
   const helper = join(root, "probe.py");

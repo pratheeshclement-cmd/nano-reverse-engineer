@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "reports missing and directory objdump inputs with structured reasons",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-objdump-invalid-target-");
+    const root = await createTestTempDirectory("nre-objdump-invalid-target-");
     const missing = join(root, "missing.bin");
     const directory = root;
 
@@ -54,7 +54,7 @@ cliTest(
 cliTest(
   "reports the rejected Rizin command before inspecting the target",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rizin-invalid-command-");
+    const root = await createTestTempDirectory("nre-rizin-invalid-command-");
     const result = await cli.run({
       arguments: [
         "execute-rizin-command",

@@ -15,23 +15,12 @@ export const mergeEnvironmentOverrides = <T>(
 };
 
 /**
- * Project NRE_* and REA_* aliases with deterministic precedence:
- * NRE_* takes precedence over legacy REA_* when both are provided.
+ * Resolves environment variables for NRE.
  */
 export const resolveNreEnvironmentAliases = <T extends string | undefined>(
   environment: Readonly<Record<string, T>>,
 ): Record<string, T> => {
-  const result: Record<string, T> = { ...environment };
-  for (const [key, value] of Object.entries(environment)) {
-    if (key.startsWith("NRE_")) {
-      const reaKey = `REA_${key.slice(4)}`;
-      result[reaKey] = value;
-    } else if (key.startsWith("nre_")) {
-      const reaKey = `rea_${key.slice(4)}`;
-      result[reaKey] = value;
-    }
-  }
-  return result;
+  return { ...environment };
 };
 
 /** Snapshot selected variables while preserving platform and caller precedence. */

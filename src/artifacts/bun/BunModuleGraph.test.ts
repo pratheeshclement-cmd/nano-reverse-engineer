@@ -21,7 +21,7 @@ import {
 } from "./BunStandalone.fixture.js";
 
 async function locate(bytes: Buffer) {
-  const path = join(await createTestTempDirectory("rea-bun-parser-"), "app");
+  const path = join(await createTestTempDirectory("nre-bun-parser-"), "app");
   await writeFile(path, bytes);
   const handle = await open(path, "r");
   try {
@@ -53,7 +53,7 @@ async function locate(bytes: Buffer) {
 
 /** Probe while counting bytes read through the handle. */
 async function probe(bytes: Buffer) {
-  const path = join(await createTestTempDirectory("rea-bun-parser-"), "app");
+  const path = join(await createTestTempDirectory("nre-bun-parser-"), "app");
   await writeFile(path, bytes);
   const handle = await open(path, "r");
   let bytesRead = 0;

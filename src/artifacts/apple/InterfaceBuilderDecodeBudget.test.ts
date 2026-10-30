@@ -91,7 +91,7 @@ describe("inert XML declaration examples in Interface Builder archives", () => {
   it.each(inertDeclarations)(
     "retains $kind and archive provenance through bundle decoding",
     async ({ xml, title }) => {
-      const root = await createTestTempDirectory("rea-ib-inert-declaration-");
+      const root = await createTestTempDirectory("nre-ib-inert-declaration-");
       const bundle = join(root, "Example.app");
       await mkdir(bundle);
       const bytes = Buffer.from(xml);
@@ -164,7 +164,7 @@ describe("inert XML declaration examples in Interface Builder archives", () => {
 });
 
 it("retains explicit date uncertainty for an overlapping binary plist object", async () => {
-  const root = await createTestTempDirectory("rea-ib-binary-date-overlap-");
+  const root = await createTestTempDirectory("nre-ib-binary-date-overlap-");
   const bundle = join(root, "Example.app");
   await mkdir(bundle);
   const bytes = Buffer.from(
@@ -235,7 +235,7 @@ it("retains explicit date uncertainty for an overlapping binary plist object", a
 });
 
 it("preserves aliased wide-integer precision and marks the date unknown in bundle output", async () => {
-  const root = await createTestTempDirectory("rea-ib-binary-scalar-alias-");
+  const root = await createTestTempDirectory("nre-ib-binary-scalar-alias-");
   const bundle = join(root, "Example.app");
   await mkdir(bundle);
   const source = Buffer.from(
@@ -280,7 +280,7 @@ describe("binary Interface Builder plist dates", () => {
   marker.writeDoubleBE(0.1, 1);
 
   const nib = async (bytes: Buffer, name: string) => {
-    const root = await createTestTempDirectory(`rea-ib-date-${name}-`);
+    const root = await createTestTempDirectory(`nre-ib-date-${name}-`);
     const bundle = join(root, "Example.app");
     await mkdir(bundle);
     await writeFile(join(bundle, "Panel.nib"), bytes);

@@ -41,7 +41,7 @@ const countOpenDescriptorsFor = async (path: string): Promise<number> => {
 it.skipIf(process.platform === "win32")(
   "omits a captured regular file replaced by a symlink",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-snapshot-symlink-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-snapshot-symlink-"));
     const selected = join(directory, "selected");
     const replacement = join(directory, "replacement");
     try {
@@ -60,7 +60,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("does not hash a replacement file using the earlier path metadata", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-snapshot-identity-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-snapshot-identity-"));
   const path = join(directory, "observed-file");
   try {
     await writeFile(path, "captured file\n");
@@ -79,7 +79,7 @@ it("does not hash a replacement file using the earlier path metadata", async () 
 });
 
 it("rejects a same-size rewrite even when its modification time is restored", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-snapshot-ctime-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-snapshot-ctime-"));
   const path = join(directory, "observed-file");
   try {
     const fixedMtime = new Date("2020-01-02T03:04:05.000Z");
@@ -115,7 +115,7 @@ it("rejects a same-size rewrite even when its modification time is restored", as
 });
 
 it("reports a file removed between metadata observation and open", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-snapshot-open-race-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-snapshot-open-race-"));
   const path = join(directory, "observed-file");
   try {
     await writeFile(path, "captured file\n");
@@ -133,7 +133,7 @@ it("reports a file removed between metadata observation and open", async () => {
 });
 
 it("rejects cancellation for an empty file before returning its digest", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-snapshot-empty-cancel-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-snapshot-empty-cancel-"));
   const path = join(directory, "observed-file");
   try {
     await writeFile(path, "");
@@ -152,7 +152,7 @@ it("rejects cancellation for an empty file before returning its digest", async (
 it.skipIf(process.platform === "win32")(
   "closes the opened file when cancellation arrives during open",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-snapshot-cancel-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-snapshot-cancel-"));
     const path = join(directory, "observed-file");
     try {
       await writeFile(path, "captured file\n");
@@ -199,7 +199,7 @@ for (const variant of [
   it.runIf(process.platform === "win32")(
     `hashes only the captured Windows file through ${variant}`,
     async () => {
-      const directory = await mkdtemp(join(tmpdir(), "rea-snapshot-windows-"));
+      const directory = await mkdtemp(join(tmpdir(), "nre-snapshot-windows-"));
       try {
         const original = join(directory, "original");
         const replacement = join(directory, "replacement");

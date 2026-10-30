@@ -38,7 +38,7 @@ if (!["linux", "darwin"].includes(process.platform))
   throw new Error("This optional lane requires a Linux/macOS Ghidra host.");
 if (process.env.GHIDRA_INSTALL_DIR === undefined)
   throw new Error("Missing prerequisite: caller-supplied GHIDRA_INSTALL_DIR");
-for (const key of ["REA_GHIDRA_LANGUAGE_ID", "REA_GHIDRA_COMPILER_SPEC_ID"])
+for (const key of ["NRE_GHIDRA_LANGUAGE_ID", "NRE_GHIDRA_COMPILER_SPEC_ID"])
   if (process.env[key] !== undefined)
     throw new Error(
       `Unset ${key}: this lane verifies provider-pinned selection.`,
@@ -54,17 +54,17 @@ assert.equal(installation.status, "available", JSON.stringify(installation));
 assert.equal(installation.providerVersion, "12.1.4");
 
 const execute = promisify(execFile);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-riscv-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-riscv-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: installation.installDir,
   JAVA_HOME: installation.javaHome,
 };
@@ -76,7 +76,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-riscv-proof", version: "1" });
+const client = new Client({ name: "nre-real-riscv-proof", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);
@@ -177,24 +177,24 @@ try {
     }
     const procedures = await call("list_procedures");
     for (const name of [
-      "rea_riscv_entry",
-      "rea_riscv_leaf",
-      "rea_riscv_float",
-      "rea_riscv_probe",
+      "nre_riscv_entry",
+      "nre_riscv_leaf",
+      "nre_riscv_float",
+      "nre_riscv_probe",
     ]) {
       const procedure = procedures.find((value) => value.value === name);
       assert.ok(procedure, `${name} missing from Ghidra inventory`);
       assert.equal(BigInt(procedure.address), BigInt(fixture.symbols[name]));
     }
     const probe = await call("inspect_native_instruction", {
-      address: fixture.symbols.rea_riscv_probe,
+      address: fixture.symbols.nre_riscv_probe,
     });
     assert.equal(probe.status, "decoded");
     assert.equal(probe.architecture, expectedLanguage);
     assert.equal(probe.length, 4);
     assert.equal(probe.bytes, "13051501"); // addi a0, a0, 17
     const mapping = await call("address_to_file_offset", {
-      address: fixture.symbols.rea_riscv_probe,
+      address: fixture.symbols.nre_riscv_probe,
     });
     const sourceBytes = await readFile(fixture.path);
     assert.equal(
@@ -204,14 +204,14 @@ try {
       probe.bytes,
     );
     const global = await call("read_bytes", {
-      address: fixture.symbols.rea_riscv_global,
+      address: fixture.symbols.nre_riscv_global,
       length: 4,
     });
     assert.equal(global.bytes_hex, "07000000");
     const callees = await call("procedure_callees", {
-      procedure: fixture.symbols.rea_riscv_entry,
+      procedure: fixture.symbols.nre_riscv_entry,
     });
-    for (const name of ["rea_riscv_leaf", "rea_riscv_probe"])
+    for (const name of ["nre_riscv_leaf", "nre_riscv_probe"])
       assert.ok(
         callees.some(
           (address) => BigInt(address) === BigInt(fixture.symbols[name]),
@@ -219,13 +219,13 @@ try {
       );
     const dossier = functionDossierSchema.parse(
       await call("analyze_function", {
-        procedure: fixture.symbols.rea_riscv_entry,
+        procedure: fixture.symbols.nre_riscv_entry,
         detail: "complete",
       }),
     );
     assert.ok(dossier.pseudocode.trim().length > 0);
     const floatCode = await call("procedure_pseudo_code", {
-      procedure: fixture.symbols.rea_riscv_float,
+      procedure: fixture.symbols.nre_riscv_float,
     });
     assert.ok(typeof floatCode === "string" && floatCode.trim().length > 0);
     assert.match(floatCode, /\bdouble\b/u);
@@ -259,7 +259,7 @@ try {
             entrypoint,
             "function",
             rejectedPath,
-            "rea_riscv_entry",
+            "nre_riscv_entry",
             "--provider",
             "ghidra",
             "--json",
@@ -297,8 +297,8 @@ try {
     await call("close_binary");
 
     for (const [command, arguments_] of [
-      ["search", ["rea_riscv_", "--kind", "procedures"]],
-      ["function", ["rea_riscv_entry"]],
+      ["search", ["nre_riscv_", "--kind", "procedures"]],
+      ["function", ["nre_riscv_entry"]],
     ]) {
       const cli = await execute(
         process.execPath,
@@ -317,10 +317,10 @@ try {
       assertEvidence(evidence);
       if (command === "search")
         for (const name of [
-          "rea_riscv_entry",
-          "rea_riscv_leaf",
-          "rea_riscv_float",
-          "rea_riscv_probe",
+          "nre_riscv_entry",
+          "nre_riscv_leaf",
+          "nre_riscv_float",
+          "nre_riscv_probe",
         ])
           assert.ok(
             evidence.normalized_result.some((value) => value.value === name),

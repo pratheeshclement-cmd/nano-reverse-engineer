@@ -381,7 +381,7 @@ const requireEngineArchive = async (
             }
             throw configurationFailure(
               "unsupported_version",
-              `REA_JADX_MCP_JAR ${jar} does not contain the required metadata bridge classes: ${[...missing].join(", ")}. ${JADX_JAR_CONFIGURATION_REMEDIATION}`,
+              `NRE_JADX_MCP_JAR ${jar} does not contain the required metadata bridge classes: ${[...missing].join(", ")}. ${JADX_JAR_CONFIGURATION_REMEDIATION}`,
               {
                 jar_path: jar,
                 phase: "jar-inspection",
@@ -461,7 +461,7 @@ const archiveInspectionFailure = (jar: string, cause: unknown) => {
   const reason = cause instanceof Error ? cause.message : String(cause);
   return configurationFailure(
     "version_unresolved",
-    `Cannot inspect REA_JADX_MCP_JAR ${jar} as a Java archive: ${reason}. ${JADX_JAR_CONFIGURATION_REMEDIATION}`,
+    `Cannot inspect NRE_JADX_MCP_JAR ${jar} as a Java archive: ${reason}. ${JADX_JAR_CONFIGURATION_REMEDIATION}`,
     {
       jar_path: jar,
       phase: "jar-inspection",
@@ -513,7 +513,7 @@ const requireSupportedHost = (): void => {
       if (loaded.authority.inspection.protocolStdin === true) return;
       throw configurationFailure(
         "runtime_missing",
-        "The bundled Windows native artifact lacks owned protocol stdin; use a matching current Windows x64 REA package.",
+        "The bundled Windows native artifact lacks owned protocol stdin; use a matching current Windows x64 NRE package.",
         {
           platform: process.platform,
           architecture: process.arch,
@@ -561,7 +561,7 @@ const requireSupportedHost = (): void => {
 const resolveJar = async (
   environment: Readonly<Record<string, string | undefined>>,
 ): Promise<string> => {
-  const jar = environment.REA_JADX_MCP_JAR;
+  const jar = environment.NRE_JADX_MCP_JAR;
   if (jar === undefined)
     throw configurationFailure(
       "not_configured",
@@ -570,11 +570,11 @@ const resolveJar = async (
       "jar",
     );
   // A supplied selection stays configured even when rejected, so callers can
-  // tell it from an omitted setting and see the exact value REA refused.
+  // tell it from an omitted setting and see the exact value NRE refused.
   if (!isAbsolute(jar))
     throw configurationFailure(
       "open_options_invalid",
-      `REA_JADX_MCP_JAR must be an absolute path; received ${JSON.stringify(jar)}. ${JADX_JAR_CONFIGURATION_REMEDIATION}`,
+      `NRE_JADX_MCP_JAR must be an absolute path; received ${JSON.stringify(jar)}. ${JADX_JAR_CONFIGURATION_REMEDIATION}`,
       { jar_configured: true, jar_path: jar, path_requirement: "absolute" },
       "jar",
     );
@@ -583,7 +583,7 @@ const resolveJar = async (
     if (!(await stat(jar)).isFile())
       throw configurationFailure(
         "executable_missing",
-        `REA_JADX_MCP_JAR is not a regular file: ${jar}`,
+        `NRE_JADX_MCP_JAR is not a regular file: ${jar}`,
         { jar_path: jar },
         "jar",
       );
@@ -592,7 +592,7 @@ const resolveJar = async (
     if (cause instanceof JadxConfigurationFailure) throw cause;
     throw configurationFailure(
       "executable_missing",
-      `Cannot read REA_JADX_MCP_JAR ${jar}: ${cause instanceof Error ? cause.message : String(cause)}`,
+      `Cannot read NRE_JADX_MCP_JAR ${jar}: ${cause instanceof Error ? cause.message : String(cause)}`,
       { jar_path: jar },
       "jar",
       cause,
@@ -656,7 +656,7 @@ const resolveJava = async (
     }
     throw configurationFailure(
       "runtime_missing",
-      `Cannot find an executable ${executable} on the selected ${windows ? "Windows " : ""}PATH. Select a full JDK with JAVA_HOME or PATH, then verify it with java --list-modules. REA does not install Java.`,
+      `Cannot find an executable ${executable} on the selected ${windows ? "Windows " : ""}PATH. Select a full JDK with JAVA_HOME or PATH, then verify it with java --list-modules. NRE does not install Java.`,
       { java_executable: executable, phase: "path-lookup" },
       "java_runtime",
     );
@@ -702,8 +702,8 @@ const resolveJvmArguments = (
 ): readonly string[] => {
   const result: string[] = [];
   for (const [name, prefix, suffix] of [
-    ["REA_JADX_HEAP_MIB", "-Xmx", "m"],
-    ["REA_JADX_ACTIVE_PROCESSOR_COUNT", "-XX:ActiveProcessorCount=", ""],
+    ["NRE_JADX_HEAP_MIB", "-Xmx", "m"],
+    ["NRE_JADX_ACTIVE_PROCESSOR_COUNT", "-XX:ActiveProcessorCount=", ""],
   ] as const) {
     const value = environment[name];
     if (value === undefined) continue;
@@ -715,7 +715,7 @@ const resolveJvmArguments = (
         "jvm_options",
       );
     if (
-      name === "REA_JADX_ACTIVE_PROCESSOR_COUNT" &&
+      name === "NRE_JADX_ACTIVE_PROCESSOR_COUNT" &&
       Number(value) > 2_147_483_647
     )
       throw configurationFailure(
@@ -734,14 +734,14 @@ const readOperationTimeout = (
   runtimeTimeoutMs?: number,
 ): number => {
   if (runtimeTimeoutMs !== undefined) return runtimeTimeoutMs;
-  const value = environment.REA_JADX_OPERATION_TIMEOUT_MS;
+  const value = environment.NRE_JADX_OPERATION_TIMEOUT_MS;
   if (value === undefined) return DEFAULT_JADX_OPERATION_TIMEOUT_MS;
   const parsed = providerStartupTimeoutSchema.safeParse(value);
   if (parsed.success) return parsed.data;
   throw configurationFailure(
     "open_options_invalid",
-    `REA_JADX_OPERATION_TIMEOUT_MS must be a decimal millisecond count from 1 to 2147483647; received ${value}.`,
-    { setting: "REA_JADX_OPERATION_TIMEOUT_MS", value },
+    `NRE_JADX_OPERATION_TIMEOUT_MS must be a decimal millisecond count from 1 to 2147483647; received ${value}.`,
+    { setting: "NRE_JADX_OPERATION_TIMEOUT_MS", value },
     "operation_timeout",
   );
 };

@@ -20,7 +20,7 @@ for (const { serial, capture, ids } of [
   cliTest.skipIf(process.platform === "win32")(
     `retains display-scoped focus through CLI and MCP: ${serial}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-adb-display-focus-");
+      const root = await createTestTempDirectory("nre-adb-display-focus-");
       const binary = join(root, "fake-adb.mjs");
       await writeFile(
         binary,
@@ -37,7 +37,7 @@ if (args.length === 1 && args[0] === 'version') {
         { mode: 0o700 },
       );
       const environment = {
-        REA_ADB_PATH: binary,
+        NRE_ADB_PATH: binary,
         HOME: root,
         TMPDIR: root,
         PATH: `${dirname(process.execPath)}:/usr/bin:/bin`,

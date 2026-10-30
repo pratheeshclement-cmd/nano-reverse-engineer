@@ -31,7 +31,7 @@ const connect = async () => {
     { kind: "session", session },
     {
       androidAnalysis: fixture.provider,
-      environment: { REA_MCP_TOOL_FAMILIES: "android,application,session" },
+      environment: { NRE_MCP_TOOL_FAMILIES: "android,application,session" },
     },
   );
   const client = new Client({
@@ -71,7 +71,7 @@ const mappingText = (original: string) =>
 
 it("keeps exact class and selected-method facts in summaries with readable complete parents after source removal", async () => {
   const { apk, client, session, launches } = await connect();
-  const root = await createTestTempDirectory("rea-android-mapping-summary-");
+  const root = await createTestTempDirectory("nre-android-mapping-summary-");
   const mapping_path = join(root, "mapping.txt");
   await writeFile(mapping_path, mappingText("com.example.Original"));
   const catalog = (await client.listTools()).tools;
@@ -138,7 +138,7 @@ it("keeps exact class and selected-method facts in summaries with readable compl
 
 it("annotates class inspection with a caller-selected mapping and reuses one engine", async () => {
   const { apk, client, inspect, launches } = await connect();
-  const root = await createTestTempDirectory("rea-android-mapping-");
+  const root = await createTestTempDirectory("nre-android-mapping-");
   const first = join(root, "first.txt");
   const second = join(root, "second.txt");
   await writeFile(first, mappingText("com.example.Original"));
@@ -235,7 +235,7 @@ it.each([
   "refuses a %s mapping before launching JADX",
   async (scenario, code, reason) => {
     const { inspect, launches } = await connect();
-    const root = await createTestTempDirectory("rea-android-mapping-");
+    const root = await createTestTempDirectory("nre-android-mapping-");
     const path = join(root, "mapping.txt");
     if (scenario === "not UTF-8")
       await writeFile(

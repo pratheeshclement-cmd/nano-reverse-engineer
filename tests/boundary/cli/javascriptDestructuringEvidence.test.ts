@@ -11,7 +11,7 @@ cliTest(
   "retains assignment and nested-default destructuring Evidence",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-js-destructuring-evidence-",
+      "nre-js-destructuring-evidence-",
     );
     await writeFile(
       join(root, "main.js"),

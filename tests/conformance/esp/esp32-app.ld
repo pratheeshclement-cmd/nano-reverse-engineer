@@ -1,4 +1,4 @@
-ENTRY(rea_entry)
+ENTRY(nre_entry)
 /*
  * ESP32 (Xtensa) address ranges from ESP-IDF v6.1
  * components/soc/esp32/include/soc/soc.h, for app.c built with

@@ -11,7 +11,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "preserves caller unknown capacities and omission coverage through real worker, CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-unknown-capacity-");
+    const root = await createTestTempDirectory("nre-js-unknown-capacity-");
     for (const name of ["first.js", "second.js"])
       await writeFile(
         join(root, name),
@@ -60,9 +60,9 @@ cliTest(
     ).toBe(29);
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
-      env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+      env: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
       stderr: "pipe",
     });
     const client = new Client({

@@ -31,7 +31,7 @@ async function connect(profile?: "full" | "compact") {
   });
   const server = createServer(
     { kind: "session", session },
-    { environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: profile } },
+    { environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: profile } },
   );
   const client = new Client({ name: "retained-evidence-test", version: "1" });
   resources.push(client, server, session);

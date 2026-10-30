@@ -52,7 +52,7 @@ class FakeMacHopperHost implements MacHopperInstallHost {
         : { ok: this.archiveOk, bytes: this.archive },
     );
   };
-  createTemporaryDirectory = () => Promise.resolve("/tmp/rea-hopper-test");
+  createTemporaryDirectory = () => Promise.resolve("/tmp/nre-hopper-test");
   createMountDirectory = () => Promise.resolve();
   writePackage = () => Promise.resolve();
   mount = () => {
@@ -266,7 +266,7 @@ it("retains the exact DMG temporary root with its retry capability", async () =>
     cleanupFailure: expect.stringContaining("DMG root busy"),
   });
   expect(retained).toHaveLength(1);
-  expect(retained[0]?.resources).toEqual(["/tmp/rea-hopper-test"]);
+  expect(retained[0]?.resources).toEqual(["/tmp/nre-hopper-test"]);
   allowCleanup = true;
   await expect(retained[0]!.close()).resolves.toBeUndefined();
 });

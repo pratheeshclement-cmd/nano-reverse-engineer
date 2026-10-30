@@ -10,7 +10,7 @@ import {
   type ClientConfigurationFormat,
 } from "./ClientConfigurationDocument.js";
 
-const owned = { command: "rea", args: ["mcp"] };
+const owned = { command: "nre", args: ["mcp"] };
 const foreign = { command: "/usr/bin/false" };
 
 const removeRea = (
@@ -19,12 +19,12 @@ const removeRea = (
   options?: ClientConfigurationEditOptions,
 ) => {
   const parsed = parseClientConfiguration(text, format);
-  const { rea: _removed, ...remaining } = parsed.servers;
+  const { nre: _removed, ...remaining } = parsed.servers;
   return serializeClientConfiguration(
     withClientServers(parsed, remaining),
     format,
     text,
-    [clientServerPath(parsed, "rea")],
+    [clientServerPath(parsed, "nre")],
     options,
   );
 };
@@ -35,26 +35,26 @@ const parseStrictJson = (text: string): Record<string, unknown> =>
 describe("JSON client configuration repeated-member edits", () => {
   it("keeps the default refusal for repeated deletions", () => {
     const text =
-      `{"mcpServers":{"rea":${JSON.stringify(foreign)},` +
-      `"rea":${JSON.stringify(owned)}}}`;
+      `{"mcpServers":{"nre":${JSON.stringify(foreign)},` +
+      `"nre":${JSON.stringify(owned)}}}`;
     expect(removeRea(text, "claude_code")).toEqual({
       ok: false,
       error: {
         kind: "shadowed_member",
-        path: ["mcpServers", "rea"],
+        path: ["mcpServers", "nre"],
       },
     });
   });
 
   it("removes all authorized repeats and preserves peer values in strict JSON", () => {
     const text =
-      `{"mcpServers":{"rea":${JSON.stringify(foreign)},` +
+      `{"mcpServers":{"nre":${JSON.stringify(foreign)},` +
       `"peer":{"command":"peer"},` +
-      `"rea":${JSON.stringify(owned)},` +
+      `"nre":${JSON.stringify(owned)},` +
       `"other":{"args":[1,2]},` +
-      `"rea":${JSON.stringify(owned)}}}`;
+      `"nre":${JSON.stringify(owned)}}}`;
     const parsed = parseClientConfiguration(text, "claude_code");
-    const path = clientServerPath(parsed, "rea");
+    const path = clientServerPath(parsed, "nre");
     const result = removeRea(text, "claude_code", {
       removeShadowedMembersAt: [path],
     });
@@ -67,19 +67,19 @@ describe("JSON client configuration repeated-member edits", () => {
         other: { args: [1, 2] },
       },
     });
-    expect(result.value).not.toContain('"rea"');
+    expect(result.value).not.toContain('"nre"');
   });
 
   it("does not apply repeat-removal authority to a different path", () => {
-    const text = `{"mcpServers":{"rea":1,"rea":2,"peer":3,"peer":4}}`;
+    const text = `{"mcpServers":{"nre":1,"nre":2,"peer":3,"peer":4}}`;
     const parsed = parseClientConfiguration(text, "json");
     const document = withClientServers(parsed, {});
     const result = serializeClientConfiguration(
       document,
       "json",
       text,
-      [clientServerPath(parsed, "rea"), clientServerPath(parsed, "peer")],
-      { removeShadowedMembersAt: [clientServerPath(parsed, "rea")] },
+      [clientServerPath(parsed, "nre"), clientServerPath(parsed, "peer")],
+      { removeShadowedMembersAt: [clientServerPath(parsed, "nre")] },
     );
 
     expect(result).toEqual({
@@ -95,15 +95,15 @@ describe("JSON client configuration repeated-member edits", () => {
     ["no registration", `{"mcpServers":{"peer":1}}`, { peer: 1 }, undefined],
     [
       "one registration",
-      `{"mcpServers":{"rea":1,"peer":2}}`,
+      `{"mcpServers":{"nre":1,"peer":2}}`,
       { peer: 2 },
       undefined,
     ],
     [
       "multiple registrations",
-      `{"mcpServers":{"rea":1,"peer":2,"rea":3,"other":4,"rea":5}}`,
+      `{"mcpServers":{"nre":1,"peer":2,"nre":3,"other":4,"nre":5}}`,
       { peer: 2, other: 4 },
-      { removeShadowedMembersAt: [["mcpServers", "rea"]] },
+      { removeShadowedMembersAt: [["mcpServers", "nre"]] },
     ],
   ] as const)(
     "handles %s without losing peers",
@@ -118,13 +118,13 @@ describe("JSON client configuration repeated-member edits", () => {
   );
 
   it("matches escaped keys and retains a repeated inactive parent byte for byte", () => {
-    const inactive = `{"rea":${JSON.stringify(foreign)}}`;
+    const inactive = `{"nre":${JSON.stringify(foreign)}}`;
     const text =
       `{"mcpServers":${inactive},` +
-      `"mcpServers":{"r\\u0065a":${JSON.stringify(foreign)},` +
-      `"peer":2,"rea":${JSON.stringify(owned)}}}`;
+      `"mcpServers":{"n\\u0072e":${JSON.stringify(foreign)},` +
+      `"peer":2,"nre":${JSON.stringify(owned)}}}`;
     const result = removeRea(text, "claude_code", {
-      removeShadowedMembersAt: [["mcpServers", "rea"]],
+      removeShadowedMembersAt: [["mcpServers", "nre"]],
     });
 
     expect(result.ok).toBe(true);
@@ -138,12 +138,12 @@ describe("JSON client configuration repeated-member edits", () => {
   it("preserves JSONC comments and parses BOM/CRLF output independently", () => {
     const text =
       `\uFEFF{\r\n  // top comment\r\n  "mcp": {\r\n` +
-      `    "r\\u0065a": ${JSON.stringify(foreign)}, // first\r\n` +
+      `    "n\\u0072e": ${JSON.stringify(foreign)}, // first\r\n` +
       `    "peer": { "command": "peer" },\r\n` +
-      `    /* second */ "rea": ${JSON.stringify(owned)},\r\n` +
+      `    /* second */ "nre": ${JSON.stringify(owned)},\r\n` +
       `  },\r\n}\r\n`;
     const result = removeRea(text, "opencode", {
-      removeShadowedMembersAt: [["mcp", "rea"]],
+      removeShadowedMembersAt: [["mcp", "nre"]],
     });
 
     expect(result.ok).toBe(true);

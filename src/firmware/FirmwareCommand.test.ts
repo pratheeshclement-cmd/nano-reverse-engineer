@@ -48,7 +48,7 @@ it.each([
       command: "/usr/bin/true",
       limiter: "/usr/bin/true",
       args: ["--version"],
-      cwd: await createTestTempDirectory("rea-firmware-admission-"),
+      cwd: await createTestTempDirectory("nre-firmware-admission-"),
       environment: process.env,
       signal: AbortSignal.any([analysis.signal, caller.signal]),
       deadline: {
@@ -99,7 +99,7 @@ it("does not relabel an unrelated launch failure when a deadline also fires", as
       command: "/usr/bin/true",
       limiter: "/usr/bin/true",
       args: [],
-      cwd: await createTestTempDirectory("rea-firmware-admission-error-"),
+      cwd: await createTestTempDirectory("nre-firmware-admission-error-"),
       environment: process.env,
       signal: analysis.signal,
       deadline: {
@@ -135,11 +135,11 @@ test("names the host and tool requirement of an unconfigured engine", async () =
     message: refusal.reason,
     remediation: { action: refusal.reason },
   });
-  expect(refusal.reason).toContain("REA_BINWALK_COMMAND");
+  expect(refusal.reason).toContain("NRE_BINWALK_COMMAND");
 });
 
 it("rejects a directory configured as the firmware engine executable", async () => {
-  const root = await createTestTempDirectory("rea-firmware-command-");
+  const root = await createTestTempDirectory("nre-firmware-command-");
   const command = join(root, "binwalk");
   const limiter = await executableFixture(root, "prlimit");
   await mkdir(command);
@@ -147,8 +147,8 @@ it("rejects a directory configured as the firmware engine executable", async () 
   await expect(
     resolveFirmwareCommand(
       {
-        REA_BINWALK_COMMAND: command,
-        REA_FIRMWARE_PRLIMIT_COMMAND: limiter,
+        NRE_BINWALK_COMMAND: command,
+        NRE_FIRMWARE_PRLIMIT_COMMAND: limiter,
       },
       "binwalk",
       "inspect_firmware_regions",
@@ -161,7 +161,7 @@ it("rejects a directory configured as the firmware engine executable", async () 
 });
 
 it("classifies an unusable firmware engine as an unavailable capability", async () => {
-  const root = await createTestTempDirectory("rea-firmware-command-");
+  const root = await createTestTempDirectory("nre-firmware-command-");
   const command = join(root, "binwalk");
   const limiter = await executableFixture(root, "prlimit");
   await writeFile(command, "not executable", { mode: 0o600 });
@@ -169,8 +169,8 @@ it("classifies an unusable firmware engine as an unavailable capability", async 
   await expect(
     resolveFirmwareCommand(
       {
-        REA_BINWALK_COMMAND: command,
-        REA_FIRMWARE_PRLIMIT_COMMAND: limiter,
+        NRE_BINWALK_COMMAND: command,
+        NRE_FIRMWARE_PRLIMIT_COMMAND: limiter,
       },
       "binwalk",
       "inspect_firmware_regions",
@@ -183,7 +183,7 @@ it("classifies an unusable firmware engine as an unavailable capability", async 
 });
 
 it("rejects a directory configured as the resource limiter executable", async () => {
-  const root = await createTestTempDirectory("rea-firmware-limiter-");
+  const root = await createTestTempDirectory("nre-firmware-limiter-");
   const command = await executableFixture(root, "binwalk");
   const limiter = join(root, "prlimit");
   await mkdir(limiter);
@@ -191,8 +191,8 @@ it("rejects a directory configured as the resource limiter executable", async ()
   await expect(
     resolveFirmwareCommand(
       {
-        REA_BINWALK_COMMAND: command,
-        REA_FIRMWARE_PRLIMIT_COMMAND: limiter,
+        NRE_BINWALK_COMMAND: command,
+        NRE_FIRMWARE_PRLIMIT_COMMAND: limiter,
       },
       "binwalk",
       "inspect_firmware_regions",
@@ -238,7 +238,7 @@ it("keeps captured tool output when firmware stops on SIGXCPU", async () => {
     command: "/opt/binwalk",
     limiter: "/usr/bin/prlimit",
     args: ["--quiet"],
-    cwd: await createTestTempDirectory("rea-firmware-signal-"),
+    cwd: await createTestTempDirectory("nre-firmware-signal-"),
     environment: process.env,
     signal: analysis.signal,
     deadline: {
@@ -251,7 +251,7 @@ it("keeps captured tool output when firmware stops on SIGXCPU", async () => {
       Promise.resolve({
         process: child,
         ownership: {
-          runId: "rea-firmware-signal",
+          runId: "nre-firmware-signal",
           leaderPid: 4242,
           processGroupId: 4242,
         },
@@ -301,7 +301,7 @@ test.each([
 ])(
   "separates payload $selected from metadata file headroom and inherited ceiling $inherited",
   async ({ selected, inherited, expected }) => {
-    const root = await createTestTempDirectory("rea-firmware-file-policy-");
+    const root = await createTestTempDirectory("nre-firmware-file-policy-");
     const refused = new Error("stop after inspecting launch policy");
     const launcher = vi.fn(
       async (options: OwnedProviderProcessSpawnOptions) => {
@@ -345,7 +345,7 @@ test.each([
 ])(
   "preserves completed exit $exitCode through cancellation during real owned cleanup (fails: $cleanupFails)",
   async ({ exitCode, cleanupFails }) => {
-    const root = await createTestTempDirectory("rea-firmware-finalization-");
+    const root = await createTestTempDirectory("nre-firmware-finalization-");
     const caller = new AbortController();
     const reason = { caller: "cancel during final cleanup" };
     let cleanupCalls = 0;
@@ -480,7 +480,7 @@ test.skipIf(process.platform === "win32").each([
   "retains root exit $exitCode while a handshaken descendant holds output (accepted: $acceptFailure, earlier cancellation: $cancelBeforeExit, overflow: $overflow)",
   async ({ exitCode, acceptFailure, cancelBeforeExit, expected, overflow }) => {
     const root = await createTestTempDirectory(
-      "rea-firmware-inherited-output-",
+      "nre-firmware-inherited-output-",
     );
     const caller = new AbortController();
     const reason = { caller: "cancel with inherited output still open" };

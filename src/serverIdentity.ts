@@ -62,7 +62,7 @@ export const createServerIdentity = (input: {
       name: PRODUCT_IDENTITY.packageName,
       version: PRODUCT_IDENTITY.packageVersion,
       root_path: packageRoot(),
-      build_commit: process.env.REA_BUILD_COMMIT ?? null,
+      build_commit: process.env.NRE_BUILD_COMMIT ?? null,
     },
     server: {
       name: PRODUCT_IDENTITY.mcpServerKey,

@@ -94,7 +94,7 @@ it.each(["inspect_native_exports", "inspect_byte_entropy"] as const)(
 it.each([false, true])(
   "preserves a completed byte report through MCP cleanup failure and retry (retained=%s)",
   async (retained) => {
-    const root = await createTestTempDirectory("rea-entropy-mcp-cleanup-");
+    const root = await createTestTempDirectory("nre-entropy-mcp-cleanup-");
     const path = join(root, "bytes.bin");
     const bytes = Buffer.alloc(512);
     await writeFile(path, bytes);
@@ -302,7 +302,7 @@ it("records inline layout with compact schemas and canonical path checks", async
 });
 
 it("profiles real bytes with exact offsets, valid advertised schemas and read-only effects", async () => {
-  const root = await createTestTempDirectory("rea-entropy-mcp-");
+  const root = await createTestTempDirectory("nre-entropy-mcp-");
   const path = join(root, "firmware.bin");
   await writeFile(
     path,
@@ -372,7 +372,7 @@ it("profiles real bytes with exact offsets, valid advertised schemas and read-on
 });
 
 it("records a portable export inventory through MCP without a binary target", async () => {
-  const root = await createTestTempDirectory("rea-native-exports-mcp-");
+  const root = await createTestTempDirectory("nre-native-exports-mcp-");
   const path = join(root, "libfixture.so");
   const bytes = elfExportImage({
     symbols: [

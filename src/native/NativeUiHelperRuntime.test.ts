@@ -21,7 +21,7 @@ const helperCapture = {
   stderrBytes: 0,
 };
 
-it.each([250_000, undefined])(
+it.skipIf(process.platform === "win32").each([250_000, undefined])(
   "uses the selected UI deadline for both helper subprocesses: %s",
   async (deadlineMs) => {
     vi.mocked(execFileOutput).mockReset();

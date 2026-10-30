@@ -54,9 +54,9 @@ const parseStaticLayer = (
     evidence,
     {
       operation: "analyze_javascript_application",
-      predicate: "rea.javascript-application-analysis",
-      providerId: "rea-javascript-application",
-      providerName: "REA JavaScript application analyzer",
+      predicate: "nre.javascript-application-analysis",
+      providerId: "nre-javascript-application",
+      providerName: "NRE JavaScript application analyzer",
       providerVersion: "1",
       authority: "shipped-artifact",
       confidence: "derived",

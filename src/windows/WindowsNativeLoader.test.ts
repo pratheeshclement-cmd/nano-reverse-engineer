@@ -131,7 +131,7 @@ describe("packaged Windows native compatibility", () => {
       available: false,
       failureStage: "artifact",
       reason: expect.stringMatching(
-        /Missing packaged Windows native file native\/windows\/build\/manifest\.json \(ENOENT\).*native\/windows\/build\/rea-windows-x64\.node.*native\/windows\/README\.md/u,
+        /Missing packaged Windows native file native\/windows\/build\/manifest\.json \(ENOENT\).*native\/windows\/build\/nre-windows-x64\.node.*native\/windows\/README\.md/u,
       ),
     });
     expect(value.loads()).toBe(0);
@@ -218,7 +218,7 @@ describe("packaged Windows native artifact validation", () => {
       ...value.host,
       loadArtifact: () => {
         throw new Error(
-          "An Application Control policy has blocked this file.\r\n\\\\?\\C:\\rea\\rea-windows-x64.node",
+          "An Application Control policy has blocked this file.\r\n\\\\?\\C:\\nre\\nre-windows-x64.node",
         );
       },
     });

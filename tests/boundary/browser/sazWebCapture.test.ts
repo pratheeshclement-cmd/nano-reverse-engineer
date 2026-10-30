@@ -75,13 +75,13 @@ const archive = async (entries = members(), password?: string, level = 6) => {
   return Buffer.from(await writer.close());
 };
 const fixture = async (bytes: Buffer) => {
-  const root = await createTestTempDirectory("rea-saz-capture-");
+  const root = await createTestTempDirectory("nre-saz-capture-");
   const path = join(root, "capture.saz");
   await writeFile(path, bytes);
   return path;
 };
 const entrypoint = fileURLToPath(
-  new URL("../../../scripts/rea.mjs", import.meta.url),
+  new URL("../../../scripts/nre.mjs", import.meta.url),
 );
 const cliResponse = async (path: string, extra: string[] = []) => {
   try {

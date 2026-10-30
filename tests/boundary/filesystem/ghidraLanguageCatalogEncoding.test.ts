@@ -46,7 +46,7 @@ it.each([
 ])(
   "reads $name at the language-file byte boundary",
   async ({ bytes, expectedError }) => {
-    const root = await createTestTempDirectory("rea-ghidra-xml-encoding-");
+    const root = await createTestTempDirectory("nre-ghidra-xml-encoding-");
     const directory = join(
       root,
       "Ghidra",

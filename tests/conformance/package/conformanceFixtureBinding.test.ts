@@ -9,7 +9,7 @@ import {
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("binds canonical manifest-relative artifacts without changing declared names", async () => {
-  const root = await createTestTempDirectory("rea-conformance-binding-");
+  const root = await createTestTempDirectory("nre-conformance-binding-");
   const name = "caller α source artifact";
   const bytes = Buffer.from("inert fixture content");
   await writeFile(join(root, name), bytes);
@@ -41,7 +41,7 @@ it.each([
 ])(
   "rejects malformed artifact declarations before reading files: %j",
   async (declaration) => {
-    const root = await createTestTempDirectory("rea-conformance-declaration-");
+    const root = await createTestTempDirectory("nre-conformance-declaration-");
     await expect(
       bindConformanceFixtureArtifact(join(root, "artifact"), declaration),
     ).rejects.toThrow("Invalid conformance artifact declaration");
@@ -49,8 +49,8 @@ it.each([
 );
 
 it("rejects paths outside the canonical manifest root", async () => {
-  const root = await createTestTempDirectory("rea-conformance-root-");
-  const outside = await createTestTempDirectory("rea-conformance-outside-");
+  const root = await createTestTempDirectory("nre-conformance-root-");
+  const outside = await createTestTempDirectory("nre-conformance-outside-");
   const path = join(outside, "artifact");
   await writeFile(path, "outside");
   await expect(resolveConformanceFixturePath(root, path)).rejects.toThrow(
@@ -64,9 +64,9 @@ it("rejects paths outside the canonical manifest root", async () => {
 it.skipIf(process.platform === "win32")(
   "rejects artifact symlinks escaping their manifest root",
   async () => {
-    const root = await createTestTempDirectory("rea-conformance-symlink-");
+    const root = await createTestTempDirectory("nre-conformance-symlink-");
     const outside = await createTestTempDirectory(
-      "rea-conformance-symlink-outside-",
+      "nre-conformance-symlink-outside-",
     );
     const bytes = Buffer.from("outside");
     await writeFile(join(outside, "artifact"), bytes);

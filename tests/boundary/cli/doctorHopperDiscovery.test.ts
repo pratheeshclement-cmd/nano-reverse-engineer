@@ -9,7 +9,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "reports invalid Hopper startup timeouts without launching the discovered engine",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-doctor-hopper-timeout-");
+    const home = await createTestTempDirectory("nre-doctor-hopper-timeout-");
     const launcher = join(home, "hopper");
     const marker = join(home, "launched");
     await writeFile(launcher, `#!/bin/sh\nprintf launched > '${marker}'\n`);
@@ -29,7 +29,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
           : {}),
         HOME: home,
         HOPPER_LAUNCHER_PATH: launcher,
-        REA_HOPPER_STARTUP_TIMEOUT_MS: timeout,
+        NRE_HOPPER_STARTUP_TIMEOUT_MS: timeout,
         GHIDRA_INSTALL_DIR: join(home, "missing-ghidra"),
       };
       const providers = await cli.run({
@@ -51,7 +51,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
             name: "hopper-startup-timeout",
             ok: expectedExit === 0,
             classification: expectedExit === 0 ? "healthy" : "config_drift",
-            detail: expect.stringContaining("REA_HOPPER_STARTUP_TIMEOUT_MS"),
+            detail: expect.stringContaining("NRE_HOPPER_STARTUP_TIMEOUT_MS"),
           }),
         ]),
       });
@@ -63,7 +63,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "reports native configuration that blocks the selected engine",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-doctor-native-config-");
+    const home = await createTestTempDirectory("nre-doctor-native-config-");
     const shared = {
       HOME: home,
       USERPROFILE: home,
@@ -74,8 +74,8 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
       arguments: ["doctor", "--provider", "hopper", "--json"],
       environment: {
         ...shared,
-        REA_ANALYSIS_PROVIDER: "Hopper",
-        REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
+        NRE_ANALYSIS_PROVIDER: "Hopper",
+        NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc",
       },
     });
     expect(invalid.exitCode, invalid.stderr).toBe(1);
@@ -83,12 +83,12 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
       healthy: false,
       scope_checks: expect.arrayContaining([
         expect.objectContaining({
-          name: "runtime-configuration:REA_ANALYSIS_PROVIDER",
+          name: "runtime-configuration:NRE_ANALYSIS_PROVIDER",
           ok: false,
           classification: "config_drift",
         }),
         expect.objectContaining({
-          name: "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+          name: "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
           ok: false,
           classification: "config_drift",
         }),
@@ -97,7 +97,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
 
     const jebOnly = await cli.run({
       arguments: ["doctor", "--provider", "hopper", "--json"],
-      environment: { ...shared, REA_JEB_MCP_TIMEOUT_MS: "abc" },
+      environment: { ...shared, NRE_JEB_MCP_TIMEOUT_MS: "abc" },
     });
     const checks = (jebOnly.json as { checks?: { name: string }[] } | undefined)
       ?.checks;
@@ -112,7 +112,7 @@ cliTest(
   async ({ cli }) => {
     const doctor = await cli.run({
       arguments: ["--json", "doctor", "--client", "codex"],
-      environment: { REA_GHIDRA_STARTUP_TIMEOUT_MS: "abc" },
+      environment: { NRE_GHIDRA_STARTUP_TIMEOUT_MS: "abc" },
     });
     expect(doctor.exitCode, doctor.stderr).toBe(1);
     expect(doctor.stderr).toBe("");
@@ -121,7 +121,7 @@ cliTest(
       scope: { mode: "explicit", clients: ["codex"], providers: [] },
       scope_checks: expect.arrayContaining([
         expect.objectContaining({
-          name: "runtime-configuration:REA_GHIDRA_STARTUP_TIMEOUT_MS",
+          name: "runtime-configuration:NRE_GHIDRA_STARTUP_TIMEOUT_MS",
           ok: false,
         }),
       ]),
@@ -132,13 +132,13 @@ cliTest(
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "retains a configured Hopper path in host diagnostics without launching it",
   async ({ cli }) => {
-    const home = await createTestTempDirectory("rea-doctor-hopper-home-");
+    const home = await createTestTempDirectory("nre-doctor-hopper-home-");
     const launcher = `${home}/bin/../bin/hopper`;
     const launchMarker = join(home, "hopper-was-launched");
     await mkdir(join(home, "bin"), { recursive: true });
     await writeFile(
       launcher,
-      '#!/bin/sh\nprintf launched > "$REA_HOPPER_TEST_MARKER"\nexit 99\n',
+      '#!/bin/sh\nprintf launched > "$NRE_HOPPER_TEST_MARKER"\nexit 99\n',
     );
     await chmod(launcher, 0o700);
     const loaderMarker = join(home, "loader-checked-launcher");
@@ -152,7 +152,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
           "#!/bin/sh",
           'test "$#" -eq 1 || exit 87',
           'test "$1" = "$HOPPER_LAUNCHER_PATH" || exit 88',
-          'printf "%s" "$1" > "$REA_HOPPER_LDD_TEST_MARKER"',
+          'printf "%s" "$1" > "$NRE_HOPPER_LDD_TEST_MARKER"',
           'printf "%s\\n" "libc.so.6 => /fixture/libc.so.6 (0x1)"',
           "",
         ].join("\n"),
@@ -167,14 +167,14 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
         ...(process.platform === "linux"
           ? {
               PATH: [join(home, "bin"), process.env.PATH ?? ""].join(delimiter),
-              REA_HOPPER_LDD_TEST_MARKER: loaderMarker,
+              NRE_HOPPER_LDD_TEST_MARKER: loaderMarker,
               NODE_OPTIONS: `--import=${new URL("../../fixtures/hopperRejectionFeed.mjs", import.meta.url).href}`,
             }
           : {}),
         HOME: home,
         USERPROFILE: home,
         HOPPER_LAUNCHER_PATH: launcher,
-        REA_HOPPER_TEST_MARKER: launchMarker,
+        NRE_HOPPER_TEST_MARKER: launchMarker,
         GHIDRA_INSTALL_DIR: join(home, "missing-ghidra"),
       },
       timeoutMs: 20_000,

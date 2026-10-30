@@ -28,14 +28,14 @@ assert(
   "This real-client lane requires POSIX; native Windows is unverified.",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtimeRoot = process.env.REA_VERIFY_RUNTIME_ROOT ?? repo;
+const runtimeRoot = process.env.NRE_VERIFY_RUNTIME_ROOT ?? repo;
 const command =
-  process.env[`REA_VERIFY_${client.toUpperCase()}_COMMAND`] ?? client;
-const lab = await mkdtemp(join(tmpdir(), `rea-${client}-client-`));
+  process.env[`NRE_VERIFY_${client.toUpperCase()}_COMMAND`] ?? client;
+const lab = await mkdtemp(join(tmpdir(), `nre-${client}-client-`));
 const account = join(lab, "account");
 const profile = join(lab, "selected profile");
 const stickyHermes =
-  client === "hermes" && process.env.REA_VERIFY_HERMES_STICKY_PROFILE === "1";
+  client === "hermes" && process.env.NRE_VERIFY_HERMES_STICKY_PROFILE === "1";
 const selectedProfile = stickyHermes
   ? join(profile, "profiles", "coder")
   : profile;
@@ -45,7 +45,7 @@ const artifactPath = join(workspace, "evidence.json");
 const skillPath = join(
   client === "pi" ? join(account, ".agents") : selectedProfile,
   "skills",
-  "reverse-engineer-anything",
+  "nano-reverse-engineer",
   "SKILL.md",
 );
 const verifier = createVerifierRun();
@@ -77,7 +77,7 @@ await withVerifierCleanup(async () => {
       USERPROFILE: account,
       [client === "pi" ? "PI_CODING_AGENT_DIR" : "HERMES_HOME"]: profile,
       PI_OFFLINE: "1",
-      REA_PROCESS_RUN_ID: verifier.run_id,
+      NRE_PROCESS_RUN_ID: verifier.run_id,
     };
     const configPath = join(
       selectedProfile,
@@ -108,7 +108,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const result = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/nre.mjs"), ...args, "--json"],
         {
           env: environment,
           cwd: workspace,
@@ -131,7 +131,7 @@ await withVerifierCleanup(async () => {
         result.stdout,
       );
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     const installedConfiguration = await readFile(configPath, "utf8");
     assert(installedConfiguration.includes("unrelated-server"));
     if (client === "hermes")
@@ -139,7 +139,7 @@ await withVerifierCleanup(async () => {
     const repeated = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/nre.mjs"),
         "setup",
         "--client",
         client,
@@ -155,10 +155,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), installedConfiguration);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.nre.backup`, "utf8"), original);
     assert(
       (await readFile(skillPath, "utf8")).includes(
-        "name: reverse-engineer-anything",
+        "name: nano-reverse-engineer",
       ),
     );
     const decodeNativeAgentResult = (text) => {
@@ -212,7 +212,7 @@ await withVerifierCleanup(async () => {
         if (
           client === "pi" &&
           callRequested &&
-          serializedTools.includes("REA_CLIENT_FIXTURE")
+          serializedTools.includes("NRE_CLIENT_FIXTURE")
         ) {
           const fact = toolMessages
             .flatMap((m) => {
@@ -220,7 +220,7 @@ await withVerifierCleanup(async () => {
                 typeof m.content === "string"
                   ? m.content
                   : JSON.stringify(m.content);
-              const marker = text.indexOf('{"REA_CLIENT_FIXTURE":true');
+              const marker = text.indexOf('{"NRE_CLIENT_FIXTURE":true');
               if (marker < 0) return [];
               const end = text.indexOf("}\n", marker);
               try {
@@ -257,7 +257,7 @@ await withVerifierCleanup(async () => {
             );
           skillLoaded ||=
             serializedTools.includes(skillPath) &&
-            serializedTools.includes("reverse-engineer-anything");
+            serializedTools.includes("nano-reverse-engineer");
           for (const message of toolMessages) {
             const evidence = findClientResult(
               message.content,
@@ -269,7 +269,7 @@ await withVerifierCleanup(async () => {
         }
         if (mode === "chat" || evidenceSeen) {
           finalSeen = true;
-          return { role: "assistant", content: "REA_CLIENT_COMPATIBILITY_OK" };
+          return { role: "assistant", content: "NRE_CLIENT_COMPATIBILITY_OK" };
         }
         if (client === "pi") {
           const tool = tools.find((t) => t.name === "codemode");
@@ -279,18 +279,18 @@ await withVerifierCleanup(async () => {
           );
           assert(
             JSON.stringify(messages).includes(skillPath),
-            "Pi must advertise the installed REA skill.",
+            "Pi must advertise the installed NRE skill.",
           );
           callRequested = true;
           return call(tool.name, {
-            code: `await describeNamespace("rea"); const skill = await tools.read({path:${JSON.stringify(skillPath)}}); const result = await tools.mcp__rea__analyze_javascript_application({input_path:${JSON.stringify(target)},format:"directory"}); if(result.isError) throw new Error(JSON.stringify(result)); const evidence = result.structuredContent ?? JSON.parse(result.content.find(c=>c.type==="text").text); await tools.write({path:${JSON.stringify(artifactPath)},content:JSON.stringify(evidence)}); text({REA_CLIENT_FIXTURE:true,skill_loaded:typeof skill==="string"&&skill.includes("name: reverse-engineer-anything"),catalog:ALL_TOOLS.filter(t=>t.name.startsWith("mcp__rea__")).map(t=>t.name.slice(10))});`,
+            code: `await describeNamespace("nre"); const skill = await tools.read({path:${JSON.stringify(skillPath)}}); const result = await tools.mcp__rea__analyze_javascript_application({input_path:${JSON.stringify(target)},format:"directory"}); if(result.isError) throw new Error(JSON.stringify(result)); const evidence = result.structuredContent ?? JSON.parse(result.content.find(c=>c.type==="text").text); await tools.write({path:${JSON.stringify(artifactPath)},content:JSON.stringify(evidence)}); text({NRE_CLIENT_FIXTURE:true,skill_loaded:typeof skill==="string"&&skill.includes("name: nano-reverse-engineer"),catalog:ALL_TOOLS.filter(t=>t.name.startsWith("mcp__rea__")).map(t=>t.name.slice(10))});`,
           });
         }
         if (!skillRequested) {
           const tool = tools.find((t) => t.name === "skill_view");
           assert(tool, "Hermes skill_view must be available.");
           skillRequested = true;
-          return call(tool.name, { name: "reverse-engineer-anything" });
+          return call(tool.name, { name: "nano-reverse-engineer" });
         }
         if (!searchRequested) {
           const tool = tools.find((t) => t.name === "tool_search");
@@ -330,13 +330,13 @@ await withVerifierCleanup(async () => {
         join(profile, "models.json"),
         JSON.stringify({
           providers: {
-            "rea-fixture": {
+            "nre-fixture": {
               baseUrl: fixture.baseUrl,
               api: "openai-completions",
               apiKey: "local-fixture-key",
               models: [
                 {
-                  id: "rea-client-fixture",
+                  id: "nre-client-fixture",
                   reasoning: false,
                   contextWindow: 200000,
                   maxTokens: 4096,
@@ -351,7 +351,7 @@ await withVerifierCleanup(async () => {
       await writeFile(
         configPath,
         configured +
-          `\nmodel:\n  default: rea-client-fixture\n  provider: custom\n  base_url: ${fixture.baseUrl}\nagent:\n  max_turns: 6\n`,
+          `\nmodel:\n  default: nre-client-fixture\n  provider: custom\n  base_url: ${fixture.baseUrl}\nagent:\n  max_turns: 6\n`,
       );
     }
     const args =
@@ -359,9 +359,9 @@ await withVerifierCleanup(async () => {
         ? [
             "--offline",
             "--provider",
-            "rea-fixture",
+            "nre-fixture",
             "--model",
-            "rea-client-fixture",
+            "nre-client-fixture",
             "--no-session",
             "--no-context-files",
             "--mode",
@@ -369,17 +369,17 @@ await withVerifierCleanup(async () => {
             "-p",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use REA to analyze ${target}.`,
+              : `Use NRE to analyze ${target}.`,
           ]
         : [
             "--oneshot",
             mode === "chat"
               ? "Say hello briefly."
-              : `Use REA to analyze ${target}.`,
+              : `Use NRE to analyze ${target}.`,
             "--provider",
             "custom",
             "--model",
-            "rea-client-fixture",
+            "nre-client-fixture",
             "--reasoning",
             "none",
           ];
@@ -404,7 +404,7 @@ await withVerifierCleanup(async () => {
     );
     assert.equal(fixture.failure, undefined);
     assert(finalSeen);
-    assert(result.stdout.includes("REA_CLIENT_COMPATIBILITY_OK"));
+    assert(result.stdout.includes("NRE_CLIENT_COMPATIBILITY_OK"));
     if (mode === "call") {
       assert(evidenceSeen);
       assert(
@@ -414,7 +414,7 @@ await withVerifierCleanup(async () => {
       assert.deepEqual(
         catalog?.sort(),
         TOOL_CONTRACTS.map((t) => t.name).sort(),
-        "The complete REA catalog must survive native client discovery.",
+        "The complete NRE catalog must survive native client discovery.",
       );
     }
   }, [

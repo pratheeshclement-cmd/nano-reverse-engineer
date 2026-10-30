@@ -9,7 +9,7 @@ import { processTest } from "../../support/process/processFixture.js";
 processTest(
   "reports the original website translation import failure at the startup boundary",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-website-initialization-");
+    const root = await createTestTempDirectory("nre-website-initialization-");
     const main = join(root, "main.mjs");
     await Promise.all([
       copyFile(

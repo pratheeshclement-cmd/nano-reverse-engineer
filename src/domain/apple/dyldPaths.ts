@@ -110,7 +110,7 @@ export const expandPrefix = (
           path: joinPath(directoryOf(context.executable), rest),
         };
   }
-  if (raw.startsWith("/")) {
+  if (raw.startsWith("/") || /^[a-zA-Z]:[\\/]/u.test(raw)) {
     const lookupPath = context.rootRelativePath(raw);
     return lookupPath === undefined
       ? { scope: "outside", path: raw }

@@ -12,7 +12,7 @@ assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, undefined);
 // Android cache fallback before Playwright initializes in each subprocess.
 const { stdout: doctorOutput } = await execute(
   process.execPath,
-  ["scripts/rea.mjs", "mcp", "doctor", "--format", "json"],
+  ["scripts/nre.mjs", "mcp", "doctor", "--format", "json"],
   { timeout: 120_000, maxBuffer: 8 * 1024 * 1024 },
 );
 assert.equal(JSON.parse(doctorOutput).healthy, true, doctorOutput);
@@ -20,7 +20,7 @@ const executable = `${process.env.PREFIX}/bin/chromium`;
 const { stdout: chromiumVersion } = await execute(executable, ["--version"], {
   timeout: 30_000,
 });
-const marker = "rea-termux-browser-smoke";
+const marker = "nre-termux-browser-smoke";
 const server = createServer((_request, response) => {
   response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
   response.end(`<!doctype html><html><body><h1>${marker}</h1></body></html>`);
@@ -47,7 +47,7 @@ try {
   const { stdout } = await execute(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/nre.mjs",
       "capture-browser-scenario",
       JSON.stringify(scenario),
       "--json",

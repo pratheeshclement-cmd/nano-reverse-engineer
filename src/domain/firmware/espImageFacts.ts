@@ -93,7 +93,7 @@ const hexByte = (value: number): string =>
   `0x${value.toString(16).padStart(2, "0")}`;
 
 /**
- * How each ESP image fact REA could not establish is reported. Decoding,
+ * How each ESP image fact NRE could not establish is reported. Decoding,
  * inventory and tests use these, so wording has one owner.
  */
 export const ESP_IMAGE_LIMITATIONS = {

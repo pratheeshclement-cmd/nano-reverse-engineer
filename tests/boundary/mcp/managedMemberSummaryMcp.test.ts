@@ -170,7 +170,7 @@ const SUMMARY_METHOD_BODY = Buffer.from([
 ]);
 
 it("summarizes selected members and pages every original collection after the file disappears", async () => {
-  const directory = await createTestTempDirectory("rea-member-summary-");
+  const directory = await createTestTempDirectory("nre-member-summary-");
   const path = join(directory, "fixture.dll");
   await writeFile(
     path,
@@ -306,7 +306,7 @@ it("summarizes selected members and pages every original collection after the fi
 }, 30000);
 
 it("keeps collections that historical member Evidence never examined unknown", async () => {
-  const directory = await createTestTempDirectory("rea-member-historical-");
+  const directory = await createTestTempDirectory("nre-member-historical-");
   const path = join(directory, "fixture.dll");
   await writeFile(path, buildManagedPeFixture());
   const { client } = await createHarness();

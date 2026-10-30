@@ -21,7 +21,7 @@ import { ArtifactResourceScope } from "../../../src/artifacts/ArtifactResourceSc
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("reads exact binary and empty bytes and rejects symlink/size/cancellation boundaries", async () => {
-  const root = await createTestTempDirectory("rea-stable-artifact-");
+  const root = await createTestTempDirectory("nre-stable-artifact-");
   const path = join(root, "source.bin");
   await writeFile(path, Buffer.from([0, 255, 254]));
   expect(
@@ -52,7 +52,7 @@ it("reads exact binary and empty bytes and rejects symlink/size/cancellation bou
 });
 
 it("preserves exact binary bytes and digest across physical chunks and a partial tail", async () => {
-  const root = await createTestTempDirectory("rea-stable-chunks-");
+  const root = await createTestTempDirectory("nre-stable-chunks-");
   const path = join(root, "source.bin");
   const bytes = Buffer.from(
     Array.from({ length: 3 * 65536 + 7 }, (_, i) => i % 251),
@@ -66,7 +66,7 @@ it("preserves exact binary bytes and digest across physical chunks and a partial
 });
 
 it("joins short descriptor reads into the exact snapshot without gaps", async () => {
-  const root = await createTestTempDirectory("rea-stable-short-read-");
+  const root = await createTestTempDirectory("nre-stable-short-read-");
   const path = join(root, "source.bin");
   const bytes = Buffer.from(Array.from({ length: 1031 }, (_, i) => i % 251));
   await writeFile(path, bytes);
@@ -95,7 +95,7 @@ it("joins short descriptor reads into the exact snapshot without gaps", async ()
 it.each([-1, Number.NaN, "oversized"] as const)(
   "refuses malformed descriptor byte counts: %s",
   async (count) => {
-    const root = await createTestTempDirectory("rea-stable-read-count-");
+    const root = await createTestTempDirectory("nre-stable-read-count-");
     const path = join(root, "source.bin");
     await writeFile(path, "base");
     await expect(
@@ -119,7 +119,7 @@ it.each([-1, Number.NaN, "oversized"] as const)(
 it.each(["complete", "fail"] as const)(
   "joins an admitted descriptor read before cancellation finalization: %s",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-stable-read-cancel-");
+    const root = await createTestTempDirectory("nre-stable-read-cancel-");
     const path = join(root, "source.bin");
     const bytes = Buffer.from("base");
     await writeFile(path, bytes);
@@ -185,7 +185,7 @@ it.each(["complete", "fail"] as const)(
 it.each(["integrity", "limit", "io"] as const)(
   "preserves %s precedence after growth beyond the initial snapshot size",
   async (outcome) => {
-    const root = await createTestTempDirectory("rea-stable-growth-");
+    const root = await createTestTempDirectory("nre-stable-growth-");
     const path = join(root, "source.bin");
     await writeFile(path, "base");
     const extra = Buffer.from("expanded");
@@ -232,7 +232,7 @@ it.each(["integrity", "limit", "io"] as const)(
 );
 
 it("bounds allocation when the opened descriptor exceeds the selected byte budget", async () => {
-  const root = await createTestTempDirectory("rea-stable-admission-race-");
+  const root = await createTestTempDirectory("nre-stable-admission-race-");
   const path = join(root, "source.bin");
   await writeFile(path, "base");
   await expect(
@@ -252,7 +252,7 @@ it("bounds allocation when the opened descriptor exceeds the selected byte budge
 });
 
 it("does not start a read when cancellation arrives during descriptor admission", async () => {
-  const root = await createTestTempDirectory("rea-stable-admission-cancel-");
+  const root = await createTestTempDirectory("nre-stable-admission-cancel-");
   const path = join(root, "source.bin");
   await writeFile(path, "base");
   const controller = new AbortController();
@@ -295,7 +295,7 @@ it("does not start a read when cancellation arrives during descriptor admission"
 const checkChange = async (
   stage: "before-open" | "after-read" | "symlink-replacement",
 ): Promise<void> => {
-  const root = await createTestTempDirectory("rea-stable-read-");
+  const root = await createTestTempDirectory("nre-stable-read-");
   const path = join(root, "selected");
   await writeFile(path, "original evidence");
   let inspected = 0;
@@ -326,14 +326,14 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("keeps initially missing inputs distinguishable from later changes", async () => {
-  const root = await createTestTempDirectory("rea-stable-missing-");
+  const root = await createTestTempDirectory("nre-stable-missing-");
   await expect(
     readStableArtifact(join(root, "missing"), 1024),
   ).rejects.toMatchObject({ code: "ENOENT" });
 });
 
 const heldDescriptor = async () => {
-  const root = await createTestTempDirectory("rea-stable-close-owner-");
+  const root = await createTestTempDirectory("nre-stable-close-owner-");
   const path = join(root, "selected.bin");
   const bytes = Buffer.from([0, 255, 1, 254]);
   await writeFile(path, bytes);

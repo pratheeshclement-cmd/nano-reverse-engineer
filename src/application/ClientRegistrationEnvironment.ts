@@ -36,11 +36,11 @@ interface ResolvedClientRegistrationEnvironmentDetails extends ClientRegistratio
 }
 
 const TIMEOUT_INPUT_SETTINGS: ReadonlySet<string> = new Set([
-  "REA_ANALYSIS_PROVIDER",
-  "REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
-  "REA_GHIDRA_STARTUP_TIMEOUT_MS",
-  "REA_HOPPER_STARTUP_TIMEOUT_MS",
-  "REA_JEB_MCP_TIMEOUT_MS",
+  "NRE_ANALYSIS_PROVIDER",
+  "NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS",
+  "NRE_GHIDRA_STARTUP_TIMEOUT_MS",
+  "NRE_HOPPER_STARTUP_TIMEOUT_MS",
+  "NRE_JEB_MCP_TIMEOUT_MS",
 ]);
 
 const environmentSchema = clientConfigurationRecordSchema.transform(
@@ -59,7 +59,7 @@ const environmentSchema = clientConfigurationRecordSchema.transform(
   },
 );
 
-/** Read explicit REA overrides without dropping peers when one value is invalid. */
+/** Read explicit NRE overrides without dropping peers when one value is invalid. */
 export const clientRegistrationEnvironment = (
   parsed: ClientConfigurationDocument | undefined,
   overrides: Readonly<Record<string, string>> = {},
@@ -109,7 +109,7 @@ export const clientRegistrationEnvironmentDetails = (
   const existing = environmentSchema.safeParse(raw === undefined ? {} : raw);
   if (!existing.success)
     return err(
-      new ConfigurationError("Invalid REA server environment", {
+      new ConfigurationError("Invalid NRE server environment", {
         settings: existing.error.issues.map((issue) => ({
           setting: [key, ...issue.path].join("."),
           constraint:
@@ -200,18 +200,18 @@ const environmentDetails = (
   )
     ? undefined
     : {
-        analysisProvider: configuration.REA_ANALYSIS_PROVIDER,
-        ghidraStartupTimeoutMs: configuration.REA_GHIDRA_STARTUP_TIMEOUT_MS,
-        ...(configuration.REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS === undefined
+        analysisProvider: configuration.NRE_ANALYSIS_PROVIDER,
+        ghidraStartupTimeoutMs: configuration.NRE_GHIDRA_STARTUP_TIMEOUT_MS,
+        ...(configuration.NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS === undefined
           ? {}
           : {
               ghidraDecompileTimeoutMs:
-                configuration.REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS * 1000,
+                configuration.NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS * 1000,
             }),
-        hopperStartupTimeoutMs: configuration.REA_HOPPER_STARTUP_TIMEOUT_MS,
-        ...(configuration.REA_JEB_MCP_TIMEOUT_MS === undefined
+        hopperStartupTimeoutMs: configuration.NRE_HOPPER_STARTUP_TIMEOUT_MS,
+        ...(configuration.NRE_JEB_MCP_TIMEOUT_MS === undefined
           ? {}
-          : { jebMcpTimeoutMs: configuration.REA_JEB_MCP_TIMEOUT_MS }),
+          : { jebMcpTimeoutMs: configuration.NRE_JEB_MCP_TIMEOUT_MS }),
       },
 });
 

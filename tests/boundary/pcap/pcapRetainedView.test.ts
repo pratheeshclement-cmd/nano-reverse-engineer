@@ -65,8 +65,8 @@ const createPcapToolFixture = async (root: string) => {
     { mode: 0o755 },
   );
   const environment = {
-    REA_TSHARK_COMMAND: tshark,
-    REA_CAPINFOS_COMMAND: capinfos,
+    NRE_TSHARK_COMMAND: tshark,
+    NRE_CAPINFOS_COMMAND: capinfos,
   };
   return { path, marker, environment };
 };
@@ -76,12 +76,12 @@ const createPcapToolFixture = async (root: string) => {
 it.runIf(process.platform === "linux")(
   "retains every fact and pages late DNS/SNI rows after source deletion without another tool launch",
   async () => {
-    const root = await createTestTempDirectory("rea-pcap-view-");
+    const root = await createTestTempDirectory("nre-pcap-view-");
     const { path, marker, environment } = await createPcapToolFixture(root);
     const complete = await promisify(execFile)(
       process.execPath,
       [
-        join(import.meta.dirname, "../../../scripts/rea.mjs"),
+        join(import.meta.dirname, "../../../scripts/nre.mjs"),
         "inspect-pcap-capture",
         path,
         "--json",
@@ -187,7 +187,7 @@ it.runIf(process.platform === "linux")(
       JSON.stringify({ source: { kind: "inline", evidence: parent }, view }),
     );
     const portable = await promisify(execFile)(process.execPath, [
-      join(import.meta.dirname, "../../../scripts/rea.mjs"),
+      join(import.meta.dirname, "../../../scripts/nre.mjs"),
       "inspect-analysis-view",
       workflow,
       "--json",

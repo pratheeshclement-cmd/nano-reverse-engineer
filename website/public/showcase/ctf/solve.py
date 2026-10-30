@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Solve the DownUnderCTF 2023 masked-squares handout from Nre-extracted checks.
 
-Requires Python 3 and z3-solver. The constants below were Nred from the original
+Requires Python 3 and z3-solver. The constants below were Read from the original
 ELF with SHA-256 dcd3bec4f608e11f3a12ce461100aaf5f621851ee63a1f870d7c90d4e3dd51ae.
 Challenge by joseph / DownUnderCTF:
 https://github.com/DownUnderCTF/Challenges_2023_Public/tree/b48f83db2984bc7fa2ec7879a32d7efb1be8d333/rev/masked-squares-flag-checker

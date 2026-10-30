@@ -43,7 +43,7 @@ const inspect = async (
   bytes: Buffer,
   architecture: "x86" | "arm" | "x86_64",
 ) => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-objc-macho-fallback-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-objc-macho-fallback-"));
   const path = join(directory, "fixture");
   await writeFile(path, bytes);
   const sha256 = createHash("sha256").update(bytes).digest("hex");

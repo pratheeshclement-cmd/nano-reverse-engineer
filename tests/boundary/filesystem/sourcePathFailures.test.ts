@@ -12,7 +12,7 @@ import { importReferenceSource } from "../../support/referenceSourceResourceScop
 it.skipIf(process.platform === "win32")(
   "preserves root-selection causes for a loop and an overlong component",
   async () => {
-    const root = await createTestTempDirectory("rea-source-path-causes-");
+    const root = await createTestTempDirectory("nre-source-path-causes-");
     await symlink("loop-b", join(root, "loop-a"));
     await symlink("loop-a", join(root, "loop-b"));
     await mkdir(join(root, "valid"));

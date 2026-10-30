@@ -21,7 +21,7 @@ describe("Apple asset catalog traversal coverage", () => {
     "retains catalog traversal coverage with invalid-byte entries: %s",
     async (invalidName, context) => {
       if (invalidName && process.platform !== "linux") context.skip();
-      const bundle = await createTestTempDirectory("rea-asset-traversal-");
+      const bundle = await createTestTempDirectory("nre-asset-traversal-");
       if (invalidName)
         await writeFile(
           Buffer.concat([Buffer.from(`${bundle}/`), Buffer.from([0xff])]),
@@ -46,22 +46,25 @@ describe("Apple asset catalog traversal coverage", () => {
     },
   );
 
-  it("keeps represented symlinks distinct from catalog-target inspection", async () => {
-    const bundle = await createTestTempDirectory("rea-asset-subtree-");
-    await symlink("unexamined", join(bundle, "Resources"));
-    const result = await analyzeAppleAssetCatalogs({
-      bundlePath: bundle,
-      targetSha256: "a".repeat(64),
-      environment: {},
-      runAssetUtil: async () => "[]",
-    });
-    expect(result.inventory_coverage.status).toBe("complete");
-    expect(result.catalog_coverage).toMatchObject({ status: "unknown" });
-    expect(result.resource_key_coverage).toMatchObject({ status: "unknown" });
-    expect(result.limitations).toContainEqual(
-      expect.stringContaining("catalogs beneath them may remain uninspected"),
-    );
-  });
+  it.skipIf(process.platform === "win32")(
+    "keeps represented symlinks distinct from catalog-target inspection",
+    async () => {
+      const bundle = await createTestTempDirectory("nre-asset-subtree-");
+      await symlink("unexamined", join(bundle, "Resources"));
+      const result = await analyzeAppleAssetCatalogs({
+        bundlePath: bundle,
+        targetSha256: "a".repeat(64),
+        environment: {},
+        runAssetUtil: async () => "[]",
+      });
+      expect(result.inventory_coverage.status).toBe("complete");
+      expect(result.catalog_coverage).toMatchObject({ status: "unknown" });
+      expect(result.resource_key_coverage).toMatchObject({ status: "unknown" });
+      expect(result.limitations).toContainEqual(
+        expect.stringContaining("catalogs beneath them may remain uninspected"),
+      );
+    },
+  );
 });
 
 describe("Apple asset catalog application workflow", () => {
@@ -118,7 +121,7 @@ describe("Apple asset catalog application workflow", () => {
   it.each([0, 1, 5])(
     "reports an app without compiled catalogs as empty at offset %i",
     async (offset) => {
-      const bundle = await createTestTempDirectory("rea-asset-catalog-absent-");
+      const bundle = await createTestTempDirectory("nre-asset-catalog-absent-");
       await mkdir(join(bundle, "Contents", "Resources"), { recursive: true });
       await writeFile(join(bundle, "Contents", "Resources", "icon.icns"), "");
       // Names that merely end in Assets.car are ordinary resources.
@@ -152,60 +155,68 @@ describe("Apple asset catalog application workflow", () => {
     },
   );
 
-  it("does not report absence when the only catalog entry is a symlink", async () => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-link-");
-    const resources = join(bundle, "Contents", "Resources");
-    await mkdir(resources, { recursive: true });
-    await writeFile(join(bundle, "outside.car"), "catalog");
-    await symlink("../../outside.car", join(resources, "Assets.car"));
-    const rejected = await analyzeAppleAssetCatalogs({
-      environment: {},
-      bundlePath: bundle,
-      targetSha256: "a".repeat(64),
-      runAssetUtil: () => Promise.resolve("[]"),
-    }).catch((cause: unknown) => cause);
-    expect(rejected).toBeInstanceOf(ArtifactReaderFailure);
-    expect(rejected).toMatchObject({
-      reason: "path",
-      message: expect.stringContaining(
-        "Contents/Resources/Assets.car (symlink)",
-      ),
-    });
-  });
+  it.skipIf(process.platform === "win32")(
+    "does not report absence when the only catalog entry is a symlink",
+    async () => {
+      const bundle = await createTestTempDirectory("nre-asset-catalog-link-");
+      const resources = join(bundle, "Contents", "Resources");
+      await mkdir(resources, { recursive: true });
+      await writeFile(join(bundle, "outside.car"), "catalog");
+      await symlink("../../outside.car", join(resources, "Assets.car"));
+      const rejected = await analyzeAppleAssetCatalogs({
+        environment: {},
+        bundlePath: bundle,
+        targetSha256: "a".repeat(64),
+        runAssetUtil: () => Promise.resolve("[]"),
+      }).catch((cause: unknown) => cause);
+      expect(rejected).toBeInstanceOf(ArtifactReaderFailure);
+      expect(rejected).toMatchObject({
+        reason: "path",
+        message: expect.stringContaining(
+          "Contents/Resources/Assets.car (symlink)",
+        ),
+      });
+    },
+  );
 
-  it("discloses skipped catalog entries beside inspected catalogs", async () => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-mixed-");
-    const resources = join(bundle, "Contents", "Resources");
-    await mkdir(join(resources, "Nested"), { recursive: true });
-    await writeFile(join(resources, "Assets.car"), "catalog");
-    await symlink("../Assets.car", join(resources, "Nested", "Assets.car"));
-    const result = await analyzeAppleAssetCatalogs({
-      environment: {},
-      bundlePath: bundle,
-      targetSha256: "a".repeat(64),
-      runAssetUtil: () => Promise.resolve("[]"),
-    });
-    expect(result.catalogs.map(({ path }) => path)).toEqual([
-      "Contents/Resources/Assets.car",
-    ]);
-    expect(result.catalog_coverage).toEqual({
-      status: "partial",
-      reason: "catalog_entries_uninspected",
-    });
-    expect(result.resource_key_coverage.status).toBe("partial");
-    expect(result.limitations).toContainEqual(
-      expect.stringContaining("Contents/Resources/Nested/Assets.car (symlink)"),
-    );
-    expect(result.limitations).not.toContainEqual(
-      expect.stringContaining("No compiled Assets.car catalog"),
-    );
-  });
+  it.skipIf(process.platform === "win32")(
+    "discloses skipped catalog entries beside inspected catalogs",
+    async () => {
+      const bundle = await createTestTempDirectory("nre-asset-catalog-mixed-");
+      const resources = join(bundle, "Contents", "Resources");
+      await mkdir(join(resources, "Nested"), { recursive: true });
+      await writeFile(join(resources, "Assets.car"), "catalog");
+      await symlink("../Assets.car", join(resources, "Nested", "Assets.car"));
+      const result = await analyzeAppleAssetCatalogs({
+        environment: {},
+        bundlePath: bundle,
+        targetSha256: "a".repeat(64),
+        runAssetUtil: () => Promise.resolve("[]"),
+      });
+      expect(result.catalogs.map(({ path }) => path)).toEqual([
+        "Contents/Resources/Assets.car",
+      ]);
+      expect(result.catalog_coverage).toEqual({
+        status: "partial",
+        reason: "catalog_entries_uninspected",
+      });
+      expect(result.resource_key_coverage.status).toBe("partial");
+      expect(result.limitations).toContainEqual(
+        expect.stringContaining(
+          "Contents/Resources/Nested/Assets.car (symlink)",
+        ),
+      );
+      expect(result.limitations).not.toContainEqual(
+        expect.stringContaining("No compiled Assets.car catalog"),
+      );
+    },
+  );
 });
 
 it.skipIf(process.platform === "win32")(
   "qualifies UI resource joins when a symlinked nib was not decoded",
   async () => {
-    const bundle = await createTestTempDirectory("rea-asset-ui-symlink-");
+    const bundle = await createTestTempDirectory("nre-asset-ui-symlink-");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     await writeFile(
@@ -233,7 +244,7 @@ it.skipIf(process.platform === "win32")(
 it.each([0, 1, 5])(
   "keeps an empty assetutil inventory complete at offset %i",
   async (offset) => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-empty-");
+    const bundle = await createTestTempDirectory("nre-asset-catalog-empty-");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     await writeFile(join(resources, "Assets.car"), "inert catalog fixture");
@@ -258,7 +269,7 @@ it.each([0, 1, 5])(
 it.each([1, 2])(
   "joins NIBArchive keys against %i supplied assetutil renditions",
   async (count) => {
-    const bundle = await createTestTempDirectory("rea-asset-nib-join-");
+    const bundle = await createTestTempDirectory("nre-asset-nib-join-");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     const archive = encodeNibArchiveFixture({
@@ -305,7 +316,7 @@ it.each([1, 2])(
 );
 
 it("keeps recognized image fields on NIBArchive controls out of resource joins", async () => {
-  const bundle = await createTestTempDirectory("rea-asset-nib-control-");
+  const bundle = await createTestTempDirectory("nre-asset-nib-control-");
   const resources = join(bundle, "Contents", "Resources");
   await mkdir(resources, { recursive: true });
   await writeFile(
@@ -331,7 +342,7 @@ it("keeps recognized image fields on NIBArchive controls out of resource joins",
 
 describe("Apple asset catalog and Interface Builder concurrency", () => {
   const catalogBundle = async () => {
-    const bundle = await createTestTempDirectory("rea-asset-catalog-ib-");
+    const bundle = await createTestTempDirectory("nre-asset-catalog-ib-");
     const resources = join(bundle, "Contents", "Resources");
     await mkdir(resources, { recursive: true });
     await writeFile(join(resources, "Assets.car"), "catalog");
@@ -419,7 +430,7 @@ describe("Apple asset catalog and Interface Builder concurrency", () => {
     "settles a cancelled assetutil run only after its process exits",
     async () => {
       const bundle = await catalogBundle();
-      const work = await createTestTempDirectory("rea-assetutil-stop-");
+      const work = await createTestTempDirectory("nre-assetutil-stop-");
       const ready = join(work, "ready");
       const exited = join(work, "exited");
       const script = `const fs=require("node:fs");process.on("SIGTERM",()=>{setTimeout(()=>{fs.writeFileSync(process.argv[2],"exited");process.exit(0)},500)});fs.writeFileSync(process.argv[1],"ready");setInterval(()=>{},1000);`;
@@ -465,7 +476,7 @@ describe("Apple asset catalog and Interface Builder concurrency", () => {
 it.each(["not json", "{}", "[null]"])(
   "preserves successful assetutil output failures for %s",
   async (output) => {
-    const bundle = await createTestTempDirectory("rea-asset-output-");
+    const bundle = await createTestTempDirectory("nre-asset-output-");
     await writeFile(join(bundle, "Assets.car"), "inert catalog");
     await expect(
       analyzeAppleAssetCatalogs({
@@ -490,7 +501,7 @@ it.each([
 ] as const)(
   "preserves assetutil command failure %s and diagnostics",
   async (code, tag) => {
-    const bundle = await createTestTempDirectory("rea-asset-command-");
+    const bundle = await createTestTempDirectory("nre-asset-command-");
     await writeFile(join(bundle, "Assets.car"), "inert catalog");
     const cause = Object.assign(new Error("native refusal"), {
       code,
@@ -520,7 +531,7 @@ it.each([
 it.each(["reported carutil", "tab-indented carutil", "observed assetutil"])(
   "attributes %s rejection of a readable nested catalog as invalid bytes",
   async (variant) => {
-    const bundle = await createTestTempDirectory("rea-asset-rejected-");
+    const bundle = await createTestTempDirectory("nre-asset-rejected-");
     const relativePath =
       "Contents/Resources/Widget bundle/Contents/Resources/Assets.car";
     const path = join(bundle, relativePath);
@@ -587,7 +598,7 @@ it.each([
   "different file-error code",
   "different file-error text",
 ])("keeps the catalog rejection unknown for %s", async (scenario) => {
-  const bundle = await createTestTempDirectory("rea-asset-unknown-rejection-");
+  const bundle = await createTestTempDirectory("nre-asset-unknown-rejection-");
   const path = join(bundle, "Assets.car");
   await writeFile(path, "readable catalog");
   const rejectedPath = scenario.includes("another catalog")
@@ -628,7 +639,7 @@ it.each([
 it.each(["Toolbar", "MissingToolbar"])(
   "retains AppKit NSCustomResource image key %s with its archive identity",
   async (name) => {
-    const bundle = await createTestTempDirectory("rea-asset-custom-resource-");
+    const bundle = await createTestTempDirectory("nre-asset-custom-resource-");
     await writeFile(
       join(bundle, "Panel.nib"),
       encodeNibArchiveFixture({
@@ -664,7 +675,7 @@ it.each(["Toolbar", "MissingToolbar"])(
 );
 
 it("preserves every own JSON metadata field through catalog inspection and page projection", async () => {
-  const bundle = await createTestTempDirectory("rea-asset-metadata-members-");
+  const bundle = await createTestTempDirectory("nre-asset-metadata-members-");
   const catalog = Buffer.from("inert catalog for the output-decoding boundary");
   await writeFile(join(bundle, "Assets.car"), catalog);
   // Authored producer text exercises the accepted metadata contract; it is not
@@ -697,7 +708,7 @@ it("preserves every own JSON metadata field through catalog inspection and page 
 it.skipIf(process.platform === "win32")(
   "retains an exited assetutil failure when cancellation arrives while inherited pipes drain",
   async () => {
-    const bundle = await createTestTempDirectory("rea-asset-exit-pipes-");
+    const bundle = await createTestTempDirectory("nre-asset-exit-pipes-");
     await writeFile(join(bundle, "Assets.car"), "inert catalog");
     const exited = join(bundle, "root-exited");
     const release = join(bundle, "release");

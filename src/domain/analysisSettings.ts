@@ -31,8 +31,8 @@ export interface AnalysisSettingLimit {
   readonly source?: "default" | "setting" | "runtime" | "request";
   readonly applies_at: "next_operation" | "next_worker" | "next_startup";
   readonly agent_editable: true;
-  readonly scope: "rea-runtime";
-  readonly rea_restart_required: false;
+  readonly scope: "nre-runtime";
+  readonly nre_restart_required: false;
   readonly required_value?: number;
   readonly parameter?: string;
 }

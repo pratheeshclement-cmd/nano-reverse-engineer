@@ -180,7 +180,7 @@ export async function verifyNativeProvenance(app, executable) {
 
 /** Compile independent inputs; their unusual loader paths are never executed. */
 async function verifyInstallNames() {
-  const root = await mkdtemp(join(tmpdir(), "rea-macho-install-names-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-macho-install-names-"));
   const observations = [];
   try {
     const librarySource = join(root, "library.c");

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 /** Verify batch selector/entry separation against real source-owned Ghidra functions. */
 export async function verifyGhidraBatchIdentity(call, names) {
   const leaf = names.find((item) =>
-    item.value.endsWith("rea_ghidra_inventory_leaf"),
+    item.value.endsWith("nre_ghidra_inventory_leaf"),
   );
   assert.ok(leaf, "Source fixture lacks a leaf procedure");
   const listing = await call("read_function_instructions", {

@@ -18,7 +18,7 @@ const TRAVERSAL_UNKNOWN =
   "Producer traversal coverage is unknown; missing matches do not prove source absence.";
 
 const writeBundle = async (withFifo: boolean): Promise<string> => {
-  const root = await createTestTempDirectory("rea-inspection-coverage-");
+  const root = await createTestTempDirectory("nre-inspection-coverage-");
   const bundle = join(root, "Fixture.app");
   await mkdir(bundle);
   await writeFile(

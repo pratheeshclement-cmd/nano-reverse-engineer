@@ -102,7 +102,7 @@ export const acquireOwnedLease = async (input: {
   if (process.platform === "win32") {
     // A named pipe disappears with its last handle, so no stale pipe needs
     // recovery. A pipe that vanished between bind and owner lookup is retried.
-    const pipePath = `\\\\.\\pipe\\rea-lease-${key}`;
+    const pipePath = `\\\\.\\pipe\\nre-lease-${key}`;
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const acquisition = await tryAcquireLease(
         pipePath,

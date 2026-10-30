@@ -43,7 +43,7 @@ it.skipIf(process.platform === "win32")(
   "traverses directories lstat-observed before their parent enumeration failed",
   async ({ onTestFinished }) => {
     const root = await createTestTempDirectory(
-      "rea-queued-source-directories-",
+      "nre-queued-source-directories-",
     );
     const container = join(root, "container");
     const hidden = join(container, "hidden");

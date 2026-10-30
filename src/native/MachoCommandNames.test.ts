@@ -462,7 +462,7 @@ it.skipIf(process.platform !== "darwin")(
     const { join } = await import("node:path");
     const { tmpdir } = await import("node:os");
     const { execFileSync } = await import("node:child_process");
-    const root = await mkdtemp(join(tmpdir(), "rea-macho-names-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-macho-names-"));
     try {
       const code = join(root, "main.c");
       const payload = join(root, "payload");

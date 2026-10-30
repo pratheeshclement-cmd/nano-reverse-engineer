@@ -67,7 +67,7 @@ const signedFixture = async (root: string) => {
 cliTest(
   "keeps unknown block signer identity through CLI and retained MCP views despite a readable lineage",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-unknown-block-");
+    const root = await createTestTempDirectory("nre-apk-unknown-block-");
     const path = join(root, "unknown-block.apk");
     await writeFile(
       path,
@@ -127,7 +127,7 @@ cliTest(
 cliTest(
   "delivers identical selected signing facts through CLI and SDK with complete historical Evidence",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-view-");
+    const root = await createTestTempDirectory("nre-apk-view-");
     const path = await signedFixture(root),
       bundlePath = join(root, "evidence.json");
     const fullCli = await cli.run({
@@ -204,7 +204,7 @@ cliTest(
 cliTest(
   "composes signer, digest and lineage pages after source deletion without implying verification",
   async () => {
-    const root = await createTestTempDirectory("rea-apk-retained-");
+    const root = await createTestTempDirectory("nre-apk-retained-");
     const path = await signedFixture(root),
       { call } = await connectLocalToolsMcp();
     const reply = await call("inspect_apk_signature", { path });
@@ -299,7 +299,7 @@ cliTest(
 cliTest(
   "keeps unknown v1 identity visible and rejects invalid delivery before reading",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-unknown-view-");
+    const root = await createTestTempDirectory("nre-apk-unknown-view-");
     const path = join(root, "malformed-block.apk");
     await writeFile(
       path,

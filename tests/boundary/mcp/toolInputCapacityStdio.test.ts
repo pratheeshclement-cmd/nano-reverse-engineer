@@ -6,10 +6,10 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("applies the selected input allowance through the public deferred stdio entry point", async () => {
-  const root = await createTestTempDirectory("rea-input-capacity-stdio-");
+  const root = await createTestTempDirectory("nre-input-capacity-stdio-");
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/nre.mjs"), "mcp"],
     env: {
       PATH: process.env.PATH ?? "",
       HOME: root,
@@ -17,10 +17,10 @@ it("applies the selected input allowance through the public deferred stdio entry
       XDG_CONFIG_HOME: join(root, "config"),
       XDG_CACHE_HOME: join(root, "cache"),
       XDG_DATA_HOME: join(root, "data"),
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
       NODE_OPTIONS: "--max-old-space-size=3072",
-      REA_LOG_LEVEL: "silent",
-      REA_MCP_MAX_INPUT_ELEMENTS: "8192",
+      NRE_LOG_LEVEL: "silent",
+      NRE_MCP_MAX_INPUT_ELEMENTS: "8192",
     },
     stderr: "pipe",
   });

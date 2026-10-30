@@ -8,8 +8,7 @@ import {
   applicationGraphEvidenceSchema,
 } from "./javascriptApplicationEvidenceSchemas.js";
 import { jsonValueSchema } from "../jsonValue.js";
-import { digestSchema } from "../digests.js";
-import { prefixedDigestSchema } from "../digests.js";
+import { digestSchema, prefixedDigestSchema } from "../digests.js";
 
 const boundedTextSchema = z.string().min(1);
 const semanticNodeIdSchema = prefixedDigestSchema("jsrg_node");
@@ -313,7 +312,7 @@ const fingerprintComponentsSchema = z.strictObject({
 /** One bounded rename-resistant function fingerprint. */
 export const javaScriptSemanticFingerprintInputSchema = z.strictObject({
   function_node_id: semanticNodeIdSchema,
-  algorithm: z.literal("rea.javascript-semantic-function"),
+  algorithm: z.literal("nre.javascript-semantic-function"),
   status: z.enum(["complete", "partial", "unavailable"]),
   components: fingerprintComponentsSchema,
   limitations: z.array(boundedTextSchema),

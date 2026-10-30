@@ -12,17 +12,17 @@ import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 
 const execute = promisify(execFile);
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
-const root = await realpath(await mkdtemp(join(tmpdir(), "rea-inspector-")));
+const root = await realpath(await mkdtemp(join(tmpdir(), "nre-inspector-")));
 const environment = {
   ...process.env,
 };
 const client = new Client({
-  name: "rea-inspector-conformance",
+  name: "nre-inspector-conformance",
   version: "1.0.0",
 });
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: ["scripts/rea.mjs", "mcp"],
+  args: ["scripts/nre.mjs", "mcp"],
   cwd: repository,
   env: environment,
   stderr: "pipe",
@@ -117,7 +117,7 @@ async function verifyTarget(child, targetPath, name) {
     "--json",
   ]);
   assert.equal(observed.operation, "observe_javascript_runtime");
-  assert.equal(observed.provider.id, "rea-v8-inspector");
+  assert.equal(observed.provider.id, "nre-v8-inspector");
   const mcpObservation = await runMcp("observe_javascript_runtime", {
     inspector_endpoint: endpoint,
     target_id: raw.id,
@@ -206,7 +206,7 @@ async function inspectorUrl(process_) {
 async function runCli(arguments_) {
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", ...arguments_],
+    ["scripts/nre.mjs", ...arguments_],
     {
       cwd: repository,
       env: environment,

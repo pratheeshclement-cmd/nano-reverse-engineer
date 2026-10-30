@@ -15,7 +15,7 @@ import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js
 it.each([1, 129])(
   "reports the actual private-image capacity for %i compressed PYZ images",
   async (count) => {
-    const root = await createTestTempDirectory("rea-artifact-capacity-");
+    const root = await createTestTempDirectory("nre-artifact-capacity-");
     const path = join(root, "app.exe");
     const bytes = cArchiveExecutable({
       carrier: "pe",

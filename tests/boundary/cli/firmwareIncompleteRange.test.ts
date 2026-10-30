@@ -11,7 +11,7 @@ cliTest(
   "identifies the missing companion option for firmware range input",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-firmware-incomplete-range-",
+      "nre-firmware-incomplete-range-",
     );
     const firmware = join(root, "firmware.bin");
     await writeFile(firmware, new Uint8Array());

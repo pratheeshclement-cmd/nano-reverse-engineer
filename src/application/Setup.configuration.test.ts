@@ -264,7 +264,7 @@ describe("configured Linux Hopper selection", () => {
     expect(discovery.installHopper).toBe(false);
   });
 
-  it("still offers repair for an unconfigured REA managed install", async () => {
+  it("still offers repair for an unconfigured NRE managed install", async () => {
     const host = new FakeSetupHost("linux");
     host.distribution = {
       id: "ubuntu",
@@ -310,7 +310,7 @@ it("offers shared skill intent when the detected personal copy is current", asyn
         host.homeDirectory,
         ".agents",
         "skills",
-        "reverse-engineer-anything",
+        "nano-reverse-engineer",
       ),
     }),
   ]);
@@ -376,7 +376,7 @@ describe("setup workflow action selection", () => {
     ]);
   });
 
-  it("does not default to a foreign command registered under the rea key", async () => {
+  it("does not default to a foreign command registered under the nre key", async () => {
     const host = new FakeSetupHost();
     host.hopper = "/Applications/Hopper";
     host.skill = "unchanged";
@@ -490,7 +490,7 @@ describe("setup configuration failure recovery", () => {
     const host = new FakeSetupHost();
     host.hopper = "/Applications/Hopper";
     host.clients = [{ name: "cursor", configPath: "/agent.json" }];
-    const backupPath = `/agent.json.rea.backup.${"a".repeat(64)}.recovery`;
+    const backupPath = `/agent.json.nre.backup.${"a".repeat(64)}.recovery`;
     host.clientResults.set("cursor", {
       status: "failed",
       reason: "readback",
@@ -533,10 +533,10 @@ describe("MSIX Claude Desktop setup", () => {
     // The package reads its private copy, so a manual setup edit belongs there.
     const client = msixClaudeDesktop("unknown");
     expect(registrationWriteBlocker(client, "setup")).toContain(
-      `Add REA's entry to ${PRIVATE_CONFIG} by hand`,
+      `Add NRE's entry to ${PRIVATE_CONFIG} by hand`,
     );
     expect(registrationWriteBlocker(client, "uninstall")).toContain(
-      `Remove REA's entry by hand from each of ${PRIVATE_CONFIG} and ${APPDATA_CONFIG} that has one`,
+      `Remove NRE's entry by hand from each of ${PRIVATE_CONFIG} and ${APPDATA_CONFIG} that has one`,
     );
   });
 
@@ -576,7 +576,7 @@ describe("MSIX Claude Desktop setup", () => {
   it("refuses registrations whose launcher only one MSIX package can see", async () => {
     const host = new FakeSetupHost("win32");
     host.hopper = join(PROFILE, "Hopper");
-    host.registrationCommandBlocker = "Install REA outside the package.";
+    host.registrationCommandBlocker = "Install NRE outside the package.";
     host.clients = [
       { name: "codex", displayName: "Codex", configPath: "/codex.toml" },
     ];
@@ -586,7 +586,7 @@ describe("MSIX Claude Desktop setup", () => {
       host,
     );
     expect(blocked.status).toBe("needs_human");
-    expect(blocked.remediation).toBe("Install REA outside the package.");
+    expect(blocked.remediation).toBe("Install NRE outside the package.");
     expect(host.configurations).toBe(0);
     expect(host.skillInstalls).toBe(0);
 
@@ -615,7 +615,7 @@ describe("setup tool family scope", () => {
       host,
     );
     expect(plan.plannedActions[0]?.detail).toContain(
-      "REA_MCP_TOOL_FAMILIES=session,application",
+      "NRE_MCP_TOOL_FAMILIES=session,application",
     );
 
     const applied = await runSetup(
@@ -628,7 +628,7 @@ describe("setup tool family scope", () => {
     );
     expect(applied.status).toBe("ready");
     expect(host.configuredProviderEnvironments).toContainEqual({
-      REA_MCP_TOOL_FAMILIES: "session,application",
+      NRE_MCP_TOOL_FAMILIES: "session,application",
     });
   });
 

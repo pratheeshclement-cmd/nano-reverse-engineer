@@ -220,7 +220,7 @@ describe("CLI command output wrapping", () => {
       aliases: ["nested-alias"],
       run: () => ({ kind: "group-root" }),
     }).command("child", { run: () => ({ kind: "child" }) });
-    const cli = Cli.create("rea-output-group-test", { sync: false }).command(
+    const cli = Cli.create("nre-output-group-test", { sync: false }).command(
       group,
     );
     streamCliCommandResults(cli, output);
@@ -279,7 +279,7 @@ describe("CLI result output surface", () => {
       );
       if (output === undefined)
         throw new Error("Missing structured output surface");
-      const cli = Cli.create("rea-output-test", { sync: false });
+      const cli = Cli.create("nre-output-test", { sync: false });
       registerManagedCommands(cli, silentLogger, async () => ({
         ok: false,
         error: failure,
@@ -361,7 +361,7 @@ describe("CLI result output surface", () => {
       destination,
     );
     if (output === undefined) throw new Error("Missing JSON output surface");
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("nre-output-test", { sync: false });
     cli.command("fixture", {
       run: () =>
         logCliCommand(
@@ -409,7 +409,7 @@ describe("full-output token windows", () => {
       destination,
     );
     if (output === undefined) throw new Error("Missing TOON output surface");
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("nre-output-test", { sync: false });
     registerManagedCommands(cli, silentLogger, async () => ({
       ok: false,
       error: {
@@ -461,7 +461,7 @@ describe("logger classification handoff", () => {
       destination,
     );
     if (output === undefined) throw new Error("Missing JSON output surface");
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("nre-output-test", { sync: false });
     cli.command("fixture", {
       run: () =>
         logCliCommand(
@@ -669,7 +669,7 @@ describe("CLI result output surface", () => {
         callback();
       },
     });
-    const cli = Cli.create("rea-output-test", { sync: false });
+    const cli = Cli.create("nre-output-test", { sync: false });
     registerManagedCommands(cli, silentLogger, async (...[path, operation]) => {
       expect(path).toBe("fixture.dll");
       expect(operation).toBe("inspect_managed_members");
@@ -712,7 +712,7 @@ describe("CLI result output surface", () => {
     );
     if (tokenOutput === undefined)
       throw new Error("Missing token-count output surface");
-    const tokenCli = Cli.create("rea-output-test", { sync: false });
+    const tokenCli = Cli.create("nre-output-test", { sync: false });
     registerManagedCommands(tokenCli, silentLogger, async () => ({
       ok: false,
       error: value,
@@ -792,7 +792,7 @@ describe("streamed CLI filtered selections", () => {
       const text = Buffer.concat(chunks).toString("utf8");
       if (expected === "JSONL_BOUNDARY_ERROR")
         expect(JSON.parse(text)).toMatchObject({
-          $rea: "jsonl/v1",
+          $nre: "jsonl/v1",
           type: "error",
           result: { code: "invalid_request", category: "invalid_input" },
         });

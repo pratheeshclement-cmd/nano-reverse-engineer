@@ -23,7 +23,7 @@ import { parseMcpToolError } from "../fixtures/mcpToolError.js";
 cliTest(
   "rejects misaligned 64-bit Mach-O through Rust CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-macho-alignment-");
+    const root = await createTestTempDirectory("nre-rust-macho-alignment-");
     const { client, call } = await connectLocalToolsMcp();
     const expectedFailure = {
       code: "invalid_request",
@@ -79,7 +79,7 @@ cliTest(
 cliTest(
   "reports cargo-auditable packages through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-");
+    const root = await createTestTempDirectory("nre-rust-cli-");
     const path = join(root, "sample");
     await writeFile(path, createRustImage({ format: "macho" }));
     const result = await cli.run({
@@ -106,7 +106,7 @@ cliTest(
 cliTest(
   "preserves historical cargo-auditable features through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-features-legacy-");
+    const root = await createTestTempDirectory("nre-rust-features-legacy-");
     const { client, call } = await connectLocalToolsMcp();
     const validCases = [
       {
@@ -243,7 +243,7 @@ cliTest(
 );
 
 cliTest("returns null metadata when .dep-v0 is absent", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-rust-cli-missing-");
+  const root = await createTestTempDirectory("nre-rust-cli-missing-");
   const path = join(root, "plain");
   await writeFile(path, createRustImage({ format: "elf", omitSection: true }));
   const result = await cli.run({
@@ -264,7 +264,7 @@ cliTest(
   "reads compressed ELF names and keeps unsupported compression unknown",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-rust-elf-compressed-names-",
+      "nre-rust-elf-compressed-names-",
     );
     for (const fixture of [
       { name: "zlib", type: 1, supported: true },
@@ -315,7 +315,7 @@ cliTest(
 cliTest(
   "keeps arm64_32 in Rust CLI Evidence when dependency metadata is absent",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-arm64-32-");
+    const root = await createTestTempDirectory("nre-rust-arm64-32-");
     const path = join(root, "watchos-object");
     const bytes = createRustImage({
       format: "macho",
@@ -348,7 +348,7 @@ cliTest(
 cliTest(
   "preserves an unknown cargo-auditable revision and reports its fallback",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-unknown-format-");
+    const root = await createTestTempDirectory("nre-rust-cli-unknown-format-");
     const path = join(root, "sample");
     const payload = rustDependencyPayload({
       format: 4,
@@ -376,7 +376,7 @@ cliTest(
 );
 
 cliTest("reports malformed zlib as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-rust-cli-zlib-");
+  const root = await createTestTempDirectory("nre-rust-cli-zlib-");
   const path = join(root, "broken.elf");
   await writeFile(
     path,
@@ -399,7 +399,7 @@ cliTest("reports malformed zlib as invalid input", async ({ cli }) => {
 cliTest(
   "rejects duplicate Rust dependency JSON through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-duplicate-json-");
+    const root = await createTestTempDirectory("nre-rust-cli-duplicate-json-");
     const { client, call } = await connectLocalToolsMcp();
     const path = join(root, "duplicate.elf");
     await writeFile(
@@ -432,7 +432,7 @@ cliTest(
 cliTest(
   "reads PE cargo-auditable data padded to FileAlignment through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-pe-padding-");
+    const root = await createTestTempDirectory("nre-rust-cli-pe-padding-");
     const { client, call } = await connectLocalToolsMcp();
     const path = join(root, "padded.exe");
     const bytes = createRustImage({ format: "pe", includeRustc: false });
@@ -481,7 +481,7 @@ cliTest(
 cliTest(
   "limits PE inflate ratio by consumed zlib bytes through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-pe-ratio-");
+    const root = await createTestTempDirectory("nre-rust-cli-pe-ratio-");
     const { client, call } = await connectLocalToolsMcp();
     const path = join(root, "over-ratio.exe");
     const document = Buffer.concat([
@@ -528,7 +528,7 @@ cliTest(
 cliTest(
   "releases a failed Rust descriptor close before projecting the CLI failure",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-close-");
+    const root = await createTestTempDirectory("nre-rust-cli-close-");
     const path = join(root, "sample.elf");
     const marker = join(root, "close-events.json");
     const preload = join(root, "deny-first-close.mjs");
@@ -545,7 +545,7 @@ cliTest(
     let opened = 0;
     fs.promises.open = async (...args) => {
       const file = await open(...args);
-      if (String(args[0]) !== process.env.REA_TEST_SELECTED_FILE) return file;
+      if (String(args[0]) !== process.env.NRE_TEST_SELECTED_FILE) return file;
       const handleId = opened++;
       events.push({ stage: 'opened', handleId });
       const close = file.close.bind(file);
@@ -554,7 +554,7 @@ cliTest(
         if (!denied) {
           denied = true;
           events.push({ stage: 'denied', handleId, open: file.fd >= 0 });
-          fs.writeFileSync(process.env.REA_TEST_CLOSE_EVENTS, JSON.stringify(events));
+          fs.writeFileSync(process.env.NRE_TEST_CLOSE_EVENTS, JSON.stringify(events));
           throw new Error('controlled Rust descriptor close failure');
         }
         await close();
@@ -563,7 +563,7 @@ cliTest(
         if (!releaseObserved) {
           releaseObserved = true;
           events.push({ stage: 'released', handleId, fd: file.fd });
-          fs.writeFileSync(process.env.REA_TEST_CLOSE_EVENTS, JSON.stringify(events));
+          fs.writeFileSync(process.env.NRE_TEST_CLOSE_EVENTS, JSON.stringify(events));
         }
       };
       return file;
@@ -575,8 +575,8 @@ cliTest(
       arguments: ["inspect-rust-binary", path, "--json"],
       environment: {
         NODE_OPTIONS: `--import=${pathToFileURL(preload).href}`,
-        REA_TEST_SELECTED_FILE: path,
-        REA_TEST_CLOSE_EVENTS: marker,
+        NRE_TEST_SELECTED_FILE: path,
+        NRE_TEST_CLOSE_EVENTS: marker,
       },
     });
     expect(result.exitCode, result.stdout + result.stderr).toBe(1);
@@ -594,7 +594,7 @@ cliTest(
 cliTest(
   "keeps Rust evidence independent of Go section errors through public CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-cli-go-section-");
+    const root = await createTestTempDirectory("nre-rust-cli-go-section-");
     const { client, call } = await connectLocalToolsMcp();
     for (const [format, fault, code] of [
       ["elf", "compressed", "unsupported_target"],

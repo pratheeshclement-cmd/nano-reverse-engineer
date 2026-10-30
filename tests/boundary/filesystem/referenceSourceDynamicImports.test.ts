@@ -7,7 +7,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { importReferenceSource } from "../../support/referenceSourceResourceScope.js";
 
 it("resolves dynamic source imports while retaining computed targets as unknown", async () => {
-  const root = await createTestTempDirectory("rea-reference-dynamic-import-");
+  const root = await createTestTempDirectory("nre-reference-dynamic-import-");
   await Promise.all([
     writeFile(
       join(root, "main.ts"),
@@ -71,7 +71,7 @@ it("resolves dynamic source imports while retaining computed targets as unknown"
 });
 
 it("loads an extensionless JSON target only through CommonJS require", async () => {
-  const root = await createTestTempDirectory("rea-reference-json-require-");
+  const root = await createTestTempDirectory("nre-reference-json-require-");
   await Promise.all([
     writeFile(join(root, "main.cjs"), 'require("./data");\n'),
     writeFile(join(root, "main.mjs"), 'import "./data";\n'),

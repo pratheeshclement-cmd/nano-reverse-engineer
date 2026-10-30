@@ -14,7 +14,7 @@ import { PRODUCT_IDENTITY } from "../../../src/identity.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("uses the same Hermes root for sticky selection and named profile resolution", async () => {
-  const home = await createTestTempDirectory("rea-hermes-nested-root-");
+  const home = await createTestTempDirectory("nre-hermes-nested-root-");
   const native = join(home, ".hermes");
   const nested = join(native, "nested");
   const profile = join(native, "profiles", "coder");
@@ -33,7 +33,7 @@ it("uses the same Hermes root for sticky selection and named profile resolution"
 });
 
 it("retains an explicitly selected missing Hermes profile as unresolved without writing elsewhere", async () => {
-  const home = await createTestTempDirectory("rea-skill-profile-selection-");
+  const home = await createTestTempDirectory("nre-skill-profile-selection-");
   const root = join(home, ".hermes");
   await mkdir(root);
   await writeFile(join(root, "active_profile"), "missing-profile\n");
@@ -76,7 +76,7 @@ it("retains an explicitly selected missing Hermes profile as unresolved without 
 });
 
 it("retains freshness for each selected personal and shared skill copy", async () => {
-  const home = await createTestTempDirectory("rea-skill-copy-selection-");
+  const home = await createTestTempDirectory("nre-skill-copy-selection-");
   const roots = [
     join(home, ".claude", "skills", PRODUCT_IDENTITY.skillName),
     join(home, ".agents", "skills", PRODUCT_IDENTITY.skillName),

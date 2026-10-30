@@ -73,7 +73,7 @@ const apple = {
 cliTest(
   "bounds mobile conventions and preserves inference provenance through compiled CLI and real MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-mobile-conventions-");
+    const root = await createTestTempDirectory("nre-mobile-conventions-");
     const { call } = await connectLocalToolsMcp();
     const { runProviderAnalysis } = createDirectAnalysis({});
     for (const fixture of [android, apple]) {

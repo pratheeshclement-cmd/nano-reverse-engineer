@@ -57,13 +57,13 @@ const electronCliEvidence = await runCli([
 
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: ["scripts/rea.mjs", "mcp"],
+  args: ["scripts/nre.mjs", "mcp"],
   cwd: root,
   env: environment,
   stderr: "pipe",
 });
 const client = new Client({
-  name: "rea-readiness-verifier",
+  name: "nre-readiness-verifier",
   version: "1",
   capabilities: { elicitation: {} },
 });
@@ -148,9 +148,9 @@ await withVerifierCleanup(async () => {
   };
 }, [() => client.close(), () => transport.close()]);
 
-if (process.env.REA_READINESS_REPORT_PATH !== undefined)
+if (process.env.NRE_READINESS_REPORT_PATH !== undefined)
   await writeFile(
-    resolve(root, process.env.REA_READINESS_REPORT_PATH),
+    resolve(root, process.env.NRE_READINESS_REPORT_PATH),
     `${JSON.stringify(verificationReport, null, 2)}\n`,
   );
 process.stdout.write(
@@ -177,7 +177,7 @@ process.stdout.write(
 async function runCli(arguments_) {
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", ...arguments_],
+    ["scripts/nre.mjs", ...arguments_],
     {
       cwd: root,
       env: environment,

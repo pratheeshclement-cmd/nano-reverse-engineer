@@ -22,7 +22,7 @@ class FakeDocument:
         return "bookmark-fixture"
 
     def getExecutableFilePath(self):
-        return "/tmp/rea-hopper-bookmark-fixture"
+        return "/tmp/nre-hopper-bookmark-fixture"
 
     def getDatabaseFilePath(self):
         return None
@@ -84,10 +84,10 @@ class FakeDocumentProvider:
 
 def main():
     bridge_path = sys.argv[1]
-    namespace = {"__file__": bridge_path, "__name__": "rea_hopper_bridge"}
+    namespace = {"__file__": bridge_path, "__name__": "nre_hopper_bridge"}
     source = Path(bridge_path).read_text(encoding="utf-8")
     exec(compile(source, bridge_path, "exec"), namespace)
-    namespace["REA_TARGET_PATH"] = FakeDocumentProvider.document.getExecutableFilePath()
+    namespace["NRE_TARGET_PATH"] = FakeDocumentProvider.document.getExecutableFilePath()
     namespace["_configure_hopper_api"](FakeDocumentProvider)
     namespace["_bind_session_document"]()
     dispatch = namespace["_dispatch"]

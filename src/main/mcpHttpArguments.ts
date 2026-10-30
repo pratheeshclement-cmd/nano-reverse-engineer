@@ -10,7 +10,7 @@ import {
 } from "../config/mcpHttpEndpoint.js";
 
 /**
- * Canonical `rea mcp --http` options. The help renderer lists exactly this
+ * Canonical `nre mcp --http` options. The help renderer lists exactly this
  * schema and the parser accepts exactly these flags plus the `-h` alias.
  */
 const MCP_HTTP_OPTIONS = z.object({
@@ -35,28 +35,32 @@ const MCP_HTTP_OPTIONS = z.object({
     .string()
     .min(1)
     .optional()
-    .describe("Authentication token required for all HTTP requests; default NRE_HTTP_AUTH_TOKEN"),
+    .describe(
+      "Authentication token required for all HTTP requests; default NRE_HTTP_AUTH_TOKEN",
+    ),
   allowUnauthenticated: z
     .boolean()
     .optional()
-    .describe("Permit non-loopback network binding without an authentication token (insecure)"),
+    .describe(
+      "Permit non-loopback network binding without an authentication token (insecure)",
+    ),
   maxSessions: z
     .number()
     .int()
     .min(1)
     .optional()
-    .describe("Maximum number of concurrent MCP sessions (enables multi-session mode)"),
+    .describe(
+      "Maximum number of concurrent MCP sessions (enables multi-session mode)",
+    ),
   help: z.boolean().optional().describe("Show help"),
 });
 
 const MCP_HTTP_ALIAS = { help: "h" } as const;
-const MCP_HTTP_COMMAND = "rea mcp --http";
+const MCP_HTTP_COMMAND = "nre mcp --http";
 const MCP_HTTP_DESCRIPTION =
   "Serve the MCP server over streamable HTTP for one local client";
 const HELP_FLAGS: ReadonlySet<string> = new Set(["--help", "-h"]);
-const BOOLEAN_FLAGS: ReadonlySet<string> = new Set([
-  "--allow-unauthenticated",
-]);
+const BOOLEAN_FLAGS: ReadonlySet<string> = new Set(["--allow-unauthenticated"]);
 const VALUED_FLAGS: ReadonlySet<string> = new Set([
   "--host",
   "--port",
@@ -76,7 +80,7 @@ export const renderMcpHttpHelp = (): string =>
     hint: "This entry accepts only the options above. The bound URL is logged as one JSON line on stderr.",
   });
 
-/** Parsed `rea mcp --http` arguments; omitted values defer to the environment. */
+/** Parsed `nre mcp --http` arguments; omitted values defer to the environment. */
 export type McpHttpArguments =
   | {
       readonly ok: true;

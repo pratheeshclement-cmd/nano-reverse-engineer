@@ -43,7 +43,7 @@ const invoke = async (argv: readonly string[]) => {
       );
     },
   };
-  const cli = Cli.create("rea-jeb-input-test", { sync: false });
+  const cli = Cli.create("nre-jeb-input-test", { sync: false });
   registerJebCommands(cli, silentLogger, {}, provider);
   let stdout = "";
   let exitCode = 0;

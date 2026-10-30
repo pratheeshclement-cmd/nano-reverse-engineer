@@ -224,8 +224,8 @@ workspaceCliTest.for([
         arguments: ["decompile", target, "main", "--provider", "ida", "--json"],
         environment: {
           ...workspace.environment,
-          REA_IDA_MCP_CONFIG: registration,
-          REA_LOG_LEVEL: "silent",
+          NRE_IDA_MCP_CONFIG: registration,
+          NRE_LOG_LEVEL: "silent",
         },
         timeoutMs: 15000,
       });

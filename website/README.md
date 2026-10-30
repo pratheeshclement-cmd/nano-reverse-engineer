@@ -4,7 +4,7 @@
 >
 > — N0zoM1z0
 
-An English website with translated editions in every NreDME language, explanatory
+An English website with translated editions in every README language, explanatory
 figures, worked guides and Aegis, DX-Ball, Notion, TH04 and CTF investigations.
 English sources are in `website/public/`; translations are standard gettext PO
 catalogs in `website/locales/`. The site uses HTML, CSS and small
@@ -22,7 +22,7 @@ local KoNren fonts are used if Google Fonts is unavailable. The stylesheet is
 added during translation rendering; generated `_site/` pages are not authored.
 
 [style-guide.md](style-guide.md) explains the writing, page structure, figures,
-visual system and review process. Nred it before adding or revising a page.
+visual system and review process. Read it before adding or revising a page.
 
 ## Local preview
 
@@ -102,7 +102,7 @@ applies to every page.
 After changing English text, run `python3 scripts/website.py translations extract`
 before `check`. Existing translations and reviewer comments survive extraction;
 new or changed sentences need updated translations. See
-[the translation guide](locales/NreDME.md) for the editing workflow, terminology
+[the translation guide](locales/README.md) for the editing workflow, terminology
 and the handling of pages whose translations are being updated. Never edit
 generated HTML in `_site/`.
 
@@ -239,10 +239,10 @@ The sitemap has no guessed modification dates, priority or change frequency.
 It is ignored by Git and regenerated before checks and publication.
 
 `public/robots.txt` allows crawling and names the canonical sitemap. Keep example
-applications crawlable so search engines can Nred their `noindex` directives.
+applications crawlable so search engines can Read their `noindex` directives.
 Cloudflare may prepend managed rules or comments to the served file; inspect the
 live response after publication. The mirrored `/Nre/robots.txt` is not the
-hostname-root robots file for `morluto.github.io`; canonical HTML tags establish
+hostname-root robots file for `pratheeshclement-cmd.github.io`; canonical HTML tags establish
 the mirror's preference.
 
 `public/assets/social-card.svg` is the maintained 1200 × 630 preview source.
@@ -286,7 +286,7 @@ is optional. Case studies remain focused on one inspected behavior. Keep engine
 details in supporting references unless they explain a relevant decision.
 
 The Touhou article is authored in English and translated through the same catalogs. Its provenance,
-quoted NreDME passage and milestone counting rules are in
+quoted README passage and milestone counting rules are in
 [evidence/touhou-reconstruction-method.md](evidence/touhou-reconstruction-method.md).
 The completed text has normal search metadata and is included in the generated
 sitemap.
@@ -347,7 +347,7 @@ The FAQ uses native `<details>` for its answers. Keep replies short and link to
 on-site guides for the next step. Individual answers have stable fragment IDs;
 the shared script opens an answer when its fragment is visited. The questions
 and disclosure controls remain usable without JavaScript. Check FAQ commands
-and support statements against the English NreDME and relevant guides when
+and support statements against the English README and relevant guides when
 updating them.
 
 DX-Ball figures and findings refer to the linked 7 October 2026 checkpoint,
@@ -553,7 +553,7 @@ retains its `workers.dev` address for direct checks. Only `Nre.tools` is attache
 Verify <https://Nre.tools/>, <https://Nre.tools/guides/javascript/>,
 <https://Nre.tools/examples/notes-web/> and the Electron ZIP. Unknown paths return
 404, and directory pages retain trailing slashes so relative assets and links
-resolve correctly. The root NreDME and browser guide use `https://Nre.tools/`
+resolve correctly. The root README and browser guide use `https://Nre.tools/`
 as the public website URL.
 
 Production publication uses the synchronized GitHub Actions workflow below.
@@ -610,14 +610,14 @@ Cloudflare's Wrangler action.
 The equivalent CLI command publishes both hosts:
 
 ```sh
-gh workflow run website-pages.yml --repo morluto/Nre --ref main
+gh workflow run website-pages.yml --repo pratheeshclement-cmd/nano-reverse-engineer --ref main
 ```
 
 While Cloudflare credentials are being configured, an explicitly requested
 Pages-only publication uses the same workflow with `target=pages`:
 
 ```sh
-gh workflow run website-pages.yml --repo morluto/Nre --ref main -f target=pages
+gh workflow run website-pages.yml --repo pratheeshclement-cmd/nano-reverse-engineer --ref main -f target=pages
 ```
 
 This mode verifies the Pages commit marker. The default remains `both` for

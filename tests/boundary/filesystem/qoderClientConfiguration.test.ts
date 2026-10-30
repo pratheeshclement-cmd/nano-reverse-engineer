@@ -60,20 +60,18 @@ describe("Qoder configuration paths", () => {
   it("resolves the personal skills directory beside the config root", () => {
     expect(
       skillDestinations("/home/a", ["qoder"]).map(({ path }) => path),
-    ).toEqual([
-      join("/home/a", ".qoder", "skills", "reverse-engineer-anything"),
-    ]);
+    ).toEqual([join("/home/a", ".qoder", "skills", "nano-reverse-engineer")]);
     expect(
       skillDestinations("/home/a", ["qoder"], {
         QODER_CONFIG_DIR: "/opt/qoder",
       }).map(({ path }) => path),
-    ).toEqual([join("/opt/qoder", "skills", "reverse-engineer-anything")]);
+    ).toEqual([join("/opt/qoder", "skills", "nano-reverse-engineer")]);
   });
 });
 
 describe("Qoder JSON registration", () => {
   const qoderClient = async () => {
-    const home = await createTestTempDirectory("rea-qoder-");
+    const home = await createTestTempDirectory("nre-qoder-");
     const client = qoderPath(home, process.platform);
     if (client?.markerPath === undefined)
       throw new Error("missing Qoder client");
@@ -81,7 +79,7 @@ describe("Qoder JSON registration", () => {
     return { home, client };
   };
 
-  it("upserts rea into mcpServers while preserving unrelated settings", async () => {
+  it("upserts nre into mcpServers while preserving unrelated settings", async () => {
     const { home, client } = await qoderClient();
     await writeFile(
       client.configPath,
@@ -99,7 +97,7 @@ describe("Qoder JSON registration", () => {
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
     expect(parsed.model).toEqual({ name: "qoder-model" });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -128,7 +126,7 @@ describe("Qoder JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.general).toEqual({ vimMode: false });
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -141,13 +139,13 @@ describe("Qoder JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toEqual({
+    expect(parsed.mcpServers.nre).toEqual({
       command: command[0],
       args: command.slice(1),
     });
   });
 
-  it("removes only the rea entry on uninstall", async () => {
+  it("removes only the nre entry on uninstall", async () => {
     const { home, client } = await qoderClient();
     await writeFile(
       client.configPath,
@@ -164,6 +162,6 @@ describe("Qoder JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcpServers.rea).toBeUndefined();
+    expect(parsed.mcpServers.nre).toBeUndefined();
   });
 });

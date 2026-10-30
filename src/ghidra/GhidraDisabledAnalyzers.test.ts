@@ -13,13 +13,13 @@ const configured = (setting?: string) => {
     GHIDRA_INSTALL_DIR: INSTALL,
     ...(setting === undefined
       ? {}
-      : { REA_GHIDRA_DISABLED_ANALYZERS: setting }),
+      : { NRE_GHIDRA_DISABLED_ANALYZERS: setting }),
   });
   if (!config.ok) throw config.error;
   return config.value.ghidraDisabledAnalyzers;
 };
 
-describe("REA_GHIDRA_DISABLED_ANALYZERS", () => {
+describe("NRE_GHIDRA_DISABLED_ANALYZERS", () => {
   it("stays unset without the setting", () => {
     expect(configured(undefined)).toBeUndefined();
   });
@@ -49,14 +49,14 @@ describe("REA_GHIDRA_DISABLED_ANALYZERS", () => {
   ])("rejects %s", (_label, setting) => {
     const config = parseConfig({
       GHIDRA_INSTALL_DIR: INSTALL,
-      REA_GHIDRA_DISABLED_ANALYZERS: setting,
+      NRE_GHIDRA_DISABLED_ANALYZERS: setting,
     });
     expect(config.ok).toBe(false);
     if (!config.ok)
       expect(config.error).toMatchObject({
         settings: [
           expect.objectContaining({
-            setting: "REA_GHIDRA_DISABLED_ANALYZERS",
+            setting: "NRE_GHIDRA_DISABLED_ANALYZERS",
           }),
         ],
       });
@@ -69,14 +69,14 @@ describe("REA_GHIDRA_DISABLED_ANALYZERS", () => {
     ).join(",");
     const config = parseConfig({
       GHIDRA_INSTALL_DIR: INSTALL,
-      REA_GHIDRA_DISABLED_ANALYZERS: setting,
+      NRE_GHIDRA_DISABLED_ANALYZERS: setting,
     });
     expect(config.ok).toBe(false);
     if (!config.ok)
       expect(config.error).toMatchObject({
         settings: [
           expect.objectContaining({
-            setting: "REA_GHIDRA_DISABLED_ANALYZERS",
+            setting: "NRE_GHIDRA_DISABLED_ANALYZERS",
           }),
         ],
       });

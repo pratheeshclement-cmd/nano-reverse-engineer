@@ -13,19 +13,19 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 
 const run = promisify(execFile);
 const environment = {
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "auto",
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "auto",
 } as const;
 
 const signedApp = async () => {
-  const root = await createTestTempDirectory("rea-selected-app-");
+  const root = await createTestTempDirectory("nre-selected-app-");
   const app = join(root, "Probe.app");
   const executable = join(app, "Contents/MacOS/Probe");
   await mkdir(join(app, "Contents/MacOS"), { recursive: true });
   await copyFile("/usr/bin/true", executable);
   await writeFile(
     join(app, "Contents/Info.plist"),
-    '<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>Probe</string><key>CFBundleIdentifier</key><string>org.example.rea.probe</string><key>CFBundlePackageType</key><string>APPL</string></dict></plist>',
+    '<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>Probe</string><key>CFBundleIdentifier</key><string>org.example.nre.probe</string><key>CFBundlePackageType</key><string>APPL</string></dict></plist>',
   );
   await run("/usr/bin/codesign", ["-s", "-", "-f", app]);
   await symlink("Probe.app", join(root, "Selected.app"));

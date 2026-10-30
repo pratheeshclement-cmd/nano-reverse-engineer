@@ -35,11 +35,11 @@ const DEFAULT_CACHE_MAX_BYTES = 4 * 1024 ** 3;
 /** One project needs its .c, .h, .asm, inventory and manifest; refuse smaller caps. */
 const MIN_CACHE_MAX_BYTES = 1024 ** 2;
 
-/** Caller-selected Kuna installation and REA-owned project cache policy. */
+/** Caller-selected Kuna installation and NRE-owned project cache policy. */
 export interface KunaConfiguration {
   /** Caller-selected executable path, preserved exactly as configured. */
   readonly command: string;
-  /** REA-owned cache root; Kuna's own spec cache lives beneath it too. */
+  /** NRE-owned cache root; Kuna's own spec cache lives beneath it too. */
   readonly cacheRoot: string;
   readonly cacheMaxBytes: number;
   readonly projectTimeoutMs: number;
@@ -50,7 +50,7 @@ export interface KunaConfiguration {
 
 /** One configured deadline and the setting that owns it. */
 export interface KunaDeadline {
-  readonly setting: "REA_KUNA_TIMEOUT_MS" | "REA_KUNA_PROJECT_TIMEOUT_MS";
+  readonly setting: "NRE_KUNA_TIMEOUT_MS" | "NRE_KUNA_PROJECT_TIMEOUT_MS";
   readonly ms: number;
 }
 
@@ -58,7 +58,7 @@ export interface KunaDeadline {
 export const kunaFunctionDeadline = (
   configuration: KunaConfiguration,
 ): KunaDeadline => ({
-  setting: "REA_KUNA_TIMEOUT_MS",
+  setting: "NRE_KUNA_TIMEOUT_MS",
   ms: configuration.functionTimeoutMs,
 });
 
@@ -66,7 +66,7 @@ export const kunaFunctionDeadline = (
 export const kunaProjectDeadline = (
   configuration: KunaConfiguration,
 ): KunaDeadline => ({
-  setting: "REA_KUNA_PROJECT_TIMEOUT_MS",
+  setting: "NRE_KUNA_PROJECT_TIMEOUT_MS",
   ms: configuration.projectTimeoutMs,
 });
 
@@ -90,9 +90,9 @@ const failure = (
     remediation:
       code === "unsupported_host"
         ? KUNA_UNSUPPORTED_HOST_REMEDIATION
-        : setting === null || setting === "REA_KUNA_COMMAND"
+        : setting === null || setting === "NRE_KUNA_COMMAND"
           ? KUNA_COMMAND_REMEDIATION
-          : `Correct ${setting} to meet the reported constraint, or unset it to use its default. Restart REA after changing the environment.`,
+          : `Correct ${setting} to meet the reported constraint, or unset it to use its default. Restart NRE after changing the environment.`,
   });
 
 const positiveInteger = (value: string): number | undefined =>
@@ -105,27 +105,27 @@ export const readKunaConfiguration = (
   environment: Readonly<NodeJS.ProcessEnv>,
   platform: NodeJS.Platform = process.platform,
 ): Result<KunaConfiguration, KunaConfigurationFailure> => {
-  const command = environment.REA_KUNA_COMMAND;
+  const command = environment.NRE_KUNA_COMMAND;
   if (command === undefined || command.length === 0)
     return failure("not_configured", KUNA_COMMAND_REMEDIATION);
   if (!isAbsolute(command))
     return failure(
       "open_options_invalid",
-      `REA_KUNA_COMMAND must be an absolute path; received ${command}. ${KUNA_COMMAND_REMEDIATION}`,
-      "REA_KUNA_COMMAND",
+      `NRE_KUNA_COMMAND must be an absolute path; received ${command}. ${KUNA_COMMAND_REMEDIATION}`,
+      "NRE_KUNA_COMMAND",
     );
   if (platform !== "darwin" && platform !== "linux")
     return failure("unsupported_host", KUNA_UNSUPPORTED_HOST_REMEDIATION);
 
-  const cacheRoot = environment.REA_KUNA_CACHE_DIR;
+  const cacheRoot = environment.NRE_KUNA_CACHE_DIR;
   if (cacheRoot !== undefined && !isAbsolute(cacheRoot))
     return failure(
       "open_options_invalid",
-      `REA_KUNA_CACHE_DIR must be an absolute directory; received ${cacheRoot}.`,
-      "REA_KUNA_CACHE_DIR",
+      `NRE_KUNA_CACHE_DIR must be an absolute directory; received ${cacheRoot}.`,
+      "NRE_KUNA_CACHE_DIR",
     );
 
-  const rawMaxBytes = environment.REA_KUNA_CACHE_MAX_BYTES;
+  const rawMaxBytes = environment.NRE_KUNA_CACHE_MAX_BYTES;
   const cacheMaxBytes =
     rawMaxBytes === undefined
       ? DEFAULT_CACHE_MAX_BYTES
@@ -133,11 +133,11 @@ export const readKunaConfiguration = (
   if (cacheMaxBytes === undefined || cacheMaxBytes < MIN_CACHE_MAX_BYTES)
     return failure(
       "open_options_invalid",
-      `REA_KUNA_CACHE_MAX_BYTES must be a decimal byte count of at least ${String(MIN_CACHE_MAX_BYTES)}; received ${String(rawMaxBytes)}.`,
-      "REA_KUNA_CACHE_MAX_BYTES",
+      `NRE_KUNA_CACHE_MAX_BYTES must be a decimal byte count of at least ${String(MIN_CACHE_MAX_BYTES)}; received ${String(rawMaxBytes)}.`,
+      "NRE_KUNA_CACHE_MAX_BYTES",
     );
 
-  const rawTimeout = environment.REA_KUNA_PROJECT_TIMEOUT_MS;
+  const rawTimeout = environment.NRE_KUNA_PROJECT_TIMEOUT_MS;
   const timeout =
     rawTimeout === undefined
       ? undefined
@@ -145,11 +145,11 @@ export const readKunaConfiguration = (
   if (timeout !== undefined && !timeout.success)
     return failure(
       "open_options_invalid",
-      `REA_KUNA_PROJECT_TIMEOUT_MS must be a decimal millisecond count from 1 to 2147483647; received ${String(rawTimeout)}.`,
-      "REA_KUNA_PROJECT_TIMEOUT_MS",
+      `NRE_KUNA_PROJECT_TIMEOUT_MS must be a decimal millisecond count from 1 to 2147483647; received ${String(rawTimeout)}.`,
+      "NRE_KUNA_PROJECT_TIMEOUT_MS",
     );
 
-  const rawFunctionTimeout = environment.REA_KUNA_TIMEOUT_MS;
+  const rawFunctionTimeout = environment.NRE_KUNA_TIMEOUT_MS;
   const functionTimeout =
     rawFunctionTimeout === undefined
       ? undefined
@@ -157,17 +157,17 @@ export const readKunaConfiguration = (
   if (functionTimeout !== undefined && !functionTimeout.success)
     return failure(
       "open_options_invalid",
-      `REA_KUNA_TIMEOUT_MS must be a decimal millisecond count from 1 to 2147483647; received ${String(rawFunctionTimeout)}.`,
-      "REA_KUNA_TIMEOUT_MS",
+      `NRE_KUNA_TIMEOUT_MS must be a decimal millisecond count from 1 to 2147483647; received ${String(rawFunctionTimeout)}.`,
+      "NRE_KUNA_TIMEOUT_MS",
     );
 
-  const rawJobs = environment.REA_KUNA_JOBS;
+  const rawJobs = environment.NRE_KUNA_JOBS;
   const jobs = rawJobs === undefined ? DEFAULT_JOBS : positiveInteger(rawJobs);
   if (jobs === undefined || jobs > MAX_KUNA_JOBS)
     return failure(
       "open_options_invalid",
-      `REA_KUNA_JOBS must be an integer from 1 to ${String(MAX_KUNA_JOBS)}; received ${String(rawJobs)}.`,
-      "REA_KUNA_JOBS",
+      `NRE_KUNA_JOBS must be an integer from 1 to ${String(MAX_KUNA_JOBS)}; received ${String(rawJobs)}.`,
+      "NRE_KUNA_JOBS",
     );
 
   return ok({

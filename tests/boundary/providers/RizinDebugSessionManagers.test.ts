@@ -30,7 +30,7 @@ describe.skipIf(process.platform === "win32")(
     });
 
     it("uses an absolute target path and waits for Rizin's completion marker", async () => {
-      directory = await mkdtemp(join(tmpdir(), "rea-rizin-manager-"));
+      directory = await mkdtemp(join(tmpdir(), "nre-rizin-manager-"));
       const provider = join(directory, "fake-rizin.mjs");
       const argsFile = join(directory, "args.json");
       await writeFile(
@@ -58,7 +58,7 @@ process.stdin.on("data", (chunk) => {
       );
       await chmod(provider, 0o700);
       const manager = createRizinTestManager({
-        REA_RIZIN_COMMAND: provider,
+        NRE_RIZIN_COMMAND: provider,
       });
       managers.push(manager);
 
@@ -122,7 +122,7 @@ describe.skipIf(process.platform === "win32")(
     it.each(["stopped", "throw", "reject"] as const)(
       "retains timeout output and retryable cleanup when stop outcome is %s",
       async (stopOutcome) => {
-        directory = await mkdtemp(join(tmpdir(), "rea-rizin-timeout-"));
+        directory = await mkdtemp(join(tmpdir(), "nre-rizin-timeout-"));
         const provider = join(directory, "fake-rizin-stall.mjs");
         await writeFile(
           provider,
@@ -151,7 +151,7 @@ process.stdin.on("data", (chunk) => {
         await chmod(provider, 0o700);
         let stopRejected = false;
         const manager = createRizinTestManager(
-          { REA_RIZIN_COMMAND: provider },
+          { NRE_RIZIN_COMMAND: provider },
           {
             frameTimeoutMs: 50,
             stopProcess: (session, name, options) => {
@@ -212,10 +212,10 @@ process.stdin.on("data", (chunk) => {
 it.skipIf(process.platform === "win32")(
   "stops Rizin when empty unsolicited NUL frames exhaust the bounded queue",
   async () => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-empty-frames-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-empty-frames-"));
     const provider = join(directory, "fake-rizin-empty.mjs");
     const manager = createRizinTestManager({
-      REA_RIZIN_COMMAND: provider,
+      NRE_RIZIN_COMMAND: provider,
     });
     try {
       await writeFile(

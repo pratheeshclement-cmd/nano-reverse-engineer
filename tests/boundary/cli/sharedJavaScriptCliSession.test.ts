@@ -124,7 +124,7 @@ test("stops an unready shared CLI process when the session closes", async () => 
     },
   });
   const pending = session.run(
-    command(["--version"], { PATH: "/usr/bin", REA_LOG_LEVEL: "silent" }),
+    command(["--version"], { PATH: "/usr/bin", NRE_LOG_LEVEL: "silent" }),
   );
   await waitFor(() => spawned !== undefined);
   const rejected = expect(pending).rejects.toThrow(
@@ -137,7 +137,7 @@ test("stops an unready shared CLI process when the session closes", async () => 
   expect(spawned?.signalCode).toBe("SIGTERM");
   await expect(
     session.run(
-      command(["--version"], { PATH: "/usr/bin", REA_LOG_LEVEL: "silent" }),
+      command(["--version"], { PATH: "/usr/bin", NRE_LOG_LEVEL: "silent" }),
     ),
   ).rejects.toThrow("Shared CLI session is closed");
   await session.close();
@@ -158,7 +158,7 @@ test("stops an in-flight shared CLI command when the session closes", async () =
     },
   });
   const pending = session.run(
-    command(["--version"], { PATH: "/usr/bin", REA_LOG_LEVEL: "silent" }),
+    command(["--version"], { PATH: "/usr/bin", NRE_LOG_LEVEL: "silent" }),
   );
   await waitFor(() => received);
   const rejected = expect(pending).rejects.toThrow(
@@ -814,14 +814,14 @@ test("starts a new process after the real worker reports a fatal failure", async
   const failed = await session.run({
     arguments: ["--version"],
     cwd: "/workspace/this-directory-does-not-exist",
-    environment: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+    environment: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
   });
   expect(failed.exitCode).toBe(1);
   expect(failed.stderr).toMatch(/ENOENT/);
   const recovered = await session.run({
     arguments: ["--version"],
     cwd: process.cwd(),
-    environment: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" },
+    environment: { PATH: process.env.PATH ?? "", NRE_LOG_LEVEL: "silent" },
   });
   expect(recovered.exitCode).toBe(0);
   expect(recovered.stdout.length).toBeGreaterThan(0);
@@ -834,7 +834,7 @@ test("keeps a malformed JSON command's failure status and serves the next comman
   onTestFinished(() => session.close());
   const environment = {
     PATH: process.env.PATH ?? "",
-    REA_LOG_LEVEL: "silent",
+    NRE_LOG_LEVEL: "silent",
   };
   const failed = await session.run(
     command(["compare-javascript-export-shapes", "{", "--json"], environment),
@@ -843,7 +843,7 @@ test("keeps a malformed JSON command's failure status and serves the next comman
   expect(failed.stdout).toContain("invalid_request");
   const worker = session.processId();
   expect(worker).toEqual(expect.any(Number));
-  const root = await createTestTempDirectory("rea-warm-cli-status-");
+  const root = await createTestTempDirectory("nre-warm-cli-status-");
   await writeFixtureFiles(root, {
     "app.mjs": "export function current() { return 1; }\n",
   });
@@ -882,14 +882,14 @@ test("closes the real JavaScript CLI worker through its resource cleanup", async
     },
   });
   onTestFinished(() => session.close());
-  const root = await createTestTempDirectory("rea-warm-cli-graceful-");
+  const root = await createTestTempDirectory("nre-warm-cli-graceful-");
   await writeFixtureFiles(root, {
     "app.mjs": "export function current() { return 1; }\n",
   });
   const analyzed = await session.run(
     command(["analyze-javascript-application", root, "--json"], {
       PATH: process.env.PATH ?? "",
-      REA_LOG_LEVEL: "silent",
+      NRE_LOG_LEVEL: "silent",
     }),
   );
   expect(analyzed.exitCode, analyzed.stderr).toBe(0);
@@ -942,11 +942,11 @@ cliTest(
     const sharedCliRun = requireSharedCli(cli);
     const fresh = await cli.run({
       arguments: ["--version"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const shared = await sharedCliRun({
       arguments: ["--version"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(shared.exitCode).toBe(fresh.exitCode);
     expect(shared.stdout).toBe(fresh.stdout);
@@ -955,18 +955,18 @@ cliTest(
     expect(pid).toEqual(expect.any(Number));
     const again = await sharedCliRun({
       arguments: ["--version"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(again.stdout).toBe(fresh.stdout);
     expect(cliCommandSession.processId()).toBe(pid);
 
     const freshInvalid = await cli.run({
       arguments: ["--version"],
-      environment: { REA_LOG_LEVEL: "not-a-level" },
+      environment: { NRE_LOG_LEVEL: "not-a-level" },
     });
     const sharedInvalid = await sharedCliRun({
       arguments: ["--version"],
-      environment: { REA_LOG_LEVEL: "not-a-level" },
+      environment: { NRE_LOG_LEVEL: "not-a-level" },
     });
     expect(sharedInvalid.exitCode).toBe(freshInvalid.exitCode);
     expect(sharedInvalid.exitCode).not.toBe(0);
@@ -976,7 +976,7 @@ cliTest(
 
     const restored = await sharedCliRun({
       arguments: ["--version"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(restored.exitCode).toBe(0);
     expect(restored.stdout).toBe(fresh.stdout);
@@ -988,28 +988,28 @@ cliTest(
   "reuses one CLI process across JavaScript application directories",
   async ({ cli, cliCommandSession }) => {
     const sharedCliRun = requireSharedCli(cli);
-    const firstRoot = await writeApplication("rea-shared-cli-");
+    const firstRoot = await writeApplication("nre-shared-cli-");
     const fresh = await cli.run({
       arguments: analyzeArguments(firstRoot),
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const shared = await sharedCliRun({
       arguments: analyzeArguments(firstRoot),
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(shared.exitCode).toBe(0);
     expect(normalized(shared)).toEqual(normalized(fresh));
     const pid = cliCommandSession.processId();
     expect(pid).toEqual(expect.any(Number));
 
-    const secondRoot = await writeApplication("rea-shared-cli-next-");
+    const secondRoot = await writeApplication("nre-shared-cli-next-");
     const freshNext = await cli.run({
       arguments: analyzeArguments(secondRoot),
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     const sharedNext = await sharedCliRun({
       arguments: analyzeArguments(secondRoot),
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(normalized(sharedNext)).toEqual(normalized(freshNext));
     expect(normalized(sharedNext).input_path).not.toBe(

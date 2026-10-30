@@ -115,7 +115,7 @@ const sampleWebBundleAnalysis = (): WebBundleAnalysis => ({
 const makeParent = () =>
   createEvidence(
     undefined,
-    { id: "rea-browser", name: "REA Browser", version: "6.8.0" },
+    { id: "nre-browser", name: "NRE Browser", version: "6.8.0" },
     {
       operation: "analyze_web_bundle",
       parameters: { target_url: "https://example.test/app" },
@@ -131,7 +131,7 @@ const connect = async () => {
   const server = createServer(
     { kind: "session", session },
     {
-      environment: { ...process.env, REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
+      environment: { ...process.env, NRE_MCP_INPUT_SCHEMA_PROFILE: "full" },
     },
   );
   const client = new Client(
@@ -211,7 +211,7 @@ it("projects web bundle summary views over MCP using retained and inline sources
 it("pages web bundle endpoints and inferences over MCP using evidence-file source", async () => {
   const { client, schemas } = await connect();
   const parent = makeParent();
-  const tempDir = await createTestTempDirectory("rea-webbundle-mcp-");
+  const tempDir = await createTestTempDirectory("nre-webbundle-mcp-");
   const evidenceFile = join(tempDir, "webbundle-evidence.json");
   await writeFile(evidenceFile, JSON.stringify(parent));
 

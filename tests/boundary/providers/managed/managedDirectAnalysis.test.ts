@@ -14,7 +14,7 @@ const { runProviderAnalysis } = createDirectAnalysis({});
 
 describe("managed direct-analysis path boundary", () => {
   it("returns provider evidence through the shared analysis service", async () => {
-    const directory = await createTestTempDirectory("rea-managed-cli-");
+    const directory = await createTestTempDirectory("nre-managed-cli-");
     const path = join(directory, "fixture.exe");
     await writeFile(path, buildManagedPeFixture());
 
@@ -25,7 +25,7 @@ describe("managed direct-analysis path boundary", () => {
     );
     expect(evidence).toMatchObject({
       operation: "inspect_managed_artifact",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "nre-dotnet-static" },
       subject: { local_path: path, format: "pe" },
       normalized_result: {
         classification: { status: "managed", runtime_family: "modern-dotnet" },
@@ -40,7 +40,7 @@ describe("managed direct-analysis path boundary", () => {
     );
     expect(memberEvidence).toMatchObject({
       operation: "inspect_managed_members",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "nre-dotnet-static" },
       subject: { local_path: path, format: "pe" },
       normalized_result: {
         identity_scope: { token_identity: "build-local" },
@@ -57,7 +57,7 @@ describe("managed direct-analysis path boundary", () => {
     );
     expect(boundaryEvidence).toMatchObject({
       operation: "inspect_managed_native_boundaries",
-      provider: { id: "rea-dotnet-static" },
+      provider: { id: "nre-dotnet-static" },
       subject: { local_path: path, format: "pe" },
       normalized_result: {
         identity_scope: { token_identity: "build-local" },

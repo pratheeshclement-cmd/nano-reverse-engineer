@@ -25,7 +25,7 @@ import {
   withArtifactRegularFile,
 } from "../artifacts/ArtifactFileOperation.js";
 
-/** Installed processor code and data, distinct from REA's analysis-extension ABI. */
+/** Installed processor code and data, distinct from NRE's analysis-extension ABI. */
 export const ghidraPspExtensionSchema = z.strictObject({
   id: z.literal("ghidra-allegrex"),
   root: z.string().refine(isAbsolute),
@@ -241,7 +241,7 @@ const ghidraPspInspectionError = (cause: unknown): AnalysisError => {
   const identity =
     admission?.code ??
     (primary instanceof Error ? primary.message : String(primary));
-  const reason = `PSP_EXTENSION_UNAVAILABLE: ${identity} Use a compatible caller-installed ghidra-allegrex under GHIDRA_INSTALL_DIR/Ghidra/Extensions; REA does not install it.`;
+  const reason = `PSP_EXTENSION_UNAVAILABLE: ${identity} Use a compatible caller-installed ghidra-allegrex under GHIDRA_INSTALL_DIR/Ghidra/Extensions; NRE does not install it.`;
   const diagnostics =
     admission === undefined
       ? undefined

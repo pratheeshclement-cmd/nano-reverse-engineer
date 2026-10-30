@@ -143,7 +143,7 @@ it("keeps unresolved probe cleanup typed when the launcher overflows its output"
 
   // Both provider entry points report the unresolved processes as cleanup.
   const provider = new ApktoolProvider({
-    environment: { REA_APKTOOL_COMMAND: "/opt/apktool/apktool" },
+    environment: { NRE_APKTOOL_COMMAND: "/opt/apktool/apktool" },
   });
   vi.mocked(runOwnedCommand).mockRejectedValueOnce(overflow());
   await expect(provider.inspectAvailability()).rejects.toMatchObject({

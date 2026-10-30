@@ -69,10 +69,10 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "executes native commands with the selected environment snapshot instead of ambient values",
   async () => {
-    vi.stubEnv("REA_NATIVE_SELECTED", "ambient");
-    vi.stubEnv("REA_NATIVE_AMBIENT", "ambient-only");
+    vi.stubEnv("NRE_NATIVE_SELECTED", "ambient");
+    vi.stubEnv("NRE_NATIVE_AMBIENT", "ambient-only");
     const environment = {
-      REA_NATIVE_SELECTED: "selected",
+      NRE_NATIVE_SELECTED: "selected",
       PATH: "/selected-path",
     };
     const runner = new XcrunCommandRunner(environment, async () =>
@@ -82,12 +82,12 @@ it.skipIf(process.platform === "win32")(
         sha256: "a".repeat(64),
       }),
     );
-    environment.REA_NATIVE_SELECTED = "mutated-after-construction";
+    environment.NRE_NATIVE_SELECTED = "mutated-after-construction";
     const captured = await runner.run(
       "file",
       [
         "-e",
-        "process.stdout.write(JSON.stringify({selected:process.env.REA_NATIVE_SELECTED,ambient:process.env.REA_NATIVE_AMBIENT??null,path:process.env.PATH,locale:process.env.LC_ALL}))",
+        "process.stdout.write(JSON.stringify({selected:process.env.NRE_NATIVE_SELECTED,ambient:process.env.NRE_NATIVE_AMBIENT??null,path:process.env.PATH,locale:process.env.LC_ALL}))",
       ],
       {},
     );

@@ -27,7 +27,7 @@ export const localPathStringSchema = nulFreeStringSchema.min(1);
 export const windowsAbsolutePathPattern =
   /^(?:[\x5C\x2F]|[A-Za-z]:[\x5C\x2F])/u;
 
-/** A caller-selected path that is absolute on the host running REA. */
+/** A caller-selected path that is absolute on the host running NRE. */
 export const absoluteLocalPathStringSchema = localPathStringSchema.regex(
   process.platform === "win32" ? windowsAbsolutePathPattern : /^\//u,
   "must be an absolute local filesystem path",

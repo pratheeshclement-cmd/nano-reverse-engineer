@@ -83,7 +83,7 @@ export const APPLICATION_TOOL_CONTRACTS = [
     name: "search_guidance",
     ...toolContractMetadata("search_guidance"),
     description:
-      "Search only the installed REA workflow guidance. Every non-generic query word must occur in a section. Returns ranked sections, bounded pages, and locators for read_guidance_section. No target or provider is accessed.",
+      "Search only the installed NRE workflow guidance. Every non-generic query word must occur in a section. Returns ranked sections, bounded pages, and locators for read_guidance_section. No target or provider is accessed.",
     kind: "application",
     inputSchema: searchGuidanceInputSchema,
     outputSchema: searchGuidanceOutputSchema,
@@ -98,7 +98,7 @@ export const APPLICATION_TOOL_CONTRACTS = [
     name: "guided_workflows",
     ...toolContractMetadata("guided_workflows"),
     description:
-      "List or render REA's existing guided workflows. Rendering returns guidance only; it does not inspect targets, start analysis, or change session state.",
+      "List or render NRE's existing guided workflows. Rendering returns guidance only; it does not inspect targets, start analysis, or change session state.",
     kind: "application",
     inputSchema: guidedWorkflowsInputSchema,
     outputSchema: guidedWorkflowsOutputSchema,
@@ -121,7 +121,7 @@ export const APPLICATION_TOOL_CONTRACTS = [
     name: "read_guidance_section",
     ...toolContractMetadata("read_guidance_section"),
     description:
-      "Retrieve a section selected by search_guidance from the installed REA guidance bundle. Reports stale locators and unavailable bundles explicitly. Returns documentation, not target observations or Evidence.",
+      "Retrieve a section selected by search_guidance from the installed NRE guidance bundle. Reports stale locators and unavailable bundles explicitly. Returns documentation, not target observations or Evidence.",
     kind: "application",
     inputSchema: readGuidanceSectionInputSchema,
     outputSchema: readGuidanceSectionOutputSchema,

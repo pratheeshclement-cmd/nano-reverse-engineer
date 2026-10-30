@@ -68,11 +68,11 @@ Symbol table '.symtab' contains 9 entries:
      1: 00000000     0 FILE    LOCAL  DEFAULT  ABS mips.c
      2: 00020254     0 NOTYPE  LOCAL  DEFAULT    4 .Lzero
      3: 00038250     0 NOTYPE  LOCAL  HIDDEN     6 _gp
-     4: 00020170    64 FUNC    GLOBAL DEFAULT    4 rea_mips_leaf
-     5: 00030268     4 OBJECT  GLOBAL DEFAULT    7 rea_mips_global
-     6: 000201b0   136 FUNC    GLOBAL DEFAULT    4 rea_mips_entry
-     7: 00010148    30 OBJECT  GLOBAL DEFAULT    3 rea_mips_marker
-     8: 00020240    32 FUNC    GLOBAL DEFAULT    4 rea_mips_probe
+     4: 00020170    64 FUNC    GLOBAL DEFAULT    4 nre_mips_leaf
+     5: 00030268     4 OBJECT  GLOBAL DEFAULT    7 nre_mips_global
+     6: 000201b0   136 FUNC    GLOBAL DEFAULT    4 nre_mips_entry
+     7: 00010148    30 OBJECT  GLOBAL DEFAULT    3 nre_mips_marker
+     8: 00020240    32 FUNC    GLOBAL DEFAULT    4 nre_mips_probe
 
 MIPS ABI Flags Version: 0
 
@@ -144,7 +144,7 @@ describe("MIPS real-verifier independent expectations", () => {
         fpAbi: 5,
       },
     });
-    expect(parsed.symbols.rea_mips_probe).toBe("0x20240");
+    expect(parsed.symbols.nre_mips_probe).toBe("0x20240");
     expect(
       parseMipsReadelf(readelf.replace("little endian", "big endian"), "big")
         .mips.byteOrder,
@@ -160,7 +160,7 @@ describe("MIPS real-verifier independent expectations", () => {
     ["wrong ISA", "ISA: MIPS32r2", "ISA: MIPS32r6"],
     ["unknown FP ABI", "Hard float (32-bit CPU, Any FPU)", "unknown"],
     ["unknown register width", "GPR size: 32", "GPR size: 64"],
-    ["missing symbol", "rea_mips_probe", "unrelated_probe"],
+    ["missing symbol", "nre_mips_probe", "unrelated_probe"],
     ["missing ABI", "MIPS ABI Flags Version: 0", "ABI omitted"],
   ])(
     "rejects %s instead of returning a guessed fixture interpretation",
@@ -337,14 +337,14 @@ describe("MIPS soft-float real-verifier expectations", () => {
     .replace("CPR1 size: 32", "CPR1 size: 0")
     .replace("Hard float (32-bit CPU, Any FPU)", "Soft float")
     .replace(
-      "     8: 00020240    32 FUNC    GLOBAL DEFAULT    4 rea_mips_probe\n",
+      "     8: 00020240    32 FUNC    GLOBAL DEFAULT    4 nre_mips_probe\n",
       [
-        "     8: 00020240    32 FUNC    GLOBAL DEFAULT    4 rea_mips_probe",
-        "     9: 00020300    64 FUNC    GLOBAL DEFAULT    4 rea_mips_soft_pick",
-        "    10: 00020340    64 FUNC    GLOBAL DEFAULT    4 rea_mips_soft_wide",
-        "    11: 00020380    96 FUNC    GLOBAL DEFAULT    4 rea_mips_soft_mixed",
-        "    12: 000203e0    96 FUNC    GLOBAL DEFAULT    4 rea_mips_soft_struct",
-        "    13: 00020440   160 FUNC    GLOBAL DEFAULT    4 rea_mips_soft_caller",
+        "     8: 00020240    32 FUNC    GLOBAL DEFAULT    4 nre_mips_probe",
+        "     9: 00020300    64 FUNC    GLOBAL DEFAULT    4 nre_mips_soft_pick",
+        "    10: 00020340    64 FUNC    GLOBAL DEFAULT    4 nre_mips_soft_wide",
+        "    11: 00020380    96 FUNC    GLOBAL DEFAULT    4 nre_mips_soft_mixed",
+        "    12: 000203e0    96 FUNC    GLOBAL DEFAULT    4 nre_mips_soft_struct",
+        "    13: 00020440   160 FUNC    GLOBAL DEFAULT    4 nre_mips_soft_caller",
         "",
       ].join("\n"),
     );
@@ -353,7 +353,7 @@ describe("MIPS soft-float real-verifier expectations", () => {
     const parsed = parseMipsReadelf(softReadelf, "little", "soft");
     expect(parsed.mips.abiFlags).toMatchObject({ cpr1Size: 0, fpAbi: 3 });
     expect(parsed.mips.gnuAttributes).toBeNull();
-    expect(parsed.symbols.rea_mips_soft_mixed).toBe("0x20380");
+    expect(parsed.symbols.nre_mips_soft_mixed).toBe("0x20380");
   });
 
   it("rejects a float ABI that differs from the build intent", () => {
@@ -375,7 +375,7 @@ describe("MIPS soft-float real-verifier expectations", () => {
       storage: string,
     ) => ({ ordinal, name, data_type: dataType, storage });
     return {
-      rea_mips_soft_pick: {
+      nre_mips_soft_pick: {
         return_type: { data_type: "float", storage: "v0:4" },
         parameters: [
           item(2, "sel", "int", "a2:4"),
@@ -383,14 +383,14 @@ describe("MIPS soft-float real-verifier expectations", () => {
           item(1, "b", "float", "a1:4"),
         ],
       },
-      rea_mips_soft_wide: {
+      nre_mips_soft_wide: {
         return_type: { data_type: "double", storage: pair("v0", "v1") },
         parameters: [
           item(0, "a", "double", pair("a0", "a1")),
           item(1, "sel", "int", "a2:4"),
         ],
       },
-      rea_mips_soft_mixed: {
+      nre_mips_soft_mixed: {
         return_type: { data_type: "double", storage: pair("v0", "v1") },
         parameters: [
           item(0, "i", "int", "a0:4"),
@@ -399,13 +399,13 @@ describe("MIPS soft-float real-verifier expectations", () => {
           item(3, "e", "double", "Stack[0x18]:8"),
         ],
       },
-      rea_mips_soft_struct: {
-        return_type: { data_type: "rea_mips_soft_pair *", storage: "v0:4" },
+      nre_mips_soft_struct: {
+        return_type: { data_type: "nre_mips_soft_pair *", storage: "v0:4" },
         parameters: [
           item(
             0,
             "__return_storage_ptr__",
-            "rea_mips_soft_pair *",
+            "nre_mips_soft_pair *",
             "a0:4 (auto)",
           ),
           item(1, "scale", "float", "a1:4"),
@@ -422,14 +422,14 @@ describe("MIPS soft-float real-verifier expectations", () => {
       assertMipsSoftFloatStorage(boundaries("big"), "little"),
     ).toThrow();
     const hardFloat = boundaries("little");
-    const pickA = hardFloat.rea_mips_soft_pick.parameters.find(
+    const pickA = hardFloat.nre_mips_soft_pick.parameters.find(
       (item) => item.ordinal === 0,
     );
     if (pickA === undefined) throw new Error("fixture lacks pick parameter a");
     pickA.storage = "f12:4";
     expect(() => assertMipsSoftFloatStorage(hardFloat, "little")).toThrow();
     const unaligned = boundaries("little");
-    const mixedD = unaligned.rea_mips_soft_mixed.parameters.find(
+    const mixedD = unaligned.nre_mips_soft_mixed.parameters.find(
       (item) => item.ordinal === 1,
     );
     if (mixedD === undefined)
@@ -437,7 +437,7 @@ describe("MIPS soft-float real-verifier expectations", () => {
     mixedD.storage = "a2:4,a1:4";
     expect(() => assertMipsSoftFloatStorage(unaligned, "little")).toThrow();
     const lostHiddenReturn = boundaries("little");
-    lostHiddenReturn.rea_mips_soft_struct.parameters = [
+    lostHiddenReturn.nre_mips_soft_struct.parameters = [
       { ordinal: 0, name: "scale", data_type: "float", storage: "a0:4" },
       { ordinal: 1, name: "sel", data_type: "int", storage: "a1:4" },
     ];

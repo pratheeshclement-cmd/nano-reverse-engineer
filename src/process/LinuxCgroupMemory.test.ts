@@ -18,9 +18,9 @@ const events = (oomKill: number) =>
 it("reads the cgroup v2 row and ignores v1 controller rows", () => {
   expect(
     parseLinuxCgroupV2Path(
-      "12:memory:/docker/abc\n0::/system.slice/rea.service\n",
+      "12:memory:/docker/abc\n0::/system.slice/nre.service\n",
     ),
-  ).toBe("/system.slice/rea.service");
+  ).toBe("/system.slice/nre.service");
   expect(parseLinuxCgroupV2Path("0::/\n")).toBe("/");
 });
 
@@ -69,28 +69,28 @@ it("lists cgroup2 mounts and decodes escaped paths", () => {
 it("joins a cgroup path from the root of the mount that exposes it", () => {
   const full = { root: "/", mountPoint: "/mnt/full" };
   const subtree = { root: "/jobs", mountPoint: "/sys/fs/cgroup" };
-  expect(linuxCgroupDirectory([subtree], "/jobs/rea")).toBe(
-    "/sys/fs/cgroup/rea",
+  expect(linuxCgroupDirectory([subtree], "/jobs/nre")).toBe(
+    "/sys/fs/cgroup/nre",
   );
   expect(linuxCgroupDirectory([subtree], "/jobs")).toBe("/sys/fs/cgroup");
-  expect(linuxCgroupDirectory([full, subtree], "/jobs/rea")).toBe(
-    "/sys/fs/cgroup/rea",
+  expect(linuxCgroupDirectory([full, subtree], "/jobs/nre")).toBe(
+    "/sys/fs/cgroup/nre",
   );
-  expect(linuxCgroupDirectory([full], "/jobs/rea")).toBe("/mnt/full/jobs/rea");
-  expect(linuxCgroupDirectory([subtree], "/jobsite/rea")).toBeUndefined();
-  expect(linuxCgroupDirectory([], "/rea")).toBeUndefined();
+  expect(linuxCgroupDirectory([full], "/jobs/nre")).toBe("/mnt/full/jobs/nre");
+  expect(linuxCgroupDirectory([subtree], "/jobsite/nre")).toBeUndefined();
+  expect(linuxCgroupDirectory([], "/nre")).toBeUndefined();
 });
 
-/** A cgroup2 mount whose root is `/jobs`, holding this process's group `/jobs/rea`. */
+/** A cgroup2 mount whose root is `/jobs`, holding this process's group `/jobs/nre`. */
 const cgroupTree = async (
   files: Readonly<Record<string, string>>,
-  membership = "0::/jobs/rea\n",
+  membership = "0::/jobs/nre\n",
 ) => {
-  const root = await createTestTempDirectory("rea-cgroup-");
+  const root = await createTestTempDirectory("nre-cgroup-");
   const mountPoint = join(root, "cgroup");
-  await mkdir(join(mountPoint, "rea"), { recursive: true });
+  await mkdir(join(mountPoint, "nre"), { recursive: true });
   for (const [name, text] of Object.entries(files))
-    await writeFile(join(mountPoint, "rea", name), text);
+    await writeFile(join(mountPoint, "nre", name), text);
   const procCgroupPath = join(root, "proc-self-cgroup");
   await writeFile(procCgroupPath, membership);
   const procMountInfoPath = join(root, "proc-self-mountinfo");
@@ -104,7 +104,7 @@ it("reads the process's own group below a subtree cgroup2 mount", async () => {
     "memory.max": "3221225472\n",
   });
   await expect(readLinuxCgroupMemoryState(options)).resolves.toEqual({
-    path: "/jobs/rea",
+    path: "/jobs/nre",
     oomKills: 1,
     memoryMax: 3_221_225_472,
   });
@@ -120,7 +120,7 @@ it("keeps an unlimited group apart from an unreadable limit", async () => {
   });
   const unreadable = await cgroupTree({ "memory.events": events(0) });
   await expect(readLinuxCgroupMemoryState(unreadable)).resolves.toEqual({
-    path: "/jobs/rea",
+    path: "/jobs/nre",
     oomKills: 0,
     memoryMax: null,
   });
@@ -131,12 +131,12 @@ it("is unavailable without memory.events, a covering mount, cgroup v2, or Linux"
   await expect(readLinuxCgroupMemoryState(noEvents)).resolves.toBeUndefined();
   const outside = await cgroupTree(
     { "memory.events": events(0) },
-    "0::/system.slice/rea.service\n",
+    "0::/system.slice/nre.service\n",
   );
   await expect(readLinuxCgroupMemoryState(outside)).resolves.toBeUndefined();
   const v1 = await cgroupTree(
     { "memory.events": events(0) },
-    "4:memory:/jobs/rea\n",
+    "4:memory:/jobs/nre\n",
   );
   await expect(readLinuxCgroupMemoryState(v1)).resolves.toBeUndefined();
   const linux = await cgroupTree({ "memory.events": events(0) });

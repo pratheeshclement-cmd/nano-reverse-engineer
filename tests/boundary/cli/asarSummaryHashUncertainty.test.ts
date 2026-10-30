@@ -16,7 +16,7 @@ const summarySchema = z.object({
 cliTest(
   "discloses unavailable ASAR content hashes in both summary routes and retains the parent",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-asar-summary-");
+    const root = await createTestTempDirectory("nre-asar-summary-");
     const source = join(root, "source");
     await mkdir(join(source, "native"), { recursive: true });
     await writeFile(join(source, "main.js"), "console.log(1);\n");

@@ -1,7 +1,7 @@
 import { GHIDRA_BRIDGE_SOURCES } from "../src/ghidra/GhidraBridgeSources.ts";
 
 const packedHopperBridge = "package/bridge/hopper_bridge.py";
-const packedCutterBridge = "package/bridge/cutter/rea_bridge.py";
+const packedCutterBridge = "package/bridge/cutter/nre_bridge.py";
 
 /** Check shipped bridge files; real-provider lanes verify runtime behavior. */
 export async function verifyPackedBridge({ tarball, packedFiles, commands }) {

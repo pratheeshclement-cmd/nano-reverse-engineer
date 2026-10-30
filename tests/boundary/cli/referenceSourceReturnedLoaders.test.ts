@@ -12,10 +12,10 @@ cliTest(
   "imports immediate CommonJS loader results without promoting local or module values",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-reference-returned-loaders-",
+      "nre-reference-returned-loaders-",
     );
     const config = await createTestTempDirectory(
-      "rea-reference-returned-loader-config-",
+      "nre-reference-returned-loader-config-",
     );
     const source = `const load = (() => require)(); load('./dep.cjs');\n`;
     const sources = {

@@ -5,7 +5,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { readFileHandleRange } from "../../../src/filesystem/readFileHandleRange.js";
 
 const source = async () => {
-  const root = await createTestTempDirectory("rea-file-window-");
+  const root = await createTestTempDirectory("nre-file-window-");
   const path = join(root, "bytes");
   await writeFile(path, "0123456789");
   const handle = await open(path, "r");

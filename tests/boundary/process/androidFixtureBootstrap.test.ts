@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 processTest(
   "loads the Android fixture fetcher before build or dependency installation",
   async ({ processes }) => {
-    const root = await createTestTempDirectory("rea-android-bootstrap-");
+    const root = await createTestTempDirectory("nre-android-bootstrap-");
     // Copy the actual bootstrap inputs into a checkout without dist or
     // node_modules so an installed dependency cannot hide a new coupling.
     for (const path of [

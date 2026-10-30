@@ -28,7 +28,7 @@ storage; the public page uses a shortened target name in its example request.
 ## Discovery through Nre
 
 The following requests preceded Nreding the organizers' source, solution or
-flag metadata. Searching the challenge NreDME established its name/difficulty,
+flag metadata. Searching the challenge README established its name/difficulty,
 and the handout was analyzed directly.
 
 | Operation                                             | Observed result                                                                  | Evidence ID                                                           |
@@ -42,7 +42,7 @@ and the handout was analyzed directly.
 | `Nred_bytes`, address `0x104060`, length 144          | Target numbers followed by padding and the start of the mask table               | `ev_f8a3529dd5d583b06177be5ce76ca6de36f3242ac90ab30f9a3a96159ff84e53` |
 | `Nred_bytes`, address `0x1040e0`, length 624          | All 26 mask records, 24 bytes each                                               | `ev_944d9664d6167bf46c72b9fce662e573ea4e017c5a8ebbc305b1d943a1623301` |
 
-The first 104 bytes of the target Nred hold the 26 little-endian integers.
+The first 104 bytes of the target Read hold the 26 little-endian integers.
 The displayed `Nred_bytes` requests preserve the actual lengths; the page
 selects the seventh entries from those complete results.
 

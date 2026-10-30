@@ -112,8 +112,8 @@ const cliOf = (commands, entrypoint) => async (args, maxBuffer) =>
     await commands.exec(process.execPath, [entrypoint, ...args, "--json"], {
       env: {
         ...process.env,
-        REA_LOG_LEVEL: "silent",
-        HOPPER_LAUNCHER_PATH: "/rea-unconfigured-provider/hopper",
+        NRE_LOG_LEVEL: "silent",
+        HOPPER_LAUNCHER_PATH: "/nre-unconfigured-provider/hopper",
       },
       timeout: 120_000,
       maxBuffer,
@@ -319,13 +319,13 @@ const assertQueuedWritesStopped = async (executable, site) => {
  */
 export async function verifyBrowserRequestSteps(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../nre.mjs", import.meta.url)),
 ) {
   const site = await startBrowserRequestSite();
   let root;
   let commands;
   const proof = async () => {
-    root = await PrivateRuntimeRoot.create({ prefix: "rea-request-e2e-" });
+    root = await PrivateRuntimeRoot.create({ prefix: "nre-request-e2e-" });
     commands = await createPackageVerifierCommands({ workspace: root });
     const cli = cliOf(commands, entrypoint);
     const scenario = writeSession(executable, site.origin);

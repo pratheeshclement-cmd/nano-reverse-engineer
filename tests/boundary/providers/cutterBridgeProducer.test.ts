@@ -13,13 +13,13 @@ import {
 } from "../../../tests/support/process/processFixture.js";
 
 const startPythonBridge = async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-cutter-receipt-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-cutter-receipt-"));
   await chmod(directory, 0o700);
   const processes = createTestProcessRegistry();
   const child = processes.spawn(
     "python3",
     [resolve("tests/fixtures/cutter_bridge_protocol_test.py"), "--serve"],
-    { env: { ...process.env, REA_CUTTER_BRIDGE_DIR: directory } },
+    { env: { ...process.env, NRE_CUTTER_BRIDGE_DIR: directory } },
   );
   let stdout = "";
   let stderr = "";
@@ -64,7 +64,7 @@ const startPythonBridge = async () => {
     });
     const client = new CutterBridgeClient({
       ...process.env,
-      REA_CUTTER_BRIDGE_DIR: directory,
+      NRE_CUTTER_BRIDGE_DIR: directory,
     });
     const discovery = await client.listSessions();
     const session = discovery.sessions[0];
@@ -169,7 +169,7 @@ it("preserves caller A service cleanup proof after caller B acknowledges A", asy
     const callerB = new CutterBridgeService(
       new CutterBridgeClient({
         ...process.env,
-        REA_CUTTER_BRIDGE_DIR: bridge.directory,
+        NRE_CUTTER_BRIDGE_DIR: bridge.directory,
       }),
     );
     await expect(
@@ -197,7 +197,7 @@ it("recovers orphan receipts across more than 64 fresh CLI clients", async () =>
     for (let index = 0; index < 65; index += 1) {
       const freshClient = new CutterBridgeClient({
         ...process.env,
-        REA_CUTTER_BRIDGE_DIR: bridge.directory,
+        NRE_CUTTER_BRIDGE_DIR: bridge.directory,
       });
       const execution = await freshClient.execute({
         sessionId: bridge.session.session_id,
@@ -209,7 +209,7 @@ it("recovers orphan receipts across more than 64 fresh CLI clients", async () =>
     }
     const nextInvocation = new CutterBridgeClient({
       ...process.env,
-      REA_CUTTER_BRIDGE_DIR: bridge.directory,
+      NRE_CUTTER_BRIDGE_DIR: bridge.directory,
     });
     await expect(
       nextInvocation.execute({

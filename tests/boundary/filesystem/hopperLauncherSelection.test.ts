@@ -25,7 +25,7 @@ const installedSystemHopper = (home: string): boolean => {
 it.for(["Hopper Disassembler.app", "Hopper A.app"])(
   "skips a directory launcher in %s and selects a real file",
   async (name, context) => {
-    const home = await createTestTempDirectory("rea-hopper-selection-");
+    const home = await createTestTempDirectory("nre-hopper-selection-");
     if (installedSystemHopper(home)) context.skip();
     const invalid = join(home, "Applications", name, "Contents/MacOS/hopper");
     const valid = join(home, "Applications/Hopper Z.app/Contents/MacOS/hopper");
@@ -40,7 +40,7 @@ it.for(["Hopper Disassembler.app", "Hopper A.app"])(
 it.skipIf(process.platform === "win32")(
   "runtime and doctor discover linked renamed app bundles in order without executing them",
   async () => {
-    const home = await createTestTempDirectory("rea-hopper-linked-app-");
+    const home = await createTestTempDirectory("nre-hopper-linked-app-");
     const applications = join(home, "Applications");
     const marker = join(home, "launched");
     await mkdir(applications);

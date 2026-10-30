@@ -16,7 +16,7 @@ it.each([
 ] as const)(
   "preserves a $cause rejection from $stage without throwing while classifying it",
   async ({ stage, cause }) => {
-    const root = await createTestTempDirectory("rea-reverse-unknown-failure-");
+    const root = await createTestTempDirectory("nre-reverse-unknown-failure-");
     const path = join(root, "input.bin");
     await writeFile(path, new Uint8Array([0x7f, 0x45, 0x4c, 0x46]));
     const run = vi.fn(async () => {

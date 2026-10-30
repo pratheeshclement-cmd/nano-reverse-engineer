@@ -76,7 +76,7 @@ describe("NativeAOT recovery evidence", () => {
   });
   it("accepts the optional Ghidra extension's string reason", () => {
     // NativeAotExtension.inspectImage copies this not_applicable summary, and
-    // ReaGhidraExtensions adds the artifact digest before load-image parsing.
+    // NreGhidraExtensions adds the artifact digest before load-image parsing.
     const summary = {
       format: "dotnet-nativeaot",
       status: "not_applicable",

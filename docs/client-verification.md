@@ -2,18 +2,18 @@
 
 FreeBuff MCP loading and personal skill discovery are currently unverified with
 an installed native client/version. Its temporary-filesystem coverage verifies
-REA's configuration and applicability boundaries only; it does not establish
+NRE's configuration and applicability boundaries only; it does not establish
 that FreeBuff consumes the written registration or skill.
 
 Use these optional lanes to verify an installed client or evaluate an agent's
-REA workflow. [Testing REA](testing.md) provides the normal development commands
+NRE workflow. [Testing NRE](testing.md) provides the normal development commands
 and provider lanes. Each record below states its host, client version, model
 fixture, and remaining coverage; a native-client run with a loopback model does
 not establish live model-service acceptance.
 
 ## Launch environment verification
 
-`rea mcp doctor --json` starts the production MCP adapter with the current runtime
+`nre mcp doctor --json` starts the production MCP adapter with the current runtime
 executable and environment. A healthy result establishes that adapter's
 initialization, discovery and target-free request flow; it does not verify a
 client's configured launcher or its inherited environment. Test the generated
@@ -26,12 +26,12 @@ separately from terminal doctor results. See [launcher troubleshooting](client-c
 A separate probe of the published `@earendil-works/pi-codemode` 1.1.0 and 1.2.0
 declaration renderers rendered the full `compare_web_captures` input as
 `args: unknown`: its generated TypeScript type exceeds Pi's 16,000-character
-default. REA keeps the full advertisement's fields by inlining references when
+default. NRE keeps the full advertisement's fields by inlining references when
 the shared form would exceed Pi's 32-reference expansion limit; retaining that
 shared form would leave later fields unknown instead. The existing
-`REA_MCP_INPUT_SCHEMA_PROFILE=compact` profile lets callers stay below
+`NRE_MCP_INPUT_SCHEMA_PROFILE=compact` profile lets callers stay below
 its character limit by advertising reduced nested validation structure, while
-REA continues to validate calls against the complete canonical input schema.
+NRE continues to validate calls against the complete canonical input schema.
 Compact is the default for the server's advertised inputs; an explicit `full`
 choice is preserved. See the [compact input schema profile](mcp-contracts.md#compact-input-schema-profile)
 for details of its reduced forms.
@@ -47,27 +47,27 @@ and [renderer usage notes](https://github.com/earendil-works/pi/blob/b45e0ebcc5a
 
 The optional `verify:qwen-client`, `verify:pi-client`, and `verify:hermes-client`
 lanes require an installed native client. Select its executable with
-`REA_VERIFY_QWEN_COMMAND`, `REA_VERIFY_PI_COMMAND`, or `REA_VERIFY_HERMES_COMMAND`.
-They configure disposable profiles through the public REA CLI, preserve caller
+`NRE_VERIFY_QWEN_COMMAND`, `NRE_VERIFY_PI_COMMAND`, or `NRE_VERIFY_HERMES_COMMAND`.
+They configure disposable profiles through the public NRE CLI, preserve caller
 settings and backups, and exercise real stdio MCP calls and skill loading. The
 `call` mode checks complete catalog discovery and actual JavaScript Evidence;
-pass `-- chat` to check plain chat with REA enabled. Qwen also reads the full
+pass `-- chat` to check plain chat with NRE enabled. Qwen also reads the full
 result that its client offloads, and Pi exercises default codemode execution.
-Use `REA_VERIFY_RUNTIME_ROOT` to select a production-only installed REA package.
+Use `NRE_VERIFY_RUNTIME_ROOT` to select a production-only installed NRE package.
 Receipts retain client versions, result digests, host coverage and owned-process
 cleanup. These lanes use a deterministic loopback model and do not prove live
 model-provider compatibility. Pi and Hermes remain POSIX-only. Qwen, Pi and Hermes
 bind both `HOME` and `USERPROFILE` to the disposable account. Qwen and Pi discover
 the shared personal skill through their default search paths without an explicit
 skill setting; Hermes discovers it through the selected `HERMES_HOME`.
-Set `REA_VERIFY_HERMES_STICKY_PROFILE=1` to exercise native Hermes selection of
+Set `NRE_VERIFY_HERMES_STICKY_PROFILE=1` to exercise native Hermes selection of
 a named sticky profile with `HERMES_HOME` still pointing to its root.
 
-For Qwen on POSIX, set `REA_VERIFY_QWEN_REDUCED_PATH=1` and select its JavaScript
-entry point with `REA_VERIFY_QWEN_COMMAND` to test a restricted client environment.
+For Qwen on POSIX, set `NRE_VERIFY_QWEN_REDUCED_PATH=1` and select its JavaScript
+entry point with `NRE_VERIFY_QWEN_COMMAND` to test a restricted client environment.
 Setup retains the caller's `PATH`; the native Qwen `chat` or `call` run then uses
 an isolated `PATH` containing only Bash for the shell-tool fixture. The lane
-checks that `node`, `npm` and `npx` cannot be found and uses the generated REA
+checks that `node`, `npm` and `npx` cannot be found and uses the generated NRE
 registration unchanged. Its receipt records `reducedPath`, `clientPath` and
 `registrationCommand`; the option alone does not establish a passing native run.
 
@@ -76,7 +76,7 @@ Node 24.19.0 for both `chat` and `call`). With Node 24.18.0, the same `call`
 journey reached full Evidence readback but the client aborted during exit with
 `UV_HANDLE_CLOSING`; that run remains a failure, not a compatibility claim.
 Select the npm install's
-`node_modules/@qwen-code/qwen-code/cli-entry.js` with `REA_VERIFY_QWEN_COMMAND`,
+`node_modules/@qwen-code/qwen-code/cli-entry.js` with `NRE_VERIFY_QWEN_COMMAND`,
 because `execFile` cannot launch the `qwen.cmd` shim directly. A selected `.js`,
 `.mjs` or `.cjs` entry point runs under the verifier's Node. Windows path checks
 use native separators; persisted output is read through Qwen's real shell tool
@@ -85,29 +85,29 @@ lineage as unavailable when the verifier has no retained native Job Object lease
 
 `verify:gemini-client` requires an installed Gemini CLI (verified with
 `@google/gemini-cli@0.63.0` on POSIX and native Windows); select it with
-`REA_VERIFY_GEMINI_COMMAND`. A selected `.js`, `.mjs` or `.cjs` entry point runs
+`NRE_VERIFY_GEMINI_COMMAND`. A selected `.js`, `.mjs` or `.cjs` entry point runs
 under the verifier's Node. On Windows, select the npm install's
 `node_modules/@google/gemini-cli/bundle/gemini.js`, because only a `gemini.cmd`
 shim reaches `PATH`.
 The optional lane uses native `GEMINI_CLI_HOME` discovery in an isolated
 Git project, checks setup plans, backups and idempotence, activates the installed
 personal skill, validates all forwarded input JSON Schemas against their declared
-dialect, forwards the complete REA catalog and checks full JavaScript
-Evidence for a Unicode path. Use `-- chat` for ordinary chat with REA enabled,
-or `REA_VERIFY_RUNTIME_ROOT` for a production-only installed REA package.
+dialect, forwards the complete NRE catalog and checks full JavaScript
+Evidence for a Unicode path. Use `-- chat` for ordinary chat with NRE enabled,
+or `NRE_VERIFY_RUNTIME_ROOT` for a production-only installed NRE package.
 The local fixture exercises the real Gemini API adapter, including its
 `untrusted_context` tool-result envelope. Token counts are synthetic; live
 Google API compatibility remains unverified. The lane disables
 the client's memory-based relaunch to preserve the caller's Node heap budget.
 
 `verify:opencode-client` requires an installed OpenCode (verified with
-`opencode-ai@1.18.35`); select it with `REA_VERIFY_OPENCODE_COMMAND`.
+`opencode-ai@1.18.35`); select it with `NRE_VERIFY_OPENCODE_COMMAND`.
 The optional POSIX lane configures isolated XDG roots and `OPENCODE_CONFIG_DIR`,
 checks setup plans, backups, preserved JSONC comments and idempotence, activates
 the installed skill, validates all forwarded input schemas and verifies complete
 JavaScript Evidence for a Unicode path. JSONC is the default fixture; set
-`REA_VERIFY_OPENCODE_CONFIG_FORMAT=json` for JSON. Use `-- chat` for ordinary
-chat or `REA_VERIFY_RUNTIME_ROOT` for a production-only installed package.
+`NRE_VERIFY_OPENCODE_CONFIG_FORMAT=json` for JSON. Use `-- chat` for ordinary
+chat or `NRE_VERIFY_RUNTIME_ROOT` for a production-only installed package.
 The native core runs with external plugins disabled through `OPENCODE_PURE`;
 the local OpenAI-compatible fixture has a caller-declared one-million-token
 context and synthetic usage. Skills use an explicit isolated `skills.paths`
@@ -116,7 +116,7 @@ native Windows are also unverified.
 
 `verify:claude-client` requires installed Claude Code (verified with
 `@anthropic-ai/claude-code@2.1.296` on POSIX and native Windows); select it
-with `REA_VERIFY_CLAUDE_COMMAND`. On Windows, select
+with `NRE_VERIFY_CLAUDE_COMMAND`. On Windows, select
 `claude.exe`: npm installs put only a `claude.cmd` shim on `PATH`, and the real
 executable is under `node_modules/@anthropic-ai/claude-code/bin`.
 The optional lane uses native `CLAUDE_CONFIG_DIR` discovery, an independent
@@ -125,14 +125,14 @@ preferences and backups, checks idempotent setup, waits through the native
 `WaitForMcpServers` tool when discovery is pending, and validates the complete
 catalog and forwarded input schemas. Call mode loads the personal skill through
 native `Skill`, checks its full body and verifies named-schema JavaScript Evidence
-for a Unicode path. Use `-- chat` for ordinary chat with REA enabled, or
-`REA_VERIFY_RUNTIME_ROOT` for a production-only installed package. The local
+for a Unicode path. Use `-- chat` for ordinary chat with NRE enabled, or
+`NRE_VERIFY_RUNTIME_ROOT` for a production-only installed package. The local
 Anthropic Messages/SSE fixture preserves native resource-hint envelopes in its
 request artifacts. Usage is synthetic; live Anthropic API and bare-mode
 personal-skill activation remain unverified by this lane.
 
 `verify:copilot-client` requires installed GitHub Copilot CLI (verified with
-`@github/copilot@1.0.95`); select it with `REA_VERIFY_COPILOT_COMMAND`.
+`@github/copilot@1.0.95`); select it with `NRE_VERIFY_COPILOT_COMMAND`.
 The optional POSIX lane uses native `COPILOT_HOME` discovery, an independent
 Git workspace, guarded setup plans, preserved registrations, backups and
 idempotence. Native `skill add` registers the isolated installed skill; call
@@ -141,11 +141,11 @@ named-schema JavaScript Evidence for a Unicode path. When Copilot spills a
 large MCP result, the model requests native `view` with `forceReadLargeFiles`
 and validates the complete returned Evidence rather than its preview.
 Use `-- chat` for ordinary
-chat or `REA_VERIFY_RUNTIME_ROOT` for a production-only installed package.
+chat or `NRE_VERIFY_RUNTIME_ROOT` for a production-only installed package.
 The native offline BYOK adapter uses a loopback OpenAI completions/SSE fixture
 and `gpt-5.4` model metadata; model inference and token usage are synthetic.
-Set `REA_VERIFY_COPILOT_MODEL` to examine another client model ID and
-`REA_VERIFY_COPILOT_WIRE_MODEL` for its backend model name (defaults to the client
+Set `NRE_VERIFY_COPILOT_MODEL` to examine another client model ID and
+`NRE_VERIFY_COPILOT_WIRE_MODEL` for its backend model name (defaults to the client
 ID). Every actual HTTP request's model is checked and recorded separately.
 Both `HOME` and `USERPROFILE` point to the disposable account; native `skill add`
 still selects the installed skill directory explicitly.
@@ -154,8 +154,8 @@ The same native client passed full-profile chat and analysis with the actual
 wire model `gpt-4.1` under a distinct BYOK model ID:
 
 ```bash
-REA_VERIFY_COPILOT_MODEL=rea-gpt-4.1 REA_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- chat
-REA_VERIFY_COPILOT_MODEL=rea-gpt-4.1 REA_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- call
+NRE_VERIFY_COPILOT_MODEL=nre-gpt-4.1 NRE_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- chat
+NRE_VERIFY_COPILOT_MODEL=nre-gpt-4.1 NRE_VERIFY_COPILOT_WIRE_MODEL=gpt-4.1 npm run verify:copilot-client -- call
 ```
 
 These runs retain full canonical input/output schemas, all tools, installed-skill
@@ -168,14 +168,14 @@ capacity. The effective capacity is unknown. The default verifier preserves
 the complete catalog and full schemas. To verify the existing compact profile:
 
 ```bash
-REA_VERIFY_COPILOT_MODEL=gpt-4.1 REA_VERIFY_COPILOT_SCHEMA_PROFILE=compact npm run verify:copilot-client -- chat
-REA_VERIFY_COPILOT_MODEL=gpt-4.1 REA_VERIFY_COPILOT_SCHEMA_PROFILE=compact npm run verify:copilot-client -- call
+NRE_VERIFY_COPILOT_MODEL=gpt-4.1 NRE_VERIFY_COPILOT_SCHEMA_PROFILE=compact npm run verify:copilot-client -- chat
+NRE_VERIFY_COPILOT_MODEL=gpt-4.1 NRE_VERIFY_COPILOT_SCHEMA_PROFILE=compact npm run verify:copilot-client -- call
 ```
 
 The verifier explicitly writes either selected profile into its disposable
 registration and compares the input schemas forwarded by Copilot with that
 profile's advertised schemas. A run must not infer `full` from an unset setting:
-REA's runtime default is now `compact`. The recorded client results above remain
+NRE's runtime default is now `compact`. The recorded client results above remain
 scoped to their executed revisions; this verifier correction is not a new client run.
 
 Both native workflows passed with the complete tool inventory. The verifier selects the
@@ -187,13 +187,13 @@ Live model APIs, native Windows and default OS-home skill discovery remain
 unverified.
 
 `verify:grok-client` requires installed Grok Build (verified with the official
-Linux x64 1.0.50 binary); select it with `REA_VERIFY_GROK_COMMAND`. This optional
+Linux x64 1.0.50 binary); select it with `NRE_VERIFY_GROK_COMMAND`. This optional
 POSIX lane isolates `GROK_HOME`, an independent Git workspace and additional
 skill roots, disables foreign configuration discovery, guards setup writes,
 preserves unrelated registrations/backups and checks idempotence. Call mode
-loads the full skill through native `read_file`, queries all REA names and input
+loads the full skill through native `read_file`, queries all NRE names and input
 schemas through native `search_tool`, and calls analysis through `use_tool`.
-If discovery reports `partial`, the native agent diagnoses REA registration and
+If discovery reports `partial`, the native agent diagnoses NRE registration and
 retries discovery. No startup-timeout override or fixed readiness delay is used.
 A larger Unicode-path fixture exercises native result offloading: the full
 retained Evidence is validated against its named schema, then native terminal
@@ -201,29 +201,29 @@ queries recover the selected export facts, subject and full artifact digest in
 the next model request. This verifies useful artifact recovery without claiming
 that every offloaded graph fact enters model context. Native line-number and
 truncation envelopes remain in the request artifacts. Use `-- chat` for ordinary
-chat, or `REA_VERIFY_RUNTIME_ROOT` for a production-only installed package.
+chat, or `NRE_VERIFY_RUNTIME_ROOT` for a production-only installed package.
 The loopback OpenAI completions/SSE custom model declares a one-million-token
 context and synthetic usage. Live xAI APIs, native Windows and default OS-home
 skill discovery remain unverified.
 
 `verify:commandcode-client` requires installed Command Code (verified with npm
-1.79.2); select it with `REA_VERIFY_COMMANDCODE_COMMAND`. Auth, MCP tokens and
+1.79.2); select it with `NRE_VERIFY_COMMANDCODE_COMMAND`. Auth, MCP tokens and
 sessions use the actual OS home, so provision a disposable POSIX account rather
-than overriding `HOME`. Set `REA_VERIFY_COMMANDCODE_ACCOUNT_HOME` to that account's
-actual home and create `.rea-client-verification` there with exactly
-`Disposable REA client verification account` followed by a newline. The lane
-owns that account's `.commandcode` configuration and shared REA skill. Build the
+than overriding `HOME`. Set `NRE_VERIFY_COMMANDCODE_ACCOUNT_HOME` to that account's
+actual home and create `.nre-client-verification` there with exactly
+`Disposable NRE client verification account` followed by a newline. The lane
+owns that account's `.commandcode` configuration and shared NRE skill. Build the
 runtime as the checkout owner, then run `node scripts/verify-commandcode-client.mjs`
 as the disposable account; the npm shortcut also needs a writable checkout.
 The verifier does not create accounts or install clients. It guards setup
 targets, preserves an unrelated registration and backups, checks idempotence,
 and verifies native default shared-skill discovery and complete activation.
 Default deferred-schema delivery stays enabled: the native prompt advertises
-every REA tool, exact-name `search_tools` returns every input schema, and a native
+every NRE tool, exact-name `search_tools` returns every input schema, and a native
 shell query recovers the saved catalog's count and digest when the client spills
 it. Actual analysis of a Unicode-path fixture delivers full named-schema Evidence
 to the next model request. Use `-- chat` for ordinary chat or
-`REA_VERIFY_RUNTIME_ROOT` for a production-only installed package. The loopback
+`NRE_VERIFY_RUNTIME_ROOT` for a production-only installed package. The loopback
 OpenAI completions/SSE model is a keyless BYOK endpoint declaring a million-token
 context with synthetic usage. A synthetic account-key value satisfies the
 client's print-mode gate; native local-only mode refuses hosted API calls.
@@ -231,17 +231,17 @@ Updates, telemetry and cron are disabled. Hosted authentication, live models
 and Windows remain unverified.
 
 `verify:omp-client` requires installed OMP (verified with the official Linux x64
-18.8.7 binary); select it with `REA_VERIFY_OMP_COMMAND`. This optional POSIX lane
+18.8.7 binary); select it with `NRE_VERIFY_OMP_COMMAND`. This optional POSIX lane
 isolates the default agent, global config and XDG roots, guards setup targets,
 preserves unrelated registrations and backups, and checks idempotence. It
-compares native rejection of an invalid profile with REA's refusal to plan
-fallback writes. OMP's default `xd://` interface mounts the complete REA catalog
+compares native rejection of an invalid profile with NRE's refusal to plan
+fallback writes. OMP's default `xd://` interface mounts the complete NRE catalog
 as devices: call mode reads the complete installed skill and tool documentation,
 then dispatches analysis through native `write`. It checks full named-schema
 JavaScript Evidence with a Unicode path in the next model request. Device
 metadata and documentation are distinct from forwarding all JSON schemas as
 model functions. Native print-mode MCP readiness uses its defaults.
-Use `-- chat` for ordinary chat or `REA_VERIFY_RUNTIME_ROOT` for a production-only
+Use `-- chat` for ordinary chat or `NRE_VERIFY_RUNTIME_ROOT` for a production-only
 installed package. The loopback OpenAI completions/SSE model fixture declares a
 one-million-token context and synthetic usage. Live model APIs, native Windows,
 named-profile native execution and default OS-home skill discovery are
@@ -249,7 +249,7 @@ unverified; skill discovery uses an explicit isolated custom directory.
 
 `verify:deepseek-client` requires an installed DeepSeek Harness (`dsh`;
 verified with `@deepseek-ai/dsh@0.2.0-rc.2`) and Git. Set
-`REA_VERIFY_DEEPSEEK_COMMAND` to select its executable. This optional POSIX lane
+`NRE_VERIFY_DEEPSEEK_COMMAND` to select its executable. This optional POSIX lane
 seeds caller model settings and a stale Cordis registration in an isolated
 `DSH_HOME`, then runs public `setup --client dsh` dry-run, setup, repeated setup,
 and scoped doctor. It checks the backup and unrelated patches before booting
@@ -261,7 +261,7 @@ the installed skill without a `DSH_AGENTS_HOME` override. A separate Git root pr
 masking a missing installation. The default `call` mode checks skill loading,
 complete catalog discovery, the actual forwarded input schemas and regexes,
 and full JavaScript Evidence for a Unicode path. Use `-- chat` for ordinary
-chat with REA enabled, or `REA_VERIFY_RUNTIME_ROOT` for an installed package.
+chat with NRE enabled, or `NRE_VERIFY_RUNTIME_ROOT` for an installed package.
 The fixture uses Harness's custom OpenAI adapter and the one-million-token
 context capacity declared by its default DeepSeek Flash model; it does not
 establish live DeepSeek API or native Windows coverage. Receipts include
@@ -269,7 +269,7 @@ request artifacts, result digests and owned-process lineage.
 
 The DSH acceptance journey also exercises public setup, approval, doctor,
 generated-launcher MCP startup and uninstall without an installed Harness.
-That journey proves REA workflow behavior, not native Cordis expression
+That journey proves NRE workflow behavior, not native Cordis expression
 evaluation. Filesystem regressions retain tagged values and unrelated rows
 across alias dependencies and check refusal of unsafe YAML without mutation.
 
@@ -382,7 +382,7 @@ sockets to recover.
 
 `verify:setup:linux` exercises installation on a clean supported Linux runner as
 root. Use a disposable VM: this lane installs Hopper and its Linux runtime
-dependencies through the system package manager. Set `REA_VERIFY_SERVER_COMMAND`
+dependencies through the system package manager. Set `NRE_VERIFY_SERVER_COMMAND`
 to the CLI entrypoint being verified. The command builds and checks source-owned
 ELF fixtures before testing the read-only Hopper setup plan, approved
 installation, scoped doctor, real CLI/MCP analysis, rejection of a modified
@@ -409,7 +409,7 @@ without changing its loaded bytes. `verify:hopper:fat64` additionally checks
 FAT64 preparation through Hopper's native Mach-O loader, source-container
 mappings, profile identity,
 malformed and ambiguous slice rejection, and temporary-image lifetime. Both
-lanes have been verified on Hopper 6.1.0-demo; this establishes REA's prepared
+lanes have been verified on Hopper 6.1.0-demo; this establishes NRE's prepared
 FAT64 workflow, not native FAT64-loader support.
 Cross-architecture fixture compilation is not required by `verify:hopper`.
 
@@ -426,7 +426,7 @@ The raw Chrome fixture launchers use `--password-store=basic` so Linux startup
 does not wait for an unlock prompt from a reachable but locked desktop keyring.
 Such a stall leaves the initial page unloaded with empty or placeholder CDP URLs;
 it does not establish permission to capture that page. See
-[the keyring diagnosis](https://github.com/morluto/rea/issues/1384#issuecomment-6093781686).
+[the keyring diagnosis](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/1384#issuecomment-6093781686).
 
 On Windows, browser verifier lanes that launch an owned fixture require a
 standard, non-elevated caller token. They inspect the verifier caller before
@@ -446,21 +446,21 @@ failure, action failure and cancellation while the external target stays open.
 `verify:browser:network` is a focused real-browser lane for transaction identity,
 selected request/response bytes, binary and compressed responses, duplicate
 headers, credential and declared-secret redaction, redirects, streaming cutoff,
-CLI/MCP parity, and owned-profile cleanup. Set `REA_BROWSER_EXECUTABLE` to an
+CLI/MCP parity, and owned-profile cleanup. Set `NRE_BROWSER_EXECUTABLE` to an
 installed Chrome-family browser. An optional script argument selects an already
-installed package's `scripts/rea.mjs` entry point for packaged-artifact checks.
+installed package's `scripts/nre.mjs` entry point for packaged-artifact checks.
 The complete `verify:browser` lane includes these same checks.
 
 After building, `verify:browser:dom` checks empty and HTML-whitespace form
 destinations against a native Chrome DOM-property oracle through CLI and stdio
-MCP. It requires `REA_BROWSER_EXECUTABLE` and accepts an optional installed REA
+MCP. It requires `NRE_BROWSER_EXECUTABLE` and accepts an optional installed NRE
 entrypoint. The full browser lane includes the same public-adapter assertions
 before other fixtures navigate the selected page.
 
 `verify:browser:scripts` checks active script capture → exact-byte export →
 existing static JavaScript analysis through CLI and stdio MCP, including
 manifest readback, competing query variants, and resolved relative imports.
-It uses an installed browser and accepts an optional installed REA entrypoint.
+It uses an installed browser and accepts an optional installed NRE entrypoint.
 The complete `verify:browser` lane also exercises passive script export through
 both public adapters. See [website script export](website-script-export.md).
 
@@ -468,7 +468,7 @@ both public adapters. See [website script export](website-script-export.md).
 real Chromium module-loading fixture: import-map scopes, package prefixes,
 null/backtracking rejection, query/fragment identities, repeated module instances,
 lazy and computed unknowns, exact source/map identities and no implicit refetch.
-Set `REA_BROWSER_EXECUTABLE`; the optional script argument selects an installed
+Set `NRE_BROWSER_EXECUTABLE`; the optional script argument selects an installed
 package entrypoint. The complete `verify:browser` lane and existing conditional
 Chrome CI include this verifier. See [module relationships](website-module-trace.md).
 
@@ -483,12 +483,12 @@ npm run verify:agent
 
 The verifier's scenarios, transcript scoring, fixture rubrics, and report gates
 are development verification code under `tests/evaluation/model-evals/`. The
-source-owned evaluator runs alongside the compiled REA tools; it is excluded
+source-owned evaluator runs alongside the compiled NRE tools; it is excluded
 from the shipped runtime package.
 
 The lane runs scenarios sequentially in standalone Codex (`--no-daemon`) with a
-disposable HOME and CODEX_HOME under `~/.cache/rea-agent-evaluations/`. Set
-`REA_AGENT_EVAL_ROOT` to choose another parent directory outside the OS temporary
+disposable HOME and CODEX_HOME under `~/.cache/nre-agent-evaluations/`. Set
+`NRE_AGENT_EVAL_ROOT` to choose another parent directory outside the OS temporary
 directory: current Codex refuses helper aliases under `/tmp`, preventing shell
 commands and skill reads even if MCP works. Each owned run directory is removed
 after verification unless fixture retention is requested. Commands share the
@@ -502,15 +502,15 @@ exceeding these diagnostic budgets fails explicitly. Scenario JSON events stream
 to the evaluator without retaining a second raw stdout copy. Cleanup attempts the
 remaining run tree even if auth removal fails, and reports unresolved cleanup
 together with the original verification failure. The lane
-installs the packaged skill and MCP registration through public `rea setup`,
+installs the packaged skill and MCP registration through public `nre setup`,
 rather than copying a skill into a project that also inherits the caller's
 skills and configuration. Only authentication is copied, when present, and it
 is removed after confirmed process cleanup even with
-`REA_AGENT_EVAL_KEEP_FIXTURES=true`. No user configuration,
+`NRE_AGENT_EVAL_KEEP_FIXTURES=true`. No user configuration,
 rules, plugins or history is copied; shell snapshots and additional agents are
 disabled. Existing API-key environment authentication remains available.
 The native provider scenario preapproves only `open_binary` and
-`close_binary` in the disposable client so it reaches REA's actual provider
+`close_binary` in the disposable client so it reaches NRE's actual provider
 boundary instead of stopping at Codex approval. Its scenario contract accepts
 one `provider_unavailable` open refusal without a close, or one successful open
 followed by a successful close. Other errors, an unclosed session, and a close
@@ -520,18 +520,18 @@ still apply to scenarios that require them. The provider scenario checks routing
 reported limitations, and cleanup; free-form answer correctness remains
 unassessed. It does not validate a real native engine or authorize runtime execution.
 
-Select a smaller run with `REA_AGENT_EVAL_SCENARIOS`, a comma-separated list of
+Select a smaller run with `NRE_AGENT_EVAL_SCENARIOS`, a comma-separated list of
 scenario IDs. `asar-zh` exercises the packaged desktop rubric from a Chinese
 request. `javascript-module-view` exercises summary analysis, module paging and
 item inspection in a tree with unrelated modules; its routing and text checks
 remain heuristic, so review the retained transcript for selector choice and
-coverage claims. Set `REA_CODEX_CLI` to an installed Codex executable and
-`REA_AGENT_EVAL_MODEL` to an account-supported model. Use an external resource
+coverage claims. Set `NRE_CODEX_CLI` to an installed Codex executable and
+`NRE_AGENT_EVAL_MODEL` to an account-supported model. Use an external resource
 limit for the whole process tree when testing on a constrained host; a Node
 heap limit alone does not bound client and child-process memory.
 
 `missing-target` leaves desktop fixtures visible without selecting one in the
-request. It requires zero REA calls and a JSON-only request for an app name or
+request. It requires zero NRE calls and a JSON-only request for an app name or
 artifact path, with no preceding prose or Markdown fences. Its prompt and
 whole-answer validator are defined together in `AgentEvaluationScenarios.ts`.
 Its `expectedFirstTool` is `null`, and
@@ -542,7 +542,7 @@ The packaged desktop, parser-comparison, and managed scenarios assess a closed s
 known fixture claims. Each final answer must be a strict JSON manifest containing
 exactly the requested claim IDs, values, Evidence IDs, and Evidence authority and
 confidence. Golden values are not included in the prompt. The evaluator checks
-exact values against both the fixture oracle and authenticated successful REA
+exact values against both the fixture oracle and authenticated successful NRE
 results; an Evidence ID by itself is insufficient. Missing, duplicate, extra,
 contradictory, incorrectly sourced, or unsupported claims fail the scenario.
 
@@ -579,8 +579,8 @@ its heuristic gate does not establish full-producer factual correctness.
 All scenarios retain routing, workflow, validation, repetition, process-exit,
 and token-use gates. Configured factual scenarios additionally require a factual
 pass. Their answer-text heuristics are diagnostic and do not affect the gate.
-Validation counts include complete text-only REA `invalid_request` envelopes
-and failed SDK calls whose arguments violate the named current REA contract.
+Validation counts include complete text-only NRE `invalid_request` envelopes
+and failed SDK calls whose arguments violate the named current NRE contract.
 Client approval rejections and provider unavailability remain distinct failures;
 truncated JSON previews are not parsed into invented error codes.
 Repeated `binary_session` observations separated by a successful `open_binary`
@@ -590,12 +590,12 @@ Scenarios without a rubric retain the legacy text-heuristic gate.
 `answerTermCoverageMet` checks case-insensitive substrings,
 `epistemicCuePresent` checks keywords, and `finalCitesEvidence` checks only an ID's
 presence. These metrics can still accept fabricated prose and must not be read
-as factual assessments. Set `REA_AGENT_EVAL_TRANSCRIPT_DIR` to retain complete
+as factual assessments. Set `NRE_AGENT_EVAL_TRANSCRIPT_DIR` to retain complete
 tool results and final answers for review.
 
 Report schema version 4 adds negative routing scenarios with nullable
 `expectedFirstTool` and a `targetClarificationPassed` outcome. Consumers must
-allow an expected absence of REA calls; this does not make an analysis scenario
+allow an expected absence of NRE calls; this does not make an analysis scenario
 pass without its required tools. Native provider records additionally report
 `scenarioOutcome` (`provider-unavailable`, `opened-and-closed`, or `failed`) and
 `scenarioOutcomePassed`; a failed outcome fails the gate independently of prose

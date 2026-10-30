@@ -19,7 +19,7 @@ const control = vi.hoisted(() => ({
 it.each([false, true])(
   "retains verified inspection evidence through close retry (late cancellation: %s)",
   async (cancelDuringClose) => {
-    const root = await createTestTempDirectory("rea-macho-completed-close-");
+    const root = await createTestTempDirectory("nre-macho-completed-close-");
     const path = join(root, "fixture.macho");
     await writeFile(path, inspectionImage());
     const target = await nativeMachoTargetForFile(path);
@@ -111,7 +111,7 @@ it.each([false, true])(
 it.each([false, true])(
   "retains the producer outcome when cancellation arrives during successful close (producer fails: %s)",
   async (producerFails) => {
-    const root = await createTestTempDirectory("rea-macho-cancel-close-");
+    const root = await createTestTempDirectory("nre-macho-cancel-close-");
     const path = join(root, "fixture.macho");
     await writeFile(path, inspectionImage());
     const target = await nativeMachoTargetForFile(path);
@@ -197,7 +197,7 @@ vi.mock("./MachoCommandNames.js", async (importOriginal) => {
 });
 
 it("reports target mutation after a throwing binary reader and retains the producer failure", async () => {
-  const root = await createTestTempDirectory("rea-macho-target-mutation-");
+  const root = await createTestTempDirectory("nre-macho-target-mutation-");
   const path = join(root, "fixture.macho");
   await writeFile(path, "selected source bytes");
   const client = new NativeMacOSProvider(
@@ -233,7 +233,7 @@ it("reports target mutation after a throwing binary reader and retains the produ
 });
 
 it("retains cancellation and a throwing reader's failure through final verification", async () => {
-  const root = await createTestTempDirectory("rea-macho-reader-cancel-");
+  const root = await createTestTempDirectory("nre-macho-reader-cancel-");
   const path = join(root, "fixture.macho");
   await writeFile(path, "selected source bytes");
   const client = new NativeMacOSProvider(
@@ -270,7 +270,7 @@ it("retains cancellation and a throwing reader's failure through final verificat
 });
 
 it("retains mutation and reader failure while descriptor cleanup is retried", async () => {
-  const root = await createTestTempDirectory("rea-macho-reader-close-");
+  const root = await createTestTempDirectory("nre-macho-reader-close-");
   const path = join(root, "fixture.macho");
   await writeFile(path, "selected source bytes");
   const target = await nativeMachoTargetForFile(path);
@@ -329,7 +329,7 @@ it("retains mutation and reader failure while descriptor cleanup is retried", as
 });
 
 it("retains a returned command failure and captured output when close fails", async () => {
-  const root = await createTestTempDirectory("rea-macho-command-close-");
+  const root = await createTestTempDirectory("nre-macho-command-close-");
   const path = join(root, "fixture.macho");
   await writeFile(path, "selected source bytes");
   const target = await nativeMachoTargetForFile(path);
@@ -382,7 +382,7 @@ it("retains a returned command failure and captured output when close fails", as
 });
 
 it("preserves a returned command failure and late cancellation through close retry", async () => {
-  const root = await createTestTempDirectory("rea-macho-command-cancel-close-");
+  const root = await createTestTempDirectory("nre-macho-command-cancel-close-");
   const path = join(root, "fixture.macho");
   await writeFile(path, "selected source bytes");
   const target = await nativeMachoTargetForFile(path);
@@ -457,7 +457,7 @@ it.each([
         : dylibCommand(LC.LOAD_DYLIB, "lib");
     if (mode === 2)
       new DataView(command.buffer).setUint32(8, command.length, true);
-    const root = await createTestTempDirectory("rea-malformed-macho-");
+    const root = await createTestTempDirectory("nre-malformed-macho-");
     const path = join(root, "fixture.macho");
     await writeFile(path, machoImage({ commands: [command] }));
     const client = new NativeMacOSProvider(

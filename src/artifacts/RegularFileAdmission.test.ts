@@ -28,7 +28,7 @@ it("returns the original validated metadata snapshot with its actual descriptor"
     await vi.importActual<typeof import("node:fs/promises")>(
       "node:fs/promises",
     );
-  const root = await createTestTempDirectory("rea-admission-snapshot-");
+  const root = await createTestTempDirectory("nre-admission-snapshot-");
   const path = join(root, "selected.bin");
   const original = Buffer.from("admitted α测试\0\n");
   await writeFile(path, original);

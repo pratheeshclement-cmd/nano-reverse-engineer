@@ -9,7 +9,7 @@ import { analyzeJavaScriptApplication } from "../../../support/javascriptApplica
 import { javascriptApplicationAnalysisResultSchema } from "../../../../src/domain/javascript/javascriptApplicationAnalysis.js";
 
 const analyzeMaps = async (maps: Readonly<Record<string, string>>) => {
-  const root = await createTestTempDirectory("rea-app-source-map-mappings-");
+  const root = await createTestTempDirectory("nre-app-source-map-mappings-");
   await Promise.all(
     Object.entries(maps).map(([path, text]) =>
       writeFile(join(root, path), text),

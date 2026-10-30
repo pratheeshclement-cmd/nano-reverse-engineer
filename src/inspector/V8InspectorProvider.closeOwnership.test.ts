@@ -18,7 +18,7 @@ import {
 } from "./V8InspectorProvider.js";
 
 const inspectorCloseFixture = async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-inspector-close-owner-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-inspector-close-owner-"));
   const scriptPath = join(root, "target.js");
   await writeFile(scriptPath, "globalThis.fixture = true;\n");
   const scriptUrl = pathToFileURL(scriptPath).href;
@@ -160,7 +160,7 @@ it("retains cancelled final-close ownership and retries the exact transport befo
   expect(error.cleanupPrimary).toBeInstanceOf(AnalysisCancelledError);
   expect(error.cleanupPrimary?.cause).toBe(cancellationReason);
   expect(error.partialObservation).toMatchObject({
-    predicate_type: "rea.javascript-runtime-observation",
+    predicate_type: "nre.javascript-runtime-observation",
     operation: "observe_javascript_runtime",
     normalized_result: {
       target: { target_id: "fixture" },
@@ -188,7 +188,7 @@ it("retains cancelled final-close ownership and retries the exact transport befo
   expect(cleanupOnly.error.cleanupIncomplete).toBe(true);
   expect(cleanupOnly.error.cleanupResources).toEqual(["browser_transport"]);
   expect(cleanupOnly.error.partialObservation).toMatchObject({
-    predicate_type: "rea.javascript-runtime-observation",
+    predicate_type: "nre.javascript-runtime-observation",
     operation: "observe_javascript_runtime",
   });
   expect(fixture.acceptedConnections).toBe(3);

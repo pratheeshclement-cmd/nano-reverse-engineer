@@ -18,13 +18,13 @@ import { historicalPidTraceContract } from "./verify/recorded-crash/trace-policy
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );
-environment.REA_PWNDBG_GDB ??= "/usr/bin/gdb";
+environment.NRE_PWNDBG_GDB ??= "/usr/bin/gdb";
 for (const key of [
-  "REA_PWNTOOLS_PYTHON",
-  "REA_PWNDBG_GDB",
-  "REA_PWNDBG_GDBINIT",
-  "REA_PWNDBG_VENV_PATH",
-  "REA_VERIFY_STRACE_COMMAND",
+  "NRE_PWNTOOLS_PYTHON",
+  "NRE_PWNDBG_GDB",
+  "NRE_PWNDBG_GDBINIT",
+  "NRE_PWNDBG_VENV_PATH",
+  "NRE_VERIFY_STRACE_COMMAND",
 ])
   if (!isAbsolute(environment[key] ?? ""))
     throw new Error(
@@ -33,11 +33,11 @@ for (const key of [
 if (process.platform !== "linux" || process.arch !== "x64")
   throw new Error("verify:recorded:crash requires Linux x64.");
 const run = createVerifierRun();
-environment.REA_PROCESS_RUN_ID = run.run_id;
-const root = await PrivateRuntimeRoot.create({ prefix: "rea-core-verifier-" });
+environment.NRE_PROCESS_RUN_ID = run.run_id;
+const root = await PrivateRuntimeRoot.create({ prefix: "nre-core-verifier-" });
 const options = { root: root.path, environment, runId: run.run_id };
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./nre.mjs", import.meta.url));
 const failures = [];
 const sessions = [];
 let sentinel;
@@ -47,8 +47,8 @@ let catalogTools;
 try {
   for (const [command, args] of [
     ["gcc", ["--version"]],
-    [environment.REA_PWNDBG_GDB, ["--version"]],
-    [environment.REA_VERIFY_STRACE_COMMAND, ["-V"]],
+    [environment.NRE_PWNDBG_GDB, ["--version"]],
+    [environment.NRE_VERIFY_STRACE_COMMAND, ["-V"]],
   ]) {
     try {
       await fixtureCommand(command, args, options);
@@ -68,7 +68,7 @@ try {
   assert.ok(Number.isSafeInteger(pidMaximum) && pidMaximum < unlistedPid);
   const fixtures = JSON.parse(
     await fixtureCommand(
-      environment.REA_PWNTOOLS_PYTHON,
+      environment.NRE_PWNTOOLS_PYTHON,
       [
         "-I",
         fileURLToPath(
@@ -276,18 +276,18 @@ try {
     cases++;
   }
   for (const [name, changes] of [
-    ["missing", { REA_PWNDBG_GDBINIT: join(root.path, "missing-plugin.py") }],
+    ["missing", { NRE_PWNDBG_GDBINIT: join(root.path, "missing-plugin.py") }],
     [
       "wrong-profile",
-      { REA_PWNDBG_GDBINIT: join(root.path, "wrong-profile.py") },
+      { NRE_PWNDBG_GDBINIT: join(root.path, "wrong-profile.py") },
     ],
   ]) {
     if (name === "wrong-profile") {
       // Source-owned failure injection changes only the in-memory reported version.
       // The selected upstream checkout and its installed files remain unchanged.
       await writeFile(
-        changes.REA_PWNDBG_GDBINIT,
-        `from pathlib import Path\nentry = ${JSON.stringify(environment.REA_PWNDBG_GDBINIT)}\nexec(compile(Path(entry).read_bytes(), entry, 'exec'), {'__name__': '__main__', '__file__': entry})\nimport pwndbg.lib.version\npwndbg.lib.version.__version__ = '0.0.0-source-owned'\n`,
+        changes.NRE_PWNDBG_GDBINIT,
+        `from pathlib import Path\nentry = ${JSON.stringify(environment.NRE_PWNDBG_GDBINIT)}\nexec(compile(Path(entry).read_bytes(), entry, 'exec'), {'__name__': '__main__', '__file__': entry})\nimport pwndbg.lib.version\npwndbg.lib.version.__version__ = '0.0.0-source-owned'\n`,
       );
     }
     const session = await connectRecordedCrash({
@@ -302,7 +302,7 @@ try {
       });
       assert.ok(
         JSON.stringify(error).includes(
-          name === "missing" ? "REA_PWNDBG_GDBINIT" : "source-owned",
+          name === "missing" ? "NRE_PWNDBG_GDBINIT" : "source-owned",
         ),
       );
       cases++;

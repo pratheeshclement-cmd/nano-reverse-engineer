@@ -26,7 +26,7 @@ const host = (contents: Buffer) =>
   );
 
 it("reads bounded metadata instead of the stored Bun asset body", async () => {
-  const root = await createTestTempDirectory("rea-bun-metadata-range-");
+  const root = await createTestTempDirectory("nre-bun-metadata-range-");
   const path = join(root, "host.exe");
   const bytes = host(Buffer.alloc(8 * 1024 * 1024, 97));
   await writeFile(path, bytes);
@@ -60,7 +60,7 @@ it("reads bounded metadata instead of the stored Bun asset body", async () => {
 });
 
 it("shares the Bun probe across preflight, inventory and extraction", async () => {
-  const root = await createTestTempDirectory("rea-bun-shared-probe-");
+  const root = await createTestTempDirectory("nre-bun-shared-probe-");
   const path = join(root, "host.exe");
   const contents = Buffer.from("owned Bun source");
   const bytes = host(contents);
@@ -108,7 +108,7 @@ it("shares the Bun probe across preflight, inventory and extraction", async () =
 });
 
 it("closes a completed producer whose readable bytes remain buffered", async () => {
-  const root = await createTestTempDirectory("rea-bun-buffered-reader-");
+  const root = await createTestTempDirectory("nre-bun-buffered-reader-");
   const path = join(root, "host.exe");
   await writeFile(path, host(Buffer.from("unconsumed source")));
   const reader = new BunStandaloneArtifactReader(path);
@@ -130,7 +130,7 @@ it("closes a completed producer whose readable bytes remain buffered", async () 
 });
 
 it("rejects replacement of the selected parent while the old descriptor stays valid", async () => {
-  const root = await createTestTempDirectory("rea-bun-selected-parent-");
+  const root = await createTestTempDirectory("nre-bun-selected-parent-");
   const parent = join(root, "selected");
   await mkdir(parent);
   const path = join(parent, "host.exe");
@@ -152,7 +152,7 @@ it("rejects replacement of the selected parent while the old descriptor stays va
 });
 
 it("indexes a deep virtual name while retaining its exact source identity", async () => {
-  const root = await createTestTempDirectory("rea-bun-deep-virtual-name-");
+  const root = await createTestTempDirectory("nre-bun-deep-virtual-name-");
   const path = join(root, "host.exe");
   const name = "/" + "a/".repeat(256) + "main.js";
   await writeFile(

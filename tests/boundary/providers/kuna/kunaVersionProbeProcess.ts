@@ -57,7 +57,7 @@ export const makeLauncher = (
       env: {
         ...options.hostEnvironment,
         ...options.env,
-        REA_PROCESS_RUN_ID: options.runId,
+        NRE_PROCESS_RUN_ID: options.runId,
       },
       detached: true,
       stdio: ["ignore", "pipe", "pipe"],

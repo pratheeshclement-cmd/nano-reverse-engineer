@@ -112,7 +112,7 @@
       "available": {
         "result": {
           "artifact": {
-            "path": "/tmp/rea-native-handoff-20261015/cases/available/app.asar",
+            "path": "/tmp/nre-native-handoff-20261015/cases/available/app.asar",
             "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
           },
           "addon_path": "node_modules/keytar/build/Release/keytar.node",
@@ -255,7 +255,7 @@
       "missing": {
         "result": {
           "artifact": {
-            "path": "/tmp/rea-native-handoff-20261015/cases/missing/app.asar",
+            "path": "/tmp/nre-native-handoff-20261015/cases/missing/app.asar",
             "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
           },
           "addon_path": "node_modules/keytar/build/Release/keytar.node",
@@ -401,7 +401,7 @@
       "available": {
         "result": {
           "artifact": {
-            "path": "/tmp/rea-native-handoff-20261015/cases/available/app.asar",
+            "path": "/tmp/nre-native-handoff-20261015/cases/available/app.asar",
             "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
           },
           "addon_path": "node_modules/keytar/build/Release/keytar.node",
@@ -544,7 +544,7 @@
       "missing": {
         "result": {
           "artifact": {
-            "path": "/tmp/rea-native-handoff-20261015/cases/missing/app.asar",
+            "path": "/tmp/nre-native-handoff-20261015/cases/missing/app.asar",
             "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
           },
           "addon_path": "node_modules/keytar/build/Release/keytar.node",
@@ -691,7 +691,7 @@
     "available": {
       "result": {
         "artifact": {
-          "path": "/tmp/rea-native-handoff-20261015/cases/available/app.asar",
+          "path": "/tmp/nre-native-handoff-20261015/cases/available/app.asar",
           "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
         },
         "addon_path": "node_modules/keytar/build/Release/keytar.node",
@@ -834,7 +834,7 @@
     "missing": {
       "result": {
         "artifact": {
-          "path": "/tmp/rea-native-handoff-20261015/cases/missing/app.asar",
+          "path": "/tmp/nre-native-handoff-20261015/cases/missing/app.asar",
           "sha256": "767df409b18effe60421fbefcca873de237c7e813eac744ecdeebbc5e825a33a"
         },
         "addon_path": "node_modules/keytar/build/Release/keytar.node",

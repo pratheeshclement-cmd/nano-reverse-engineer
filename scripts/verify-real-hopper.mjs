@@ -13,7 +13,7 @@ import {
 } from "./lib/real-hopper-assertions.mjs";
 import { HOPPER_PROVIDER_IDENTITY } from "../dist/hopper/HopperProviderCapabilities.js";
 import { HOPPER_TARGET_LEASE_DIRECTORY } from "../dist/process/HopperLease.js";
-import { REA_WORKFLOW_PROVIDER } from "../dist/domain/investigationProviders.js";
+import { NRE_WORKFLOW_PROVIDER } from "../dist/domain/investigationProviders.js";
 import { loadRealHopperFixtureTargets } from "./lib/real-hopper-fixture.mjs";
 import { verifyHopperStringObjects } from "./lib/real-hopper-search.mjs";
 import {
@@ -57,7 +57,7 @@ const parseServerArgs = (encoded) => {
     !Array.isArray(parsed) ||
     parsed.some((value) => typeof value !== "string")
   )
-    throw new Error("REA_VERIFY_SERVER_ARGS_JSON must encode string arguments");
+    throw new Error("NRE_VERIFY_SERVER_ARGS_JSON must encode string arguments");
   return parsed;
 };
 
@@ -226,7 +226,7 @@ const verifyCurrentTarget = async (client, options) => {
 };
 
 const fixtureManifestPath =
-  process.env.REA_HOPPER_CONFORMANCE_MANIFEST_PATH ??
+  process.env.NRE_HOPPER_CONFORMANCE_MANIFEST_PATH ??
   "build/conformance/manifest.json";
 const fixtureTargets = await loadRealHopperFixtureTargets(fixtureManifestPath);
 const targetA = fixtureTargets.primary.path;
@@ -235,15 +235,15 @@ const largeTarget = fixtureTargets.large.path;
 const targetHashA = fixtureTargets.primary.sha256;
 const targetHashB = fixtureTargets.secondary.sha256;
 const serverEnvironment = { ...process.env };
-serverEnvironment.REA_ANALYSIS_PROVIDER = "auto";
+serverEnvironment.NRE_ANALYSIS_PROVIDER = "auto";
 delete serverEnvironment.HOPPER_TARGET_PATH;
 delete serverEnvironment.HOPPER_SECOND_TARGET_PATH;
-delete serverEnvironment.REA_VERIFY_SERVER_COMMAND;
-delete serverEnvironment.REA_VERIFY_SERVER_ARGS_JSON;
+delete serverEnvironment.NRE_VERIFY_SERVER_COMMAND;
+delete serverEnvironment.NRE_VERIFY_SERVER_ARGS_JSON;
 
-const serverCommand = process.env.REA_VERIFY_SERVER_COMMAND ?? process.execPath;
+const serverCommand = process.env.NRE_VERIFY_SERVER_COMMAND ?? process.execPath;
 const serverArgs = parseServerArgs(
-  process.env.REA_VERIFY_SERVER_ARGS_JSON ?? '["dist/main.js"]',
+  process.env.NRE_VERIFY_SERVER_ARGS_JSON ?? '["dist/main.js"]',
 );
 
 const transport = new StdioClientTransport({
@@ -343,7 +343,7 @@ try {
     HOPPER_PROVIDER_IDENTITY.id,
   );
   requireWorkflowEvidenceProvider(overview, "binary_overview", {
-    workflowProviderId: REA_WORKFLOW_PROVIDER.id,
+    workflowProviderId: NRE_WORKFLOW_PROVIDER.id,
     upstreamProviderId: HOPPER_PROVIDER_IDENTITY.id,
   });
   const segments = await client.callTool(
@@ -486,8 +486,8 @@ try {
     await call("open_binary", { path: fixtureTargets.unicode.path });
     terminalInstructions = await verifyHopperTerminalInstructions(call);
     unicodeStrings = await verifyHopperStringObjects(call, [
-      { value: "REA_UTF16_é_😀", encoding: "utf-16-le" },
-      { value: 'REA_UTF16_ESCAPED_é_"\\line\nend\t\r', encoding: "utf-16-le" },
+      { value: "NRE_UTF16_é_😀", encoding: "utf-16-le" },
+      { value: 'NRE_UTF16_ESCAPED_é_"\\line\nend\t\r', encoding: "utf-16-le" },
       { value: "\nREA_UTF16_LEADING_é", encoding: "utf-16-le" },
     ]);
     await call("close_binary");

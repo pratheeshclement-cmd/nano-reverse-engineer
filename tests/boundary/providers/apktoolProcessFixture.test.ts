@@ -12,7 +12,7 @@ it
   .each(["malformed", "unreadable"] as const)(
   "retains fixture cleanup ownership when its published marker becomes %s",
   async (failure) => {
-    const root = await createTestTempDirectory("rea-apktool-marker-failure-");
+    const root = await createTestTempDirectory("nre-apktool-marker-failure-");
     const fixture = await createApktoolProcessFixture(root, "probe");
     await expect(fixture.readMarker()).resolves.toBeUndefined();
     const commands = new ApktoolCommandCleanup();

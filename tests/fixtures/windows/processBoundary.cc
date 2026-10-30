@@ -27,11 +27,11 @@ int wmain(int count, wchar_t** args) {
     auto value = [](const wchar_t* name) {
       wchar_t text[128]{}; GetEnvironmentVariableW(name, text, 128); return std::wstring(text);
     };
-    const auto sameUnicodeName = CompareStringOrdinal(L"REA_\u00df", -1, L"REA_SS", -1, TRUE) == CSTR_EQUAL;
+    const auto sameUnicodeName = CompareStringOrdinal(L"REA_\u00df", -1, L"NRE_SS", -1, TRUE) == CSTR_EQUAL;
     const auto expectedSharp = sameUnicodeName ? L"double" : L"sharp";
     std::printf("{\"ordinallySorted\":%s,\"lastDuplicateSelected\":%s,\"unicodeNamesPreserved\":%s}\n",
-      sorted ? "true" : "false", value(L"REA_CASE") == L"last" ? "true" : "false",
-      value(L"REA_\u00df") == expectedSharp && value(L"REA_SS") == L"double" ? "true" : "false");
+      sorted ? "true" : "false", value(L"NRE_CASE") == L"last" ? "true" : "false",
+      value(L"REA_\u00df") == expectedSharp && value(L"NRE_SS") == L"double" ? "true" : "false");
     return 0;
   }
   if ((count == 2 || count == 3) && std::wstring(args[1]) == L"affinity") {

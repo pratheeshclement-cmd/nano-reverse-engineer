@@ -50,7 +50,7 @@ const fixtures = fileURLToPath(
   new URL("../tests/conformance/ghidra", import.meta.url),
 );
 const bridge = fileURLToPath(new URL("../bridge/ghidra", import.meta.url));
-const workspace = await mkdtemp(join(tmpdir(), "rea-ghidra-decompiler-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-ghidra-decompiler-"));
 let cleaned = true;
 let report;
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -61,7 +61,7 @@ try {
     process.platform === "darwin" ? "cross-format.dylib" : "cross-format.so",
   );
   const compiler = {
-    command: process.env.REA_CC ?? "cc",
+    command: process.env.NRE_CC ?? "cc",
     arguments: [
       ...(process.platform === "darwin" ? ["-dynamiclib"] : ["-shared"]),
       "-fPIC",
@@ -91,7 +91,7 @@ try {
   }
   const targetDigest = digest(await readFile(targetPath));
   const bridgeDigest = digest(
-    await readFile(join(bridge, "ReaGhidraBridge.java")),
+    await readFile(join(bridge, "NreGhidraBridge.java")),
   );
   const project = join(workspace, "project");
   await mkdir(project);
@@ -108,7 +108,7 @@ try {
       "-scriptPath",
       `${fixtures};${bridge}`,
       "-postScript",
-      join(fixtures, "ReaDecompilerFailureProbe.java"),
+      join(fixtures, "NreDecompilerFailureProbe.java"),
       bridge,
     ],
     runId: run.run_id,
@@ -133,14 +133,14 @@ try {
     const output = `${snapshot.stdout.text}\n${snapshot.stderr.text}`;
     assert.equal(snapshot.exitCode, 0, output);
     const reports = [
-      ...output.matchAll(/REA_DECOMPILER_FAILURE_PROBE_JSON (\{[^\r\n]*\})/gu),
+      ...output.matchAll(/NRE_DECOMPILER_FAILURE_PROBE_JSON (\{[^\r\n]*\})/gu),
     ];
     assert.equal(reports.length, 1, output);
     probe = JSON.parse(reports[0][1]);
     assert.equal(probe.status, "passed");
     assert.equal(probe.ghidra_version, SUPPORTED_GHIDRA_VERSION);
     assert.equal(probe.target_sha256, targetDigest);
-    assert.equal(probe["ReaGhidraBridge.java"], bridgeDigest);
+    assert.equal(probe["NreGhidraBridge.java"], bridgeDigest);
     for (const check of [
       "regex_failure_preserves_stage_and_pattern",
       "regex_failure_leaves_lifecycle_to_provider",
@@ -172,7 +172,7 @@ try {
     );
   }
 
-  // The degraded dossier must satisfy the same provider output contract REA
+  // The degraded dossier must satisfy the same provider output contract NRE
   // applies to every bridge reply.
   const degraded = parseGhidraFunctionResult(
     "analyze_function",
@@ -229,7 +229,7 @@ try {
       !result.value.limitations.some((item) => item.includes(injected)),
     );
     const functionLimitCapability = result.value.limitations.find((item) =>
-      item.includes("REA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS"),
+      item.includes("NRE_GHIDRA_DECOMPILE_TIMEOUT_SECONDS"),
     );
     assert.ok(functionLimitCapability?.includes("per-function limit"));
     assert.ok(

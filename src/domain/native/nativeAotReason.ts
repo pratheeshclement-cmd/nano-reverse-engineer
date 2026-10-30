@@ -2,7 +2,7 @@ import { z } from "zod";
 
 /**
  * Windows image-loader maximum for a PE executable. This is a format
- * constraint, not a REA resource budget, so it is not an environment setting.
+ * constraint, not a NRE resource budget, so it is not an environment setting.
  */
 export const WINDOWS_IMAGE_LOADER_SECTION_LIMIT = 96;
 

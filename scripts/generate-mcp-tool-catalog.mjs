@@ -63,7 +63,7 @@ const catalog = TOOL_CONTRACTS.map((contract) => {
 });
 
 async function sdkToolCatalog() {
-  const server = new McpServer({ name: "rea-catalog-generator", version: "0" });
+  const server = new McpServer({ name: "nre-catalog-generator", version: "0" });
   for (const contract of TOOL_CONTRACTS)
     server.registerTool(
       contract.name,
@@ -73,7 +73,7 @@ async function sdkToolCatalog() {
         isError: true,
       }),
     );
-  const client = new Client({ name: "rea-catalog-generator", version: "0" });
+  const client = new Client({ name: "nre-catalog-generator", version: "0" });
   const [clientTransport, serverTransport] =
     InMemoryTransport.createLinkedPair();
   try {

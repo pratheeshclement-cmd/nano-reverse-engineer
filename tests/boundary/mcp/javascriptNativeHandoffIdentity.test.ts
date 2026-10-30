@@ -18,7 +18,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 const client = new Client({ name: "native-handoff-identity", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [resolve("scripts/rea.mjs"), "mcp"],
+  args: [resolve("scripts/nre.mjs"), "mcp"],
   cwd: process.cwd(),
   env: { PATH: process.env.PATH ?? "" },
   stderr: "pipe",

@@ -44,7 +44,7 @@ const createdThenRenamed = (
 
 describe("blame for a failed item read", () => {
   it("confirms no update by a read showing a field its response showed and the state lacks, with no rule for it", () => {
-    const reviewed = (entry: Book): Book => ({ ...entry, reviewedBy: "rea" });
+    const reviewed = (entry: Book): Book => ({ ...entry, reviewedBy: "nre" });
     const rows = createdThenRenamed(
       reviewed(RENAMED_THIRD),
       reviewed(shelved(RENAMED_THIRD)),

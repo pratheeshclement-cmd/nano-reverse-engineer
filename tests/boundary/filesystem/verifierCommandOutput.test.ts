@@ -13,7 +13,7 @@ afterEach(async () => {
 });
 
 const createOutputWorkspace = async () => {
-  const workspace = await createTestWorkspace("rea-verifier-command-output-");
+  const workspace = await createTestWorkspace("nre-verifier-command-output-");
   workspaces.push(workspace.root);
   return workspace;
 };

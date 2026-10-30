@@ -17,14 +17,14 @@ describe("decompile-all CLI", () => {
   cliTest(
     "maps filters, limit and a relative output directory to the export",
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-decompile-all-cli-");
+      const root = await createTestTempDirectory("nre-decompile-all-cli-");
       const kuna = await writeFakeKuna(root, { functions: FUNCTIONS });
       const target = join(root, "target.elf");
       await writeFile(target, elf(2, 1, 62));
       const environment = {
-        REA_LOG_LEVEL: "silent",
-        REA_KUNA_COMMAND: kuna,
-        REA_KUNA_CACHE_DIR: join(root, "cache"),
+        NRE_LOG_LEVEL: "silent",
+        NRE_KUNA_COMMAND: kuna,
+        NRE_KUNA_CACHE_DIR: join(root, "cache"),
       };
       const result = await cli.run({
         arguments: [

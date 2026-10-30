@@ -64,7 +64,7 @@ it("passes the selected environment to the actual browser launch boundary", asyn
   const selected = {
     LANG: "selected-language",
     PATH: "/selected/bin",
-    REA_PRIVATE_VALUE: "not-a-launch-setting",
+    NRE_PRIVATE_VALUE: "not-a-launch-setting",
   };
   let launchedEnvironment: unknown;
   const scenario = browserScenarioSchema.parse({
@@ -98,7 +98,7 @@ it("passes the selected environment to the actual browser launch boundary", asyn
 it.skipIf(process.platform === "win32")(
   "passes the caller-selected symlink-parent executable to the launch boundary",
   async () => {
-    const root = await createTestTempDirectory("rea-browser-caller-path-");
+    const root = await createTestTempDirectory("nre-browser-caller-path-");
     try {
       await mkdir(join(root, "real/inner"), { recursive: true });
       await symlink(join(root, "real/inner"), join(root, "link"));
@@ -803,7 +803,7 @@ it("serializes concurrent attach across loopback spellings of one browser", asyn
 });
 
 it("tracks only pending browser cleanup resources and resolves prior errors after exact recovery", async () => {
-  const root = await createTestTempDirectory("rea-browser-cleanup-recovery-");
+  const root = await createTestTempDirectory("nre-browser-cleanup-recovery-");
   const profile = join(root, "profile");
   await mkdir(profile);
   await writeFile(join(profile, "authored-data"), "profile control");

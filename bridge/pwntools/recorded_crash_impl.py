@@ -169,6 +169,6 @@ def inspect_core(path, cache):
 
 if __name__ == "__main__":
     runtime_path = Path(__file__).with_name("decoder_runtime.py")
-    runtime = {"__file__": str(runtime_path), "__name__": "rea_decoder_runtime"}
+    runtime = {"__file__": str(runtime_path), "__name__": "nre_decoder_runtime"}
     exec(compile(runtime_path.read_bytes(), str(runtime_path), "exec"), runtime)
     runtime["main"](sys.argv[-1], inspect_core, CoreFailure, PROFILE)

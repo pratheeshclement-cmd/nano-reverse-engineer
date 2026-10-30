@@ -34,7 +34,7 @@ const denyRead = async (path: string): Promise<() => Promise<void>> => {
 it.skipIf(isRoot)(
   "reports a real host read refusal on the selected archive as access denial",
   async () => {
-    const root = await createTestTempDirectory("rea-keyed-host-denial-");
+    const root = await createTestTempDirectory("nre-keyed-host-denial-");
     await mkdir(join(root, "Contents", "Resources"), { recursive: true });
     const selected = join(root, "Contents", "Resources", "Model.plist");
     await writeFile(

@@ -84,9 +84,9 @@ def main():
     gib = 1024 ** 3
     if available_bytes() < 8 * gib:
         raise SystemExit('Refusing experiment: less than 8 GiB available')
-    unit = 'rea-efficiency-' + uuid.uuid4().hex + '.scope'
+    unit = 'nre-efficiency-' + uuid.uuid4().hex + '.scope'
     cpu = max(os.sched_getaffinity(0))
-    receipt_root = tempfile.TemporaryDirectory(prefix='rea-payload-counters-') if options.observe_payload_exit else None
+    receipt_root = tempfile.TemporaryDirectory(prefix='nre-payload-counters-') if options.observe_payload_exit else None
     receipt_path = Path(receipt_root.name) / 'observation.json' if receipt_root else None
     release_path = Path(receipt_root.name) / 'release' if receipt_root else None
     payload = args if receipt_root is None else [

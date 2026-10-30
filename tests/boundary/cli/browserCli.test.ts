@@ -141,7 +141,7 @@ cliTest(
     const listed = listedInvocation.json;
     expect(listed).toMatchObject({
       operation: "list_browser_targets",
-      provider: { id: "rea-cdp-browser" },
+      provider: { id: "nre-cdp-browser" },
       normalized_result: {
         targets: expect.arrayContaining([
           expect.objectContaining({ target_id: "allowed-page" }),
@@ -168,7 +168,7 @@ cliTest(
     const inspected = inspectedInvocation.json;
     expect(inspected).toMatchObject({
       operation: "inspect_web_page",
-      provider: { id: "rea-cdp-browser" },
+      provider: { id: "nre-cdp-browser" },
       normalized_result: {
         target: { target_id: "allowed-page" },
         scripts: {

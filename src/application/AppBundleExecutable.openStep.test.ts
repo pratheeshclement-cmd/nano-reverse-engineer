@@ -13,7 +13,7 @@ it.each([
   ["line comment", "// App metadata\n"],
   ["mixed comments", " \t/* header */\n// executable selection\n"],
 ])("resolves an OpenStep Info.plist with %s", async (_label, prefix) => {
-  const root = await createTestTempDirectory("rea-openstep-bundle-");
+  const root = await createTestTempDirectory("nre-openstep-bundle-");
   const bundle = join(root, "Fixture.app");
   const programs = join(bundle, "Contents", "MacOS");
   const executable = join(programs, "Fixture");

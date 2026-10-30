@@ -24,7 +24,7 @@ export const requirePermissionDenial = async (
 ): Promise<void> => {
   if (process.platform === "win32")
     context.skip("POSIX mode denial is unavailable on Windows");
-  const root = await createTestTempDirectory("rea-permission-probe-");
+  const root = await createTestTempDirectory("nre-permission-probe-");
   const directory = join(root, "directory");
   const file = join(directory, "file");
   await mkdir(directory);

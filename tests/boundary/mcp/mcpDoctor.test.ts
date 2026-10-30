@@ -39,7 +39,7 @@ const expectDoctorDeadline = (
   expect(detail).toContain(
     mcpDoctorDeadlineRecovery(
       resolveMcpStartupBudgets({
-        REA_MCP_DOCTOR_DEADLINE_MS: String(milliseconds),
+        NRE_MCP_DOCTOR_DEADLINE_MS: String(milliseconds),
       }).doctor,
     ),
   );
@@ -54,7 +54,7 @@ const assertCliCatalogIdentity = async (
   for (const command of ["capabilities", "providers"]) {
     const { stdout } = await promisify(execFile)(
       process.execPath,
-      [resolve("scripts/rea.mjs"), command, "--json"],
+      [resolve("scripts/nre.mjs"), command, "--json"],
       { env: environment, timeout: 15_000, maxBuffer: 1024 * 1024 },
     );
     const cliStatus: unknown = JSON.parse(stdout);
@@ -70,8 +70,8 @@ const catalogProfiles = [
   {
     name: "default compact input",
     environment: {
-      REA_MCP_INPUT_SCHEMA_PROFILE: undefined,
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "full",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: undefined,
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "full",
     },
     identity: createCatalogIdentity({
       compactPresentation:
@@ -81,16 +81,16 @@ const catalogProfiles = [
   {
     name: "full",
     environment: {
-      REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "full",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "full",
     },
     identity: FULL_CATALOG_IDENTITY,
   },
   {
     name: "compact",
     environment: {
-      REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "full",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "full",
     },
     identity: createCatalogIdentity({
       compactPresentation:
@@ -100,24 +100,24 @@ const catalogProfiles = [
   {
     name: "output schemas off",
     environment: {
-      REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
     },
     identity: createCatalogIdentity({ outputSchemaProfile: "off" }),
   },
   {
     name: "output schemas compact",
     environment: {
-      REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "compact",
     },
     identity: createCatalogIdentity({ outputSchemaProfile: "compact" }),
   },
   {
     name: "compact input and output schemas off",
     environment: {
-      REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: "off",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off",
     },
     identity: createCatalogIdentity({
       compactPresentation:
@@ -182,7 +182,7 @@ describe("production MCP doctor", () => {
         checks: [{ name: "transport", ok: false }],
       },
       meta: {
-        command: "rea mcp doctor",
+        command: "nre mcp doctor",
         duration: expect.stringMatching(/^\d+ms$/u),
       },
     });
@@ -193,7 +193,7 @@ describe("production MCP doctor", () => {
     async ({ environment, identity }) => {
       const result = await runProductionMcpDoctor({
         command: process.execPath,
-        args: [resolve("scripts/rea.mjs"), "mcp"],
+        args: [resolve("scripts/nre.mjs"), "mcp"],
         cwd: process.cwd(),
         environment: { ...process.env, ...environment },
       });
@@ -241,12 +241,12 @@ describe("production MCP doctor family scopes", () => {
     async ({ families, output }) => {
       const result = await runProductionMcpDoctor({
         command: process.execPath,
-        args: [resolve("scripts/rea.mjs"), "mcp"],
+        args: [resolve("scripts/nre.mjs"), "mcp"],
         cwd: process.cwd(),
         environment: {
           ...process.env,
-          REA_MCP_TOOL_FAMILIES: families,
-          REA_MCP_OUTPUT_SCHEMA_PROFILE: output,
+          NRE_MCP_TOOL_FAMILIES: families,
+          NRE_MCP_OUTPUT_SCHEMA_PROFILE: output,
         },
       });
 
@@ -267,12 +267,12 @@ describe("production MCP doctor family scopes", () => {
       await assertCliCatalogIdentity(
         {
           ...process.env,
-          REA_MCP_TOOL_FAMILIES: families,
-          REA_MCP_OUTPUT_SCHEMA_PROFILE: output,
+          NRE_MCP_TOOL_FAMILIES: families,
+          NRE_MCP_OUTPUT_SCHEMA_PROFILE: output,
         },
         catalogIdentityForToolFamilies(
           compactPresentationForMcpInputSchemaProfile(
-            process.env.REA_MCP_INPUT_SCHEMA_PROFILE === "full"
+            process.env.NRE_MCP_INPUT_SCHEMA_PROFILE === "full"
               ? "full"
               : "compact",
           ),
@@ -287,9 +287,9 @@ describe("production MCP doctor family scopes", () => {
   it("discovers an empty prompt inventory and explains a scope without session", async () => {
     const result = await runProductionMcpDoctor({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
-      environment: { ...process.env, REA_MCP_TOOL_FAMILIES: "browser" },
+      environment: { ...process.env, NRE_MCP_TOOL_FAMILIES: "browser" },
     });
     expect(result).toMatchObject({
       healthy: false,
@@ -309,9 +309,9 @@ describe("production MCP doctor family scopes", () => {
   it("fails startup instead of misreporting inventory for an invalid scope", async () => {
     const result = await runProductionMcpDoctor({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
-      environment: { ...process.env, REA_MCP_TOOL_FAMILIES: "session,typo" },
+      environment: { ...process.env, NRE_MCP_TOOL_FAMILIES: "session,typo" },
     });
 
     expect(result.healthy).toBe(false);
@@ -321,7 +321,7 @@ describe("production MCP doctor family scopes", () => {
       detail: expect.any(String),
     });
     expect(result.diagnostics?.stderr).toEqual(
-      expect.stringContaining("REA_MCP_TOOL_FAMILIES"),
+      expect.stringContaining("NRE_MCP_TOOL_FAMILIES"),
     );
   }, 30_000);
 });
@@ -341,13 +341,13 @@ describe("production MCP doctor output", () => {
       expect(result.exitCode).toBe(1);
       expect(result.output.trimEnd().split("\n")).toHaveLength(1);
       expect(JSON.parse(result.output)).toMatchObject({
-        $rea: "jsonl/v1",
+        $nre: "jsonl/v1",
         type: "error",
         result: full
           ? {
               ok: false,
               error: { healthy: false },
-              meta: { command: "rea mcp doctor" },
+              meta: { command: "nre mcp doctor" },
             }
           : { healthy: false },
       });
@@ -365,7 +365,7 @@ describe("production MCP doctor output", () => {
     );
     expect(result.exitCode).toBe(1);
     expect(JSON.parse(result.output)).toMatchObject({
-      $rea: "jsonl/v1",
+      $nre: "jsonl/v1",
       type: "error",
       result: { code: "VALIDATION_ERROR" },
     });
@@ -404,13 +404,13 @@ describe("production MCP doctor output", () => {
 
 describe("production MCP doctor probe validation", () => {
   it("rejects a schema-invalid probe while retaining the discovered inventory", async () => {
-    const root = await createTestTempDirectory("rea-mcp-doctor-reply-");
+    const root = await createTestTempDirectory("nre-mcp-doctor-reply-");
     const snapshotPath = join(root, "reply.json");
     const environment = { PATH: process.env.PATH ?? "" };
     const client = new Client({ name: "doctor-reply-capture", version: "1" });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/nre.mjs"), "mcp"],
       cwd: process.cwd(),
       env: environment,
       stderr: "pipe",
@@ -564,7 +564,7 @@ describe("production MCP doctor child lifecycle", () => {
   });
 
   it("kills a child that misses the absolute startup deadline", async () => {
-    const root = await createTestTempDirectory("rea-mcp-doctor-");
+    const root = await createTestTempDirectory("nre-mcp-doctor-");
     const pidPath = join(root, "pid");
     // Keep filesystem/process I/O real. Advance only the deadline timers,
     // after the fixture proves it started and published its PID.
@@ -573,7 +573,7 @@ describe("production MCP doctor child lifecycle", () => {
       command: process.execPath,
       args: [resolve("tests/fixtures/mcpDoctorHang.mjs")],
       cwd: process.cwd(),
-      environment: { ...process.env, REA_MCP_DOCTOR_PID_PATH: pidPath },
+      environment: { ...process.env, NRE_MCP_DOCTOR_PID_PATH: pidPath },
       deadlineMs: 60_000,
     });
     const pid = await vi.waitFor(
@@ -589,14 +589,14 @@ describe("production MCP doctor child lifecycle", () => {
     vi.useRealTimers();
     expect(result.healthy).toBe(false);
     expectDoctorDeadline(result.checks[0]?.detail, 60_000);
-    expect(result.checks[0]?.detail).not.toContain("REA_MCP_STARTUP");
+    expect(result.checks[0]?.detail).not.toContain("NRE_MCP_STARTUP");
     await expect(waitForExit(pid)).resolves.toBeUndefined();
   }, 10_000);
 });
 
 describe("production MCP doctor request-flow deadline", () => {
   it("names the applied deadline when binary_session exceeds it after the catalog", async () => {
-    const root = await createTestTempDirectory("rea-mcp-doctor-session-");
+    const root = await createTestTempDirectory("nre-mcp-doctor-session-");
     const readyPath = join(root, "ready");
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     const pending = runProductionMcpDoctor({
@@ -605,8 +605,8 @@ describe("production MCP doctor request-flow deadline", () => {
       cwd: process.cwd(),
       environment: {
         ...process.env,
-        REA_MCP_PROBE_MODE: "hang-on-call",
-        REA_MCP_PROBE_READY_PATH: readyPath,
+        NRE_MCP_PROBE_MODE: "hang-on-call",
+        NRE_MCP_PROBE_READY_PATH: readyPath,
       },
       deadlineMs: 60_000,
     });
@@ -625,7 +625,7 @@ describe("production MCP doctor request-flow deadline", () => {
     );
     expect(requestFlow?.ok).toBe(false);
     expectDoctorDeadline(requestFlow?.detail, 60_000);
-    expect(requestFlow?.detail).not.toContain("REA_MCP_STARTUP");
+    expect(requestFlow?.detail).not.toContain("NRE_MCP_STARTUP");
   }, 15_000);
 
   it.each([
@@ -642,8 +642,8 @@ describe("production MCP doctor request-flow deadline", () => {
         cwd: process.cwd(),
         environment: {
           ...process.env,
-          REA_MCP_PROBE_MODE: "refuse-call",
-          REA_MCP_PROBE_ERROR_MESSAGE: message,
+          NRE_MCP_PROBE_MODE: "refuse-call",
+          NRE_MCP_PROBE_ERROR_MESSAGE: message,
         },
         deadlineMs: 5_000,
       });
@@ -653,13 +653,13 @@ describe("production MCP doctor request-flow deadline", () => {
       );
       expect(requestFlow?.ok).toBe(false);
       expect(requestFlow?.detail).toContain(message);
-      expect(requestFlow?.detail).not.toContain("REA_MCP_DOCTOR_DEADLINE_MS");
+      expect(requestFlow?.detail).not.toContain("NRE_MCP_DOCTOR_DEADLINE_MS");
     },
     10_000,
   );
 
-  it("uses REA_MCP_DOCTOR_DEADLINE_MS when no caller deadline is passed", async () => {
-    const root = await createTestTempDirectory("rea-mcp-doctor-setting-");
+  it("uses NRE_MCP_DOCTOR_DEADLINE_MS when no caller deadline is passed", async () => {
+    const root = await createTestTempDirectory("nre-mcp-doctor-setting-");
     const pidPath = join(root, "pid");
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     const pending = runProductionMcpDoctor({
@@ -668,8 +668,8 @@ describe("production MCP doctor request-flow deadline", () => {
       cwd: process.cwd(),
       environment: {
         ...process.env,
-        REA_MCP_DOCTOR_PID_PATH: pidPath,
-        REA_MCP_DOCTOR_DEADLINE_MS: "2000",
+        NRE_MCP_DOCTOR_PID_PATH: pidPath,
+        NRE_MCP_DOCTOR_DEADLINE_MS: "2000",
       },
     });
     const pid = await vi.waitFor(
@@ -695,26 +695,26 @@ describe("production MCP doctor request-flow deadline", () => {
       cwd: process.cwd(),
       environment: {
         ...process.env,
-        REA_MCP_INITIALIZE_BUDGET_MS: "0",
-        REA_MCP_DOCTOR_DEADLINE_MS: "0",
+        NRE_MCP_INITIALIZE_BUDGET_MS: "0",
+        NRE_MCP_DOCTOR_DEADLINE_MS: "0",
       },
     });
     expect(result.healthy).toBe(false);
     expect(result.server).toBeNull();
     expect(result.checks.map(({ name }) => name)).toEqual([
-      "REA_MCP_INITIALIZE_BUDGET_MS",
-      "REA_MCP_DOCTOR_DEADLINE_MS",
+      "NRE_MCP_INITIALIZE_BUDGET_MS",
+      "NRE_MCP_DOCTOR_DEADLINE_MS",
     ]);
     const budgetRange = `from ${String(MCP_PHASE_BUDGET_FLOOR_MS)} to ${String(MCP_PHASE_BUDGET_MAXIMUM_MS)} ms`;
-    expect(result.checks[0]?.detail).toContain("REA_MCP_INITIALIZE_BUDGET_MS");
+    expect(result.checks[0]?.detail).toContain("NRE_MCP_INITIALIZE_BUDGET_MS");
     expect(result.checks[0]?.detail).toContain(budgetRange);
-    expect(result.checks[1]?.detail).toContain("REA_MCP_DOCTOR_DEADLINE_MS");
+    expect(result.checks[1]?.detail).toContain("NRE_MCP_DOCTOR_DEADLINE_MS");
     expect(result.checks[1]?.detail).toContain(budgetRange);
   });
 });
 
 const runNoisyDoctorChild = async (body: string) => {
-  const root = await createTestTempDirectory("rea-mcp-doctor-stderr-");
+  const root = await createTestTempDirectory("nre-mcp-doctor-stderr-");
   const scriptPath = join(root, "noisy.mjs");
   await writeFile(scriptPath, body);
   return runProductionMcpDoctor({

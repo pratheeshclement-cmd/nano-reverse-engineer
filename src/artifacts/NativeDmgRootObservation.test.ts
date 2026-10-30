@@ -18,7 +18,7 @@ import { ArtifactOperationError } from "../domain/artifactOperationError.js";
 it.each(["same", "other", "missing-path", "no-path", "empty-group"] as const)(
   "retains DMG root facts and limits existing-attachment guidance to a resolved image path: %s",
   async (listed) => {
-    const root = await createTestTempDirectory("rea-dmg-unavailable-root-");
+    const root = await createTestTempDirectory("nre-dmg-unavailable-root-");
     const path = join(root, "image.dmg");
     const bytes = Buffer.alloc(1024);
     bytes.write("koly", bytes.length - 512, "ascii");

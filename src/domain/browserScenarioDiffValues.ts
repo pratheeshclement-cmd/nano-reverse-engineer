@@ -78,10 +78,10 @@ export const compareBrowserScenariosInputSchema = z.strictObject({
     .describe(
       "Earlier complete normalized_result from capture_browser_scenario.",
     )
-    .meta({ "x-rea-complete-observation": true }),
+    .meta({ "x-nre-complete-observation": true }),
   after_scenario: retainedBrowserScenarioCaptureSchema
     .describe("Later complete normalized_result from capture_browser_scenario.")
-    .meta({ "x-rea-complete-observation": true }),
+    .meta({ "x-nre-complete-observation": true }),
   normalization: normalizationInputSchema
     .default({ rules: [] })
     .describe("Exact-literal rules committed in the comparison result."),

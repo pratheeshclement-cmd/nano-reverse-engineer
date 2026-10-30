@@ -175,7 +175,7 @@ const expectComparison = (
 cliTest.for(cases)(
   "CLI preserves passive inventory evidence: $name",
   async ({ name, left, right, change }, { cli }) => {
-    const root = await createTestTempDirectory("rea-passive-inventory-");
+    const root = await createTestTempDirectory("nre-passive-inventory-");
     const paths = [
       join(root, "before.json"),
       join(root, "after.json"),
@@ -189,7 +189,7 @@ cliTest.for(cases)(
     );
     const response = await cli.run({
       arguments: ["compare-web-captures", ...paths, "--json"],
-      environment: { REA_LOG_LEVEL: "silent" },
+      environment: { NRE_LOG_LEVEL: "silent" },
     });
     expect(response.exitCode, response.stderr).toBe(0);
     expectComparison(response.json, name, change);

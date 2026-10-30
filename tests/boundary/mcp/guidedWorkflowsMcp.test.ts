@@ -6,9 +6,9 @@ it.each(["full", "compact"])(
   "preserves workflow contracts through the production %s MCP server",
   async (profile) => {
     const { client, call } = await connectLocalToolsMcp({
-      REA_MCP_TOOL_FAMILIES: "session,electron,direct,application,enhanced",
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
-      REA_MCP_OUTPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_TOOL_FAMILIES: "session,electron,direct,application,enhanced",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_OUTPUT_SCHEMA_PROFILE: profile,
     });
     const prompts = await client.listPrompts();
     const listed = await call("guided_workflows", { action: "list" });
@@ -96,7 +96,7 @@ it.each(["full", "compact"])(
 
 it("uses the native prompt scope for tool discovery and rendering", async () => {
   const { client, call } = await connectLocalToolsMcp({
-    REA_MCP_TOOL_FAMILIES: "application",
+    NRE_MCP_TOOL_FAMILIES: "application",
   });
   const native = await client.listPrompts();
   expect(native.prompts).toEqual([]);

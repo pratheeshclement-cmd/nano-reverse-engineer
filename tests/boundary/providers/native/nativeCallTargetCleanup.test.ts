@@ -15,7 +15,7 @@ import { ArtifactFileCleanupFailure } from "../../../../src/artifacts/ArtifactFi
 
 const parameters = { breakpoints: [{ kind: "function", name: "main" }] };
 const fixture = async () => {
-  const directory = await createTestTempDirectory("rea-native-call-file-");
+  const directory = await createTestTempDirectory("nre-native-call-file-");
   const path = join(directory, "inert.bin");
   await writeFile(path, "inert native call preflight bytes");
   const target = await nativeMachoTargetForFile(path);

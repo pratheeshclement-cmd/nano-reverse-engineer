@@ -2089,12 +2089,12 @@ const ENVELOPED_ROWS: readonly TimedCaptureRow[] = [
 /** A card whose edit info an update restamps: its response and its read-back name instants milliseconds apart. */
 const cardEdit = (milliseconds: number) => ({
   at: new Date(Date.parse(bookClock(3)) + milliseconds).toISOString(),
-  by: "rea",
+  by: "nre",
 });
 const FIRST_CARD = {
   id: 1,
   name: "First Card",
-  edit: { at: "2026-10-01T09:00:00.000Z", by: "rea" },
+  edit: { at: "2026-10-01T09:00:00.000Z", by: "nre" },
 };
 const SECOND_CARD = { ...FIRST_CARD, id: 2, name: "Second Card" };
 
@@ -2143,7 +2143,7 @@ describe("values an application stamps", () => {
     const card = (id: number, seconds: number, at: string) => ({
       id,
       name: `Card ${String(id)}`,
-      edit: { at, by: "rea" },
+      edit: { at, by: "nre" },
     });
     const answered = (seconds: number) =>
       new Date(Date.parse(bookClock(seconds)) + 30).toISOString();
@@ -2183,7 +2183,7 @@ describe("nested clocks another recorded call kept", () => {
         ? FIRST_CARD.edit
         : {
             at: new Date(Date.parse(bookClock(stampedAt)) + 64).toISOString(),
-            by: "rea",
+            by: "nre",
           },
   });
   const put = (written: ReturnType<typeof card>): TimedCaptureRow[] => [

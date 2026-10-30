@@ -6,7 +6,7 @@ import { assertClientConfig } from "../../../scripts/verify-package-setup.mjs";
 import { terminalModesRestored } from "../../../scripts/lib/verify-setup-terminal.mjs";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
-const cli = resolve("scripts/rea.mjs");
+const cli = resolve("scripts/nre.mjs");
 
 it("requires positive canonical-input and echo terminal mode tokens", () => {
   expect(terminalModesRestored("speed 38400 baud; icanon echo isig")).toBe(
@@ -24,19 +24,19 @@ it("requires positive canonical-input and echo terminal mode tokens", () => {
 });
 
 it("rejects a backup replaced with the post-setup client configuration", async () => {
-  const directory = await createTestTempDirectory("rea-client-backup-");
+  const directory = await createTestTempDirectory("nre-client-backup-");
   const path = join(directory, "client.json");
   const original = Buffer.from('{"existing":true,"model":"caller"}\n');
   const configured = JSON.stringify({
     existing: true,
     model: "caller",
-    mcpServers: { rea: { command: process.execPath, args: [cli, "mcp"] } },
+    mcpServers: { nre: { command: process.execPath, args: [cli, "mcp"] } },
   });
   await writeFile(path, configured);
-  await writeFile(`${path}.rea.backup`, original);
+  await writeFile(`${path}.nre.backup`, original);
   await assertClientConfig(cli, path, original);
 
-  await writeFile(`${path}.rea.backup`, configured);
+  await writeFile(`${path}.nre.backup`, configured);
   await expect(assertClientConfig(cli, path, original)).rejects.toThrow(
     "packaged client backup failed",
   );
@@ -44,12 +44,12 @@ it("rejects a backup replaced with the post-setup client configuration", async (
 });
 
 it("compares backup bytes even when invalid UTF-8 decodes to the same text", async () => {
-  const directory = await createTestTempDirectory("rea-client-backup-bytes-");
+  const directory = await createTestTempDirectory("nre-client-backup-bytes-");
   const path = join(directory, "client.json");
   const original = Buffer.from('{"existing":true,"note":"\uFFFD"}\n');
   const configured = JSON.stringify({
     existing: true,
-    mcpServers: { rea: { command: process.execPath, args: [cli, "mcp"] } },
+    mcpServers: { nre: { command: process.execPath, args: [cli, "mcp"] } },
   });
   const changed = Buffer.concat([
     Buffer.from('{"existing":true,"note":"'),
@@ -58,7 +58,7 @@ it("compares backup bytes even when invalid UTF-8 decodes to the same text", asy
   ]);
   expect(changed.toString("utf8")).toBe(original.toString("utf8"));
   await writeFile(path, configured);
-  await writeFile(`${path}.rea.backup`, changed);
+  await writeFile(`${path}.nre.backup`, changed);
   await expect(assertClientConfig(cli, path, original)).rejects.toThrow(
     "packaged client backup failed",
   );

@@ -21,7 +21,7 @@ const deferred = () => {
 };
 
 const createArchive = async () => {
-  const root = await createTestTempDirectory("rea-artifact-cleanup-retry-");
+  const root = await createTestTempDirectory("nre-artifact-cleanup-retry-");
   const contents = join(root, "contents");
   await mkdir(contents);
   await writeFile(join(contents, "payload.txt"), "payload\n");

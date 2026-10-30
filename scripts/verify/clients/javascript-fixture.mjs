@@ -3,7 +3,7 @@ import { toolContract } from "../../../dist/contracts/toolContracts.js";
 import { assertJavaScriptApplicationInputPaths } from "../../lib/javascript-application-paths.mjs";
 
 export const CLIENT_JAVASCRIPT_FIXTURE_SOURCE =
-  'export function result() { return { clientCompatibility: "REA_CLIENT_FIXTURE", count: 7 }; }\n';
+  'export function result() { return { clientCompatibility: "NRE_CLIENT_FIXTURE", count: 7 }; }\n';
 
 /** Validate the same analyst result across native client transports. */
 export const assertClientJavaScriptFixtureEvidence = async (
@@ -38,7 +38,7 @@ export const assertClientJavaScriptFixtureEvidence = async (
         (field) =>
           field.path === "/clientCompatibility" &&
           field.state === "literal" &&
-          field.value === "REA_CLIENT_FIXTURE",
+          field.value === "NRE_CLIENT_FIXTURE",
       ),
       "Client must return the fixture's compatibility literal",
     );

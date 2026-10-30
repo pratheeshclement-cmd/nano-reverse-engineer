@@ -9,7 +9,7 @@ const execute = promisify(execFile);
 
 /** Build a source-owned freestanding ELF; never execute its target code. */
 export async function buildPowerPcFixture(directory) {
-  const compiler = process.env.REA_PPC_CLANG ?? "clang";
+  const compiler = process.env.NRE_PPC_CLANG ?? "clang";
   const target = "powerpc-unknown-linux-gnu";
   const source = fileURLToPath(new URL("../c/ppc.c", import.meta.url));
   const probe = fileURLToPath(new URL("./ppc-probe.S", import.meta.url));
@@ -24,7 +24,7 @@ export async function buildPowerPcFixture(directory) {
     "-static",
     "-O0",
     "-g",
-    "-Wl,-e,rea_ppc_entry",
+    "-Wl,-e,nre_ppc_entry",
     "-Wl,--build-id=none",
     source,
     probe,

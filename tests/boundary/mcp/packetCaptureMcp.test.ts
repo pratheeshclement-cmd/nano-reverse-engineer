@@ -49,7 +49,7 @@ it.each(["inspect_packet_capture", "inspect_packet_fields"])(
         code: "capability_unavailable",
         details: {
           operation: tool.name,
-          reason: expect.stringContaining("REA_TSHARK_COMMAND"),
+          reason: expect.stringContaining("NRE_TSHARK_COMMAND"),
         },
       },
     });

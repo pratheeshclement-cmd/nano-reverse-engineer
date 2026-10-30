@@ -23,7 +23,7 @@ class NeverStartedTracer implements NativeCallTracer {
 }
 
 const fixture = async () => {
-  const root = await createTestTempDirectory("rea-native-digest-");
+  const root = await createTestTempDirectory("nre-native-digest-");
   const path = join(root, "fixture");
   await writeFile(path, "selected executable");
   const target = await nativeMachoTargetForFile(path);

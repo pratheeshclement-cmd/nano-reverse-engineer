@@ -26,15 +26,15 @@ if (
   );
 const execute = promisify(execFile);
 const run = createVerifierRun();
-const workspace = await mkdtemp(join(tmpdir(), "rea-mips-shared-proof-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-mips-shared-proof-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,
-  REA_LOG_LEVEL: "silent",
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_PROCESS_RUN_ID: run.run_id,
+  NRE_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_PROCESS_RUN_ID: run.run_id,
   GHIDRA_INSTALL_DIR: process.env.GHIDRA_INSTALL_DIR,
   ...(process.env.JAVA_HOME === undefined
     ? {}
@@ -87,13 +87,13 @@ try {
       }
       const transport = new StdioClientTransport({
         command: process.execPath,
-        args: ["scripts/rea.mjs", "mcp"],
+        args: ["scripts/nre.mjs", "mcp"],
         cwd: process.cwd(),
         env,
         stderr: "pipe",
       });
       const client = new Client({
-        name: "rea-mips16-shared-conformance",
+        name: "nre-mips16-shared-conformance",
         version: "1",
       });
       let stderr = "";
@@ -176,19 +176,19 @@ try {
         const base = BigInt(loaded.observations.image_base);
         const address = (source, clearTag = false) =>
           `0x${(base + (clearTag ? BigInt(source) & ~1n : BigInt(source))).toString(16)}`;
-        const compressed = address(fixture.symbols.rea_mips16_probe, true);
-        const standard = address(fixture.symbols.rea_mips32_probe);
+        const compressed = address(fixture.symbols.nre_mips16_probe, true);
+        const standard = address(fixture.symbols.nre_mips32_probe);
         const procedures = await call("list_procedures");
         assert(
           procedures.some(
             (item) =>
-              item.address === compressed && item.value === "rea_mips16_probe",
+              item.address === compressed && item.value === "nre_mips16_probe",
           ),
         );
         assert(
           procedures.some(
             (item) =>
-              item.address === standard && item.value === "rea_mips32_probe",
+              item.address === standard && item.value === "nre_mips32_probe",
           ),
         );
         let firstInstruction;
@@ -229,7 +229,7 @@ try {
           [null, "0"].includes(standardInstruction.decoder_context[0].value),
         );
         const pointer = await call("read_bytes", {
-          address: address(fixture.symbols.rea_mips16_pointer),
+          address: address(fixture.symbols.nre_mips16_pointer),
           length: 4,
         });
         const pointerBytes = Buffer.from(pointer.bytes_hex, "hex");
@@ -239,7 +239,7 @@ try {
             : pointerBytes.readUInt32BE(0);
         assert.equal(
           BigInt(pointerValue),
-          base + BigInt(fixture.symbols.rea_mips16_probe),
+          base + BigInt(fixture.symbols.nre_mips16_probe),
         );
         const dossier = await call("analyze_function", {
           procedure: compressed,
@@ -282,7 +282,7 @@ try {
         const cli = await execute(
           process.execPath,
           [
-            "scripts/rea.mjs",
+            "scripts/nre.mjs",
             "inspect-native-instruction",
             fixture.path,
             compressed,

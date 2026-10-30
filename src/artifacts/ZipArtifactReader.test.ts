@@ -93,7 +93,7 @@ const holdZipProducerSettlement = () => {
 };
 
 const admittedZip = async () => {
-  const directory = await createTestTempDirectory("rea-zip-short-read-");
+  const directory = await createTestTempDirectory("nre-zip-short-read-");
   const path = join(directory, "valid.zip");
   const content = "Complete ZIP member bytes, including café.";
   const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -117,7 +117,7 @@ const admittedZip = async () => {
 
 describe("ZIP Zstandard method 93", () => {
   const read = async (archive: Buffer): Promise<Buffer> => {
-    const root = await createTestTempDirectory("rea-zip-zstd-");
+    const root = await createTestTempDirectory("nre-zip-zstd-");
     const path = join(root, "method93.zip");
     await writeFile(path, archive);
     const reader = new ZipArtifactReader(path, "zip");
@@ -312,7 +312,7 @@ describe("ZIP Zstandard member streams", () => {
         });
       onTestFinished(() => enumeration.mockRestore());
       const content = randomBytes(512 * 1024);
-      const root = await createTestTempDirectory("rea-zip-zstd-cancel-");
+      const root = await createTestTempDirectory("nre-zip-zstd-cancel-");
       const path = join(root, "method93.zip");
       await writeFile(path, zstandardZipFixture(content));
       const reader = new ZipArtifactReader(path, "zip");
@@ -515,7 +515,7 @@ describe("ZipArtifactReader positional reads", () => {
 });
 
 it("refuses to open ZIP symlink entries even when unixMode is absent", async () => {
-  const directory = await createTestTempDirectory("rea-zip-symlink-open-");
+  const directory = await createTestTempDirectory("nre-zip-symlink-open-");
   const path = join(directory, "symlinks.zip");
   await writeFile(path, await zipSymlinkMetadataFixture());
   const reader = new ZipArtifactReader(path, "zip");
@@ -539,7 +539,7 @@ it("refuses to open ZIP symlink entries even when unixMode is absent", async () 
 
 describe("ZipArtifactReader decompression budget", () => {
   it("refuses an archive whose entries declare more than its size can justify", async () => {
-    const directory = await createTestTempDirectory("rea-zip-budget-bomb-");
+    const directory = await createTestTempDirectory("nre-zip-budget-bomb-");
     // A ~160-byte archive cannot declare 2 GiB of members without being a bomb.
     const path = await writeZipWithDeclaredSize(directory, [2_147_483_647]);
     const reader = new ZipArtifactReader(path, "zip");
@@ -554,7 +554,7 @@ describe("ZipArtifactReader decompression budget", () => {
   });
 
   it("charges all declarations in one traversal before yielding an over-budget member", async () => {
-    const directory = await createTestTempDirectory("rea-zip-budget-total-");
+    const directory = await createTestTempDirectory("nre-zip-budget-total-");
     const half = MINIMUM_ARTIFACT_EXPANDED_BYTES / 2;
     const path = await writeZipWithDeclaredSize(directory, [half, half + 1]);
     const reader = new ZipArtifactReader(path, "zip");
@@ -570,7 +570,7 @@ describe("ZipArtifactReader decompression budget", () => {
 
   it("keeps repeated and interleaved metadata traversals independently charged", async () => {
     const directory = await createTestTempDirectory(
-      "rea-zip-budget-iterators-",
+      "nre-zip-budget-iterators-",
     );
     const path = await writeZipWithDeclaredSize(directory, [
       MINIMUM_ARTIFACT_EXPANDED_BYTES / 2,
@@ -594,7 +594,7 @@ describe("ZipArtifactReader decompression budget", () => {
   });
 
   it("streams a valid small member through open", async () => {
-    const directory = await createTestTempDirectory("rea-zip-budget-valid-");
+    const directory = await createTestTempDirectory("nre-zip-budget-valid-");
     const path = join(directory, "valid.zip");
     const writer = new ZipWriter(new Uint8ArrayWriter());
     await writer.add("member.bin", new TextReader("valid member bytes"));
@@ -615,7 +615,7 @@ describe("ZipArtifactReader decompression budget", () => {
   });
 
   it("rejects under-declared member output before delivering its complete actual bytes", async () => {
-    const directory = await createTestTempDirectory("rea-zip-underdeclared-");
+    const directory = await createTestTempDirectory("nre-zip-underdeclared-");
     const path = join(directory, "underdeclared.zip");
     const content = new Uint8Array(128 * 1024);
     const writer = new ZipWriter(new Uint8ArrayWriter());
@@ -660,7 +660,7 @@ describe("ZipArtifactReader decompression budget", () => {
 it.each([null, { caller: "opaque ZIP interruption" }])(
   "preserves the exact ZIP cancellation reason at enumeration and open: %j",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-zip-cancellation-");
+    const root = await createTestTempDirectory("nre-zip-cancellation-");
     const path = join(root, "fixture.zip");
     await writeOrderedZip(path, ["member.txt"]);
     const reader = new ZipArtifactReader(path, "zip");
@@ -693,7 +693,7 @@ describe("ZipArtifactReader producer ownership", () => {
   it.each(["unread", "abandoned", "cancelled"] as const)(
     "joins late extraction settlement for an %s stream before closing its source",
     async (mode) => {
-      const directory = await createTestTempDirectory("rea-zip-producer-");
+      const directory = await createTestTempDirectory("nre-zip-producer-");
       const path = join(directory, "member.zip");
       const writer = new ZipWriter(new Uint8ArrayWriter());
       await writer.add(
@@ -751,7 +751,7 @@ describe("ZipArtifactReader producer ownership", () => {
   );
 
   it("retires completed buffered output and retries a failed descriptor close", async () => {
-    const directory = await createTestTempDirectory("rea-zip-buffered-close-");
+    const directory = await createTestTempDirectory("nre-zip-buffered-close-");
     const path = join(directory, "small.zip");
     await writeOrderedZip(path, ["member.txt"]);
     const held = holdZipProducerSettlement();
@@ -828,7 +828,7 @@ it("joins an admitted ZIP enumeration before reader close completes", async () =
 });
 
 it("joins a late ZIP producer and closes the source despite an enumeration cleanup failure", async () => {
-  const directory = await createTestTempDirectory("rea-zip-mixed-cleanup-");
+  const directory = await createTestTempDirectory("nre-zip-mixed-cleanup-");
   const path = join(directory, "mixed.zip");
   await writeOrderedZip(path, ["member.txt"]);
   const held = holdZipProducerSettlement();
@@ -915,7 +915,7 @@ it("rejects ZIP carrier mutation while a directory traversal is paused", async (
 });
 
 it("rejects ZIP carrier mutation during member streaming", async () => {
-  const directory = await createTestTempDirectory("rea-zip-stream-mutation-");
+  const directory = await createTestTempDirectory("nre-zip-stream-mutation-");
   const path = join(directory, "stream.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add(

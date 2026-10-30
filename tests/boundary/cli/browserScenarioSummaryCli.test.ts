@@ -33,7 +33,7 @@ it.each([false, true])(
         );
       },
     );
-    const cli = Cli.create("rea-browser-startup-cleanup-test", { sync: false });
+    const cli = Cli.create("nre-browser-startup-cleanup-test", { sync: false });
     let stdout = "";
     registerBrowserScenarioCommands(
       cli,
@@ -97,11 +97,11 @@ it.each([false, true])(
 it.each(["complete", "summary"] as const)(
   "retains complete Evidence on cancellation during CLI cleanup with %s delivery",
   async (detail) => {
-    const root = await createTestTempDirectory("rea-browser-summary-cli-");
+    const root = await createTestTempDirectory("nre-browser-summary-cli-");
     const destination = join(root, "evidence.json");
     const originalExit = process.exitCode;
     const listeners = new Set(process.listeners("SIGINT"));
-    const cli = Cli.create("rea-browser-summary-test", { sync: false });
+    const cli = Cli.create("nre-browser-summary-test", { sync: false });
     let stdout = "";
     let closed = false;
     registerBrowserScenarioCommands(
@@ -171,9 +171,9 @@ it.each(["complete", "summary"] as const)(
 );
 
 it("keeps the provider's cleanup failure and completed Evidence without publishing a summary bundle", async () => {
-  const root = await createTestTempDirectory("rea-browser-summary-cleanup-");
+  const root = await createTestTempDirectory("nre-browser-summary-cleanup-");
   const destination = join(root, "evidence.json");
-  const cli = Cli.create("rea-browser-cleanup-test", { sync: false });
+  const cli = Cli.create("nre-browser-cleanup-test", { sync: false });
   let stdout = "";
   const failure = new ProviderCleanupError(
     "owned-browser",

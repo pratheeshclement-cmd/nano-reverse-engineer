@@ -34,7 +34,7 @@ const serveReplayOnly = async (
   environment: Readonly<Record<string, string>> = {},
   fixture?: EnvironmentServeFixture,
 ) => {
-  const root = await createTestTempDirectory("rea-environment-serve-mcp-");
+  const root = await createTestTempDirectory("nre-environment-serve-mcp-");
   const files = await writeEnvironmentServeFiles(root, fixture);
   const started = await startListeningProcess(
     processes,
@@ -65,7 +65,7 @@ processTest(
     const fixture = environmentStateServeFixture(
       timedCaptureEvidence(INITIAL_TRASH_ROWS),
     );
-    const root = await createTestTempDirectory("rea-environment-trash-mcp-");
+    const root = await createTestTempDirectory("nre-environment-trash-mcp-");
     const files = await writeEnvironmentServeFiles(root, fixture);
     const started = await startListeningProcess(processes, [
       "environment-serve",
@@ -202,7 +202,7 @@ processTest(
   HTTP_BOUNDARY_TIMEOUT_MS,
 );
 
-describe("rea environment-serve --replay-only", () => {
+describe("nre environment-serve --replay-only", () => {
   processTest(
     "lists one tool per manifest tool and replays exact and best-effort records as untrusted target content",
     async ({ processes }) => {
@@ -311,11 +311,11 @@ describe("rea environment-serve --replay-only", () => {
   );
 });
 
-describe("rea environment-serve", () => {
+describe("nre environment-serve", () => {
   processTest(
     "serves read tools from the state it derives from the capture and loads a replacement state through the data plane",
     async ({ processes }) => {
-      const root = await createTestTempDirectory("rea-environment-state-mcp-");
+      const root = await createTestTempDirectory("nre-environment-state-mcp-");
       const fixture = environmentStateServeFixture();
       // Only the manifest and the capture: the server derives the state itself.
       const files = await writeEnvironmentServeFiles(root, fixture);
@@ -366,7 +366,7 @@ describe("rea environment-serve", () => {
             parts: [
               {
                 data: {
-                  rea_state: {
+                  nre_state: {
                     state_evidence_id: string;
                     entities: unknown[];
                   };
@@ -382,10 +382,10 @@ describe("rea environment-serve", () => {
       const current = await rpc("data/get");
       const document = current.result?.parts[0].data;
       // The derived state is the one inspect-analysis-view projects from the capture.
-      expect(document?.rea_state.state_evidence_id).toBe(
+      expect(document?.nre_state.state_evidence_id).toBe(
         fixture.state.evidence_id,
       );
-      expect(document?.rea_state.entities.length).toBeGreaterThan(0);
+      expect(document?.nre_state.entities.length).toBeGreaterThan(0);
       const client = await connect(started.url);
       try {
         const before = await client.callTool({
@@ -401,7 +401,7 @@ describe("rea environment-serve", () => {
             parts: [
               {
                 kind: "data",
-                data: { rea_state: { ...document?.rea_state, entities: [] } },
+                data: { nre_state: { ...document?.nre_state, entities: [] } },
               },
             ],
           }),

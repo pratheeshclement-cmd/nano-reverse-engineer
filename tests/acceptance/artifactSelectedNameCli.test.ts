@@ -16,7 +16,7 @@ cliTest
   .for(["content-addressed-archive", "stored.ipa"])(
   "public APK aliases retain package selection through inspection, projection and extraction from %s",
   async (storedName, { cli }) => {
-    const root = await createTestTempDirectory("rea-selected-apk-cli-");
+    const root = await createTestTempDirectory("nre-selected-apk-cli-");
     const stored = join(root, storedName);
     const selected = join(root, "selected.apk");
     const writer = new ZipWriter(new Uint8ArrayWriter());

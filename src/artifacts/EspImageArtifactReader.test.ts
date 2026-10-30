@@ -24,7 +24,7 @@ const APP = espImage({ segments: ESP32C3_APP_SEGMENTS });
 const SIGNED = signedEspImage(APP, ["rsa", null, "ecdsa-p256"]);
 
 const writeImage = async (bytes: Uint8Array, name = "app.bin") => {
-  const path = join(await createTestTempDirectory("rea-esp-image-"), name);
+  const path = join(await createTestTempDirectory("nre-esp-image-"), name);
   await writeFile(path, bytes);
   return path;
 };
@@ -171,7 +171,7 @@ it("reports truncation and undescribed trailing bytes as coverage", async () => 
 });
 
 it("extracts byte-exact segments that re-inventory as raw files", async () => {
-  const directory = await createTestTempDirectory("rea-esp-extract-");
+  const directory = await createTestTempDirectory("nre-esp-extract-");
   const path = join(directory, "signed.bin");
   await writeFile(path, SIGNED);
   const resourceScope = new ArtifactResourceScope();

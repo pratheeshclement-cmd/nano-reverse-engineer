@@ -45,7 +45,7 @@ describe("resolvePcapTools", () => {
   it.skipIf(process.platform === "win32")(
     "selects the same executable as the packet tools ahead of a relative PATH entry",
     async () => {
-      const root = await createTestTempDirectory("rea-wireshark-shared-");
+      const root = await createTestTempDirectory("nre-wireshark-shared-");
       const decoy = join(root, "relative-decoy");
       const installed = join(root, "installed");
       for (const directory of [decoy, installed]) {
@@ -100,7 +100,7 @@ describe("locateWiresharkTool", () => {
   it.skipIf(process.platform === "win32")(
     "uses the first absolute PATH entry holding an executable regular file",
     async () => {
-      const root = await createTestTempDirectory("rea-wireshark-path-");
+      const root = await createTestTempDirectory("nre-wireshark-path-");
       // An absolute PATH entry that does not exist must be skipped.
       const missingDirectory = join(root, "missing-directory");
       const notExecutable = join(root, "not-executable");
@@ -401,7 +401,7 @@ describe("parseTsharkJsonOutput", () => {
 it.skipIf(process.platform === "win32")(
   "resolves Wireshark tools through native PATH traversal instead of a decoy directory",
   async () => {
-    const root = await createTestTempDirectory("rea-wireshark-native-path-");
+    const root = await createTestTempDirectory("nre-wireshark-native-path-");
     const intended = join(root, "intended");
     await mkdir(join(intended, "nested"), { recursive: true });
     await symlink(join(intended, "nested"), join(root, "alias"));

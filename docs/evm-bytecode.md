@@ -6,8 +6,8 @@ contract investigation, compatibility, audit and CTF showcases use the same
 portable primitive. It does not require an active native binary target.
 
 ```sh
-rea inspect-evm-interface ./runtime.hex hex --json
-rea inspect-evm-interface ./runtime.bin raw --json
+nre inspect-evm-interface ./runtime.hex hex --json
+nre inspect-evm-interface ./runtime.bin raw --json
 ```
 
 ```json
@@ -24,9 +24,9 @@ with the selected path and format reason. Selected-path resolution errors
 issues. Permission, resource, cancellation, provider, and cleanup failures retain
 their distinct classifications.
 The host must already provide util-linux `prlimit`, normally `/usr/bin/prlimit`;
-`REA_EVM_PRLIMIT_COMMAND` can select another absolute executable. REA installs
+`NRE_EVM_PRLIMIT_COMMAND` can select another absolute executable. NRE installs
 no system tools and changes no user configuration. [Upstream provenance and
-license](https://github.com/morluto/rea/blob/main/third_party/evmole/README.md) are packaged.
+license](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/third_party/evmole/README.md) are packaged.
 
 ## Evidence semantics
 
@@ -114,7 +114,7 @@ output to 1 MiB. An owned worker has a 256 MiB JavaScript heap; its profile
 maxima are 3 GiB virtual address space and 30 CPU seconds, with tighter inherited
 limits retained. The worker command deadline is
 `timeout_ms` (default 30000 ms, integer 1 through 2147483647) on the next call,
-or `--timeout-ms` on `rea inspect-evm-interface`. Omission keeps 30000 ms.
+or `--timeout-ms` on `nre inspect-evm-interface`. Omission keeps 30000 ms.
 Those byte, address-space, and CPU ceilings have no runtime override, and
 `timeout_ms` does not raise them. An oversized selected carrier returns a
 non-retryable `resource_constraint` with resource `file-size` and its fixed
@@ -157,7 +157,7 @@ For the independent metadata parser, `npm run verify:solidity:metadata` uses an
 existing caller-selected solc 0.8.30 module:
 
 ```sh
-REA_VERIFY_SOLC_MODULE=/absolute/path/to/solc/index.js npm run verify:solidity:metadata
+NRE_VERIFY_SOLC_MODULE=/absolute/path/to/solc/index.js npm run verify:solidity:metadata
 ```
 
 It compiles the owned fixture with unoptimized, viaIR, content-hash-free and

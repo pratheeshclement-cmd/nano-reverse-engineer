@@ -8,7 +8,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 import { analyzeJavaScriptApplication } from "../../support/javascriptApplicationScope.js";
 
 it("checks caller and canonical paths independently in real JavaScript analysis Evidence", async () => {
-  const root = await createTestTempDirectory("rea-js-client-paths-");
+  const root = await createTestTempDirectory("nre-js-client-paths-");
   const directory = join(root, "app α测试");
   const inputPath = join(root, "selected app");
   await mkdir(directory);

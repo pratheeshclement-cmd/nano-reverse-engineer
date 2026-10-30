@@ -16,7 +16,7 @@ class FakeDocument:
         return "fixture"
 
     def getExecutableFilePath(self):
-        return "/tmp/rea-hopper-facade-fixture"
+        return "/tmp/nre-hopper-facade-fixture"
 
     def getDatabaseFilePath(self):
         return None
@@ -111,7 +111,7 @@ class FakeBlock:
 def load_bridge(path, namespace_updates=None):
     namespace = {
         "__file__": path,
-        "__name__": "rea_hopper_bridge",
+        "__name__": "nre_hopper_bridge",
     }
     if namespace_updates:
         namespace.update(namespace_updates)
@@ -160,8 +160,8 @@ def main():
             "diagnostic_type": bridge["_diagnostic_type"](error),
         }
 
-    bridge["REA_TARGET_PATH"] = "/tmp/rea-hopper-facade-fixture"
-    bridge["REA_OWNS_PROCESS_LIFETIME"] = False
+    bridge["NRE_TARGET_PATH"] = "/tmp/nre-hopper-facade-fixture"
+    bridge["NRE_OWNS_PROCESS_LIFETIME"] = False
     bridge["_configure_hopper_api"](FakeDocumentProvider)
     bridge["_bind_session_document"]()
     current = bridge["_dispatch"]("current_document", {})
@@ -179,7 +179,7 @@ def main():
             "message": str(error),
         }
 
-    bridge["REA_TOKEN"] = "probe-token"
+    bridge["NRE_TOKEN"] = "probe-token"
     FakeDocumentProvider.document.analysis_active = False
     FakeDocumentProvider.current.analysis_active = False
     reference_segment = FakeReferenceSegment()

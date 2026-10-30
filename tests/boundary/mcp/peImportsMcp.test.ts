@@ -36,7 +36,7 @@ mcpTest(
         readOnlyHint: false,
         idempotentHint: true,
       });
-      const root = await createTestTempDirectory("rea-pe-imports-mcp-");
+      const root = await createTestTempDirectory("nre-pe-imports-mcp-");
       const path = join(root, "app.exe");
       await writeFile(path, peImportImage({ bits: 64 }));
       const response = await client.callTool({

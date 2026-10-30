@@ -7,7 +7,7 @@ Native x86 (32-bit) PE support is available on repository main; npm releases
 through 5.0.0 admit x86-64 PE targets on Windows.
 
 Status: experimental Windows x64 support for the read-only P0 boundary. Windows
-package builds bundle native process, filesystem, and DACL controls. REA
+package builds bundle native process, filesystem, and DACL controls. NRE
 uses them automatically when the analyst selects a Ghidra operation; no
 additional permission flag or degraded mode is required.
 
@@ -45,16 +45,16 @@ console-specific cartridge loader, CPU variant, or bank-switching model is
 implied. Run `npm run verify:ghidra:6502` with caller-installed `ca65`/`ld65`
 to check the source-built fixture through real CLI and MCP workflows.
 
-REA does not install or upgrade Ghidra, Java, Python, npm, Node.js, Hopper, or a
+NRE does not install or upgrade Ghidra, Java, Python, npm, Node.js, Hopper, or a
 compiler. The adapter uses the packaged Java `HeadlessScript`; Python and
 PyGhidra are not prerequisites. Users do not build the native addon.
 
-REA selects its packaged bridge scripts by explicit path. Same-named files or
+NRE selects its packaged bridge scripts by explicit path. Same-named files or
 directories in the caller's working directory do not select a different
 script or require users to clean that directory before analysis.
 
 Native DLL analysis preserves the PE shared-library role in the analysis profile.
-REA imports an immutable copy for static analysis; it does not load the library
+NRE imports an immutable copy for static analysis; it does not load the library
 into the analyst process or execute its entry routine. The source-owned DLL
 fixtures have no entry routine or imports and expose two exported functions.
 The same native snapshot, path-admission and cleanup requirements apply to EXEs
@@ -63,17 +63,17 @@ and DLLs.
 ## Configuration
 
 ```powershell
-npm install --global rea-agents
+npm install --global nano-reverse-engineer
 $env:GHIDRA_INSTALL_DIR = "C:\tools\ghidra_12.1.4_PUBLIC"
 $env:JAVA_HOME = "C:\tools\jdk-21"
-$env:REA_ANALYSIS_PROVIDER = "ghidra"
+$env:NRE_ANALYSIS_PROVIDER = "ghidra"
 
-rea doctor --json
-rea providers --json
-rea inspect "C:\fixtures\sample.exe" --provider ghidra --format json
+nre doctor --json
+nre providers --json
+nre inspect "C:\fixtures\sample.exe" --provider ghidra --format json
 ```
 
-`rea doctor` distinguishes installation prerequisites from native artifact or
+`nre doctor` distinguishes installation prerequisites from native artifact or
 OS failures. It checks the Ghidra release, headless launcher, full JDK, x64
 host, and native controls. A missing or mismatched addon requires the matching
 Windows x64 package; changing MCP registration cannot supply that artifact.
@@ -97,7 +97,7 @@ failures remain stable for the process lifetime.
 Other doctor checks, including unconfigured agent integrations, can remain
 unready while Ghidra itself is available.
 
-`rea setup` can register supported agent integrations and the bundled skill.
+`nre setup` can register supported agent integrations and the bundled skill.
 Its existing preview and approval apply to configuration writes. Setup
 preserves valid Ghidra and Java settings even when a separate runtime
 prerequisite is unavailable.
@@ -107,11 +107,11 @@ For MCP, register the resolved Node entry point and the same provider settings:
 ```json
 {
   "mcpServers": {
-    "rea": {
+    "nre": {
       "command": "C:\\tools\\node\\node.exe",
-      "args": ["C:\\tools\\rea\\scripts\\rea.mjs", "mcp"],
+      "args": ["C:\\tools\\nre\\scripts\\nre.mjs", "mcp"],
       "env": {
-        "REA_ANALYSIS_PROVIDER": "ghidra",
+        "NRE_ANALYSIS_PROVIDER": "ghidra",
         "GHIDRA_INSTALL_DIR": "C:\\tools\\ghidra_12.1.4_PUBLIC",
         "JAVA_HOME": "C:\\tools\\jdk-21"
       }
@@ -128,7 +128,7 @@ short default request timeout; the real verification lane allows the existing
 ## Native authority and target identity
 
 The verified boundary excludes SUBST aliases and changing drive-letter/DOS-device
-namespaces. REA does not claim a separate SUBST detector. Mounted-folder entries
+namespaces. NRE does not claim a separate SUBST detector. Mounted-folder entries
 that expose reparse tags fail component admission; broader namespace variants
 have not been established by this lane. Requested paths, final handle paths,
 volume serials, and file IDs remain separate observations.
@@ -166,7 +166,7 @@ ARM or ARM64 instructions. ARM64 EXE file-offset verification includes ambiguous
 mappings; the single-section ARM32 DLL cannot exercise that case.
 
 The runs used two logical CPUs, 512 MiB Node/JVM heaps, a 900-second startup
-budget, and an explicit `REA_GHIDRA_DISABLED_ANALYZERS=WindowsResourceReference`
+budget, and an explicit `NRE_GHIDRA_DISABLED_ANALYZERS=WindowsResourceReference`
 test configuration. Default-analyzer runs exceeded the selected startup budget;
 resource-reference analysis and default-configuration completion are not
 established by these results. A Microsoft-signed Coreinfo ARM64 application also
@@ -238,7 +238,7 @@ private runtime files; crash-time transactional deletion is not claimed.
 
 ## Verification
 
-See [native controls](https://github.com/morluto/rea/blob/main/native/windows/README.md) for the separate artifact
+See [native controls](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/native/windows/README.md) for the separate artifact
 build lane and native boundary checks. Development tarballs without the built
 artifact report native controls unavailable; publishing requires the verified
 artifact and manifest.
@@ -254,7 +254,7 @@ npm run verify:ghidra:windows -- --arm64 --dll
 npm run verify:ghidra:windows:package -- --x86
 npm run verify:ghidra:windows:package -- --dll
 npm run verify:ghidra:windows:package -- --x86 --dll
-npm run verify:ghidra:windows:package -- C:\fixtures\installed-rea C:\fixtures\sample.exe
+npm run verify:ghidra:windows:package -- C:\fixtures\installed-nre C:\fixtures\sample.exe
 ```
 
 The package lane must run with an ordinary, non-elevated user token. It exercises

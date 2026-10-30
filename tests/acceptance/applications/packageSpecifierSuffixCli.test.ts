@@ -38,35 +38,35 @@ const encodedDotSpecifiers = ["\t", "\n", "\r"].flatMap((control) => [
 
 const requests = [
   {
-    specifier: "rea-self-fixture",
+    specifier: "nre-self-fixture",
     target: "root.cjs",
     status: "resolved",
     value: 11,
     error: null,
   },
   {
-    specifier: "rea-self-fixture/feature",
+    specifier: "nre-self-fixture/feature",
     target: "feature.cjs",
     status: "resolved",
     value: 22,
     error: null,
   },
   {
-    specifier: "rea-self-fixture/feature?cache=1",
+    specifier: "nre-self-fixture/feature?cache=1",
     target: "punctuated.cjs",
     status: "resolved",
     value: 33,
     error: null,
   },
   {
-    specifier: "rea-self-fixture/feature?cache=2",
+    specifier: "nre-self-fixture/feature?cache=2",
     target: null,
     status: "external",
     value: null,
     error: "ERR_PACKAGE_PATH_NOT_EXPORTED",
   },
   {
-    specifier: "rea-self-fixture/feature#entry",
+    specifier: "nre-self-fixture/feature#entry",
     target: null,
     status: "external",
     value: null,
@@ -230,7 +230,7 @@ const createPackageSpecifierFixture = async (): Promise<{
   readonly root: string;
   readonly source: string;
 }> => {
-  const root = await createTestTempDirectory("rea-package-specifier-suffix-");
+  const root = await createTestTempDirectory("nre-package-specifier-suffix-");
   const packagePath = join(root, "node_modules", "fixture");
   const legacyPackagePath = join(root, "node_modules", "legacy");
   await Promise.all([
@@ -240,7 +240,7 @@ const createPackageSpecifierFixture = async (): Promise<{
   await writeFile(
     join(root, "package.json"),
     JSON.stringify({
-      name: "rea-self-fixture",
+      name: "nre-self-fixture",
       exports: {
         ".": { import: "./root.cjs", require: "./require.cjs" },
         "./feature": { import: "./feature.cjs", require: "./require.cjs" },
@@ -380,24 +380,24 @@ cliTest.for(["CLI", "stdio MCP"] as const)(
 cliTest.for(["CLI", "stdio MCP"] as const)(
   "confines legacy package traversal before URL normalization through %s",
   async (surface, { cli }) => {
-    const root = await createTestTempDirectory("rea-package-root-traversal-");
+    const root = await createTestTempDirectory("nre-package-root-traversal-");
     const cases = [
       { specifier: "legacy/../../outside.js", status: "resolved" },
       {
-        specifier: "legacy/../../outside.js?cache=/../../rea-artifact/#/..",
+        specifier: "legacy/../../outside.js?cache=/../../nre-artifact/#/..",
         status: "resolved",
       },
       { specifier: "legacy//../../../outside.js", status: "resolved" },
       {
-        specifier: "legacy/../../../rea-artifact/outside.js",
+        specifier: "legacy/../../../nre-artifact/outside.js",
         status: "rejected",
       },
       {
-        specifier: "legacy/../../../../rea-artifact/outside.js",
+        specifier: "legacy/../../../../nre-artifact/outside.js",
         status: "rejected",
       },
       {
-        specifier: "legacy/../.\t./.\n./rea-artifact/outside.js?cache=1#entry",
+        specifier: "legacy/../.\t./.\n./nre-artifact/outside.js?cache=1#entry",
         status: "rejected",
       },
     ] as const;

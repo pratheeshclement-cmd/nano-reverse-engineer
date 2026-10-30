@@ -48,13 +48,13 @@ const refusal = (value: unknown, from = source) => {
 };
 
 interface Editable {
-  rea_state: Record<string, unknown> & {
+  nre_state: Record<string, unknown> & {
     entities: Record<string, unknown>[];
     documents: unknown[];
   };
 }
 
-/** The served state as a rea-state/v1 document, changed by `edit`. */
+/** The served state as a nre-state/v1 document, changed by `edit`. */
 const documentWith = (edit: (document: Editable) => void): Editable => {
   const document = structuredClone(
     new EnvironmentStateStore(state).snapshot(),
@@ -385,10 +385,10 @@ describe("admitServedState", () => {
 });
 
 describe("EnvironmentStateStore", () => {
-  it("reports its state as rea-state/v1, accepts that report back and resets to the initial state", () => {
+  it("reports its state as nre-state/v1, accepts that report back and resets to the initial state", () => {
     const store = new EnvironmentStateStore(state);
     const initial = store.snapshot();
-    expect(initial.rea_state).toMatchObject({
+    expect(initial.nre_state).toMatchObject({
       version: 1,
       state_evidence_id: state.evidenceId,
       types: state.types,
@@ -397,11 +397,11 @@ describe("EnvironmentStateStore", () => {
     });
     expect(store.replace(structuredClone(initial)).ok).toBe(true);
     const emptied = store.replace({
-      rea_state: { version: 1, entities: [], documents: [] },
+      nre_state: { version: 1, entities: [], documents: [] },
     });
     expect(emptied.ok).toBe(true);
     expect(store.entity("/api/users", "/api/users", "2")).toBeUndefined();
-    expect(store.snapshot().rea_state.entities).toEqual([]);
+    expect(store.snapshot().nre_state.entities).toEqual([]);
     store.reset();
     expect(store.snapshot()).toEqual(initial);
     expect(store.entity("/api/users", "/api/users", "2")).toMatchObject({
@@ -416,7 +416,7 @@ describe("EnvironmentStateStore", () => {
     );
     expect(
       store.replace({
-        rea_state: {
+        nre_state: {
           version: 1,
           entities: [...folders].reverse(),
           documents: [],
@@ -441,7 +441,7 @@ describe("EnvironmentStateStore", () => {
     expect(
       store.replace(
         documentWith((document) => {
-          for (const entity of document.rea_state.entities) {
+          for (const entity of document.nre_state.entities) {
             if (entity.type !== "/api/users") delete entity.record_ordinals;
             else if (entity.id === "2")
               entity.fields = { ...(entity.fields as object), login: "edited" };
@@ -449,7 +449,7 @@ describe("EnvironmentStateStore", () => {
         }),
       ).ok,
     ).toBe(true);
-    const { entities } = store.snapshot().rea_state;
+    const { entities } = store.snapshot().nre_state;
     expect(user(entities)).toMatchObject({
       fields: { login: "edited" },
       record_ordinals: [],
@@ -464,11 +464,11 @@ describe("EnvironmentStateStore", () => {
     expect(
       firstProblem(
         documentWith((document) => {
-          document.rea_state.entities[index]!.record_ordinals = [424242];
+          document.nre_state.entities[index]!.record_ordinals = [424242];
         }),
       ),
     ).toEqual({
-      path: `rea_state/entities/${String(index)}/record_ordinals`,
+      path: `nre_state/entities/${String(index)}/record_ordinals`,
       message:
         "cites records the served Evidence does not cite for this entity",
     });
@@ -479,8 +479,8 @@ describe("EnvironmentStateStore", () => {
     const before = store.snapshot();
     const refused = store.replace(
       documentWith((document) => {
-        document.rea_state.entities = [];
-        document.rea_state.documents.push({ tool: "get_users_by_id" });
+        document.nre_state.entities = [];
+        document.nre_state.documents.push({ tool: "get_users_by_id" });
       }),
     );
     expect(refused.ok).toBe(false);
@@ -489,10 +489,10 @@ describe("EnvironmentStateStore", () => {
 
   it("refuses a document that data/get would write back past what data/add loads", () => {
     const store = new EnvironmentStateStore(state);
-    const { rea_state: held } = store.snapshot();
+    const { nre_state: held } = store.snapshot();
     // Without the members data/get adds back, the document fits only until they return.
     const document = {
-      rea_state: {
+      nre_state: {
         version: held.version,
         entities: held.entities.map(({ type, collection, id, fields }) => ({
           type,
@@ -503,7 +503,7 @@ describe("EnvironmentStateStore", () => {
         documents: held.documents,
       },
     };
-    const entity = document.rea_state.entities[0]!;
+    const entity = document.nre_state.entities[0]!;
     const { fields } = entity;
     const idField = state.types.find(
       (type) => type.collection_template === entity.type,
@@ -534,18 +534,18 @@ describe("caller-owned state replacement", () => {
   it("does not retain mutable data from a caller-owned replacement", () => {
     const store = new EnvironmentStateStore(state);
     const document = documentWith((value) => {
-      const entity = value.rea_state.entities.find((item) => item.id === "2");
+      const entity = value.nre_state.entities.find((item) => item.id === "2");
       if (!entity) throw new Error("Expected the user entity");
       entity.fields = { ...(entity.fields as object), login: "renamed" };
     });
     expect(store.replace(document).ok).toBe(true);
-    const callerEntity = document.rea_state.entities.find(
+    const callerEntity = document.nre_state.entities.find(
       (entity) => entity.id === "2",
     );
     if (!callerEntity) throw new Error("Expected the caller's user entity");
     (callerEntity.fields as Record<string, unknown>).login = "later edit";
 
-    expect(store.snapshot().rea_state.entities).toContainEqual(
+    expect(store.snapshot().nre_state.entities).toContainEqual(
       expect.objectContaining({
         id: "2",
         fields: expect.objectContaining({ login: "renamed" }),
@@ -554,69 +554,69 @@ describe("caller-owned state replacement", () => {
   });
 });
 
-describe("rea-state/v1 validation", () => {
+describe("nre-state/v1 validation", () => {
   it.each([
     [
       "an unknown type",
       (document: Editable) => {
-        document.rea_state.entities[0]!.type = "/api/unknown";
+        document.nre_state.entities[0]!.type = "/api/unknown";
       },
-      "rea_state/entities/0/type",
+      "nre_state/entities/0/type",
     ],
     [
       "a collection outside its template",
       (document: Editable) => {
-        document.rea_state.entities[3]!.collection = "/api/folders/extra";
+        document.nre_state.entities[3]!.collection = "/api/folders/extra";
       },
-      "rea_state/entities/3/collection",
+      "nre_state/entities/3/collection",
     ],
     [
       "an id its identity field does not carry",
       (document: Editable) => {
-        document.rea_state.entities[2]!.id = "other";
+        document.nre_state.entities[2]!.id = "other";
       },
-      "rea_state/entities/2/id",
+      "nre_state/entities/2/id",
     ],
     [
       "a repeated key",
       (document: Editable) => {
-        document.rea_state.entities.push(document.rea_state.entities[0]!);
+        document.nre_state.entities.push(document.nre_state.entities[0]!);
       },
-      `rea_state/entities/${String(state.entities.length)}/id`,
+      `nre_state/entities/${String(state.entities.length)}/id`,
     ],
     [
       "view values for a view of another type",
       (document: Editable) => {
-        document.rea_state.entities[2]!.view_fields = [
+        document.nre_state.entities[2]!.view_fields = [
           { tool: "get_users_by_id", fields: {} },
         ];
       },
-      "rea_state/entities/2/view_fields/0/tool",
+      "nre_state/entities/2/view_fields/0/tool",
     ],
     [
       "a document for a tool that is not a document view",
       (document: Editable) => {
-        document.rea_state.documents.push({
+        document.nre_state.documents.push({
           tool: "get_folders",
           path: "/api/folders",
           value: {},
         });
       },
-      `rea_state/documents/${String(state.documents.length)}/tool`,
+      `nre_state/documents/${String(state.documents.length)}/tool`,
     ],
     [
       "a member the format does not define",
       (document: Editable) => {
-        document.rea_state.entities[1]!.secret = "never echoed";
+        document.nre_state.entities[1]!.secret = "never echoed";
       },
-      "rea_state/entities/1",
+      "nre_state/entities/1",
     ],
     [
       "another state's Evidence id",
       (document: Editable) => {
-        document.rea_state.state_evidence_id = "ev_other";
+        document.nre_state.state_evidence_id = "ev_other";
       },
-      "rea_state/state_evidence_id",
+      "nre_state/state_evidence_id",
     ],
   ])("names the first problem of %s by its path", (_, edit, path) => {
     const problem = firstProblem(documentWith(edit));
@@ -630,13 +630,13 @@ describe("rea-state/v1 validation", () => {
     );
     const withView = (fields: Record<string, unknown>) =>
       documentWith((document) => {
-        document.rea_state.entities[index]!.view_fields = [
+        document.nre_state.entities[index]!.view_fields = [
           { tool: "get_users_by_id", fields },
         ];
       });
     for (const id of [3, "3", null])
       expect(firstProblem(withView({ id, login: "other" }))).toEqual({
-        path: `rea_state/entities/${String(index)}/view_fields/0/fields`,
+        path: `nre_state/entities/${String(index)}/view_fields/0/fields`,
         message:
           "sets the type's id field to a value other than the entity's id",
       });
@@ -651,35 +651,35 @@ describe("rea-state/v1 validation", () => {
     const marker = Symbol("not exact JSON");
     const problem = firstProblem(
       documentWith((document) => {
-        document.rea_state.entities[0]!.fields = {
-          ...(document.rea_state.entities[0]!.fields as object),
+        document.nre_state.entities[0]!.fields = {
+          ...(document.nre_state.entities[0]!.fields as object),
           "caller-named": marker,
         };
       }),
     );
     expect(problem).toEqual({
-      path: "rea_state/entities/0/fields",
+      path: "nre_state/entities/0/fields",
       message: "holds a value that is not exactly representable JSON",
     });
     for (const types of [[marker], [{ "caller-secret-key": marker }]])
       expect(
         firstProblem(
           documentWith((document) => {
-            document.rea_state.types = types;
+            document.nre_state.types = types;
           }),
         ),
       ).toEqual({
-        path: "rea_state/types",
+        path: "nre_state/types",
         message: "holds a value that is not exactly representable JSON",
       });
     expect(
       firstProblem(
         documentWith((document) => {
-          document.rea_state.types = [];
+          document.nre_state.types = [];
         }),
       ),
     ).toEqual({
-      path: "rea_state/types",
+      path: "nre_state/types",
       message: "differs from the served types",
     });
     const prototypeMember = () =>
@@ -692,14 +692,14 @@ describe("rea-state/v1 validation", () => {
         ),
       );
     expect(prototypeMember()).toEqual({
-      path: "rea_state/entities/0",
-      message: "has a member rea-state/v1 does not define",
+      path: "nre_state/entities/0",
+      message: "has a member nre-state/v1 does not define",
     });
 
     expect(firstProblem([])).toMatchObject({ path: "" });
     expect(
-      firstProblem({ rea_state: { version: 2, entities: [], documents: [] } }),
-    ).toMatchObject({ path: "rea_state/version" });
+      firstProblem({ nre_state: { version: 2, entities: [], documents: [] } }),
+    ).toMatchObject({ path: "nre_state/version" });
   });
 });
 
@@ -713,11 +713,11 @@ describe("wide state value validation", () => {
       ]),
     );
     const document = documentWith((value) => {
-      const fields = value.rea_state.entities[0]!.fields as Record<
+      const fields = value.nre_state.entities[0]!.fields as Record<
         string,
         unknown
       >;
-      value.rea_state.entities[0]!.fields = {
+      value.nre_state.entities[0]!.fields = {
         ...fields,
         caller_wide: wide,
         caller_wide_object: wideObject,
@@ -726,12 +726,12 @@ describe("wide state value validation", () => {
     const store = new EnvironmentStateStore(state);
 
     expect(store.replace(document).ok).toBe(true);
-    const retained = store.snapshot().rea_state.entities[0]?.fields.caller_wide;
+    const retained = store.snapshot().nre_state.entities[0]?.fields.caller_wide;
     if (!Array.isArray(retained)) throw new Error("Expected the wide value");
     expect(retained).toHaveLength(wide.length);
     expect(retained.at(-1)).toBe(wide.at(-1));
     const retainedObject =
-      store.snapshot().rea_state.entities[0]?.fields.caller_wide_object;
+      store.snapshot().nre_state.entities[0]?.fields.caller_wide_object;
     expect(retainedObject).toEqual(wideObject);
   });
 });
@@ -741,10 +741,10 @@ it("retains arbitrary dictionary keys and owned JSON references at state intake"
     '{"__proto__":{"constructor":{"prototype":"kept"}},"constructor":7,"prototype":8}',
   );
   const document = documentWith((value) => {
-    const entity = value.rea_state.entities[0]!;
+    const entity = value.nre_state.entities[0]!;
     entity.fields = { ...(entity.fields as object), ...dictionary };
   });
-  const entity = document.rea_state.entities[0]!;
+  const entity = document.nre_state.entities[0]!;
   const fields = entity.fields;
   const owned = parseStateDocument(state, document, true);
   expect(owned.ok).toBe(true);
@@ -771,13 +771,13 @@ it.each(["__proto__", "constructor", "prototype"])(
     const document = documentWith(() => undefined);
     const structures = [
       document,
-      document.rea_state,
-      document.rea_state.entities[0]!,
+      document.nre_state,
+      document.nre_state.entities[0]!,
     ];
     const view = { tool: "fixture", fields: {} };
-    document.rea_state.entities[0]!.view_fields = [view];
+    document.nre_state.entities[0]!.view_fields = [view];
     const held = { tool: "fixture", path: "/fixture", value: {} };
-    document.rea_state.documents = [held];
+    document.nre_state.documents = [held];
     structures.push(view, held);
     for (const structure of structures) {
       Object.defineProperty(structure, key, {
@@ -786,7 +786,7 @@ it.each(["__proto__", "constructor", "prototype"])(
         enumerable: true,
       });
       expect(firstProblem(document).message).toBe(
-        "has a member rea-state/v1 does not define",
+        "has a member nre-state/v1 does not define",
       );
       Reflect.deleteProperty(structure, key);
     }
@@ -795,10 +795,10 @@ it.each(["__proto__", "constructor", "prototype"])(
 
 it("keeps missing fields distinct from invalid JSON field contents", () => {
   const document = documentWith((value) => {
-    Reflect.deleteProperty(value.rea_state.entities[0]!, "fields");
+    Reflect.deleteProperty(value.nre_state.entities[0]!, "fields");
   });
   expect(firstProblem(document)).toEqual({
-    path: "rea_state/entities/0/fields",
+    path: "nre_state/entities/0/fields",
     message: "is required",
   });
 });

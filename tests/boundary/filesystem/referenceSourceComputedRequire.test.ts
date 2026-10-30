@@ -40,7 +40,7 @@ const memberFixtures = [
 }));
 
 it("distinguishes computed require member values from literal members in source evidence", async () => {
-  const root = await createTestTempDirectory("rea-reference-require-members-");
+  const root = await createTestTempDirectory("nre-reference-require-members-");
   const ignoredSources = [
     'require[resolve]("./dep.js");',
     'require[main]("./dep.js");',

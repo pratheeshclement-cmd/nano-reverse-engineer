@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Initial-Translation: Machine-assisted baseline; see website/locales/NreDME.md for review workflow\n"
+"X-Initial-Translation: Machine-assisted baseline; see website/locales/README.md for review workflow\n"
 
 #: website/public/blog/index.html:111
 msgctxt "page:blog/index.html"
@@ -54,7 +54,7 @@ msgstr ""
 
 #: website/public/blog/index.html:214 website/public/blog/index.html:229
 msgctxt "page:blog/index.html"
-msgid "Nred the article"
+msgid "Read the article"
 msgstr "글 읽기"
 
 #: website/public/blog/index.html:232
@@ -773,11 +773,11 @@ msgstr "재구성을 바라보는 두 가지 관점"
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"GensokyoClub's {ph0}public NreDME{ph1} makes its disagreement with this kind"
+"GensokyoClub's {ph0}public README{ph1} makes its disagreement with this kind"
 " of work explicit. The notice announces that further development will happen"
 " privately until completion. One passage Nreds:"
 msgstr ""
-"GensokyoClub의 {ph0}공개 NreDME{ph1}는 이런 작업 방식에 반대한다는 입장을 명시합니다. 해당 공지는 작업이 완성될"
+"GensokyoClub의 {ph0}공개 README{ph1}는 이런 작업 방식에 반대한다는 입장을 명시합니다. 해당 공지는 작업이 완성될"
 " 때까지 추가 개발을 비공개로 진행한다고 알립니다. 한 구절은 다음과 같습니다:"
 
 #: website/public/blog/touhou-reconstruction/index.html:554
@@ -870,7 +870,7 @@ msgstr ""
 " 방식으로 어디까지 갈 수 있는지 살펴보고, 도중에 생기는 실패에서도 배울 수 있습니다."
 
 #. {ph0}: <a
-#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/NreDME.md#important-
+#. href="https://github.com/GensokyoClub/th08/blob/e874b98e210b3be1ed21c5e03d54b883eac5069c/README.md#important-
 #. notice" >
 #. {ph1}: </a >
 #. {ph2}: <a
@@ -878,18 +878,18 @@ msgstr ""
 #. >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/NreDME.md#credits-
+#. href="https://github.com/N0zoM1z0/th08/blob/d2a00f4acb4a13916e07a00bd13f714961714628/README.md#credits-
 #. and-provenance" >
 #. {ph5}: </a >
 #: website/public/blog/touhou-reconstruction/index.html:608
 #, python-brace-format
 msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
-"Source: GensokyoClub's {ph0}NreDME notice{ph1}, checked on 10 October 2026, "
+"Source: GensokyoClub's {ph0}README notice{ph1}, checked on 10 October 2026, "
 "and its {ph2}contribution policy{ph3}. The quotation is a shortened excerpt."
 " TH08's {ph4}credits and provenance{ph5} record the continuation boundary."
 msgstr ""
-"출처: 2026년 10월 10일에 확인한 GensokyoClub의 {ph0}NreDME 공지{ph1}와 {ph2}기여 정책{ph3}. "
+"출처: 2026년 10월 10일에 확인한 GensokyoClub의 {ph0}README 공지{ph1}와 {ph2}기여 정책{ph3}. "
 "인용문은 일부를 줄여 발췌했습니다. TH08의 {ph4}공로 및 출처 기록{ph5}에는 후속 작업이 시작된 경계가 기록되어 있습니다."
 
 #: website/public/blog/touhou-reconstruction/index.html:626
@@ -1324,7 +1324,7 @@ msgctxt "page:blog/touhou-reconstruction/index.html"
 msgid ""
 "The TH08 bug shows why those checks deserve engineering attention of their "
 "own. When the same comparison is used across hundreds of functions, a gap in"
-" it can spNred much further than a mistake in one implementation. Testing "
+" it can spRead much further than a mistake in one implementation. Testing "
 "the checker improves the feedback available to all that later work."
 msgstr ""
 "TH08 버그는 검증 도구 자체에도 공학적 노력이 필요한 이유를 보여줍니다. 수백 개의 함수에 같은 비교를 적용하면, 검사의 허점은 개별"
@@ -1732,7 +1732,7 @@ msgstr "{ph0}플레이하며 속도 바꾸기{ph1}"
 #: website/public/examples/dino-lab/index.html:219
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Nred the recovered rule{ph1}"
+msgid "{ph0}Read the recovered rule{ph1}"
 msgstr "{ph0}복구한 규칙 읽기{ph1}"
 
 #. {ph0}: <a href="#check">
@@ -1815,7 +1815,7 @@ msgstr "게임을 플레이하려면 JavaScript를 켜세요. 위의 코드와 �
 
 #: website/public/examples/dino-lab/index.html:302
 msgctxt "page:examples/dino-lab/index.html"
-msgid "Nred the script Nre returned"
+msgid "Read the script Nre returned"
 msgstr "Nre가 반환한 스크립트 읽기"
 
 #. {ph0}: <a href="https://wayou.github.io/t-rex-runner/" >
@@ -1872,7 +1872,7 @@ msgstr ""
 #: website/public/examples/dino-lab/index.html:349
 #, python-brace-format
 msgctxt "page:examples/dino-lab/index.html"
-msgid "{ph0}Download the speed rule{ph1} · {ph2}Nred the game code{ph3}"
+msgid "{ph0}Download the speed rule{ph1} · {ph2}Read the game code{ph3}"
 msgstr "{ph0}속도 규칙 다운로드{ph1} · {ph2}게임 코드 읽기{ph3}"
 
 #: website/public/examples/dino-lab/index.html:357
@@ -2014,7 +2014,7 @@ msgstr "Chrome 공룡 게임: 속도 규칙 재현 — Nre"
 #: website/public/examples/dino-lab/index.html:7
 msgctxt "page:examples/dino-lab/index.html"
 msgid ""
-"Nred the dinosaur game’s speed rule with Nre, rebuild it, then change the "
+"Read the dinosaur game’s speed rule with Nre, rebuild it, then change the "
 "speed and play."
 msgstr "Nre로 공룡 게임의 속도 규칙을 읽고 재현한 다음, 속도를 바꿔 플레이해 보세요."
 
@@ -2518,7 +2518,7 @@ msgstr ""
 "있습니다."
 
 # Reviewed for Nredable instructions and accurate software terminology.
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/faq/index.html:517
 #, python-brace-format
@@ -2555,9 +2555,9 @@ msgid "How can I share an example or contribute?"
 msgstr "사례를 공유하거나 기여하려면 어떻게 하나요?"
 
 # Reviewed for Nredable instructions and accurate software terminology.
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/pulls">
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/pulls">
 #. {ph3}: </a >
 #: website/public/faq/index.html:543
 #, python-brace-format
@@ -2837,7 +2837,7 @@ msgstr "버튼에서 파일 저장 코드까지"
 msgctxt "page:first-investigation/index.html"
 msgid ""
 "Nre’s static analysis pairs the message with its handler. The destination is"
-" Nred from code."
+" Read from code."
 msgstr "Nre의 정적 분석은 메시지와 핸들러를 연결합니다. 저장 위치는 코드에서 확인합니다."
 
 #: website/public/first-investigation/index.html:389
@@ -2926,7 +2926,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:first-investigation/index.html"
 msgid ""
-"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Nred the original "
+"{ph0}How DX-Ball calculates sound panning{ph1}{ph2}Read the original "
 "instructions and the reconstruction’s checks.{ph3}"
 msgstr ""
 "{ph0}DX-Ball이 사운드 패닝을 계산하는 방법{ph1}{ph2}원본 명령어와 재구성판의 검증 과정을 살펴보세요.{ph3}"
@@ -3478,7 +3478,7 @@ msgid ""
 " Electron app and a browser.{ph3}"
 msgstr "{ph0}분석 가이드 선택{ph1}{ph2}바이너리, Electron 앱, 브라우저의 실제 분석 예제입니다.{ph3}"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues">
 #. {ph1}: </a >
 #. {ph2}: <span>
 #. {ph3}: </span>
@@ -3648,7 +3648,7 @@ msgstr "{ph0}CLI에서 캡처하기{ph1}"
 #: website/public/guides/browser/index.html:219
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
-msgid "{ph0}Nred the request and script{ph1}"
+msgid "{ph0}Read the request and script{ph1}"
 msgstr "{ph0}요청 및 스크립트 읽기{ph1}"
 
 #: website/public/guides/browser/index.html:224
@@ -3721,7 +3721,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:guides/browser/index.html"
 msgid ""
-"{ph0}03 · Your agent{ph1}{ph2}Nred the export code{ph3}{ph4}Connect the "
+"{ph0}03 · Your agent{ph1}{ph2}Read the export code{ph3}{ph4}Connect the "
 "observed request to {ph5} in {ph6}.{ph7}"
 msgstr ""
 "{ph0}03 · 코딩 에이전트{ph1}{ph2}내보내기 코드 읽기{ph3}{ph4}관찰된 요청을 {ph6}의 {ph5} 호출과 "
@@ -3881,7 +3881,7 @@ msgstr ""
 
 #: website/public/guides/browser/index.html:390
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the request and export script"
+msgid "Read the request and export script"
 msgstr "요청 및 내보내기 스크립트 읽기"
 
 #: website/public/guides/browser/index.html:393
@@ -3937,7 +3937,7 @@ msgstr "{ph1}과 {ph2} 필드가 있는 {ph0}"
 
 #: website/public/guides/browser/index.html:427
 msgctxt "page:guides/browser/index.html"
-msgid "Nred the loaded scripts"
+msgid "Read the loaded scripts"
 msgstr "로드된 스크립트 읽기"
 
 #. {ph0}: <code>export.js</code>
@@ -3946,7 +3946,7 @@ msgstr "로드된 스크립트 읽기"
 msgctxt "page:guides/browser/index.html"
 msgid ""
 "The request identifies the data source, and Nre records {ph0} as its "
-"initiator. Nred the captured script source to see how the data is used:"
+"initiator. Read the captured script source to see how the data is used:"
 msgstr ""
 "요청으로 데이터 출처를 확인할 수 있으며, Nre는 {ph0}을 요청 시작 지점으로 기록합니다. 캡처한 스크립트에서 데이터 사용 방식을 "
 "확인하세요:"
@@ -4027,7 +4027,7 @@ msgstr "다음 10초 캡처 명령 복사"
 
 #: website/public/guides/browser/index.html:428
 msgctxt "page:guides/browser/index.html"
-msgid "Copy Nred the loaded scripts"
+msgid "Copy Read the loaded scripts"
 msgstr "로드된 스크립트 읽기 명령 복사"
 
 #: website/public/guides/browser/index.html:516
@@ -4094,7 +4094,7 @@ msgstr "왼쪽/오른쪽 사운드 위치 계산 복구"
 msgctxt "page:guides/index.html"
 msgid ""
 "Start with a Windows game executable. Inspect instructions, follow a caller,"
-" Nred numeric constants and check the recovered C."
+" Read numeric constants and check the recovered C."
 msgstr ""
 "Windows 게임 실행 파일로 시작합니다. 명령어와 호출 함수를 추적하고 숫자 상수를 읽은 뒤, 복구한 C 코드를 검증합니다."
 
@@ -4261,7 +4261,7 @@ msgctxt "page:guides/javascript/index.html"
 msgid ""
 "This guide uses a small Electron app. Clicking {ph0}Export notes{ph1} calls "
 "an API in the page, crosses into the main process, and writes a CSV. The "
-"behavior is spNred across several files."
+"behavior is spRead across several files."
 msgstr ""
 "이 가이드는 작은 Electron 앱을 사용합니다. {ph0}노트 내보내기{ph1}를 클릭하면 페이지의 API가 호출되고, 메인 "
 "프로세스를 거쳐 CSV 파일이 기록됩니다. 이 동작은 여러 파일에 걸쳐 구현되어 있습니다."
@@ -4654,7 +4654,7 @@ msgstr "{ph0}에이전트에게 질문하기{ph1}"
 #: website/public/guides/native/index.html:216
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
-msgid "{ph0}Nred the Nre results{ph1}"
+msgid "{ph0}Read the Nre results{ph1}"
 msgstr "{ph0}Nre 결과 읽기{ph1}"
 
 #. {ph0}: <a href="#result">
@@ -4754,7 +4754,7 @@ msgstr "{ph0}주소:{ph1} 프로그램 안의 위치로, {ph2}처럼 16진수로
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}Constants:{ph1} fixed numbers stored in the program, Nred as raw bytes "
+"{ph0}Constants:{ph1} fixed numbers stored in the program, Read as raw bytes "
 "and decoded."
 msgstr "{ph0}상수:{ph1} 프로그램에 저장된 고정 숫자입니다. 원시 바이트를 읽어 값으로 해석합니다."
 
@@ -4773,7 +4773,7 @@ msgstr "세 가지 증거, 하나의 계산"
 #, python-brace-format
 msgctxt "page:guides/native/index.html"
 msgid ""
-"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Nred "
+"{ph0}01 · Instructions{ph1}{ph2}An integer input{ph3}{ph4}A stack Read "
 "supplies the value used by the floating-point instructions.{ph5}"
 msgstr ""
 "{ph0}01 · 명령어{ph1}{ph2}정수 입력{ph3}{ph4}스택에서 읽은 값이 부동 소수점 명령어의 입력으로 쓰입니다.{ph5}"
@@ -4845,7 +4845,7 @@ msgstr "어떤 분석 도구를 쓰면 되나요?"
 
 #: website/public/guides/native/index.html:314
 msgctxt "page:guides/native/index.html"
-msgid "Nre needs one of these to Nred native programs:"
+msgid "Nre needs one of these to Read native programs:"
 msgstr "Nre로 네이티브 프로그램을 읽으려면 다음 중 하나가 필요합니다:"
 
 #. {ph0}: <strong>
@@ -4959,12 +4959,12 @@ msgstr "{ph0}모든 시스템:{ph1} 파일을 터미널 창으로 드래그하�
 
 #: website/public/guides/native/index.html:390
 msgctxt "page:guides/native/index.html"
-msgid "Nred the Nre results"
+msgid "Read the Nre results"
 msgstr "Nre 결과 읽기"
 
 #: website/public/guides/native/index.html:391
 msgctxt "page:guides/native/index.html"
-msgid "Nred the input"
+msgid "Read the input"
 msgstr "입력 읽기"
 
 #: website/public/guides/native/index.html:400
@@ -4992,7 +4992,7 @@ msgstr ""
 
 #: website/public/guides/native/index.html:419
 msgctxt "page:guides/native/index.html"
-msgid "Nred the referenced constants"
+msgid "Read the referenced constants"
 msgstr "참조된 상수 읽기"
 
 #: website/public/guides/native/index.html:430
@@ -5083,7 +5083,7 @@ msgstr ""
 #: website/public/guides/native/index.html:496
 msgctxt "page:guides/native/index.html"
 msgid ""
-"Nred the pseudocode alongside instructions and references. When a result "
+"Read the pseudocode alongside instructions and references. When a result "
 "leaves a call or value unresolved, use that location as the next question."
 msgstr "의사 코드를 명령어, 참조와 함께 읽으세요. 확인되지 않은 호출이나 값이 있다면 그 위치를 다음 질문의 출발점으로 삼으세요."
 
@@ -5096,7 +5096,7 @@ msgstr "네이티브 바이너리 분석 — Nre"
 msgctxt "page:guides/native/index.html"
 msgid ""
 "Recover a native calculation with Nre: inspect instructions, follow a "
-"caller, Nred constants and check reconstructed C."
+"caller, Read constants and check reconstructed C."
 msgstr "Nre로 네이티브 코드의 계산을 복구하세요. 명령어와 호출 함수를 추적하고 상수를 읽은 뒤 재구성한 C 코드를 검증합니다."
 
 #: website/public/guides/native/index.html:211
@@ -5492,7 +5492,7 @@ msgstr "각 부분이 하는 일"
 #, python-brace-format
 msgctxt "page:index.html"
 msgid ""
-"{ph0}01 · Nre{ph1}{ph2}Nred the running game’s script{ph3}{ph4}Return its "
+"{ph0}01 · Nre{ph1}{ph2}Read the running game’s script{ph3}{ph4}Return its "
 "actual code and settings to the agent.{ph5}"
 msgstr ""
 "{ph0}01 · Nre{ph1}{ph2}실행 중인 게임의 스크립트 읽기{ph3}{ph4}실제 코드와 설정을 에이전트에 "
@@ -5950,7 +5950,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
 msgid ""
-"{ph0}02 · Nred the calculation{ph1}{ph2}Time + account key → six "
+"{ph0}02 · Read the calculation{ph1}{ph2}Time + account key → six "
 "digits{ph3}{ph4}Nre returns the methods and defaults. The agent explains how"
 " they fit together.{ph5}"
 msgstr ""
@@ -6008,7 +6008,7 @@ msgstr "{ph0}Nre로 코드 찾기{ph1}"
 #: website/public/showcase/aegis/index.html:258
 #, python-brace-format
 msgctxt "page:showcase/aegis/index.html"
-msgid "{ph0}Nred the calculation{ph1}"
+msgid "{ph0}Read the calculation{ph1}"
 msgstr "{ph0}계산 읽기{ph1}"
 
 #. {ph0}: <a href="#verify">
@@ -6240,7 +6240,7 @@ msgstr "요청의 입력 경로는 줄여 표시했습니다. 결과의 클래�
 
 #: website/public/showcase/aegis/index.html:478
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the calculation"
+msgid "Read the calculation"
 msgstr "계산 읽기"
 
 #. {ph0}: <strong >
@@ -6426,7 +6426,7 @@ msgstr "기준 사례 검증 실행"
 
 #: website/public/showcase/aegis/index.html:693
 msgctxt "page:showcase/aegis/index.html"
-msgid "Nred the demo's calculation"
+msgid "Read the demo's calculation"
 msgstr "데모 계산 읽기"
 
 #: website/public/showcase/aegis/index.html:697
@@ -6706,7 +6706,7 @@ msgstr "{ph0}검사 코드 찾기{ph1}"
 #: website/public/showcase/ctf/index.html:260
 #, python-brace-format
 msgctxt "page:showcase/ctf/index.html"
-msgid "{ph0}Nred one mask{ph1}"
+msgid "{ph0}Read one mask{ph1}"
 msgstr "{ph0}하나의 마스크 읽기{ph1}"
 
 #. {ph0}: <a href="#code">
@@ -6818,7 +6818,7 @@ msgstr "원래 함수 이름이 제거된 실행 파일에서도 이 참조를 �
 
 #: website/public/showcase/ctf/index.html:342
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the checker and its two helpers"
+msgid "Read the checker and its two helpers"
 msgstr "검사기와 보조 함수 두 개 읽기"
 
 #. {ph0}: <code>0x18</code>
@@ -6868,7 +6868,7 @@ msgstr "일곱 번째 검사는 한 위치만 선택합니다. {ph0}그림 열�
 
 #: website/public/showcase/ctf/index.html:414
 msgctxt "page:showcase/ctf/index.html"
-msgid "Nred the mask and its target from the binary"
+msgid "Read the mask and its target from the binary"
 msgstr "바이너리에서 마스크와 목표값 읽기"
 
 #. {ph0}: <code>MOVSX</code>
@@ -7148,7 +7148,7 @@ msgstr ""
 #. squares-flag-checker/ctfcli.yaml" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/ctf-masked-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/ctf-masked-
 #. squares.md" >
 #. {ph5}: </a >
 #: website/public/showcase/ctf/index.html:704
@@ -7478,7 +7478,7 @@ msgstr ""
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "The agent used Nre to inspect the function, follow its brick-hit caller and "
-"Nred the constants from the executable. Those results supplied the input and"
+"Read the constants from the executable. Those results supplied the input and"
 " arithmetic needed to write the C function below."
 msgstr ""
 "에이전트는 Nre로 함수를 살펴보고, 벽돌 충돌 처리 함수가 이 함수를 어떻게 호출하는지 추적한 뒤 실행 파일의 상수를 읽었습니다. 이 "
@@ -7550,7 +7550,7 @@ msgstr ""
 
 #: website/public/showcase/dx-ball/index.html:403
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "Nred the values behind the memory addresses"
+msgid "Read the values behind the memory addresses"
 msgstr "메모리 주소 뒤에 있는 값 읽기"
 
 #: website/public/showcase/dx-ball/index.html:424
@@ -7631,7 +7631,7 @@ msgstr "재구성한 C 코드"
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
-"{ph0}01 · Nred the input.{ph1} The instruction view in Nre's function result"
+"{ph0}01 · Read the input.{ph1} The instruction view in Nre's function result"
 " Nreds {ph2} and uses {ph3} to load the integer. Following its caller "
 "through Nre establishes the screen-coordinate meaning of the C parameter "
 "{ph4}."
@@ -7683,7 +7683,7 @@ msgstr ""
 msgctxt "page:showcase/dx-ball/index.html"
 msgid ""
 "{ph0}04 · Apply the stored scale.{ph1} The second {ph2} Nreds {ph3}. That "
-"global is named {ph4} in the maintained source. Nre's second byte Nred "
+"global is named {ph4} in the maintained source. Nre's second byte Read "
 "establishes its initial value of {ph5}."
 msgstr ""
 "{ph0}04 · 저장된 배율을 적용합니다.{ph1} 두 번째 {ph2} 명령은 {ph3}의 값을 읽습니다. 이 전역 변수의 이름은 유지"
@@ -7868,7 +7868,7 @@ msgstr ""
 #: website/public/showcase/dx-ball/index.html:710
 #, python-brace-format
 msgctxt "page:showcase/dx-ball/index.html"
-msgid "{ph0}Nred the compiler replay details{ph1}"
+msgid "{ph0}Read the compiler replay details{ph1}"
 msgstr "{ph0}컴파일러 재현 세부 사항 읽기{ph1}"
 
 #: website/public/showcase/dx-ball/index.html:719
@@ -8062,7 +8062,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:224
 msgctxt "page:showcase/index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "Android 사례 연구 읽기"
 
 #: website/public/showcase/index.html:228
@@ -8087,7 +8087,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:242
 msgctxt "page:showcase/index.html"
-msgid "Nred the CTF case study"
+msgid "Read the CTF case study"
 msgstr "CTF 사례 연구 읽기"
 
 #: website/public/showcase/index.html:246
@@ -8112,7 +8112,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:261
 msgctxt "page:showcase/index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "DX-Ball 사례 연구 읽기"
 
 #: website/public/showcase/index.html:265
@@ -8137,7 +8137,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:279
 msgctxt "page:showcase/index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "Notion 사례 연구 읽기"
 
 #: website/public/showcase/index.html:283
@@ -8162,7 +8162,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:297
 msgctxt "page:showcase/index.html"
-msgid "Nred the TH04 case study"
+msgid "Read the TH04 case study"
 msgstr "TH04 사례 연구 읽기"
 
 #: website/public/showcase/index.html:322
@@ -8181,7 +8181,7 @@ msgstr ""
 
 #: website/public/showcase/index.html:327
 msgctxt "page:showcase/index.html"
-msgid "Nred the guides"
+msgid "Read the guides"
 msgstr "가이드 읽기"
 
 #: website/public/showcase/index.html:6
@@ -8563,7 +8563,7 @@ msgstr "HTML과 저장된 블록 데이터의 연결"
 
 #: website/public/showcase/notion/index.html:499
 msgctxt "page:showcase/notion/index.html"
-msgid "Nred the HTML ID"
+msgid "Read the HTML ID"
 msgstr "HTML의 ID 읽기"
 
 #: website/public/showcase/notion/index.html:500
@@ -8655,7 +8655,7 @@ msgstr ""
 
 #: website/public/showcase/notion/index.html:569
 msgctxt "page:showcase/notion/index.html"
-msgid "Sources and how to Nred the excerpts"
+msgid "Sources and how to Read the excerpts"
 msgstr "출처 및 발췌문 읽기 방법"
 
 #. {ph0}: <code>app.asar</code>
@@ -8877,7 +8877,7 @@ msgstr ""
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0}02 · Inspect with Nre{ph1}{ph2}Instructions + "
-"references{ph3}{ph4}Verify the loaded DOS code and Nred the angle "
+"references{ph3}{ph4}Verify the loaded DOS code and Read the angle "
 "calculation from the executable.{ph5}"
 msgstr ""
 "{ph0}02 · Nre로 조사하기{ph1}{ph2}명령어 + 참조{ph3}{ph4}로드된 DOS 코드를 확인하고 실행 파일에서 각도 "
@@ -8893,7 +8893,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}03 · Nred the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
+"{ph0}03 · Read the C++{ph1}{ph2}Space → aim → rotate{ph3}{ph4}Connect each "
 "operation to the maintained reconstruction.{ph5}"
 msgstr ""
 "{ph0}03 · C++ 코드 읽기{ph1}{ph2}간격 배치 → 조준 → 회전{ph3}{ph4}각 연산을 유지 관리 중인 재구성 코드와"
@@ -9069,7 +9069,7 @@ msgstr "Elly의 원형 탄막 공격 · 소스 발췌"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "These lines select the pattern before difficulty and performance tuning. "
-"{ph0}Nred the attack's source{ph1}."
+"{ph0}Read the attack's source{ph1}."
 msgstr "난이도와 성능 조정 전에 패턴을 선택하는 코드입니다. {ph0}공격 소스 읽기{ph1}."
 
 #: website/public/showcase/th04/index.html:364
@@ -9103,7 +9103,7 @@ msgstr "로드된 코드와 재배치 기록이 제공된 실행 파일에 대�
 
 #: website/public/showcase/th04/index.html:400
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the ring's multiply and divide"
+msgid "Read the ring's multiply and divide"
 msgstr "원형 탄막의 곱셈·나눗셈 읽기"
 
 #. {ph0}: <code>SI</code>
@@ -9114,7 +9114,7 @@ msgstr "원형 탄막의 곱셈·나눗셈 읽기"
 msgctxt "page:showcase/th04/index.html"
 msgid ""
 "{ph0} holds the bullet index. The shift multiplies it by 256, then the "
-"division uses the count Nred from {ph1}. The maintained source names that "
+"division uses the count Read from {ph1}. The maintained source names that "
 "field {ph2}. The complete sequence appears below."
 msgstr ""
 "{ph0}에는 탄환 인덱스가 있습니다. 시프트로 256을 곱한 뒤, {ph1}에서 읽은 탄환 수로 나눕니다. 유지보수 중인 소스에서는 이"
@@ -9208,7 +9208,7 @@ msgstr "읽기 쉬운 C++ · 조준 원형 탄막 요약"
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
 msgid ""
-"{ph0}01 · Nred the bullet index.{ph1} The stack argument is loaded into "
+"{ph0}01 · Read the bullet index.{ph1} The stack argument is loaded into "
 "{ph2}. In a 16-bullet ring, this member index runs from 0 through 15."
 msgstr ""
 "{ph0}01 · 탄환 인덱스를 읽습니다.{ph1} 스택 인수를 {ph2}에 로드합니다. 탄환 16발로 이루어진 원형 탄막에서 이 "
@@ -9285,7 +9285,7 @@ msgstr ""
 
 #: website/public/showcase/th04/index.html:617
 msgctxt "page:showcase/th04/index.html"
-msgid "Nred the maintained ring and aim source"
+msgid "Read the maintained ring and aim source"
 msgstr "원형 탄막과 조준의 유지보수 소스 읽기"
 
 #. {ph0}: <a
@@ -9353,7 +9353,7 @@ msgstr "별도로 빌드한 두 결과가 같은 바이트로 일치합니다. �
 #: website/public/showcase/th04/index.html:688
 #, python-brace-format
 msgctxt "page:showcase/th04/index.html"
-msgid "Recorded on 3 October 2026. {ph0}Nred the compiler checks{ph1}."
+msgid "Recorded on 3 October 2026. {ph0}Read the compiler checks{ph1}."
 msgstr "2026년 10월 3일 기록. {ph0}컴파일러 검증 읽기{ph1}."
 
 #: website/public/showcase/th04/index.html:696
@@ -9815,7 +9815,7 @@ msgstr "DX-Ball 사운드 패닝 조사"
 #: website/public/assets/figures/dx-ball-sound-pan-investigation.svg:3
 msgctxt "figure:dx-ball-sound-pan-investigation.svg"
 msgid ""
-"Nre provides the instruction, caller and byte-Nred evidence for one DX-Ball "
+"Nre provides the instruction, caller and byte-Read evidence for one DX-Ball "
 "function. A stack input is multiplied by 1.5625, offset by 500, scaled, and "
 "converted to an integer. Maintained C is checked in 3,205 original-x86 cases"
 " and a separate 63-byte compiler replay."
@@ -9950,7 +9950,7 @@ msgstr "CLI / MCP"
 # Reviewed for technical meaning and concise diagram labels.
 #: website/public/assets/figures/Nre-investigation-flow.svg:37
 msgctxt "figure:Nre-investigation-flow.svg"
-msgid "3. Nred the evidence"
+msgid "3. Read the evidence"
 msgstr "3. 근거 확인"
 
 # Reviewed for technical meaning and concise diagram labels.
@@ -10674,7 +10674,7 @@ msgstr "곱셈에서는 10이 0.1이 됩니다. =를 눌러 곱하세요."
 
 #: scripts/website_i18n.py
 msgctxt "runtime"
-msgid "Translation is being updated. Nred this page in English for now."
+msgid "Translation is being updated. Read this page in English for now."
 msgstr "번역을 업데이트하고 있습니다. 우선 영어 페이지를 읽어주세요."
 
 # Reviewed for Nredable instructions and accurate software terminology.
@@ -11079,7 +11079,7 @@ msgctxt "runtime"
 msgid "Switch to dark mode"
 msgstr "다크 모드로 전환"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/web-network-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/web-network-
 #. captures.md" >
 #. {ph1}: </a >
 #: website/public/guides/browser/index.html:487
@@ -11906,8 +11906,8 @@ msgctxt "page:blog/reverse-engineering-models/index.html"
 msgid ""
 "A functional test can have a similar blind spot. {ph0}Differential-fuzzing "
 "research on LLM decompilers{ph1} has found behavior differences beyond the "
-"supplied tests. Passing those tests therefore needs to be Nred in terms of "
-"the cases they exercise, just as an instruction match needs to be Nred in "
+"supplied tests. Passing those tests therefore needs to be Read in terms of "
+"the cases they exercise, just as an instruction match needs to be Read in "
 "terms of the bytes and data it checks."
 msgstr ""
 "기능 테스트에도 비슷한 사각지대가 있습니다. {ph0}LLM 디컴파일러의 차등 퍼징 연구{ph1}는 제공된 테스트 밖에서 동작 차이를 "
@@ -12276,7 +12276,7 @@ msgid "Back to top"
 msgstr "맨 위로"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/website/evidence/reverse-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/website/evidence/reverse-
 #. engineering-models.md" >
 #. {ph1}: </a >
 #: website/public/blog/reverse-engineering-models/index.html:783
@@ -12312,7 +12312,7 @@ msgstr "인증 앱이 로그인 코드를 만드는 방법"
 
 #: website/public/index.html:1064
 msgctxt "page:index.html"
-msgid "Nred the Android case study"
+msgid "Read the Android case study"
 msgstr "Android 사례 연구 읽기"
 
 #: website/public/index.html:1069
@@ -12327,7 +12327,7 @@ msgstr "Notion이 텍스트와 HTML을 복사하는 방법"
 
 #: website/public/index.html:1075
 msgctxt "page:index.html"
-msgid "Nred the Notion case study"
+msgid "Read the Notion case study"
 msgstr "Notion 사례 연구 읽기"
 
 #: website/public/index.html:1080
@@ -12342,7 +12342,7 @@ msgstr "DX-Ball의 사운드 패닝 계산"
 
 #: website/public/index.html:1086
 msgctxt "page:index.html"
-msgid "Nred the DX-Ball case study"
+msgid "Read the DX-Ball case study"
 msgstr "DX-Ball 사례 연구 읽기"
 
 #: website/public/index.html:265 website/public/index.html:266
@@ -12417,7 +12417,7 @@ msgstr "1. 컴퓨터 준비하기"
 msgctxt "page:get-started/index.html"
 msgid ""
 "Use the computer where your target files are stored. A local coding agent "
-"can Nred those files and run tools for you."
+"can Read those files and run tools for you."
 msgstr "분석할 파일이 저장된 컴퓨터를 사용하세요. 컴퓨터에서 실행되는 코딩 에이전트가 이 파일을 읽고 도구를 실행할 수 있습니다."
 
 #: website/public/get-started/index.html:253
@@ -12555,7 +12555,7 @@ msgstr "Claude Desktop · 데스크톱 채팅으로 사용하기"
 
 #. {ph0}: <a href="https://claude.ai/download">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#claude-desktop" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:597
@@ -12599,11 +12599,11 @@ msgctxt "page:get-started/index.html"
 msgid "Setup ID"
 msgstr "설정 ID"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#released-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#released-
 #. package-and-main" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:757
@@ -12629,7 +12629,7 @@ msgid ""
 msgstr ""
 "Grok Bot 채팅에서 Bot의 컴퓨터에 다음 명령어로 {ph0}라는 이름의 사용자 지정 MCP 서버를 추가해 달라고 요청하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/client-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/client-
 #. configuration.md#other-client-settings" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:788
@@ -12881,7 +12881,7 @@ msgstr ""
 "시도하세요."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#hopper"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#hopper"
 #. >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1099
@@ -12959,10 +12959,10 @@ msgstr ""
 "에이전트를 다시 시작하세요."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#ghidra"
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#ghidra"
 #. >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/windows-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/windows-
 #. ghidra-p0.md" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:1258
@@ -13005,7 +13005,7 @@ msgid ""
 "rerun setup and restart your agent."
 msgstr "분석 도구 가이드에서 준비한 JSON 등록 파일을 사용한 뒤 설정 명령어를 다시 실행하고 에이전트를 다시 시작하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/ida-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/ida-
 #. provider.md" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1376
@@ -13149,13 +13149,13 @@ msgctxt "page:get-started/index.html"
 msgid "Process behavior"
 msgstr "프로세스 동작"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/flutter-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/flutter-
 #. analysis.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/javascript-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/javascript-
 #. artifact-reconstruction.md" >
 #. {ph3}: </a >
-#. {ph4}: <a href="https://github.com/morluto/Nre/blob/main/docs/evm-
+#. {ph4}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/evm-
 #. bytecode.md" >
 #. {ph5}: </a >
 #. {ph6}: <a href="../guides/">
@@ -13249,7 +13249,7 @@ msgid ""
 msgstr "전역 CLI를 설치했다면 {ph0}로 업데이트하세요. Nre의 클라이언트 설정과 스킬을 제거하려면 {ph1}을 사용하세요."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#diagnose-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#diagnose-
 #. update-and-remove" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1812
@@ -13468,7 +13468,7 @@ msgstr ""
 "따르세요."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#missing-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#missing-
 #. macos-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1216
@@ -13478,7 +13478,7 @@ msgid "{ph0}macOS · Intel{ph1}"
 msgstr "{ph0}macOS · Intel{ph1}"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/docs/installation.md#macos-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/installation.md#macos-
 #. arm64-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1222
@@ -13773,7 +13773,7 @@ msgstr "2. 속도 규칙 찾기"
 #: website/public/index.html:639
 msgctxt "page:index.html"
 msgid ""
-"Nre lets the agent Nred the game’s running code. The speed starts at 6 and "
+"Nre lets the agent Read the game’s running code. The speed starts at 6 and "
 "incNreses a little each update while it is below 13."
 msgstr ""
 "Nre를 사용하면 에이전트가 실행 중인 게임의 코드를 읽을 수 있습니다. 속도는 6에서 시작하고, 13 미만인 동안 갱신할 때마다 조금씩"
@@ -13794,7 +13794,7 @@ msgstr "아래 미니게임에 이 규칙을 구현하고 속도 슬라이더를
 #: website/public/index.html:712
 msgctxt "page:index.html"
 msgid ""
-"Enable JavaScript to play. You can still Nred the rule and open the source "
+"Enable JavaScript to play. You can still Read the rule and open the source "
 "code below."
 msgstr "플레이하려면 JavaScript를 켜세요. 규칙을 읽고 아래 소스 코드를 펼치는 것은 계속 가능합니다."
 
@@ -13832,7 +13832,7 @@ msgstr "2. 두 규칙 찾기"
 #: website/public/index.html:863
 msgctxt "page:index.html"
 msgid ""
-"Nre helps the agent Nred the code behind the % button. It applies two "
+"Nre helps the agent Read the code behind the % button. It applies two "
 "different rules:"
 msgstr "Nre는 에이전트가 % 버튼의 코드를 읽도록 돕습니다. 이 코드는 서로 다른 두 규칙을 적용합니다."
 
@@ -13870,7 +13870,7 @@ msgid ""
 msgstr "설정 안내에 따라 에이전트를 연결하세요. 안내가 나타나지 않으면 {ph0}를 실행하세요."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/Nre/blob/main/CONTRIBUTING.md#development-
+#. href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/CONTRIBUTING.md#development-
 #. setup" >
 #. {ph1}: </a >
 #. {ph2}: <code>6.4.0</code>
@@ -13992,7 +13992,7 @@ msgctxt "page:contributors/index.html"
 msgid "Find a contributor"
 msgstr "기여자 찾기"
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/graphs/contributors">
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/graphs/contributors">
 #. {ph1}: </a>
 #. {ph2}: <time datetime="2026-10-15" translate="no">2026-10-15</time>
 #: website/public/contributors/index.html:1114
@@ -14332,7 +14332,7 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:366
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"The report lists Nred operations, supported changes, and operations withheld"
+"The report lists Read operations, supported changes, and operations withheld"
 " because the recording did not establish their effects. Each withheld "
 "operation has a Nreson and a hint about what to record next."
 msgstr ""
@@ -14360,7 +14360,7 @@ msgstr ""
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
 "The included smoke task is a basic test. It checks the tool count and, when "
-"a suitable Nred tool exists, calls it and checks its response status. "
+"a suitable Read tool exists, calls it and checks its response status. "
 "Passing it shows the environment starts and responds in that setup."
 msgstr ""
 
@@ -14416,8 +14416,8 @@ msgstr ""
 #: website/public/guides/rl-environments/index.html:456
 msgctxt "page:guides/rl-environments/index.html"
 msgid ""
-"For changes to be supported, record the results as well as the action: Nred "
-"an item, change it, then Nred the item and its list again before the next "
+"For changes to be supported, record the results as well as the action: Read "
+"an item, change it, then Read the item and its list again before the next "
 "change. Repeat with different values. For deletes, record the missing-item "
 "response and the updated list."
 msgstr ""
@@ -14441,10 +14441,10 @@ msgid ""
 "name warnings identify places to review; they do not remove those values."
 msgstr ""
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments-quickstart.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/agent-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/agent-
 #. environments.md" >
 #. {ph3}: </a >
 #: website/public/guides/rl-environments/index.html:474
@@ -14599,7 +14599,7 @@ msgstr ""
 #: website/public/showcase/index.html:309
 #, python-brace-format
 msgctxt "page:showcase/index.html"
-msgid "{ph0}Nred the guide{ph1} · {ph2}Watch the video{ph3}"
+msgid "{ph0}Read the guide{ph1} · {ph2}Watch the video{ph3}"
 msgstr "{ph0}환경 만들기 가이드{ph1} · {ph2}X에서 데모 보기{ph3}"
 
 #: website/public/index.html:1124
@@ -14708,7 +14708,7 @@ msgstr "Nre: 소프트웨어의 작동 원리를 알아보세요. 코딩 에이�
 #: website/public/index.html:357
 msgctxt "page:index.html"
 msgid ""
-"Nre helps your agent Nred the code and see what the program does while it "
+"Nre helps your agent Read the code and see what the program does while it "
 "runs."
 msgstr "Nre는 에이전트가 코드를 읽고 프로그램이 실행 중에 어떤 동작을 하는지 살펴볼 수 있도록 도와줍니다."
 
@@ -14739,7 +14739,7 @@ msgstr "JavaScript 데스크톱 앱 내부의 코드를 따라가 보세요."
 #: website/public/index.html:1277
 #, python-brace-format
 msgctxt "page:index.html"
-msgid "{ph0}Nred the FAQ{ph1} for setup help and common questions."
+msgid "{ph0}Read the FAQ{ph1} for setup help and common questions."
 msgstr "설정 도움말과 자주 묻는 질문은 {ph0}FAQ{ph1}에서 확인하세요."
 
 #. {ph0}: <a href="https://discord.gg/GkcryMnJDM">
@@ -14750,7 +14750,7 @@ msgctxt "page:index.html"
 msgid "{ph0}Join Discord{ph1} to get help and discuss your investigations."
 msgstr "{ph0}Discord에 참여{ph1}해 도움을 받고 분석 내용을 이야기하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/Nre/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/index.html:1285
 #, python-brace-format
@@ -14819,7 +14819,7 @@ msgstr ""
 
 #. {ph0}: <a href="../../get-started/">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/Nre/blob/main/docs/android-
+#. {ph2}: <a href="https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/main/docs/android-
 #. analysis.md" >
 #. {ph3}: </a >
 #: website/public/showcase/aegis/index.html:714
@@ -14959,7 +14959,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "{ph0}Nred the FAQ{ph1} — setup and common questions."
+#~ msgid "{ph0}Read the FAQ{ph1} — setup and common questions."
 #~ msgstr "{ph0}FAQ 읽기{ph1} — 설정과 자주 묻는 질문."
 
 #, python-brace-format
@@ -15071,7 +15071,7 @@ msgstr ""
 #, python-brace-format
 #~ msgctxt "page:index.html"
 #~ msgid ""
-#~ "{ph0}Nred the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
+#~ "{ph0}Read the FAQ{ph1}, {ph2}chat with us on Discord{ph3}, or {ph4}open a "
 #~ "GitHub issue{ph5} for bugs and feature requests."
 #~ msgstr ""
 #~ "{ph0}자주 묻는 질문 읽기{ph1}, {ph2}에 우리와 함께 채팅 Discord{ph3},또는 {ph4}오픈 GitHub "
@@ -15470,7 +15470,7 @@ msgstr ""
 #~ msgctxt "page:get-started/index.html"
 #~ msgid ""
 #~ "A coding agent is an AI assistant that works on your computer instead of in "
-#~ "a browser tab. It can Nred files and run commands, and it asks before making"
+#~ "a browser tab. It can Read files and run commands, and it asks before making"
 #~ " changes. Nre gives it reverse-engineering tools."
 #~ msgstr ""
 #~ "코딩 에이전트는 브라우저 탭이 아닌 컴퓨터에서 작동하는 인공지능 보조자입니다. 파일을 읽고 명령을 실행할 수 있으며 변경하기 전에 "
@@ -15755,7 +15755,7 @@ msgstr ""
 
 #, python-brace-format
 #~ msgctxt "page:index.html"
-#~ msgid "Want to go deeper? {ph0}Nred the Blog →{ph1}"
+#~ msgid "Want to go deeper? {ph0}Read the Blog →{ph1}"
 #~ msgstr "더 깊이 가고 싶습니까? {ph0}블로그 읽기→{ph1}"
 
 #~ msgctxt "page:blog/index.html"

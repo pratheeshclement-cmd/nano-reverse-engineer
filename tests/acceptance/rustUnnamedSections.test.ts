@@ -17,7 +17,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "finds compiler paths independently of ELF section names through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-rust-unnamed-sections-");
+    const root = await createTestTempDirectory("nre-rust-unnamed-sections-");
     const { client, call } = await connectLocalToolsMcp();
     for (const name of ["named", "empty", "unavailable", "writable"] as const) {
       const bytes = rustElfSectionNameFixture(

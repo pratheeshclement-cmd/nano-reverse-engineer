@@ -11,7 +11,7 @@ import { historicalHar } from "../fixtures/historicalHar.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 
 it("excludes marked output identity from late CLI publication failure while retaining capture Evidence", async () => {
-  const root = await createTestTempDirectory("rea-capture-delivery-");
+  const root = await createTestTempDirectory("nre-capture-delivery-");
   const outputPath = join(root, "private-publication-marker.json");
   await writeFile(outputPath, "existing caller file");
   const bytes = JSON.stringify(historicalHar());
@@ -59,7 +59,7 @@ it("excludes marked output identity from late CLI publication failure while reta
 it.each([true, false])(
   "publishes summary bytes while excluding only a marked receipt identity: %s",
   async (marked) => {
-    const root = await createTestTempDirectory("rea-capture-publication-");
+    const root = await createTestTempDirectory("nre-capture-publication-");
     const outputPath = join(root, "private-publication-marker.json");
     const values = marked ? ["private-publication-marker"] : [];
     const bytes = JSON.stringify(historicalHar());

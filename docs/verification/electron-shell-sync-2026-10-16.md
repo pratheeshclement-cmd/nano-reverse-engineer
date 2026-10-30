@@ -76,7 +76,7 @@ run under Xvfb. Set TMPDIR to the owned writable packet `tmp` directory. Run:
 
 ```sh
 node experiments/analysis-efficiency/joplin-shell-boundary.mjs \
-  --runtime-root /absolute/rea-checkout \
+  --runtime-root /absolute/nre-checkout \
   --executable /absolute/generic-electron \
   --application /absolute/Joplin/resources/app.asar \
   --profile-root /absolute/owned-packet/profiles \

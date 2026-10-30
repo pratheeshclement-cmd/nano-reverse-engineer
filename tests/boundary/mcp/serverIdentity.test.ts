@@ -201,18 +201,18 @@ describe("server and catalog identity", () => {
     const aligned = createServerIdentity({
       catalog: DEFAULT_CATALOG_IDENTITY,
       startedAt: "2026-07-13T00:00:00.000Z",
-      commandPath: "/packaged/rea.mjs",
+      commandPath: "/packaged/nre.mjs",
       expected: {
         package_version: PRODUCT_IDENTITY.packageVersion,
         catalog_digest: DEFAULT_CATALOG_IDENTITY.digests.combined_sha256,
-        server_path: "/packaged/rea.mjs",
+        server_path: "/packaged/nre.mjs",
       },
     });
     expect(aligned.alignment).toMatchObject({ state: "aligned", reasons: [] });
     const stale = createServerIdentity({
       catalog: DEFAULT_CATALOG_IDENTITY,
       startedAt: "2026-07-13T00:00:00.000Z",
-      commandPath: "/packaged/rea.mjs",
+      commandPath: "/packaged/nre.mjs",
       expected: {
         package_version: "1.2.0",
         catalog_digest: "0".repeat(64),
@@ -229,7 +229,7 @@ describe("server and catalog identity", () => {
       catalog: DEFAULT_CATALOG_IDENTITY,
       startedAt: "2026-07-13T00:00:00.000Z",
       commandPath: undefined,
-      expected: { server_path: "/registered/rea.mjs" },
+      expected: { server_path: "/registered/nre.mjs" },
     });
 
     expect(identity.server.command_path).toBeNull();
@@ -374,7 +374,7 @@ describe("live server identity over MCP", () => {
     const session = createTestBinarySession(availabilityProvider());
     const server = createServer(
       { kind: "session", session },
-      { environment: { REA_MCP_INPUT_SCHEMA_PROFILE: "compact" } },
+      { environment: { NRE_MCP_INPUT_SCHEMA_PROFILE: "compact" } },
     );
     const client = new Client({ name: "compact-identity-test", version: "1" });
     const [clientTransport, serverTransport] =
@@ -427,12 +427,12 @@ describe("active-target availability over MCP", () => {
     // Availability does not depend on compiling every advertised output schema.
     const server = createServer(
       { kind: "session", session },
-      { environment: { REA_MCP_OUTPUT_SCHEMA_PROFILE: "off" } },
+      { environment: { NRE_MCP_OUTPUT_SCHEMA_PROFILE: "off" } },
     );
     const client = new Client({ name: "availability-test", version: "1" });
     const [clientTransport, serverTransport] =
       InMemoryTransport.createLinkedPair();
-    const directory = await createTestTempDirectory("rea-target-availability-");
+    const directory = await createTestTempDirectory("nre-target-availability-");
     const executable = join(directory, "tool");
     const plist = join(directory, "Info.plist");
     await writeFile(executable, machoImage({}));

@@ -20,7 +20,7 @@ cliTest(
   "decodes shared-suffix IL2CPP names through CLI and MCP",
   async ({ cli }) => {
     const directory = await createTestTempDirectory(
-      "rea-il2cpp-shared-suffix-",
+      "nre-il2cpp-shared-suffix-",
     );
     const { call } = await connectLocalToolsMcp();
     for (const version of [29, 39] as const) {
@@ -40,7 +40,7 @@ cliTest(
       const cliOutput = await cli.run({
         arguments: ["inspect-il2cpp-metadata", path, "--json"],
         environment: {
-          REA_LOG_LEVEL: "silent",
+          NRE_LOG_LEVEL: "silent",
           HOME: directory,
           USERPROFILE: directory,
         },

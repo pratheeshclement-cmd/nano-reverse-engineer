@@ -16,7 +16,7 @@ describe("MCP doctor help boundary", () => {
           arguments: ["mcp", "doctor", argument],
         });
         expect(result).toMatchObject({ exitCode: 0 });
-        expect(result.stdout).toContain("Usage: rea mcp doctor [options]");
+        expect(result.stdout).toContain("Usage: nre mcp doctor [options]");
         expect(result.stdout).toContain("--format <toon|json|yaml|md|jsonl>");
         expect(result.stdout).toContain("--full-output");
         expect(result.stdout).toContain("current runtime");
@@ -42,7 +42,7 @@ describe("MCP doctor help boundary", () => {
       ]) {
         const result = await cli.run({ arguments: arguments_ });
         expect(result).toMatchObject({ exitCode: 0 });
-        expect(result.stdout).toContain("Usage: rea mcp doctor [options]");
+        expect(result.stdout).toContain("Usage: nre mcp doctor [options]");
         expect(result.stdout).toContain("--help, -h");
         expect(result.stdout).not.toContain("healthy");
       }
@@ -61,7 +61,7 @@ describe("MCP doctor help boundary", () => {
         const result = await cli.run({ arguments: arguments_ });
         expect(result).toMatchObject({ exitCode: 1 });
         expect(result.stdout).toContain("Invalid output format:");
-        expect(result.stdout).not.toContain("Usage: rea mcp doctor");
+        expect(result.stdout).not.toContain("Usage: nre mcp doctor");
       }
     },
     CLI_INTEGRATION_TIMEOUT_MS,
@@ -130,10 +130,10 @@ describe("MCP doctor help boundary", () => {
       expect(lines).toHaveLength(1);
       const record: unknown = JSON.parse(lines[0]!);
       expect(record).toMatchObject({
-        rea_timings: { version: 1, command_ms: expect.any(Number) },
+        nre_timings: { version: 1, command_ms: expect.any(Number) },
       });
-      const duration = (record as { rea_timings: { command_ms: number } })
-        .rea_timings.command_ms;
+      const duration = (record as { nre_timings: { command_ms: number } })
+        .nre_timings.command_ms;
       expect(Number.isFinite(duration)).toBe(true);
       expect(duration).toBeGreaterThanOrEqual(0);
     },

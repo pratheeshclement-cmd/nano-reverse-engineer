@@ -17,11 +17,11 @@ import { artifactExtractionResultSchema } from "../../../src/domain/artifactGrap
 it.each(["full", "compact"] as const)(
   "exposes FIT facts and image extraction through MCP (%s)",
   async (profile) => {
-    const root = await createTestTempDirectory("rea-fit-mcp-");
+    const root = await createTestTempDirectory("nre-fit-mcp-");
     const path = join(root, "boot.itb");
     await writeFile(path, FIT_EXTERNAL);
     const { call } = await connectLocalToolsMcp({
-      REA_MCP_INPUT_SCHEMA_PROFILE: profile,
+      NRE_MCP_INPUT_SCHEMA_PROFILE: profile,
     });
     let outputRoot: string | undefined;
     try {

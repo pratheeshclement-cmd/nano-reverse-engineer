@@ -14,7 +14,7 @@ for (const bits of [32, 64] as const) {
   cliTest(
     `rejects non-MZ PE${String(bits)} load config across CLI and MCP`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-pe-config-signature-");
+      const root = await createTestTempDirectory("nre-pe-config-signature-");
       const call = await cli.sharedMcpCall!();
       for (const [name, prefix] of [
         ["zz", Buffer.from("ZZ")],
@@ -59,7 +59,7 @@ for (const bits of [32, 64] as const) {
   );
 
   cliTest(`reads PE${bits} TLS callbacks through the CLI`, async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-pe-config-cli-");
+    const root = await createTestTempDirectory("nre-pe-config-cli-");
     await writeFile(join(root, "app.exe"), peLoadConfigImage({ bits }));
     const result = await cli.run({
       arguments: ["inspect-pe-load-config", "app.exe", "--json"],
@@ -81,7 +81,7 @@ for (const bits of [32, 64] as const) {
   });
 }
 cliTest("fails closed at the callback limit", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-pe-config-budget-");
+  const root = await createTestTempDirectory("nre-pe-config-budget-");
   const path = join(root, "app.exe");
   await writeFile(path, peLoadConfigImage());
   const result = await cli.run({

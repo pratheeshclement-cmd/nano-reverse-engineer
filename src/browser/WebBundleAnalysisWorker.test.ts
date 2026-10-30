@@ -451,43 +451,46 @@ it("keeps cancellation when abort is observed before a later child exit", async 
   }
 });
 
-it("keeps a code-0 exit pending while an inherited output pipe can still produce a frame", async () => {
-  for (const abortAfterExit of [false, true]) {
-    const reason = { opaque: "code-0 exit while inherited pipe is open" };
-    const controller = new AbortController();
-    const worker = new WebBundleAnalysisWorker(
-      128,
-      launcherFor(
-        { kind: "protocol", failure: "zero-exit-held-pipe" },
-        {
-          onSpawn: ({ process: child }) => {
-            if (abortAfterExit)
-              child.once("exit", () =>
-                queueMicrotask(() => controller.abort(reason)),
-              );
+it.skipIf(process.platform === "win32")(
+  "keeps a code-0 exit pending while an inherited output pipe can still produce a frame",
+  async () => {
+    for (const abortAfterExit of [false, true]) {
+      const reason = { opaque: "code-0 exit while inherited pipe is open" };
+      const controller = new AbortController();
+      const worker = new WebBundleAnalysisWorker(
+        128,
+        launcherFor(
+          { kind: "protocol", failure: "zero-exit-held-pipe" },
+          {
+            onSpawn: ({ process: child }) => {
+              if (abortAfterExit)
+                child.once("exit", () =>
+                  queueMicrotask(() => controller.abort(reason)),
+                );
+            },
           },
-        },
-      ),
-    );
-    try {
-      const result = await worker.analyze(
-        makeScript("fetch('/zero-exit-held-pipe');"),
-        5_000,
-        controller.signal,
+        ),
       );
-      const error = failureOf(result);
-      if (abortAfterExit) {
-        expect(error).toBeInstanceOf(AnalysisCancelledError);
-        expect(error.cause).toBe(reason);
-      } else {
-        expect(error).toBeInstanceOf(AnalysisOutputError);
-        expect(error.capturedOutput?.exit_code).toBe(0);
+      try {
+        const result = await worker.analyze(
+          makeScript("fetch('/zero-exit-held-pipe');"),
+          5_000,
+          controller.signal,
+        );
+        const error = failureOf(result);
+        if (abortAfterExit) {
+          expect(error).toBeInstanceOf(AnalysisCancelledError);
+          expect(error.cause).toBe(reason);
+        } else {
+          expect(error).toBeInstanceOf(AnalysisOutputError);
+          expect(error.capturedOutput?.exit_code).toBe(0);
+        }
+      } finally {
+        await worker.close();
       }
-    } finally {
-      await worker.close();
     }
-  }
-});
+  },
+);
 
 it("retains EOF without a terminal response when abort follows the close event", async () => {
   const reason = { opaque: "abort queued after owned output close" };
@@ -706,23 +709,26 @@ it("keeps the resource budget on an observed worker resource frame", async () =>
   }
 });
 
-it("consumes a final frame before an inherited descendant pipe closes", async () => {
-  const worker = new WebBundleAnalysisWorker(
-    128,
-    launcherFor({ kind: "protocol", failure: "final-frame-held-pipe" }),
-  );
-  try {
-    const result = await worker.analyze(
-      makeScript("fetch('/descendant-frame');"),
-      5_000,
+it.skipIf(process.platform === "win32")(
+  "consumes a final frame before an inherited descendant pipe closes",
+  async () => {
+    const worker = new WebBundleAnalysisWorker(
+      128,
+      launcherFor({ kind: "protocol", failure: "final-frame-held-pipe" }),
     );
-    const error = failureOf(result);
-    expect(error).toBeInstanceOf(AnalysisOutputError);
-    expect(error.message).toContain("final frame from descendant");
-  } finally {
-    await worker.close();
-  }
-});
+    try {
+      const result = await worker.analyze(
+        makeScript("fetch('/descendant-frame');"),
+        5_000,
+      );
+      const error = failureOf(result);
+      expect(error).toBeInstanceOf(AnalysisOutputError);
+      expect(error.message).toContain("final frame from descendant");
+    } finally {
+      await worker.close();
+    }
+  },
+);
 
 it("projects a heap-marker exit with the runtime's exhausted resource", async () => {
   const heapMb = 256;
@@ -776,43 +782,46 @@ it("does not classify heap-marker stderr from a healthy worker as exhaustion", a
   }
 });
 
-it("projects late stderr tails with completeness from the actual selection point", async () => {
-  for (const abortAfterExit of [false, true]) {
-    const reason = { opaque: "abort after exit but after late stderr tail" };
-    const controller = new AbortController();
-    const worker = new WebBundleAnalysisWorker(
-      128,
-      launcherFor(
-        { kind: "protocol", failure: "tail-exit" },
-        {
-          onSpawn: ({ process: child }) => {
-            if (abortAfterExit)
-              child.once("exit", () =>
-                setTimeout(() => controller.abort(reason), 150),
-              );
+it.skipIf(process.platform === "win32")(
+  "projects late stderr tails with completeness from the actual selection point",
+  async () => {
+    for (const abortAfterExit of [false, true]) {
+      const reason = { opaque: "abort after exit but after late stderr tail" };
+      const controller = new AbortController();
+      const worker = new WebBundleAnalysisWorker(
+        128,
+        launcherFor(
+          { kind: "protocol", failure: "tail-exit" },
+          {
+            onSpawn: ({ process: child }) => {
+              if (abortAfterExit)
+                child.once("exit", () =>
+                  setTimeout(() => controller.abort(reason), 150),
+                );
+            },
           },
-        },
-      ),
-    );
-    try {
-      const result = await worker.analyze(
-        makeScript("fetch('/late-tail');"),
-        5_000,
-        controller.signal,
+        ),
       );
-      const error = failureOf(result);
-      expect(error).toBeInstanceOf(AnalysisOutputError);
-      expect(error.capturedOutput?.stderr).toContain("early exit marker");
-      expect(error.capturedOutput?.stderr).toContain("late tail marker");
-      expect(error.capturedOutput?.truncated).toBe(abortAfterExit);
-      if (abortAfterExit)
-        expect(error.secondaryFailures[0]?.cause).toBe(reason);
-      else expect(error.secondaryFailures).toHaveLength(0);
-    } finally {
-      await worker.close();
+      try {
+        const result = await worker.analyze(
+          makeScript("fetch('/late-tail');"),
+          5_000,
+          controller.signal,
+        );
+        const error = failureOf(result);
+        expect(error).toBeInstanceOf(AnalysisOutputError);
+        expect(error.capturedOutput?.stderr).toContain("early exit marker");
+        expect(error.capturedOutput?.stderr).toContain("late tail marker");
+        expect(error.capturedOutput?.truncated).toBe(abortAfterExit);
+        if (abortAfterExit)
+          expect(error.secondaryFailures[0]?.cause).toBe(reason);
+        else expect(error.secondaryFailures).toHaveLength(0);
+      } finally {
+        await worker.close();
+      }
     }
-  }
-});
+  },
+);
 
 it("kills a hung owned child at the deadline and starts a fresh worker for the next script", async () => {
   const children: ProviderProcessHandle[] = [];

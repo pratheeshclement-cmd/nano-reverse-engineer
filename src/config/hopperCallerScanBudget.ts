@@ -10,7 +10,7 @@ import {
 } from "../domain/native/hopperCallerReconciliation.js";
 
 export const HOPPER_CALLER_SCAN_BUDGET_SETTING =
-  "REA_HOPPER_CALLER_SCAN_BUDGET_MS";
+  "NRE_HOPPER_CALLER_SCAN_BUDGET_MS";
 
 /** Effective caller-scan budget and where its milliseconds came from. */
 export interface HopperCallerScanBudget {
@@ -65,6 +65,6 @@ export const hopperCallerScanRecovery = (
     !facts.instructions_complete ||
     facts.native_callers_complete === false;
   if (facts.stop.code === "work_budget")
-    return `${budget.setting} is ${String(budget.milliseconds)} ms (source: ${budget.source}). The default is ${String(budget.defaultMilliseconds)} ms. Allowed values are integers from ${String(budget.floorMilliseconds)} to ${String(budget.maximumMilliseconds)} ms. Set it in the environment that starts REA and restart REA. ${fixedAllowanceRecovery}`;
+    return `${budget.setting} is ${String(budget.milliseconds)} ms (source: ${budget.source}). The default is ${String(budget.defaultMilliseconds)} ms. Allowed values are integers from ${String(budget.floorMilliseconds)} to ${String(budget.maximumMilliseconds)} ms. Set it in the environment that starts NRE and restart NRE. ${fixedAllowanceRecovery}`;
   return fixedLimit ? fixedAllowanceRecovery : "";
 };

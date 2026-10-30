@@ -116,7 +116,7 @@ export const managedAnalysisCleanupFailure = (
   }
   const cleanup = projectAnalysisError(error);
   const failure = new ProviderAdapterError(
-    error instanceof ProviderAdapterError ? error.providerId : "rea",
+    error instanceof ProviderAdapterError ? error.providerId : "nre",
     "close_binary",
     {
       cause: error,

@@ -22,7 +22,7 @@ import type { BinaryTarget } from "../../../../src/domain/binaryTargetTypes.js";
 
 describe("artifact extraction format support", () => {
   it("refuses unsupported formats before inventory or output", async () => {
-    const root = await createTestTempDirectory("rea-extract-format-");
+    const root = await createTestTempDirectory("nre-extract-format-");
     const image = join(root, "Image.dmg");
     const udif = Buffer.alloc(512);
     udif.write("koly");
@@ -59,7 +59,7 @@ describe("artifact extraction format support", () => {
   });
 
   it("refuses a thin Mach-O that inventory lists as root-only", async () => {
-    const root = await createTestTempDirectory("rea-extract-thin-macho-");
+    const root = await createTestTempDirectory("nre-extract-thin-macho-");
     const binary = join(root, "thin");
     await writeFile(binary, machoImage({ cpu: CPU.arm64e }));
     const output = join(root, "output");
@@ -83,7 +83,7 @@ describe("artifact extraction format support", () => {
   });
 
   it("keeps a thin Mach-O PyInstaller onefile extractable", async () => {
-    const root = await createTestTempDirectory("rea-extract-thin-macho-pyi-");
+    const root = await createTestTempDirectory("nre-extract-thin-macho-pyi-");
     const binary = join(root, "hello");
     await writeFile(
       binary,
@@ -122,7 +122,7 @@ describe("artifact extraction format support", () => {
 
 describe("artifact extraction reader selection", () => {
   it("extracts an embedded PCK using its inventoried format rather than its executable carrier", async () => {
-    const root = await createTestTempDirectory("rea-extract-embedded-pck-");
+    const root = await createTestTempDirectory("nre-extract-embedded-pck-");
     const binary = join(root, "game");
     const output = join(root, "output");
     const pack = buildGodotPck(3, [
@@ -164,7 +164,7 @@ describe("artifact extraction reader selection", () => {
   it.each(["zip", "hap", "hsp", "app-pack"] as const)(
     "extracts the ZIP-backed %s package family that inventory already supports",
     async (format) => {
-      const root = await createTestTempDirectory("rea-extract-zip-family-");
+      const root = await createTestTempDirectory("nre-extract-zip-family-");
       const archive = join(
         root,
         `Payload.${format === "app-pack" ? "app" : format}`,

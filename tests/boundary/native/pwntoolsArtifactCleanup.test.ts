@@ -69,7 +69,7 @@ const makeDecoder = () =>
         throw new Error("input read should fail before decoder launch");
       },
     },
-    { REA_PWNTOOLS_PYTHON: process.execPath },
+    { NRE_PWNTOOLS_PYTHON: process.execPath },
     undefined,
     async () => {
       throw new Error("runtime should not be created for failed input read");
@@ -94,7 +94,7 @@ const emulateSupportedHost = async (
 
 it("reports the read failure without stale incomplete-cleanup state when close retry succeeds", async () =>
   emulateSupportedHost(async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-pwntools-close-retry-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-pwntools-close-retry-"));
     const path = join(root, "selected.bin");
     await writeFile(path, "selected evidence");
     closeState.fail = false;
@@ -135,7 +135,7 @@ it("reports the read failure without stale incomplete-cleanup state when close r
 
 it("retains a persistent failed input descriptor and refuses the next acquisition", async () =>
   emulateSupportedHost(async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-pwntools-held-close-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-pwntools-held-close-"));
     const path = join(root, "selected.bin");
     await writeFile(path, "selected evidence");
     closeState.fail = true;
@@ -176,7 +176,7 @@ it("retains a persistent failed input descriptor and refuses the next acquisitio
 
 it("retains selected target identity when cancellation arrives after its completed read", async () =>
   emulateSupportedHost(async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-pwntools-input-cancel-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-pwntools-input-cancel-"));
     const path = join(root, "selected.bin");
     await writeFile(path, "selected evidence");
     closeState.inputAbort = new AbortController();
@@ -208,7 +208,7 @@ it("retains selected target identity when cancellation arrives after its complet
 it("retains admitted layout through reply close failure and cancellation, then resolves cleanup", async () => {
   await prepareProcessOwnershipInspection();
   await emulateSupportedHost(async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-pwntools-reply-close-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-pwntools-reply-close-"));
     const path = join(root, "selected.bin");
     await writeFile(path, Buffer.alloc(128));
     const runtime = await PrivateRuntimeRoot.create({
@@ -223,7 +223,7 @@ it("retains admitted layout through reply close failure and cancellation, then r
     closeState.replyFail = true;
     closeState.abort = new AbortController();
     const provider = new PwntoolsLayoutProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         const request = JSON.parse(
           await readFile(join(runtime.path, "request.json"), "utf8"),
@@ -290,7 +290,7 @@ it.each([
   async (scenario) => {
     await prepareProcessOwnershipInspection();
     await emulateSupportedHost(async () => {
-      const root = await mkdtemp(join(tmpdir(), "rea-pwntools-core-reply-"));
+      const root = await mkdtemp(join(tmpdir(), "nre-pwntools-core-reply-"));
       const path = join(root, "selected.core");
       const value = recordedCrashFixture(path);
       await writeFile(path, recordedCrashFixtureBytes(value));
@@ -327,10 +327,10 @@ it.each([
       let launches = 0;
       const provider = new PwntoolsRecordedCrashProvider(
         {
-          REA_PWNTOOLS_PYTHON: process.execPath,
-          REA_PWNDBG_GDB: process.execPath,
-          REA_PWNDBG_GDBINIT: plugin,
-          REA_PWNDBG_VENV_PATH: venv,
+          NRE_PWNTOOLS_PYTHON: process.execPath,
+          NRE_PWNDBG_GDB: process.execPath,
+          NRE_PWNDBG_GDBINIT: plugin,
+          NRE_PWNDBG_VENV_PATH: venv,
         },
         async (spawn) => {
           launches++;

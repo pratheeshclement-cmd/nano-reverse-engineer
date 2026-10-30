@@ -72,7 +72,7 @@ class GdbExecutableRefusal extends AnalysisCapabilityUnavailableError {
       cause,
       userMessage: `Could not launch the selected GDB executable ${JSON.stringify(command)} (${systemCode}).`,
       remediationAction:
-        "Set REA_GDB_COMMAND to an installed executable GDB command, or make that command available on PATH. Check execute permission on the command and search permission on its parent directories before retrying.",
+        "Set NRE_GDB_COMMAND to an installed executable GDB command, or make that command available on PATH. Check execute permission on the command and search permission on its parent directories before retrying.",
       diagnostics: {
         boundary: "provider-launch",
         command,
@@ -590,7 +590,7 @@ export class GdbSessionManager {
   constructor(
     options: {
       readonly environment?: Readonly<NodeJS.ProcessEnv>;
-      /** @internal Test seam. Production uses REA_DEBUGGER_COMMAND_DEADLINE_MS. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_COMMAND_DEADLINE_MS. */
       readonly commandTimeoutMs?: number;
       readonly startupTimeoutMs?: number;
       readonly platform?: NodeJS.Platform;
@@ -604,11 +604,11 @@ export class GdbSessionManager {
       ) => Promise<void>;
       /** @internal Read-only process identity observer for lifecycle tests. */
       readonly readInferiorProcessStartTime?: ProcessStartTimeReader;
-      /** @internal Test seam. Production uses REA_DEBUGGER_MAX_SESSIONS. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_MAX_SESSIONS. */
       readonly maxSessions?: number;
-      /** @internal Test seam. Production uses REA_DEBUGGER_MAX_PENDING_COMMANDS. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_MAX_PENDING_COMMANDS. */
       readonly maxPendingCommands?: number;
-      /** @internal Test seam. Production uses REA_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES. */
+      /** @internal Test seam. Production uses NRE_DEBUGGER_MAX_COMMAND_OUTPUT_BYTES. */
       readonly maxCommandOutputBytes?: number;
       /**
        * @internal Test seam for startup and detach MI truncation.
@@ -618,7 +618,7 @@ export class GdbSessionManager {
     } = {},
   ) {
     this.#environment = { ...(options.environment ?? process.env) };
-    this.#command = this.#environment.REA_GDB_COMMAND ?? "gdb";
+    this.#command = this.#environment.NRE_GDB_COMMAND ?? "gdb";
     const limits = resolveDebuggerSessionLimits(this.#environment);
     this.#commandDeadline = applyDebuggerAdmissionOverride(
       limits.commandDeadline,
@@ -685,7 +685,7 @@ export class GdbSessionManager {
           "start_gdb_session",
           this.#platform === "win32"
             ? "Persistent Windows GDB sessions are unavailable because owned Job Object cleanup can terminate debugger inferiors."
-            : "Persistent GDB sessions are available only on Linux because REA verifies live inferior output descriptors through /proc.",
+            : "Persistent GDB sessions are available only on Linux because NRE verifies live inferior output descriptors through /proc.",
         ),
       );
     const controller = new AbortController();
@@ -1085,7 +1085,7 @@ export class GdbSessionManager {
         startupEvidencePayload === undefined
           ? undefined
           : createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
-              predicateType: "rea.debugger.startup-observation",
+              predicateType: "nre.debugger.startup-observation",
               operation: "start_gdb_session",
               parameters: {
                 mi_version: miVersion,
@@ -1271,7 +1271,7 @@ export class GdbSessionManager {
               undefined,
               { id: "gnu.gdb", name: "GNU GDB", version: null },
               {
-                predicateType: "rea.debugger.console-observation",
+                predicateType: "nre.debugger.console-observation",
                 operation: "gdb_console",
                 parameters: { session_id: sessionId, command },
                 result: {
@@ -1342,7 +1342,7 @@ export class GdbSessionManager {
                 undefined,
                 { id: "gnu.gdb", name: "GNU GDB", version: null },
                 {
-                  predicateType: "rea.debugger.console-observation",
+                  predicateType: "nre.debugger.console-observation",
                   operation: "gdb_console",
                   parameters: { session_id: sessionId, command },
                   result: { ...result, records: [...result.records] },
@@ -1858,7 +1858,7 @@ export class GdbSessionManager {
       partial === undefined
         ? undefined
         : createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
-            predicateType: "rea.debugger.console-observation",
+            predicateType: "nre.debugger.console-observation",
             operation: "gdb_console",
             parameters: {
               session_id: session.id,
@@ -2114,8 +2114,8 @@ export class GdbSessionManager {
         const evidence = createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
           predicateType:
             operation === "start_gdb_session"
-              ? "rea.debugger.startup-observation"
-              : "rea.debugger.console-observation",
+              ? "nre.debugger.startup-observation"
+              : "nre.debugger.console-observation",
           operation,
           parameters: {
             session_id: session.id,
@@ -2207,7 +2207,7 @@ export class GdbSessionManager {
           completion_status: "unknown",
         };
         const evidence = createEvidence(undefined, GDB_PROVIDER_IDENTITY, {
-          predicateType: "rea.debugger.console-observation",
+          predicateType: "nre.debugger.console-observation",
           operation: "gdb_console",
           parameters: {
             session_id: session.id,

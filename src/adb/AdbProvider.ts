@@ -782,7 +782,7 @@ const reservePackageDestinations = async (
           capturedOutput,
           userMessage: `pm path for ${packageName} reported ${displayDevicePath(entry.device_path)}, whose file name ${displayDevicePath(entry.file_name)} cannot be written to a unique local destination (${errorCode ?? "unknown error"}). No APK was pulled.`,
           remediationAction:
-            "Review details.diagnostics and details.captured_output for the refused destination. Correct the output filesystem conflict before retrying; REA does not rename APKs.",
+            "Review details.diagnostics and details.captured_output for the refused destination. Correct the output filesystem conflict before retrying; NRE does not rename APKs.",
           diagnostics: {
             package_name: packageName,
             device_path: entry.device_path,
@@ -822,7 +822,7 @@ const reservePackageDestinations = async (
           capturedOutput,
           userMessage: `Could not release the local filename reservation for ${displayDevicePath(reservation.device_path)} (${errorCode ?? "unknown error"}); no APK was pulled.`,
           remediationAction:
-            "Review details.diagnostics and details.captured_output for the refused destination. Correct the output filesystem conflict before retrying; REA does not rename APKs.",
+            "Review details.diagnostics and details.captured_output for the refused destination. Correct the output filesystem conflict before retrying; NRE does not rename APKs.",
           diagnostics: {
             package_name: packageName,
             device_path: reservation.device_path,
@@ -1582,8 +1582,8 @@ export class AdbProvider {
             "shell",
             "sh",
             "-c",
-            'cd "$1" || exit\nexec find . -mindepth 1 -maxdepth 1 -exec sh -c "$2" rea-list-directory {} +',
-            "rea-list-directory",
+            'cd "$1" || exit\nexec find . -mindepth 1 -maxdepth 1 -exec sh -c "$2" nre-list-directory {} +',
+            "nre-list-directory",
             request.input.device_path,
             ADB_DIRECTORY_BATCH_SCRIPT,
           ]),
@@ -1911,7 +1911,7 @@ export class AdbProvider {
           capturedOutput,
           userMessage: `pm path for ${packageName} reported an APK path that cannot be written as a file on this host: ${displayDevicePath(first.device_path)} (${first.reason})${otherCount > 0 ? ` and ${String(otherCount)} other path(s)` : ""}. No APK was pulled.`,
           remediationAction:
-            "Review details.diagnostics for the refused device paths and details.captured_output for the retained pm path output. REA does not rename device-reported APK paths; correct the device path policy before retrying.",
+            "Review details.diagnostics for the refused device paths and details.captured_output for the retained pm path output. NRE does not rename device-reported APK paths; correct the device path policy before retrying.",
           diagnostics: {
             package_name: packageName,
             rejected_paths: parsed.rejectedPaths.map(
@@ -1947,7 +1947,7 @@ export class AdbProvider {
             capturedOutput,
             userMessage: `pm path for ${packageName} reported multiple APK paths with the same local file name ${displayDevicePath(entry.file_name)}; no APK was pulled.`,
             remediationAction:
-              "Review details.diagnostics and details.captured_output for the conflicting device paths. REA does not rename device-reported paths; correct Package Manager's path response before retrying.",
+              "Review details.diagnostics and details.captured_output for the conflicting device paths. NRE does not rename device-reported paths; correct Package Manager's path response before retrying.",
             diagnostics: {
               package_name: packageName,
               file_name: entry.file_name,
@@ -2287,7 +2287,7 @@ export class AdbProvider {
           {
             path: ["device_path"],
             reason: "invalid_value",
-            message: `The device path ${JSON.stringify(input.device_path)} does not name a file that can be written on this host (${derived.reason}); REA never renames a device-reported file.`,
+            message: `The device path ${JSON.stringify(input.device_path)} does not name a file that can be written on this host (${derived.reason}); NRE never renames a device-reported file.`,
           },
         ]),
       );
@@ -2394,7 +2394,7 @@ export class AdbProvider {
         device_path: input.device_path,
         overwrite: input.overwrite,
       },
-      { prefix: "rea-adb-input-" },
+      { prefix: "nre-adb-input-" },
       signal,
       async (root, resources) => {
         const digest = await snapshotAdbInput(
@@ -2601,7 +2601,7 @@ export class AdbProvider {
         apk_path: apkPath,
         replace: input.replace,
       },
-      { prefix: "rea-adb-apk-" },
+      { prefix: "nre-adb-apk-" },
       signal,
       async (root, resources) => {
         const digest = await snapshotAdbInput(
@@ -3027,7 +3027,7 @@ export class AdbProvider {
     return this.#withRuntimeRoot(
       operation,
       { serial: input.serial, output_directory: directory.value },
-      { parent: directory.value, prefix: ".rea-screen-" },
+      { parent: directory.value, prefix: ".nre-screen-" },
       signal,
       async (stage, resources) => {
         let publicationCloseFailure: ScreenPublicationCloseFailure | undefined;
@@ -3129,7 +3129,7 @@ export class AdbProvider {
     let publishedPath: string | undefined;
     try {
       stagingDirectory = await mkdtemp(
-        appendCallerPath(directory.value, ".rea-bugreport-"),
+        appendCallerPath(directory.value, ".nre-bugreport-"),
       );
     } catch (cause) {
       return err(

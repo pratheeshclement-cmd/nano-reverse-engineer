@@ -31,7 +31,7 @@ it.skipIf(process.platform === "win32").each(["file", "directory"])(
   "rejects invalid native traversal before canonicalizing a %s inventory root",
   async (kind) => {
     const root = await createTestTempDirectory(
-      "rea-inventory-native-selection-",
+      "nre-inventory-native-selection-",
     );
     await writeFile(join(root, "blocker"), "regular file");
     const path = join(root, "target");
@@ -48,7 +48,7 @@ it.skipIf(process.platform === "win32").each(["file", "directory"])(
 it.skipIf(process.platform === "win32")(
   "rejects a FIFO artifact root without waiting for a writer",
   async () => {
-    const root = await createTestTempDirectory("rea-artifact-root-fifo-");
+    const root = await createTestTempDirectory("nre-artifact-root-fifo-");
     const fifoPath = join(root, "input.asar");
     await promisify(execFile)("mkfifo", [fifoPath]);
 
@@ -69,7 +69,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("rejects a root path replaced between its initial stat and open", async () => {
-  const root = await createTestTempDirectory("rea-artifact-root-replaced-");
+  const root = await createTestTempDirectory("nre-artifact-root-replaced-");
   const path = join(root, "input.bin");
   const replacement = join(root, "replacement.bin");
   await writeFile(path, "first bytes\n");
@@ -87,7 +87,7 @@ it("rejects a root path replaced between its initial stat and open", async () =>
 });
 
 it("keeps unavailable container traversal distinct from observed root bytes", async () => {
-  const root = await createTestTempDirectory("rea-artifact-root-scope-");
+  const root = await createTestTempDirectory("nre-artifact-root-scope-");
   const path = join(root, "fixture.pkg");
   // The recognized XAR prefix selects PKG inventory; no child decoder is installed.
   await writeFile(path, Buffer.from("xar!fixture"));
@@ -106,7 +106,7 @@ it("keeps unavailable container traversal distinct from observed root bytes", as
 });
 
 it("retains root identity without asserting absent children for an unclassified FAT archive", async () => {
-  const root = await createTestTempDirectory("rea-fat-archive-root-scope-");
+  const root = await createTestTempDirectory("nre-fat-archive-root-scope-");
   const path = join(root, "libfat.a");
   const archive = arArchive();
   const bytes = fatImage([
@@ -140,7 +140,7 @@ it("retains root identity without asserting absent children for an unclassified 
 });
 
 it("admits a FAT root when a valid slice header starts at the prefix boundary", async () => {
-  const root = await createTestTempDirectory("rea-fat-root-header-boundary-");
+  const root = await createTestTempDirectory("nre-fat-root-header-boundary-");
   const path = join(root, "universal");
   const bytes = Buffer.alloc(8_224);
   bytes.writeUInt32BE(0xcafebabe, 0);
@@ -168,7 +168,7 @@ it("admits a FAT root when a valid slice header starts at the prefix boundary", 
 });
 
 it("recognizes a root ASAR when its exact JSON extent has legal surrounding whitespace", async () => {
-  const root = await createTestTempDirectory("rea-asar-root-whitespace-");
+  const root = await createTestTempDirectory("nre-asar-root-whitespace-");
   const path = join(root, "app.asar");
   const json = ` \t\r\n${JSON.stringify({
     files: { "main.js": { size: 0, offset: "0" } },
@@ -190,7 +190,7 @@ it("recognizes a root ASAR when its exact JSON extent has legal surrounding whit
 });
 
 it("reports the bounded probe limit for an oversized ASAR candidate without penalizing opaque files", async () => {
-  const root = await createTestTempDirectory("rea-asar-probe-limit-");
+  const root = await createTestTempDirectory("nre-asar-probe-limit-");
   const candidatePath = join(root, "large.asar");
   const opaquePath = join(root, "opaque.bin");
   const jsonObject = Buffer.from('{"files":{}}');

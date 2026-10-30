@@ -22,7 +22,7 @@ import { verifyNativeProvenance } from "./native-provenance.mjs";
 const exec = promisify(execFile);
 
 await preflightMacosBundleFixture();
-const root = await mkdtemp(join(tmpdir(), "rea-macos-bundle-"));
+const root = await mkdtemp(join(tmpdir(), "nre-macos-bundle-"));
 
 /** Bundle roles relative to the application root, independent of the container. */
 const anatomy = (projection, applicationRoot) => {
@@ -129,13 +129,13 @@ try {
       `${format} bundle roles drifted`,
     );
     assert.deepEqual(observed.privileged_helpers, [
-      "Contents/Library/LaunchServices/com.example.rea.helper",
+      "Contents/Library/LaunchServices/com.example.nre.helper",
     ]);
     assert.deepEqual(observed.launchd_plists, [
-      "agent:Contents/Library/LaunchAgents/com.example.rea.agent.plist",
-      "daemon:Contents/Library/LaunchDaemons/com.example.rea.helper.plist",
+      "agent:Contents/Library/LaunchAgents/com.example.nre.agent.plist",
+      "daemon:Contents/Library/LaunchDaemons/com.example.nre.helper.plist",
     ]);
-    assert.deepEqual(observed.helpers, ["Contents/Helpers/rea-tool"]);
+    assert.deepEqual(observed.helpers, ["Contents/Helpers/nre-tool"]);
     assert.ok(
       projection.symlinks.some((path) =>
         path.endsWith(`${FRAMEWORK}/Versions/Current`),

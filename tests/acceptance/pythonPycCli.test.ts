@@ -40,7 +40,7 @@ const marshalSingleItemTuple = (item: Buffer): Buffer =>
 cliTest(
   "reads backward-compatible signed 64-bit marshal integers",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-int64-");
+    const root = await createTestTempDirectory("nre-python-pyc-int64-");
     for (const [name, value, bits] of [
       ["positive", 42n, 6],
       ["negative", -1n, 1],
@@ -124,7 +124,7 @@ cliTest(
       "8w0NCgAAAAAAAAAAAAAAAOMAAAAAAAAAAAAAAAABAAAAAAAAAPMEAAAAlQBnACkCTj4CAAAA4wIAAAAAAAAAAAAAAAQAAAADAAAA8w4AAACVAFgQUwFTAiYAVQAkACkDTukBAAAA6QIAAACpACkC2gFh2gFicwIAAAAgINoKZml4dHVyZS5wedoBZnIKAAAAAQAAAHMQAAAAgADYDQ6AYYgBgEbYCwyASPMAAAAA4wIAAAAAAAAAAAAAAAQAAAADAAAA8w4AAACVAFgQUwFTAiYAVQEkACkDTnIEAAAAcgUAAAByBgAAACkCcgcAAAByCAAAAHMCAAAAICByCQAAAHIKAAAAcgoAAAABAAAAcxAAAACAANgNDoBhiAGARtgLDIBIcgsAAAByBgAAAHIGAAAAcgsAAAByCQAAANoIPG1vZHVsZT5yDgAAAAEAAABzCAAAAPADAQEB2AAEcgsAAAA=",
       "base64",
     );
-    const root = await createTestTempDirectory("rea-python-pyc-store-slice-");
+    const root = await createTestTempDirectory("nre-python-pyc-store-slice-");
     const path = join(root, "code-set.pyc");
     await writeFile(path, pyc);
     const result = await cli.run({
@@ -146,7 +146,7 @@ cliTest(
 cliTest(
   "uses magic-specific cache tables for synthetic pyc bytecode equality",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-inline-cache-");
+    const root = await createTestTempDirectory("nre-python-pyc-inline-cache-");
     const cases = [
       { magic: 3495, opcode: 166, cacheUnits: 1 },
       { magic: 3500, opcode: 25, cacheUnits: 4 },
@@ -208,7 +208,7 @@ cliTest(
 cliTest(
   "keeps distinct Python code names distinct when JavaScript display strings collide",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-unicode-name-");
+    const root = await createTestTempDirectory("nre-python-pyc-unicode-name-");
     const scalar = Buffer.from([0xf0, 0x9f, 0x98, 0x80]);
     const surrogatePair = Buffer.from([0xed, 0xa0, 0xbd, 0xed, 0xb8, 0x80]);
     const code = (name: Buffer) =>
@@ -249,7 +249,7 @@ cliTest(
 cliTest(
   "reports nested CPython code objects through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-cli-");
+    const root = await createTestTempDirectory("nre-python-pyc-cli-");
     const path = join(root, "sample.pyc");
     await writeFile(path, pythonPycFixture("py311", { nested: true }));
     const result = await cli.run({
@@ -265,7 +265,7 @@ cliTest(
 cliTest(
   "classifies unsupported 3.7 alpha headers without labeling their marshal data malformed",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-alpha-header-");
+    const root = await createTestTempDirectory("nre-python-pyc-alpha-header-");
     const marshal = Buffer.from(
       "e3000000000000000000000000010000004000000073040000006400530029014ea900720100000072010000007201000000fa066d6f642e7079da083c6d6f64756c653e010000007300000000",
       "hex",
@@ -311,7 +311,7 @@ cliTest(
 cliTest(
   "preserves historical signed code fields and reports the ambiguous 3410 constructor revision",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-signed-fields-");
+    const root = await createTestTempDirectory("nre-python-pyc-signed-fields-");
     for (const { name, magic, layout, fields, expected } of [
       {
         name: "zero",
@@ -376,7 +376,7 @@ cliTest(
   "rejects negative code fields after the pinned constructor validation transition",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-python-pyc-signed-rejection-",
+      "nre-python-pyc-signed-rejection-",
     );
     for (const { name, magic, layout, fields, message } of [
       {
@@ -438,7 +438,7 @@ cliTest(
 cliTest(
   "preserves negative CPython first line numbers through the public CLI",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-lines-");
+    const root = await createTestTempDirectory("nre-python-pyc-lines-");
     const path = join(root, "sample.pyc");
     const nested = marshalCode("py311", {
       name: "inner",
@@ -469,7 +469,7 @@ cliTest(
 cliTest(
   "matches CPython reference slots for singleton and reference tags",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-ref-slots-");
+    const root = await createTestTempDirectory("nre-python-pyc-ref-slots-");
     const cases = [
       {
         name: "flagged-none",
@@ -517,7 +517,7 @@ cliTest(
 cliTest(
   "counts code keys using the selected CPython equality rules",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-equality-");
+    const root = await createTestTempDirectory("nre-python-pyc-equality-");
     const cases = [
       { magic: 3413, layout: "py38" as const, lengths: [1, 1] },
       { magic: 3439, layout: "py38" as const, lengths: [1, 1] },
@@ -572,7 +572,7 @@ cliTest(
   "uses constructor-normalized legacy flags for code keys and preserves raw flags",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-python-pyc-effective-flags-",
+      "nre-python-pyc-effective-flags-",
     );
     const cases = [
       {
@@ -677,7 +677,7 @@ cliTest(
 cliTest(
   "resolves a relative pyc path against the working directory",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-cli-rel-");
+    const root = await createTestTempDirectory("nre-python-pyc-cli-rel-");
     await writeFile(join(root, "sample.pyc"), pythonPycFixture("py37"));
     const result = await cli.run({
       arguments: ["inspect-python-pyc", "sample.pyc", "--json"],
@@ -693,7 +693,7 @@ cliTest(
 cliTest.skipIf(process.platform === "win32")(
   "reads the file the symlink path names, not its lexical sibling",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-pyc-cli-link-");
+    const root = await createTestTempDirectory("nre-python-pyc-cli-link-");
     const target = join(root, "target");
     await mkdir(join(target, "child"), { recursive: true });
     await writeFile(join(target, "sample.pyc"), pythonPycFixture("py37"));
@@ -711,7 +711,7 @@ cliTest.skipIf(process.platform === "win32")(
 );
 
 cliTest("reports a truncated pyc as invalid input", async ({ cli }) => {
-  const root = await createTestTempDirectory("rea-python-pyc-cli-bad-");
+  const root = await createTestTempDirectory("nre-python-pyc-cli-bad-");
   const path = join(root, "broken.pyc");
   await writeFile(path, Buffer.from("not a pyc"));
   const result = await cli.run({
@@ -770,7 +770,7 @@ cliTest(
       pythonPycHeader(3531),
       marshalCode("py311", { consts }),
     ]);
-    const root = await createTestTempDirectory("rea-python-pyc-preview-");
+    const root = await createTestTempDirectory("nre-python-pyc-preview-");
     const path = join(root, "unicode.pyc");
     await writeFile(path, bytes);
     const response = await cli.run({
@@ -807,7 +807,7 @@ cliTest(
 cliTest(
   "distinguishes source surrogate code points from astral scalars at the preview cut",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-python-source-boundary-");
+    const root = await createTestTempDirectory("nre-python-source-boundary-");
     const path = join(root, "source-boundaries.pyc");
     const prefix = "a".repeat(79);
     const scalar = Buffer.from(prefix + "𐀀z");

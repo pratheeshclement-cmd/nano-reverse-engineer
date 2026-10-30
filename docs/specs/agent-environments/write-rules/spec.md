@@ -1,14 +1,14 @@
 # Serve writes by what their recordings show
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
 After state targets, 30 write tools across the 50 published capture-built environments had a state target but were
 refused (contradicted, an unexplained change, or a side effect), and 59 still had none. A diagnosis traced each
 refused tool to the fields that differed between the gate's state and the recorded read, and named seven shared
-causes. Seven of the 30 are refusals REA should keep (asynchronous jobs, rendered markup, reverse embeds, appended
-relation rows), and six need only a better recording. This change addresses the causes REA can fix:
+causes. Seven of the 30 are refusals NRE should keep (asynchronous jobs, rendered markup, reverse embeds, appended
+relation rows), and six need only a better recording. This change addresses the causes NRE can fix:
 
 - **Blame too broad.** A failed read contradicted every write it exercised, whatever fields differed.
 - **Unsent update changes.** An update changing a field it did not send had no rule unless the change was a top-level

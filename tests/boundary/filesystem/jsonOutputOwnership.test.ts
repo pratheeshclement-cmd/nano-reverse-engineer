@@ -32,7 +32,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
       const handle = await filesystem.open(...args);
       if (
         !(allocation.deferred || allocation.statFailure) ||
-        !basename(dirname(String(args[0]))).startsWith(".rea-write-")
+        !basename(dirname(String(args[0]))).startsWith(".nre-write-")
       )
         return handle;
       allocation.staged.push(handle);
@@ -50,7 +50,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 });
 
 it("closes the descriptor and retains staged content when its final identity is unknown", async () => {
-  const root = await createTestTempDirectory("rea-json-identity-unknown-");
+  const root = await createTestTempDirectory("nre-json-identity-unknown-");
   const resources = new ArtifactResourceScope();
   const destination = join(root, "unverified.json");
   allocation.statFailure = true;
@@ -79,7 +79,7 @@ it("closes the descriptor and retains staged content when its final identity is 
     });
     const stage = result.error.cleanupResources[0];
     if (stage === undefined) throw new Error("Expected retained staging");
-    expect(stage).toContain(".rea-write-");
+    expect(stage).toContain(".nre-write-");
     expect(await fs.readFile(join(stage, "content"), "utf8")).toBe(
       "owned bytes",
     );
@@ -102,7 +102,7 @@ it("closes the descriptor and retains staged content when its final identity is 
 it.each([false, true])(
   "publishes when the staged file ID is assigned by its first write (overwrite: %s)",
   async (overwrite) => {
-    const root = await createTestTempDirectory("rea-json-deferred-id-");
+    const root = await createTestTempDirectory("nre-json-deferred-id-");
     const resources = new ArtifactResourceScope();
     const destination = join(root, "bundle.json");
     allocation.deferred = true;
@@ -127,7 +127,7 @@ it.each([false, true])(
 );
 
 it("removes cancelled staging after the first write assigned its file ID", async () => {
-  const root = await createTestTempDirectory("rea-json-deferred-cancel-");
+  const root = await createTestTempDirectory("nre-json-deferred-cancel-");
   const resources = new ArtifactResourceScope();
   const controller = new AbortController();
   const destination = join(root, "cancelled.json");
@@ -158,7 +158,7 @@ it("removes cancelled staging after the first write assigned its file ID", async
 });
 
 it("reports committed output when post-publication staging cleanup remains owned", async () => {
-  const root = await createTestTempDirectory("rea-json-write-");
+  const root = await createTestTempDirectory("nre-json-write-");
   const resources = new ArtifactResourceScope();
   try {
     const result = await writeTextParts(
@@ -176,7 +176,7 @@ it("reports committed output when post-publication staging cleanup remains owned
       path: join(root, "bundle.json"),
       bytes: 16,
     });
-    expect(cleanupResource).toContain(".rea-write-");
+    expect(cleanupResource).toContain(".nre-write-");
     expect(projectAnalysisError(result.error)).toMatchObject({
       code: "cleanup_incomplete",
       details: { published: true, published_path: join(root, "bundle.json") },
@@ -201,7 +201,7 @@ it("reports committed output when post-publication staging cleanup remains owned
 });
 
 it("preserves cancellation when staging cleanup also fails", async () => {
-  const root = await createTestTempDirectory("rea-json-cancel-");
+  const root = await createTestTempDirectory("nre-json-cancel-");
   const resources = new ArtifactResourceScope();
   const controller = new AbortController();
   let unexpected: string | undefined;
@@ -257,7 +257,7 @@ it("preserves cancellation when staging cleanup also fails", async () => {
 });
 
 it("restores an unpublished write failure once its retained stage is released", async () => {
-  const root = await createTestTempDirectory("rea-json-write-retry-");
+  const root = await createTestTempDirectory("nre-json-write-retry-");
   const resources = new ArtifactResourceScope();
   const destination = join(root, "failed.json");
   try {
@@ -303,8 +303,8 @@ it("restores an unpublished write failure once its retained stage is released", 
 });
 
 it("clears an admission retry failure only after every retained owner releases", async () => {
-  const root = await createTestTempDirectory("rea-json-admission-retry-");
-  const directory = join(root, ".rea-write-owned");
+  const root = await createTestTempDirectory("nre-json-admission-retry-");
+  const directory = join(root, ".nre-write-owned");
   await mkdir(directory);
   const unexpected = join(directory, "unexpected");
   writeFileSync(unexpected, "retain this");
@@ -344,7 +344,7 @@ it("clears an admission retry failure only after every retained owner releases",
 });
 
 it("refuses to publish a staged path replaced after its descriptor opened", async () => {
-  const root = await createTestTempDirectory("rea-staged-swap-");
+  const root = await createTestTempDirectory("nre-staged-swap-");
   const resources = new ArtifactResourceScope();
   const destination = join(root, "swapped.json");
   try {
@@ -372,7 +372,7 @@ it("refuses to publish a staged path replaced after its descriptor opened", asyn
 });
 
 it("does not invent a staged owner when the supplied scope is closed", async () => {
-  const root = await createTestTempDirectory("rea-closed-output-scope-");
+  const root = await createTestTempDirectory("nre-closed-output-scope-");
   const resources = new ArtifactResourceScope();
   await resources.close();
   const destination = join(root, "closed.json");
@@ -394,7 +394,7 @@ function stagingPollutingParts(root: string): Iterable<string> {
     *[Symbol.iterator](): Generator<string> {
       const directories = readdirSync(root);
       const stage = directories.find((entry) =>
-        entry.startsWith(".rea-write-"),
+        entry.startsWith(".nre-write-"),
       );
       if (stage === undefined) throw new Error("Expected staging directory");
       writeFileSync(join(root, stage, "unexpected"), "retain this");
@@ -417,11 +417,11 @@ function replacingStagedParts(root: string): Iterable<string> {
 }
 
 const requireStages = (root: string): string[] =>
-  readdirSync(root).filter((entry) => entry.startsWith(".rea-write-"));
+  readdirSync(root).filter((entry) => entry.startsWith(".nre-write-"));
 
 it("retains a failed file close owner and retries before removing its stage", async () => {
-  const root = await createTestTempDirectory("rea-staged-close-");
-  const directory = join(root, ".rea-write-owned");
+  const root = await createTestTempDirectory("nre-staged-close-");
+  const directory = join(root, ".nre-write-owned");
   await mkdir(directory);
   const path = join(directory, "content");
   const handle = await open(path, "wx", 0o600);
@@ -454,8 +454,8 @@ it("retains a failed file close owner and retries before removing its stage", as
 });
 
 it("refuses to remove unexpected files from an owned staging directory", async () => {
-  const root = await createTestTempDirectory("rea-staged-replaced-");
-  const directory = join(root, ".rea-write-owned");
+  const root = await createTestTempDirectory("nre-staged-replaced-");
+  const directory = join(root, ".nre-write-owned");
   await mkdir(directory);
   const owner = await OwnedStagedOutput.create(directory);
   const unexpected = join(directory, "unexpected");
@@ -475,7 +475,7 @@ it("refuses to remove unexpected files from an owned staging directory", async (
 });
 
 it("keeps unexpected staging names on the publication error", async () => {
-  const root = await createTestTempDirectory("rea-staged-public-entries-");
+  const root = await createTestTempDirectory("nre-staged-public-entries-");
   const destination = join(root, "out.json");
   const resources = new ArtifactResourceScope();
   const close = vi
@@ -506,9 +506,9 @@ it("keeps unexpected staging names on the publication error", async () => {
 });
 
 it("retains cleanup when its staging directory was renamed", async () => {
-  const root = await createTestTempDirectory("rea-staged-renamed-dir-");
-  const directory = join(root, ".rea-write-owned");
-  const moved = join(root, ".rea-write-moved");
+  const root = await createTestTempDirectory("nre-staged-renamed-dir-");
+  const directory = join(root, ".nre-write-owned");
+  const moved = join(root, ".nre-write-moved");
   await mkdir(directory);
   const path = join(directory, "content");
   const handle = await open(path, "wx", 0o600);
@@ -537,8 +537,8 @@ it("retains cleanup when its staging directory was renamed", async () => {
 });
 
 it("retains cleanup when owned staged content was renamed", async () => {
-  const root = await createTestTempDirectory("rea-staged-renamed-file-");
-  const directory = join(root, ".rea-write-owned");
+  const root = await createTestTempDirectory("nre-staged-renamed-file-");
+  const directory = join(root, ".nre-write-owned");
   const content = join(directory, "content");
   const moved = join(directory, "moved-content");
   await mkdir(directory);

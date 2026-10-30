@@ -18,7 +18,7 @@ it.each([
 ] as const)(
   "preserves ELF class%d byte-order%d machine%d in Go and Rust subjects",
   async (bits, endian, machine, local, canonical) => {
-    const root = await createTestTempDirectory("rea-metadata-subject-");
+    const root = await createTestTempDirectory("nre-metadata-subject-");
     const path = join(root, "header.elf");
     const bytes = elf(bits, endian, machine);
     await writeFile(path, bytes);

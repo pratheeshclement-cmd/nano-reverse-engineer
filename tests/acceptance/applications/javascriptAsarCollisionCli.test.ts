@@ -10,7 +10,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 cliTest(
   "reports normalized ASAR collisions as path failures",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-asar-collision-cli-");
+    const root = await createTestTempDirectory("nre-asar-collision-cli-");
     const path = join(root, "twins.asar");
     const entries = [
       ["café.js", "console.log(1)\n"],
@@ -54,7 +54,7 @@ cliTest(
 cliTest(
   "analyzes readable sources when all colliding siblings are unavailable",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-asar-missing-cli-");
+    const root = await createTestTempDirectory("nre-asar-missing-cli-");
     const path = join(root, "missing.asar");
     const main = Buffer.from('require("./café.js");\n');
     const files = {

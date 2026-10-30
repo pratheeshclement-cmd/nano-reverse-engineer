@@ -87,7 +87,7 @@ fuseMcpTest(
         openWorldHint: false,
       });
 
-      const root = await createTestTempDirectory("rea-electron-fuses-mcp-");
+      const root = await createTestTempDirectory("nre-electron-fuses-mcp-");
       const elf = elfFuseImage([ELECTRON_FUSE_STATE_BYTES.removed, 0x99]);
       const path = join(root, "application");
       await writeFile(path, elf.bytes);
@@ -194,7 +194,7 @@ fuseMcpTest.for([
 ] as const)(
   "preserves $format machine $machine architecture in MCP Evidence",
   async ({ format, machine, architecture }, { fuse: { client } }) => {
-    const root = await createTestTempDirectory("rea-fuse-mcp-architecture-");
+    const root = await createTestTempDirectory("nre-fuse-mcp-architecture-");
     const path = join(root, "selected");
     const image =
       format === "elf"

@@ -50,12 +50,12 @@ afterEach(() => {
 const it = test.skipIf(process.platform === "win32");
 
 const fixture = async (behavior: FakeKunaBehavior = {}) => {
-  const root = await createTestTempDirectory("rea-kuna-published-cleanup-");
+  const root = await createTestTempDirectory("nre-kuna-published-cleanup-");
   const kuna = await writeFakeKuna(root, behavior);
   const cacheRoot = join(root, "cache");
   const installed = await inspectKunaInstallationOwned({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: cacheRoot,
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: cacheRoot,
   });
   if (!installed.ok) throw new Error(installed.error.reason);
   const targetPath = join(root, "program");
@@ -122,7 +122,7 @@ it("retains the completed publication receipt while retrying only stopped stagin
 
 it("reuses the published export in the same session without hiding pending cleanup", async () => {
   const { cacheRoot, kuna, open } = await session(
-    "rea-kuna-session-published-cleanup-",
+    "nre-kuna-session-published-cleanup-",
   );
   const client = open();
   fault.root = cacheRoot;

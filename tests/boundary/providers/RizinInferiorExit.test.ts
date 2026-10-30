@@ -38,7 +38,7 @@ it
   .each(["exit", "redirect", "ambiguous-policy"] as const)(
   "verifies the original inferior after %s during detach",
   async (mode) => {
-    const directory = await mkdtemp(join(tmpdir(), "rea-rizin-exit-"));
+    const directory = await mkdtemp(join(tmpdir(), "nre-rizin-exit-"));
     directories.add(directory);
     const ready = join(directory, "ready");
     const redirected = join(directory, "redirected");

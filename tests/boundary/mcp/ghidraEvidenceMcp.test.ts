@@ -193,7 +193,7 @@ it("retains terminal-call qualifications across function views and snapshot repl
       expect(replay.value.result, name).toEqual(value);
       expect(replay.value.limitations, name).toContain(limitation);
       expect(replay.value.limitations, name).toContainEqual(
-        expect.stringContaining("Loaded from a local REA analysis snapshot"),
+        expect.stringContaining("Loaded from a local NRE analysis snapshot"),
       );
     }
     expect(harness.calls).toEqual([...values.keys()]);
@@ -430,7 +430,7 @@ describe("Ghidra MCP evidence parity", () => {
       ]);
       expect(mcpOverview.normalized_result).toEqual(directOverview.value);
       expect(mcpOverview).toMatchObject({
-        provider: { id: "rea-workflow" },
+        provider: { id: "nre-workflow" },
         confidence: "derived",
         normalized_result: {
           document: "fixture",

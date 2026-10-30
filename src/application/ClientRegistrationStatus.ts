@@ -94,7 +94,7 @@ interface ClientRegistrationReadOptions {
    * Which evidence authorises inspection. `readiness` inspects a client whose
    * product applicability is established, plus clients the caller selected
    * explicitly. `ownership` also inspects shared registration storage, because
-   * a version-pinned registration REA wrote must be refreshed even when the
+   * a version-pinned registration NRE wrote must be refreshed even when the
    * product profile is absent.
    */
   readonly evidence?: "readiness" | "ownership";
@@ -316,7 +316,7 @@ export const readClientRegistrationInspections = async (
           snapshotEnvironment(
             registrationEnvironment.value.values,
             options.platform,
-          ).REA_MCP_INPUT_SCHEMA_PROFILE !== undefined,
+          ).NRE_MCP_INPUT_SCHEMA_PROFILE !== undefined,
       });
       record(
         configuredStatus(
@@ -404,7 +404,7 @@ const sharedEnableFlagBinds = (
 /** A disable that setup preserves is a manual conflict: its remediation
  * must not point at an ineffective setup run. */
 const sharedDisabledActivationRemediation = (): string =>
-  "This shared registration row carries enable: false, which binds every reader of the shared storage, including ZCode's fallback view. REA preserves that flag, so rea setup will not change this row. Re-enable it with the product that disabled it, or remove enable: false manually, then rerun rea doctor.";
+  "This shared registration row carries enable: false, which binds every reader of the shared storage, including ZCode's fallback view. NRE preserves that flag, so nre setup will not change this row. Re-enable it with the product that disabled it, or remove enable: false manually, then rerun nre doctor.";
 // Codex and Kimi Code load a server marked `disabled: true` and honor only
 // `enabled`; Devin loads one marked `enabled: false` and honors only `disabled`.
 const ignoresDisabledKey = new Set(["codex", "kimi"]);
@@ -462,11 +462,11 @@ const registrationAligned = ({
   )
     return "stale";
   if (client.name === "kimi" && !kimiInputSchemaProfileSelected) return "stale";
-  // A Harness registration only connects as the rea stdio server; another
-  // server name or transport leaves the session without REA tools.
+  // A Harness registration only connects as the nre stdio server; another
+  // server name or transport leaves the session without NRE tools.
   if (
     client.format === "dsh" &&
-    (registration.serverName !== "rea" || registration.transport !== "stdio")
+    (registration.serverName !== "nre" || registration.transport !== "stdio")
   )
     return "stale";
   // Legacy package runners remain owned, but setup migrates them to the selected installation.
@@ -479,13 +479,13 @@ const registrationAligned = ({
 /** A client that rewrites its file from memory must be quit before setup. */
 const remediation = (client: SetupClient): string => {
   if (client.quitBeforeSetup !== true)
-    return "Run rea setup to refresh this registration, then restart the client.";
+    return "Run nre setup to refresh this registration, then restart the client.";
   const name = client.displayName ?? client.name;
-  return `Quit ${name} fully, run rea setup to refresh this registration, then start ${name} again. A running ${name} can rewrite its configuration from memory and drop the registration.`;
+  return `Quit ${name} fully, run nre setup to refresh this registration, then start ${name} again. A running ${name} can rewrite its configuration from memory and drop the registration.`;
 };
 
 const unknownEntryPointRemediation = (): string =>
-  "The existing registration was retained because its executable identity cannot be verified. Check the registered launcher path, symlink targets and access permissions. Run the installed REA CLI or a supported package runner, then rerun rea doctor; no registration was changed.";
+  "The existing registration was retained because its executable identity cannot be verified. Check the registered launcher path, symlink targets and access permissions. Run the installed NRE CLI or a supported package runner, then rerun nre doctor; no registration was changed.";
 
 const configuredStatus = (
   client: SetupClient,
@@ -551,7 +551,7 @@ const timeoutAdvisory = (
   const headroom = isKimi
     ? `${String(MCP_STARTUP_POLICY.toolOperationHeadroomMs)} ms`
     : `${String(MCP_STARTUP_POLICY.toolOperationHeadroomMs / 1000)} seconds`;
-  const recommendation = `The configured ${setting} (${currentValue}) is shorter than REA's known provider allowance (${String(providerAllowance)} ms), so provider startup or an upstream request may exceed this client deadline. REA recommends ${setting} = ${recommendedValue} to cover that allowance plus ${headroom} of operation headroom; this additional headroom is a recommendation, not a guarantee for every analysis.`;
+  const recommendation = `The configured ${setting} (${currentValue}) is shorter than NRE's known provider allowance (${String(providerAllowance)} ms), so provider startup or an upstream request may exceed this client deadline. NRE recommends ${setting} = ${recommendedValue} to cover that allowance plus ${headroom} of operation headroom; this additional headroom is a recommendation, not a guarantee for every analysis.`;
   return batchScope === undefined
     ? recommendation
     : `${recommendation} ${batchScope}`;
@@ -561,7 +561,7 @@ const packageVersionRemediation = (
   packageReference: string,
   client: SetupClient,
 ): string =>
-  `This registration requests ${packageReference}, while the current REA CLI package is ${PRODUCT_IDENTITY.packageVersion}. REA does not resolve package-runner requests during doctor; update the registration with rea setup --client ${client.name}, then restart the client.`;
+  `This registration requests ${packageReference}, while the current NRE CLI package is ${PRODUCT_IDENTITY.packageVersion}. NRE does not resolve package-runner requests during doctor; update the registration with nre setup --client ${client.name}, then restart the client.`;
 
 const unavailableStatus = (
   client: SetupClient,
@@ -602,7 +602,7 @@ const clientEvidencePresent = async (
       if (!isMissing(cause))
         unavailable ??= {
           path,
-          detail: `Client configuration evidence at ${path} could not be inspected: ${cause instanceof Error ? cause.message : String(cause)}. Check file permissions and rerun rea doctor.`,
+          detail: `Client configuration evidence at ${path} could not be inspected: ${cause instanceof Error ? cause.message : String(cause)}. Check file permissions and rerun nre doctor.`,
         };
     }
   }

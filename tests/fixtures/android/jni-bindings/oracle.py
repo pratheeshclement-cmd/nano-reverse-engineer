@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small fixture oracle: known source symbols/slots, never a REA table scanner."""
+"""Small fixture oracle: known source symbols/slots, never a NRE table scanner."""
 import argparse
 import hashlib
 import json

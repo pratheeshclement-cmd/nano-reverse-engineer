@@ -6,7 +6,7 @@ import type { TestProcesses } from "../process/processFixture.js";
 const LISTENING_MESSAGE = "MCP transport listening";
 const STARTUP_TIMEOUT_MS = 30_000;
 
-/** A compiled REA listener child and the URL it announced. */
+/** A compiled NRE listener child and the URL it announced. */
 export interface McpHttpProcess {
   readonly child: ChildProcessWithoutNullStreams;
   readonly url: URL;
@@ -36,7 +36,7 @@ const listeningUrl = (stderr: string): URL | undefined => {
   return undefined;
 };
 
-/** Spawn `rea <arguments>` with stdin closed and resolve once it announces its MCP URL. */
+/** Spawn `nre <arguments>` with stdin closed and resolve once it announces its MCP URL. */
 export const startListeningProcess = async (
   processes: TestProcesses,
   arguments_: readonly string[],
@@ -44,11 +44,11 @@ export const startListeningProcess = async (
 ): Promise<McpHttpProcess> => {
   const child = processes.spawn(
     process.execPath,
-    [resolvePath("scripts/rea.mjs"), ...arguments_],
+    [resolvePath("scripts/nre.mjs"), ...arguments_],
     {
       env: {
         PATH: process.env.PATH ?? "",
-        HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
+        HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
         ...environment,
       },
     },
@@ -85,7 +85,7 @@ export const startListeningProcess = async (
   return { child, url, stderr: () => stderr };
 };
 
-/** Spawn `rea mcp --http --port 0` and resolve once it names its URL. */
+/** Spawn `nre mcp --http --port 0` and resolve once it names its URL. */
 export const startMcpHttpProcess = (
   processes: TestProcesses,
   arguments_: readonly string[] = [],

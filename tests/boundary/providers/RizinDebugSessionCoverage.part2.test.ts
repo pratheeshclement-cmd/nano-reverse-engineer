@@ -87,7 +87,7 @@ it.skipIf(process.platform === "win32")(
     for (const spawnError of [new Error("injected spawn failure"), "opaque"]) {
       const injected = createInjectedProcess({ spawnError });
       const manager = createManager(
-        { REA_RIZIN_COMMAND: "injected-rizin" },
+        { NRE_RIZIN_COMMAND: "injected-rizin" },
         { spawnProcess: injected.spawnProcess },
       );
       const result = await manager.start({
@@ -101,7 +101,7 @@ it.skipIf(process.platform === "win32")(
       startup: (control) => control.closeStdin(),
     });
     const manager = createManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       { spawnProcess: injected.spawnProcess },
     );
     const result = await manager.start({
@@ -123,7 +123,7 @@ it.skipIf(process.platform === "win32")(
       spawnError: new Error("spawn interrupted"),
     });
     const manager = createManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       { spawnProcess: injected.spawnProcess },
     );
     const result = await manager.start(
@@ -146,7 +146,7 @@ it.skipIf(process.platform === "win32")(
       },
     });
     const manager = createManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       { spawnProcess: injected.spawnProcess },
     );
     const result = await manager.start(
@@ -165,7 +165,7 @@ it.skipIf(process.platform === "win32")(
       beforeSpawnReturns: () => abort.abort(),
     });
     const manager = createManager(
-      { REA_RIZIN_COMMAND: "injected-rizin" },
+      { NRE_RIZIN_COMMAND: "injected-rizin" },
       { spawnProcess: injected.spawnProcess },
     );
     const result = await manager.start(

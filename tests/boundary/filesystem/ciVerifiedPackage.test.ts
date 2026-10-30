@@ -90,7 +90,7 @@ async function createFixture({
   version = "1.2.3",
   tag = "latest",
 }: FixtureOptions = {}) {
-  const directory = await createTestTempDirectory("rea-verified-package-");
+  const directory = await createTestTempDirectory("nre-verified-package-");
   await workflowGit(directory, ["init", "--initial-branch=main"]);
   await writeFile(
     join(directory, "package.json"),
@@ -177,10 +177,10 @@ async function preparePublication(fixture: Fixture, published = "false") {
         status:
           published === "unknown" ? 503 : published === "false" ? 404 : 200,
         body: {
-          name: "rea-agents",
+          name: "nano-reverse-engineer",
           versions: {
             [fixture.version]: {
-              name: "rea-agents",
+              name: "nano-reverse-engineer",
               version: fixture.version,
               dist: { integrity: fixture.integrity },
             },
@@ -196,7 +196,7 @@ import { readFile } from "node:fs/promises";
 import { prepareNpmPublication } from "./prepare-npm-publication.mjs";
 const state = JSON.parse(await readFile("registry-state.json", "utf8"));
 await prepareNpmPublication(async (url) => {
-  if (url !== "https://registry.npmjs.org/rea-agents") throw new Error("Unexpected registry origin");
+  if (url !== "https://registry.npmjs.org/nano-reverse-engineer") throw new Error("Unexpected registry origin");
   return Response.json(state.body, { status: state.status });
 });
 `,

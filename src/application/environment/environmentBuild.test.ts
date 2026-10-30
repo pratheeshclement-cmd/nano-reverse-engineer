@@ -162,7 +162,7 @@ const sameTree = async (left: string, right: string): Promise<number> => {
 
 describe("buildEnvironment", () => {
   it("writes the bundle the three-step path writes, byte for byte", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-same-");
+    const root = await createTestTempDirectory("nre-environment-build-same-");
     const evidence = analysisViewCaptureEvidence(
       environmentManifestCaptureFixture(),
     );
@@ -170,7 +170,7 @@ describe("buildEnvironment", () => {
     const built = await buildEnvironment(input);
     if (!built.ok) throw built.error;
     const reference = await threeStep(
-      await createTestTempDirectory("rea-environment-build-ref-"),
+      await createTestTempDirectory("nre-environment-build-ref-"),
       evidence,
       undefined,
     );
@@ -192,12 +192,14 @@ describe("buildEnvironment", () => {
       package_source: reference.exported.package_source,
       files: reference.exported.files,
       warnings: [],
-      next: [`agent-env run ${input.directory!}`],
+      next: [
+        `agent-env run ${process.platform === "win32" ? `'${input.directory!}'` : input.directory!}`,
+      ],
     });
   });
 
   it("reports the coverage of the state the bundle serves", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-cov-");
+    const root = await createTestTempDirectory("nre-environment-build-cov-");
     const evidence = analysisViewCaptureEvidence(
       environmentManifestCaptureFixture(),
     );
@@ -229,7 +231,7 @@ describe("buildEnvironment", () => {
   });
 
   it("plans the same files without writing anything on a dry run", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-dry-");
+    const root = await createTestTempDirectory("nre-environment-build-dry-");
     const planned = await buildEnvironment(
       await buildInput(root, undefined, { dryRun: true }),
     );
@@ -250,7 +252,7 @@ describe("buildEnvironment", () => {
 
 describe("buildEnvironment naming and refusals", () => {
   it("names a loopback capture after its file and says so", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-name-");
+    const root = await createTestTempDirectory("nre-environment-build-name-");
     const evidence = loopbackCapture();
     const input = await buildInput(root, evidence);
     const built = await buildEnvironment(input);
@@ -263,7 +265,7 @@ describe("buildEnvironment naming and refusals", () => {
       }),
     ]);
     const reference = await threeStep(
-      await createTestTempDirectory("rea-environment-build-name-ref-"),
+      await createTestTempDirectory("nre-environment-build-name-ref-"),
       evidence,
       "grafana",
     );
@@ -279,7 +281,7 @@ describe("buildEnvironment naming and refusals", () => {
   });
 
   it("refuses a loopback capture whose file name yields no name", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-noname-");
+    const root = await createTestTempDirectory("nre-environment-build-noname-");
     const capture = await captureFile(root, loopbackCapture(), "--.json");
     const built = await buildEnvironment({
       capture,
@@ -303,7 +305,7 @@ describe("buildEnvironment naming and refusals", () => {
   });
 
   it("refuses evidence that is not a capture, and a build without a directory", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-refuse-");
+    const root = await createTestTempDirectory("nre-environment-build-refuse-");
     const evidence = analysisViewCaptureEvidence(
       environmentManifestCaptureFixture(),
     );
@@ -334,7 +336,7 @@ describe("buildEnvironment naming and refusals", () => {
   });
 
   it("refuses an occupied directory and leaves it as it was", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-busy-");
+    const root = await createTestTempDirectory("nre-environment-build-busy-");
     const input = await buildInput(root);
     await mkdir(input.directory!);
     await writeFile(join(input.directory!, "notes.md"), "keep");
@@ -347,7 +349,7 @@ describe("buildEnvironment naming and refusals", () => {
 
 describe("buildEnvironment cancellation and input checks", () => {
   it("writes nothing when cancelled before the bundle stage", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-stop-");
+    const root = await createTestTempDirectory("nre-environment-build-stop-");
     const controller = new AbortController();
     const input = await buildInput(root, undefined, {
       signal: controller.signal,
@@ -367,7 +369,7 @@ describe("buildEnvironment cancellation and input checks", () => {
   });
 
   it("names the written bundle when cancelled during the write", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-late-");
+    const root = await createTestTempDirectory("nre-environment-build-late-");
     const controller = new AbortController();
     const input = await buildInput(root, undefined, {
       signal: controller.signal,
@@ -386,7 +388,7 @@ describe("buildEnvironment cancellation and input checks", () => {
   });
 
   it("refuses repeated rules and a HAR document saved as JSON", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-input-");
+    const root = await createTestTempDirectory("nre-environment-build-input-");
     const repeated = await buildEnvironment(
       await buildInput(root, undefined, {
         templateRules: ["opaque-token", "opaque-token"],
@@ -419,8 +421,8 @@ describe("buildEnvironment cancellation and input checks", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "refuses an unreadable package tarball on a dry run as a build does",
     async () => {
-      const root = await createTestTempDirectory("rea-environment-build-tgz-");
-      const tarball = join(root, "rea-agents.tgz");
+      const root = await createTestTempDirectory("nre-environment-build-tgz-");
+      const tarball = join(root, "nano-reverse-engineer.tgz");
       await writeFile(tarball, "packed");
       await chmod(tarball, 0o000);
       try {
@@ -443,7 +445,7 @@ describe("buildEnvironment cancellation and input checks", () => {
   );
 
   it("refuses a loopback capture whose file name is too long, and quotes the next command", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-long-");
+    const root = await createTestTempDirectory("nre-environment-build-long-");
     const long = await captureFile(
       root,
       loopbackCapture(),
@@ -502,7 +504,7 @@ describe("canonicalTemplateRules", () => {
 
 describe("buildEnvironment credential names", () => {
   it("flags the credential-named headers and query parameters a scenario capture retains, as a HAR's", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-scan-");
+    const root = await createTestTempDirectory("nre-environment-build-scan-");
     const evidence = scenarioCaptureEvidence(
       scenarioCaptureFixture(
         [
@@ -621,7 +623,7 @@ describe("buildEnvironment credential scan of scenario events", () => {
     if (duplicate === undefined) throw new Error("Fixture lacks a response");
     // The session's request began before attachment; the third transaction recorded two responses.
     const planned = await plannedScan(
-      "rea-environment-build-events-",
+      "nre-environment-build-events-",
       editedScenarioEvidence(capture, (items) => [
         ...attachedMidFlight("request-2")(items),
         { ...duplicate, sequence: 99 },
@@ -659,7 +661,7 @@ describe("buildEnvironment credential scan of scenario events", () => {
       },
     ]);
     const planned = await plannedScan(
-      "rea-environment-build-events-large-",
+      "nre-environment-build-events-large-",
       editedScenarioEvidence(capture, attachedMidFlight("request-2")),
     );
     expect(planned.warnings).toEqual([
@@ -673,7 +675,7 @@ describe("buildEnvironment credential scan of scenario events", () => {
 
 describe("buildEnvironment credential scan coverage", () => {
   it("warns that a body too large to scan was not scanned", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-large-");
+    const root = await createTestTempDirectory("nre-environment-build-large-");
     const [entry] = environmentManifestHar().log.entries;
     const text = JSON.stringify({
       token: "t-large",
@@ -710,8 +712,8 @@ describe("buildEnvironment credential scan coverage", () => {
 
 describe("buildEnvironment dry-run package tarball", () => {
   it("refuses a tarball whose descriptor stats successfully but fails to read", async () => {
-    const root = await createTestTempDirectory("rea-environment-build-read-");
-    const tarball = join(root, "rea-agents.tgz");
+    const root = await createTestTempDirectory("nre-environment-build-read-");
+    const tarball = join(root, "nano-reverse-engineer.tgz");
     await writeFile(tarball, "packed");
     const input = await buildInput(root, undefined, {
       dryRun: true,
@@ -741,9 +743,9 @@ describe("buildEnvironment dry-run package tarball", () => {
     "retries a failed tarball close and retains its owner when the failure persists: %s",
     async (persistent) => {
       const root = await createTestTempDirectory(
-        "rea-environment-build-close-",
+        "nre-environment-build-close-",
       );
-      const tarball = join(root, "rea-agents.tgz");
+      const tarball = join(root, "nano-reverse-engineer.tgz");
       await writeFile(tarball, "packed");
       const input = await buildInput(root, undefined, {
         dryRun: true,
@@ -814,9 +816,9 @@ describe("buildEnvironment dry-run package tarball", () => {
 
   it("is cancelled by an interrupt that arrives while it reads the tarball", async () => {
     const root = await createTestTempDirectory(
-      "rea-environment-build-tgz-stop-",
+      "nre-environment-build-tgz-stop-",
     );
-    const tarball = join(root, "rea-agents.tgz");
+    const tarball = join(root, "nano-reverse-engineer.tgz");
     await writeFile(tarball, "packed");
     const controller = new AbortController();
     const input = await buildInput(root, undefined, {

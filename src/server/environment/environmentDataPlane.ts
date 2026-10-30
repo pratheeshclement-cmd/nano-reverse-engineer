@@ -35,7 +35,7 @@ const documentError = (error: AnalysisInputError): RpcError => {
     .map((segment) => `/${pointerSegment(segment)}`)
     .join("");
   return invalidParams(
-    `${pointer === "" ? "the document" : pointer} ${issue?.message ?? "is not a rea-state/v1 document"}`,
+    `${pointer === "" ? "the document" : pointer} ${issue?.message ?? "is not a nre-state/v1 document"}`,
     pointer,
   );
 };

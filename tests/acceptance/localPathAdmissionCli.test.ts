@@ -32,7 +32,7 @@ const fileCommands = [
 cliTest(
   "rejects empty file selections before they can become the working directory",
   async ({ cli }) => {
-    const cwd = await createTestTempDirectory("rea-empty-local-path-");
+    const cwd = await createTestTempDirectory("nre-empty-local-path-");
     const selections = [
       ...fileCommands.map((command) => ({
         arguments: [command, ""],
@@ -67,7 +67,7 @@ cliTest(
 cliTest(
   "rejects empty auxiliary selections and output destinations before reading inputs",
   async ({ cli }) => {
-    const cwd = await createTestTempDirectory("rea-empty-auxiliary-path-");
+    const cwd = await createTestTempDirectory("nre-empty-auxiliary-path-");
     const selections = [
       {
         arguments: ["inspect-il2cpp-metadata", "unread", "--binary", ""],
@@ -122,7 +122,7 @@ cliTest(
 cliTest(
   "still inspects an explicit relative file with its exact digest",
   async ({ cli }) => {
-    const cwd = await createTestTempDirectory("rea-relative-local-path-");
+    const cwd = await createTestTempDirectory("nre-relative-local-path-");
     const bytes = pythonPycFixture();
     const path = join(cwd, "selected.pyc");
     await writeFile(path, bytes);

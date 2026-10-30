@@ -6,7 +6,7 @@ import { createCliCompletions } from "../../../src/cli/completions.js";
 import { workspaceCliTest } from "../../support/cli/workspaceCliFixture.js";
 
 const registry = () =>
-  Cli.create("rea", { sync: false }).command("instructions", {
+  Cli.create("nre", { sync: false }).command("instructions", {
     options: z.object({
       procedure: z.string().optional(),
       targetFormat: z.enum(["dos-com", "raw-binary"]).optional(),
@@ -36,34 +36,34 @@ const complete = (words: string[], index = words.length - 1) => {
 };
 
 it("resolves enabled builtin scopes in the same tree as registered commands", () => {
-  expect(complete(["rea", "mcp", ""])).toEqual(["add", "doctor"]);
-  expect(complete(["rea", "mcp", "d"])).toEqual(["doctor"]);
-  expect(complete(["rea", "mcp", "ad"])).toEqual(["add"]);
-  expect(complete(["rea", "mcp"], 2)).toEqual(["add", "doctor"]);
-  expect(complete(["rea", ""])).toEqual(["instructions", "mcp", "completions"]);
-  expect(complete(["rea", "completions", "b"])).toEqual(["bash"]);
-  expect(complete(["rea", "mcp", "add", "--c"])).toEqual([
+  expect(complete(["nre", "mcp", ""])).toEqual(["add", "doctor"]);
+  expect(complete(["nre", "mcp", "d"])).toEqual(["doctor"]);
+  expect(complete(["nre", "mcp", "ad"])).toEqual(["add"]);
+  expect(complete(["nre", "mcp"], 2)).toEqual(["add", "doctor"]);
+  expect(complete(["nre", ""])).toEqual(["instructions", "mcp", "completions"]);
+  expect(complete(["nre", "completions", "b"])).toEqual(["bash"]);
+  expect(complete(["nre", "mcp", "add", "--c"])).toEqual([
     "--command",
     "--columns",
   ]);
 });
 
 it("uses canonical global flag metadata and retains command options and enum hints", () => {
-  expect(complete(["rea", "instructions", "--he"])).toEqual(["--help"]);
-  expect(complete(["rea", "instructions", "--for"])).toEqual(["--format"]);
-  expect(complete(["rea", "instructions", "--tok"])).toEqual(
+  expect(complete(["nre", "instructions", "--he"])).toEqual(["--help"]);
+  expect(complete(["nre", "instructions", "--for"])).toEqual(["--format"]);
+  expect(complete(["nre", "instructions", "--tok"])).toEqual(
     expect.arrayContaining([
       "--token-count",
       "--token-limit",
       "--token-offset",
     ]),
   );
-  expect(complete(["rea", "instructions", "--proc"])).toEqual(["--procedure"]);
-  expect(complete(["rea", "instructions", "--target-format", ""])).toEqual([
+  expect(complete(["nre", "instructions", "--proc"])).toEqual(["--procedure"]);
+  expect(complete(["nre", "instructions", "--target-format", ""])).toEqual([
     "dos-com",
     "raw-binary",
   ]);
-  expect(complete(["rea", "instructions", "--format", ""])).toEqual([
+  expect(complete(["nre", "instructions", "--format", ""])).toEqual([
     "toon",
     "json",
     "yaml",
@@ -72,31 +72,31 @@ it("uses canonical global flag metadata and retains command options and enum hin
     "csv",
     "tsv",
   ]);
-  expect(complete(["rea", "mcp", "doctor", "--format", ""])).toEqual([
+  expect(complete(["nre", "mcp", "doctor", "--format", ""])).toEqual([
     "toon",
     "json",
     "yaml",
     "md",
     "jsonl",
   ]);
-  expect(complete(["rea", "mcp", "doctor", "--"])).toEqual([
+  expect(complete(["nre", "mcp", "doctor", "--"])).toEqual([
     "--format",
     "--json",
     "--full-output",
     "--help",
     "--timings",
   ]);
-  expect(complete(["rea", "mcp", "doctor", "--t"])).toEqual(["--timings"]);
-  expect(complete(["rea", "mcp", "doctor", "-h"])).toEqual(["-h"]);
-  expect(complete(["rea", "--filter-output", "mcp", ""])).toEqual([
+  expect(complete(["nre", "mcp", "doctor", "--t"])).toEqual(["--timings"]);
+  expect(complete(["nre", "mcp", "doctor", "-h"])).toEqual(["-h"]);
+  expect(complete(["nre", "--filter-output", "mcp", ""])).toEqual([
     "instructions",
     "mcp",
     "completions",
   ]);
-  expect(complete(["rea", "instructions", "--"])).not.toContain(
+  expect(complete(["nre", "instructions", "--"])).not.toContain(
     "--incur-update-check",
   );
-  expect(complete(["rea", "instructions", "--"])).not.toContain("--mcp");
+  expect(complete(["nre", "instructions", "--"])).not.toContain("--mcp");
 });
 
 it("shares Bash registration across ordinary and protocol routes while retaining builtin precedence", () => {
@@ -131,9 +131,9 @@ workspaceCliTest(
     const environment = {
       ...process.env,
       ...workspace.environment,
-      REA_LOG_LEVEL: "silent",
-      REA_TEST_NODE: process.execPath,
-      REA_TEST_DISPATCHER: resolve("scripts/rea.mjs"),
+      NRE_LOG_LEVEL: "silent",
+      NRE_TEST_NODE: process.execPath,
+      NRE_TEST_DISPATCHER: resolve("scripts/nre.mjs"),
     };
     for (const arguments_ of [
       ["completions", "--help"],
@@ -142,7 +142,7 @@ workspaceCliTest(
     ]) {
       const help = await processes.run(
         process.execPath,
-        [resolve("scripts/rea.mjs"), ...arguments_],
+        [resolve("scripts/nre.mjs"), ...arguments_],
         { env: environment },
       );
       expect(help.exitCode, help.stderr).toBe(0);
@@ -159,9 +159,9 @@ workspaceCliTest.skipIf(process.platform !== "darwin")(
     const environment = {
       ...process.env,
       ...workspace.environment,
-      REA_LOG_LEVEL: "silent",
-      REA_TEST_NODE: process.execPath,
-      REA_TEST_DISPATCHER: resolve("scripts/rea.mjs"),
+      NRE_LOG_LEVEL: "silent",
+      NRE_TEST_NODE: process.execPath,
+      NRE_TEST_DISPATCHER: resolve("scripts/nre.mjs"),
     };
     const result = await processes.run(
       "zsh",
@@ -169,11 +169,11 @@ workspaceCliTest.skipIf(process.platform !== "darwin")(
         "-f",
         "-c",
         `
-rea() { "$REA_TEST_NODE" "$REA_TEST_DISPATCHER" "$@"; }
+nre() { "$NRE_TEST_NODE" "$NRE_TEST_DISPATCHER" "$@"; }
 autoload -Uz compinit
 compinit -i -D
-eval "$(rea completions zsh)" || exit
-print -r -- "association=\${+_comps[rea]}"
+eval "$(nre completions zsh)" || exit
+print -r -- "association=\${+_comps[nre]}"
 `,
       ],
       { env: environment },
@@ -194,17 +194,17 @@ workspaceCliTest.skipIf(process.platform === "win32")(
         "--norc",
         "-c",
         `
-rea() { "$REA_TEST_NODE" "$REA_TEST_DISPATCHER" "$@"; }
-eval "$(rea completions bash)" || exit
-COMP_WORDS=(rea mcp "")
+nre() { "$NRE_TEST_NODE" "$NRE_TEST_DISPATCHER" "$@"; }
+eval "$(nre completions bash)" || exit
+COMP_WORDS=(nre mcp "")
 COMP_CWORD=2
 _incur_complete_rea || exit
 printf 'mcp=%s\\n' "\${COMPREPLY[*]}"
-COMP_WORDS=(rea instructions --format "")
+COMP_WORDS=(nre instructions --format "")
 COMP_CWORD=3
 _incur_complete_rea || exit
 printf 'format=%s\\n' "\${COMPREPLY[*]}"
-COMP_WORDS=(rea mcp doctor --)
+COMP_WORDS=(nre mcp doctor --)
 COMP_CWORD=3
 _incur_complete_rea || exit
 printf 'doctor=%s\\n' "\${COMPREPLY[*]}"
@@ -214,9 +214,9 @@ printf 'doctor=%s\\n' "\${COMPREPLY[*]}"
         env: {
           ...process.env,
           ...workspace.environment,
-          REA_LOG_LEVEL: "silent",
-          REA_TEST_NODE: process.execPath,
-          REA_TEST_DISPATCHER: resolve("scripts/rea.mjs"),
+          NRE_LOG_LEVEL: "silent",
+          NRE_TEST_NODE: process.execPath,
+          NRE_TEST_DISPATCHER: resolve("scripts/nre.mjs"),
         },
       },
     );

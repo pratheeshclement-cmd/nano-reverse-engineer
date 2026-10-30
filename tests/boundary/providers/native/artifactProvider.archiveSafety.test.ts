@@ -26,7 +26,7 @@ describe("artifact archive safety", () => {
   ] as const)(
     "reuses the hardened ZIP reader for %s package inventory",
     async (name, format) => {
-      const root = await createTestTempDirectory("rea-windows-package-");
+      const root = await createTestTempDirectory("nre-windows-package-");
       const path = join(root, name);
       const writer = new ZipWriter(new Uint8ArrayWriter());
       await writer.add(
@@ -83,7 +83,7 @@ describe("artifact archive safety", () => {
 });
 
 it("extracts case-distinct names only when the destination can preserve them", async () => {
-  const root = await createTestTempDirectory("rea-case-distinct-zip-");
+  const root = await createTestTempDirectory("nre-case-distinct-zip-");
   await writeFile(join(root, "case-probe"), "lower");
   await writeFile(join(root, "CASE-PROBE"), "upper");
   const caseSensitive =
@@ -128,7 +128,7 @@ it("extracts case-distinct names only when the destination can preserve them", a
 });
 
 it("preserves colon names in inventory and refuses Windows stream materialization", async () => {
-  const root = await createTestTempDirectory("rea-artifact-stream-");
+  const root = await createTestTempDirectory("nre-artifact-stream-");
   const path = join(root, "fixture.zip");
   const writer = new ZipWriter(new Uint8ArrayWriter());
   await writer.add("0-ordinary.txt", new TextReader("ordinary content"));

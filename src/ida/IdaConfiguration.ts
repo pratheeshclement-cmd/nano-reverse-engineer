@@ -42,7 +42,7 @@ const common = {
     .default(DEFAULT_IDA_REQUEST_TIMEOUT_MS),
   workspaceRoot: z
     .string()
-    .refine(isAbsolute, "workspaceRoot must be absolute on the REA host")
+    .refine(isAbsolute, "workspaceRoot must be absolute on the NRE host")
     .optional(),
 };
 const registrationSchema = z
@@ -78,7 +78,7 @@ const registrationSchema = z
     "The native IDA MCP protocol requires attached mode",
   );
 
-/** An upstream MCP registration plus REA's database lifecycle selection. */
+/** An upstream MCP registration plus NRE's database lifecycle selection. */
 export type IdaConfiguration = z.infer<typeof registrationSchema>;
 
 /** Render only schema-owned constraints, never rejected registration values. */
@@ -192,17 +192,17 @@ export const readIdaConfiguration = (
       if (constraints.length === 0)
         return err(
           idaConfigurationError(
-            "REA_IDA_MCP_CONFIG must contain an IDA MCP command/args or local url registration; see docs/ida-provider.md.",
+            "NRE_IDA_MCP_CONFIG must contain an IDA MCP command/args or local url registration; see docs/ida-provider.md.",
             parsed.error,
           ),
         );
       return err(
         new ConfigurationError(
-          `REA_IDA_MCP_CONFIG: ${constraints.join("; ")}. See docs/ida-provider.md.`,
+          `NRE_IDA_MCP_CONFIG: ${constraints.join("; ")}. See docs/ida-provider.md.`,
           {
             cause: parsed.error,
             settings: constraints.map((constraint) => ({
-              setting: "REA_IDA_MCP_CONFIG",
+              setting: "NRE_IDA_MCP_CONFIG",
               constraint,
             })),
           },
@@ -213,7 +213,7 @@ export const readIdaConfiguration = (
       if (cause instanceof NonRegularFileReadError)
         return err(
           idaConfigurationError(
-            `REA_IDA_MCP_CONFIG must select a regular JSON file: ${path}`,
+            `NRE_IDA_MCP_CONFIG must select a regular JSON file: ${path}`,
             cause,
           ),
         );
@@ -248,7 +248,7 @@ export const readIdaConfiguration = (
             ? primary instanceof ConfigurationError
               ? primary.message
               : primary instanceof NonRegularFileReadError
-                ? `REA_IDA_MCP_CONFIG must select a regular JSON file: ${path}`
+                ? `NRE_IDA_MCP_CONFIG must select a regular JSON file: ${path}`
                 : `Cannot read IDA MCP registration ${path}: ${primary instanceof Error ? primary.message : String(primary)}`
             : `Cannot close IDA MCP registration ${path}; provide a readable JSON configuration.`;
         const error = new ConfigurationError(primaryMessage, {
@@ -262,7 +262,7 @@ export const readIdaConfiguration = (
           },
           settings: [
             {
-              setting: "REA_IDA_MCP_CONFIG",
+              setting: "NRE_IDA_MCP_CONFIG",
               constraint: `Close remains incomplete for ${path}`,
             },
           ],
@@ -288,7 +288,7 @@ const MAXIMUM_REGISTRATION_BYTES = 65_536;
  */
 const registrationTooLarge = (): ConfigurationError =>
   idaConfigurationError(
-    "REA_IDA_MCP_CONFIG exceeds the 64 KiB registration size.",
+    "NRE_IDA_MCP_CONFIG exceeds the 64 KiB registration size.",
   );
 
 /**
@@ -307,15 +307,15 @@ export const idaRegistrationTimeoutGuidance = (
       : ceilingMs === timeoutMs
         ? `This IDA request reached the registration timeoutMs deadline of ${String(timeoutMs)} ms (deadlineExpired).`
         : `This IDA request reached its ${String(timeoutMs)} ms deadline (deadlineExpired), within the registration timeoutMs ceiling of ${String(ceilingMs)} ms.`,
-  remediationAction: `Set timeoutMs in the JSON file named by REA_IDA_MCP_CONFIG to an integer from 1 to ${String(MAX_IDA_REQUEST_TIMEOUT_MS)} (omitted means ${String(DEFAULT_IDA_REQUEST_TIMEOUT_MS)}). REA applies the edited file on the next IDA connection after it re-reads the registration; an already open session keeps the timeout it connected with. Allow execution, cleanup and delivery headroom in the outer MCP client deadline. Confirm outstanding work and cleanup before retrying.`,
+  remediationAction: `Set timeoutMs in the JSON file named by NRE_IDA_MCP_CONFIG to an integer from 1 to ${String(MAX_IDA_REQUEST_TIMEOUT_MS)} (omitted means ${String(DEFAULT_IDA_REQUEST_TIMEOUT_MS)}). NRE applies the edited file on the next IDA connection after it re-reads the registration; an already open session keeps the timeout it connected with. Allow execution, cleanup and delivery headroom in the outer MCP client deadline. Confirm outstanding work and cleanup before retrying.`,
 });
 
-/** A REA_IDA_MCP_CONFIG rejection that names the setting it concerns. */
+/** A NRE_IDA_MCP_CONFIG rejection that names the setting it concerns. */
 export const idaConfigurationError = (
   constraint: string,
   cause?: unknown,
 ): ConfigurationError =>
   new ConfigurationError(constraint, {
     ...(cause === undefined ? {} : { cause }),
-    settings: [{ setting: "REA_IDA_MCP_CONFIG", constraint }],
+    settings: [{ setting: "NRE_IDA_MCP_CONFIG", constraint }],
   });

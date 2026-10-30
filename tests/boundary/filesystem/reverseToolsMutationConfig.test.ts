@@ -59,7 +59,7 @@ describe("reverse-tools mutation configuration", () => {
   });
 
   it("fails closed when an owned mutation method is missing", async () => {
-    const directory = await createTestTempDirectory("rea-mutation-selector-");
+    const directory = await createTestTempDirectory("nre-mutation-selector-");
     const source = join(directory, "source.ts");
     await writeFile(source, "class Present { run() {} }\n");
 
@@ -79,7 +79,7 @@ describe("reverse-tools mutation configuration", () => {
   });
 
   it("fails closed when an owned mutation method is ambiguous", async () => {
-    const directory = await createTestTempDirectory("rea-mutation-selector-");
+    const directory = await createTestTempDirectory("nre-mutation-selector-");
     const source = join(directory, "source.ts");
     await writeFile(source, "class Owner { run() {} run(value: string) {} }\n");
 

@@ -34,13 +34,13 @@ import {
   type UninstallFileSystem,
 } from "../../../src/application/Uninstall.js";
 
-const ownedSkillManifest = `---\nname: ${PRODUCT_IDENTITY.skillName}\n---\n# REA\n`;
+const ownedSkillManifest = `---\nname: ${PRODUCT_IDENTITY.skillName}\n---\n# NRE\n`;
 beforeEach(clearClientLocationEnvironment);
 afterEach(() => vi.unstubAllEnvs());
 
 describe("client configuration filesystem lifecycle", () => {
   it("detects every supported client and skips absent clients", async () => {
-    const home = await createTestTempDirectory("rea-detect-");
+    const home = await createTestTempDirectory("nre-detect-");
     for (const client of supportedClients(home))
       if (client.markerPath !== undefined)
         await mkdir(client.markerPath, { recursive: true });
@@ -77,12 +77,12 @@ describe("client configuration filesystem lifecycle", () => {
       detected.find(({ name }) => name === "claude_code")?.configPath,
     ).toBe(join(home, ".claude.json"));
     expect(detected.find(({ name }) => name === "devin")?.format).toBe("json");
-    const emptyHome = await createTestTempDirectory("rea-empty-");
+    const emptyHome = await createTestTempDirectory("nre-empty-");
     expect(await detectClients(emptyHome)).toEqual([]);
   });
 
   it("preserves unrelated Codex TOML and supports an installed command", async () => {
-    const home = await createTestTempDirectory("rea-toml-");
+    const home = await createTestTempDirectory("nre-toml-");
     const configPath = join(home, ".codex/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
@@ -97,13 +97,13 @@ describe("client configuration filesystem lifecycle", () => {
           GHIDRA_INSTALL_DIR: "/opt/ghidra",
           JAVA_HOME: "/opt/jdk-21",
         },
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
     expect(configured).toContain('model = "gpt-5"');
-    expect(configured).toContain("[mcp_servers.rea]");
-    expect(configured).toContain('command = "rea"');
+    expect(configured).toContain("[mcp_servers.nre]");
+    expect(configured).toContain('command = "nre"');
     expect(configured).toContain("startup_timeout_sec = 30");
     expect(configured).toContain("tool_timeout_sec = 450");
     expect(configured).toContain('GHIDRA_INSTALL_DIR = "/opt/ghidra"');
@@ -116,18 +116,18 @@ describe("client configuration filesystem lifecycle", () => {
           GHIDRA_INSTALL_DIR: "/opt/ghidra",
           JAVA_HOME: "/opt/jdk-21",
         },
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
   });
 
   it("does not rewrite an equivalent Codex registration with reordered environment keys", async () => {
-    const home = await createTestTempDirectory("rea-toml-");
+    const home = await createTestTempDirectory("nre-toml-");
     const configPath = join(home, ".codex/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      `[mcp_servers.rea]\ncommand = "rea"\nargs = ["mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n\n[mcp_servers.rea.env]\nJAVA_HOME = "/opt/jdk-21"\nHOPPER_LAUNCHER_PATH = "/Hopper Path"\nGHIDRA_INSTALL_DIR = "/opt/ghidra"\n`,
+      `[mcp_servers.nre]\ncommand = "nre"\nargs = ["mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n\n[mcp_servers.nre.env]\nJAVA_HOME = "/opt/jdk-21"\nHOPPER_LAUNCHER_PATH = "/Hopper Path"\nGHIDRA_INSTALL_DIR = "/opt/ghidra"\n`,
     );
 
     const original = await readFile(configPath, "utf8");
@@ -139,49 +139,49 @@ describe("client configuration filesystem lifecycle", () => {
           GHIDRA_INSTALL_DIR: "/opt/ghidra",
           JAVA_HOME: "/opt/jdk-21",
         },
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
 
 describe("Codex MCP tool deadlines", () => {
   it("derives the Codex tool deadline from an explicit Ghidra startup allowance", async () => {
-    const home = await createTestTempDirectory("rea-codex-long-timeout-");
+    const home = await createTestTempDirectory("nre-codex-long-timeout-");
     const configPath = join(home, ".codex/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     expect(
       await configureClientConfiguration(
         { name: "codex", configPath, format: "toml" },
-        { REA_GHIDRA_STARTUP_TIMEOUT_MS: "2700001" },
-        ["rea", "mcp"],
+        { NRE_GHIDRA_STARTUP_TIMEOUT_MS: "2700001" },
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     expect(await readFile(configPath, "utf8")).toContain(
       "tool_timeout_sec = 2821",
     );
     expect(await readFile(configPath, "utf8")).toContain(
-      'REA_GHIDRA_STARTUP_TIMEOUT_MS = "2700001"',
+      'NRE_GHIDRA_STARTUP_TIMEOUT_MS = "2700001"',
     );
   });
 
   it("preserves positive caller-selected Codex startup and tool deadlines", async () => {
-    const home = await createTestTempDirectory("rea-codex-custom-timeout-");
+    const home = await createTestTempDirectory("nre-codex-custom-timeout-");
     const configPath = join(home, ".codex/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@6.1.0", "mcp"]\nstartup_timeout_sec = 5\ntool_timeout_sec = 10\n',
+      '[mcp_servers.nre]\ncommand = "npx"\nargs = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]\nstartup_timeout_sec = 5\ntool_timeout_sec = 10\n',
     );
     expect(
       await configureClientConfiguration(
         { name: "codex", configPath, format: "toml" },
         {},
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -192,7 +192,7 @@ describe("Codex MCP tool deadlines", () => {
 
 describe("client configuration filesystem lifecycle", () => {
   it("updates a symlink target without replacing the TOML config symlink", async () => {
-    const home = await createTestTempDirectory("rea-toml-symlink-");
+    const home = await createTestTempDirectory("nre-toml-symlink-");
     const configPath = join(home, ".codex/config.toml");
     const targetPath = join(home, "managed-config.toml");
     const original = 'model = "gpt-5"\n';
@@ -204,16 +204,16 @@ describe("client configuration filesystem lifecycle", () => {
       await configureClientConfiguration(
         { name: "codex", configPath, format: "toml" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
-    expect(await readFile(targetPath, "utf8")).toContain("[mcp_servers.rea]");
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
+    expect(await readFile(targetPath, "utf8")).toContain("[mcp_servers.nre]");
   });
 
   it("fails before mutation when a TOML config symlink is dangling", async () => {
-    const home = await createTestTempDirectory("rea-toml-symlink-");
+    const home = await createTestTempDirectory("nre-toml-symlink-");
     const configPath = join(home, ".codex/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await symlink(join(home, "missing-config.toml"), configPath);
@@ -227,14 +227,14 @@ describe("client configuration filesystem lifecycle", () => {
     ).toEqual({ status: "failed", reason: "path" });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
 
 describe("Grok Build server table edits", () => {
-  it("edits only the Grok Build REA tables and removes them on uninstall", async () => {
-    const home = await createTestTempDirectory("rea-grok-");
+  it("edits only the Grok Build NRE tables and removes them on uninstall", async () => {
+    const home = await createTestTempDirectory("nre-grok-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original = [
@@ -248,13 +248,13 @@ describe("Grok Build server table edits", () => {
       'command = "blender"',
       'args = ["--mcp"]',
       "",
-      "# about rea",
-      "[mcp_servers.rea]",
+      "# about nre",
+      "[mcp_servers.nre]",
       'command = "npx"',
-      'args = ["-y", "rea-agents@6.1.0", "mcp"]',
+      'args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]',
       "",
-      "# rea environment",
-      "[mcp_servers.rea.env]",
+      "# nre environment",
+      "[mcp_servers.nre.env]",
       'OLD = "1"',
       "",
       "[[marketplace.sources]]",
@@ -277,7 +277,7 @@ describe("Grok Build server table edits", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         environment,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -285,8 +285,8 @@ describe("Grok Build server table edits", () => {
     expect(configured.replaceAll("\r\n", "")).not.toContain("\n");
     for (const comment of [
       "# keep this comment",
-      "# about rea",
-      "# rea environment",
+      "# about nre",
+      "# nre environment",
       "# trailing note",
     ])
       expect(configured).toContain(`${comment}\r\n`);
@@ -299,15 +299,15 @@ describe("Grok Build server table edits", () => {
     expect(configured).toContain('url = "https://example.test/market"');
     expect(configured).toContain("[privacy]");
     expect(configured).toContain("share = false");
-    expect(configured).toContain("[mcp_servers.rea]");
+    expect(configured).toContain("[mcp_servers.nre]");
     expect(configured).toContain("startup_timeout_sec = 30");
     expect(configured).toContain('OLD = "1"');
-    expect(configured).not.toContain("rea-agents@6.1.0");
+    expect(configured).not.toContain("nano-reverse-engineer@6.1.0");
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         blender: { command: "blender", args: ["--mcp"] },
-        rea: {
-          command: "rea",
+        nre: {
+          command: "nre",
           args: ["mcp"],
           startup_timeout_sec: 30,
           env: {
@@ -325,7 +325,7 @@ describe("Grok Build server table edits", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         environment,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(configured);
@@ -336,8 +336,8 @@ describe("Grok Build server table edits", () => {
     const removed = await readFile(configPath, "utf8");
     for (const comment of [
       "# keep this comment",
-      "# about rea",
-      "# rea environment",
+      "# about nre",
+      "# nre environment",
       "# trailing note",
     ])
       expect(removed).toContain(`${comment}\r\n`);
@@ -345,15 +345,15 @@ describe("Grok Build server table edits", () => {
     expect(removed).toContain("[[marketplace.sources]]");
     expect(removed).toContain('url = "https://example.test/market"');
     expect(removed).toContain("[privacy]");
-    expect(removed).not.toContain("[mcp_servers.rea]");
+    expect(removed).not.toContain("[mcp_servers.nre]");
     expect(removed).not.toContain("startup_timeout_sec");
     expect(removed).not.toContain("JAVA_HOME");
   });
 });
 
 describe("Grok Build disabled server list", () => {
-  it("removes rea from disabled_mcp_servers and leaves other names", async () => {
-    const home = await createTestTempDirectory("rea-grok-disabled-");
+  it("removes nre from disabled_mcp_servers and leaves other names", async () => {
+    const home = await createTestTempDirectory("nre-grok-disabled-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
@@ -362,12 +362,12 @@ describe("Grok Build disabled server list", () => {
         "disabled_mcp_servers = [",
         '  "other",',
         '  "r\\u0065a",',
-        '  "rea", # was off',
+        '  "nre", # was off',
         '  "github",',
         "]",
-        "[mcp_servers.rea]",
+        "[mcp_servers.nre]",
         "enabled = false",
-        'command = "rea"',
+        'command = "nre"',
         'args = ["mcp"]',
         "startup_timeout_sec = 30",
       ].join("\n"),
@@ -376,7 +376,7 @@ describe("Grok Build disabled server list", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -385,45 +385,45 @@ describe("Grok Build disabled server list", () => {
     expect(parseToml(configured)).toMatchObject({
       disabled_mcp_servers: ["other", "github"],
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
-    await writeFile(configPath, 'disabled_mcp_servers = ["rea"] # note\n');
+    await writeFile(configPath, 'disabled_mcp_servers = ["nre"] # note\n');
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const created = await readFile(configPath, "utf8");
     expect(created).toContain("# note");
     expect(created).not.toContain("disabled_mcp_servers");
     expect(parseToml(created)).toMatchObject({
-      mcp_servers: { rea: { command: "rea", args: ["mcp"] } },
+      mcp_servers: { nre: { command: "nre", args: ["mcp"] } },
     });
   });
 
-  it("removes multiline rea entries from disabled_mcp_servers", async () => {
-    const home = await createTestTempDirectory("rea-grok-disabled-multiline-");
+  it("removes multiline nre entries from disabled_mcp_servers", async () => {
+    const home = await createTestTempDirectory("nre-grok-disabled-multiline-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
       [
         "disabled_mcp_servers = [",
-        '  """rea""",',
-        "  '''rea''',",
+        '  """nre""",',
+        "  '''nre''',",
         '  """',
-        'rea""",',
-        '  """rea',
+        'nre""",',
+        '  """nre',
         '""",',
         '  "github",',
         "]",
@@ -433,20 +433,20 @@ describe("Grok Build disabled server list", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
     expect(parseToml(configured)).toMatchObject({
-      disabled_mcp_servers: ["rea\n", "github"],
-      mcp_servers: { rea: { command: "rea", args: ["mcp"] } },
+      disabled_mcp_servers: ["nre\n", "github"],
+      mcp_servers: { nre: { command: "nre", args: ["mcp"] } },
     });
-    await writeFile(configPath, 'disabled_mcp_servers = ["""rea"""] # note\n');
+    await writeFile(configPath, 'disabled_mcp_servers = ["""nre"""] # note\n');
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const created = await readFile(configPath, "utf8");
@@ -456,24 +456,24 @@ describe("Grok Build disabled server list", () => {
 });
 
 describe("Grok Build text that resembles a server table", () => {
-  it("preserves Grok text that only looks like an REA table", async () => {
-    const home = await createTestTempDirectory("rea-grok-preserve-");
+  it("preserves Grok text that only looks like an NRE table", async () => {
+    const home = await createTestTempDirectory("nre-grok-preserve-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original = [
       "banner = '''",
       "welcome",
-      "[mcp_servers.rea]",
+      "[mcp_servers.nre]",
       "keep this text",
       "[privacy]",
       "'''",
       "",
-      "[mcp_servers.rea]",
+      "[mcp_servers.nre]",
       'command = "npx"',
-      'args = ["-y", "rea-agents@6.1.0", "mcp"]',
+      'args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]',
       "",
       "# Production server: preserve this configuration",
-      '[mcp_servers."rea.env"]',
+      '[mcp_servers."nre.env"]',
       'command = "other"',
       'args = ["serve"]',
       "",
@@ -490,7 +490,7 @@ describe("Grok Build text that resembles a server table", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -498,16 +498,16 @@ describe("Grok Build text that resembles a server table", () => {
     expect(configured).toContain(
       "# Production server: preserve this configuration",
     );
-    expect(configured).toContain('[mcp_servers."rea.env"]');
+    expect(configured).toContain('[mcp_servers."nre.env"]');
     expect(configured).toContain('[mcp_servers."other[prod]"]');
     expect(configured).toContain('[[marketplace."sources[prod]"]]');
-    expect(configured).not.toContain("rea-agents@6.1.0");
+    expect(configured).not.toContain("nano-reverse-engineer@6.1.0");
     expect(parseToml(configured)).toMatchObject({
-      banner: "welcome\n[mcp_servers.rea]\nkeep this text\n[privacy]\n",
+      banner: "welcome\n[mcp_servers.nre]\nkeep this text\n[privacy]\n",
       mcp_servers: {
-        "rea.env": { command: "other", args: ["serve"] },
+        "nre.env": { command: "other", args: ["serve"] },
         "other[prod]": { command: "other", args: ["serve"] },
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
       marketplace: { "sources[prod]": [{ name: "official" }] },
     });
@@ -515,7 +515,7 @@ describe("Grok Build text that resembles a server table", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
 
@@ -530,23 +530,23 @@ describe("Grok Build text that resembles a server table", () => {
     expect(removed).toContain('[mcp_servers."other[prod]"]');
     expect(parseToml(removed)).toMatchObject({
       mcp_servers: {
-        "rea.env": { command: "other" },
+        "nre.env": { command: "other" },
         "other[prod]": { command: "other" },
       },
     });
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
   });
 
-  it("replaces spaced and escaped Grok REA headers without duplicating them", async () => {
-    const home = await createTestTempDirectory("rea-grok-alias-");
+  it("replaces spaced and escaped Grok NRE headers without duplicating them", async () => {
+    const home = await createTestTempDirectory("nre-grok-alias-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
       [
-        "[ mcp_servers . rea ]",
+        "[ mcp_servers . nre ]",
         'command = "npx"',
-        'args = ["-y", "rea-agents@6.1.0", "mcp"]',
+        'args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]',
         "",
         '[mcp_servers."\\u0072ea".env]',
         'OLD = "1"',
@@ -557,22 +557,22 @@ describe("Grok Build text that resembles a server table", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
-    expect(configured).not.toContain("mcp_servers . rea");
+    expect(configured).not.toContain("mcp_servers . nre");
     expect(configured).not.toContain("\\u0072ea");
     expect(configured).toContain('OLD = "1"');
     expect(
       configured
         .split("\n")
-        .filter((line) => line.trim() === "[mcp_servers.rea]"),
+        .filter((line) => line.trim() === "[mcp_servers.nre]"),
     ).toHaveLength(1);
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
-        rea: {
-          command: "rea",
+        nre: {
+          command: "nre",
           args: ["mcp"],
           startup_timeout_sec: 30,
           env: { OLD: "1" },
@@ -584,7 +584,7 @@ describe("Grok Build text that resembles a server table", () => {
 
 describe("Grok Build multiline and escaped headers", () => {
   it("preserves a multiline string opened on the line that closed the previous one", async () => {
-    const home = await createTestTempDirectory("rea-grok-multiline-");
+    const home = await createTestTempDirectory("nre-grok-multiline-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
@@ -593,7 +593,7 @@ describe("Grok Build multiline and escaped headers", () => {
         'banner = ["""',
         "first",
         '""", """',
-        "[mcp_servers.rea]",
+        "[mcp_servers.nre]",
         'command = "keep this text"',
         "[privacy]",
         "keep this too",
@@ -602,7 +602,7 @@ describe("Grok Build multiline and escaped headers", () => {
         "marker = ['''",
         "first",
         "''', '''",
-        "[mcp_servers.rea]",
+        "[mcp_servers.nre]",
         'command = "keep literal"',
         "''']",
         "",
@@ -612,7 +612,7 @@ describe("Grok Build multiline and escaped headers", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -622,32 +622,32 @@ describe("Grok Build multiline and escaped headers", () => {
     expect(parseToml(configured)).toMatchObject({
       banner: [
         "first\n",
-        '[mcp_servers.rea]\ncommand = "keep this text"\n[privacy]\nkeep this too\n',
+        '[mcp_servers.nre]\ncommand = "keep this text"\n[privacy]\nkeep this too\n',
       ],
-      marker: ["first\n", '[mcp_servers.rea]\ncommand = "keep literal"\n'],
+      marker: ["first\n", '[mcp_servers.nre]\ncommand = "keep literal"\n'],
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
   });
 
-  it("replaces a hex-escaped Grok REA header and keeps a hex-escaped foreign name", async () => {
-    const home = await createTestTempDirectory("rea-grok-hex-");
+  it("replaces a hex-escaped Grok NRE header and keeps a hex-escaped foreign name", async () => {
+    const home = await createTestTempDirectory("nre-grok-hex-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original = [
       '[mcp_servers."\\x72ea"]',
-      'command = "rea"',
+      'command = "nre"',
       'args = ["mcp"]',
       "",
-      '[mcp_servers."rea\\x2Eenv"]',
+      '[mcp_servers."nre\\x2Eenv"]',
       'command = "other"',
       'args = ["serve"]',
       "",
@@ -657,47 +657,47 @@ describe("Grok Build multiline and escaped headers", () => {
       "complete",
     );
     const removed = await readFile(configPath, "utf8");
-    expect(removed).toContain('[mcp_servers."rea\\x2Eenv"]');
+    expect(removed).toContain('[mcp_servers."nre\\x2Eenv"]');
     expect(removed).not.toContain("\\x72");
     expect(parseToml(removed)).toMatchObject({
-      mcp_servers: { "rea.env": { command: "other", args: ["serve"] } },
+      mcp_servers: { "nre.env": { command: "other", args: ["serve"] } },
     });
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
 
     await writeFile(configPath, original);
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
     expect(configured).not.toContain("\\x72");
-    expect(configured).toContain('[mcp_servers."rea\\x2Eenv"]');
+    expect(configured).toContain('[mcp_servers."nre\\x2Eenv"]');
     expect(
       configured
         .split("\n")
-        .filter((line) => line.trim() === "[mcp_servers.rea]"),
+        .filter((line) => line.trim() === "[mcp_servers.nre]"),
     ).toHaveLength(1);
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
-        "rea.env": { command: "other", args: ["serve"] },
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "nre.env": { command: "other", args: ["serve"] },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
   });
 });
 
 describe("Grok Build inline and dotted assignments", () => {
-  it("updates and removes inline and dotted Grok REA assignments", async () => {
-    const home = await createTestTempDirectory("rea-grok-assign-");
+  it("updates and removes inline and dotted Grok NRE assignments", async () => {
+    const home = await createTestTempDirectory("nre-grok-assign-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const inline = [
       "[mcp_servers]",
-      'rea = """',
-      "[mcp_servers.rea]",
+      'nre = """',
+      "[mcp_servers.nre]",
       'command = "keep? no, this is the old value"',
       '"""',
       'other = { command = "other" }',
@@ -712,18 +712,18 @@ describe("Grok Build inline and dotted assignments", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "failed", reason: "registration_ownership" });
     expect(await readFile(configPath, "utf8")).toBe(inline);
-    await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${configPath}.nre.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await writeFile(
       configPath,
       [
         "[mcp_servers]",
-        'rea = { command = "npx", args = ["-y", "rea-agents@6.1.0", "mcp"] }',
+        'nre = { command = "npx", args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"] }',
         'other = { command = "other" }',
         "",
         "# next table",
@@ -736,18 +736,18 @@ describe("Grok Build inline and dotted assignments", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configuredInline = await readFile(configPath, "utf8");
-    expect(configuredInline).not.toContain("rea-agents@6.1.0");
+    expect(configuredInline).not.toContain("nano-reverse-engineer@6.1.0");
     expect(configuredInline).toContain('other = { command = "other" }');
     expect(configuredInline).toContain("# next table");
     expect(configuredInline).toContain("[privacy]");
     expect(parseToml(configuredInline)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
       privacy: { share: false },
     });
@@ -756,7 +756,7 @@ describe("Grok Build inline and dotted assignments", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
     expect((await runUninstall(false, systemUninstallHost(home))).status).toBe(
@@ -765,10 +765,10 @@ describe("Grok Build inline and dotted assignments", () => {
     const removedInline = await readFile(configPath, "utf8");
     expect(removedInline).toContain('other = { command = "other" }');
     expect(removedInline).toContain("# next table");
-    expect(parseToml(removedInline)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removedInline)).not.toHaveProperty("mcp_servers.nre");
 
     const dotted = [
-      'mcp_servers.rea = { command = "rea", args = ["mcp"] }',
+      'mcp_servers.nre = { command = "nre", args = ["mcp"] }',
       'mcp_servers.other.command = "other"',
       "",
       "# next table",
@@ -787,14 +787,14 @@ describe("Grok Build inline and dotted assignments", () => {
       mcp_servers: { other: { command: "other" } },
       privacy: { share: false },
     });
-    expect(parseToml(removedDotted)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removedDotted)).not.toHaveProperty("mcp_servers.nre");
 
     await writeFile(
       configPath,
       [
         "[mcp_servers]",
-        'rea.command = "npx"',
-        'rea.args = ["-y", "rea-agents@6.1.0", "mcp"]',
+        'nre.command = "npx"',
+        'nre.args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"]',
         'other.command = "other"',
         "",
       ].join("\n"),
@@ -803,29 +803,29 @@ describe("Grok Build inline and dotted assignments", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configuredDotted = await readFile(configPath, "utf8");
     expect(configuredDotted).toContain('other.command = "other"');
-    expect(configuredDotted).not.toContain("rea-agents@6.1.0");
+    expect(configuredDotted).not.toContain("nano-reverse-engineer@6.1.0");
     expect(parseToml(configuredDotted)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
   });
 });
 
 describe("Grok Build closed inline tables", () => {
-  it("splices REA into a closed mcp_servers inline table", async () => {
-    const home = await createTestTempDirectory("rea-grok-inline-table-");
+  it("splices NRE into a closed mcp_servers inline table", async () => {
+    const home = await createTestTempDirectory("nre-grok-inline-table-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original = [
       "# preamble",
-      'mcp_servers = { other = { command = "other" }, "\\x72ea" = { command = "npx", args = ["-y", "rea-agents@6.1.0", "mcp"] } }',
+      'mcp_servers = { other = { command = "other" }, "\\x72ea" = { command = "npx", args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"] } }',
       "",
       "# next table",
       "[privacy]",
@@ -837,7 +837,7 @@ describe("Grok Build closed inline tables", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -845,12 +845,12 @@ describe("Grok Build closed inline tables", () => {
     expect(configured).toContain("# next table");
     expect(configured).toContain("[privacy]");
     expect(configured).toContain("mcp_servers =");
-    expect(configured).not.toMatch(/^\[mcp_servers\.rea\]$/mu);
+    expect(configured).not.toMatch(/^\[mcp_servers\.nre\]$/mu);
     expect(configured).not.toContain("\\x72");
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
       privacy: { share: false },
     });
@@ -858,14 +858,14 @@ describe("Grok Build closed inline tables", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toEqual({ status: "unchanged" });
 
     await writeFile(
       configPath,
       [
-        'mcp_servers = { other = { command = "other" }, rea = { command = "rea", args = ["mcp"] } }',
+        'mcp_servers = { other = { command = "other" }, nre = { command = "nre", args = ["mcp"] } }',
         "",
       ].join("\n"),
     );
@@ -878,28 +878,28 @@ describe("Grok Build closed inline tables", () => {
     expect(parseToml(removed)).toMatchObject({
       mcp_servers: { other: { command: "other" } },
     });
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
 
     await writeFile(configPath, "mcp_servers = { }\n");
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const created = await readFile(configPath, "utf8");
     expect(created).toContain("mcp_servers =");
-    expect(created).not.toMatch(/^\[mcp_servers\.rea\]$/mu);
+    expect(created).not.toMatch(/^\[mcp_servers\.nre\]$/mu);
     expect(parseToml(created)).toMatchObject({
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
   });
 
   it("keeps a quote that belongs to a multiline string closer", async () => {
-    const home = await createTestTempDirectory("rea-grok-quotes-");
+    const home = await createTestTempDirectory("nre-grok-quotes-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
@@ -907,8 +907,8 @@ describe("Grok Build closed inline tables", () => {
       [
         'banner = ["""keep""""]',
         "marker = ['''keep'''']",
-        "[mcp_servers.rea]",
-        'command = "rea"',
+        "[mcp_servers.nre]",
+        'command = "nre"',
         'args = ["mcp"]',
         "",
       ].join("\n"),
@@ -917,7 +917,7 @@ describe("Grok Build closed inline tables", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -925,28 +925,28 @@ describe("Grok Build closed inline tables", () => {
       banner: ['keep"'],
       marker: ["keep'"],
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
     expect(
       configured
         .split("\n")
-        .filter((line) => line.trim() === "[mcp_servers.rea]"),
+        .filter((line) => line.trim() === "[mcp_servers.nre]"),
     ).toHaveLength(1);
   });
 });
 
 describe("Grok Build scalar and nested values", () => {
   it("preserves a basic string that uses the escape smol-toml accepts", async () => {
-    const home = await createTestTempDirectory("rea-grok-escape-e-");
+    const home = await createTestTempDirectory("nre-grok-escape-e-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
       [
         'banner = "\\e[31m"',
-        "[mcp_servers.rea]",
-        'command = "rea"',
+        "[mcp_servers.nre]",
+        'command = "nre"',
         'args = ["mcp"]',
         "",
       ].join("\n"),
@@ -955,7 +955,7 @@ describe("Grok Build scalar and nested values", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -963,42 +963,42 @@ describe("Grok Build scalar and nested values", () => {
     expect(parseToml(configured)).toMatchObject({
       banner: "\u001b[31m",
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
   });
 
   it("updates a closed inline table whose last value is a scalar", async () => {
-    const home = await createTestTempDirectory("rea-grok-scalar-");
+    const home = await createTestTempDirectory("nre-grok-scalar-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      'mcp_servers = { rea.command = "npx", rea.args = ["-y", "rea-agents@6.1.0", "mcp"], rea.startup_timeout_sec = 10 }\n',
+      'mcp_servers = { nre.command = "npx", nre.args = ["-y", "nano-reverse-engineer@6.1.0", "mcp"], nre.startup_timeout_sec = 10 }\n',
     );
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
-    expect(configured).not.toMatch(/^\[mcp_servers\.rea\]$/mu);
+    expect(configured).not.toMatch(/^\[mcp_servers\.nre\]$/mu);
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 10 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 10 },
       },
     });
   });
 
-  it("removes a nested array inside a Grok REA table", async () => {
-    const home = await createTestTempDirectory("rea-grok-nested-array-");
+  it("removes a nested array inside a Grok NRE table", async () => {
+    const home = await createTestTempDirectory("nre-grok-nested-array-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original = [
-      "[mcp_servers.rea]",
-      'command = "rea"',
+      "[mcp_servers.nre]",
+      'command = "nre"',
       'args = ["mcp"]',
       "extra = [",
       "  [1, 2],",
@@ -1016,14 +1016,14 @@ describe("Grok Build scalar and nested values", () => {
     expect(removed).toContain("[privacy]");
     expect(removed).not.toContain("[1, 2]");
     expect(parseToml(removed)).toMatchObject({ privacy: { share: false } });
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
 
     await writeFile(configPath, original);
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -1032,7 +1032,7 @@ describe("Grok Build scalar and nested values", () => {
     expect(parseToml(configured)).toMatchObject({
       privacy: { share: false },
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
   });
@@ -1040,60 +1040,60 @@ describe("Grok Build scalar and nested values", () => {
 
 describe("Grok Build newlines and leading marks", () => {
   it("edits a BOM-prefixed Grok document without losing the first table", async () => {
-    const home = await createTestTempDirectory("rea-grok-bom-");
+    const home = await createTestTempDirectory("nre-grok-bom-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      '\uFEFF[profile]\nmcp_servers.rea = "keep this setting"\n',
+      '\uFEFF[profile]\nmcp_servers.nre = "keep this setting"\n',
     );
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
     expect(configured.startsWith("\uFEFF")).toBe(true);
-    expect(configured).toContain('mcp_servers.rea = "keep this setting"');
+    expect(configured).toContain('mcp_servers.nre = "keep this setting"');
     expect(parseToml(configured)).toMatchObject({
-      profile: { mcp_servers: { rea: "keep this setting" } },
+      profile: { mcp_servers: { nre: "keep this setting" } },
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
 
     await writeFile(
       configPath,
-      '\uFEFF[mcp_servers.rea]\ncommand = "rea"\nargs = ["mcp"]\n',
+      '\uFEFF[mcp_servers.nre]\ncommand = "nre"\nargs = ["mcp"]\n',
     );
     expect((await runUninstall(false, systemUninstallHost(home))).status).toBe(
       "complete",
     );
     const removed = await readFile(configPath, "utf8");
     expect(removed.startsWith("\uFEFF")).toBe(true);
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
   });
 
   it("keeps CRLF string values in a Grok file that also uses LF", async () => {
-    const home = await createTestTempDirectory("rea-grok-crlf-string-");
+    const home = await createTestTempDirectory("nre-grok-crlf-string-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original =
-      'banner = """a\r\nb"""\n[mcp_servers.rea]\ncommand = "rea"\nargs = ["mcp"]\n';
+      'banner = """a\r\nb"""\n[mcp_servers.nre]\ncommand = "nre"\nargs = ["mcp"]\n';
     await writeFile(configPath, original);
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     expect(parseToml(await readFile(configPath, "utf8"))).toMatchObject({
       banner: "a\r\nb",
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
 
@@ -1103,28 +1103,28 @@ describe("Grok Build newlines and leading marks", () => {
     );
     const removed = await readFile(configPath, "utf8");
     expect(parseToml(removed)).toMatchObject({ banner: "a\r\nb" });
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
   });
 
   it("keeps LF string values in a Grok file that also uses CRLF", async () => {
-    const home = await createTestTempDirectory("rea-grok-mixed-newline-");
+    const home = await createTestTempDirectory("nre-grok-mixed-newline-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      'banner = """keep\nthis LF"""\n[mcp_servers.rea]\r\ncommand = "rea"\r\nargs = ["mcp"]\r\n',
+      'banner = """keep\nthis LF"""\n[mcp_servers.nre]\r\ncommand = "nre"\r\nargs = ["mcp"]\r\n',
     );
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     expect(parseToml(await readFile(configPath, "utf8"))).toMatchObject({
       banner: "keep\nthis LF",
       mcp_servers: {
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
   });
@@ -1132,13 +1132,13 @@ describe("Grok Build newlines and leading marks", () => {
 
 describe("Grok Build inline comments", () => {
   it("keeps comments on dotted Grok fields without repeating a comma", async () => {
-    const home = await createTestTempDirectory("rea-grok-dotted-comment-");
+    const home = await createTestTempDirectory("nre-grok-dotted-comment-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original = [
       'mcp_servers = { other = {command="other"}, # keep other note',
-      '  rea.command = "rea", # command note',
-      '  rea.args = ["mcp"] }',
+      '  nre.command = "nre", # command note',
+      '  nre.args = ["mcp"] }',
       "",
     ].join("\n");
     await writeFile(configPath, original);
@@ -1146,7 +1146,7 @@ describe("Grok Build inline comments", () => {
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -1155,7 +1155,7 @@ describe("Grok Build inline comments", () => {
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
 
@@ -1169,21 +1169,21 @@ describe("Grok Build inline comments", () => {
     expect(parseToml(removed)).toMatchObject({
       mcp_servers: { other: { command: "other" } },
     });
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
   });
 
-  it("keeps an inline comment that sits before the Grok REA pair", async () => {
-    const home = await createTestTempDirectory("rea-grok-inline-before-");
+  it("keeps an inline comment that sits before the Grok NRE pair", async () => {
+    const home = await createTestTempDirectory("nre-grok-inline-before-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     const original =
-      'mcp_servers = { other = {command="other"}, # important other-server note\n  rea = {command="rea",args=["mcp"]} }\n';
+      'mcp_servers = { other = {command="other"}, # important other-server note\n  nre = {command="nre",args=["mcp"]} }\n';
     await writeFile(configPath, original);
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         undefined,
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -1191,7 +1191,7 @@ describe("Grok Build inline comments", () => {
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        rea: { command: "rea", args: ["mcp"], startup_timeout_sec: 30 },
+        nre: { command: "nre", args: ["mcp"], startup_timeout_sec: 30 },
       },
     });
 
@@ -1204,22 +1204,22 @@ describe("Grok Build inline comments", () => {
     expect(parseToml(removed)).toMatchObject({
       mcp_servers: { other: { command: "other" } },
     });
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
   });
 
   it("keeps inline-table comments and encodes a DEL in an inline value", async () => {
-    const home = await createTestTempDirectory("rea-grok-inline-comment-");
+    const home = await createTestTempDirectory("nre-grok-inline-comment-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      'mcp_servers = { rea = {command="rea",args=["mcp"]}, # other: one, two\n  other = {command="other"} }\n',
+      'mcp_servers = { nre = {command="nre",args=["mcp"]}, # other: one, two\n  other = {command="other"} }\n',
     );
     expect(
       await configureClientConfiguration(
         { name: "grok_build", configPath, format: "grok" },
         { HOPPER_LAUNCHER_PATH: "/tmp/path\u007fwith-del" },
-        ["rea", "mcp"],
+        ["nre", "mcp"],
       ),
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
@@ -1227,8 +1227,8 @@ describe("Grok Build inline comments", () => {
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        rea: {
-          command: "rea",
+        nre: {
+          command: "nre",
           args: ["mcp"],
           startup_timeout_sec: 30,
           env: { HOPPER_LAUNCHER_PATH: "/tmp/path\u007fwith-del" },
@@ -1238,12 +1238,12 @@ describe("Grok Build inline comments", () => {
   });
 
   it("keeps comments when uninstall removes the only inline Grok server", async () => {
-    const home = await createTestTempDirectory("rea-grok-inline-empty-");
+    const home = await createTestTempDirectory("nre-grok-inline-empty-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      'mcp_servers = { # policy\n  rea = { command = "rea", args = ["mcp"] } # owned\n}\n',
+      'mcp_servers = { # policy\n  nre = { command = "nre", args = ["mcp"] } # owned\n}\n',
     );
     expect((await runUninstall(false, systemUninstallHost(home))).status).toBe(
       "complete",
@@ -1251,18 +1251,18 @@ describe("Grok Build inline comments", () => {
     const removed = await readFile(configPath, "utf8");
     expect(removed).toContain("# policy");
     expect(removed).toContain("# owned");
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.nre");
   });
 });
 
 describe("JSON client configuration comments", () => {
   it("keeps a same-line JSONC comment when uninstall removes Cursor", async () => {
-    const home = await createTestTempDirectory("rea-cursor-jsonc-comment-");
+    const home = await createTestTempDirectory("nre-cursor-jsonc-comment-");
     const configPath = join(home, ".cursor/mcp.json");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      '{\n  "mcpServers": {\n    "other": {"command":"other"}, // important other-server note\n    "rea": {"command":"rea","args":["mcp"]}\n  }\n}\n',
+      '{\n  "mcpServers": {\n    "other": {"command":"other"}, // important other-server note\n    "nre": {"command":"nre","args":["mcp"]}\n  }\n}\n',
     );
     expect((await runUninstall(false, systemUninstallHost(home))).status).toBe(
       "complete",
@@ -1278,12 +1278,12 @@ describe("JSON client configuration comments", () => {
   });
 
   it("keeps a JSONC comment when a block comment precedes the comma", async () => {
-    const home = await createTestTempDirectory("rea-cursor-jsonc-block-");
+    const home = await createTestTempDirectory("nre-cursor-jsonc-block-");
     const configPath = join(home, ".cursor/mcp.json");
     await mkdir(dirname(configPath), { recursive: true });
     await writeFile(
       configPath,
-      '{"mcpServers":{\n  "other":{"command":"other"}, // keep other note\n  "rea":{"command":"rea","args":["mcp"]} /**/,\n  "keep":{"command":"keep"}\n}}\n',
+      '{"mcpServers":{\n  "other":{"command":"other"}, // keep other note\n  "nre":{"command":"nre","args":["mcp"]} /**/,\n  "keep":{"command":"keep"}\n}}\n',
     );
     expect((await runUninstall(false, systemUninstallHost(home))).status).toBe(
       "complete",
@@ -1302,12 +1302,12 @@ describe("JSON client configuration comments", () => {
   });
 
   it("keeps a JSONC comment without swallowing the next server or closers", async () => {
-    const home = await createTestTempDirectory("rea-cursor-jsonc-next-");
+    const home = await createTestTempDirectory("nre-cursor-jsonc-next-");
     const configPath = join(home, ".cursor/mcp.json");
     await mkdir(dirname(configPath), { recursive: true });
     const files = [
-      '{\n  "mcpServers": {\n    "other": {"command":"other"}, // important other-server note\n    "rea": {"command":"rea","args":["mcp"]}, "keep": {"command":"keep"}\n  }\n}\n',
-      '{\n  "mcpServers": {\n    "other": {"command":"other"}, // important other-server note\n    "rea": {"command":"rea","args":["mcp"]}}}\n',
+      '{\n  "mcpServers": {\n    "other": {"command":"other"}, // important other-server note\n    "nre": {"command":"nre","args":["mcp"]}, "keep": {"command":"keep"}\n  }\n}\n',
+      '{\n  "mcpServers": {\n    "other": {"command":"other"}, // important other-server note\n    "nre": {"command":"nre","args":["mcp"]}}}\n',
     ];
     for (const original of files) {
       await writeFile(configPath, original);
@@ -1334,12 +1334,12 @@ describe("JSON client configuration comments", () => {
 
 describe("Grok Bot registration", () => {
   it("does not write or align a data-directory mcp.json", async () => {
-    const home = await createTestTempDirectory("rea-grokbot-");
+    const home = await createTestTempDirectory("nre-grokbot-");
     const directory = join(home, ".grokbot");
     const configPath = join(directory, "mcp.json");
     await mkdir(directory, { recursive: true });
     const original =
-      '{"mcpServers":{"other":{"command":"other"},"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"other":{"command":"other"},"nre":{"command":"nre","args":["mcp"]}}}\n';
     await writeFile(configPath, original);
     const client = supportedClients(home).find(
       ({ name }) => name === "grok_bot",
@@ -1348,11 +1348,11 @@ describe("Grok Bot registration", () => {
     expect(client.format).toBe("unsupported");
     expect(client.configPath).toBe(directory);
     expect(
-      await systemSetupHost().configureClient(client, {}, ["rea", "mcp"]),
+      await systemSetupHost().configureClient(client, {}, ["nre", "mcp"]),
     ).toEqual({ status: "skipped" });
     expect(await readFile(configPath, "utf8")).toBe(original);
     expect(
-      await readClientRegistrationStatuses(home, "/current/rea", {
+      await readClientRegistrationStatuses(home, "/current/nre", {
         environment: {},
       }),
     ).toEqual([
@@ -1374,7 +1374,7 @@ describe("Grok Bot registration", () => {
 
 describe("Codex configuration comments", () => {
   it("keeps Codex comments and value spelling through setup and uninstall", async () => {
-    const home = await createTestTempDirectory("rea-toml-comments-");
+    const home = await createTestTempDirectory("nre-toml-comments-");
     const configPath = join(home, ".codex/config.toml");
     const original =
       '# Keep this explanation.\nnotify = ["a", "b"]\nliteral = \'C:\\demo\\path\'\n';
@@ -1390,7 +1390,7 @@ describe("Codex configuration comments", () => {
     ).toMatchObject({ status: "configured" });
     const configured = await readFile(configPath, "utf8");
     expect(configured.startsWith(original)).toBe(true);
-    expect(configured).toContain("[mcp_servers.rea]");
+    expect(configured).toContain("[mcp_servers.nre]");
 
     const removed = await runUninstall(false, systemUninstallHost(home));
     expect(removed.items).toContainEqual(
@@ -1404,7 +1404,7 @@ describe("managed data purge root validation", () => {
   it.each(["existing", "dangling"] as const)(
     "retains cache and state when the managed-root symlink is %s",
     async (targetState) => {
-      const root = await createTestTempDirectory("rea-uninstall-data-root-");
+      const root = await createTestTempDirectory("nre-uninstall-data-root-");
       const home = join(root, "home");
       const outside = join(root, "unrelated-application");
       await mkdir(home);
@@ -1413,7 +1413,7 @@ describe("managed data purge root validation", () => {
           await mkdir(join(outside, name), { recursive: true });
           await writeFile(join(outside, name, "keep.txt"), "unrelated data");
         }
-      const managedRoot = join(home, ".rea");
+      const managedRoot = join(home, ".nre");
       await symlink(
         outside,
         managedRoot,
@@ -1442,8 +1442,8 @@ describe("managed data purge root validation", () => {
   );
 
   it("retains a managed data root that is not a directory", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-data-file-");
-    const managedRoot = join(home, ".rea");
+    const home = await createTestTempDirectory("nre-uninstall-data-file-");
+    const managedRoot = join(home, ".nre");
     await writeFile(managedRoot, "unrelated file");
 
     const result = await runUninstall(
@@ -1460,10 +1460,10 @@ describe("managed data purge root validation", () => {
   });
 
   it("purges ordinary managed data through a legitimate home directory link", async () => {
-    const root = await createTestTempDirectory("rea-uninstall-home-link-");
+    const root = await createTestTempDirectory("nre-uninstall-home-link-");
     const home = join(root, "actual-home");
     const linkedHome = join(root, "linked-home");
-    const managedRoot = join(home, ".rea");
+    const managedRoot = join(home, ".nre");
     for (const name of ["cache", "state"]) {
       await mkdir(join(managedRoot, name), { recursive: true });
       await writeFile(join(managedRoot, name, "data.txt"), "managed data");
@@ -1496,8 +1496,8 @@ describe("managed data purge root validation", () => {
   });
 
   it("reports root inspection failure without removing managed data", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-data-denied-");
-    const managedRoot = join(home, ".rea");
+    const home = await createTestTempDirectory("nre-uninstall-data-denied-");
+    const managedRoot = join(home, ".nre");
     for (const name of ["cache", "state"]) {
       await mkdir(join(managedRoot, name), { recursive: true });
       await writeFile(join(managedRoot, name, "keep.txt"), "managed data");
@@ -1538,27 +1538,24 @@ describe("managed data purge root validation", () => {
 
 describe("client configuration filesystem removal", () => {
   it("uninstalls only owned entries and refuses purge symlinks", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-");
+    const home = await createTestTempDirectory("nre-uninstall-");
     const cursor = join(home, ".cursor/mcp.json");
-    const skill = join(
-      home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
-    );
+    const skill = join(home, ".agents/skills/nano-reverse-engineer/SKILL.md");
     await mkdir(dirname(cursor), { recursive: true });
     await mkdir(dirname(skill), { recursive: true });
     await writeFile(
       cursor,
       JSON.stringify({
         mcpServers: {
-          rea: { command: PRODUCT_IDENTITY.cliBinary, args: ["mcp"] },
+          nre: { command: PRODUCT_IDENTITY.cliBinary, args: ["mcp"] },
           other: { command: "other" },
         },
       }),
     );
     await writeFile(skill, ownedSkillManifest);
-    await mkdir(join(home, ".rea"), { recursive: true });
+    await mkdir(join(home, ".nre"), { recursive: true });
     await import("node:fs/promises").then(({ symlink }) =>
-      symlink(home, join(home, ".rea/cache")),
+      symlink(home, join(home, ".nre/cache")),
     );
     const first = await runUninstall(true, systemUninstallHost(home));
     expect(first.status).toBe("complete");
@@ -1571,7 +1568,7 @@ describe("client configuration filesystem removal", () => {
         name: "cache",
         status: "retained",
         detail:
-          "REA did not remove this item because its managed path is a symbolic link. Verify the link target before removing it manually.",
+          "NRE did not remove this item because its managed path is a symbolic link. Verify the link target before removing it manually.",
       }),
     );
     expect((await runUninstall(true, systemUninstallHost(home))).status).toBe(
@@ -1580,9 +1577,9 @@ describe("client configuration filesystem removal", () => {
   });
 
   it("removes emptied skill directories and keeps ones with user files", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-skill-dirs-");
-    const shared = join(home, ".agents/skills/reverse-engineer-anything");
-    const claude = join(home, ".claude/skills/reverse-engineer-anything");
+    const home = await createTestTempDirectory("nre-uninstall-skill-dirs-");
+    const shared = join(home, ".agents/skills/nano-reverse-engineer");
+    const claude = join(home, ".claude/skills/nano-reverse-engineer");
     for (const root of [shared, claude]) {
       await mkdir(join(root, "references"), { recursive: true });
       await writeFile(join(root, "SKILL.md"), ownedSkillManifest);
@@ -1612,9 +1609,9 @@ describe("client configuration filesystem removal", () => {
   it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     "reports an emptied skill directory that cannot be removed",
     async () => {
-      const home = await createTestTempDirectory("rea-uninstall-skill-perm-");
+      const home = await createTestTempDirectory("nre-uninstall-skill-perm-");
       const parent = join(home, ".agents/skills");
-      const root = join(parent, "reverse-engineer-anything");
+      const root = join(parent, "nano-reverse-engineer");
       await mkdir(join(root, "references"), { recursive: true });
       await writeFile(join(root, "SKILL.md"), ownedSkillManifest);
       await chmod(parent, 0o555);
@@ -1642,12 +1639,12 @@ describe("client configuration filesystem removal", () => {
 
 describe("uninstall configuration symlink ownership", () => {
   it("removes an owned entry through a symlink without replacing it", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-symlink-");
+    const home = await createTestTempDirectory("nre-uninstall-symlink-");
     const configPath = join(home, ".cursor/mcp.json");
     const targetPath = join(home, "managed-mcp.json");
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: "rea", args: ["mcp"] },
+        nre: { command: "nre", args: ["mcp"] },
         other: { command: "other" },
       },
     });
@@ -1665,14 +1662,14 @@ describe("uninstall configuration symlink ownership", () => {
       }),
     );
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.nre.backup`, "utf8")).toBe(original);
     expect(JSON.parse(await readFile(targetPath, "utf8"))).toEqual({
       mcpServers: { other: { command: "other" } },
     });
   });
 
   it("fails before mutation when an uninstall config symlink is dangling", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-symlink-");
+    const home = await createTestTempDirectory("nre-uninstall-symlink-");
     const configPath = join(home, ".cursor/mcp.json");
     await mkdir(dirname(configPath), { recursive: true });
     await symlink(join(home, "missing-mcp.json"), configPath);
@@ -1688,14 +1685,14 @@ describe("uninstall configuration symlink ownership", () => {
     });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.nre.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
 
 describe("uninstall registration ownership preflight", () => {
   it("removes repeated owned registrations from the table the client reads", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-repeated-owned-");
+    const home = await createTestTempDirectory("nre-uninstall-repeated-owned-");
     const config = join(home, ".claude.json");
     await mkdir(dirname(config), { recursive: true });
     const owned = {
@@ -1703,9 +1700,9 @@ describe("uninstall registration ownership preflight", () => {
       args: ["mcp"],
     };
     const original =
-      `{"mcpServers":{"rea":${JSON.stringify(owned)},` +
+      `{"mcpServers":{"nre":${JSON.stringify(owned)},` +
       `"peer":{"command":"peer"},` +
-      `"rea":${JSON.stringify(owned)}}}\n`;
+      `"nre":${JSON.stringify(owned)}}}\n`;
     await writeFile(config, original);
 
     const result = await runUninstall(false, systemUninstallHost(home));
@@ -1717,12 +1714,12 @@ describe("uninstall registration ownership preflight", () => {
     expect(JSON.parse(await readFile(config, "utf8"))).toEqual({
       mcpServers: { peer: { command: "peer" } },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(original);
   });
 
   it("refuses an unowned repeat before changing any client or making backups", async () => {
     const home = await createTestTempDirectory(
-      "rea-uninstall-repeated-foreign-",
+      "nre-uninstall-repeated-foreign-",
     );
     const claude = join(home, ".claude.json");
     const cursor = join(home, ".cursor/mcp.json");
@@ -1732,8 +1729,8 @@ describe("uninstall registration ownership preflight", () => {
       command: PRODUCT_IDENTITY.cliBinary,
       args: ["mcp"],
     };
-    const claudeOriginal = JSON.stringify({ mcpServers: { rea: owned } });
-    const cursorOriginal = `{"mcpServers":{"rea":null,"rea":${JSON.stringify(owned)}}}`;
+    const claudeOriginal = JSON.stringify({ mcpServers: { nre: owned } });
+    const cursorOriginal = `{"mcpServers":{"nre":null,"nre":${JSON.stringify(owned)}}}`;
     await writeFile(claude, claudeOriginal);
     await writeFile(cursor, cursorOriginal);
 
@@ -1749,29 +1746,29 @@ describe("uninstall registration ownership preflight", () => {
     expect(await readFile(claude, "utf8")).toBe(claudeOriginal);
     expect(await readFile(cursor, "utf8")).toBe(cursorOriginal);
     await expect(
-      readFile(`${claude}.rea.backup`, "utf8"),
+      readFile(`${claude}.nre.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
     await expect(
-      readFile(`${cursor}.rea.backup`, "utf8"),
+      readFile(`${cursor}.nre.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 
   it("keeps an owned OpenCode V2 registration when its V1 fallback is foreign", async () => {
     const home = await createTestTempDirectory(
-      "rea-uninstall-opencode-fallback-",
+      "nre-uninstall-opencode-fallback-",
     );
     const config = join(home, ".config/opencode/opencode.json");
     await mkdir(dirname(config), { recursive: true });
     const original = JSON.stringify({
       mcp: {
         servers: {
-          rea: {
+          nre: {
             type: "local",
             command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
             enabled: true,
           },
         },
-        rea: { type: "local", command: ["/usr/bin/false"] },
+        nre: { type: "local", command: ["/usr/bin/false"] },
       },
     });
     await writeFile(config, original);
@@ -1784,7 +1781,7 @@ describe("uninstall registration ownership preflight", () => {
     );
     expect(await readFile(config, "utf8")).toBe(original);
     await expect(
-      readFile(`${config}.rea.backup`, "utf8"),
+      readFile(`${config}.nre.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 });
@@ -1792,12 +1789,12 @@ describe("uninstall registration ownership preflight", () => {
 describe("layered uninstall outcomes", () => {
   it("reports an earlier layered OpenCode removal when a later backup is blocked", async () => {
     const home = await createTestTempDirectory(
-      "rea-uninstall-opencode-layers-",
+      "nre-uninstall-opencode-layers-",
     );
     const directory = join(home, ".config/opencode");
     const json = join(directory, "opencode.json");
     const jsonc = join(directory, "opencode.jsonc");
-    const blocker = `${jsonc}.rea.backup`;
+    const blocker = `${jsonc}.nre.backup`;
     await mkdir(directory, { recursive: true });
     const registration = {
       type: "local",
@@ -1805,10 +1802,10 @@ describe("layered uninstall outcomes", () => {
       enabled: true,
     };
     const jsonOriginal = JSON.stringify({
-      mcp: { servers: { rea: registration } },
+      mcp: { servers: { nre: registration } },
     });
     const jsoncOriginal = `// OpenCode's later JSONC layer\n${JSON.stringify({
-      mcp: { servers: { rea: registration } },
+      mcp: { servers: { nre: registration } },
     })}\n`;
     await writeFile(json, jsonOriginal);
     await writeFile(jsonc, jsoncOriginal);
@@ -1824,7 +1821,7 @@ describe("layered uninstall outcomes", () => {
     });
 
     expect(blocked.status).toBe("failed");
-    expect(await readFile(json, "utf8")).not.toContain('"rea"');
+    expect(await readFile(json, "utf8")).not.toContain('"nre"');
     expect(await readFile(jsonc, "utf8")).toBe(jsoncOriginal);
     const client = blocked.items.find(({ name }) => name === "opencode");
     expect(client?.status).toBe("failed");
@@ -1869,7 +1866,7 @@ describe("layered uninstall outcomes", () => {
 
 describe("uninstall configuration preflight", () => {
   it("fails closed on malformed client configuration", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-bad-");
+    const home = await createTestTempDirectory("nre-uninstall-bad-");
     const config = join(home, ".cursor/mcp.json");
     await mkdir(dirname(config), { recursive: true });
     await writeFile(config, "not-json");
@@ -1893,7 +1890,7 @@ describe("uninstall configuration preflight", () => {
   ])(
     "names the structural problem in valid JSON %s",
     async (content, problem) => {
-      const home = await createTestTempDirectory("rea-uninstall-shape-");
+      const home = await createTestTempDirectory("nre-uninstall-shape-");
       const config = join(home, ".cursor/mcp.json");
       await mkdir(dirname(config), { recursive: true });
       await writeFile(config, content);
@@ -1913,32 +1910,35 @@ describe("uninstall configuration preflight", () => {
         detail: `Configuration was not changed: ${problem}. Repair it, then rerun uninstall.`,
       });
       expect(await readFile(config, "utf8")).toBe(content);
-      await expect(readFile(`${config}.rea.backup`, "utf8")).rejects.toThrow();
+      await expect(readFile(`${config}.nre.backup`, "utf8")).rejects.toThrow();
     },
   );
 
   it("stops before any removal when one client configuration is malformed", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-stop-");
+    const home = await createTestTempDirectory("nre-uninstall-stop-");
     const codex = join(home, ".codex/config.toml");
     const cursor = join(home, ".cursor/mcp.json");
     const skillMarker = join(
       home,
-      ".agents/skills/reverse-engineer-anything/marker.txt",
+      ".agents/skills/nano-reverse-engineer/marker.txt",
     );
     const managed = [
       skillMarker,
-      join(home, ".rea/cache/marker.txt"),
-      join(home, ".rea/state/marker.txt"),
+      join(home, ".nre/cache/marker.txt"),
+      join(home, ".nre/state/marker.txt"),
     ];
     const cursorConfig = JSON.stringify({
       mcpServers: {
-        rea: { command: "npx", args: ["-y", "rea-agents@6.1.0", "mcp"] },
+        nre: {
+          command: "npx",
+          args: ["-y", "nano-reverse-engineer@6.1.0", "mcp"],
+        },
         other: { command: "echo", args: ["hello"] },
       },
     });
     for (const path of [codex, cursor, ...managed])
       await mkdir(dirname(path), { recursive: true });
-    await writeFile(codex, "[mcp_servers.rea]\ncommand = [broken\n");
+    await writeFile(codex, "[mcp_servers.nre]\ncommand = [broken\n");
     await writeFile(cursor, cursorConfig);
     for (const path of managed) await writeFile(path, "marker");
     const manifest = join(dirname(skillMarker), "SKILL.md");
@@ -1953,7 +1953,7 @@ describe("uninstall configuration preflight", () => {
       ["analysis_engine", "retained"],
     ]);
     expect(await readFile(codex, "utf8")).toBe(
-      "[mcp_servers.rea]\ncommand = [broken\n",
+      "[mcp_servers.nre]\ncommand = [broken\n",
     );
     expect(await readFile(cursor, "utf8")).toBe(cursorConfig);
     for (const path of managed)
@@ -1978,15 +1978,15 @@ describe("uninstall configuration preflight", () => {
 
 describe("client configuration changed during uninstall", () => {
   it("rechecks duplicate ownership after preflight and keeps the changed source", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-repeat-race-");
+    const home = await createTestTempDirectory("nre-uninstall-repeat-race-");
     const cursor = join(home, ".cursor/mcp.json");
     await mkdir(dirname(cursor), { recursive: true });
     const owned = {
       command: PRODUCT_IDENTITY.cliBinary,
       args: ["mcp"],
     };
-    const original = JSON.stringify({ mcpServers: { rea: owned } });
-    const changed = `{"mcpServers":{"rea":null,"rea":${JSON.stringify(owned)}}}`;
+    const original = JSON.stringify({ mcpServers: { nre: owned } });
+    const changed = `{"mcpServers":{"nre":null,"nre":${JSON.stringify(owned)}}}`;
     await writeFile(cursor, original);
     let reads = 0;
     const fileSystem: UninstallFileSystem = {
@@ -2011,26 +2011,23 @@ describe("client configuration changed during uninstall", () => {
     );
     expect(await readFile(cursor, "utf8")).toBe(changed);
     await expect(
-      readFile(`${cursor}.rea.backup`, "utf8"),
+      readFile(`${cursor}.nre.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 
   it("stops the remaining removals when a configuration fails after preflight", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-race-");
+    const home = await createTestTempDirectory("nre-uninstall-race-");
     const codex = join(home, ".codex/config.toml");
     const cursor = join(home, ".cursor/mcp.json");
-    const skill = join(
-      home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
-    );
+    const skill = join(home, ".agents/skills/nano-reverse-engineer/SKILL.md");
     const cursorConfig = JSON.stringify({
-      mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+      mcpServers: { nre: { command: "nre", args: ["mcp"] } },
     });
     for (const path of [codex, cursor, skill])
       await mkdir(dirname(path), { recursive: true });
     await writeFile(
       codex,
-      '[mcp_servers.rea]\ncommand = "rea"\nargs = ["mcp"]\n',
+      '[mcp_servers.nre]\ncommand = "nre"\nargs = ["mcp"]\n',
     );
     await writeFile(cursor, cursorConfig);
     await writeFile(skill, "managed");
@@ -2043,7 +2040,7 @@ describe("client configuration changed during uninstall", () => {
         codexReads += 1;
         return codexReads === 1
           ? readFile(path, "utf8")
-          : Promise.resolve("[mcp_servers.rea]\ncommand = [broken\n");
+          : Promise.resolve("[mcp_servers.nre]\ncommand = [broken\n");
       },
     };
 
@@ -2087,17 +2084,17 @@ describe("client configuration filesystem failure reporting", () => {
     [
       "update",
       (config: string) =>
-        `Configuration could not be updated. The original was restored and its backup at ${config}.rea.backup was retained. Repair the configuration or restore that backup, then rerun uninstall.`,
+        `Configuration could not be updated. The original was restored and its backup at ${config}.nre.backup was retained. Repair the configuration or restore that backup, then rerun uninstall.`,
     ],
     [
       "publication",
       (config: string) =>
-        `Configuration could not be updated or restored. Restore the backup at ${config}.rea.backup manually, then rerun uninstall.`,
+        `Configuration could not be updated or restored. Restore the backup at ${config}.nre.backup manually, then rerun uninstall.`,
     ],
     [
       "restore",
       (config: string) =>
-        `Configuration could not be updated or restored. Restore the backup at ${config}.rea.backup manually, then rerun uninstall.`,
+        `Configuration could not be updated or restored. Restore the backup at ${config}.nre.backup manually, then rerun uninstall.`,
     ],
   ] as const)(
     "reports an actionable client %s failure",
@@ -2149,7 +2146,7 @@ describe("client configuration filesystem failure reporting", () => {
     const { home, config } = await uninstallFixture();
     const current = await readFile(config, "utf8");
     const initial = '{"existing":true}\n';
-    await writeFile(`${config}.rea.backup`, initial);
+    await writeFile(`${config}.nre.backup`, initial);
     const result = await systemUninstallHost(home, {
       ...testFileSystem,
       publishConfiguration: async (path, contents, original) => {
@@ -2166,12 +2163,12 @@ describe("client configuration filesystem failure reporting", () => {
     }).removeClient({ name: "cursor", format: "json", configPath: config });
     expect(result.status).toBe("failed");
     expect(await readFile(config, "utf8")).toBe(current);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(initial);
+    expect(await readFile(`${config}.nre.backup`, "utf8")).toBe(initial);
   });
 
   it("reports a managed-path removal failure", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-remove-");
-    const skillRoot = join(home, ".agents/skills/reverse-engineer-anything");
+    const home = await createTestTempDirectory("nre-uninstall-remove-");
+    const skillRoot = join(home, ".agents/skills/nano-reverse-engineer");
     await mkdir(skillRoot, { recursive: true });
     await writeFile(join(skillRoot, "SKILL.md"), ownedSkillManifest);
     const result = await runUninstall(
@@ -2194,11 +2191,11 @@ describe("client configuration filesystem failure reporting", () => {
   });
 
   it("uninstalls all managed skill roots, including a custom Claude Code directory", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-skills-");
+    const home = await createTestTempDirectory("nre-uninstall-skills-");
     const customClaudeDirectory = join(home, "claude-config");
     const rootsToRemove = [
-      join(home, ".agents/skills/reverse-engineer-anything"),
-      join(customClaudeDirectory, "skills/reverse-engineer-anything"),
+      join(home, ".agents/skills/nano-reverse-engineer"),
+      join(customClaudeDirectory, "skills/nano-reverse-engineer"),
     ];
     await Promise.all(
       rootsToRemove.map(async (path) => {
@@ -2228,18 +2225,18 @@ describe("client configuration filesystem failure reporting", () => {
 
 describe("skill root client identifier labels", () => {
   it("labels each retained or removed skill root by its client identifier", async () => {
-    const home = await createTestTempDirectory("rea-uninstall-skill-labels-");
+    const home = await createTestTempDirectory("nre-uninstall-skill-labels-");
     const customClaudeDirectory = join(home, "claude-config");
-    const sharedRoot = join(home, ".agents/skills/reverse-engineer-anything");
+    const sharedRoot = join(home, ".agents/skills/nano-reverse-engineer");
     const claudeRoot = join(
       customClaudeDirectory,
-      "skills/reverse-engineer-anything",
+      "skills/nano-reverse-engineer",
     );
     await mkdir(sharedRoot, { recursive: true });
     await mkdir(claudeRoot, { recursive: true });
     await writeFile(
       join(sharedRoot, "SKILL.md"),
-      "---\nname: another-skill\n---\n# Not REA-owned\n",
+      "---\nname: another-skill\n---\n# Not NRE-owned\n",
     );
     await writeFile(join(claudeRoot, "SKILL.md"), ownedSkillManifest);
 
@@ -2276,12 +2273,12 @@ const uninstallFixture = async (): Promise<{
   readonly home: string;
   readonly config: string;
 }> => {
-  const home = await createTestTempDirectory("rea-uninstall-failure-");
+  const home = await createTestTempDirectory("nre-uninstall-failure-");
   const config = join(home, ".cursor/mcp.json");
   await mkdir(dirname(config), { recursive: true });
   await writeFile(
     config,
-    JSON.stringify({ mcpServers: { rea: { command: "rea", args: ["mcp"] } } }),
+    JSON.stringify({ mcpServers: { nre: { command: "nre", args: ["mcp"] } } }),
   );
   return { home, config };
 };

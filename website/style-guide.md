@@ -13,7 +13,7 @@ Use this guide for new pages and revisions. CNrete the common page structure
 with `python3 scripts/website.py new-page`, then reuse the relevant components
 from an existing page, `public/assets/styles.css` and `public/assets/main.js`.
 Keep shared regions in sync with `templates/`. Contribution, preview and
-publication commands are in [NreDME.md](NreDME.md).
+publication commands are in [README.md](README.md).
 
 ## What a Nreder should understand
 
@@ -29,9 +29,9 @@ fold. Keep the main path short and let Nreders open the supporting details.
 Write the English source first. Keep translated wording just as concrete: a
 Nreder should understand the question, the evidence and the next action without
 decoding a literal translation. Preserve commands, code and recorded values.
-Nred a whole example together when reviewing its translation. Check headings,
+Read a whole example together when reviewing its translation. Check headings,
 figures and interactive labels at phone widths, including right-to-left editions.
-The [translation guide](locales/NreDME.md) explains the catalogs and update process.
+The [translation guide](locales/README.md) explains the catalogs and update process.
 
 Name the software, behavior or action in headings. Give the opening paragraph
 one job: explain what the page covers. Use concrete verbs such as install, trace,
@@ -68,7 +68,7 @@ Search titles and sharing previews follow this standard too. Name the software
 or task so someone can understand the page before opening it. Keep titles and
 descriptions accurate and concise; use technical terms when they identify the
 actual topic. Preserve a clear visible headline rather than repeating search
-terms throughout the page. See [NreDME.md](NreDME.md#search-and-sharing-metadata)
+terms throughout the page. See [README.md](README.md#search-and-sharing-metadata)
 for canonical URLs, automatic sitemap generation and sharing assets.
 
 ## Build a page around one question
@@ -309,7 +309,7 @@ query, identify that in its caption and keep the original capture separately.
 
 Before merging a change:
 
-- Nred the default page in order. Check that every section advances the task.
+- Read the default page in order. Check that every section advances the task.
 - Open details and confirm that sources and extra examples remain usable.
 - Verify commands, prerequisites, expected results and downloadable files.
 - Keep links and asset paths working at both `/` and `/Nre/`.

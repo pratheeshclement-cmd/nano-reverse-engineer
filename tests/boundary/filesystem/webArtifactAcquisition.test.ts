@@ -27,7 +27,7 @@ it.each([
 ])(
   "retains independently read web file identities when %s prevents analysis",
   async (variant) => {
-    const root = await createTestTempDirectory("rea-web-acquisition-");
+    const root = await createTestTempDirectory("nre-web-acquisition-");
     const fixture = webModuleArtifactsFixture();
     const manifestPath = join(root, "manifest.json");
     const sourcePath = join(root, "files", "modules", "main.js");

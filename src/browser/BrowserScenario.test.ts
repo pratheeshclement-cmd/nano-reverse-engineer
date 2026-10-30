@@ -66,15 +66,15 @@ const baseScenario = () => ({
   secrets: [
     {
       secret_id: "session",
-      environment_variable: "REA_TEST_SESSION",
+      environment_variable: "NRE_TEST_SESSION",
     },
     {
       secret_id: "login_input",
-      environment_variable: "REA_TEST_PASSWORD",
+      environment_variable: "NRE_TEST_PASSWORD",
     },
     {
       secret_id: "cookie",
-      environment_variable: "REA_TEST_COOKIE",
+      environment_variable: "NRE_TEST_COOKIE",
     },
   ],
   capture: {
@@ -89,9 +89,9 @@ describe("browser scenario secret redaction", () => {
     const secrets = resolveScenarioSecrets(
       browserScenarioSchema.parse(baseScenario()),
       {
-        REA_TEST_SESSION: "a/b?",
-        REA_TEST_PASSWORD: "password",
-        REA_TEST_COOKIE: "cookie",
+        NRE_TEST_SESSION: "a/b?",
+        NRE_TEST_PASSWORD: "password",
+        NRE_TEST_COOKIE: "cookie",
       },
     );
 
@@ -128,8 +128,8 @@ describe("browser scenario secret redaction", () => {
   it("does not resolve inherited environment properties as secret values", () => {
     const scenario = browserScenarioSchema.parse(baseScenario());
     const environment = Object.assign(
-      { REA_TEST_PASSWORD: "password", REA_TEST_COOKIE: "cookie" },
-      Object.create({ REA_TEST_SESSION: "session" }) as object,
+      { NRE_TEST_PASSWORD: "password", NRE_TEST_COOKIE: "cookie" },
+      Object.create({ NRE_TEST_SESSION: "session" }) as object,
     );
     expect(BrowserScenarioSecrets.resolve(scenario, environment)).toMatchObject(
       {
@@ -140,7 +140,7 @@ describe("browser scenario secret redaction", () => {
             {
               path: ["secrets", 0, "environment_variable"],
               expected: {
-                environment_variable: "REA_TEST_SESSION",
+                environment_variable: "NRE_TEST_SESSION",
                 secret_id: "session",
               },
             },
@@ -155,9 +155,9 @@ describe("storage value fingerprint encoding", () => {
   const secrets = resolveScenarioSecrets(
     browserScenarioSchema.parse(baseScenario()),
     {
-      REA_TEST_SESSION: "declared-session",
-      REA_TEST_PASSWORD: "declared-password",
-      REA_TEST_COOKIE: "declared-cookie",
+      NRE_TEST_SESSION: "declared-session",
+      NRE_TEST_PASSWORD: "declared-password",
+      NRE_TEST_COOKIE: "declared-cookie",
     },
   );
 
@@ -267,9 +267,9 @@ describe("browserScenarioSchema", () => {
   it("redacts overlapping secrets longest-first", () => {
     const scenario = browserScenarioSchema.parse(baseScenario());
     const secrets = resolveScenarioSecrets(scenario, {
-      REA_TEST_SESSION: "prefix",
-      REA_TEST_PASSWORD: "prefix-suffix",
-      REA_TEST_COOKIE: "cookie",
+      NRE_TEST_SESSION: "prefix",
+      NRE_TEST_PASSWORD: "prefix-suffix",
+      NRE_TEST_COOKIE: "cookie",
     });
     expect(secrets.redact("prefix-suffix")).toBe("[REDACTED:login_input]");
   });
@@ -282,15 +282,15 @@ describe("browserScenarioSchema", () => {
           ...baseScenario().secrets,
           {
             secret_id: "password",
-            environment_variable: "REA_TEST_SHORT_PASSWORD",
+            environment_variable: "NRE_TEST_SHORT_PASSWORD",
           },
         ],
       }),
       {
-        REA_TEST_SESSION: "prefix",
-        REA_TEST_PASSWORD: "prefix-suffix",
-        REA_TEST_COOKIE: "cookie",
-        REA_TEST_SHORT_PASSWORD: "pass",
+        NRE_TEST_SESSION: "prefix",
+        NRE_TEST_PASSWORD: "prefix-suffix",
+        NRE_TEST_COOKIE: "cookie",
+        NRE_TEST_SHORT_PASSWORD: "pass",
       },
     );
     expect(secrets.redact("seen pass in the page")).toBe(
@@ -304,17 +304,17 @@ describe("browserScenarioSchema", () => {
           ...baseScenario().secrets,
           {
             secret_id: "password",
-            environment_variable: "REA_TEST_LONG_SECRET",
+            environment_variable: "NRE_TEST_LONG_SECRET",
           },
-          { secret_id: "pin", environment_variable: "REA_TEST_PIN" },
+          { secret_id: "pin", environment_variable: "NRE_TEST_PIN" },
         ],
       }),
       {
-        REA_TEST_SESSION: "prefix",
-        REA_TEST_PASSWORD: "prefix-suffix",
-        REA_TEST_COOKIE: "cookie",
-        REA_TEST_LONG_SECRET: "session-secret-value",
-        REA_TEST_PIN: "pass",
+        NRE_TEST_SESSION: "prefix",
+        NRE_TEST_PASSWORD: "prefix-suffix",
+        NRE_TEST_COOKIE: "cookie",
+        NRE_TEST_LONG_SECRET: "session-secret-value",
+        NRE_TEST_PIN: "pass",
       },
     ).redactBytes(Buffer.from("body session-secret-value tail"));
     expect(bytes.toString("utf8")).toBe("body [REDACTED] tail");
@@ -359,7 +359,7 @@ describe("browserScenarioSchema secret declarations", () => {
     const unused = baseScenario();
     const redactionOnly = {
       secret_id: "unused",
-      environment_variable: "rea.test-unused",
+      environment_variable: "nre.test-unused",
     };
     unused.secrets.push(redactionOnly);
     expect(browserScenarioSchema.safeParse(unused).success).toBe(true);

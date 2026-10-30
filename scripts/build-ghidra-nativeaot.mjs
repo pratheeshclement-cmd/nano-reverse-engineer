@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const source = resolve(
-  process.env.REA_NATIVEAOT_SOURCE ??
+  process.env.NRE_NATIVEAOT_SOURCE ??
     join(root, "third_party/ghidra-nativeaot"),
 );
 const install = process.env.GHIDRA_INSTALL_DIR;
@@ -32,7 +32,7 @@ if (!ghidraReleaseLineAccepted(ghidraVersion))
     `NativeAOT build lane accepts Ghidra 12.1.x (verified with 12.1.4). Observed application.version=${ghidraVersion ?? "missing"}.`,
   );
 const output = resolve(
-  process.env.REA_NATIVEAOT_BUILD_ROOT ??
+  process.env.NRE_NATIVEAOT_BUILD_ROOT ??
     join(root, "_reference/nativeaot-integration/extension"),
 );
 const java = process.env.JAVA_HOME ? join(process.env.JAVA_HOME, "bin") : null;
@@ -54,7 +54,7 @@ const javacBanner = capture(javac, ["-version"]);
 const javacMajor = Number(/^javac (\d+)/mu.exec(javacBanner)?.[1]);
 if (!Number.isInteger(javacMajor) || javacMajor < 21)
   throw new Error(
-    `NativeAOT build lane requires javac 21 or newer and compiles with --release 21. Observed: ${javacBanner || "no version"}. REA does not install or upgrade Java.`,
+    `NativeAOT build lane requires javac 21 or newer and compiles with --release 21. Observed: ${javacBanner || "no version"}. NRE does not install or upgrade Java.`,
   );
 const revision = run("git", ["-C", source, "rev-parse", "HEAD"]);
 if (
@@ -106,7 +106,7 @@ try {
     join(classes, "LICENSE-ghidra-nativeaot.md"),
     await readFile(join(source, "LICENSE.md")),
   );
-  const jar = join(output, "rea-ghidra-nativeaot.jar");
+  const jar = join(output, "nre-ghidra-nativeaot.jar");
   run(java ? join(java, "jar") : "jar", [
     "--create",
     "--file",

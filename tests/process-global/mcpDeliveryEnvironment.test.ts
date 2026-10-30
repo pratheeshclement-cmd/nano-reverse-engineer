@@ -31,8 +31,8 @@ const connect = async (server: EvidenceMcpServer) => {
 it("keeps independent server budgets for successful results and oversized errors after environment mutation", async () => {
   const smallBudget = STDIO_DEFAULT_MAX_BUFFER_SIZE;
   const largeBudget = 2 * smallBudget;
-  const smallEnvironment = { REA_MCP_MAX_RESPONSE_BYTES: String(smallBudget) };
-  const largeEnvironment = { REA_MCP_MAX_RESPONSE_BYTES: String(largeBudget) };
+  const smallEnvironment = { NRE_MCP_MAX_RESPONSE_BYTES: String(smallBudget) };
+  const largeEnvironment = { NRE_MCP_MAX_RESPONSE_BYTES: String(largeBudget) };
   const payload = "x".repeat(3 * 1024 * 1024);
   const analysis = {
     execute: () =>
@@ -51,23 +51,23 @@ it("keeps independent server budgets for successful results and oversized errors
       ),
   };
 
-  vi.stubEnv("REA_MCP_MAX_RESPONSE_BYTES", String(largeBudget));
+  vi.stubEnv("NRE_MCP_MAX_RESPONSE_BYTES", String(largeBudget));
   const small = createServer(
     { kind: "fixed", analysis },
     {
       environment: smallEnvironment,
     },
   );
-  vi.stubEnv("REA_MCP_MAX_RESPONSE_BYTES", String(smallBudget));
+  vi.stubEnv("NRE_MCP_MAX_RESPONSE_BYTES", String(smallBudget));
   const large = createServer(
     { kind: "fixed", analysis },
     {
       environment: largeEnvironment,
     },
   );
-  smallEnvironment.REA_MCP_MAX_RESPONSE_BYTES = "invalid-after-selection";
-  largeEnvironment.REA_MCP_MAX_RESPONSE_BYTES = String(smallBudget);
-  vi.stubEnv("REA_MCP_MAX_RESPONSE_BYTES", "invalid-ambient-after-selection");
+  smallEnvironment.NRE_MCP_MAX_RESPONSE_BYTES = "invalid-after-selection";
+  largeEnvironment.NRE_MCP_MAX_RESPONSE_BYTES = String(smallBudget);
+  vi.stubEnv("NRE_MCP_MAX_RESPONSE_BYTES", "invalid-ambient-after-selection");
 
   // Error text alone exceeds the small budget and fits the large one.
   const diagnostic = "observed failure ".repeat(
@@ -151,9 +151,9 @@ it("keeps independent server budgets for successful results and oversized errors
 
 it("snapshots the runtime-selected environment before optional loading and reuses it for replacement servers", async () => {
   const selected = {
-    REA_MCP_MAX_RESPONSE_BYTES: String(2 * STDIO_DEFAULT_MAX_BUFFER_SIZE),
-    REA_BROWSER_EXECUTABLE: "/selected/browser",
-    REA_LOG_LEVEL: "silent",
+    NRE_MCP_MAX_RESPONSE_BYTES: String(2 * STDIO_DEFAULT_MAX_BUFFER_SIZE),
+    NRE_BROWSER_EXECUTABLE: "/selected/browser",
+    NRE_LOG_LEVEL: "silent",
   };
   const observed: EvidenceMcpServer[] = [];
   let shutdown: (() => void) | undefined;
@@ -162,18 +162,18 @@ it("snapshots the runtime-selected environment before optional loading and reuse
     finishClose = resolve;
   });
   vi.stubEnv(
-    "REA_MCP_MAX_RESPONSE_BYTES",
+    "NRE_MCP_MAX_RESPONSE_BYTES",
     String(STDIO_DEFAULT_MAX_BUFFER_SIZE),
   );
   const code = await run({
     env: selected,
     loadOptionalProviders: async () => {
-      selected.REA_MCP_MAX_RESPONSE_BYTES = "invalid-after-start";
-      selected.REA_BROWSER_EXECUTABLE = "/mutated/browser";
+      selected.NRE_MCP_MAX_RESPONSE_BYTES = "invalid-after-start";
+      selected.NRE_BROWSER_EXECUTABLE = "/mutated/browser";
       return {};
     },
     createServer: (source, options) => {
-      expect(options?.environment?.REA_BROWSER_EXECUTABLE).toBe(
+      expect(options?.environment?.NRE_BROWSER_EXECUTABLE).toBe(
         "/selected/browser",
       );
       expect(Object.isFrozen(options?.environment)).toBe(true);

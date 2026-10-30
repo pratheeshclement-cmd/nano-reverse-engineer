@@ -1,4 +1,8 @@
-import { currentClientRegistrationCommand } from "./application/ClientRegistrationIdentity.js";
+import {
+  currentClientRegistrationCommand,
+  invokingPackageRunner,
+  withoutPackageRunnerIdentity,
+} from "./application/ClientRegistrationIdentity.js";
 import { UpdateCommandRunner } from "./application/UpdateCommandRunner.js";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -15,10 +19,6 @@ import { systemSetupHost } from "./application/SetupHost.js";
 import { systemUninstallHost } from "./application/Uninstall.js";
 import { createSystemDoctorHost } from "./doctorRuntime.js";
 import { PRODUCT_IDENTITY } from "./identity.js";
-import {
-  invokingPackageRunner,
-  withoutPackageRunnerIdentity,
-} from "./application/ClientRegistrationIdentity.js";
 import { snapshotEnvironment } from "./process/snapshotEnvironment.js";
 
 afterEach(() => vi.unstubAllEnvs());
@@ -31,11 +31,11 @@ it.each([undefined, "/caller/tools with spaces/ilspycmd"])(
         ...(selected === undefined ? {} : { configuredIlspyCmdPath: selected }),
         ilspyCmdVersion: async () => "ilspycmd 9.1.0",
       }),
-      selected === undefined ? {} : { REA_ILSPY_CMD_PATH: selected },
+      selected === undefined ? {} : { NRE_ILSPY_CMD_PATH: selected },
     );
     try {
       const state = await host.initialSetupState();
-      expect(state.providerEnvironment.REA_ILSPY_CMD_PATH).toBe(selected);
+      expect(state.providerEnvironment.NRE_ILSPY_CMD_PATH).toBe(selected);
       if (selected !== undefined)
         expect(state.doctor.checks).toContainEqual(
           expect.objectContaining({ name: "ilspycmd", ok: true }),
@@ -47,7 +47,7 @@ it.each([undefined, "/caller/tools with spaces/ilspycmd"])(
 );
 
 it("plans setup and uninstall against selected home and client overrides", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-selected-setup-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-selected-setup-"));
   const environment = {
     HOME: join(root, "selected-home"),
     USERPROFILE: join(root, "selected-home"),
@@ -78,10 +78,8 @@ it("plans setup and uninstall against selected home and client overrides", async
         }),
         expect.objectContaining({
           id: "install_skill",
-          target: join(
-            environment.HOME,
-            ".agents/skills",
-            PRODUCT_IDENTITY.skillName,
+          target: expect.stringMatching(
+            /[\\/]selected-home[\\/]\.agents[\\/]skills[\\/]nano-reverse-engineer$/,
           ),
         }),
       ]),
@@ -105,10 +103,10 @@ it("plans setup and uninstall against selected home and client overrides", async
 
 it("composes provider diagnostics from selected configuration rather than ambient configuration", async () => {
   vi.stubEnv("GHIDRA_INSTALL_DIR", "/ambient/ghidra");
-  vi.stubEnv("REA_IDA_MCP_CONFIG", "/ambient/ida.json");
+  vi.stubEnv("NRE_IDA_MCP_CONFIG", "/ambient/ida.json");
   const host = createSystemDoctorHost({
     GHIDRA_INSTALL_DIR: "/selected/ghidra",
-    REA_IDA_MCP_CONFIG: "/selected/ida.json",
+    NRE_IDA_MCP_CONFIG: "/selected/ida.json",
   });
   const inspections = await host.providerInspections?.();
   expect(inspections?.find(({ id }) => id === "ghidra")?.configured).toBe(true);
@@ -147,23 +145,25 @@ it("includes the macOS Hopper installer diagnostic in setup remediation", async 
 });
 
 it("preserves a validated selected JEB endpoint in setup registrations without claiming live readiness", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-jeb-setup-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-jeb-setup-"));
   const endpoint = "http://127.0.0.1:8425/mcp/";
   const ambientEndpoint = "http://127.0.0.1:8426/mcp";
-  vi.stubEnv("REA_JEB_MCP_URL", ambientEndpoint);
+  vi.stubEnv("NRE_JEB_MCP_URL", ambientEndpoint);
   try {
     const environment = {
       HOME: root,
       USERPROFILE: root,
       CODEX_HOME: join(root, "codex"),
-      REA_JEB_MCP_URL: endpoint,
+      NRE_JEB_MCP_URL: endpoint,
     };
-    const doctorHost = createSystemDoctorHost(environment);
+    const doctorHost = Object.assign(createSystemDoctorHost(environment), {
+      runtime: { id: "node", version: "24.22.1" } as const,
+    });
     const setupHost = systemSetupHost(doctorHost, environment);
     const state = await setupHost.initialSetupState();
 
     expect(state.providerEnvironment).toHaveProperty(
-      "REA_JEB_MCP_URL",
+      "NRE_JEB_MCP_URL",
       endpoint,
     );
     const planned = await runSetup(
@@ -190,25 +190,25 @@ it.each([
   {
     name: "registration-only settings",
     environment: {
-      REA_ANALYSIS_PROVIDER: "auto",
-      REA_BRIDGE_MAX_REQUEST_BYTES: "33554432",
-      REA_GHIDRA_STARTUP_TIMEOUT_MS: "2700000",
-      REA_HOPPER_STARTUP_TIMEOUT_MS: "120000",
-      REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-      REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
-      REA_REGEX_MATCHING_DEADLINE_MS: "10000",
-      REA_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
-      REA_MCP_INITIALIZE_BUDGET_MS: "16000",
-      REA_MCP_TOOLS_LIST_BUDGET_MS: "6000",
-      REA_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
-      REA_MCP_DOCTOR_DEADLINE_MS: "31000",
+      NRE_ANALYSIS_PROVIDER: "auto",
+      NRE_BRIDGE_MAX_REQUEST_BYTES: "33554432",
+      NRE_GHIDRA_STARTUP_TIMEOUT_MS: "2700000",
+      NRE_HOPPER_STARTUP_TIMEOUT_MS: "120000",
+      NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+      NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
+      NRE_REGEX_MATCHING_DEADLINE_MS: "10000",
+      NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
+      NRE_MCP_INITIALIZE_BUDGET_MS: "16000",
+      NRE_MCP_TOOLS_LIST_BUDGET_MS: "6000",
+      NRE_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
+      NRE_MCP_DOCTOR_DEADLINE_MS: "31000",
     },
     providerConfigured: false,
     installHopper: true,
   },
   {
     name: "an explicit unready provider selection",
-    environment: { REA_ANALYSIS_PROVIDER: "ghidra" },
+    environment: { NRE_ANALYSIS_PROVIDER: "ghidra" },
     providerConfigured: true,
     installHopper: false,
   },
@@ -228,33 +228,33 @@ it.each([
     try {
       const initial = await setupHost.initialSetupState();
       expect(initial.providerConfigured).toBe(providerConfigured);
-      if ("REA_MCP_INPUT_SCHEMA_PROFILE" in environment) {
+      if ("NRE_MCP_INPUT_SCHEMA_PROFILE" in environment) {
         expect(initial.providerEnvironment).toMatchObject({
-          REA_ANALYSIS_PROVIDER: "auto",
-          REA_BRIDGE_MAX_REQUEST_BYTES: "33554432",
-          REA_GHIDRA_STARTUP_TIMEOUT_MS: "2700000",
-          REA_HOPPER_STARTUP_TIMEOUT_MS: "120000",
-          REA_MCP_INPUT_SCHEMA_PROFILE: "full",
-          REA_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
-          REA_REGEX_MATCHING_DEADLINE_MS: "10000",
-          REA_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
-          REA_MCP_INITIALIZE_BUDGET_MS: "16000",
-          REA_MCP_TOOLS_LIST_BUDGET_MS: "6000",
-          REA_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
-          REA_MCP_DOCTOR_DEADLINE_MS: "31000",
+          NRE_ANALYSIS_PROVIDER: "auto",
+          NRE_BRIDGE_MAX_REQUEST_BYTES: "33554432",
+          NRE_GHIDRA_STARTUP_TIMEOUT_MS: "2700000",
+          NRE_HOPPER_STARTUP_TIMEOUT_MS: "120000",
+          NRE_MCP_INPUT_SCHEMA_PROFILE: "full",
+          NRE_CAPTURE_DECODER_OLD_GENERATION_MIB: "256",
+          NRE_REGEX_MATCHING_DEADLINE_MS: "10000",
+          NRE_REGEX_WORKER_HEAP_REQUEST_MIB: "256",
+          NRE_MCP_INITIALIZE_BUDGET_MS: "16000",
+          NRE_MCP_TOOLS_LIST_BUDGET_MS: "6000",
+          NRE_MCP_FIRST_CATALOG_BUDGET_MS: "21000",
+          NRE_MCP_DOCTOR_DEADLINE_MS: "31000",
         });
       } else {
         expect(initial.providerEnvironment).not.toHaveProperty(
-          "REA_BRIDGE_MAX_REQUEST_BYTES",
+          "NRE_BRIDGE_MAX_REQUEST_BYTES",
         );
         expect(initial.providerEnvironment).not.toHaveProperty(
-          "REA_REGEX_MATCHING_DEADLINE_MS",
+          "NRE_REGEX_MATCHING_DEADLINE_MS",
         );
         expect(initial.providerEnvironment).not.toHaveProperty(
-          "REA_REGEX_WORKER_HEAP_REQUEST_MIB",
+          "NRE_REGEX_WORKER_HEAP_REQUEST_MIB",
         );
         expect(initial.providerEnvironment).not.toHaveProperty(
-          "REA_MCP_INITIALIZE_BUDGET_MS",
+          "NRE_MCP_INITIALIZE_BUDGET_MS",
         );
       }
       const discovery = await discoverSetupState({
@@ -272,14 +272,14 @@ it.each([
 );
 
 it("passes only selected environment to updater subprocesses and drops npm invocation identity", async () => {
-  vi.stubEnv("REA_UPDATE_MARKER", "ambient");
+  vi.stubEnv("NRE_UPDATE_MARKER", "ambient");
   const result = await updateCommands.runProbe(
     [
       process.execPath,
       "-e",
-      "process.stdout.write(JSON.stringify({marker:process.env.REA_UPDATE_MARKER,npm:process.env.npm_command,ambient:process.env.HOME}))",
+      "process.stdout.write(JSON.stringify({marker:process.env.NRE_UPDATE_MARKER,npm:process.env.npm_command,ambient:process.env.HOME}))",
     ],
-    { REA_UPDATE_MARKER: "selected", npm_command: "exec" },
+    { NRE_UPDATE_MARKER: "selected", npm_command: "exec" },
   );
   expect(result).toEqual({ ok: true, value: '{"marker":"selected"}' });
 });

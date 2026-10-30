@@ -106,14 +106,14 @@ cleanup retains its owner and private files for recovery. `--mode legacy` or
 `--mode references` runs one arm. Fresh runs
 reanalyze the artifact and can produce different parent identities/resource
 coverage; the verifier requires equal facts within its paired run. The measured
-run additionally used the preserved [8 GiB cgroup observer](https://github.com/morluto/rea/blob/b3bdabab694af1f9801eff7caf75001b92314a58/experiments/analysis-efficiency/resource-run.py)
+run additionally used the preserved [8 GiB cgroup observer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/b3bdabab694af1f9801eff7caf75001b92314a58/experiments/analysis-efficiency/resource-run.py)
 and its adjacent `resource_payload.py`; observer hashes are in the JSON.
 No application, complete bundle, raw observations or ambient environment is
 archived. Temporary exported/inline Evidence files are removed after successful
 owned-command cleanup.
 
 For the Linux descendant-timeout check, create an operator-selected private
-directory and set `REA_TOKENIZER_PROBE_RECORD` to a file within it. Run the same
+directory and set `NRE_TOKENIZER_PROBE_RECORD` to a file within it. Run the same
 real-artifact command with `--mode references --rounds 1`, replace the tokenizer
 with the absolute path to `scripts/fixtures/tokenizer-family-wrapper.py`, and add
 `--tokenizer-timeout-ms 2000`. Expect a timeout failure. The explicit marker

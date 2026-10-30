@@ -11,7 +11,7 @@ const providerSource = `#!${process.execPath}\nprocess.stdout.write("selected pr
 const inputSource = "selected input bytes\n";
 
 const selectedProviderFiles = async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-owner-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-provider-owner-"));
   const provider = join(directory, "selected-rizin");
   const input = join(directory, "fixture.bin");
   await Promise.all([
@@ -22,7 +22,7 @@ const selectedProviderFiles = async () => {
 };
 
 const providerOptions = (provider: string, close: () => Promise<void>) => ({
-  environment: { REA_RIZIN_COMMAND: provider },
+  environment: { NRE_RIZIN_COMMAND: provider },
   adbDeviceAnalysis: {
     inspectAvailability: async () => ({
       status: "available" as const,

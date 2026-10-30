@@ -21,7 +21,7 @@ import { parseMcpToolError } from "../fixtures/mcpToolError.js";
 cliTest.skipIf(process.platform !== "darwin")(
   "restores the exact profileless workflow commitment after a rejected snapshot switch",
   async () => {
-    const root = await createTestTempDirectory("rea-native-snapshot-restore-");
+    const root = await createTestTempDirectory("nre-native-snapshot-restore-");
     const first = join(root, "first.macho");
     const second = join(root, "second.macho");
     const saved = join(root, "before.json");
@@ -31,13 +31,13 @@ cliTest.skipIf(process.platform !== "darwin")(
     await Promise.all([writeFile(first, bytes), writeFile(second, bytes)]);
     const { call } = await connectLocalToolsMcp({
       PATH: process.env.PATH ?? "",
-      REA_ANALYSIS_PROVIDER: "auto",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
-      GHIDRA_INSTALL_DIR: "/rea-unconfigured-deep-provider/ghidra",
-      JAVA_HOME: "/rea-unconfigured-deep-provider/java",
-      REA_IDA_MCP_CONFIG: "/rea-unconfigured-deep-provider/ida-mcp.json",
-      REA_KUNA_COMMAND: "/rea-unconfigured-deep-provider/kuna",
-      REA_KUNA_CACHE_DIR: "/rea-unconfigured-deep-provider/kuna-cache",
+      NRE_ANALYSIS_PROVIDER: "auto",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
+      GHIDRA_INSTALL_DIR: "/nre-unconfigured-deep-provider/ghidra",
+      JAVA_HOME: "/nre-unconfigured-deep-provider/java",
+      NRE_IDA_MCP_CONFIG: "/nre-unconfigured-deep-provider/ida-mcp.json",
+      NRE_KUNA_COMMAND: "/nre-unconfigured-deep-provider/kuna",
+      NRE_KUNA_CACHE_DIR: "/nre-unconfigured-deep-provider/kuna-cache",
     });
     const good = async (name: string, arguments_: Record<string, unknown>) => {
       const result = await call(name, arguments_);
@@ -122,20 +122,20 @@ cliTest.skipIf(process.platform !== "darwin")(
 cliTest.skipIf(process.platform !== "darwin")(
   "preserves ambiguous encoded method implementations through the public CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-objc-method-candidates-");
+    const root = await createTestTempDirectory("nre-objc-method-candidates-");
     const target = join(root, "methods.macho");
     const bytes = objcRecordBudgetMacho("class", [0x700, 0x720]);
     await writeFile(target, bytes);
     const environment = {
       PATH: process.env.PATH ?? "",
-      REA_ANALYSIS_PROVIDER: "auto",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
-      GHIDRA_INSTALL_DIR: "/rea-unconfigured-deep-provider/ghidra",
-      JAVA_HOME: "/rea-unconfigured-deep-provider/java",
-      REA_IDA_MCP_CONFIG: "/rea-unconfigured-deep-provider/ida-mcp.json",
-      REA_KUNA_COMMAND: "/rea-unconfigured-deep-provider/kuna",
-      REA_KUNA_CACHE_DIR: "/rea-unconfigured-deep-provider/kuna-cache",
-      REA_LOG_LEVEL: "silent",
+      NRE_ANALYSIS_PROVIDER: "auto",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
+      GHIDRA_INSTALL_DIR: "/nre-unconfigured-deep-provider/ghidra",
+      JAVA_HOME: "/nre-unconfigured-deep-provider/java",
+      NRE_IDA_MCP_CONFIG: "/nre-unconfigured-deep-provider/ida-mcp.json",
+      NRE_KUNA_COMMAND: "/nre-unconfigured-deep-provider/kuna",
+      NRE_KUNA_CACHE_DIR: "/nre-unconfigured-deep-provider/kuna-cache",
+      NRE_LOG_LEVEL: "silent",
     };
     const result = await cli.run({
       arguments: ["inspect-native-dispatch-metadata", target, "--json"],
@@ -179,7 +179,7 @@ cliTest.skipIf(process.platform !== "darwin")(
 cliTest.skipIf(process.platform !== "darwin")(
   "retains and reopens profileless native dispatch workflow snapshots through CLI and stdio MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-native-dispatch-snapshot-");
+    const root = await createTestTempDirectory("nre-native-dispatch-snapshot-");
     const target = join(root, "minimal.macho");
     const cliSnapshot = join(root, "cli-snapshot.json");
     const mcpSnapshot = join(root, "mcp-snapshot.json");
@@ -187,13 +187,13 @@ cliTest.skipIf(process.platform !== "darwin")(
     await writeFile(target, bytes);
     const isolatedProviderEnvironment = {
       PATH: process.env.PATH ?? "",
-      REA_ANALYSIS_PROVIDER: "auto",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
-      GHIDRA_INSTALL_DIR: "/rea-unconfigured-deep-provider/ghidra",
-      JAVA_HOME: "/rea-unconfigured-deep-provider/java",
-      REA_IDA_MCP_CONFIG: "/rea-unconfigured-deep-provider/ida-mcp.json",
-      REA_KUNA_COMMAND: "/rea-unconfigured-deep-provider/kuna",
-      REA_KUNA_CACHE_DIR: "/rea-unconfigured-deep-provider/kuna-cache",
+      NRE_ANALYSIS_PROVIDER: "auto",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
+      GHIDRA_INSTALL_DIR: "/nre-unconfigured-deep-provider/ghidra",
+      JAVA_HOME: "/nre-unconfigured-deep-provider/java",
+      NRE_IDA_MCP_CONFIG: "/nre-unconfigured-deep-provider/ida-mcp.json",
+      NRE_KUNA_COMMAND: "/nre-unconfigured-deep-provider/kuna",
+      NRE_KUNA_CACHE_DIR: "/nre-unconfigured-deep-provider/kuna-cache",
     };
 
     const cliArguments = [
@@ -313,20 +313,20 @@ cliTest.skipIf(process.platform !== "darwin")(
 cliTest.skipIf(process.platform !== "darwin")(
   "reports exact Objective-C class imports through the compiled native MCP adapter",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-objc-import-mcp-");
+    const root = await createTestTempDirectory("nre-objc-import-mcp-");
     const target = join(root, "class-import.macho");
     const fixture = nativeObjcClassImportMachO();
     await writeFile(target, fixture.bytes);
     const environment = {
       PATH: process.env.PATH ?? "",
-      REA_ANALYSIS_PROVIDER: "auto",
-      HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper",
-      GHIDRA_INSTALL_DIR: "/rea-unconfigured-deep-provider/ghidra",
-      JAVA_HOME: "/rea-unconfigured-deep-provider/java",
-      REA_IDA_MCP_CONFIG: "/rea-unconfigured-deep-provider/ida-mcp.json",
-      REA_KUNA_COMMAND: "/rea-unconfigured-deep-provider/kuna",
-      REA_KUNA_CACHE_DIR: "/rea-unconfigured-deep-provider/kuna-cache",
-      REA_LOG_LEVEL: "silent",
+      NRE_ANALYSIS_PROVIDER: "auto",
+      HOPPER_LAUNCHER_PATH: "/nre-unconfigured-deep-provider/hopper",
+      GHIDRA_INSTALL_DIR: "/nre-unconfigured-deep-provider/ghidra",
+      JAVA_HOME: "/nre-unconfigured-deep-provider/java",
+      NRE_IDA_MCP_CONFIG: "/nre-unconfigured-deep-provider/ida-mcp.json",
+      NRE_KUNA_COMMAND: "/nre-unconfigured-deep-provider/kuna",
+      NRE_KUNA_CACHE_DIR: "/nre-unconfigured-deep-provider/kuna-cache",
+      NRE_LOG_LEVEL: "silent",
     };
 
     const cliResult = await cli.run({

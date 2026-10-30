@@ -956,7 +956,7 @@ it("enforces the caller-resolved representation allowance and names its setting"
     "update_analysis_settings with setting native.matching_representation_bytes",
   );
   expect(lowered.error.remediationAction).toContain(
-    "REA_NATIVE_MATCHING_REPRESENTATION_BYTES",
+    "NRE_NATIVE_MATCHING_REPRESENTATION_BYTES",
   );
   expect((await matchNativeFunctions(small)).ok).toBe(true);
   // A request refused by the 96 MiB default fits a raised allowance unchanged.

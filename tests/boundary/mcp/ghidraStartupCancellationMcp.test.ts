@@ -57,7 +57,7 @@ it.each([0, 1])(
     };
     const config = parseConfig({
       GHIDRA_INSTALL_DIR: "/fixture/ghidra",
-      REA_GHIDRA_STARTUP_TIMEOUT_MS: "10000",
+      NRE_GHIDRA_STARTUP_TIMEOUT_MS: "10000",
     });
     if (!config.ok) throw config.error;
     const provider = new GhidraProvider(

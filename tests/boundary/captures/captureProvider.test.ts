@@ -19,7 +19,7 @@ import { analysisErrorRemediationAction } from "../../../src/domain/analysisErro
 
 // A command-boundary simulator: real process ownership/filesystem, not real TShark coverage.
 const fixture = async (mode = "ok", failCleanup = false) => {
-  const directory = await createTestTempDirectory("rea-capture-test-");
+  const directory = await createTestTempDirectory("nre-capture-test-");
   const path = join(directory, "recorded bytes.pcap");
   await writeFile(path, "recording bytes");
   const script = join(directory, "producer.mjs");
@@ -53,9 +53,9 @@ else { if(readFileSync('capture', 'utf8') !== 'recording bytes') throw Error('wr
     {
       ...process.env,
       ...(mode === "path"
-        ? { PATH: directory, REA_TSHARK_COMMAND: undefined }
-        : { REA_TSHARK_COMMAND: configuredCommand }),
-      REA_TSHARK_PRLIMIT_COMMAND: configuredCommand,
+        ? { PATH: directory, NRE_TSHARK_COMMAND: undefined }
+        : { NRE_TSHARK_COMMAND: configuredCommand }),
+      NRE_TSHARK_PRLIMIT_COMMAND: configuredCommand,
     },
     async (input) => {
       calls++;
@@ -427,7 +427,7 @@ it.each([
 
 it("refuses unsupported hosts before launching or allocating a workspace", async () => {
   const provider = new TsharkCaptureProvider(
-    { REA_TSHARK_COMMAND: process.execPath },
+    { NRE_TSHARK_COMMAND: process.execPath },
     async () => {
       throw new Error("Must not launch");
     },
@@ -486,9 +486,9 @@ it.each([
   },
 );
 
-it("refuses a relative REA_TSHARK_COMMAND instead of searching PATH", async () => {
+it("refuses a relative NRE_TSHARK_COMMAND instead of searching PATH", async () => {
   const provider = new TsharkCaptureProvider(
-    { REA_TSHARK_COMMAND: "tshark", PATH: "/usr/bin" },
+    { NRE_TSHARK_COMMAND: "tshark", PATH: "/usr/bin" },
     async () => {
       throw new Error("Must not launch");
     },
@@ -504,7 +504,7 @@ it("refuses a relative REA_TSHARK_COMMAND instead of searching PATH", async () =
   if (result.ok) throw new Error("Expected configuration refusal");
   expect(result.error).toMatchObject({
     _tag: "AnalysisCapabilityUnavailableError",
-    reason: "REA_TSHARK_COMMAND must be an absolute path to the tshark binary",
+    reason: "NRE_TSHARK_COMMAND must be an absolute path to the tshark binary",
   });
 });
 
@@ -579,7 +579,7 @@ it("preserves termination signal and effective file ceiling as a resource failur
     capturedOutput: { signal: "SIGXFSZ", stderr: "before file limit\n" },
   });
   expect(analysisErrorRemediationAction(result.error)).toContain(
-    "REA retains the tighter inherited limit",
+    "NRE retains the tighter inherited limit",
   );
 });
 

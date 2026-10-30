@@ -33,7 +33,7 @@ export const verifyAndroidMetadata = async ({
       { cause },
     );
   }
-  const classes = await mkdtemp(join(tmpdir(), "rea-android-metadata-"));
+  const classes = await mkdtemp(join(tmpdir(), "nre-android-metadata-"));
   try {
     await execute(
       javac,
@@ -46,7 +46,7 @@ export const verifyAndroidMetadata = async ({
         bridge,
         resolve(
           repository,
-          "tests/conformance/android/ReaJadxMetadataRegression.java",
+          "tests/conformance/android/NreJadxMetadataRegression.java",
         ),
       ],
       { timeout: 30_000 },
@@ -57,7 +57,7 @@ export const verifyAndroidMetadata = async ({
         ...jvmArguments,
         "-classpath",
         `${classes}${delimiter}${jar}`,
-        "ReaJadxMetadataRegression",
+        "NreJadxMetadataRegression",
         apk,
         resolve(repository, "tests/fixtures/android/static-initializers"),
         classes,

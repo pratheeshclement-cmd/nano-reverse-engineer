@@ -25,12 +25,12 @@ const invoke = (root: string) =>
   });
 
 it("reports test-only candidates without losing dynamic, worker or published roots", async () => {
-  const root = await createTestTempDirectory("rea-production-reachability-");
+  const root = await createTestTempDirectory("nre-production-reachability-");
   const files = {
     "package.json": JSON.stringify({
       name: "reachability-fixture",
       type: "module",
-      bin: { fixture: "scripts/rea.mjs" },
+      bin: { fixture: "scripts/nre.mjs" },
       exports: { "./published": "./src/published.ts" },
     }),
     "src/main.ts":
@@ -42,7 +42,7 @@ it("reports test-only candidates without losing dynamic, worker or published roo
     "src/composition/javascriptAnalysisWorkerProcess.ts":
       'import { workerFact } from "../workerFacts.js"; console.log(workerFact);',
     "src/workerFacts.ts": "export const workerFact = 5;",
-    "scripts/rea.mjs": 'import "../src/main.js";',
+    "scripts/nre.mjs": 'import "../src/main.js";',
     "tests/facts.test.ts":
       'import { testOnly } from "../src/facts.js"; import { retired } from "../src/testOnly.js"; console.log(testOnly, retired);',
   };
@@ -92,7 +92,7 @@ it("reports test-only candidates without losing dynamic, worker or published roo
 
 it("fails on Knip configuration errors and removes a stale candidate report", async () => {
   const root = await createTestTempDirectory(
-    "rea-production-reachability-error-",
+    "nre-production-reachability-error-",
   );
   await writeFile(join(root, "package.json"), '{"name":"broken-config"}');
   await writeFile(join(root, "knip.production.json"), "{");

@@ -48,7 +48,7 @@ const completeEvidence = (value: unknown) => {
 cliTest(
   "names the v1 signer certificate and a v1/v2 signer mismatch identically through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-v1-signer-");
+    const root = await createTestTempDirectory("nre-apk-v1-signer-");
     const v1Zip = await zipWith([
       { name: "classes.dex", data: "dex" },
       { name: "META-INF/MANIFEST.MF", data: "Manifest-Version: 1.0" },
@@ -205,7 +205,7 @@ cliTest(
 cliTest(
   "retains v1 signer identity when the CMS signature OCTET STRING is constructed BER",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-v1-ber-signature-");
+    const root = await createTestTempDirectory("nre-apk-v1-ber-signature-");
     const encodings = [
       [
         "definite",
@@ -257,7 +257,7 @@ cliTest(
 cliTest(
   "explains an unreadable v1 signer comparison through CLI and MCP",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-v1-unknown-");
+    const root = await createTestTempDirectory("nre-apk-v1-unknown-");
     const path = join(root, "unreadable-v1.apk");
     await writeFile(
       path,
@@ -299,7 +299,7 @@ cliTest(
 cliTest(
   "keeps a subjectKeyIdentifier v1 signer out of the posture match, as apksig cannot resolve it",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-v1-ski-");
+    const root = await createTestTempDirectory("nre-apk-v1-ski-");
     // The same key in v1 and v2, but the JAR block names it by
     // subjectKeyIdentifier, which apksig cannot resolve.
     const keyIdentified = join(root, "v1-ski-v2.apk");
@@ -347,7 +347,7 @@ cliTest(
 cliTest(
   "keeps a v1 signer unknown where apksig refuses its signature block entry",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-v1-entry-");
+    const root = await createTestTempDirectory("nre-apk-v1-entry-");
     const block = "META-INF/CERT.EC";
     // apksigner writes local headers with sizes, not data descriptors.
     const signed = await zipWith(
@@ -483,10 +483,10 @@ cliTest(
 cliTest(
   "flags any duplicate central-directory name as apksig rejects it",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-v1-duplicate-");
+    const root = await createTestTempDirectory("nre-apk-v1-duplicate-");
     const block = "META-INF/CERT.EC";
     // Two blocks with one name: apksig rejects the v1 signature
-    // ("Duplicate entry"); REA keeps one signer for the name, unknown.
+    // ("Duplicate entry"); NRE keeps one signer for the name, unknown.
     const duplicated = join(root, "duplicate-names.apk");
     const twoBlocks = Buffer.from(
       await zipWith(
@@ -614,7 +614,7 @@ const directoryOnly = (names: readonly Buffer[]): Buffer => {
 cliTest(
   "names duplicates as apksig decodes and counts them, quoted and bounded",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-duplicate-names-");
+    const root = await createTestTempDirectory("nre-apk-duplicate-names-");
     const limitationsOf = async (name: string, names: readonly Buffer[]) => {
       const path = join(root, name);
       await writeFile(path, directoryOnly(names));
@@ -677,7 +677,7 @@ cliTest(
 cliTest(
   "reads a v1 block whose local and central names differ only in malformed bytes Java decodes alike",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-apk-v1-malformed-name-");
+    const root = await createTestTempDirectory("nre-apk-v1-malformed-name-");
     // apksig compares the decoded names: CERT\xff and CERT\xfe are both
     // CERT + U+FFFD, which also pairs the block with CERT�.SF.
     const archive = Buffer.from(

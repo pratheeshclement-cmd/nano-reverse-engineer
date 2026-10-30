@@ -63,7 +63,7 @@ describe("OMP configuration paths", () => {
 
 describe("OMP disabledServers denylist", () => {
   const ompClient = async () => {
-    const home = await createTestTempDirectory("rea-omp-");
+    const home = await createTestTempDirectory("nre-omp-");
     const client = supportedClients(home, process.platform, {}).find(
       ({ name }) => name === "omp",
     );
@@ -72,14 +72,14 @@ describe("OMP disabledServers denylist", () => {
     return { home, client };
   };
 
-  it("removes rea from disabledServers while keeping other names and comments", async () => {
+  it("removes nre from disabledServers while keeping other names and comments", async () => {
     const { home, client } = await ompClient();
     await writeFile(
       client.configPath,
       `{
   // Keep this note.
   "mcpServers": { "other": { "command": "other-server" } },
-  "disabledServers": ["other", "rea"]
+  "disabledServers": ["other", "nre"]
 }
 `,
     );
@@ -91,7 +91,7 @@ describe("OMP disabledServers denylist", () => {
     expect(parseJsonc(text)).toEqual({
       mcpServers: {
         other: { command: "other-server" },
-        rea: { type: "stdio", command: command[0], args: command.slice(1) },
+        nre: { type: "stdio", command: command[0], args: command.slice(1) },
       },
       disabledServers: ["other"],
     });
@@ -117,8 +117,8 @@ describe("OMP disabledServers denylist", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: registration },
-        disabledServers: ["rea"],
+        mcpServers: { nre: registration },
+        disabledServers: ["nre"],
       }),
     );
     const status = async () =>
@@ -131,36 +131,36 @@ describe("OMP disabledServers denylist", () => {
     const disabledEntry = { ...registration, enabled: false };
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcpServers: { rea: disabledEntry } }),
+      JSON.stringify({ mcpServers: { nre: disabledEntry } }),
     );
     expect(await status()).toMatchObject({ state: "stale" });
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: disabledEntry },
-        enabledServers: ["rea"],
+        mcpServers: { nre: disabledEntry },
+        enabledServers: ["nre"],
       }),
     );
     expect(await status()).toMatchObject({ state: "aligned" });
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: disabledEntry },
-        enabledServers: ["rea"],
-        disabledServers: ["rea"],
+        mcpServers: { nre: disabledEntry },
+        enabledServers: ["nre"],
+        disabledServers: ["nre"],
       }),
     );
     expect(await status()).toMatchObject({ state: "stale" });
     // OMP infers stdio for a command entry without an explicit type.
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { nre: registration } }),
     );
     expect(await status()).toMatchObject({ state: "aligned" });
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: { ...registration, type: "http" } },
+        mcpServers: { nre: { ...registration, type: "http" } },
       }),
     );
     expect(await status()).toMatchObject({ state: "invalid" });

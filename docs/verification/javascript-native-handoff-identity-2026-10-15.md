@@ -43,7 +43,7 @@ Read-only 7z 26.02 inspection found 6,324 ASAR files, 46 unpacked entries and
 three `.node` components. Extract only the ASAR and those three binaries:
 
 ```sh
-input_root="$(mktemp -d -t rea-native-handoff-XXXXXX)"
+input_root="$(mktemp -d -t nre-native-handoff-XXXXXX)"
 curl --fail --location --output "$input_root/Joplin-3.7.21.AppImage" \
   https://github.com/laurent22/joplin/releases/download/v3.7.21/Joplin-3.7.21.AppImage
 sha256sum "$input_root/Joplin-3.7.21.AppImage"
@@ -110,7 +110,7 @@ For a pre-fix observation, run the saved verifier on the baseline build without
 analyst task. Paths affect serialized requests and some Evidence identities.
 
 The exact resource runs additionally used the preserved
-[8 GiB observer](https://github.com/morluto/rea/blob/b3bdabab694af1f9801eff7caf75001b92314a58/experiments/analysis-efficiency/resource-run.py)
+[8 GiB observer](https://github.com/pratheeshclement-cmd/nano-reverse-engineer/blob/b3bdabab694af1f9801eff7caf75001b92314a58/experiments/analysis-efficiency/resource-run.py)
 and adjacent `resource_payload.py`; both hashes are pinned in the JSON.
 
 ## Completed workflow costs and limits

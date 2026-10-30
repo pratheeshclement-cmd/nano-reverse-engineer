@@ -13,7 +13,7 @@ import { cliTest } from "../../support/cli/cliFixture.js";
 const client = new Client({ name: "literal-budget-boundary", version: "1" });
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [resolve("scripts/rea.mjs"), "mcp"],
+  args: [resolve("scripts/nre.mjs"), "mcp"],
   cwd: process.cwd(),
   env: { PATH: process.env.PATH ?? "" },
   stderr: "pipe",
@@ -51,7 +51,7 @@ for (const scenario of [
   cliTest(
     `preserves normalized string-byte coverage for ${scenario.name}`,
     async ({ cli }) => {
-      const root = await createTestTempDirectory("rea-literal-budget-");
+      const root = await createTestTempDirectory("nre-literal-budget-");
       const path = join(root, "main.js");
       const source =
         "bare" in scenario

@@ -31,37 +31,40 @@ const target = {
   format: "plist",
 } satisfies BinaryTarget;
 
-it("resolves resource roots without requiring or hashing CFBundleExecutable", async () => {
-  const temp = await mkdtemp(join(tmpdir(), "rea-app-resource-root-"));
-  try {
-    const bundle = join(temp, "Fixture.app");
-    const contents = join(bundle, "Contents");
-    const alias = join(temp, "Selected.app");
-    await mkdir(contents, { recursive: true });
-    await writeFile(join(contents, "Info.plist"), "<plist><dict/></plist>");
-    await symlink(bundle, alias);
+it.skipIf(process.platform === "win32")(
+  "resolves resource roots without requiring or hashing CFBundleExecutable",
+  async () => {
+    const temp = await mkdtemp(join(tmpdir(), "nre-app-resource-root-"));
+    try {
+      const bundle = join(temp, "Fixture.app");
+      const contents = join(bundle, "Contents");
+      const alias = join(temp, "Selected.app");
+      await mkdir(contents, { recursive: true });
+      await writeFile(join(contents, "Info.plist"), "<plist><dict/></plist>");
+      await symlink(bundle, alias);
 
-    const resolved = await resolveAppBundleResourceRoot(alias);
+      const resolved = await resolveAppBundleResourceRoot(alias);
 
-    expect(resolved).toEqual({
-      ok: true,
-      value: {
-        callerPath: alias,
-        canonicalPath: bundle,
-        infoPlistPath: join(bundle, "Contents", "Info.plist"),
-        layout: "contents",
-        executableSha256: null,
-      },
-    });
-  } finally {
-    await rm(temp, { recursive: true, force: true });
-  }
-});
+      expect(resolved).toEqual({
+        ok: true,
+        value: {
+          callerPath: alias,
+          canonicalPath: bundle,
+          infoPlistPath: join(bundle, "Contents", "Info.plist"),
+          layout: "contents",
+          executableSha256: null,
+        },
+      });
+    } finally {
+      await rm(temp, { recursive: true, force: true });
+    }
+  },
+);
 
 it.skipIf(process.platform === "win32")(
   "preserves valid symlink-parent traversal when selecting resource roots",
   async () => {
-    const temp = await mkdtemp(join(tmpdir(), "rea-resource-parent-"));
+    const temp = await mkdtemp(join(tmpdir(), "nre-resource-parent-"));
     try {
       await mkdir(join(temp, "physical", "child"), { recursive: true });
       await mkdir(join(temp, "physical", "Fixture.app"));
@@ -85,7 +88,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("resolves a flat bundle resource root without inferring executable identity", async () => {
-  const temp = await mkdtemp(join(tmpdir(), "rea-ios-resource-root-"));
+  const temp = await mkdtemp(join(tmpdir(), "nre-ios-resource-root-"));
   try {
     const bundle = join(temp, "Fixture.app");
     await mkdir(bundle);
@@ -111,7 +114,7 @@ it("resolves a flat bundle resource root without inferring executable identity",
 it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   "preserves the actual denied plist classification through resource-only root discovery",
   async () => {
-    const temp = await mkdtemp(join(tmpdir(), "rea-resource-read-denied-"));
+    const temp = await mkdtemp(join(tmpdir(), "nre-resource-read-denied-"));
     const bundle = join(temp, "Fixture.app");
     const contents = join(bundle, "Contents");
     await mkdir(contents, { recursive: true });

@@ -68,7 +68,7 @@ const spawnDebuggerFixture = (
       ? [
           "-c",
           scenario === "cancelled-exec-foreign"
-            ? 'REA_PROCESS_RUN_ID=source-owned-foreign exec "$1" -e "$2"'
+            ? 'NRE_PROCESS_RUN_ID=source-owned-foreign exec "$1" -e "$2"'
             : 'exec "$1" -e "$2"',
           "recorded-debugger-launcher",
           process.execPath,
@@ -86,7 +86,7 @@ const expectForeignDebuggerPreserved = async (
   const environment = await readFile(`/proc/${child.pid}/environ`);
   expect(
     environment.includes(
-      Buffer.from("REA_PROCESS_RUN_ID=source-owned-foreign\0"),
+      Buffer.from("NRE_PROCESS_RUN_ID=source-owned-foreign\0"),
     ),
   ).toBe(true);
   expect(child.exitCode).toBeNull();
@@ -153,7 +153,7 @@ it
     if (scenario.startsWith("wrong-e")) await writeFile(path, bytes);
     let owned = "";
     const provider = new PwntoolsRecordedCrashProvider(
-      { REA_PWNTOOLS_PYTHON: process.execPath },
+      { NRE_PWNTOOLS_PYTHON: process.execPath },
       async (spawn) => {
         owned = spawn.cwd ?? "";
         const request = requestSchema.parse(
@@ -245,13 +245,13 @@ it
     await writeFile(plugin, "");
     const provider = new PwntoolsRecordedCrashProvider(
       {
-        REA_PWNTOOLS_PYTHON: process.execPath,
+        NRE_PWNTOOLS_PYTHON: process.execPath,
         ...(scenario === "unconfigured"
           ? {}
           : {
-              REA_PWNDBG_GDB: process.execPath,
-              REA_PWNDBG_GDBINIT: plugin,
-              REA_PWNDBG_VENV_PATH: venv,
+              NRE_PWNDBG_GDB: process.execPath,
+              NRE_PWNDBG_GDBINIT: plugin,
+              NRE_PWNDBG_VENV_PATH: venv,
             }),
       },
       async (spawn) => {
@@ -488,10 +488,10 @@ it.runIf(host)(
     let stage = 0;
     const provider = new PwntoolsRecordedCrashProvider(
       {
-        REA_PWNTOOLS_PYTHON: process.execPath,
-        REA_PWNDBG_GDB: process.execPath,
-        REA_PWNDBG_GDBINIT: plugin,
-        REA_PWNDBG_VENV_PATH: venv,
+        NRE_PWNTOOLS_PYTHON: process.execPath,
+        NRE_PWNDBG_GDB: process.execPath,
+        NRE_PWNDBG_GDBINIT: plugin,
+        NRE_PWNDBG_VENV_PATH: venv,
       },
       async (spawn) => {
         stage += 1;
@@ -556,7 +556,7 @@ it.runIf(host)(
 const fixture = async (
   createReport: (path: string) => RecordedCrash = recordedCrashFixture,
 ) => {
-  const workspace = await createTestWorkspace("rea-recorded-core-seam-");
+  const workspace = await createTestWorkspace("nre-recorded-core-seam-");
   onTestFinished(() => removeTestWorkspace(workspace.root));
   const path = join(workspace.root, "recorded.core");
   const value = createReport(path);

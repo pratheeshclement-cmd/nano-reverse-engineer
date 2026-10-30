@@ -76,7 +76,7 @@ async function assertAndroidPackageSelectedFacetContract(options: {
 }
 
 const createJniSummaryContractFixture = async () => {
-  const root = await createTestTempDirectory("rea-jni-default-summary-");
+  const root = await createTestTempDirectory("nre-jni-default-summary-");
   const apk = join(root, "selected.apk");
   await writeOrderedZip(apk, ["AndroidManifest.xml", "classes.dex"]);
   const selection = {
@@ -170,7 +170,7 @@ const createJniSummaryContractFixture = async () => {
         close: async () => {},
         inspectAvailability: vi.fn(),
       },
-      environment: { REA_MCP_TOOL_FAMILIES: "android,application,session" },
+      environment: { NRE_MCP_TOOL_FAMILIES: "android,application,session" },
     },
   });
   return { ...harness, apk, selection, raw, declarations, execute };
@@ -280,7 +280,7 @@ it.skipIf(process.platform === "win32")(
     const harness = await createApplicationMcpHarness({
       serverOptions: {
         androidAnalysis: provider,
-        environment: { REA_MCP_TOOL_FAMILIES: "android,application,session" },
+        environment: { NRE_MCP_TOOL_FAMILIES: "android,application,session" },
       },
     });
     onTestFinished(harness.close);

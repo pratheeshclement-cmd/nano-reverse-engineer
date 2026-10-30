@@ -16,7 +16,7 @@ import { cliTest } from "../support/cli/cliFixture.js";
 cliTest(
   "compares actual selected type scope from public CLI Evidence through stdio MCP after source removal",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-managed-selected-scope-");
+    const root = await createTestTempDirectory("nre-managed-selected-scope-");
     const path = join(root, "selected.dll");
     const bytes = namespaceBearingNestedTypes();
     const sha256 = createHash("sha256").update(bytes).digest("hex");
@@ -87,7 +87,7 @@ cliTest(
   "preserves nominal selected membership and whole-inventory absence through CLI Evidence and stdio MCP after source removal",
   async ({ cli }) => {
     const root = await createTestTempDirectory(
-      "rea-managed-nominal-membership-",
+      "nre-managed-nominal-membership-",
     );
     const bytes = distinctSelectedNestedOwners();
     const selected: ReturnType<typeof parseEvidence>[] = [];

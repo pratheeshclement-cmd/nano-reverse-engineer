@@ -16,11 +16,11 @@ const wordHex = (value, byteOrder) => {
 };
 
 const SOFT_FLOAT_SYMBOLS = [
-  "rea_mips_soft_pick",
-  "rea_mips_soft_wide",
-  "rea_mips_soft_mixed",
-  "rea_mips_soft_struct",
-  "rea_mips_soft_caller",
+  "nre_mips_soft_pick",
+  "nre_mips_soft_wide",
+  "nre_mips_soft_mixed",
+  "nre_mips_soft_struct",
+  "nre_mips_soft_caller",
 ];
 
 /** Complete indexed ELF32 section types shared by the independent fixture readers. */
@@ -163,11 +163,11 @@ export function parseMipsReadelf(
   for (const name of objectType === "rel"
     ? []
     : [
-        "rea_mips_entry",
-        "rea_mips_leaf",
-        "rea_mips_probe",
-        "rea_mips_global",
-        "rea_mips_marker",
+        "nre_mips_entry",
+        "nre_mips_leaf",
+        "nre_mips_probe",
+        "nre_mips_global",
+        "nre_mips_marker",
         ...(floatAbi === "soft" ? SOFT_FLOAT_SYMBOLS : []),
       ]) {
     const value = field(
@@ -192,9 +192,9 @@ export function parseMipsReadelf(
   };
 }
 
-/** Independent reader is a bounded test prerequisite, never an REA provider. */
+/** Independent reader is a bounded test prerequisite, never an NRE provider. */
 export async function inspectMipsReadelf(path, byteOrder, floatAbi = "hard") {
-  const command = process.env.REA_MIPS_READELF ?? "readelf";
+  const command = process.env.NRE_MIPS_READELF ?? "readelf";
   const options = {
     env: { ...process.env, LC_ALL: "C" },
     timeout: 10000,
@@ -226,7 +226,7 @@ export async function inspectMipsReadelf(path, byteOrder, floatAbi = "hard") {
 
 /** Independent GNU readelf interpretation for the recordless legacy fixture. */
 export async function inspectLegacyMipsReadelf(path, byteOrder) {
-  const command = process.env.REA_MIPS_READELF ?? "readelf";
+  const command = process.env.NRE_MIPS_READELF ?? "readelf";
   const options = {
     env: { ...process.env, LC_ALL: "C" },
     timeout: 10000,
@@ -278,7 +278,7 @@ export async function inspectLegacyMipsReadelf(path, byteOrder) {
     `readelf diagnostics: ${symbols.stderr}`,
   );
   const parsed = {};
-  for (const name of ["rea_mips_entry", "rea_mips_probe"]) {
+  for (const name of ["nre_mips_entry", "nre_mips_probe"]) {
     const matches = [
       ...symbols.stdout.matchAll(
         new RegExp(
@@ -371,7 +371,7 @@ export function assertMipsSoftFloatStorage(boundaries, byteOrder) {
   const pair = (low, high) =>
     byteOrder === "little" ? `${high}:4,${low}:4` : `${low}:4,${high}:4`;
   const expected = {
-    rea_mips_soft_pick: {
+    nre_mips_soft_pick: {
       return: ["float", "v0:4"],
       parameters: [
         ["a", "float", "a0:4"],
@@ -379,14 +379,14 @@ export function assertMipsSoftFloatStorage(boundaries, byteOrder) {
         ["sel", "int", "a2:4"],
       ],
     },
-    rea_mips_soft_wide: {
+    nre_mips_soft_wide: {
       return: ["double", pair("v0", "v1")],
       parameters: [
         ["a", "double", pair("a0", "a1")],
         ["sel", "int", "a2:4"],
       ],
     },
-    rea_mips_soft_mixed: {
+    nre_mips_soft_mixed: {
       return: ["double", pair("v0", "v1")],
       parameters: [
         ["i", "int", "a0:4"],
@@ -395,10 +395,10 @@ export function assertMipsSoftFloatStorage(boundaries, byteOrder) {
         ["e", "double", "Stack[0x18]:8"],
       ],
     },
-    rea_mips_soft_struct: {
-      return: ["rea_mips_soft_pair *", "v0:4"],
+    nre_mips_soft_struct: {
+      return: ["nre_mips_soft_pair *", "v0:4"],
       parameters: [
-        ["__return_storage_ptr__", "rea_mips_soft_pair *", "a0:4 (auto)"],
+        ["__return_storage_ptr__", "nre_mips_soft_pair *", "a0:4 (auto)"],
         ["scale", "float", "a1:4"],
         ["sel", "int", "a2:4"],
       ],

@@ -1,13 +1,13 @@
 # Streamable HTTP transport for the MCP server
 
-Issue: https://github.com/morluto/rea/issues/4933
+Issue: https://github.com/pratheeshclement-cmd/nano-reverse-engineer/issues/4933
 
 ## Outcome
 
-`rea mcp --http [--host H] [--port N]` serves the existing MCP tool catalog over
+`nre mcp --http [--host H] [--port N]` serves the existing MCP tool catalog over
 the pinned SDK's streamable HTTP transport instead of stdio, so an agent
-environment runtime or any HTTP MCP client can reach REA on a local URL. The
-listener is opt-in: bare `rea mcp`, `rea mcp doctor`, `rea mcp add` and every
+environment runtime or any HTTP MCP client can reach NRE on a local URL. The
+listener is opt-in: bare `nre mcp`, `nre mcp doctor`, `nre mcp add` and every
 client registration keep stdio.
 
 ## Requirements
@@ -72,7 +72,7 @@ operator's parsed hostname allowlist, retain Host/Origin gates, and announce a
 client URL admitted by that list. Current listener regressions exercise a
 wildcard bind, refusal/port release and a direct SDK connection to the
 announced endpoint. Response
-budgets keep their stdio-derived floor; registrations, `rea mcp doctor` and
+budgets keep their stdio-derived floor; registrations, `nre mcp doctor` and
 `server.json` stay stdio.
 
 ## Deferred issue criteria

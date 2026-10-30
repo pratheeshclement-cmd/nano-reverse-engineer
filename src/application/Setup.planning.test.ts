@@ -11,7 +11,7 @@ import { HopperReleaseError } from "./HopperReleaseFeed.js";
 
 const linkedSkillFailure = () =>
   new SetupSkillInstallError({
-    path: "/fixture/home/.claude/skills/reverse-engineer-anything",
+    path: "/fixture/home/.claude/skills/nano-reverse-engineer",
     stage: "prepare",
     reason: "Skill directory is a symbolic link",
     rollbackFailures: [],
@@ -25,7 +25,7 @@ describe("Linux publisher cache approval", () => {
     async (valid) => {
       const host = Object.assign(new FakeSetupHost("linux"), {
         linuxHopperReleaseCache: valid
-          ? ok("/caller/cache/rea/hopper-releases")
+          ? ok("/caller/cache/nre/hopper-releases")
           : err(
               new HopperReleaseError(
                 "verification_unavailable",
@@ -44,7 +44,7 @@ describe("Linux publisher cache approval", () => {
         expect(
           result.plannedActions.find(({ kind }) => kind === "install_hopper")
             ?.detail,
-        ).toContain("/caller/cache/rea/hopper-releases/<launcher-sha256>");
+        ).toContain("/caller/cache/nre/hopper-releases/<launcher-sha256>");
       else
         expect(result).toMatchObject({
           status: "needs_human",
@@ -138,7 +138,7 @@ describe("selected skill admission", () => {
             "/fixture/home",
             ".agents",
             "skills",
-            "reverse-engineer-anything",
+            "nano-reverse-engineer",
           ),
         },
       ]);
@@ -199,7 +199,7 @@ describe("skill plan destinations", () => {
         .filter(({ kind }) => kind === "install_skill")
         .map(({ target }) => target),
     ).toEqual([
-      join("/fixture/home", ".claude", "skills", "reverse-engineer-anything"),
+      join("/fixture/home", ".claude", "skills", "nano-reverse-engineer"),
     ]);
   });
 
@@ -220,8 +220,8 @@ describe("skill plan destinations", () => {
         .filter(({ kind }) => kind === "install_skill")
         .map(({ target }) => target),
     ).toEqual([
-      join("/fixture/home", ".agents", "skills", "reverse-engineer-anything"),
-      join("/fixture/home", ".claude", "skills", "reverse-engineer-anything"),
+      join("/fixture/home", ".agents", "skills", "nano-reverse-engineer"),
+      join("/fixture/home", ".claude", "skills", "nano-reverse-engineer"),
     ]);
   });
 });
@@ -231,7 +231,7 @@ describe("setup workflow", () => {
     const host = new FakeSetupHost("win32");
     host.registrationCommand = [];
     host.registrationCommandBlocker =
-      "REA could not determine the current executable entrypoint.";
+      "NRE could not determine the current executable entrypoint.";
     host.clients = [{ name: "codex", configPath: "C:\\config\\codex.toml" }];
 
     const result = await runSetup(
@@ -252,9 +252,9 @@ describe("setup workflow", () => {
       {
         client: "cursor",
         config_path: "/cursor.json",
-        command: [process.execPath, "./rea.mjs", "mcp"],
+        command: [process.execPath, "./nre.mjs", "mcp"],
         state: "stale",
-        remediation: "Run rea setup to refresh this registration.",
+        remediation: "Run nre setup to refresh this registration.",
       },
     ];
 
@@ -562,7 +562,7 @@ describe("setup workflow lifecycle and provider planning", () => {
       {
         client: "codex",
         config_path: "/codex.toml",
-        command: ["rea", "mcp"],
+        command: ["nre", "mcp"],
         state: "aligned",
         remediation: null,
       },
@@ -581,12 +581,12 @@ describe("setup workflow lifecycle and provider planning", () => {
       },
       {
         actionId: "install_skill",
-        label: "REA reverse-engineering skill",
+        label: "NRE reverse-engineering skill",
         state: "started",
       },
       {
         actionId: "install_skill",
-        label: "REA reverse-engineering skill",
+        label: "NRE reverse-engineering skill",
         state: "completed",
       },
     ]);

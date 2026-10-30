@@ -23,7 +23,7 @@ const { capture, traceSpecification } = processTraceCaptureFixture();
 
 const captureEvidence = (side: "left" | "right") =>
   createEvidence(undefined, PROCESS_PROVIDER, {
-    predicateType: "rea.process-capture",
+    predicateType: "nre.process-capture",
     operation: "capture_process_scenario",
     parameters: { side },
     result: capture,
@@ -71,7 +71,7 @@ describe("declared trace adapter parity", () => {
   it("returns identical CLI and MCP results and Evidence identity", async () => {
     const left = captureEvidence("left");
     const right = captureEvidence("right");
-    const root = await createTestTempDirectory("rea-trace-adapters-");
+    const root = await createTestTempDirectory("nre-trace-adapters-");
     temporaryRoots.push(root);
     const leftPath = join(root, "left.json");
     const rightPath = join(root, "right.json");
@@ -122,7 +122,7 @@ describe("declared trace adapter parity", () => {
       })),
       language: { kind: "partial_order" },
     };
-    const root = await createTestTempDirectory("rea-trace-diagnostics-");
+    const root = await createTestTempDirectory("nre-trace-diagnostics-");
     temporaryRoots.push(root);
     const leftPath = join(root, "left.json");
     const rightPath = join(root, "right.json");
@@ -179,7 +179,7 @@ describe("declared trace adapter parity", () => {
         ],
       },
     };
-    const root = await createTestTempDirectory("rea-trace-duplicates-");
+    const root = await createTestTempDirectory("nre-trace-duplicates-");
     temporaryRoots.push(root);
     const leftPath = join(root, "left.json");
     const rightPath = join(root, "right.json");

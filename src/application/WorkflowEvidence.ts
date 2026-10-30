@@ -1,7 +1,7 @@
 import { AnalysisWorkScope } from "./AnalysisWorkScope.js";
 import { compareUnicodeCodePoints } from "../domain/unicodeCodePointOrder.js";
 import { jsonStringByteLength } from "../domain/jsonStringByteLength.js";
-import { REA_WORKFLOW_PROVIDER } from "../domain/investigationProviders.js";
+import { NRE_WORKFLOW_PROVIDER } from "../domain/investigationProviders.js";
 import { workflowAnalysisProfile } from "./WorkflowAnalysisProfile.js";
 import type {
   AnalysisOperation,
@@ -181,7 +181,7 @@ export const createWorkflowEvidence = (input: {
   readonly upstreamLimitations: readonly string[];
   readonly upstreamEvidenceLinks?: readonly string[];
 }): Evidence =>
-  createEvidence(input.target, REA_WORKFLOW_PROVIDER, {
+  createEvidence(input.target, NRE_WORKFLOW_PROVIDER, {
     operation: input.operation,
     parameters: input.parameters,
     result: input.result,
@@ -198,7 +198,7 @@ export const createWorkflowEvidence = (input: {
       ? {}
       : { evidenceLinks: input.upstreamEvidenceLinks }),
     limitations: [
-      "Derived by an REA composed workflow.",
+      "Derived by an NRE composed workflow.",
       ...input.upstreamLimitations,
     ],
     ...(input.operation === "batch_decompile"

@@ -27,7 +27,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
       return filesystem.link(...args);
     },
     rmdir: async (...args: Parameters<typeof filesystem.rmdir>) => {
-      if (String(args[0]).includes(".rea-write-")) {
+      if (String(args[0]).includes(".nre-write-")) {
         fault.stagingRemovals += 1;
         if (fault.stagingRemovals <= fault.stagingRemovalFailures)
           throw Object.assign(new Error("injected staging removal EBUSY"), {
@@ -75,7 +75,7 @@ it.each([
     retained: false,
   },
 ])("$name", async (scenario) => {
-  const root = await createTestTempDirectory("rea-export-cleanup-retry-");
+  const root = await createTestTempDirectory("nre-export-cleanup-retry-");
   const source = join(root, "source.json");
   const output = join(root, "out.json");
   await writeFile(source, emptyBundle);
@@ -88,7 +88,7 @@ it.each([
     const result = await exportEvidenceBundleCommand(source, output, false);
     expect(fault.stagingRemovals).toBe(scenario.stagingRemovals);
     const entries = await readdir(root);
-    const stages = entries.filter((entry) => entry.startsWith(".rea-write-"));
+    const stages = entries.filter((entry) => entry.startsWith(".nre-write-"));
     expect(stages).toHaveLength(scenario.retained ? 1 : 0);
     expect(entries.includes("out.json")).toBe(!scenario.publication);
     if (scenario.code === undefined) {

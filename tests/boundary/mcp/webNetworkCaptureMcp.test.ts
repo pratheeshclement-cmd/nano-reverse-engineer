@@ -135,7 +135,7 @@ it.each([false, true])(
             ? {
                 optionalProviderLoadFailures: {
                   browserObservation: {
-                    providerId: "rea-cdp-browser",
+                    providerId: "nre-cdp-browser",
                     reason: "synthetic browser import failure",
                   },
                 },

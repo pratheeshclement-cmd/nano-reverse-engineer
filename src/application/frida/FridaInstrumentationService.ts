@@ -451,7 +451,7 @@ const fridaEvidence = (
     undefined,
     { id: "frida", name: "Frida", version: null },
     {
-      predicateType: "rea.frida.instrumentation-observation",
+      predicateType: "nre.frida.instrumentation-observation",
       operation,
       parameters,
       result,

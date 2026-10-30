@@ -8,7 +8,7 @@ import { configureClientConfiguration } from "../../../src/application/SetupClie
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 it("registers VS Code in VSCODE_APPDATA and preserves its configuration", async () => {
-  const root = await createTestTempDirectory("rea-vscode-appdata-");
+  const root = await createTestTempDirectory("nre-vscode-appdata-");
   const home = join(root, "home");
   const appdata = join(root, "selected data");
   const expectedPath = join(appdata, "Code", "User", "mcp.json");
@@ -22,20 +22,20 @@ it("registers VS Code in VSCODE_APPDATA and preserves its configuration", async 
   expect(client).toBeDefined();
   if (client === undefined) throw new Error("VS Code client missing");
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({ status: "configured" });
   expect(parse(await readFile(expectedPath, "utf8"))).toMatchObject({
     servers: {
       other: { command: "other" },
-      rea: { command: "rea", args: ["mcp"] },
+      nre: { command: "nre", args: ["mcp"] },
     },
   });
   expect(await readFile(expectedPath, "utf8")).toContain(
     "// Keep this comment.",
   );
-  expect(await readFile(`${expectedPath}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${expectedPath}.nre.backup`, "utf8")).toBe(original);
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({ status: "unchanged" });
   await expect(access(join(home, ".config", "Code"))).rejects.toMatchObject({
     code: "ENOENT",
@@ -64,7 +64,7 @@ it.each([
     suffix: "xdg/Code",
   },
 ])("writes the selected VS Code file when $name", async ({ env, suffix }) => {
-  const root = await createTestTempDirectory("rea-vscode-precedence-");
+  const root = await createTestTempDirectory("nre-vscode-precedence-");
   const home = join(root, "home");
   const expectedPath = join(root, suffix, "User", "mcp.json");
   const client = supportedClients(home, "linux", {
@@ -74,10 +74,10 @@ it.each([
   expect(client?.configPath).toBe(expectedPath);
   if (client === undefined) throw new Error("VS Code client missing");
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["nre", "mcp"]),
   ).toMatchObject({ status: "configured" });
   expect(parse(await readFile(expectedPath, "utf8"))).toMatchObject({
-    servers: { rea: { command: "rea" } },
+    servers: { nre: { command: "nre" } },
   });
   await expect(access(join(home, ".config", "Code"))).rejects.toMatchObject({
     code: "ENOENT",
@@ -107,7 +107,7 @@ it.each([
 ] as const)(
   "retains the $platform default without VS Code overrides",
   async ({ platform, suffix }) => {
-    const home = await createTestTempDirectory("rea-vscode-default-");
+    const home = await createTestTempDirectory("nre-vscode-default-");
     const client = supportedClients(home, platform, {}).find(
       ({ name }) => name === "vscode",
     );

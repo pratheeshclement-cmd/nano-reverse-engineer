@@ -61,9 +61,9 @@ const refusedAliases = {
   "#nested-inactive": {
     status: "external",
     target: [
-      [{ browser: "./browser.cjs" }, { "rea-inactive": "./inactive.cjs" }],
+      [{ browser: "./browser.cjs" }, { "nre-inactive": "./inactive.cjs" }],
     ],
-    limitation: "it declares browser, rea-inactive.",
+    limitation: "it declares browser, nre-inactive.",
   },
   "#escape": {
     target: "./.\t./outside.cjs",
@@ -84,7 +84,7 @@ const refusedAliases = {
 const allAliases = [...resolvedAliases, ...Object.keys(refusedAliases)];
 
 const createPackageImportAliasFixture = async () => {
-  const root = await createTestTempDirectory("rea-package-import-aliases-");
+  const root = await createTestTempDirectory("nre-package-import-aliases-");
   const mainSource = [
     'const config = require("#config");',
     'const nested = require("./node_modules/fixture/index.cjs");',

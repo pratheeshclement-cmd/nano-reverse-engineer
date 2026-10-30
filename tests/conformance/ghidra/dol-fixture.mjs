@@ -103,7 +103,7 @@ export function convertElfToDol(elf, { bss }) {
  * The fixture is never executed.
  */
 export async function buildGameCubeDolFixture(directory) {
-  const compiler = process.env.REA_PPC_CLANG ?? "clang";
+  const compiler = process.env.NRE_PPC_CLANG ?? "clang";
   const target = "powerpc-unknown-linux-gnu";
   const here = (path) => fileURLToPath(new URL(path, import.meta.url));
   const sources = [
@@ -124,7 +124,7 @@ export async function buildGameCubeDolFixture(directory) {
     "-O0",
     "-g",
     `-Wl,-T,${linkerScript}`,
-    "-Wl,-e,rea_ppc_entry",
+    "-Wl,-e,nre_ppc_entry",
     "-Wl,--build-id=none",
     ...sources,
     "-o",

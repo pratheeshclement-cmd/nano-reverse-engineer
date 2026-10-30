@@ -1,4 +1,4 @@
-const OWNED_ENTRY = /^(?:rea-|bb-session-)/u;
+const OWNED_ENTRY = /^(?:nre-|bb-session-)/u;
 const SAFE_PREFIX = /^[A-Za-z0-9][A-Za-z0-9._-]*-$/u;
 
 /** Recognize test resources independently of their readiness or contents. */
@@ -14,5 +14,5 @@ export function normalizeTestTemporaryPrefix(prefix) {
     throw new TypeError(
       "Test temporary directory prefixes must be safe basenames ending in '-'",
     );
-  return isOwnedTestTemporaryName(prefix) ? prefix : `rea-${prefix}`;
+  return isOwnedTestTemporaryName(prefix) ? prefix : `nre-${prefix}`;
 }

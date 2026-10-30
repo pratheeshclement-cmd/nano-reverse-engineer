@@ -7,7 +7,7 @@ import { SQLITE_NATIVE_LIMITS_AVAILABLE } from "../../fixtures/sqlite/database.j
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const sample = async (encoding: string, malformed = false) => {
-  const root = await createTestTempDirectory("rea-sqlite-column-identity-");
+  const root = await createTestTempDirectory("nre-sqlite-column-identity-");
   const path = join(root, "Columns.sqlite");
   const db = new DatabaseSync(path);
   try {

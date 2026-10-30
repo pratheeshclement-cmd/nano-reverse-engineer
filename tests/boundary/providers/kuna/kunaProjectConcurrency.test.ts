@@ -69,14 +69,14 @@ const barrier = () => {
 };
 
 const fixture = async (maxBytes = 64 * 1024 ** 2) => {
-  const root = await createTestTempDirectory("rea-kuna-concurrency-");
+  const root = await createTestTempDirectory("nre-kuna-concurrency-");
   const kuna = await writeFakeKuna(root, {
     delayMs: 300,
     asmPadding: 400 * 1024,
   });
   const inspected = await inspectKunaInstallation({
-    REA_KUNA_COMMAND: kuna,
-    REA_KUNA_CACHE_DIR: join(root, "cache"),
+    NRE_KUNA_COMMAND: kuna,
+    NRE_KUNA_CACHE_DIR: join(root, "cache"),
   });
   if (!inspected.ok) throw new Error(inspected.error.reason);
   const installation = inspected.value;

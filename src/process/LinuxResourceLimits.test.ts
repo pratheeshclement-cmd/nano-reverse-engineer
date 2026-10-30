@@ -150,7 +150,7 @@ it.each([
 ] as const)(
   "retains exact cleanup ownership after a %s read (scoped=%s)",
   async (outcome, scoped) => {
-    const directory = await createTestTempDirectory("rea-kernel-limits-");
+    const directory = await createTestTempDirectory("nre-kernel-limits-");
     kernel.path = join(directory, "limits");
     kernel.denied = true;
     const scope = new ArtifactResourceScope();
@@ -200,7 +200,7 @@ it.each([
 );
 
 it("readmits analysis and resolves the original cleanup error after kernel descriptor recovery", async () => {
-  const directory = await createTestTempDirectory("rea-kernel-admission-");
+  const directory = await createTestTempDirectory("nre-kernel-admission-");
   kernel.path = join(directory, "limits");
   kernel.denied = true;
   const resources = new ArtifactAnalysisResources(
@@ -234,7 +234,7 @@ it("readmits analysis and resolves the original cleanup error after kernel descr
 });
 
 const kernelReportFixture = async (text: string): Promise<void> => {
-  const directory = await createTestTempDirectory("rea-kernel-short-read-");
+  const directory = await createTestTempDirectory("nre-kernel-short-read-");
   kernel.path = join(directory, "limits");
   kernel.reads = [];
   kernel.handles = [];

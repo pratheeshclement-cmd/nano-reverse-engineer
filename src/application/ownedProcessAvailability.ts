@@ -7,10 +7,10 @@ import { LinuxOwnedProcessPrerequisiteError } from "../process/ProcessOwnershipO
 import type { ProviderAvailability } from "./AnalysisProvider.js";
 
 const REMEDIATION =
-  "Install your distribution's procps or procps-ng package, or put a procps-compatible ps on REA's PATH, then retry.";
+  "Install your distribution's procps or procps-ng package, or put a procps-compatible ps on NRE's PATH, then retry.";
 
 const DARWIN_REMEDIATION =
-  "Check the selected Xcode or Command Line Tools and Swift compiler configuration, then restart REA and retry.";
+  "Check the selected Xcode or Command Line Tools and Swift compiler configuration, then restart NRE and retry.";
 
 // Provider adapters re-attribute capability errors and keep the original as cause.
 const prerequisiteRefusal = (

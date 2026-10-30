@@ -16,7 +16,7 @@ const launch = async (
   >,
   signal: AbortSignal,
 ) => {
-  const root = await createTestTempDirectory("rea-ghidra-launch-outcome-");
+  const root = await createTestTempDirectory("nre-ghidra-launch-outcome-");
   const spawnProcess = vi.fn(async () => {
     throw new Error("Unexpected spawn after Java failure");
   });
@@ -105,7 +105,7 @@ it("does not adopt a caller error's cleanup resources at initial cancellation", 
 });
 
 it("wraps an opaque typed caller reason at the real spawn preparation checkpoint", async () => {
-  const root = await createTestTempDirectory("rea-ghidra-preparation-cancel-");
+  const root = await createTestTempDirectory("nre-ghidra-preparation-cancel-");
   const controller = new AbortController();
   const reason = new ProviderCleanupError("foreign", ["foreign-resource"], {
     reason: "caller-owned",

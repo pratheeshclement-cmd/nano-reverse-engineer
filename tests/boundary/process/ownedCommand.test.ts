@@ -27,7 +27,7 @@ import { createDeferred } from "../../fixtures/binarySession.js";
 const command = (script: string) => ({
   command: process.execPath,
   arguments: ["-e", script],
-  runId: `rea-owned-command-test-${randomUUID()}`,
+  runId: `nre-owned-command-test-${randomUUID()}`,
 });
 
 // Output/exit cases start with a prepared inspector; startup deadline cases
@@ -507,7 +507,7 @@ it("marks an output collection error when the process itself exits zero", async 
 it.skipIf(process.platform === "win32")(
   "sweeps detached run-token descendants and preserves a pre-existing unrelated process",
   async () => {
-    const runId = `rea-owned-descendant-test-${randomUUID()}`;
+    const runId = `nre-owned-descendant-test-${randomUUID()}`;
     const unrelated = await spawnOwnedProviderProcess({
       command: process.execPath,
       arguments: ["-e", "setInterval(() => undefined, 1000)"],
@@ -652,7 +652,7 @@ it.skipIf(process.platform === "win32").each(["cancelled", "timeout"] as const)(
       ...command(`
         const { spawn } = require("node:child_process");
         const child = spawn(process.execPath, ["-e", ${JSON.stringify(childScript)}], {
-          env: { ...process.env, REA_PROCESS_RUN_ID: "different-child-owner" },
+          env: { ...process.env, NRE_PROCESS_RUN_ID: "different-child-owner" },
           stdio: ["pipe", "inherit", "inherit"],
         });
         const release = () => child.stdin.end("release");

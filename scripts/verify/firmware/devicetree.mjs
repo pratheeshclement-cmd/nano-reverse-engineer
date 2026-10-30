@@ -5,12 +5,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 // Optional verification tool only; the runtime inspector never starts dtc.
-const dtc = process.env.REA_DTC_PATH ?? "dtc";
+const dtc = process.env.NRE_DTC_PATH ?? "dtc";
 assert.match(
   execFileSync(dtc, ["--version"], { encoding: "utf8" }),
   /DTC 1\.8\.1\b/,
 );
-const root = mkdtempSync(join(tmpdir(), "rea-dtb-verification-"));
+const root = mkdtempSync(join(tmpdir(), "nre-dtb-verification-"));
 try {
   const source = join(root, "board.dts"),
     blob = join(root, "board.dtb");
@@ -19,7 +19,7 @@ try {
     `/dts-v1/;
 /memreserve/ 0x80000000 0x1000;
 / {
-  compatible = "rea,verification"; model = "REA DTB verification";
+  compatible = "nre,verification"; model = "NRE DTB verification";
   #address-cells = <1>; #size-cells = <1>;
   chosen { bootargs = "console=ttyS0"; stdout-path = "serial0"; };
   aliases { serial0 = &serial; };
@@ -37,7 +37,7 @@ try {
   const evidence = JSON.parse(
     execFileSync(
       process.execPath,
-      ["scripts/rea.mjs", "inspect-devicetree", blob, "--json"],
+      ["scripts/nre.mjs", "inspect-devicetree", blob, "--json"],
       { encoding: "utf8" },
     ),
   );

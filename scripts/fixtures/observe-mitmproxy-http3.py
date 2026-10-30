@@ -17,10 +17,10 @@ def bytes_view(value):
 
 class Observer:
     def load(self, loader):
-        loader.add_option("rea_lab_log", str, "", "HTTP/3 verifier observations")
+        loader.add_option("nre_lab_log", str, "", "HTTP/3 verifier observations")
 
     def emit(self, event, **data):
-        with Path(ctx.options.rea_lab_log).open("a", encoding="utf-8") as handle:
+        with Path(ctx.options.nre_lab_log).open("a", encoding="utf-8") as handle:
             handle.write(json.dumps({"event": event, **data}) + "\n")
 
     def running(self):

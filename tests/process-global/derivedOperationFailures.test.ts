@@ -235,8 +235,8 @@ const activeRuntimeFixture = () => {
     },
     result,
     {
-      id: "rea-playwright-electron-active",
-      name: "REA Playwright active Electron observation provider",
+      id: "nre-playwright-electron-active",
+      name: "NRE Playwright active Electron observation provider",
       version: "1",
     },
   );
@@ -611,7 +611,7 @@ describe("managed comparison output failure with completed source reads", () => 
   afterEach(() => vi.restoreAllMocks());
 
   it("retains the left source and output failure cause after reading real artifacts", async () => {
-    const root = await createTestTempDirectory("rea-managed-output-failure-");
+    const root = await createTestTempDirectory("nre-managed-output-failure-");
     const leftPath = join(root, "left.dll");
     const rightPath = join(root, "right.dll");
     await writeFile(leftPath, buildManagedPeFixture());
@@ -650,7 +650,7 @@ it.each(["missing", "invalid", "cleanup"])(
   "retains both managed admission cleanup owners when the left has a %s failure",
   async (leftFailure) => {
     const root = await createTestTempDirectory(
-      "rea-managed-admission-cleanup-",
+      "nre-managed-admission-cleanup-",
     );
     const leftPath = join(root, "left.dll");
     const rightPath = join(root, "right.dll");
@@ -751,7 +751,7 @@ describe("process capture CLI cleanup failure projection", () => {
   afterEach(() => vi.restoreAllMocks());
 
   it("preserves sanitized unknown-process IDs and reasons through the capture CLI boundary", async () => {
-    const root = await createTestTempDirectory("rea-process-cli-cleanup-");
+    const root = await createTestTempDirectory("nre-process-cli-cleanup-");
     const scenario = join(root, "scenario.json");
     await writeFile(
       scenario,

@@ -27,7 +27,7 @@ import { createTestTempDirectory } from "../../../tests/fixtures/temporaryDirect
 it.skipIf(process.platform === "win32")(
   "resolves a literal backslash in a POSIX executable basename through PATH",
   async () => {
-    const root = await createTestTempDirectory("rea-process-posix-basename-");
+    const root = await createTestTempDirectory("nre-process-posix-basename-");
     const bin = join(root, "bin");
     await mkdir(bin);
     const command = "selected\\node";
@@ -48,7 +48,7 @@ it.skipIf(process.platform === "win32")(
 it.skipIf(process.platform === "win32")(
   "preserves the caller-selected executable symlink for process invocation",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-process-executable-alias-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-process-executable-alias-"));
     try {
       const alias = join(root, "chosen-node");
       await symlink(process.execPath, alias);
@@ -61,7 +61,7 @@ it.skipIf(process.platform === "win32")(
 );
 
 it("resolves a Windows executable through the canonical PATH spelling", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-process-path-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-process-path-"));
   try {
     const selected = join(root, "selected");
     const ambient = join(root, "ambient");
@@ -98,7 +98,7 @@ it("resolves a Windows executable through the canonical PATH spelling", async ()
 });
 
 it("reports a working-directory file as invalid input", async () => {
-  const root = await mkdtemp(join(tmpdir(), "rea-process-invalid-cwd-"));
+  const root = await mkdtemp(join(tmpdir(), "nre-process-invalid-cwd-"));
   const selectedFile = join(root, "selected-file");
   await writeFile(selectedFile, "not a directory");
   try {
@@ -127,7 +127,7 @@ it("reports a working-directory file as invalid input", async () => {
 it.skipIf(process.platform === "win32")(
   "preserves the caller-selected working-directory symlink when pointing to a regular file",
   async () => {
-    const root = await createTestTempDirectory("rea-process-cwd-symlink-");
+    const root = await createTestTempDirectory("nre-process-cwd-symlink-");
     const targetFile = join(root, "target-file");
     const aliasFile = join(root, "alias-file");
     await writeFile(targetFile, "not a directory");
@@ -154,7 +154,7 @@ it.skipIf(process.platform === "win32")(
 
 it("reports an executable directory as invalid input", async () => {
   const root = await mkdtemp(
-    join(tmpdir(), "rea-process-executable-directory-"),
+    join(tmpdir(), "nre-process-executable-directory-"),
   );
   const directory = join(root, "tool-directory");
   try {
@@ -182,7 +182,7 @@ it("reports an executable directory as invalid input", async () => {
 it.skipIf(process.platform === "win32")(
   "reports a non-executable regular file as invalid input",
   async () => {
-    const root = await mkdtemp(join(tmpdir(), "rea-process-non-executable-"));
+    const root = await mkdtemp(join(tmpdir(), "nre-process-non-executable-"));
     const selected = join(root, "not-executable");
     try {
       await writeFile(selected, "not executable");
@@ -225,7 +225,7 @@ const withoutSearchPermission = async <T>(
 };
 
 const deniedFixture = async () => {
-  const root = await createTestTempDirectory("rea-process-denied-");
+  const root = await createTestTempDirectory("nre-process-denied-");
   const denied = join(root, "denied");
   await mkdir(join(denied, "cwd"), { recursive: true });
   const tool = join(denied, "tool");
@@ -341,7 +341,7 @@ const runtimePathFailure = async (
 it.skipIf(process.platform === "win32").each(["absolute", "relative", "PATH"])(
   "preserves native symlink/.. traversal for a %s executable",
   async (selection) => {
-    const root = await createTestTempDirectory("rea-process-native-path-");
+    const root = await createTestTempDirectory("nre-process-native-path-");
     const intended = join(root, "intended");
     await mkdir(join(intended, "nested"), { recursive: true });
     await symlink(join(intended, "nested"), join(root, "alias"));
@@ -371,7 +371,7 @@ it.skipIf(process.platform === "win32").each(["absolute", "relative", "PATH"])(
 it.skipIf(process.platform === "win32")(
   "distinguishes an unset PATH from empty and relative PATH selections",
   async () => {
-    const root = await createTestTempDirectory("rea-process-absent-path-");
+    const root = await createTestTempDirectory("nre-process-absent-path-");
     const localShell = join(root, "sh");
     await writeFile(localShell, "#!/bin/sh\nprintf local-shell\n", {
       mode: 0o755,

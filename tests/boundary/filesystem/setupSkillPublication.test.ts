@@ -51,7 +51,7 @@ describe("skill publication ownership", () => {
     async ({ change, existing }) => {
       if (change === "mode" && process.platform === "win32") return;
       const home = await createTestTempDirectory(
-        "rea-skill-published-conflict-",
+        "nre-skill-published-conflict-",
       );
       const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
       await mkdir(dirname(manifest), { recursive: true });
@@ -97,7 +97,7 @@ describe("skill publication ownership", () => {
         throw new Error("Expected published skill bytes");
       expect(Buffer.compare(await readFile(manifest), expected)).toBe(0);
       if (existing)
-        expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(
+        expect(await readFile(`${manifest}.nre.backup`, "utf8")).toBe(
           "original instructions\n",
         );
       else expect(result.error.recoveryBackupPaths).toEqual([]);
@@ -108,7 +108,7 @@ describe("skill publication ownership", () => {
 
   it("preserves a concurrently created first-install destination", async () => {
     const home = await createTestTempDirectory(
-      "rea-skill-first-install-conflict-",
+      "nre-skill-first-install-conflict-",
     );
     const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
     const result = await installCanonicalSkill(home, [], {}, process.platform, {
@@ -137,7 +137,7 @@ describe("skill publication ownership", () => {
   });
 
   it("reports a destination changed before readback without overwriting it", async () => {
-    const home = await createTestTempDirectory("rea-skill-readback-conflict-");
+    const home = await createTestTempDirectory("nre-skill-readback-conflict-");
     const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
     const result = await installCanonicalSkill(home, [], {}, process.platform, {
       ...skillPublicationOperations,
@@ -166,7 +166,7 @@ describe("skill publication ownership", () => {
 });
 
 it("preserves a destination created immediately before exclusive publication", async () => {
-  const home = await createTestTempDirectory("rea-skill-link-conflict-");
+  const home = await createTestTempDirectory("nre-skill-link-conflict-");
   const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
   const originalLink = (
     await vi.importActual<typeof import("node:fs/promises")>("node:fs/promises")
@@ -204,7 +204,7 @@ describe("skill publication recovery", () => {
     "restores byte-exact originals and mode after ambiguous readback",
     async (bytes) => {
       const home = await createTestTempDirectory(
-        "rea-skill-readback-recovery-",
+        "nre-skill-readback-recovery-",
       );
       const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
       await mkdir(dirname(manifest), { recursive: true });
@@ -231,7 +231,7 @@ describe("skill publication recovery", () => {
       expect(result.error.reason).toBe("readback unavailable");
       expect(Buffer.compare(await readFile(manifest), bytes)).toBe(0);
       expect(
-        Buffer.compare(await readFile(`${manifest}.rea.backup`), bytes),
+        Buffer.compare(await readFile(`${manifest}.nre.backup`), bytes),
       ).toBe(0);
       if (process.platform !== "win32")
         expect((await stat(manifest)).mode & 0o777).toBe(0o640);
@@ -248,7 +248,7 @@ describe("skill publication recovery", () => {
 
   it("retains a first-install publication after failed verification", async () => {
     const home = await createTestTempDirectory(
-      "rea-skill-first-install-readback-",
+      "nre-skill-first-install-readback-",
     );
     const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
     const result = await installCanonicalSkill(home, [], {}, process.platform, {
@@ -274,7 +274,7 @@ describe("skill publication recovery", () => {
     expect(await canonicalSkillNeedsInstall(home)).toBe(false);
     expect(
       (await readdir(dirname(manifest))).some((name) =>
-        name.startsWith(".rea-skill-"),
+        name.startsWith(".nre-skill-"),
       ),
     ).toBe(false);
   });
@@ -283,7 +283,7 @@ describe("skill publication recovery", () => {
     "retains exact staging cleanup for retry (scope: %s)",
     async (scoped) => {
       const resources = scoped ? new ArtifactResourceScope() : undefined;
-      const home = await createTestTempDirectory("rea-skill-cleanup-retry-");
+      const home = await createTestTempDirectory("nre-skill-cleanup-retry-");
       const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
       let closeAttempts = 0;
       const result = await installCanonicalSkill(
@@ -314,7 +314,7 @@ describe("skill publication recovery", () => {
       expect(result.error.reason).toContain("cleanup incomplete");
       expect(result.error.rollbackFailures).toEqual([
         {
-          path: expect.stringContaining(".rea-skill-"),
+          path: expect.stringContaining(".nre-skill-"),
           reason: "staging close denied",
         },
       ]);
@@ -327,7 +327,7 @@ describe("skill publication recovery", () => {
       expect(closeAttempts).toBe(3);
       expect(
         (await readdir(dirname(manifest))).some((name) =>
-          name.startsWith(".rea-skill-"),
+          name.startsWith(".nre-skill-"),
         ),
       ).toBe(false);
     },
@@ -336,7 +336,7 @@ describe("skill publication recovery", () => {
 
 describe("skill staging preparation", () => {
   it("retains the primary failure and staging owner when preparation cleanup fails", async () => {
-    const home = await createTestTempDirectory("rea-skill-prepare-cleanup-");
+    const home = await createTestTempDirectory("nre-skill-prepare-cleanup-");
     const manifest = join(skillDestinations(home, [])[0]!.path, "SKILL.md");
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, "original instructions\n");
@@ -354,7 +354,7 @@ describe("skill staging preparation", () => {
       expect(result.error.reason).toContain("staging cleanup denied");
       expect(result.error.rollbackFailures).toEqual([
         {
-          path: expect.stringContaining(".rea-skill-"),
+          path: expect.stringContaining(".nre-skill-"),
           reason: "staging cleanup still denied",
         },
       ]);
@@ -363,7 +363,7 @@ describe("skill staging preparation", () => {
       expect(close).toHaveBeenCalledTimes(3);
       expect(
         (await readdir(dirname(manifest))).some((name) =>
-          name.startsWith(".rea-skill-"),
+          name.startsWith(".nre-skill-"),
         ),
       ).toBe(false);
     } finally {

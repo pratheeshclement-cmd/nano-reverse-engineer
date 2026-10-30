@@ -77,7 +77,7 @@ const descriptor = async (root: string, index: number) => {
 cliTest.skipIf(process.platform === "win32")(
   "public CLI skips a named-pipe descriptor without waiting for a writer",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-cutter-fifo-");
+    const root = await createTestTempDirectory("nre-cutter-fifo-");
     const fifo = join(
       root,
       "cutter-1-00000000-0000-4000-8000-000000000001.json",
@@ -87,7 +87,7 @@ cliTest.skipIf(process.platform === "win32")(
       arguments: ["list-cutter-sessions", "--json"],
       environment: {
         ...process.env,
-        REA_CUTTER_BRIDGE_DIR: root,
+        NRE_CUTTER_BRIDGE_DIR: root,
       },
     });
     expect(resultInvocation.exitCode, resultInvocation.stderr).toBe(0);
@@ -102,10 +102,10 @@ cliTest.skipIf(process.platform === "win32")(
 );
 
 it("retains exact failed descriptors and keeps aggregate status until every close succeeds", async () => {
-  const root = await createTestTempDirectory("rea-cutter-descriptor-owners-");
+  const root = await createTestTempDirectory("nre-cutter-descriptor-owners-");
   await Promise.all([descriptor(root, 1), descriptor(root, 2)]);
   fault.root = root;
-  const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: root });
+  const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: root });
   try {
     const original = await client
       .listDescriptors()
@@ -147,7 +147,7 @@ it("retains exact failed descriptors and keeps aggregate status until every clos
 
 it("shutdown waits for descriptor finalization before retrying retained cleanup", async () => {
   const root = await createTestTempDirectory(
-    "rea-cutter-descriptor-finalization-",
+    "nre-cutter-descriptor-finalization-",
   );
   await descriptor(root, 1);
   fault.root = root;
@@ -163,7 +163,7 @@ it("shutdown waits for descriptor finalization before retrying retained cleanup"
     entered();
     await gate;
   };
-  const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: root });
+  const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: root });
   const reading = client.listDescriptors().catch((cause: unknown) => cause);
   await closing;
   let settled = false;
@@ -182,12 +182,12 @@ it("shutdown waits for descriptor finalization before retrying retained cleanup"
 it.each([null, "primitive abort", new Error("selected abort")])(
   "preserves admission cancellation %s when descriptor close fails",
   async (reason) => {
-    const root = await createTestTempDirectory("rea-cutter-cancel-admission-");
+    const root = await createTestTempDirectory("nre-cutter-cancel-admission-");
     await descriptor(root, 1);
     fault.root = root;
     const controller = new AbortController();
     fault.onOpen = () => controller.abort(reason);
-    const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: root });
+    const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: root });
     try {
       const failure = await client
         .listSessions({ signal: controller.signal })
@@ -213,7 +213,7 @@ it.each([null, "primitive abort", new Error("selected abort")])(
 );
 
 it("does not assign a peer's later cancellation to a descriptor that already failed close", async () => {
-  const root = await createTestTempDirectory("rea-cutter-peer-finalization-");
+  const root = await createTestTempDirectory("nre-cutter-peer-finalization-");
   await Promise.all([descriptor(root, 1), descriptor(root, 2)]);
   fault.root = root;
   const controller = new AbortController();
@@ -231,7 +231,7 @@ it("does not assign a peer's later cancellation to a descriptor that already fai
     entered();
     await gate;
   };
-  const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: root });
+  const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: root });
   const reading = client
     .listSessions({ signal: controller.signal })
     .catch((cause: unknown) => cause);
@@ -276,11 +276,11 @@ it.each(["command", "completion"] as const)(
   "attributes retained descriptor cleanup to the requesting %s",
   async (operation) => {
     const root = await createTestTempDirectory(
-      "rea-cutter-command-descriptor-",
+      "nre-cutter-command-descriptor-",
     );
     await descriptor(root, 1);
     fault.root = root;
-    const client = new CutterBridgeClient({ REA_CUTTER_BRIDGE_DIR: root });
+    const client = new CutterBridgeClient({ NRE_CUTTER_BRIDGE_DIR: root });
     try {
       const original =
         operation === "command"

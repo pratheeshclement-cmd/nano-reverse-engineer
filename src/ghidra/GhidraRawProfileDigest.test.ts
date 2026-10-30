@@ -52,7 +52,7 @@ describe("raw-binary analysis profile digest", () => {
   it("keeps the disabled-analyzer raw digest and its analysis options", async () => {
     const ghidra = new GhidraProvider(
       configFor({
-        REA_GHIDRA_DISABLED_ANALYZERS: "Aggressive Instruction Finder",
+        NRE_GHIDRA_DISABLED_ANALYZERS: "Aggressive Instruction Finder",
       }),
       silentLogger,
       {},

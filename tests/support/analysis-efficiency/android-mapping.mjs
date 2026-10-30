@@ -58,19 +58,19 @@ const { Ajv2020 } = await import(
 );
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [join(repo, "scripts/rea.mjs"), "mcp"],
+  args: [join(repo, "scripts/nre.mjs"), "mcp"],
   cwd: repo,
   env: {
     PATH: process.env.PATH,
     JAVA_HOME: resolve(values["java-home"]),
-    REA_JADX_MCP_JAR: resolve(values.jar),
-    REA_JADX_HEAP_MIB: "1024",
-    REA_JADX_ACTIVE_PROCESSOR_COUNT: "2",
+    NRE_JADX_MCP_JAR: resolve(values.jar),
+    NRE_JADX_HEAP_MIB: "1024",
+    NRE_JADX_ACTIVE_PROCESSOR_COUNT: "2",
     NODE_OPTIONS: "--max-old-space-size=3072",
     UV_THREADPOOL_SIZE: "2",
-    REA_LOG_LEVEL: "silent",
-    REA_MCP_TOOL_FAMILIES: values.proof ? "android,session" : "android",
-    REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
+    NRE_LOG_LEVEL: "silent",
+    NRE_MCP_TOOL_FAMILIES: values.proof ? "android,session" : "android",
+    NRE_MCP_INPUT_SCHEMA_PROFILE: "compact",
   },
   stderr: "pipe",
   maxBufferSize: 16 * 1024 * 1024,
@@ -80,7 +80,7 @@ transport.stderr?.on("data", (chunk) => {
   if (stderr.length < 65536)
     stderr += chunk.toString().slice(0, 65536 - stderr.length);
 });
-const client = new Client({ name: "rea-real-android-mapping", version: "1" });
+const client = new Client({ name: "nre-real-android-mapping", version: "1" });
 const calls = [],
   runs = [];
 let catalog;

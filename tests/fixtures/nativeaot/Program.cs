@@ -6,14 +6,14 @@ class BaseProbe
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
     public virtual int Compute(int value) => value * 7 + 3;
-    public override string ToString() => "REA_NATIVEAOT_BASE";
+    public override string ToString() => "NRE_NATIVEAOT_BASE";
 }
 
 sealed class DerivedProbe : BaseProbe, IProbe
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
     public override int Compute(int value) => value * 11 + 5;
-    public override string ToString() => "REA_NATIVEAOT_DERIVED";
+    public override string ToString() => "NRE_NATIVEAOT_DERIVED";
 }
 
 static class Program
@@ -32,7 +32,7 @@ static class Program
         BaseProbe[] probes = { new BaseProbe(), new DerivedProbe() };
         int result = Dispatch(probes[args.Length % probes.Length], args.Length);
         result += DispatchInterface(new DerivedProbe(), args.Length);
-        result += Consume("REA_NATIVEAOT_FROZEN");
+        result += Consume("NRE_NATIVEAOT_FROZEN");
         result += Consume(probes[args.Length % probes.Length].ToString());
         return result;
     }

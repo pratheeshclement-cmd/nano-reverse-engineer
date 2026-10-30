@@ -19,13 +19,13 @@ const connectProviderClient = (options: {
   readonly directory: string;
   readonly clientName: string;
   readonly configuredProvider: string;
-  readonly providerEnvironment?: { REA_RIZIN_COMMAND: string };
+  readonly providerEnvironment?: { NRE_RIZIN_COMMAND: string };
 }) =>
   createProviderEnvironmentMcpHarness({
     directory: options.directory,
     clientName: options.clientName,
     serverOptions: {
-      environment: { REA_RIZIN_COMMAND: options.configuredProvider },
+      environment: { NRE_RIZIN_COMMAND: options.configuredProvider },
       ...(options.providerEnvironment === undefined
         ? {}
         : { providerEnvironment: options.providerEnvironment }),
@@ -45,7 +45,7 @@ const executeRizinCommand = async (
 };
 
 it("uses the captured server environment to resolve reverse-engineering providers", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-environment-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-provider-environment-"));
   const provider = join(directory, "selected-rizin");
   const artifact = join(directory, "fixture.bin");
   await writeFile(artifact, "fixture");
@@ -63,7 +63,7 @@ it("uses the captured server environment to resolve reverse-engineering provider
 });
 
 it("prefers an explicit provider environment over the captured server environment", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-override-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-provider-override-"));
   const configured = join(directory, "captured-rizin");
   const override = join(directory, "override-rizin");
   const artifact = join(directory, "fixture.bin");
@@ -78,7 +78,7 @@ it("prefers an explicit provider environment over the captured server environmen
     directory,
     clientName: "reverse-provider-override",
     configuredProvider: configured,
-    providerEnvironment: { REA_RIZIN_COMMAND: override },
+    providerEnvironment: { NRE_RIZIN_COMMAND: override },
   });
 
   const response = await executeRizinCommand(client, artifact);
@@ -91,7 +91,7 @@ it("prefers an explicit provider environment over the captured server environmen
 });
 
 it("snapshots an explicit provider environment when the server is created", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "rea-provider-snapshot-"));
+  const directory = await mkdtemp(join(tmpdir(), "nre-provider-snapshot-"));
   const configured = join(directory, "captured-rizin");
   const override = join(directory, "explicit-rizin");
   const artifact = join(directory, "fixture.bin");
@@ -102,14 +102,14 @@ it("snapshots an explicit provider environment when the server is created", asyn
   ] as const) {
     await writeProvider(path, output);
   }
-  const providerEnvironment = { REA_RIZIN_COMMAND: override };
+  const providerEnvironment = { NRE_RIZIN_COMMAND: override };
   const { client } = await connectProviderClient({
     directory,
     clientName: "reverse-provider-snapshot",
     configuredProvider: configured,
     providerEnvironment,
   });
-  providerEnvironment.REA_RIZIN_COMMAND = configured;
+  providerEnvironment.NRE_RIZIN_COMMAND = configured;
 
   const response = await executeRizinCommand(client, artifact);
   expect(JSON.stringify(response.structuredContent)).toContain(

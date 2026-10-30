@@ -27,7 +27,7 @@ it.each([
         { step_id: "wait", action: "wait_for_timeout", duration_ms: 1 },
       ],
       secrets: [
-        { secret_id: "credential", environment_variable: "REA_STARTUP_SECRET" },
+        { secret_id: "credential", environment_variable: "NRE_STARTUP_SECRET" },
       ],
     });
     const diagnosticSecret = encodeURIComponent(secret).replace(
@@ -61,7 +61,7 @@ it.each([
         return context;
       });
     const provider = createBrowserScenarioProvider({
-      REA_STARTUP_SECRET: secret,
+      NRE_STARTUP_SECRET: secret,
     });
     if (provider.close === undefined)
       throw new Error("Production scenario provider must expose cleanup");
@@ -132,7 +132,7 @@ it.each([false, true])(
         { step_id: "wait", action: "wait_for_timeout", duration_ms: 1 },
       ],
       secrets: emptyDeclaration
-        ? [{ secret_id: "empty", environment_variable: "REA_EMPTY_SECRET" }]
+        ? [{ secret_id: "empty", environment_variable: "NRE_EMPTY_SECRET" }]
         : [],
     });
     const original = new BrowserObservationError(
@@ -151,7 +151,7 @@ it.each([false, true])(
       } as unknown as BrowserContext);
     try {
       await expect(
-        PlaywrightScenarioSession.open(scenario, { REA_EMPTY_SECRET: "" }, {}),
+        PlaywrightScenarioSession.open(scenario, { NRE_EMPTY_SECRET: "" }, {}),
       ).rejects.toBe(original);
       expect(close).toHaveBeenCalledOnce();
       expect(original.cleanupIncomplete).toBe(false);

@@ -1,4 +1,4 @@
-ENTRY(rea_entry)
+ENTRY(nre_entry)
 /*
  * app.c placed in ESP8266 DRAM, IRAM and the IROM flash window (esptool
  * v5.6.0 targets/esp8266.py MEMORY_MAP), so esptool --version 3 writes an

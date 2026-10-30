@@ -37,7 +37,7 @@ const cases = [
 cliTest(
   "names the server deadline control in CLI timeout recovery",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-cli-timeout-recovery-");
+    const root = await createTestTempDirectory("nre-js-cli-timeout-recovery-");
     await writeFile(join(root, "main.js"), "export const observed = 7;\n");
     const response = await cli.run({
       arguments: [
@@ -59,7 +59,7 @@ cliTest(
       message: expect.stringContaining("analysis_timeout_ms"),
       remediation: {
         action: expect.stringContaining(
-          "rea analyze-javascript-application <input_path> --analysis-timeout-ms",
+          "nre analyze-javascript-application <input_path> --analysis-timeout-ms",
         ),
       },
       recovery: { kind: "inspect_timeout_state", timeout_ms: 1 },
@@ -70,7 +70,7 @@ cliTest(
 cliTest.for(cases)(
   "preserves $name in CLI Evidence without adding ambient defaults",
   async ({ args, controls }, { cli }) => {
-    const root = await createTestTempDirectory("rea-js-limit-provenance-");
+    const root = await createTestTempDirectory("nre-js-limit-provenance-");
     await writeFile(join(root, "main.js"), "export const observed = 7;\n");
     const response = await cli.run({
       arguments: [
@@ -94,9 +94,9 @@ cliTest.for(cases)(
 );
 
 it("preserves MCP analysis limits in retained Evidence and an exported bundle round trip", async () => {
-  const root = await createTestTempDirectory("rea-js-limit-mcp-");
+  const root = await createTestTempDirectory("nre-js-limit-mcp-");
   await writeFile(join(root, "main.js"), "export const observed = 7;\n");
-  const bundleRoot = await createTestTempDirectory("rea-js-limit-bundle-");
+  const bundleRoot = await createTestTempDirectory("nre-js-limit-bundle-");
   const path = join(bundleRoot, "evidence.json");
   const { call } = await connectLocalToolsMcp({
     NODE_OPTIONS: "--max-old-space-size=512",
@@ -144,7 +144,7 @@ it("preserves MCP analysis limits in retained Evidence and an exported bundle ro
 cliTest(
   "retains caller limits and applicable file scopes after an actual analysis timeout",
   async ({ cli }) => {
-    const root = await createTestTempDirectory("rea-js-limit-timeout-");
+    const root = await createTestTempDirectory("nre-js-limit-timeout-");
     const sourcePaths = [
       "a.js",
       "a.js.map",

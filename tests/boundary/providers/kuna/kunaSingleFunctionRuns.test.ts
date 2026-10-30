@@ -20,7 +20,7 @@ const decompilesOf = async (kuna: string) =>
   (await fakeKunaCalls(kuna)).filter(({ argv }) => argv[0] === "decompile");
 
 it("shares one single-function run among concurrent requests for one entry", async () => {
-  const { kuna, open } = await session("rea-kuna-single-shared-", {
+  const { kuna, open } = await session("nre-kuna-single-shared-", {
     project: "hang",
     decompileDelayMs: 300,
   });
@@ -43,7 +43,7 @@ it("shares one single-function run among concurrent requests for one entry", asy
 });
 
 it("keeps a shared run for the callers still waiting when one cancels", async () => {
-  const { kuna, open } = await session("rea-kuna-single-cancel-", {
+  const { kuna, open } = await session("nre-kuna-single-cancel-", {
     project: "hang",
     decompileDelayMs: 500,
   });
@@ -76,7 +76,7 @@ it("keeps a shared run for the callers still waiting when one cancels", async ()
 
 it("admits no more concurrent single-function runs than its slots", async () => {
   const { kuna, open } = await session(
-    "rea-kuna-single-slots-",
+    "nre-kuna-single-slots-",
     { project: "hang", decompileDelayMs: 200 },
     {},
     undefined,
@@ -104,7 +104,7 @@ it("admits no more concurrent single-function runs than its slots", async () => 
 
 it("answers a queued request from the export once it finishes first", async () => {
   const { kuna, open } = await session(
-    "rea-kuna-single-yield-",
+    "nre-kuna-single-yield-",
     { delayMs: 400, decompile: "hang" },
     {},
     undefined,
@@ -142,9 +142,9 @@ it("answers a queued request from the export once it finishes first", async () =
 it("keeps the slot of a run whose stop is unproven until close proves it", async () => {
   const unproven = unprovenCleanupLauncher("decompile");
   const { kuna, open } = await session(
-    "rea-kuna-single-retained-slot-",
+    "nre-kuna-single-retained-slot-",
     { project: "hang", decompile: "hang" },
-    { REA_KUNA_TIMEOUT_MS: "300" },
+    { NRE_KUNA_TIMEOUT_MS: "300" },
     unproven.launcher,
     1,
   );
@@ -190,7 +190,7 @@ it("keeps the slot of a run whose stop is unproven until close proves it", async
 });
 
 it("answers a repeated request from the completed run while the export builds", async () => {
-  const { kuna, open } = await session("rea-kuna-single-kept-", {
+  const { kuna, open } = await session("nre-kuna-single-kept-", {
     project: "hang",
   });
   const client = open();
@@ -213,7 +213,7 @@ it("answers a repeated request from the completed run while the export builds", 
 });
 
 it("keeps answering repeats from the completed run after the export fails", async () => {
-  const { kuna, open } = await session("rea-kuna-single-kept-failed-", {
+  const { kuna, open } = await session("nre-kuna-single-kept-failed-", {
     project: "exit-failure",
   });
   const client = open();
@@ -240,9 +240,9 @@ it("keeps answering repeats from the completed run after the export fails", asyn
 
 it("does not keep a failed run, so a repeat runs again", async () => {
   const { kuna, open } = await session(
-    "rea-kuna-single-failed-not-kept-",
+    "nre-kuna-single-failed-not-kept-",
     { project: "hang", decompile: "hang" },
-    { REA_KUNA_TIMEOUT_MS: "200" },
+    { NRE_KUNA_TIMEOUT_MS: "200" },
   );
   const client = open();
   try {
@@ -259,7 +259,7 @@ it("does not keep a failed run, so a repeat runs again", async () => {
 it("drops the least recently used text beyond the session's 16 MiB budget", async () => {
   // Two 6 MiB texts fit the budget and a third does not. Reading main again
   // makes parse the least recently used, so keeping broken drops parse.
-  const { kuna, open } = await session("rea-kuna-single-kept-budget-", {
+  const { kuna, open } = await session("nre-kuna-single-kept-budget-", {
     project: "hang",
     decompilePadding: 6 * 1024 * 1024,
   });
@@ -287,9 +287,9 @@ it("drops the least recently used text beyond the session's 16 MiB budget", asyn
 
 it("names the setting that owns a single-function deadline", async () => {
   const { open } = await session(
-    "rea-kuna-function-deadline-",
+    "nre-kuna-function-deadline-",
     { project: "hang", decompile: "hang" },
-    { REA_KUNA_TIMEOUT_MS: "300" },
+    { NRE_KUNA_TIMEOUT_MS: "300" },
   );
   const client = open();
   try {
@@ -300,10 +300,10 @@ it("names the setting that owns a single-function deadline", async () => {
     expect(projectAnalysisError(result.error)).toMatchObject({
       code: "provider_timeout",
       message:
-        "kuna decompile did not finish within REA_KUNA_TIMEOUT_MS (300 ms).",
+        "kuna decompile did not finish within NRE_KUNA_TIMEOUT_MS (300 ms).",
       remediation: {
         action: expect.stringMatching(
-          /^Raise REA_KUNA_TIMEOUT_MS .* restart REA.*project export/u,
+          /^Raise NRE_KUNA_TIMEOUT_MS .* restart NRE.*project export/u,
         ),
       },
       details: { timeout_ms: 300 },

@@ -22,16 +22,16 @@ if (!process.env.GHIDRA_INSTALL_DIR)
 const exec = promisify(execFile);
 const run = createVerifierRun();
 const root = fileURLToPath(new URL("..", import.meta.url));
-const workspace = await mkdtemp(join(tmpdir(), "rea-address-context-"));
+const workspace = await mkdtemp(join(tmpdir(), "nre-address-context-"));
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "pie.elf");
-const entrypoint = join(root, "scripts/rea.mjs");
+const entrypoint = join(root, "scripts/nre.mjs");
 const env = {
   ...process.env,
   TMPDIR: runtime,
-  REA_ANALYSIS_PROVIDER: "ghidra",
-  REA_LOG_LEVEL: "silent",
+  NRE_ANALYSIS_PROVIDER: "ghidra",
+  NRE_LOG_LEVEL: "silent",
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
@@ -39,7 +39,7 @@ const transport = new StdioClientTransport({
   env,
   stderr: "pipe",
 });
-const client = new Client({ name: "rea-real-address-context", version: "1" });
+const client = new Client({ name: "nre-real-address-context", version: "1" });
 let stderr = "";
 transport.stderr?.on("data", (chunk) => {
   stderr = (stderr + chunk.toString()).slice(-65536);
@@ -59,7 +59,7 @@ try {
       "-fPIE",
       "-pie",
       "-nostdlib",
-      "-Wl,-e,rea_pie_entry",
+      "-Wl,-e,nre_pie_entry",
       "-Wl,--build-id=none",
       join(root, "tests/conformance/c/pie-address-context.c"),
       "-o",
@@ -108,10 +108,10 @@ try {
     ),
   );
   const entry = procedures.normalized_result.find(
-    (item) => item.value === "rea_pie_entry",
+    (item) => item.value === "nre_pie_entry",
   );
   const addition = procedures.normalized_result.find(
-    (item) => item.value === "rea_pie_add",
+    (item) => item.value === "nre_pie_add",
   );
   assert.ok(entry && addition);
   assert.notEqual(entry.address, declaredEntry);
@@ -202,9 +202,9 @@ try {
   assert.equal(error.code, "invalid_request");
   assert.ok(JSON.stringify(error).includes(`Ghidra image base: ${base}`));
   for (const command of [
-    "rea search <path> . --kind procedures --mode regex",
-    "rea analyze <path>",
-    "rea inspect-native-load-image <path>",
+    "nre search <path> . --kind procedures --mode regex",
+    "nre analyze <path>",
+    "nre inspect-native-load-image <path>",
   ])
     assert.ok(JSON.stringify(error).includes(command));
   const cliProcedures = parseEvidence(
@@ -223,7 +223,7 @@ try {
     ),
   );
   const cliEntry = cliProcedures.normalized_result.find(
-    (item) => item.value === "rea_pie_entry",
+    (item) => item.value === "nre_pie_entry",
   );
   assert.ok(cliEntry);
   assert.equal(cliEntry.address, entry.address);
@@ -242,7 +242,7 @@ try {
   );
   assert.equal(cliOffset.normalized_result, fromOffset.normalized_result);
   assert.deepEqual(cliOffset.locations, fromOffset.locations);
-  assert.match(cliPseudo.normalized_result, /rea_pie_add/u);
+  assert.match(cliPseudo.normalized_result, /nre_pie_add/u);
   assert.deepEqual(await readFile(path), bytes);
   assert.deepEqual(await readdir(runtime), []);
   report = {

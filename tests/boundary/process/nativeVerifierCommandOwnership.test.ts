@@ -27,7 +27,7 @@ const finish = (reason) => {
   process.exit(0);
 };
 process.on("SIGTERM", () => finish("SIGTERM"));
-process.send({ pid: process.pid, runId: process.env.REA_PROCESS_RUN_ID });
+process.send({ pid: process.pid, runId: process.env.NRE_PROCESS_RUN_ID });
 setInterval(() => {
   if (existsSync(process.env.NATIVE_RELEASE)) finish("fixture-release");
 }, 25);
@@ -59,7 +59,7 @@ const acknowledged = await new Promise((resolve, reject) => {
 });
 writeFileSync(process.env.NATIVE_READY, JSON.stringify({
   pids: [process.pid, acknowledged.pid], stdin, stdinEof: true, inputBytes,
-  runId: process.env.REA_PROCESS_RUN_ID, descendantRunId: acknowledged.runId,
+  runId: process.env.NRE_PROCESS_RUN_ID, descendantRunId: acknowledged.runId,
 }));
 process.stdout.write("native verifier stdin EOF\\n");
 process.stderr.write("native verifier diagnostics\\n");
@@ -146,7 +146,7 @@ const awaitAuthoredExit = async (readyPath: string) => {
 it.skipIf(process.platform === "win32")(
   "joins a timed-out native verifier descendant after pipe EOF while retaining lab artifacts",
   async () => {
-    const workspace = await createTestWorkspace("rea-native-verifier-owner-");
+    const workspace = await createTestWorkspace("nre-native-verifier-owner-");
     const release = workspace.path("release-descendant");
     const readyPath = workspace.path("ready.json");
     const artifact = Buffer.from("retained native verifier lab α\0\n");
@@ -170,7 +170,7 @@ it.skipIf(process.platform === "win32")(
         command: process.execPath,
         arguments: [driver],
         cwd: process.cwd(),
-        runId: `rea-native-verifier-test-${randomUUID()}`,
+        runId: `nre-native-verifier-test-${randomUUID()}`,
         sweepTokenOwnedProcesses: true,
         hostEnvironment: {
           ...process.env,
