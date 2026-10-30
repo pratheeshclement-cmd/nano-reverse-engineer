@@ -73,3 +73,18 @@ it("keeps the last caller value for Windows aliases, including undefined", () =>
   expect(Object.keys(snapshot)).toEqual(["COMSPEC", "PATH", "TEMP"]);
   expect(Object.isFrozen(snapshot)).toBe(true);
 });
+
+it("aliases NRE_* variables to REA_* with NRE precedence", () => {
+  const snapshot = snapshotEnvironment(
+    {
+      NRE_ANALYSIS_PROVIDER: "ghidra",
+      REA_ANALYSIS_PROVIDER: "hopper",
+      NRE_CUSTOM_SETTING: "value1",
+      REA_LEGACY_ONLY: "value2",
+    },
+    "linux",
+  );
+  expect(snapshot.REA_ANALYSIS_PROVIDER).toBe("ghidra");
+  expect(snapshot.REA_CUSTOM_SETTING).toBe("value1");
+  expect(snapshot.REA_LEGACY_ONLY).toBe("value2");
+});

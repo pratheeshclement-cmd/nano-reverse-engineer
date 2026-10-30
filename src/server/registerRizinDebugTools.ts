@@ -4,6 +4,8 @@ import type { Logger } from "pino";
 import type { EvidenceWriter } from "../application/investigation/InvestigationRecordPort.js";
 import { toolContract } from "../contracts/toolContracts.js";
 import { AnalysisInputError } from "../domain/analysisErrorCore.js";
+import { err } from "../domain/result.js";
+import { isDisallowedRizinCommand } from "./debuggerSecurityPolicy.js";
 import type { RizinDebugSessionManager } from "../rizin/RizinDebugSessionManager.js";
 import {
   runOwnedCleanupWithExternalMutationAdmission,
@@ -66,6 +68,17 @@ export const registerRizinDebugTools = (
     command.name,
     toolRegistrationOptions(command),
     async (input, context: ServerContext) => {
+      const disallowed = isDisallowedRizinCommand(input.command);
+      if (disallowed !== undefined) {
+        return delivery.toCallToolResult(
+          err(
+            new AnalysisInputError(command.name, {
+              userMessage: disallowed,
+            }),
+          ),
+          command,
+        );
+      }
       const result = await runWithExternalMutationAdmission(
         session,
         command.name,

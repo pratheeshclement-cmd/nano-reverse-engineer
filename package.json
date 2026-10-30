@@ -39,6 +39,7 @@
     "#web-bundle-analysis-worker": "./dist/composition/webBundleAnalysisWorkerProcess.js"
   },
   "bin": {
+    "nre": "scripts/nre.mjs",
     "rea": "scripts/rea.mjs",
     "rea-agents": "scripts/rea.mjs"
   },

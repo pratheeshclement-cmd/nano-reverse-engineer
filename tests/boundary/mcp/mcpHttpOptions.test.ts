@@ -45,6 +45,14 @@ describe("rea mcp --http arguments", () => {
       expect(parseMcpHttpArguments(["--http", `--port=${port}`])).toMatchObject(
         { ok: false, message: expect.stringContaining("Invalid --port") },
       );
+    expect(parseMcpHttpArguments(["--http", "--max-sessions", "10"])).toEqual({
+      ok: true,
+      maxSessions: 10,
+    });
+    expect(parseMcpHttpArguments(["--http", "--max-sessions", "0"])).toMatchObject({
+      ok: false,
+      message: expect.stringContaining("Invalid --max-sessions"),
+    });
     expect(parseMcpHttpArguments(["--http", "--host", " "])).toMatchObject({
       ok: false,
       message: expect.stringContaining("--host must be"),
@@ -105,6 +113,9 @@ describe("MCP_HOST and MCP_PORT", () => {
         { host: "::1", port: 1 },
       ),
     ).toEqual({ ok: true, value: { host: "::1", port: 1 } });
+    expect(
+      parseMcpHttpEndpoint({ NRE_MCP_MAX_SESSIONS: "8" }),
+    ).toEqual({ ok: true, value: { host: "127.0.0.1", port: 0, maxConcurrentSessions: 8 } });
   });
 
   it("rejects malformed values by setting name without echoing them", () => {

@@ -16,11 +16,13 @@ import type { WithAdmittedAnalysis } from "./analysisAdmission.js";
 import { runAdmittedToolOperation } from "./admittedToolOperation.js";
 import {
   AnalysisCancelledError,
+  AnalysisInputError,
   AnalysisOutputError,
 } from "../domain/analysisErrorCore.js";
 import { retainExternalMutationCancellation } from "./externalMutationAdmission.js";
 import type { AnalysisError } from "../domain/analysisErrorBase.js";
-import type { Result } from "../domain/result.js";
+import { err, type Result } from "../domain/result.js";
+import { isDisallowedRizinCommand } from "./debuggerSecurityPolicy.js";
 
 /** Register objdump and Rizin operations against their exact named contracts. */
 export const registerReverseEngineeringTools = (
@@ -82,6 +84,19 @@ export const registerReverseEngineeringTools = (
     toolRegistrationOptions(rizin),
     async (input, context: ServerContext) => {
       const parsed = resolveRizinCommandRequest(input);
+      if (parsed.ok) {
+        const disallowed = isDisallowedRizinCommand(parsed.value.command);
+        if (disallowed !== undefined) {
+          return delivery.toCallToolResult(
+            err(
+              new AnalysisInputError(rizin.name, {
+                userMessage: disallowed,
+              }),
+            ),
+            rizin,
+          );
+        }
+      }
       if (parsed.ok && withAdmittedExternalMutation !== undefined) {
         const cleanup = await service.retryCleanup(rizin.name);
         if (!cleanup.ok)

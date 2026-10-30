@@ -59,6 +59,12 @@ export interface McpHttpEndpoint {
   readonly port: number;
   /** Operator-declared Host/Origin names; required before a non-loopback bind serves. */
   readonly allowedHosts?: readonly HttpHostname[];
+  /** Secret bearer token required to access the MCP HTTP endpoint. */
+  readonly authToken?: string;
+  /** Explicit opt-in to permit non-loopback bindings without an auth token. */
+  readonly allowUnauthenticated?: boolean;
+  /** Maximum number of concurrent sessions. */
+  readonly maxConcurrentSessions?: number;
 }
 
 /** Resolve the endpoint: explicit values, then MCP_HOST/MCP_PORT, then loopback defaults. */
@@ -70,6 +76,30 @@ export const parseMcpHttpEndpoint = (
   let host = overrides.host ?? DEFAULT_MCP_HTTP_HOST;
   let port = overrides.port ?? DEFAULT_MCP_HTTP_PORT;
   let allowedHosts = overrides.allowedHosts;
+  let authToken = overrides.authToken;
+  if (authToken === undefined) {
+    const rawToken =
+      environment.NRE_HTTP_AUTH_TOKEN ??
+      environment.REA_HTTP_AUTH_TOKEN ??
+      environment.MCP_AUTH_TOKEN;
+    if (rawToken !== undefined && rawToken.trim().length > 0) {
+      authToken = rawToken.trim();
+    }
+  }
+  const allowUnauthenticated =
+    overrides.allowUnauthenticated ??
+    (environment.NRE_ALLOW_UNAUTHENTICATED === "true" ||
+      environment.REA_ALLOW_UNAUTHENTICATED === "true");
+  let maxConcurrentSessions = overrides.maxConcurrentSessions;
+  if (maxConcurrentSessions === undefined) {
+    const rawMax =
+      environment.NRE_MCP_MAX_SESSIONS ??
+      environment.REA_MCP_MAX_SESSIONS ??
+      environment.MCP_MAX_SESSIONS;
+    if (rawMax !== undefined && /^[1-9]\d*$/u.test(rawMax.trim())) {
+      maxConcurrentSessions = Number.parseInt(rawMax.trim(), 10);
+    }
+  }
   if (overrides.host === undefined && environment.MCP_HOST !== undefined) {
     const parsed = mcpHttpHostSchema.safeParse(environment.MCP_HOST);
     if (parsed.success) host = parsed.data;
@@ -113,5 +143,8 @@ export const parseMcpHttpEndpoint = (
     host,
     port,
     ...(allowedHosts === undefined ? {} : { allowedHosts }),
+    ...(authToken === undefined ? {} : { authToken }),
+    ...(allowUnauthenticated ? { allowUnauthenticated: true } : {}),
+    ...(maxConcurrentSessions === undefined ? {} : { maxConcurrentSessions }),
   });
 };

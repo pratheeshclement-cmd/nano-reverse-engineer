@@ -10,7 +10,7 @@ import {
   type McpRequestContext,
   type Server,
 } from "@modelcontextprotocol/server";
-import { randomUUID } from "node:crypto";
+import { randomUUID, timingSafeEqual } from "node:crypto";
 import {
   createServer as createHttpServer,
   type IncomingMessage,
@@ -56,6 +56,10 @@ export interface ServeStreamableHttpOptions {
   readonly port: number;
   /** Operator-declared Host/Origin names; a non-loopback bind refuses to serve without them. */
   readonly allowedHosts?: readonly HttpHostname[];
+  /** Secret bearer token required to access this MCP HTTP listener. */
+  readonly authToken?: string;
+  /** Explicit opt-in to permit non-loopback bindings without an auth token (insecure). */
+  readonly allowUnauthenticated?: boolean;
   /** Cancellation during listener startup; later shutdown remains owned by close(). */
   readonly signal?: AbortSignal;
   /** Called once; the instance serves every session in turn on a fresh transport. */
@@ -66,6 +70,8 @@ export interface ServeStreamableHttpOptions {
   readonly sessionDrainTimeoutMs?: number;
   /** Concurrent HTTP input/route work (default 8); unread uploads retain their permit. */
   readonly maxConcurrentDispatches?: number;
+  /** Maximum concurrent client sessions. When > 1, enables concurrent multi-session management. */
+  readonly maxConcurrentSessions?: number;
   readonly routes?: readonly StreamableHttpRoute[];
   readonly logger?: Logger;
   /** Reports listener failures after binding; request failures are logged instead. */
@@ -294,8 +300,14 @@ class LiveSession {
   }
 }
 
+export interface McpSessionSlotPort {
+  handle(request: Request): Promise<Response>;
+  prepareShutdown(): Promise<void>;
+  close(): Promise<void>;
+}
+
 /** Owns the single connected server and the transport of its current session. */
-export class McpSessionSlot {
+export class McpSessionSlot implements McpSessionSlotPort {
   #live: LiveSession | undefined;
   #arming: Promise<LiveSession> | undefined;
   #closed = false;
@@ -449,6 +461,126 @@ export class McpSessionSlot {
   }
 }
 
+interface ActiveMultiSessionEntry {
+  readonly id: string;
+  readonly session: LiveSession;
+  readonly instance: RequestTrackingMcpServer;
+  lastActive: number;
+}
+
+/** Owns multiple concurrent connected sessions keyed by their session ID. */
+export class MultiSessionManager implements McpSessionSlotPort {
+  readonly #sessions = new Map<string, ActiveMultiSessionEntry>();
+  #closed = false;
+
+  constructor(
+    private readonly createMcpServer: (
+      context: McpRequestContext,
+    ) => RequestTrackingMcpServer | Promise<RequestTrackingMcpServer>,
+    private readonly maxSessions: number = 10,
+    private readonly logger: Logger | undefined = undefined,
+    private readonly drainTimeoutMs: number = DEFAULT_SESSION_DRAIN_TIMEOUT_MS,
+  ) {}
+
+  get activeSessionCount(): number {
+    return this.#sessions.size;
+  }
+
+  async handle(request: Request): Promise<Response> {
+    if (this.#closed) return SHUTTING_DOWN();
+    const initialization = await classifyInitializePost(request);
+    if (initialization === "batch")
+      return jsonError(
+        400,
+        -32600,
+        "Initialize must be a single JSON-RPC object, not a batch",
+      );
+
+    if (initialization === "initialize") {
+      if (this.#closed) return SHUTTING_DOWN();
+      if (this.#sessions.size >= this.maxSessions) {
+        let oldestKey: string | undefined;
+        let oldestTime = Number.POSITIVE_INFINITY;
+        for (const [id, entry] of this.#sessions) {
+          if (entry.lastActive < oldestTime) {
+            oldestTime = entry.lastActive;
+            oldestKey = id;
+          }
+        }
+        if (oldestKey !== undefined) {
+          const entry = this.#sessions.get(oldestKey);
+          if (entry !== undefined) {
+            this.logger?.info(
+              { sessionId: oldestKey },
+              "Evicting least recently used MCP HTTP session",
+            );
+            await entry.session.transport.close().catch(() => undefined);
+          }
+        }
+      }
+
+      const instance = await this.createMcpServer({ era: "legacy" });
+      instance.enableRequestTracking();
+      const sessionId = randomUUID();
+      const transport = new WebStandardStreamableHTTPServerTransport({
+        sessionIdGenerator: () => sessionId,
+        onsessioninitialized: () =>
+          this.logger?.info({ sessionId }, "MCP HTTP session opened"),
+        onsessionclosed: () =>
+          this.logger?.info({ sessionId }, "MCP HTTP session closed by the client"),
+      });
+
+      const session = new LiveSession(transport, instance);
+      transport.close = async () => {
+        try {
+          await session.shutdown();
+          await instance.drainRequests(
+            this.#closed ? undefined : this.drainTimeoutMs,
+          );
+        } finally {
+          this.#sessions.delete(sessionId);
+          await instance.close().catch(() => undefined);
+        }
+      };
+
+      await instance.connect(transport);
+      session.fenceDispatch();
+      const entry: ActiveMultiSessionEntry = {
+        id: sessionId,
+        session,
+        instance,
+        lastActive: Date.now(),
+      };
+      this.#sessions.set(sessionId, entry);
+      return session.handle(request);
+    }
+
+    const sessionId = request.headers.get("mcp-session-id");
+    if (!sessionId) {
+      return SESSION_NOT_FOUND();
+    }
+    const entry = this.#sessions.get(sessionId);
+    if (!entry) {
+      return SESSION_NOT_FOUND();
+    }
+    entry.lastActive = Date.now();
+    return entry.session.handle(request);
+  }
+
+  async prepareShutdown(): Promise<void> {
+    this.#closed = true;
+    const closures = [...this.#sessions.values()].map((entry) =>
+      entry.session.transport.close().catch(() => undefined),
+    );
+    await Promise.allSettled(closures);
+    this.#sessions.clear();
+  }
+
+  async close(): Promise<void> {
+    await this.prepareShutdown();
+  }
+}
+
 const endpointUrl = (address: AddressInfo): string => {
   const host =
     address.family === "IPv6" ? `[${address.address}]` : address.address;
@@ -465,6 +597,13 @@ interface NodeRequestTarget {
 }
 
 /** Serve one MCP server, plus plain routes, over streamable HTTP until closed. */
+const timingSafeEqualTokens = (provided: string, expected: string): boolean => {
+  const bufA = Buffer.from(provided, "utf-8");
+  const bufB = Buffer.from(expected, "utf-8");
+  if (bufA.length !== bufB.length) return false;
+  return timingSafeEqual(bufA, bufB);
+};
+
 export const serveStreamableHttp = async (
   options: ServeStreamableHttpOptions,
 ): Promise<StreamableHttpServer> => {
@@ -477,7 +616,7 @@ export const serveStreamableHttp = async (
   // Loopback is classified from the address the listener binds, after it binds; the instance
   // is created after that, so a bind failure leaves nothing to clean up.
   let allowedHosts: string[] | undefined;
-  let slot: McpSessionSlot | undefined;
+  let slot: McpSessionSlotPort | undefined;
   let origin = "";
   let stopped = false;
   const route: NodeRequestTarget["route"] = async (request) => {
@@ -486,6 +625,47 @@ export const serveStreamableHttp = async (
       admissionLifetime: "response" as const,
     });
     if (stopped) return local(jsonError(503, -32000, "Server shutting down"));
+    if (options.authToken !== undefined) {
+      const authHeader = request.headers.get("authorization");
+      let providedToken: string | undefined;
+      if (authHeader !== null && authHeader.trim().length > 0) {
+        const match = /^Bearer\s+(\S+)$/i.exec(authHeader.trim());
+        if (match) providedToken = match[1];
+      }
+      if (providedToken === undefined) {
+        const xToken =
+          request.headers.get("x-nre-auth-token") ??
+          request.headers.get("x-rea-auth-token");
+        if (xToken !== null && xToken.trim().length > 0) {
+          providedToken = xToken.trim();
+        }
+      }
+      const isValid =
+        providedToken !== undefined &&
+        timingSafeEqualTokens(providedToken, options.authToken);
+      if (!isValid) {
+        return local(
+          new Response(
+            JSON.stringify({
+              jsonrpc: "2.0",
+              error: {
+                code: -32000,
+                message:
+                  "Unauthorized: invalid or missing authentication token",
+              },
+              id: null,
+            }),
+            {
+              status: 401,
+              headers: {
+                "content-type": "application/json",
+                "www-authenticate": 'Bearer realm="NRE"',
+              },
+            },
+          ),
+        );
+      }
+    }
     // One resolved allowlist gates Host (DNS rebinding) and Origin (browser pages); a missing Origin passes.
     const refused =
       allowedHosts === undefined
@@ -563,6 +743,18 @@ export const serveStreamableHttp = async (
       )
         throw new StreamableHttpHostAllowlistError(bound.address);
       allowedHosts = [...options.allowedHosts];
+      if (
+        options.authToken === undefined &&
+        options.allowUnauthenticated !== true &&
+        process.env.NRE_ALLOW_UNAUTHENTICATED !== "true" &&
+        process.env.REA_ALLOW_UNAUTHENTICATED !== "true" &&
+        process.env.NODE_ENV !== "test"
+      ) {
+        throw new Error(
+          `Network-exposed MCP HTTP transport on ${bound.address} requires an authentication token. ` +
+            `Set NRE_HTTP_AUTH_TOKEN, pass --token, or bind to a loopback address (127.0.0.1).`,
+        );
+      }
     }
     const announcedHost = allowedHosts.includes(endpoint.hostname)
       ? endpoint.hostname
@@ -589,29 +781,52 @@ export const serveStreamableHttp = async (
   httpServer.on("error", (error) =>
     options.onerror?.(new StreamableHttpListenError(error, "serving")),
   );
-  let instance: RequestTrackingMcpServer;
-  try {
-    instance = await options.createMcpServer({ era: "legacy" });
-  } catch (cause: unknown) {
-    // Starting responses may still be in flight; application routes stay unavailable.
-    await prepareTransportShutdown().catch(() => undefined);
-    throw cause;
+  const isMultiSession =
+    options.maxConcurrentSessions !== undefined &&
+    options.maxConcurrentSessions > 1;
+
+  let liveSlot: McpSessionSlotPort;
+  let closeInstanceHook: (() => Promise<void>) | undefined;
+
+  if (isMultiSession) {
+    const multi = new MultiSessionManager(
+      options.createMcpServer,
+      options.maxConcurrentSessions,
+      logger,
+      options.sessionDrainTimeoutMs,
+    );
+    liveSlot = multi;
+    slot = multi;
+  } else {
+    let instance: RequestTrackingMcpServer;
+    try {
+      instance = await options.createMcpServer({ era: "legacy" });
+    } catch (cause: unknown) {
+      // Starting responses may still be in flight; application routes stay unavailable.
+      await prepareTransportShutdown().catch(() => undefined);
+      throw cause;
+    }
+    protocolOf(instance).onerror = (error) =>
+      logger?.warn({ error: error.message }, "MCP HTTP request rejected");
+    const live = new McpSessionSlot(
+      instance,
+      logger,
+      options.sessionDrainTimeoutMs,
+    );
+    liveSlot = live;
+    slot = live;
+    if (closeInstance) {
+      closeInstanceHook = () => instance.close();
+    }
   }
-  protocolOf(instance).onerror = (error) =>
-    logger?.warn({ error: error.message }, "MCP HTTP request rejected");
-  const live = new McpSessionSlot(
-    instance,
-    logger,
-    options.sessionDrainTimeoutMs,
-  );
-  slot = live;
+
   const prepareShutdown = stagedClose([
     prepareTransportShutdown,
-    () => live.close(),
+    () => liveSlot.close(),
   ]);
   const close = stagedClose([
     prepareShutdown,
-    ...(closeInstance ? [() => instance.close()] : []),
+    ...(closeInstanceHook ? [closeInstanceHook] : []),
   ]);
   if (options.signal?.aborted) {
     await close();

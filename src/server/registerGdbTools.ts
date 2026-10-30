@@ -11,6 +11,7 @@ import {
 import { toolContract } from "../contracts/toolContracts.js";
 import { err, ok } from "../domain/result.js";
 import { AnalysisInputError } from "../domain/analysisErrorCore.js";
+import { isDisallowedGdbCommand } from "./debuggerSecurityPolicy.js";
 import {
   runOwnedCleanupWithExternalMutationAdmission,
   runWithExternalMutationAdmission,
@@ -67,6 +68,17 @@ export const registerGdbTools = (
     consoleContract.name,
     toolRegistrationOptions(consoleContract),
     async (input, context: ServerContext) => {
+      const disallowed = isDisallowedGdbCommand(input.command);
+      if (disallowed !== undefined) {
+        return delivery.toCallToolResult(
+          err(
+            new AnalysisInputError(consoleContract.name, {
+              userMessage: disallowed,
+            }),
+          ),
+          consoleContract,
+        );
+      }
       const retention = { recordEvidence, evidenceById };
       if (input.detail === "summary") {
         const ready = requireAnalysisViewRetention(

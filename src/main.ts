@@ -178,6 +178,13 @@ export const runMcpHttpEntrypoint = async (
     ...(parsed.allowedHosts === undefined
       ? {}
       : { allowedHosts: [...parsed.allowedHosts] }),
+    ...(parsed.authToken === undefined ? {} : { authToken: parsed.authToken }),
+    ...(parsed.allowUnauthenticated === undefined
+      ? {}
+      : { allowUnauthenticated: parsed.allowUnauthenticated }),
+    ...(parsed.maxSessions === undefined
+      ? {}
+      : { maxConcurrentSessions: parsed.maxSessions }),
   });
   if (!endpoint.ok) {
     io.writeStderr(`${projectAnalysisError(endpoint.error).message}\n`);

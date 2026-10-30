@@ -31,6 +31,21 @@ const MCP_HTTP_OPTIONS = z.object({
     .describe(
       "Host/Origin names a non-loopback bind may serve; default MCP_ALLOWED_HOSTS, else the bind is refused",
     ),
+  token: z
+    .string()
+    .min(1)
+    .optional()
+    .describe("Authentication token required for all HTTP requests; default NRE_HTTP_AUTH_TOKEN"),
+  allowUnauthenticated: z
+    .boolean()
+    .optional()
+    .describe("Permit non-loopback network binding without an authentication token (insecure)"),
+  maxSessions: z
+    .number()
+    .int()
+    .min(1)
+    .optional()
+    .describe("Maximum number of concurrent MCP sessions (enables multi-session mode)"),
   help: z.boolean().optional().describe("Show help"),
 });
 
@@ -39,10 +54,16 @@ const MCP_HTTP_COMMAND = "rea mcp --http";
 const MCP_HTTP_DESCRIPTION =
   "Serve the MCP server over streamable HTTP for one local client";
 const HELP_FLAGS: ReadonlySet<string> = new Set(["--help", "-h"]);
+const BOOLEAN_FLAGS: ReadonlySet<string> = new Set([
+  "--allow-unauthenticated",
+]);
 const VALUED_FLAGS: ReadonlySet<string> = new Set([
   "--host",
   "--port",
   "--allowed-hosts",
+  "--token",
+  "--auth-token",
+  "--max-sessions",
 ]);
 
 /** Render help for the dispatcher entry, which accepts no Incur global options. */
@@ -62,6 +83,9 @@ export type McpHttpArguments =
       readonly host?: string;
       readonly port?: number;
       readonly allowedHosts?: readonly HttpHostname[];
+      readonly authToken?: string;
+      readonly allowUnauthenticated?: boolean;
+      readonly maxSessions?: number;
     }
   | { readonly ok: false; readonly help: true }
   | { readonly ok: false; readonly help: false; readonly message: string };
@@ -86,11 +110,16 @@ export const parseMcpHttpArguments = (
 ): McpHttpArguments => {
   const values = new Map<string, string>();
   let http = false;
+  let allowUnauthenticated = false;
   for (let index = 0; index < arguments_.length; index += 1) {
     const argument = arguments_[index] ?? "";
     if (HELP_FLAGS.has(argument)) return { ok: false, help: true };
     if (argument === "--http") {
       http = true;
+      continue;
+    }
+    if (argument === "--allow-unauthenticated") {
+      allowUnauthenticated = true;
       continue;
     }
     const [flag, inline] = splitFlag(argument);
@@ -120,10 +149,23 @@ export const parseMcpHttpArguments = (
     return invalid(
       `Invalid --allowed-hosts: ${MCP_ALLOWED_HOSTS_FLAG_CONSTRAINT}`,
     );
+  const authToken =
+    values.get("--token")?.trim() ?? values.get("--auth-token")?.trim();
+  const maxSessionsText = values.get("--max-sessions");
+  let maxSessions: number | undefined;
+  if (maxSessionsText !== undefined) {
+    if (!/^[1-9]\d*$/u.test(maxSessionsText)) {
+      return invalid("Invalid --max-sessions: must be a positive integer");
+    }
+    maxSessions = Number.parseInt(maxSessionsText, 10);
+  }
   return {
     ok: true,
     ...(host === undefined ? {} : { host }),
     ...(port === undefined ? {} : { port: port.data }),
     ...(allowedHosts === undefined ? {} : { allowedHosts: allowedHosts.data }),
+    ...(authToken === undefined ? {} : { authToken }),
+    ...(allowUnauthenticated ? { allowUnauthenticated: true } : {}),
+    ...(maxSessions === undefined ? {} : { maxSessions }),
   };
 };

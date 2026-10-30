@@ -23,6 +23,29 @@ import {
 import { ProcessOwnershipEvidenceOwner } from "./ProcessOwnershipEvidence.js";
 import { mergeEnvironmentOverrides } from "./snapshotEnvironment.js";
 
+const SENSITIVE_CHILD_ENV_PATTERNS: readonly RegExp[] = [
+  /^(?:NRE|REA|MCP)_HTTP_AUTH_TOKEN$/iu,
+  /^MCP_AUTH_TOKEN$/iu,
+  /.*_AUTH_TOKEN$/iu,
+  /.*_SECRET_KEY$/iu,
+  /.*_API_KEY$/iu,
+  /^AWS_SECRET_ACCESS_KEY$/iu,
+  /^GITHUB_TOKEN$/iu,
+  /^GH_TOKEN$/iu,
+];
+
+export const sanitizeChildEnvironment = (
+  env: Readonly<Record<string, string | undefined>>,
+): Record<string, string | undefined> => {
+  const result: Record<string, string | undefined> = {};
+  for (const [key, value] of Object.entries(env)) {
+    if (!SENSITIVE_CHILD_ENV_PATTERNS.some((pattern) => pattern.test(key))) {
+      result[key] = value;
+    }
+  }
+  return result;
+};
+
 const DEFAULT_TERMINATION_GRACE_MS = 250;
 const DEFAULT_KILL_GRACE_MS = 1_000;
 const OUTPUT_CLOSE_GRACE_MS = 1_000;
@@ -268,7 +291,9 @@ export const spawnOwnedProviderProcess = async (
     captureBaseline = await capture(options.signal);
     options.signal?.throwIfAborted();
   }
-  const hostEnvironment = options.hostEnvironment ?? process.env;
+  const hostEnvironment = sanitizeChildEnvironment(
+    options.hostEnvironment ?? process.env,
+  );
   const selectedEnvironment = mergeEnvironmentOverrides(
     hostEnvironment,
     options.env ?? {},
