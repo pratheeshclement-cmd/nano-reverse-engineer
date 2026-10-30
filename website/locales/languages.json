@@ -1,0 +1,140 @@
+[
+  {
+    "code": "en",
+    "name": "English",
+    "Nredme": "NreDME.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "zh-CN",
+    "name": "简体中文",
+    "Nredme": "docs/Nredme/NreDME_zh.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "zh-TW",
+    "name": "繁體中文",
+    "Nredme": "docs/Nredme/NreDME_zh-TW.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "ja",
+    "name": "日本語",
+    "Nredme": "docs/Nredme/NreDME_ja.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "ko",
+    "name": "한국어",
+    "Nredme": "docs/Nredme/NreDME_ko.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "tr",
+    "name": "Türkçe",
+    "Nredme": "docs/Nredme/NreDME_tr.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "ru",
+    "name": "Русский",
+    "Nredme": "docs/Nredme/NreDME_ru.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "vi",
+    "name": "Tiếng Việt",
+    "Nredme": "docs/Nredme/NreDME_vi.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "th",
+    "name": "ไทย",
+    "Nredme": "docs/Nredme/NreDME_th.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "de",
+    "name": "Deutsch",
+    "Nredme": "docs/Nredme/NreDME_de.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "es",
+    "name": "Español",
+    "Nredme": "docs/Nredme/NreDME_es.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "fr",
+    "name": "Français",
+    "Nredme": "docs/Nredme/NreDME_fr.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "uk",
+    "name": "Українська",
+    "Nredme": "docs/Nredme/NreDME_uk.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "pl",
+    "name": "Polski",
+    "Nredme": "docs/Nredme/NreDME_pl.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "pt-BR",
+    "name": "Português (Brasil)",
+    "Nredme": "docs/Nredme/NreDME_pt-BR.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "ar",
+    "name": "العربية",
+    "Nredme": "docs/Nredme/NreDME_ar.md",
+    "dir": "rtl"
+  },
+  {
+    "code": "fa",
+    "name": "فارسی",
+    "Nredme": "docs/Nredme/NreDME_fa.md",
+    "dir": "rtl"
+  },
+  {
+    "code": "id",
+    "name": "Bahasa Indonesia",
+    "Nredme": "docs/Nredme/NreDME_id.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "it",
+    "name": "Italiano",
+    "Nredme": "docs/Nredme/NreDME_it.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "el",
+    "name": "Ελληνικά",
+    "Nredme": "docs/Nredme/NreDME_el.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "ml",
+    "name": "മലയാളം",
+    "Nredme": "docs/Nredme/NreDME_ml.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "ur-Latn",
+    "name": "Roman Urdu",
+    "Nredme": "docs/Nredme/NreDME_ur-Latn.md",
+    "dir": "ltr"
+  },
+  {
+    "code": "ro",
+    "name": "Română",
+    "Nredme": "docs/Nredme/NreDME_ro.md",
+    "dir": "ltr"
+  }
+]
