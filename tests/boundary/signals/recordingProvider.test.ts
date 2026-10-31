@@ -6,7 +6,16 @@ import { signalDecodersSchema } from "../../../src/domain/signals/signalDecoders
 import { projectAnalysisError } from "../../../src/domain/analysisErrorProjection.js";
 import { OwnedCommandFailure } from "../../../src/process/OwnedCommand.js";
 import { it, expect, onTestFinished } from "vitest";
-import { writeFile, readFile, readdir, chmod, symlink } from "node:fs/promises";
+import {
+  writeFile,
+  readFile,
+  readdir,
+  chmod,
+  symlink,
+  mkdtemp,
+  rm,
+} from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { createHash } from "node:crypto";
 import { basename, join } from "node:path";
 import { readStableArtifact } from "../../../src/artifacts/readStableArtifact.js";
@@ -26,6 +35,35 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { Cli } from "incur";
 import { registerSignalCommands } from "../../../src/cli/signalCommands.js";
 import { silentLogger } from "../../../src/logger.js";
+
+const SYMLINK_UNAVAILABLE_CODES = new Set(["EPERM", "EACCES", "ENOTSUP"]);
+
+/** Capability probe: verify whether symlink creation is genuinely supported by the host environment. */
+const canCreateSymlinks = await (async (): Promise<boolean> => {
+  if (process.platform !== "win32") return true;
+  const probeDirectory = await mkdtemp(join(tmpdir(), "nre-symlink-probe-"));
+  try {
+    const target = join(probeDirectory, "target");
+    const link = join(probeDirectory, "link");
+    await writeFile(target, "probe");
+    try {
+      await symlink(target, link);
+      return true;
+    } catch (cause: unknown) {
+      if (
+        cause instanceof Error &&
+        "code" in cause &&
+        typeof cause.code === "string" &&
+        SYMLINK_UNAVAILABLE_CODES.has(cause.code)
+      ) {
+        return false;
+      }
+      throw cause;
+    }
+  } finally {
+    await rm(probeDirectory, { recursive: true, force: true });
+  }
+})();
 
 const producerSource = (mode: string, snapshotName: string): string =>
   `import {readFileSync, writeFileSync, chmodSync, truncateSync} from 'node:fs';
@@ -1083,21 +1121,24 @@ it("preserves complete Evidence when aborted during post-run integrity checks", 
     (await readdir(f.directory)).filter((name) => name.startsWith("decoder-")),
   ).toEqual([]);
 });
-it("preserves configured symlink paths separately from resolved tool identities", async () => {
-  const f = await fixture("symlink");
-  const result = await f.service.decode({ path: f.path, decoders: "uart" });
-  if (!result.ok) throw result.error;
-  expect(result.value.normalized_result).toMatchObject({
-    tool: {
-      configured_path: join(f.directory, "configured-tool"),
-      path: join(f.directory, "producer.mjs"),
-    },
-    resource_limiter: {
-      configured_path: join(f.directory, "configured-tool"),
-      path: join(f.directory, "producer.mjs"),
-    },
-  });
-});
+it.skipIf(!canCreateSymlinks)(
+  "preserves configured symlink paths separately from resolved tool identities",
+  async () => {
+    const f = await fixture("symlink");
+    const result = await f.service.decode({ path: f.path, decoders: "uart" });
+    if (!result.ok) throw result.error;
+    expect(result.value.normalized_result).toMatchObject({
+      tool: {
+        configured_path: join(f.directory, "configured-tool"),
+        path: join(f.directory, "producer.mjs"),
+      },
+      resource_limiter: {
+        configured_path: join(f.directory, "configured-tool"),
+        path: join(f.directory, "producer.mjs"),
+      },
+    });
+  },
+);
 
 it.each(["oversized-copy", "oversized-tool"])(
   "identifies the mutated %s without blaming the admitted source",

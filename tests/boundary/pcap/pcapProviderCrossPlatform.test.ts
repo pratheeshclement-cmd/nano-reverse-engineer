@@ -7,7 +7,9 @@
  * refusal paths, and cancellation before spawn.
  */
 import { createHash } from "node:crypto";
+import { constants } from "node:fs";
 import {
+  access,
   chmod,
   mkdir,
   open,
@@ -20,7 +22,7 @@ import {
 import { join } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { expect, it, onTestFinished, vi } from "vitest";
+import { beforeAll, expect, it, onTestFinished, vi } from "vitest";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 import { PcapProvider } from "../../../src/pcap/PcapProvider.js";
@@ -47,6 +49,18 @@ const tsharkStub = isWindows
 const capinfosStub = isWindows
   ? join(stubDir, "capinfos-stub.cmd")
   : join(stubDir, "capinfos-stub.sh");
+
+beforeAll(async () => {
+  if (!isWindows) {
+    for (const stub of [tsharkStub, capinfosStub]) {
+      try {
+        await access(stub, constants.X_OK);
+      } catch {
+        await chmod(stub, 0o755);
+      }
+    }
+  }
+});
 
 const providerOver = (): PcapProvider => {
   const provider = new PcapProvider({
@@ -319,7 +333,7 @@ exit 2
   },
 );
 
-it.each([0, 7])(
+it.skipIf(isWindows).each([0, 7])(
   "retains failed-probe cleanup across admission retry and resolves after owner close: exit=%s",
   async (exitCode) => {
     let mayClean = false;
@@ -330,7 +344,7 @@ it.each([0, 7])(
         command: process.execPath,
         arguments: [
           "-e",
-          `process.stdout.write("TShark (Wireshark) 4.6.6\\n"); process.exitCode = ${exitCode}`,
+          `process.stdout.write('TShark (Wireshark) 4.6.6\\n'); process.exitCode = ${exitCode}`,
         ],
         expectedCommand: process.execPath,
       });
@@ -400,7 +414,20 @@ it.each([0, 7])(
   },
 );
 
-it.runIf(hasNativeBound)(
+// Inspecting a capture end-to-end requires an enforceable native memory bound:
+// Linux uses util-linux prlimit, and Windows uses Job Objects.
+// macOS (darwin) lacks an enforceable native memory bound, so pcapCaptureHostSupported("darwin")
+// is false and macOS hosts are tested for unsupported-boundary refusal below (it.runIf(!hasNativeBound)).
+//
+// Additionally, on Windows, this boundary test executes a batch stub fixture (tshark-stub.cmd).
+// NRE's Windows batch execution hardening (windowsBatchCommand, protecting against CVE-2024-27980)
+// strictly rejects arguments containing command-interpreter metacharacters like "|" (such as tshark's
+// display filter argument "-Y dns || mdns || llmnr"). Production Windows environments use the native
+// PE binary tshark.exe directly without cmd.exe. Therefore, this mock batch-stub test runs on Linux
+// hosts where POSIX shell stubs accept display filters without shell-injection risk.
+const canRunPcapCaptureInspectionStub = hasNativeBound && !isWindows;
+
+it.runIf(canRunPcapCaptureInspectionStub)(
   "inspects a capture with metadata, endpoints, DNS, and protocol facts",
   async () => {
     const root = await createTestTempDirectory("nre-pcap-x-");

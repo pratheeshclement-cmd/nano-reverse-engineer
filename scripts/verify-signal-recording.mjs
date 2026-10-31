@@ -67,7 +67,7 @@ const transport = new StdioClientTransport({
   env: environment,
   stderr: "pipe",
 });
-// Independently synthesize 9600-baud 8N1 samples at 1 MHz: bytes 52 45 41.
+// Independently synthesize 9600-baud 8N1 samples at 1 MHz: bytes 4E 52 45.
 const lines = [
   "$timescale 1 us $end",
   "$scope module logic $end",
@@ -133,7 +133,7 @@ await withVerifierCleanup(async () => {
       requireMcpOutput(response, "decode_signal_recording"),
     );
     const report = evidence.normalized_result;
-    for (const byte of ["52", "45", "41"])
+    for (const byte of ["4E", "52", "45"])
       assert.match(
         report.annotations_text,
         new RegExp(`\\d+-\\d+ uart-1: ${byte}\\n`),

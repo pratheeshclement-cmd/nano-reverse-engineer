@@ -54,6 +54,11 @@ const reasons = [];
 // baseline. Full qualification still selects every lane.
 const SHARED_BOUNDARY =
   /^(src\/process\/|src\/filesystem\/|src\/contracts\/tool|src\/server\/createServer|src\/cli\.ts|scripts\/ci\/)/;
+const forceFull = (reason) => {
+  tier = "full";
+  for (const flag of flags) selected[flag] = true;
+  reasons.push(reason);
+};
 const full = (reason) => {
   if (tier === "full") {
     for (const flag of flags) selected[flag] = true;
@@ -66,6 +71,13 @@ const full = (reason) => {
 const git = (...args) =>
   execFileSync("git", args, { encoding: "utf8" }).trimEnd();
 function classifyPackage(base, head) {
+  const baseManifest = git("ls-tree", base, "package.json");
+  if (!baseManifest) {
+    forceFull(
+      "Package manifest package.json absent from base commit; forcing full qualification",
+    );
+    return;
+  }
   const before = JSON.parse(git("show", `${base}:package.json`));
   const after = JSON.parse(git("show", `${head}:package.json`));
   const { scripts: beforeScripts, ...beforeRest } = before;
@@ -166,7 +178,7 @@ const requestedFull =
   event === "schedule" ||
   event === "workflow_dispatch" ||
   process.env.CI_FULL === "true";
-const tier =
+let tier =
   event === "schedule" &&
   process.env.CI_SKIP_FULL === "true" &&
   process.env.CI_FULL !== "true"

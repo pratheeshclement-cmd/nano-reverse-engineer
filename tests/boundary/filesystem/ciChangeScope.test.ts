@@ -1082,6 +1082,26 @@ it("scopes package script edits while retaining broad dependency checks", async 
   });
 });
 
+it("forces full qualification when package.json was introduced after base commit", async () => {
+  const { directory, base } = await fixture();
+  const head = await change(
+    directory,
+    ["package.json"],
+    JSON.stringify({ name: "nano-reverse-engineer", version: "7.0.0" }),
+  );
+  const result = await classify(directory, base, head);
+  expect(result.tier).toBe("full");
+  expect(result.code).toBe(true);
+  expect(result.package).toBe(true);
+  expect(result.reasons).toEqual(
+    expect.arrayContaining([
+      expect.stringContaining(
+        "Package manifest package.json absent from base commit",
+      ),
+    ]),
+  );
+});
+
 it.each(["test:sqlite", "test:sqlite:run"])(
   "routes %s script changes to the SQLite runtime matrix",
   async (script) => {
